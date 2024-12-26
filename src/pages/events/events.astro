@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+import Badge from '../components/ui/Badge.astro';
+import EventGrid from '../components/events/EventGrid.astro';
+
+const events = await getCollection('events');
+
+const upcomingEvents = events
+  .filter(event => event.data.status === 'upcoming')
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+const pastEvents = events
+  .filter(event => event.data.status === 'past')
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Layout title="Cultural Events">
+  <main class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl overflow-hidden mb-12">
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative px-6 py-12 md:py-16 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Cultural Events at Dzaleka
+        </h1>
+        <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+          Discover and participate in events that celebrate our diverse community and cultural heritage.
+        </p>
+      </div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <section class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">Upcoming Events</h2>
+        <div class="flex items-center gap-4">
+          <a
+            href="/events/organize"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Submit Event
+          </a>
+        </div>
+      </div>
+
+      {upcomingEvents.length > 0 ? (
+        <EventGrid events={upcomingEvents} />
+      ) : (
+        <p class="text-gray-600 text-center">No upcoming events at the moment. Check back soon!</p>
+      )}
+    </section>
+
+    <!-- Past Events -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Past Events</h2>
+      {pastEvents.length > 0 ? (
+        <EventGrid events={pastEvents} />
+      ) : (
+        <p class="text-gray-600 text-center">No past events to display.</p>
+      )}
+    </section>
+  </main>
+</Layout>

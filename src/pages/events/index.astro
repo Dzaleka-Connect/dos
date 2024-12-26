@@ -1,27 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import SearchBar from '../../components/ui/SearchBar.astro';
-import EventGrid from '../../components/events/EventGrid.astro';
-import EventPagination from '../../components/events/EventPagination.astro';
 import { getCollection } from 'astro:content';
+import Badge from '../../components/ui/Badge.astro';
+import EventGrid from '../../components/events/EventGrid.astro';
 
-// Get all events
-const allEvents = await getCollection('events');
-
-// Get URL parameters
-const searchQuery = Astro.url.searchParams.get('search')?.trim() || '';
-const upcomingPage = parseInt(Astro.url.searchParams.get('upcomingPage') || '1');
-const pastPage = parseInt(Astro.url.searchParams.get('pastPage') || '1');
-const itemsPerPage = 4;
-
-// Filter events by search query
-let filteredEvents = allEvents;
-if (searchQuery) {
-  filteredEvents = allEvents.filter(event => 
-    event.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.data.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-}
+const events = await getCollection('events');
 
 // Function to determine if an event is upcoming
 function isUpcoming(date: Date) {
@@ -32,160 +15,102 @@ function isUpcoming(date: Date) {
   return eventDate >= today;
 }
 
-// Function to paginate events
-function paginateEvents(events: any[], page: number, perPage: number) {
-  const totalPages = Math.max(1, Math.ceil(events.length / perPage));
-  const currentPage = Math.min(Math.max(1, page), totalPages);
-  const startIndex = (currentPage - 1) * perPage;
-  const endIndex = Math.min(startIndex + perPage, events.length);
-  
-  return {
-    events: events.slice(startIndex, endIndex),
-    pagination: {
-      currentPage,
-      totalPages,
-      totalItems: events.length,
-      startIndex,
-      endIndex
-    }
-  };
-}
-
-// Separate and sort events
-const allUpcomingEvents = filteredEvents
+const upcomingEvents = events
   .filter(event => isUpcoming(event.data.date))
   .map(event => ({
     ...event,
     data: { ...event.data, status: 'upcoming' }
   }))
-  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
+  .slice(0, 4); // Show only first 4 upcoming events
 
-const allPastEvents = filteredEvents
+const pastEvents = events
   .filter(event => !isUpcoming(event.data.date))
   .map(event => ({
     ...event,
     data: { ...event.data, status: 'past' }
   }))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-// Paginate both sections
-const { events: upcomingEvents, pagination: upcomingPagination } = 
-  paginateEvents(allUpcomingEvents, upcomingPage, itemsPerPage);
-
-const { events: pastEvents, pagination: pastPagination } = 
-  paginateEvents(allPastEvents, pastPage, itemsPerPage);
-
-// Function to build pagination URL
-function buildPaginationUrl(type: 'upcoming' | 'past', page: number) {
-  const params = new URLSearchParams(Astro.url.search);
-  params.set(`${type}Page`, page.toString());
-  return `?${params.toString()}`;
-}
-
-// Redirect to upcoming events by default
-const searchParams = Astro.url.searchParams.toString();
-return Astro.redirect(`/events/upcoming/1${searchParams ? '?' + searchParams : ''}`);
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 4); // Show only first 4 past events
 ---
 
-<Layout title="Events">
+<Layout title="Cultural Events">
   <main class="container mx-auto px-4 py-8">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Events</h1>
-      <div class="flex items-center gap-4">
-        <a 
-          href="/events/organize" 
-          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-        >
-          <span class="text-white text-xl font-bold mr-2" aria-hidden="true">+</span>
-          Submit Event
-        </a>
-        <SearchBar placeholder="Search events..." initialValue={searchQuery} section="events" />
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl overflow-hidden mb-12">
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative px-6 py-12 md:py-16 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Cultural Events at Dzaleka
+        </h1>
+        <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+          Discover and participate in events that celebrate our diverse community and cultural heritage.
+        </p>
       </div>
     </div>
 
-    {(allUpcomingEvents.length === 0 && allPastEvents.length === 0) ? (
-      <div class="text-center py-8">
-        <p class="text-gray-500">
-          {searchQuery 
-            ? `No events found matching "${searchQuery}"`
-            : "No events available at the moment"}
-        </p>
-      </div>
-    ) : (
-      <div class="space-y-8">
-        {/* Event Tabs */}
-        <div class="border-b border-gray-200">
-          <nav class="-mb-px flex space-x-8" aria-label="Events">
-            <a
-              href="#upcoming"
-              class="border-primary-500 text-primary-600 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm"
-              aria-current="page"
-            >
-              Upcoming Events
-              <span class="ml-2 py-0.5 px-2.5 text-xs font-medium text-primary-600 bg-primary-50 rounded-full">
-                {allUpcomingEvents.length}
-              </span>
-            </a>
-
-            <a
-              href="#past"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm"
-            >
-              Past Events
-              <span class="ml-2 py-0.5 px-2.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
-                {allPastEvents.length}
-              </span>
-            </a>
-          </nav>
-        </div>
-
-        {/* Event Sections */}
-        <div class="space-y-12">
-          {/* Upcoming Events Section */}
-          <section id="upcoming">
-            {upcomingEvents.length > 0 ? (
-              <div>
-                <EventGrid events={upcomingEvents} />
-                {upcomingPagination.totalPages > 1 && (
-                  <div class="mt-8">
-                    <EventPagination
-                      currentPage={upcomingPagination.currentPage}
-                      totalPages={upcomingPagination.totalPages}
-                      baseUrl={(page) => buildPaginationUrl('upcoming', page)}
-                    />
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div class="text-center py-8 bg-gray-50 rounded-xl">
-                <p class="text-gray-500">No upcoming events at the moment</p>
-              </div>
-            )}
-          </section>
-
-          {/* Past Events Section */}
-          <section id="past">
-            {pastEvents.length > 0 ? (
-              <div>
-                <EventGrid events={pastEvents} />
-                {pastPagination.totalPages > 1 && (
-                  <div class="mt-8">
-                    <EventPagination
-                      currentPage={pastPagination.currentPage}
-                      totalPages={pastPagination.totalPages}
-                      baseUrl={(page) => buildPaginationUrl('past', page)}
-                    />
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div class="text-center py-8 bg-gray-50 rounded-xl">
-                <p class="text-gray-500">No past events</p>
-              </div>
-            )}
-          </section>
+    <!-- Upcoming Events -->
+    <section class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">Upcoming Events</h2>
+        <div class="flex items-center gap-4">
+          <a
+            href="/events/organize"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Submit Event
+          </a>
         </div>
       </div>
-    )}
+
+      {upcomingEvents.length > 0 ? (
+        <div>
+          <EventGrid events={upcomingEvents} />
+          {events.filter(event => isUpcoming(event.data.date)).length > 4 && (
+            <div class="mt-6 text-center">
+              <a 
+                href="/events/upcoming/1" 
+                class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
+              >
+                View All Upcoming Events
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p class="text-gray-600 text-center">No upcoming events at the moment. Check back soon!</p>
+      )}
+    </section>
+
+    <!-- Past Events -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Past Events</h2>
+      {pastEvents.length > 0 ? (
+        <div>
+          <EventGrid events={pastEvents} />
+          {events.filter(event => !isUpcoming(event.data.date)).length > 4 && (
+            <div class="mt-6 text-center">
+              <a 
+                href="/events/past/1" 
+                class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
+              >
+                View All Past Events
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p class="text-gray-600 text-center">No past events to display.</p>
+      )}
+    </section>
   </main>
 </Layout>
