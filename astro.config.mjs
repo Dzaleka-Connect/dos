@@ -27,5 +27,6 @@ export default defineConfig({
         include: [/googleapis/, /node_modules/]
       }
     }
-  }
+  }, 
+  adapter: netlify()
 });
