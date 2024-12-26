@@ -23,10 +23,10 @@ import Layout from '../../layouts/Layout.astro';
     <div class="max-w-2xl mx-auto">
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
         <form 
+          id="resourceForm"
           action="https://formspree.io/f/xqaaajae" 
           method="POST" 
           class="space-y-8"
-          onsubmit="setTimeout(function() { window.location.href = '/resources/submit/thank-you'; }, 1000);"
         >
           {/* Title */}
           <div>
@@ -278,7 +278,26 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-  // No script needed
+  const form = document.getElementById('resourceForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        window.location.href = '/resources/submit/thank-you';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
 </script>
 
 <style>
