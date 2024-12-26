@@ -64,22 +64,12 @@ const pastEvents = events
               <div class="flex items-center justify-between">
                 <div class="text-sm">
                   <p class="font-medium text-gray-900">
-                    Photos by {event.data.photographer.name}
+                    Organized by {event.data.organizer}
                   </p>
-                  {event.data.photographer.instagram && (
-                    <a 
-                      href={`https://instagram.com/${event.data.photographer.instagram}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-primary-600 hover:text-primary-700"
-                    >
-                      @{event.data.photographer.instagram}
-                    </a>
-                  )}
                 </div>
-                {event.data.registrationLink && (
+                {event.data.registration?.url && (
                   <a
-                    href={event.data.registrationLink}
+                    href={event.data.registration.url}
                     class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                   >
                     Register Now
@@ -118,20 +108,8 @@ const pastEvents = events
               <p class="text-gray-600 text-sm mb-4">{event.data.description}</p>
               
               <div class="flex items-center justify-between">
-                <div class="text-sm">
-                  <span class="text-gray-500">Photos by </span>
-                  {event.data.photographer.instagram ? (
-                    <a 
-                      href={`https://instagram.com/${event.data.photographer.instagram}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-primary-600 hover:text-primary-700"
-                    >
-                      @{event.data.photographer.instagram}
-                    </a>
-                  ) : (
-                    <span class="text-gray-900">{event.data.photographer.name}</span>
-                  )}
+                <div class="text-sm text-gray-600">
+                  {event.data.organizer}
                 </div>
                 {event.data.gallery && (
                   <a
