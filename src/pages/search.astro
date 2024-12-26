@@ -14,9 +14,14 @@ const sortByDate = (a: any, b: any) => {
   return dateB.getTime() - dateA.getTime();
 };
 
+// Filter and get upcoming events
+const upcomingEvents = events
+  .filter(event => new Date(event.data.date) >= new Date())
+  .sort(sortByDate)
+  .slice(0, 3);
+
 // Get latest items (automatically updates when new content is added)
 const latestServices = [...services].sort(sortByDate).slice(0, 3);
-const latestEvents = [...events].sort(sortByDate).slice(0, 3);
 const latestResources = [...resources].sort(sortByDate).slice(0, 3);
 
 // Format date for display
@@ -27,19 +32,29 @@ function formatDate(date: string | Date) {
     day: 'numeric'
   });
 }
+
+// Popular search terms
+const popularSearches = [
+  'Dzaleka Watch',
+  'Community Services',
+  'Refugee Support',
+  'Education Programs',
+  'Local Events',
+  'Cultural Resources'
+];
 ---
 
 <Layout title="Search Dzaleka Heritage Archive">
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-3xl mx-auto">
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Dzaleka Heritage Archive</h1>
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Dzaleka Online Service</h1>
         <p class="text-gray-600 mb-6">
           Find services, events, resources, and more from Dzaleka Refugee Camp
         </p>
       </div>
       
-      <div class="mb-12">
+      <div class="mb-6">
         <form 
           onsubmit="window.location.href='/search/results?q=' + encodeURIComponent(document.getElementById('search-input').value); return false;"
           class="w-full"
@@ -77,6 +92,21 @@ function formatDate(date: string | Date) {
             </button>
           </div>
         </form>
+
+        {/* Popular Searches - Moved below search input */}
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">Popular Searches</h3>
+          <div class="flex flex-wrap justify-center gap-2">
+            {popularSearches.map(search => (
+              <a
+                href={`/search/results?q=${encodeURIComponent(search)}`}
+                class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full hover:bg-primary-100 hover:text-primary-700 transition-colors"
+              >
+                {search}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div class="space-y-12">
@@ -138,34 +168,45 @@ function formatDate(date: string | Date) {
           </div>
         </section>
 
-        {/* Latest Events */}
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Upcoming Events</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {latestEvents.map(event => (
-              <a href={`/events/${event.slug}`} class="block">
-                <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                  <div class="h-48 bg-gray-100">
-                    <img
-                      src={event.data.image || '/images/placeholder-image.jpg'}
-                      alt={event.data.title}
-                      class="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div class="p-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{event.data.title}</h3>
-                    <p class="text-sm text-gray-600 mb-2">{event.data.description}</p>
-                    <div class="flex items-center text-sm text-gray-500">
-                      <span>{event.data.location.venue}</span>
-                      <span class="mx-2">•</span>
-                      <time datetime={event.data.date}>{formatDate(event.data.date)}</time>
+        {/* Upcoming Events */}
+        {upcomingEvents.length > 0 && (
+          <section>
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Upcoming Events</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {upcomingEvents.map(event => (
+                <a href={`/events/${event.slug}`} class="block">
+                  <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="h-48 bg-gray-100">
+                      <img
+                        src={event.data.image || '/images/placeholder-image.jpg'}
+                        alt={event.data.title}
+                        class="w-full h-full object-cover"
+                      />
                     </div>
-                  </div>
-                </article>
-              </a>
-            ))}
-          </div>
-        </section>
+                    <div class="p-4">
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded-full">
+                          Upcoming
+                        </span>
+                        <time 
+                          datetime={event.data.date} 
+                          class="text-sm text-gray-500"
+                        >
+                          {formatDate(event.data.date)}
+                        </time>
+                      </div>
+                      <h3 class="text-lg font-semibold text-gray-900 mb-2">{event.data.title}</h3>
+                      <p class="text-sm text-gray-600 mb-2">{event.data.description}</p>
+                      <div class="flex items-center text-sm text-gray-500">
+                        <span>{event.data.location.venue}</span>
+                      </div>
+                    </div>
+                  </article>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Latest Services */}
         <section>
@@ -193,36 +234,6 @@ function formatDate(date: string | Date) {
             ))}
           </div>
         </section>
-
-        <div class="mb-12">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4">Popular Searches</h3>
-          <div class="flex flex-wrap justify-center gap-3">
-            <a
-              href={`/search/results?q=${encodeURIComponent('Dzaleka Watch')}`}
-              class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
-            >
-              Dzaleka Watch
-            </a>
-            <a
-              href={`/search/results?q=${encodeURIComponent('Digital Heritage')}`}
-              class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
-            >
-              Digital Heritage
-            </a>
-            <a
-              href={`/search/results?q=${encodeURIComponent('Art Exhibition')}`}
-              class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
-            >
-              Art Exhibition
-            </a>
-            <a
-              href={`/search/results?q=${encodeURIComponent('Tumaini Festival')}`}
-              class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
-            >
-              Tumaini Festival
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   </main>

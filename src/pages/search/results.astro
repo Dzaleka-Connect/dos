@@ -3,24 +3,20 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SearchBar from '../../components/ui/SearchBar.astro';
 
-// Enable server-side rendering for search
+// Ensure server-side rendering
 export const prerender = false;
 
-// Get all content from collections
-let services = [];
-let events = [];
-let resources = [];
-
-try {
-  services = await getCollection('services');
-  events = await getCollection('events');
-  resources = await getCollection('resources');
-} catch (error) {
-  console.error('Error fetching collections:', error);
+// Function to safely get search query
+function getSearchQuery(url: URL) {
+  try {
+    return (url.searchParams.get('q') || '').trim();
+  } catch {
+    return '';
+  }
 }
 
-// Get search query from URL and ensure it's trimmed
-const query = (Astro.url.searchParams.get('q') || '').trim();
+// Get search query from URL
+const query = getSearchQuery(Astro.url);
 
 // Safely get nested object properties
 function getNestedValue(obj: any, path: string) {
@@ -82,6 +78,19 @@ function searchContent(items: any[], searchQuery: string) {
   });
 }
 
+// Fetch collections
+let services: any[] = [];
+let events: any[] = [];
+let resources: any[] = [];
+
+try {
+  services = await getCollection('services');
+  events = await getCollection('events');
+  resources = await getCollection('resources');
+} catch (error) {
+  console.error('Error fetching collections:', error);
+}
+
 // Search results
 const searchResults = {
   services: searchContent(services, query),
@@ -106,7 +115,6 @@ function formatDate(date: string | Date) {
     return 'Date not available';
   }
 }
-
 ---
 
 <Layout title={`Search Results ${query ? `for "${query}"` : ''}`}>
@@ -114,7 +122,12 @@ function formatDate(date: string | Date) {
     <div class="max-w-3xl mx-auto">
       <!-- Search Bar -->
       <div class="mb-8">
-        <SearchBar section="search" initialValue={query} fullWidth={true} placeholder="Search for services, events, and resources..." />
+        <SearchBar 
+          section="search" 
+          initialValue={query} 
+          fullWidth={true} 
+          placeholder="Search for services, events, and resources..." 
+        />
       </div>
 
       <!-- Results Header -->
@@ -292,3 +305,21 @@ function formatDate(date: string | Date) {
     </div>
   </main>
 </Layout>
+
+<script>
+// Client-side search fallback
+document.addEventListener('DOMContentLoaded', () => {
+  const searchForm = document.querySelector('form');
+  const searchInput = document.getElementById('search-input');
+  
+  if (searchForm && searchInput) {
+    searchForm.addEventListener('submit', (e) => {
+      const query = searchInput.value.trim();
+      if (!query) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+  }
+});
+</script>

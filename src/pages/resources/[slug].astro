@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const resources = await getCollection('resources');
+  return resources.map(resource => ({
+    params: { slug: resource.slug },
+    props: { resource },
+  }));
+}
+
+const { resource } = Astro.props;
+const { Content } = await resource.render();
+---
+
+<Layout title={resource.data.title}>
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <article class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <header class="bg-gray-50 p-6 border-b">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{resource.data.title}</h1>
+        <div class="flex justify-between items-center text-sm text-gray-600">
+          <div class="flex items-center space-x-4">
+            {resource.data.author && (
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                {resource.data.author}
+              </span>
+            )}
+            {resource.data.date && (
+              <time datetime={resource.data.date} class="flex items-center">
+                <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {new Date(resource.data.date).toLocaleDateString()}
+              </time>
+            )}
+          </div>
+          <div class="flex items-center space-x-4">
+            {resource.data.category && (
+              <span class="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs">
+                {resource.data.category}
+              </span>
+            )}
+            {resource.data.languages && (
+              <span class="text-gray-500">
+                {resource.data.languages.join(', ')}
+              </span>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <div class="p-6">
+        {resource.data.description && (
+          <div class="mb-6 text-gray-700 italic">
+            {resource.data.description}
+          </div>
+        )}
+
+        <div class="prose max-w-none">
+          <Content />
+        </div>
+      </div>
+
+      <footer class="bg-gray-50 p-6 border-t flex justify-between items-center">
+        <div class="flex space-x-4">
+          {resource.data.downloadUrl && (
+            <a 
+              href={resource.data.downloadUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download
+            </a>
+          )}
+          {resource.data.resourceUrl && (
+            <a 
+              href={resource.data.resourceUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Visit Resource
+            </a>
+          )}
+        </div>
+        {resource.data.fileSize && (
+          <span class="text-sm text-gray-500">
+            File Size: {resource.data.fileSize}
+          </span>
+        )}
+      </footer>
+    </article>
+  </main>
+</Layout>
+
+<style is:global>
+  .prose {
+    max-width: none;
+  }
+  .prose h2 {
+    @apply text-xl font-semibold text-gray-900 mt-6 mb-4;
+  }
+  .prose p {
+    @apply mb-4 text-gray-700;
+  }
+  .prose ul {
+    @apply list-disc pl-5 mb-4;
+  }
+</style>

@@ -8,17 +8,23 @@ import { getCollection } from 'astro:content';
 // Get all resources
 const resources = await getCollection('resources');
 const searchQuery = Astro.url.searchParams.get('search') || '';
-const page = 1; // Always first page
+const selectedCategory = Astro.url.searchParams.get('category') || '';
+const page = Number(Astro.url.searchParams.get('page')) || 1;
 
-// Filter resources if there's a search query
-let filteredResources = resources;
-if (searchQuery) {
-  filteredResources = resources.filter(resource =>
+// Extract unique categories
+const categories = [...new Set(resources.map(r => r.data.category))];
+
+// Filter resources
+let filteredResources = resources.filter(resource => {
+  const matchesSearch = !searchQuery || 
     resource.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    resource.data.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    resource.data.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-}
+    resource.data.description.toLowerCase().includes(searchQuery.toLowerCase());
+  
+  const matchesCategory = !selectedCategory || 
+    resource.data.category.toLowerCase() === selectedCategory.toLowerCase();
+  
+  return matchesSearch && matchesCategory;
+});
 
 // Sort resources by date (most recent first)
 filteredResources = filteredResources.sort((a, b) => {
@@ -28,60 +34,169 @@ filteredResources = filteredResources.sort((a, b) => {
 });
 
 // Pagination
-const itemsPerPage = 6;
+const itemsPerPage = 9;
 const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
-const start = 0; // First page starts at 0
-const end = Math.min(itemsPerPage, filteredResources.length);
+const start = (page - 1) * itemsPerPage;
+const end = start + itemsPerPage;
 const paginatedResources = filteredResources.slice(start, end);
+
+// Category color mapping
+const categoryColors = {
+  'Report': 'bg-purple-100 text-purple-800',
+  'Guide': 'bg-green-100 text-green-800',
+  'Factsheet': 'bg-blue-100 text-blue-800',
+  'Document': 'bg-gray-100 text-gray-800',
+  'Research': 'bg-indigo-100 text-indigo-800'
+};
 ---
 
 <Layout title="Resource Hub">
   <main class="container mx-auto px-4 py-8">
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl overflow-hidden mb-8">
-      <div class="absolute inset-0 bg-black/20"></div>
-      <div class="relative px-6 py-12 md:py-16">
-        <div class="max-w-3xl mx-auto text-center">
-          <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
-            Resource Hub
+    {/* Hero Section */}
+    <section class="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl mb-12 overflow-hidden">
+      <div class="max-w-4xl mx-auto px-6 py-16 text-center relative">
+        <div class="absolute inset-0 bg-black/20 z-0"></div>
+        <div class="relative z-10">
+          <h1 class="text-4xl font-bold text-white mb-4">
+            Dzaleka Heritage Resource Hub
           </h1>
-          <p class="text-lg md:text-xl text-white/90">
-            Access guides, templates, and educational materials to support your journey
+          <p class="text-xl text-white/90 max-w-2xl mx-auto mb-8">
+            Discover comprehensive resources, reports, and guides that illuminate the stories, challenges, and resilience of Dzaleka Refugee Camp
           </p>
+          
+          {/* Enhanced Search and Filter */}
+          <form 
+            method="get" 
+            class="max-w-2xl mx-auto flex flex-col md:flex-row gap-4"
+          >
+            <input 
+              type="text" 
+              name="search" 
+              placeholder="Search resources..." 
+              value={searchQuery}
+              class="flex-grow px-4 py-3 rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/30"
+            />
+            <select 
+              name="category" 
+              class="px-4 py-3 rounded-lg bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+            >
+              <option value="">All Categories</option>
+              {categories.map(category => (
+                <option 
+                  value={category} 
+                  selected={selectedCategory === category}
+                >
+                  {category}
+                </option>
+              ))}
+            </select>
+            <button 
+              type="submit" 
+              class="px-6 py-3 bg-white text-primary-700 rounded-lg hover:bg-white/90 transition-colors"
+            >
+              Search
+            </button>
+          </form>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-      <div class="flex items-center gap-2 text-gray-600">
-        <span>Showing {start + 1}-{end} of {filteredResources.length} resources</span>
-      </div>
-      <SearchBar 
-        placeholder="Search resources..." 
-        initialValue={searchQuery}
-        section="resources" 
-      />
-    </div>
+    {/* Resources Grid */}
+    <section>
+      {paginatedResources.length > 0 ? (
+        <>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {paginatedResources.map(resource => (
+              <a 
+                href={`/resources/${resource.slug}`} 
+                class="group block"
+              >
+                <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full">
+                  {/* Content */}
+                  <div class="p-6 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-4">
+                      <span 
+                        class={`px-3 py-1 rounded-full text-xs font-medium ${
+                          categoryColors[resource.data.category] || 'bg-gray-100 text-gray-800'
+                        }`}
+                      >
+                        {resource.data.category}
+                      </span>
+                      <time class="text-sm text-gray-500">
+                        {new Date(resource.data.date).toLocaleDateString()}
+                      </time>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors flex-grow">
+                      {resource.data.title}
+                    </h3>
+                    
+                    <p class="text-sm text-gray-600 line-clamp-3 mb-4">
+                      {resource.data.description}
+                    </p>
+                    
+                    <div class="flex items-center justify-between mt-auto">
+                      <span class="text-sm text-gray-500">
+                        {resource.data.fileType || 'Document'}
+                      </span>
+                      <span class="text-sm text-gray-500">
+                        {resource.data.fileSize || '—'}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
 
-    {filteredResources.length > 0 ? (
-      <>
-        <ResourceGrid resources={paginatedResources} />
-        {totalPages > 1 && (
-          <ResourcePagination
-            currentPage={page}
-            totalPages={totalPages}
-            baseUrl="/resources"
-            searchQuery={searchQuery}
-          />
-        )}
-      </>
-    ) : (
-      <div class="text-center py-12">
-        <h2 class="text-xl font-semibold text-gray-900 mb-2">No resources found</h2>
-        <p class="text-gray-600">
-          {searchQuery ? `No resources match "${searchQuery}"` : "No resources available at the moment"}
-        </p>
-      </div>
-    )}
+          {/* Pagination */}
+          <div class="flex justify-center">
+            <nav aria-label="Pagination" class="inline-flex space-x-2">
+              {page > 1 && (
+                <a 
+                  href={`?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}${selectedCategory ? `&category=${selectedCategory}` : ''}`}
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-100"
+                >
+                  Previous
+                </a>
+              )}
+              
+              {page < totalPages && (
+                <a 
+                  href={`?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}${selectedCategory ? `&category=${selectedCategory}` : ''}`}
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-100"
+                >
+                  Next
+                </a>
+              )}
+            </nav>
+          </div>
+        </>
+      ) : (
+        <div class="text-center py-16 bg-gray-50 rounded-xl">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+            No Resources Found
+          </h2>
+          <p class="text-gray-600 mb-6">
+            Try adjusting your search or category filters
+          </p>
+          <a 
+            href="/resources" 
+            class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            Reset Filters
+          </a>
+        </div>
+      )}
+    </section>
   </main>
 </Layout>
+
+<style is:global>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
