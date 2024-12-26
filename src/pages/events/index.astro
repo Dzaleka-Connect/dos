@@ -15,23 +15,27 @@ function isUpcoming(date: Date) {
   return eventDate >= today;
 }
 
-const upcomingEvents = events
+// Filter and sort upcoming events
+const allUpcomingEvents = events
   .filter(event => isUpcoming(event.data.date))
   .map(event => ({
     ...event,
     data: { ...event.data, status: 'upcoming' }
   }))
-  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
-  .slice(0, 4); // Show only first 4 upcoming events
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
 
-const pastEvents = events
+// Filter and sort past events
+const allPastEvents = events
   .filter(event => !isUpcoming(event.data.date))
   .map(event => ({
     ...event,
     data: { ...event.data, status: 'past' }
   }))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 4); // Show only first 4 past events
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Get first 4 events of each type
+const upcomingEvents = allUpcomingEvents.slice(0, 4);
+const pastEvents = allPastEvents.slice(0, 4);
 ---
 
 <Layout title="Cultural Events">
@@ -66,16 +70,16 @@ const pastEvents = events
         </div>
       </div>
 
-      {upcomingEvents.length > 0 ? (
+      {allUpcomingEvents.length > 0 ? (
         <div>
           <EventGrid events={upcomingEvents} />
-          {events.filter(event => isUpcoming(event.data.date)).length > 4 && (
+          {allUpcomingEvents.length > 4 && (
             <div class="mt-6 text-center">
               <a 
                 href="/events/upcoming/1" 
                 class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
               >
-                View All Upcoming Events
+                View All Upcoming Events ({allUpcomingEvents.length})
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                 </svg>
@@ -91,16 +95,16 @@ const pastEvents = events
     <!-- Past Events -->
     <section>
       <h2 class="text-2xl font-bold text-gray-900 mb-6">Past Events</h2>
-      {pastEvents.length > 0 ? (
+      {allPastEvents.length > 0 ? (
         <div>
           <EventGrid events={pastEvents} />
-          {events.filter(event => !isUpcoming(event.data.date)).length > 4 && (
+          {allPastEvents.length > 4 && (
             <div class="mt-6 text-center">
               <a 
                 href="/events/past/1" 
                 class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
               >
-                View All Past Events
+                View All Past Events ({allPastEvents.length})
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                 </svg>

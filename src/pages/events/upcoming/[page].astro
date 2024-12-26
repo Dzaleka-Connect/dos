@@ -1,0 +1,78 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import EventGrid from '../../../components/events/EventGrid.astro';
+import EventPagination from '../../../components/events/EventPagination.astro';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  const itemsPerPage = 4; // Show 4 events per page
+
+  // Function to determine if an event is upcoming
+  function isUpcoming(date: Date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(date);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  }
+
+  // Filter and sort upcoming events
+  const upcomingEvents = events
+    .filter(event => isUpcoming(event.data.date))
+    .map(event => ({
+      ...event,
+      data: { ...event.data, status: 'upcoming' }
+    }))
+    .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+  const totalPages = Math.ceil(upcomingEvents.length / itemsPerPage);
+
+  return Array.from({ length: totalPages }, (_, i) => {
+    const page = i + 1;
+    const start = i * itemsPerPage;
+    const end = start + itemsPerPage;
+    
+    return {
+      params: { page: page.toString() },
+      props: { 
+        events: upcomingEvents.slice(start, end),
+        currentPage: page,
+        totalPages,
+        totalEvents: upcomingEvents.length
+      }
+    };
+  });
+}
+
+const { events, currentPage, totalPages, totalEvents } = Astro.props;
+---
+
+<Layout title={`Upcoming Events - Page ${currentPage}`}>
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Upcoming Events</h1>
+        <a href="/events" class="inline-flex items-center text-primary-600 hover:text-primary-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          Back to Events
+        </a>
+      </div>
+      <p class="text-gray-600">Showing {events.length} of {totalEvents} upcoming events</p>
+    </div>
+
+    <EventGrid events={events} />
+
+    {totalPages > 1 && (
+      <div class="mt-8">
+        <EventPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl="/events/upcoming/[page]"
+        />
+      </div>
+    )}
+  </main>
+</Layout>

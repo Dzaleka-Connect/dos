@@ -2,7 +2,7 @@
 interface Props {
   currentPage: number;
   totalPages: number;
-  baseUrl: (page: number) => string;
+  baseUrl: string;
 }
 
 const { currentPage, totalPages, baseUrl } = Astro.props;
@@ -17,59 +17,91 @@ const pageNumbers = Array.from(
   { length: endPage - startPage + 1 },
   (_, i) => startPage + i
 );
+
+// Function to generate page URL
+function getPageUrl(page: number) {
+  return baseUrl.replace('[page]', page.toString());
+}
+
+// Common button styles
+const buttonBase = "relative inline-flex items-center px-4 py-2 text-sm font-medium border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2";
+const buttonEnabled = "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 cursor-pointer";
+const buttonDisabled = "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed";
+const buttonActive = "z-10 bg-primary-600 text-white border-primary-600 hover:bg-primary-700";
 ---
 
-<nav class="flex justify-center space-x-2" aria-label="Pagination">
-  <!-- Previous Page -->
-  {currentPage > 1 && (
-    <a
-      href={baseUrl(currentPage - 1)}
-      class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-      aria-label="Previous page"
-    >
-      Previous
-    </a>
-  )}
+<nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 mt-8" aria-label="Pagination">
+  <!-- Previous Button -->
+  <div class="-mt-px flex w-0 flex-1">
+    {currentPage > 1 ? (
+      <a
+        href={getPageUrl(currentPage - 1)}
+        class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+      >
+        <svg class="mr-3 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z" clip-rule="evenodd" />
+        </svg>
+        Previous
+      </a>
+    ) : (
+      <span class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-400 cursor-not-allowed">
+        <svg class="mr-3 h-5 w-5 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z" clip-rule="evenodd" />
+        </svg>
+        Previous
+      </span>
+    )}
+  </div>
 
   <!-- Page Numbers -->
-  <div class="hidden sm:flex sm:space-x-2">
+  <div class="hidden md:-mt-px md:flex">
+    {/* First Page */}
     {startPage > 1 && (
       <>
         <a
-          href={baseUrl(1)}
-          class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          href={getPageUrl(1)}
+          class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          aria-label="Go to page 1"
         >
           1
         </a>
         {startPage > 2 && (
-          <span class="px-3 py-2 text-sm text-gray-500">...</span>
+          <span class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
+            ...
+          </span>
         )}
       </>
     )}
 
-    {pageNumbers.map((pageNum) => (
+    {/* Page Numbers */}
+    {pageNumbers.map((page) => (
       <a
-        href={baseUrl(pageNum)}
-        class:list={[
-          "px-3 py-2 text-sm font-medium rounded-md",
-          pageNum === currentPage
-            ? "bg-primary-600 text-white border border-primary-600"
-            : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+        href={getPageUrl(page)}
+        class={[
+          "inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium",
+          page === currentPage
+            ? "border-primary-600 text-primary-600"
+            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
         ]}
-        aria-current={pageNum === currentPage ? "page" : undefined}
+        aria-current={page === currentPage ? "page" : undefined}
+        aria-label={`Go to page ${page}`}
       >
-        {pageNum}
+        {page}
       </a>
     ))}
 
+    {/* Last Page */}
     {endPage < totalPages && (
       <>
         {endPage < totalPages - 1 && (
-          <span class="px-3 py-2 text-sm text-gray-500">...</span>
+          <span class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
+            ...
+          </span>
         )}
         <a
-          href={baseUrl(totalPages)}
-          class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          href={getPageUrl(totalPages)}
+          class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          aria-label={`Go to page ${totalPages}`}
         >
           {totalPages}
         </a>
@@ -77,14 +109,32 @@ const pageNumbers = Array.from(
     )}
   </div>
 
-  <!-- Next Page -->
-  {currentPage < totalPages && (
-    <a
-      href={baseUrl(currentPage + 1)}
-      class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-      aria-label="Next page"
-    >
-      Next
-    </a>
-  )}
+  <!-- Next Button -->
+  <div class="-mt-px flex w-0 flex-1 justify-end">
+    {currentPage < totalPages ? (
+      <a
+        href={getPageUrl(currentPage + 1)}
+        class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+      >
+        Next
+        <svg class="ml-3 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    ) : (
+      <span class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-400 cursor-not-allowed">
+        Next
+        <svg class="ml-3 h-5 w-5 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z" clip-rule="evenodd" />
+        </svg>
+      </span>
+    )}
+  </div>
+
+  <!-- Mobile Pagination (Simplified) -->
+  <div class="flex md:hidden justify-center w-full -mt-px">
+    <p class="text-sm text-gray-700">
+      Page <span class="font-medium">{currentPage}</span> of <span class="font-medium">{totalPages}</span>
+    </p>
+  </div>
 </nav>

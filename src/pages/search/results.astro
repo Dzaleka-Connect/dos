@@ -2,10 +2,20 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
+export const prerender = false;
+
 // Get all content from collections
-const services = await getCollection('services');
-const events = await getCollection('events');
-const resources = await getCollection('resources');
+let services = [];
+let events = [];
+let resources = [];
+
+try {
+  services = await getCollection('services');
+  events = await getCollection('events');
+  resources = await getCollection('resources');
+} catch (error) {
+  console.error('Error fetching collections:', error);
+}
 
 // Get search query from URL
 const query = Astro.url.searchParams.get('q') || '';
