@@ -1,0 +1,12 @@
+const id = "Surviving-in-Dzaleka.md";
+						const collection = "photos";
+						const slug = "surviving-in-dzaleka";
+						const body = "\n## About This Photo\n\nSeveral women, with the elements that they have just received from the agencies present in the field, such as the World Food Program (WFP). The inhabitants of this camp who cannot be rehoused in other countries (that is to say, the great majority) depend almost exclusively on humanitarian assistance. The Government of Malawi, open to welcoming despite the serious problems facing the country, does not allow refugees to leave the camp or get a job. This leaves many without the possibility of subsisting or generating their own income. Some, like 35-year-old Somali Raheem, have been here since 1996 and no longer remember what it was like off the field. \"I try to do things for myself that give me something to eat,\" says the father of a daughter who was born two years ago in Dzaleka. ";
+						const data = {title:"Surviving in Dzaleka: The Struggles of Refugees Left Without Options",description:"A look at life in Dzaleka Refugee Camp, where humanitarian aid sustains most residents amidst restrictive policies and limited opportunities",date:new Date(1626048000000),image:"https://ep00.epimg.net/elpais/imagenes/2016/06/20/album/1466383678_828939_1466384264_album_normal.jpg",photographer:{name:"Carlos Martinez",instagram:"dzalekaonline",website:"https://www.instagram.com/dzalekaonline/"},location:"Dzaleka Refugee Camp",tags:["World Food Program (WFP)","Economic Challenges","Refugee Life"],featured:true};
+						const _internal = {
+							type: 'content',
+							filePath: "/Users/bakari/Downloads/dzaleka heritage archive/src/content/photos/Surviving-in-Dzaleka.md",
+							rawData: "\ntitle: \"Surviving in Dzaleka: The Struggles of Refugees Left Without Options\"\ndescription: \"A look at life in Dzaleka Refugee Camp, where humanitarian aid sustains most residents amidst restrictive policies and limited opportunities\"\nphotographer:\n  name: \"Carlos Martinez\"\n  instagram: \"dzalekaonline\"\n  website: \"https://www.instagram.com/dzalekaonline/\"\n  bio: \"Visual storyteller focusing on youth empowerment and innovation in refugee communities.\"\nimage: \"https://ep00.epimg.net/elpais/imagenes/2016/06/20/album/1466383678_828939_1466384264_album_normal.jpg\"\ndate: 2021-07-12\ntags: [\"World Food Program (WFP)\", \"Economic Challenges\", \"Refugee Life\"]\nfeatured: true\nlocation: \"Dzaleka Refugee Camp\"",
+						};
+
+export { _internal, body, collection, data, id, slug };

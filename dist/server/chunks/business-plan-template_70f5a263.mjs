@@ -1,0 +1,12 @@
+const id = "business-plan-template.md";
+						const collection = "resources";
+						const slug = "business-plan-template";
+						const body = "\n## About This Template\n\nThis business plan template is designed to help entrepreneurs and small business owners in Dzaleka Refugee Camp create professional and comprehensive business plans. The template includes all essential sections needed for a strong business plan.\n\n### Template Sections\n\n1. Executive Summary\n2. Company Description\n3. Market Analysis\n4. Organization & Management\n5. Service/Product Line\n6. Marketing & Sales Strategy\n7. Funding Requirements\n8. Financial Projections\n\n### Features\n\n- Pre-formatted sections with guidance text\n- Sample financial tables and charts\n- Market analysis framework\n- Available in multiple languages\n- Easy to customize\n\n### How to Use\n\n1. Download the template\n2. Replace the placeholder text with your business information\n3. Customize the sections as needed\n4. Update the financial projections with your numbers\n5. Add your company branding\n\n### Languages Available\n\n- English (Complete template with all sections)\n- French (Complete template with all sections)\n- Swahili (Complete template with all sections)";
+						const data = {title:"Business Plan Template",description:"A comprehensive template for creating a professional business plan, including financial projections and market analysis sections.",category:"Templates",featured:true,date:new Date(1707955200000),author:"Business Development Team",fileType:"docx",fileSize:"245 KB",downloadUrl:"/downloads/business-plan-template.docx",resourceUrl:"/templates/business-plan-template.docx",lastUpdated:new Date(1707955200000),languages:["English","French","Swahili"]};
+						const _internal = {
+							type: 'content',
+							filePath: "/Users/bakari/Downloads/dzaleka heritage archive/src/content/resources/business-plan-template.md",
+							rawData: "\ntitle: Business Plan Template\ndescription: A comprehensive template for creating a professional business plan, including financial projections and market analysis sections.\ndate: 2024-02-15\ncategory: Templates\nfileType: docx\nresourceUrl: /templates/business-plan-template.docx\ndownloadUrl: '/downloads/business-plan-template.docx'\nfileSize: '245 KB'\nlastUpdated: 2024-02-15\nlanguages: ['English', 'French', 'Swahili']\nfeatured: true\nauthor: Business Development Team",
+						};
+
+export { _internal, body, collection, data, id, slug };
