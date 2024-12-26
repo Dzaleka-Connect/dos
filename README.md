@@ -1,1 +1,1 @@
-# Dzaleka Online Services
+# DOS
