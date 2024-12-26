@@ -1,117 +1,299 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const lastUpdated = new Date('2024-02-15');
+const lastUpdated = new Date('2023-12-27');
 
 const sections = [
   {
     id: 'information-collection',
     title: 'Information Collection',
-    content: `We collect information that you provide directly to us, including when you:
-    - Create an account
-    - Use our services
-    - Contact us for support
-    - Sign up for our newsletter`
+    content: `We collect information to provide better services to our users and improve the Dzaleka Online Service platform.`
   },
   {
-    id: 'information-use',
-    title: 'Information Use',
-    content: `We use the information we collect to:
-    - Provide and maintain our services
-    - Improve user experience
-    - Send important notifications
-    - Respond to your requests`
-  },
-  {
-    id: 'information-sharing',
-    title: 'Information Sharing',
-    content: `We do not sell or rent your personal information. We may share your information with:
-    - Service providers
-    - Legal authorities when required
-    - Partners with your consent`
-  },
-  {
-    id: 'data-security',
-    title: 'Data Security',
-    content: `We implement appropriate security measures to protect your information, including:
-    - Encryption
-    - Secure servers
-    - Regular security audits
-    - Access controls`
-  },
-  {
-    id: 'user-rights',
-    title: 'Your Rights',
-    content: `You have the right to:
-    - Access your data
-    - Correct inaccurate data
-    - Request deletion
-    - Opt-out of communications`
+    id: 'data-usage',
+    title: 'Data Usage',
+    content: `Your information helps us maintain and improve the platform for the Dzaleka community.`
   }
 ];
 ---
 
-<Layout title="Privacy Policy">
-  <main class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-      <!-- Header -->
-      <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
-        <p class="text-gray-600 mb-4">
-          This Privacy Policy describes how we collect, use, and handle your information.
-        </p>
-        <p class="text-sm text-gray-500">
-          Last updated: {lastUpdated.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })}
+<Layout title="Privacy Policy | Dzaleka Online Service">
+  <main class="min-h-screen bg-gray-50">
+    {/* Hero Section */}
+    <div class="bg-gradient-to-br from-primary-600 to-primary-800 py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl font-bold text-white mb-4">
+          Privacy Policy
+        </h1>
+        <p class="text-xl text-white/90">
+          How we protect and handle your information at Dzaleka Online Service
         </p>
       </div>
+    </div>
 
-      <!-- Table of Contents -->
-      <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">Contents</h2>
-        <nav>
-          <ul class="space-y-2">
-            {sections.map(section => (
-              <li>
-                <a
-                  href={`#${section.id}`}
-                  class="text-primary-600 hover:text-primary-700 hover:underline"
-                >
-                  {section.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      <!-- Content Sections -->
-      <div class="bg-white rounded-xl shadow-sm p-6">
+    {/* Content Section */}
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
         <div class="prose prose-lg max-w-none">
-          {sections.map(section => (
-            <section id={section.id} class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 mb-4">{section.title}</h2>
-              <div class="text-gray-600 whitespace-pre-line">
-                {section.content}
+          <div class="mb-12">
+            <p class="text-gray-600">
+              Last updated: December 27, 2023
+            </p>
+            <p class="text-gray-600 mt-4">
+              At Dzaleka Online Service, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains our practices regarding data collection, use, and protection.
+            </p>
+          </div>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Information We Collect</h2>
+            <div class="space-y-6">
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="font-semibold text-gray-900 mb-3">Personal Information</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-2">
+                  <li>Name and contact information</li>
+                  <li>Email address</li>
+                  <li>Organization affiliation (if applicable)</li>
+                  <li>Content you submit to our platform</li>
+                  <li>Profile information (optional)</li>
+                  <li>Location data (if permitted)</li>
+                </ul>
               </div>
-            </section>
-          ))}
+              
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="font-semibold text-gray-900 mb-3">Technical Information</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-2">
+                  <li>Device information</li>
+                  <li>Browser type and version</li>
+                  <li>Access times and dates</li>
+                  <li>Pages visited</li>
+                  <li>IP address</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">How We Use Your Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-blue-50 rounded-lg p-6">
+                <h3 class="font-semibold text-blue-900 mb-3">Primary Uses</h3>
+                <ul class="text-blue-800 space-y-2">
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Provide and maintain our services</span>
+                  </li>
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Process resource submissions</span>
+                  </li>
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Facilitate community interactions</span>
+                  </li>
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-blue-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Manage event registrations</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="bg-green-50 rounded-lg p-6">
+                <h3 class="font-semibold text-green-900 mb-3">Secondary Uses</h3>
+                <ul class="text-green-800 space-y-2">
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Improve platform features</span>
+                  </li>
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Send community updates</span>
+                  </li>
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Research and analytics</span>
+                  </li>
+                  <li class="flex items-start">
+                    <svg class="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Community engagement</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Data Protection Measures</h2>
+            <div class="bg-yellow-50 rounded-lg p-6">
+              <p class="text-yellow-800 mb-4">
+                We implement comprehensive security measures to protect your personal information:
+              </p>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-yellow-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  </svg>
+                  <span class="text-yellow-800">Encrypted data storage and transmission</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-yellow-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  </svg>
+                  <span class="text-yellow-800">Regular security assessments and updates</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-yellow-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  </svg>
+                  <span class="text-yellow-800">Strict access controls and authentication</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-yellow-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  </svg>
+                  <span class="text-yellow-800">Regular data backups and recovery procedures</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Privacy Rights</h2>
+            <div class="bg-purple-50 rounded-lg p-6">
+              <p class="text-purple-800 mb-4">As a user of Dzaleka Online Service, you have the right to:</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span class="text-purple-800">Access your personal data</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span class="text-purple-800">Request data corrections</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span class="text-purple-800">Delete your account</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span class="text-purple-800">Control communications</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Community Guidelines</h2>
+            <div class="bg-indigo-50 rounded-lg p-6">
+              <p class="text-indigo-800 mb-4">
+                To maintain a safe and respectful community environment, we expect all users to:
+              </p>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-indigo-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span class="text-indigo-800">Respect other community members' privacy</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-indigo-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span class="text-indigo-800">Share appropriate and relevant content</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-indigo-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span class="text-indigo-800">Follow our content guidelines</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Contact Information</h2>
+            <div class="bg-gray-50 rounded-lg p-6">
+              <p class="text-gray-600 mb-4">
+                For questions about this Privacy Policy or to exercise your privacy rights, please contact us:
+              </p>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>Email: info@mail.dzaleka.com</span>
+                </li>
+                <li class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                  <span>Address: Dzaleka Refugee Camp, Malawi</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Updates to This Policy</h2>
+            <div class="bg-red-50 rounded-lg p-6">
+              <p class="text-red-800 mb-4">
+                We may update this Privacy Policy from time to time. When we make significant changes, we will:
+              </p>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-red-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span class="text-red-800">Notify you via email or platform announcement</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-red-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span class="text-red-800">Update the "Last modified" date at the top of this policy</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-red-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span class="text-red-800">Obtain your consent when required by law</span>
+                </li>
+              </ul>
+            </div>
+          </section>
         </div>
 
-        <!-- Print Button -->
-        <div class="mt-8 text-center">
-          <button
-            onclick="window.print()"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        <div class="mt-12 text-center">
+          <a
+            href="/"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-            </svg>
-            Print Policy
-          </button>
+            Return to Homepage
+          </a>
         </div>
       </div>
     </div>
@@ -119,12 +301,13 @@ const sections = [
 </Layout>
 
 <style>
-  @media print {
-    nav, button {
-      display: none;
-    }
-    .prose {
-      max-width: none;
-    }
+  .prose h2 {
+    @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+  }
+  .prose p {
+    @apply text-gray-600 mb-4;
+  }
+  .prose ul {
+    @apply text-gray-600 mb-6 list-disc list-inside space-y-2;
   }
 </style>
