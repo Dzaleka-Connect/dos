@@ -6,7 +6,7 @@ import remarkSlug from 'remark-slug';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid',
+  output: process.env.NETLIFY ? 'static' : 'hybrid',
   integrations: [
     tailwind(),
     mdx()
