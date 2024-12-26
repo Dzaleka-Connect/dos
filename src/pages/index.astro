@@ -21,15 +21,11 @@ const upcomingEvents = events
   .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
   .slice(0, 3);
 
-// Get latest resources
-const resources = await getCollection('resources');
-const latestResources = resources
-  .sort((a, b) => {
-    const dateA = new Date(a.data.date || a.data.publishDate || 0);
-    const dateB = new Date(b.data.date || b.data.publishDate || 0);
-    return dateB.getTime() - dateA.getTime();
-  })
-  .slice(0, 3);
+// Fetch latest resources
+const allResources = await getCollection('resources');
+const latestResources = allResources
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 6); // Get latest 6 resources
 
 const categories = [
   {
@@ -239,7 +235,7 @@ const nationalities = ['Congolese', 'Burundians', 'Rwandans', 'Somalis', 'Ethiop
               class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
             >
               View All Events
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </a>
@@ -264,28 +260,84 @@ const nationalities = ['Congolese', 'Burundians', 'Rwandans', 'Somalis', 'Ethiop
     </div>
 
     <!-- Latest Resources Section -->
-    {latestResources.length > 0 && (
-      <div class="bg-gray-50 py-16">
-        <div class="container mx-auto px-4">
-          <h2 class="text-3xl font-bold text-gray-900 mb-3 text-center">Latest Resources</h2>
-          <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Access our most recent guides, templates, and educational materials
-          </p>
-          <ResourceGrid resources={latestResources} />
-          <div class="text-center mt-12">
-            <a 
-              href="/resources" 
-              class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
-            >
-              View All Resources
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </a>
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+          <div>
+            <h2 class="text-3xl font-bold text-gray-900">Latest Resources</h2>
+            <p class="mt-2 text-lg text-gray-600">Discover our most recent additions to the archive</p>
           </div>
+          <a href="/resources" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            View All Resources
+            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {latestResources.map((resource) => (
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div class="p-6">
+                <div class="flex items-center space-x-2 mb-3">
+                  <span class={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    resource.data.category === 'Report' ? 'bg-blue-100 text-blue-800' :
+                    resource.data.category === 'Guide' ? 'bg-green-100 text-green-800' :
+                    resource.data.category === 'News' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-purple-100 text-purple-800'
+                  }`}>
+                    {resource.data.category}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    {new Date(resource.data.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </span>
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                  <a href={`/resources/${resource.slug}`} class="hover:text-primary-600">
+                    {resource.data.title}
+                  </a>
+                </h3>
+
+                <p class="text-gray-600 mb-4 line-clamp-2">
+                  {resource.data.description}
+                </p>
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{resource.data.fileSize}</span>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    {resource.data.languages?.map((lang) => (
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                        {lang}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Mobile View All Button */}
+        <div class="mt-8 text-center md:hidden">
+          <a href="/resources" class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 w-full justify-center">
+            View All Resources
+            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
         </div>
       </div>
-    )}
+    </section>
 
     <!-- Community Section -->
     <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">

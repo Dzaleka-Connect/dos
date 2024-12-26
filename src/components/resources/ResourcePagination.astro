@@ -5,18 +5,20 @@ interface Props {
   totalPages: number;
   baseUrl: string;
   searchQuery?: string;
+  category?: string;
 }
 
-const { currentPage, totalPages, baseUrl, searchQuery } = Astro.props;
+const { currentPage, totalPages, baseUrl, searchQuery, category } = Astro.props;
 
 const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
 function getPageUrl(page: number) {
-  const searchParam = searchQuery ? `?search=${searchQuery}` : '';
-  if (page === 1) {
-    return `${baseUrl}${searchParam}`;
-  }
-  return `${baseUrl}/${page}${searchParam}`;
+  const params = [];
+  if (searchQuery) params.push(`search=${searchQuery}`);
+  if (category) params.push(`category=${category}`);
+  
+  const queryString = params.length > 0 ? `?${params.join('&')}` : '';
+  return page === 1 ? `${baseUrl}${queryString}` : `${baseUrl}/${page}${queryString}`;
 }
 ---
 
@@ -24,7 +26,7 @@ function getPageUrl(page: number) {
   <ul class="inline-flex items-center -space-x-px">
     <li>
       <a
-        href={currentPage > 1 ? getPageUrl(currentPage - 1) : null}
+        href={currentPage > 1 ? getPageUrl(currentPage - 1) : undefined}
         class={`block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${
           currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
         }`}
@@ -39,13 +41,13 @@ function getPageUrl(page: number) {
     {pages.map(page => (
       <li>
         <a
-          href={page === currentPage ? null : getPageUrl(page)}
+          href={page === currentPage ? undefined : getPageUrl(page)}
           class={`px-3 py-2 leading-tight border border-gray-300 ${
             page === currentPage
               ? 'text-primary-600 bg-primary-50 border-primary-300'
               : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'
           }`}
-          aria-current={page === currentPage ? 'page' : null}
+          aria-current={page === currentPage ? 'page' : undefined}
         >
           {page}
         </a>
@@ -53,7 +55,7 @@ function getPageUrl(page: number) {
     ))}
     <li>
       <a
-        href={currentPage < totalPages ? getPageUrl(currentPage + 1) : null}
+        href={currentPage < totalPages ? getPageUrl(currentPage + 1) : undefined}
         class={`block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${
           currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
         }`}
