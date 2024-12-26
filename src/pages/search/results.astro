@@ -1,6 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import SearchBar from '../../components/ui/SearchBar.astro';
+
+// Enable server-side rendering for search
+export const prerender = false;
 
 // Get all content from collections
 let services = [];
@@ -15,8 +19,8 @@ try {
   console.error('Error fetching collections:', error);
 }
 
-// Get search query from URL
-const query = Astro.url.searchParams.get('q') || '';
+// Get search query from URL and ensure it's trimmed
+const query = (Astro.url.searchParams.get('q') || '').trim();
 
 // Safely get nested object properties
 function getNestedValue(obj: any, path: string) {
@@ -105,19 +109,29 @@ function formatDate(date: string | Date) {
 
 ---
 
-<Layout title={`Search Results for "${query}"`}>
+<Layout title={`Search Results ${query ? `for "${query}"` : ''}`}>
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-3xl mx-auto">
+      <!-- Search Bar -->
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Results</h1>
-        <p class="text-gray-600">
-          {totalResults === 0
-            ? `No results found for "${query}"`
-            : `Found ${totalResults} result${totalResults === 1 ? '' : 's'} for "${query}"`}
-        </p>
+        <SearchBar section="search" initialValue={query} fullWidth={true} placeholder="Search for services, events, and resources..." />
       </div>
 
-      {totalResults > 0 ? (
+      <!-- Results Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Results</h1>
+        {query ? (
+          <p class="text-gray-600">
+            {totalResults === 0
+              ? `No results found for "${query}"`
+              : `Found ${totalResults} result${totalResults === 1 ? '' : 's'} for "${query}"`}
+          </p>
+        ) : (
+          <p class="text-gray-600">Enter a search term to find services, events, and resources.</p>
+        )}
+      </div>
+
+      {query && totalResults > 0 ? (
         <div class="space-y-8">
           {/* Services Results */}
           {searchResults.services.length > 0 && (
@@ -196,34 +210,76 @@ function formatDate(date: string | Date) {
               <h2 class="text-xl font-semibold text-gray-900 mb-4">Resources</h2>
               <div class="space-y-4">
                 {searchResults.resources.map(resource => (
-                  <a href={`/resources/${resource.slug}`} class="block">
+                  <div class="group relative">
+                    <a href={`/resources/${resource.slug}`} class="absolute inset-0 z-10" aria-hidden="true"></a>
                     <article class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
                       <div class="flex items-start gap-4">
                         <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                          <img
-                            src={resource.data.image || '/images/placeholder-resource.png'}
-                            alt={`${resource.data.title || 'Resource'} image`}
-                            class="w-full h-full object-cover"
-                          />
+                          {resource.data.coverImage ? (
+                            <img
+                              src={resource.data.coverImage}
+                              alt={`${resource.data.title || 'Resource'} cover`}
+                              class="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                            </div>
+                          )}
                         </div>
                         <div class="flex-grow">
-                          <h3 class="text-lg font-semibold text-gray-900">{resource.data.title || 'Untitled Resource'}</h3>
+                          <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                            {resource.data.title || 'Untitled Resource'}
+                          </h3>
                           <p class="text-sm text-gray-600 mb-2">{resource.data.description || 'No description available'}</p>
-                          {resource.data.category && (
-                            <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
-                              {resource.data.category}
-                            </span>
-                          )}
+                          <div class="flex flex-wrap items-center gap-2 mt-3">
+                            {resource.data.category && (
+                              <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
+                                {resource.data.category}
+                              </span>
+                            )}
+                            {resource.data.downloadUrl && (
+                              <a
+                                href={resource.data.downloadUrl.startsWith('http') ? resource.data.downloadUrl : `/resources/pdf/${resource.data.downloadUrl}`}
+                                class="relative z-20 inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-300"
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Download
+                              </a>
+                            )}
+                            {resource.data.resourceUrl && (
+                              <a
+                                href={resource.data.resourceUrl}
+                                class="relative z-20 inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-200"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                                Visit Resource
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </article>
-                  </a>
+                  </div>
                 ))}
               </div>
             </section>
           )}
         </div>
-      ) : (
+      ) : query ? (
         <div class="text-center py-12 bg-white rounded-lg shadow-sm">
           <h2 class="text-xl font-semibold text-gray-900 mb-4">
             No matching results found
@@ -232,7 +288,7 @@ function formatDate(date: string | Date) {
             Try adjusting your search terms or browse our content using the navigation menu.
           </p>
         </div>
-      )}
+      ) : null}
     </div>
   </main>
 </Layout>
