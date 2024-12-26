@@ -7,12 +7,29 @@ import EventGrid from '../components/events/EventGrid.astro';
 
 const events = await getCollection('events');
 
+// Function to determine if an event is upcoming
+function isUpcoming(date: Date) {
+  const today = new Date('2024-12-26T22:23:42+10:00'); // Using the current time
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(date);
+  eventDate.setHours(0, 0, 0, 0);
+  return eventDate >= today;
+}
+
 const upcomingEvents = events
-  .filter(event => event.data.status === 'upcoming')
+  .filter(event => isUpcoming(event.data.date))
+  .map(event => ({
+    ...event,
+    data: { ...event.data, status: 'upcoming' }
+  }))
   .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
 
 const pastEvents = events
-  .filter(event => event.data.status === 'past')
+  .filter(event => !isUpcoming(event.data.date))
+  .map(event => ({
+    ...event,
+    data: { ...event.data, status: 'past' }
+  }))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 

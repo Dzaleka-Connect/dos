@@ -10,6 +10,15 @@ const resources = await getCollection('resources');
 // Get search query from URL
 const query = Astro.url.searchParams.get('q') || '';
 
+// Safely get nested object properties
+function getNestedValue(obj: any, path: string) {
+  try {
+    return path.split('.').reduce((acc, part) => acc?.[part], obj);
+  } catch {
+    return undefined;
+  }
+}
+
 // Function to search through content
 function searchContent(items: any[], searchQuery: string) {
   if (!searchQuery) return [];
@@ -17,30 +26,47 @@ function searchContent(items: any[], searchQuery: string) {
   const normalizedQuery = searchQuery.toLowerCase().trim();
   
   return items.filter(item => {
-    const searchableFields = [
-      item.data.title,
-      item.data.description,
-      item.data.category,
-      item.slug.replace(/-/g, ' '),
-      item.data.location?.address,
-      item.data.location?.city,
-      ...(item.data.tags || [])
-    ];
-    
-    const searchableText = searchableFields
-      .filter(Boolean)
-      .join(' ')
-      .toLowerCase();
+    try {
+      // Safely get searchable fields
+      const searchableFields = [
+        getNestedValue(item, 'data.title'),
+        getNestedValue(item, 'data.description'),
+        getNestedValue(item, 'data.category'),
+        item.slug?.replace(/-/g, ' '),
+        getNestedValue(item, 'data.location.address'),
+        getNestedValue(item, 'data.location.city'),
+        getNestedValue(item, 'data.location.venue'),
+        ...(getNestedValue(item, 'data.tags') || [])
+      ];
+      
+      // Create searchable text from valid fields
+      const searchableText = searchableFields
+        .filter(field => typeof field === 'string' && field.length > 0)
+        .join(' ')
+        .toLowerCase();
 
-    // Split query into words for better matching
-    const queryWords = normalizedQuery.split(/\s+/);
-    
-    // Check if any of the query words match
-    return queryWords.some(word => 
-      searchableText.includes(word) || 
-      // Check for close matches (e.g., "dzaleka" matches "zaleka")
-      (word === 'dzaleka' && searchableText.includes('zaleka'))
-    );
+      // Split query into words and remove empty strings
+      const queryWords = normalizedQuery
+        .split(/\s+/)
+        .filter(word => word.length > 0);
+      
+      // Check if any query word matches
+      return queryWords.some(word => {
+        // Handle common variations
+        const variations = [
+          word,
+          word.replace(/[aeiou]/g, ''), // Remove vowels
+          word.replace(/[^a-z0-9]/g, ''), // Remove special characters
+        ];
+        
+        return variations.some(variation => 
+          searchableText.includes(variation)
+        );
+      });
+    } catch (error) {
+      console.error('Error searching item:', error);
+      return false;
+    }
   });
 }
 
@@ -58,12 +84,17 @@ const totalResults = Object.values(searchResults).reduce(
 
 // Format date for display
 function formatDate(date: string | Date) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  try {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  } catch {
+    return 'Date not available';
+  }
 }
+
 ---
 
 <Layout title={`Search Results for "${query}"`}>
@@ -92,16 +123,18 @@ function formatDate(date: string | Date) {
                         <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                           <img
                             src={service.data.logo || '/images/placeholder-logo.png'}
-                            alt={`${service.data.title} logo`}
+                            alt={`${service.data.title || 'Service'} logo`}
                             class="w-full h-full object-cover"
                           />
                         </div>
                         <div class="flex-grow">
-                          <h3 class="text-lg font-semibold text-gray-900">{service.data.title}</h3>
-                          <p class="text-sm text-gray-600 mb-2">{service.data.description}</p>
-                          <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
-                            {service.data.category}
-                          </span>
+                          <h3 class="text-lg font-semibold text-gray-900">{service.data.title || 'Untitled Service'}</h3>
+                          <p class="text-sm text-gray-600 mb-2">{service.data.description || 'No description available'}</p>
+                          {service.data.category && (
+                            <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
+                              {service.data.category}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </article>
@@ -122,17 +155,23 @@ function formatDate(date: string | Date) {
                       <div class="h-48 bg-gray-100">
                         <img
                           src={event.data.image || '/images/placeholder-image.jpg'}
-                          alt={event.data.title}
+                          alt={event.data.title || 'Event'}
                           class="w-full h-full object-cover"
                         />
                       </div>
                       <div class="p-4">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{event.data.title}</h3>
-                        <p class="text-sm text-gray-600 mb-2">{event.data.description}</p>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{event.data.title || 'Untitled Event'}</h3>
+                        <p class="text-sm text-gray-600 mb-2">{event.data.description || 'No description available'}</p>
                         <div class="flex items-center text-sm text-gray-500">
-                          <span>{event.data.location.venue}</span>
-                          <span class="mx-2">•</span>
-                          <time datetime={event.data.date}>{formatDate(event.data.date)}</time>
+                          {event.data.location?.venue && (
+                            <>
+                              <span>{event.data.location.venue}</span>
+                              <span class="mx-2">•</span>
+                            </>
+                          )}
+                          {event.data.date && (
+                            <time datetime={event.data.date}>{formatDate(event.data.date)}</time>
+                          )}
                         </div>
                       </div>
                     </article>
@@ -152,17 +191,19 @@ function formatDate(date: string | Date) {
                     <div class="flex flex-col gap-4">
                       <div class="flex justify-between items-start">
                         <div>
-                          <h3 class="text-lg font-semibold text-gray-900 mb-2">{resource.data.title}</h3>
-                          <p class="text-sm text-gray-600 mb-2">{resource.data.description}</p>
+                          <h3 class="text-lg font-semibold text-gray-900 mb-2">{resource.data.title || 'Untitled Resource'}</h3>
+                          <p class="text-sm text-gray-600 mb-2">{resource.data.description || 'No description available'}</p>
                           {resource.data.category && (
                             <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
                               {resource.data.category}
                             </span>
                           )}
                         </div>
-                        <time class="text-sm text-gray-500" datetime={resource.data.date}>
-                          {formatDate(resource.data.date || resource.data.publishDate)}
-                        </time>
+                        {(resource.data.date || resource.data.publishDate) && (
+                          <time class="text-sm text-gray-500" datetime={resource.data.date || resource.data.publishDate}>
+                            {formatDate(resource.data.date || resource.data.publishDate)}
+                          </time>
+                        )}
                       </div>
                       
                       <div class="flex gap-4">
@@ -207,48 +248,11 @@ function formatDate(date: string | Date) {
           <h2 class="text-xl font-semibold text-gray-900 mb-4">
             No matching results found
           </h2>
-          <p class="text-gray-600 mb-6">
-            Try adjusting your search terms or browse our categories
+          <p class="text-gray-600">
+            Try adjusting your search terms or browse our content using the navigation menu.
           </p>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <a href="/services" class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100">
-              <h3 class="font-semibold text-gray-900 mb-2">Services</h3>
-              <p class="text-sm text-gray-600">Browse all services</p>
-            </a>
-            <a href="/events" class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100">
-              <h3 class="font-semibold text-gray-900 mb-2">Events</h3>
-              <p class="text-sm text-gray-600">See all events</p>
-            </a>
-            <a href="/resources" class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100">
-              <h3 class="font-semibold text-gray-900 mb-2">Resources</h3>
-              <p class="text-sm text-gray-600">View all resources</p>
-            </a>
-          </div>
         </div>
       )}
-
-      <div class="mt-8">
-        <a 
-          href="/search" 
-          class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700"
-        >
-          <svg 
-            class="w-4 h-4 mr-2" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path 
-              stroke-linecap="round" 
-              stroke-linejoin="round" 
-              stroke-width="2" 
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
-          Back to Search
-        </a>
-      </div>
     </div>
   </main>
 </Layout>
