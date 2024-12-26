@@ -1,0 +1,128 @@
+---
+import { navigationLinks } from './navigationData';
+import NavLink from './NavLink.astro';
+import MobileNavLink from './MobileNavLink.astro';
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="flex items-center space-x-2">
+        <span class="text-xl font-bold text-primary-600">Heritage Archive</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-1">
+        {navigationLinks.map(({ href, label, icon }) => (
+          <NavLink href={href} icon={icon}>
+            {label}
+          </NavLink>
+        ))}
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        id="mobile-menu-button" 
+        class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+        aria-expanded="false"
+        aria-label="Toggle navigation menu"
+      >
+        <div class="relative w-6 h-6" id="hamburger-icon">
+          <span class="absolute top-0 left-0 w-6 h-0.5 bg-current transform transition-all duration-200"></span>
+          <span class="absolute top-[10px] left-0 w-6 h-0.5 bg-current transform transition-all duration-200"></span>
+          <span class="absolute top-[20px] left-0 w-6 h-0.5 bg-current transform transition-all duration-200"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div 
+    class="fixed inset-0 bg-gray-800/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 md:hidden" 
+    id="mobile-backdrop"
+  ></div>
+  <div 
+    class="fixed top-16 right-0 bottom-0 w-64 bg-white transform translate-x-full transition-transform duration-200 ease-in-out md:hidden"
+    id="mobile-menu"
+  >
+    <div class="px-2 pt-2 pb-3 h-full overflow-y-auto">
+      {navigationLinks.map(({ href, label, icon }) => (
+        <MobileNavLink href={href} icon={icon}>
+          {label}
+        </MobileNavLink>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileBackdrop = document.getElementById('mobile-backdrop');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+  let isOpen = false;
+
+  function toggleMenu() {
+    isOpen = !isOpen;
+    
+    // Update button state
+    mobileMenuButton?.setAttribute('aria-expanded', isOpen.toString());
+    
+    // Toggle menu visibility
+    if (mobileMenu) {
+      if (isOpen) {
+        mobileMenu.classList.remove('translate-x-full');
+        mobileMenu.classList.add('translate-x-0');
+      } else {
+        mobileMenu.classList.remove('translate-x-0');
+        mobileMenu.classList.add('translate-x-full');
+      }
+    }
+    
+    // Toggle backdrop
+    if (mobileBackdrop) {
+      if (isOpen) {
+        mobileBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+        mobileBackdrop.classList.add('opacity-100', 'pointer-events-auto');
+      } else {
+        mobileBackdrop.classList.remove('opacity-100', 'pointer-events-auto');
+        mobileBackdrop.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+    
+    // Animate hamburger icon
+    if (hamburgerIcon) {
+      const spans = hamburgerIcon.getElementsByTagName('span');
+      if (isOpen) {
+        spans[0].classList.add('rotate-45', 'translate-y-[10px]');
+        spans[1].classList.add('opacity-0');
+        spans[2].classList.add('-rotate-45', '-translate-y-[10px]');
+      } else {
+        spans[0].classList.remove('rotate-45', 'translate-y-[10px]');
+        spans[1].classList.remove('opacity-0');
+        spans[2].classList.remove('-rotate-45', '-translate-y-[10px]');
+      }
+    }
+  }
+
+  mobileMenuButton?.addEventListener('click', toggleMenu);
+  mobileBackdrop?.addEventListener('click', toggleMenu);
+
+  // Close menu on navigation
+  document.addEventListener('astro:after-navigation', () => {
+    if (isOpen) toggleMenu();
+  });
+
+  // Handle escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) toggleMenu();
+  });
+</script>
+
+<style>
+  /* Add padding to body when nav is fixed */
+  :global(body) {
+    padding-top: 4rem;
+  }
+</style>

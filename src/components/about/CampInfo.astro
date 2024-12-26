@@ -1,0 +1,53 @@
+---
+const campInfo = {
+  location: {
+    title: "Location and Establishment",
+    content: "Dzaleka Refugee Camp is located in Dowa district, about 50km north of Lilongwe, Malawi's capital city. It was established in 1994 in response to a surge of refugees fleeing conflicts in the Great Lakes region of Africa."
+  },
+  population: {
+    title: "Population",
+    content: "Initially designed to host around 10,000 refugees, Dzaleka has grown to accommodate over 50,000 people as of 2024. The camp hosts refugees primarily from the Democratic Republic of Congo, Burundi, and Rwanda."
+  },
+  features: {
+    title: "Life in Dzaleka",
+    content: "Despite challenges such as overcrowding and limited resources, Dzaleka has evolved into a vibrant community.",
+    list: [
+      "Schools and vocational training centers",
+      "Health facilities",
+      "Markets and small businesses",
+      "Community centers and places of worship",
+      "Arts and cultural initiatives"
+    ]
+  },
+  challenges: {
+    title: "Challenges and Opportunities",
+    content: "Residents of Dzaleka face significant challenges, including:",
+    list: [
+      "Limited freedom of movement",
+      "Restricted access to formal employment",
+      "Overcrowding and strain on resources",
+      "Limited opportunities for higher education"
+    ],
+    conclusion: "Despite these challenges, many refugees have shown remarkable resilience, creating businesses, pursuing education, and contributing to the cultural richness of Malawi."
+  }
+};
+---
+
+<section class="space-y-12">
+  {Object.values(campInfo).map(section => (
+    <div class="bg-white p-8 rounded-xl shadow-sm">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">{section.title}</h2>
+      <p class="text-gray-600 mb-4">{section.content}</p>
+      {section.list && (
+        <ul class="list-disc list-inside space-y-2 text-gray-600 ml-4">
+          {section.list.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      )}
+      {section.conclusion && (
+        <p class="text-gray-600 mt-4">{section.conclusion}</p>
+      )}
+    </div>
+  ))}
+</section>

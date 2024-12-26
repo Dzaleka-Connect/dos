@@ -1,0 +1,61 @@
+---
+import Layout from './Layout.astro';
+import { format } from 'date-fns';
+import Badge from '../components/ui/Badge.astro';
+import ContactInfo from '../components/ContactInfo.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  service: CollectionEntry<'services'>;
+}
+
+const { service } = Astro.props;
+const { Content } = await service.render();
+---
+
+<Layout title={service.data.title}>
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <!-- Header -->
+        <div class="p-6 md:p-8 border-b">
+          <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+            <div class="relative w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
+              <img 
+                src={service.data.logo} 
+                alt={`${service.data.title} logo`}
+                class="w-full h-full object-contain p-2"
+              />
+            </div>
+            <div class="flex-grow">
+              <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                {service.data.title}
+              </h1>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <Badge variant="blue" size="md">{service.data.category}</Badge>
+                {service.data.featured && (
+                  <Badge variant="green" size="md">Featured Service</Badge>
+                )}
+              </div>
+              <p class="text-gray-600 text-lg">
+                {service.data.description}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 md:p-8">
+          <div class="prose prose-lg max-w-none">
+            <Content />
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="bg-gray-50 p-6 md:p-8 border-t">
+          <ContactInfo service={service.data} />
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

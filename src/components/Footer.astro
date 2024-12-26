@@ -1,0 +1,85 @@
+---
+const currentYear = new Date().getFullYear();
+
+const links = {
+  services: [
+    { name: 'Services', href: '/services' },
+    { name: 'Events', href: '/events' },
+    { name: 'News', href: '/news' },
+    { name: 'Resources', href: '/resources' },
+    { name: 'Applications', href: '/applications' }
+  ],
+  about: [
+    { name: 'About Us', href: '/about' },
+    { name: 'Photo Gallery', href: '/photos' },
+    { name: 'Documents', href: '/docs' },
+    { name: 'Search', href: '/search' }
+  ],
+  contact: [
+    { name: 'Contact Us', href: '/contact' },
+    { name: 'Support', href: '/support' },
+    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Thank You', href: '/thank-you' }
+  ]
+};
+---
+
+<footer class="bg-white border-t mt-auto">
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div>
+        <h2 class="text-xl font-bold text-primary-600 mb-4">Dzaleka Digital Heritage</h2>
+        <p class="text-gray-600 mb-4">
+          Preserving and celebrating the cultural heritage of Dzaleka Refugee Camp.
+        </p>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h3 class="font-semibold text-gray-900 mb-4">Services</h3>
+        <ul class="space-y-2">
+          {links.services.map(link => (
+            <li>
+              <a href={link.href} class="text-gray-600 hover:text-primary-600 transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- About -->
+      <div>
+        <h3 class="font-semibold text-gray-900 mb-4">About</h3>
+        <ul class="space-y-2">
+          {links.about.map(link => (
+            <li>
+              <a href={link.href} class="text-gray-600 hover:text-primary-600 transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="font-semibold text-gray-900 mb-4">Contact</h3>
+        <ul class="space-y-2">
+          {links.contact.map(link => (
+            <li>
+              <a href={link.href} class="text-gray-600 hover:text-primary-600 transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t mt-8 pt-8 text-center text-gray-600">
+      <p>&copy; {currentYear} Heritage Archive. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

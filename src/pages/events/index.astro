@@ -1,0 +1,191 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SearchBar from '../../components/ui/SearchBar.astro';
+import EventGrid from '../../components/events/EventGrid.astro';
+import EventPagination from '../../components/events/EventPagination.astro';
+import { getCollection } from 'astro:content';
+
+// Get all events
+const allEvents = await getCollection('events');
+
+// Get URL parameters
+const searchQuery = Astro.url.searchParams.get('search')?.trim() || '';
+const upcomingPage = parseInt(Astro.url.searchParams.get('upcomingPage') || '1');
+const pastPage = parseInt(Astro.url.searchParams.get('pastPage') || '1');
+const itemsPerPage = 4;
+
+// Filter events by search query
+let filteredEvents = allEvents;
+if (searchQuery) {
+  filteredEvents = allEvents.filter(event => 
+    event.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    event.data.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+}
+
+// Function to determine if an event is upcoming
+function isUpcoming(date: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(date);
+  eventDate.setHours(0, 0, 0, 0);
+  return eventDate >= today;
+}
+
+// Function to paginate events
+function paginateEvents(events: any[], page: number, perPage: number) {
+  const totalPages = Math.max(1, Math.ceil(events.length / perPage));
+  const currentPage = Math.min(Math.max(1, page), totalPages);
+  const startIndex = (currentPage - 1) * perPage;
+  const endIndex = Math.min(startIndex + perPage, events.length);
+  
+  return {
+    events: events.slice(startIndex, endIndex),
+    pagination: {
+      currentPage,
+      totalPages,
+      totalItems: events.length,
+      startIndex,
+      endIndex
+    }
+  };
+}
+
+// Separate and sort events
+const allUpcomingEvents = filteredEvents
+  .filter(event => isUpcoming(event.data.date))
+  .map(event => ({
+    ...event,
+    data: { ...event.data, status: 'upcoming' }
+  }))
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+const allPastEvents = filteredEvents
+  .filter(event => !isUpcoming(event.data.date))
+  .map(event => ({
+    ...event,
+    data: { ...event.data, status: 'past' }
+  }))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Paginate both sections
+const { events: upcomingEvents, pagination: upcomingPagination } = 
+  paginateEvents(allUpcomingEvents, upcomingPage, itemsPerPage);
+
+const { events: pastEvents, pagination: pastPagination } = 
+  paginateEvents(allPastEvents, pastPage, itemsPerPage);
+
+// Function to build pagination URL
+function buildPaginationUrl(type: 'upcoming' | 'past', page: number) {
+  const params = new URLSearchParams(Astro.url.search);
+  params.set(`${type}Page`, page.toString());
+  return `?${params.toString()}`;
+}
+
+// Redirect to upcoming events by default
+const searchParams = Astro.url.searchParams.toString();
+return Astro.redirect(`/events/upcoming/1${searchParams ? '?' + searchParams : ''}`);
+---
+
+<Layout title="Events">
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Events</h1>
+      <div class="flex items-center gap-4">
+        <a 
+          href="/events/organize" 
+          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        >
+          <span class="text-white text-xl font-bold mr-2" aria-hidden="true">+</span>
+          Submit Event
+        </a>
+        <SearchBar placeholder="Search events..." initialValue={searchQuery} section="events" />
+      </div>
+    </div>
+
+    {(allUpcomingEvents.length === 0 && allPastEvents.length === 0) ? (
+      <div class="text-center py-8">
+        <p class="text-gray-500">
+          {searchQuery 
+            ? `No events found matching "${searchQuery}"`
+            : "No events available at the moment"}
+        </p>
+      </div>
+    ) : (
+      <div class="space-y-8">
+        {/* Event Tabs */}
+        <div class="border-b border-gray-200">
+          <nav class="-mb-px flex space-x-8" aria-label="Events">
+            <a
+              href="#upcoming"
+              class="border-primary-500 text-primary-600 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm"
+              aria-current="page"
+            >
+              Upcoming Events
+              <span class="ml-2 py-0.5 px-2.5 text-xs font-medium text-primary-600 bg-primary-50 rounded-full">
+                {allUpcomingEvents.length}
+              </span>
+            </a>
+
+            <a
+              href="#past"
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm"
+            >
+              Past Events
+              <span class="ml-2 py-0.5 px-2.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                {allPastEvents.length}
+              </span>
+            </a>
+          </nav>
+        </div>
+
+        {/* Event Sections */}
+        <div class="space-y-12">
+          {/* Upcoming Events Section */}
+          <section id="upcoming">
+            {upcomingEvents.length > 0 ? (
+              <div>
+                <EventGrid events={upcomingEvents} />
+                {upcomingPagination.totalPages > 1 && (
+                  <div class="mt-8">
+                    <EventPagination
+                      currentPage={upcomingPagination.currentPage}
+                      totalPages={upcomingPagination.totalPages}
+                      baseUrl={(page) => buildPaginationUrl('upcoming', page)}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div class="text-center py-8 bg-gray-50 rounded-xl">
+                <p class="text-gray-500">No upcoming events at the moment</p>
+              </div>
+            )}
+          </section>
+
+          {/* Past Events Section */}
+          <section id="past">
+            {pastEvents.length > 0 ? (
+              <div>
+                <EventGrid events={pastEvents} />
+                {pastPagination.totalPages > 1 && (
+                  <div class="mt-8">
+                    <EventPagination
+                      currentPage={pastPagination.currentPage}
+                      totalPages={pastPagination.totalPages}
+                      baseUrl={(page) => buildPaginationUrl('past', page)}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div class="text-center py-8 bg-gray-50 rounded-xl">
+                <p class="text-gray-500">No past events</p>
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
+    )}
+  </main>
+</Layout>

@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+
+const { currentSlug } = Astro.props;
+const docs = await getCollection('docs');
+
+const categories = {
+  'Getting Started': ['getting-started', 'platform-overview', 'registration'],
+  'Using the Platform': ['navigation', 'services-guide', 'favorites'],
+  'Services': ['finding-services', 'categories', 'contacting-providers'],
+  'Resources': ['downloads', 'tutorials', 'guides']
+};
+---
+
+<aside class="lg:col-span-3">
+  <nav class="sticky top-8 space-y-6">
+    <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+      <div class="space-y-6">
+        {Object.entries(categories).map(([category, items]) => (
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-3">{category}</h3>
+            <ul class="space-y-2">
+              {items.map(slug => {
+                const doc = docs.find(d => d.slug === slug);
+                if (!doc) return null;
+                return (
+                  <li>
+                    <a
+                      href={`/docs/${doc.slug}`}
+                      class:list={[
+                        'block text-sm',
+                        currentSlug === doc.slug
+                          ? 'text-primary-600 font-medium'
+                          : 'text-gray-600 hover:text-gray-900'
+                      ]}
+                    >
+                      {doc.data.title}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </nav>
+</aside>

@@ -1,0 +1,114 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import EventGrid from '../../../components/events/EventGrid.astro';
+import EventPagination from '../../../components/events/EventPagination.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allEvents = await getCollection('events');
+  const itemsPerPage = 4;
+
+  // Function to determine if an event is upcoming
+  function isUpcoming(date: Date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(date);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  }
+
+  // Separate events into upcoming and past
+  const upcomingEvents = allEvents
+    .filter(event => isUpcoming(event.data.date))
+    .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+  const pastEvents = allEvents
+    .filter(event => !isUpcoming(event.data.date))
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+  // Generate paths for both upcoming and past events
+  const generatePaths = (events: any[], type: string) => {
+    const totalPages = Math.max(1, Math.ceil(events.length / itemsPerPage));
+    return Array.from({ length: totalPages }, (_, i) => ({
+      params: { type, page: (i + 1).toString() },
+      props: { events, totalPages, currentPage: i + 1 }
+    }));
+  };
+
+  return [
+    ...generatePaths(upcomingEvents, 'upcoming'),
+    ...generatePaths(pastEvents, 'past')
+  ];
+}
+
+const { type, page } = Astro.params;
+const { events: allEvents, totalPages, currentPage } = Astro.props;
+
+// Paginate events
+const itemsPerPage = 4;
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = Math.min(startIndex + itemsPerPage, allEvents.length);
+const paginatedEvents = allEvents.slice(startIndex, endIndex);
+
+// Update event status based on type
+const events = paginatedEvents.map(event => ({
+  ...event,
+  data: { ...event.data, status: type === 'upcoming' ? 'upcoming' : 'past' }
+}));
+
+// Redirect to first page if current page is invalid
+if (paginatedEvents.length === 0 && allEvents.length > 0) {
+  return Astro.redirect('/events/' + type + '/1');
+}
+---
+
+<Layout title={`${type === 'upcoming' ? 'Upcoming' : 'Past'} Events`}>
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Events</h1>
+        <h2 class="text-xl text-gray-600 mt-2">
+          {type === 'upcoming' ? 'Upcoming Events' : 'Past Events'}
+        </h2>
+      </div>
+      <a 
+        href="/events/organize" 
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        aria-label="Submit Event"
+      >
+        <span class="text-white text-lg font-bold mr-1" aria-hidden="true">+</span>
+        Submit Event
+      </a>
+    </div>
+
+    {allEvents.length === 0 ? (
+      <div class="text-center py-8">
+        <p class="text-gray-500">
+          No {type} events available
+        </p>
+      </div>
+    ) : (
+      <>
+        <EventGrid events={events} />
+        {totalPages > 1 && (
+          <div class="mt-8">
+            <EventPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseUrl={(page) => `/events/${type}/${page}`}
+            />
+          </div>
+        )}
+      </>
+    )}
+
+    <div class="mt-8 flex justify-center">
+      <a
+        href={`/events/${type === 'upcoming' ? 'past' : 'upcoming'}/1`}
+        class="text-primary-600 hover:text-primary-700 font-medium"
+      >
+        View {type === 'upcoming' ? 'Past' : 'Upcoming'} Events →
+      </a>
+    </div>
+  </main>
+</Layout>

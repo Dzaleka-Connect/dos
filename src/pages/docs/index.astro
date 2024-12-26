@@ -1,0 +1,171 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DocsSidebar from '../../components/docs/DocsSidebar.astro';
+import DocsContent from '../../components/docs/DocsContent.astro';
+import { getCollection } from 'astro:content';
+
+const docs = await getCollection('docs');
+const currentDoc = docs.find(doc => doc.slug === 'getting-started');
+
+if (!currentDoc) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={`${currentDoc.data.title} - Documentation`}>
+  <div class="bg-gray-50">
+    <!-- Documentation Header -->
+    <div class="bg-gradient-to-r from-primary-600 to-primary-800">
+      <div class="max-w-7xl mx-auto py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-4xl font-extrabold text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
+            Documentation
+          </h1>
+          <p class="max-w-3xl mt-5 mx-auto text-xl text-primary-100">
+            Learn how to use the Dzaleka Online Service Platform to find services, participate in events, and access community resources.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documentation Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+        <!-- Sidebar -->
+        <div class="hidden lg:block lg:col-span-3">
+          <nav class="sticky top-6 space-y-6" aria-label="Sidebar">
+            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+              <div class="space-y-6">
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-3">Getting Started</h3>
+                  <ul class="space-y-2">
+                    <li>
+                      <a href="/docs/getting-started" class="block text-sm text-primary-600 font-medium hover:text-primary-700">
+                        Getting Started Guide
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-3">Platform Guides</h3>
+                  <ul class="space-y-2">
+                    <li>
+                      <a href="/docs/services-guide" class="block text-sm text-gray-600 hover:text-gray-900">
+                        Services Guide
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/docs/services-directory" class="block text-sm text-gray-600 hover:text-gray-900">
+                        Services Directory
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/docs/events-guide" class="block text-sm text-gray-600 hover:text-gray-900">
+                        Events Guide
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/docs/resources-guide" class="block text-sm text-gray-600 hover:text-gray-900">
+                        Resources Guide
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-3">Archive</h3>
+                  <ul class="space-y-2">
+                    <li>
+                      <a href="/docs/photo-archive" class="block text-sm text-gray-600 hover:text-gray-900">
+                        Photo Archive
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        <!-- Main Content -->
+        <main class="lg:col-span-9">
+          <div class="space-y-16">
+            <DocsContent content={currentDoc} />
+
+            <!-- Quick Links -->
+            <div class="mt-12">
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Links</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="/docs/services-directory" class="block p-6 bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-4">
+                    <div class="flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900">Services</h3>
+                      <p class="mt-1 text-sm text-gray-500">Find and access community services</p>
+                    </div>
+                  </div>
+                </a>
+
+                <a href="/docs/events-guide" class="block p-6 bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-4">
+                    <div class="flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900">Events</h3>
+                      <p class="mt-1 text-sm text-gray-500">Discover community events and activities</p>
+                    </div>
+                  </div>
+                </a>
+
+                <a href="/docs/resources-guide" class="block p-6 bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-4">
+                    <div class="flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900">Resources</h3>
+                      <p class="mt-1 text-sm text-gray-500">Access community resources and materials</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="bg-primary-50 rounded-lg p-8">
+              <div class="flex items-start gap-6">
+                <div class="flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900">Need Help?</h3>
+                  <p class="mt-2 text-sm text-gray-600">Can't find what you're looking for? Our support team is here to help.</p>
+                  <div class="mt-4">
+                    <a href="/support" class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700">
+                      Contact Support
+                      <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</Layout>

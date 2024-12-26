@@ -1,0 +1,29 @@
+---
+interface Props {
+  variant?: 'blue' | 'green';
+  size?: 'sm' | 'md';
+}
+
+const { 
+  variant = 'blue',
+  size = 'sm'
+} = Astro.props;
+
+const variants = {
+  blue: 'bg-blue-100 text-blue-800',
+  green: 'bg-green-100 text-green-800'
+};
+
+const sizes = {
+  sm: 'text-sm px-2 py-1',
+  md: 'text-base px-3 py-1.5'
+};
+---
+
+<span class:list={[
+  'rounded-full inline-block',
+  variants[variant],
+  sizes[size]
+]}>
+  <slot />
+</span>

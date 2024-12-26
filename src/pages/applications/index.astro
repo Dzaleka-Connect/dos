@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ServiceCard from '../../components/applications/ServiceCard.astro';
+
+const services = [
+  {
+    title: "Legal Support & Advocacy",
+    description: "Access legal representation and advocacy services for refugee rights and protection.",
+    icon: "scale-balanced",
+    services: [
+      "Legal representation in court",
+      "Documentation assistance",
+      "Rights awareness and education",
+      "Case advocacy"
+    ],
+    link: "/applications/legal"
+  },
+  {
+    title: "Emergency Relief",
+    description: "Get assistance during emergencies including food, shelter, and basic necessities.",
+    icon: "hand-holding-heart",
+    services: [
+      "Food assistance",
+      "Emergency shelter",
+      "Medical support",
+      "Basic necessities"
+    ],
+    link: "/applications/emergency"
+  },
+  {
+    title: "Leadership Support",
+    description: "Programs and resources for refugee community leaders and organizations.",
+    icon: "users",
+    services: [
+      "Leadership training",
+      "Community organizing",
+      "Capacity building",
+      "Network development"
+    ],
+    link: "/applications/leadership"
+  },
+  {
+    title: "Advocacy Campaigns",
+    description: "Join or request support for advocacy campaigns and policy initiatives.",
+    icon: "bullhorn",
+    services: [
+      "Policy advocacy",
+      "Public awareness",
+      "Campaign support",
+      "Community mobilization"
+    ],
+    link: "/applications/advocacy"
+  }
+];
+---
+
+<Layout title="Applications & Services">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Applications & Services</h1>
+        <p class="text-xl text-gray-600">
+          Access support services and submit applications for various programs and assistance.
+        </p>
+      </header>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        {services.map(service => (
+          <ServiceCard
+            title={service.title}
+            description={service.description}
+            icon={service.icon}
+            services={service.services}
+            link={service.link}
+          />
+        ))}
+      </div>
+
+      <div class="mt-12 bg-primary-50 rounded-xl p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Need Help?</h2>
+        <p class="text-gray-600 mb-6">
+          Not sure which service you need? Contact our support team and we'll help guide you to the right resources.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="mailto:support@dzaleka.org"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+          >
+            Contact Support
+          </a>
+          <a
+            href="/about"
+            class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            Learn More About Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

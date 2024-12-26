@@ -1,0 +1,100 @@
+---
+interface Props {
+  selectedCategory?: string;
+  selectedType?: string;
+}
+
+const { selectedCategory, selectedType } = Astro.props;
+
+const categories = [
+  'Application Guides',
+  'Templates',
+  'Educational Materials',
+  'Career Development'
+];
+
+const fileTypes = [
+  { value: 'pdf', label: 'PDF' },
+  { value: 'video', label: 'Video' },
+  { value: 'document', label: 'Document' },
+  { value: 'link', label: 'External Link' },
+  { value: 'docx', label: 'Word Document' },
+  { value: 'pptx', label: 'PowerPoint' },
+  { value: 'xlsx', label: 'Excel' },
+  { value: 'audio', label: 'Audio' },
+  { value: 'zip', label: 'Compressed File' }
+];
+---
+
+<div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+  <form id="resource-filters" class="space-y-4">
+    <div class="grid gap-4 md:grid-cols-2">
+      <div>
+        <label for="categoryFilter" class="block text-sm font-medium text-gray-700 mb-2">
+          Category
+        </label>
+        <select
+          id="categoryFilter"
+          name="category"
+          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+        >
+          <option value="">All Categories</option>
+          {categories.map(category => (
+            <option 
+              value={category}
+              selected={category === selectedCategory}
+            >
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label for="typeFilter" class="block text-sm font-medium text-gray-700 mb-2">
+          File Type
+        </label>
+        <select
+          id="typeFilter"
+          name="type"
+          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+        >
+          <option value="">All File Types</option>
+          {fileTypes.map(type => (
+            <option 
+              value={type.value}
+              selected={type.value === selectedType}
+            >
+              {type.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('resource-filters') as HTMLFormElement;
+  const selects = form.querySelectorAll('select');
+
+  selects.forEach(select => {
+    select.addEventListener('change', () => {
+      const formData = new FormData(form);
+      const params = new URLSearchParams(window.location.search);
+      
+      formData.forEach((value, key) => {
+        if (value) {
+          params.set(key, value.toString());
+        } else {
+          params.delete(key);
+        }
+      });
+
+      // Reset page number when filters change
+      params.delete('page');
+
+      window.location.href = `/resources${params.toString() ? `?${params}` : ''}`;
+    });
+  });
+</script>

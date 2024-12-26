@@ -1,0 +1,56 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  services: CollectionEntry<'services'>[];
+}
+
+const { services } = Astro.props;
+const defaultLogo = '/images/placeholder-logo.png';
+---
+
+<section class="bg-gray-50 py-8">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Featured Services</h2>
+      <p class="text-gray-600">Essential services supporting our community</p>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {services.map(service => (
+        <a href={`/services/${service.slug}`} class="group">
+          <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+            <div class="flex items-center p-4">
+              <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                <img
+                  src={service.data.logo || defaultLogo}
+                  alt={`${service.data.title} logo`}
+                  class="w-full h-full object-cover"
+                  onError={`this.onerror=null; this.src='${defaultLogo}'`}
+                />
+              </div>
+              <div class="ml-4 flex-grow">
+                <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                  {service.data.title}
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">{service.data.description}</p>
+              </div>
+            </div>
+          </article>
+        </a>
+      ))}
+    </div>
+
+    <div class="text-center mt-6">
+      <a
+        href="/services"
+        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors duration-300"
+      >
+        View All Services
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

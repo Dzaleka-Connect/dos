@@ -1,0 +1,35 @@
+---
+import { format } from 'date-fns';
+import type { DocumentRepository } from '../types';
+import Badge from './ui/Badge.astro';
+
+interface Props {
+  document: DocumentRepository;
+}
+
+const { document } = Astro.props;
+---
+
+<article class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+  <h2 class="text-xl font-bold mb-2 text-gray-900">{document.title}</h2>
+  <div class="prose prose-sm mb-3 text-gray-700" set:html={document.description} />
+  <div class="flex items-center gap-2 mb-4">
+    <Badge variant="green">{document.category}</Badge>
+    <time 
+      class="text-gray-500 text-sm"
+      datetime={document.year.toISOString()}
+    >
+      {format(document.year, 'yyyy')}
+    </time>
+  </div>
+  <a
+    href={document.documentUrl}
+    class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+    download
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+    Download Document
+  </a>
+</article>

@@ -1,0 +1,116 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ResourceGrid from '../../components/resources/ResourceGrid.astro';
+import ResourcePagination from '../../components/resources/ResourcePagination.astro';
+import SearchBar from '../../components/ui/SearchBar.astro';
+import { getCollection } from 'astro:content';
+
+// Get all resources
+const resources = await getCollection('resources');
+const searchQuery = Astro.url.searchParams.get('search') || '';
+const page = Number(Astro.url.searchParams.get('page')) || 1;
+
+// Get search query if any
+const redirectUrl = `/resources/1${searchQuery ? `?search=${searchQuery}` : ''}`;
+
+// Redirect to first page
+return Astro.redirect(redirectUrl);
+
+// Filter resources if there's a search query
+let filteredResources = resources;
+if (searchQuery) {
+  filteredResources = resources.filter(resource =>
+    resource.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.data.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.data.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+}
+
+// Sort resources by date (most recent first)
+filteredResources = filteredResources.sort((a, b) => {
+  const dateA = new Date(a.data.date || a.data.publishDate || 0);
+  const dateB = new Date(b.data.date || b.data.publishDate || 0);
+  return dateB.getTime() - dateA.getTime();
+});
+
+// Pagination
+const itemsPerPage = 6;
+const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+
+// Redirect if page is out of bounds
+if (page > totalPages && totalPages > 0) {
+  return Astro.redirect('/resources');
+}
+
+const start = (page - 1) * itemsPerPage;
+const end = Math.min(start + itemsPerPage, filteredResources.length);
+const paginatedResources = filteredResources.slice(start, end);
+---
+
+<Layout title="Resource Hub">
+  <main class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl overflow-hidden mb-8">
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative px-6 py-12 md:py-16">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            Resource Hub
+          </h1>
+          <p class="text-lg md:text-xl text-white/90">
+            Access guides, templates, and educational materials to support your journey
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div class="flex items-center gap-2 text-gray-600">
+        <span>Showing {start + 1}-{end} of {filteredResources.length} resources</span>
+      </div>
+      <SearchBar 
+        placeholder="Search resources..." 
+        initialValue={searchQuery}
+        section="resources" 
+      />
+    </div>
+
+    {filteredResources.length > 0 ? (
+      <>
+        <ResourceGrid resources={paginatedResources} />
+        {totalPages > 1 && (
+          <div class="mt-8">
+            <nav class="flex justify-center gap-2" aria-label="Pagination">
+              {page > 1 && (
+                <a
+                  href={`/resources?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Previous
+                </a>
+              )}
+              <span class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg">
+                Page {page} of {totalPages}
+              </span>
+              {page < totalPages && (
+                <a
+                  href={`/resources?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Next
+                </a>
+              )}
+            </nav>
+          </div>
+        )}
+      </>
+    ) : (
+      <div class="text-center py-12">
+        <h2 class="text-xl font-semibold text-gray-900 mb-2">No resources found</h2>
+        <p class="text-gray-600">
+          {searchQuery ? `No resources match "${searchQuery}"` : "No resources available at the moment"}
+        </p>
+      </div>
+    )}
+  </main>
+</Layout>

@@ -1,0 +1,159 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { format } from 'date-fns';
+
+interface Props {
+  results: {
+    services: CollectionEntry<'services'>[];
+    events: CollectionEntry<'events'>[];
+    resources: CollectionEntry<'resources'>[];
+  };
+}
+
+const { results } = Astro.props;
+const defaultLogo = '/images/placeholder-logo.png';
+const defaultImage = '/images/placeholder-image.jpg';
+
+// Helper function to format dates
+function formatDate(date: Date) {
+  return format(date, 'MMM d, yyyy');
+}
+---
+
+<div class="space-y-8">
+  {/* Services Results */}
+  {results.services.length > 0 && (
+    <section>
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Services</h2>
+      <div class="space-y-4">
+        {results.services.map(service => (
+          <a href={`/services/${service.slug}`} class="block">
+            <article class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+              <div class="flex items-start">
+                <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <img
+                    src={service.data.logo || defaultLogo}
+                    alt={`${service.data.title} logo`}
+                    class="w-full h-full object-cover"
+                    onError={`this.onerror=null; this.src='${defaultLogo}'`}
+                  />
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-lg font-semibold text-gray-900">{service.data.title}</h3>
+                  <p class="text-sm text-gray-600 mb-2">{service.data.description}</p>
+                  <div class="flex items-center text-sm text-gray-500">
+                    <span class="capitalize">{service.data.category}</span>
+                    {service.data.location && (
+                      <>
+                        <span class="mx-2">•</span>
+                        <span>{service.data.location.city}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </article>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Events Results */}
+  {results.events.length > 0 && (
+    <section>
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Events</h2>
+      <div class="space-y-4">
+        {results.events.map(event => (
+          <a href={`/events/${event.slug}`} class="block">
+            <article class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+              <div class="flex items-start">
+                <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <img
+                    src={event.data.image || defaultImage}
+                    alt={event.data.title}
+                    class="w-full h-full object-cover"
+                    onError={`this.onerror=null; this.src='${defaultImage}'`}
+                  />
+                </div>
+                <div class="ml-4">
+                  <div class="flex items-center gap-2 mb-1">
+                    <time datetime={event.data.date.toISOString()} class="text-sm text-gray-500">
+                      {formatDate(event.data.date)}
+                    </time>
+                    <span class="text-sm font-medium capitalize" class:list={{
+                      'text-blue-600': event.data.status === 'upcoming',
+                      'text-gray-500': event.data.status === 'past'
+                    }}>
+                      {event.data.status}
+                    </span>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900">{event.data.title}</h3>
+                  <p class="text-sm text-gray-600 mb-2">{event.data.description}</p>
+                  <div class="flex items-center text-sm text-gray-500">
+                    <span>{event.data.location.venue}</span>
+                    <span class="mx-2">•</span>
+                    <span>{event.data.time}</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Resources Results */}
+  {results.resources.length > 0 && (
+    <section>
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Resources</h2>
+      <div class="space-y-4">
+        {results.resources.map(resource => (
+          <a href={`/resources/${resource.slug}`} class="block">
+            <article class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+              <div class="flex items-start">
+                <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <img
+                    src={resource.data.thumbnail || defaultImage}
+                    alt={resource.data.title}
+                    class="w-full h-full object-cover"
+                    onError={`this.onerror=null; this.src='${defaultImage}'`}
+                  />
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-lg font-semibold text-gray-900">{resource.data.title}</h3>
+                  <p class="text-sm text-gray-600 mb-2">{resource.data.description}</p>
+                  <div class="flex items-center text-sm text-gray-500">
+                    <span class="capitalize">{resource.data.category}</span>
+                    {resource.data.lastUpdated && (
+                      <>
+                        <span class="mx-2">•</span>
+                        <span>Updated {formatDate(resource.data.lastUpdated)}</span>
+                      </>
+                    )}
+                  </div>
+                  {resource.data.tags && (
+                    <div class="mt-2 flex flex-wrap gap-1">
+                      {resource.data.tags.slice(0, 3).map(tag => (
+                        <span class="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {Object.values(results).every(arr => arr.length === 0) && (
+    <div class="text-center py-8">
+      <p class="text-gray-600">No matching results found. Try adjusting your search terms.</p>
+    </div>
+  )}
+</div>

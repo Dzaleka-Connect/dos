@@ -1,0 +1,72 @@
+---
+// src/pages/resources/[...page].astro
+import Layout from '../../layouts/Layout.astro';
+import ResourceGrid from '../../components/resources/ResourceGrid.astro';
+import ResourcePagination from '../../components/resources/ResourcePagination.astro';
+import SearchBar from '../../components/ui/SearchBar.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths({ paginate }) {
+  const resources = await getCollection('resources');
+  
+  // Sort resources by date (most recent first)
+  const sortedResources = resources.sort((a, b) => {
+    const dateA = new Date(a.data.lastUpdated || a.data.date || 0);
+    const dateB = new Date(b.data.lastUpdated || b.data.date || 0);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  return paginate(sortedResources, { pageSize: 9 });
+}
+
+const { page } = Astro.props;
+const searchQuery = Astro.url.searchParams.get('search') || '';
+
+// Filter resources if there's a search query
+let filteredResources = page.data;
+if (searchQuery) {
+  filteredResources = page.data.filter(resource =>
+    resource.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.data.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.data.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+}
+
+// Debug logging
+console.log('Filtered Resources:', filteredResources.map(resource => ({
+  title: resource.data.title,
+  downloadUrl: resource.data.downloadUrl,
+  resourceUrl: resource.data.resourceUrl,
+  fileType: resource.data.fileType,
+  fileSize: resource.data.fileSize
+})));
+---
+
+<Layout title="Resource Hub">
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Resource Hub</h1>
+      <SearchBar 
+        placeholder="Search resources..." 
+        initialValue={searchQuery}
+        section="resources"
+      />
+    </div>
+
+    {filteredResources.length > 0 ? (
+      <>
+        <ResourceGrid resources={filteredResources} />
+        <ResourcePagination
+          currentPage={page.currentPage}
+          totalPages={page.lastPage}
+          baseUrl="/resources/"
+        />
+      </>
+    ) : (
+      <div class="text-center py-12">
+        <h2 class="text-xl font-semibold text-gray-900 mb-2">No resources found</h2>
+        <p class="text-gray-600">Try adjusting your search terms or browse all resources.</p>
+      </div>
+    )}
+  </main>
+</Layout>

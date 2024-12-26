@@ -1,0 +1,152 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { format } from 'date-fns';
+
+// Get URL parameters
+const { searchParams } = Astro.url;
+const PHOTOS_PER_PAGE = 9;
+
+// Get all photos
+const photos = await getCollection('photos');
+
+// Group photos by year
+const photosByYear = photos.reduce((acc, photo) => {
+  const year = new Date(photo.data.date).getFullYear();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(photo);
+  return acc;
+}, {} as Record<number, typeof photos>);
+
+// Sort years in descending order
+const years = Object.keys(photosByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+// Sort photos within each year and get top 3
+const previewPhotosByYear = years.reduce((acc, year) => {
+  // Sort photos for this year
+  const yearPhotos = photosByYear[year].sort((a, b) => 
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+
+  acc[year] = {
+    photos: yearPhotos.slice(0, 3),
+    totalPhotos: yearPhotos.length
+  };
+
+  return acc;
+}, {} as Record<number, { 
+  photos: typeof photos, 
+  totalPhotos: number 
+}>);
+
+// Function to generate pagination URL
+function getPaginationUrl(year: number, page: number) {
+  const params = new URLSearchParams(searchParams);
+  params.set(`${year}Page`, page.toString());
+  return `?${params.toString()}#${year}`;
+}
+---
+
+<Layout title="Photo Gallery | Dzaleka Heritage">
+  <main class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Photo Gallery</h1>
+      <p class="text-xl text-gray-600 text-center mb-8 max-w-2xl mx-auto">
+        Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp
+      </p>
+      
+      {/* Submit Photo Button */}
+      <div class="text-center mb-12">
+        <a
+          href="/photos/submit"
+          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Submit Your Photo
+        </a>
+      </div>
+    </div>
+    
+    {years.map(year => {
+      const { photos, totalPhotos } = previewPhotosByYear[year];
+      return (
+        <div class="mb-16" id={year.toString()}>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-3xl font-bold text-gray-800 flex items-center gap-4">
+              <span>{year}</span>
+              <span class="text-lg text-gray-500 font-normal">({totalPhotos} photos)</span>
+            </h2>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {photos.map(photo => (
+              <a 
+                href={`/photos/${photo.slug}`}
+                class="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <div class="aspect-w-4 aspect-h-3 bg-gray-100">
+                  <img
+                    src={photo.data.image}
+                    alt={photo.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div class="p-4">
+                  <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    {photo.data.title}
+                  </h3>
+                  <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                    <span>{format(new Date(photo.data.date), 'MMMM d, yyyy')}</span>
+                    {photo.data.photographer && (
+                      <span class="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {typeof photo.data.photographer === 'string' 
+                          ? photo.data.photographer 
+                          : photo.data.photographer.name}
+                      </span>
+                    )}
+                  </div>
+                  <p class="mt-2 text-sm text-gray-600 line-clamp-2">
+                    {photo.data.description}
+                  </p>
+                  {photo.data.tags && (
+                    <div class="mt-3 flex flex-wrap gap-2">
+                      {photo.data.tags.slice(0, 3).map(tag => (
+                        <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {totalPhotos > 3 && (
+            <div class="text-center">
+              <a 
+                href={`/photos/${year}`}
+                class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors group"
+              >
+                View All {year} Photos
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          )}
+        </div>
+      );
+    })}
+  </main>
+</Layout>

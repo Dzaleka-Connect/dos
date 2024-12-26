@@ -1,0 +1,310 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SearchBar from '../components/ui/SearchBar.astro';
+import MobileServiceCard from '../components/MobileServiceCard.astro';
+import FeaturedServices from '../components/services/FeaturedServices.astro';
+import ResourceGrid from '../components/resources/ResourceGrid.astro';
+import { format } from 'date-fns';
+
+// Get all services and filter featured ones
+const services = await getCollection('services');
+const featuredServices = services
+  .filter(service => service.data.featured)
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0))
+  .slice(0, 6);
+
+// Get upcoming events
+const events = await getCollection('events');
+const upcomingEvents = events
+  .filter(event => new Date(event.data.date) >= new Date())
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
+  .slice(0, 3);
+
+// Get latest resources
+const resources = await getCollection('resources');
+const latestResources = resources
+  .sort((a, b) => {
+    const dateA = new Date(a.data.date || a.data.publishDate || 0);
+    const dateB = new Date(b.data.date || b.data.publishDate || 0);
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 3);
+
+const categories = [
+  {
+    title: 'Humanitarian Aid',
+    icon: '🤝',
+    description: 'Access essential support and emergency assistance'
+  },
+  {
+    title: 'Education',
+    icon: '📚',
+    description: 'Find learning opportunities and educational resources'
+  },
+  {
+    title: 'Healthcare',
+    icon: '⚕️',
+    description: 'Access the Ministry of Health clinic and local pharmacies'
+  },
+  {
+    title: 'Legal Support',
+    icon: '⚖️',
+    description: 'Get help with legal matters and advocacy'
+  },
+  {
+    title: 'Youth Programs',
+    icon: '🌟',
+    description: 'Discover opportunities for young people'
+  },
+  {
+    title: 'Community',
+    icon: '👥',
+    description: 'Connect with community groups and activities'
+  }
+];
+
+const mobileServices = [
+  {
+    name: 'TNM Malawi',
+    logo: 'https://www.tnm.co.mw/_nuxt/img/tnm-logo-1.0dd9a10.svg',
+    description: "Get connected with TNM's reliable mobile and data services.",
+    services: ['Mobile Services', 'Internet', 'Mpamba'],
+    link: 'https://www.tnm.co.mw',
+    icon: '📱',
+    socialMedia: {
+      website: 'https://www.tnm.co.mw',
+      facebook: 'https://www.facebook.com/tnmmw',
+      twitter: 'https://twitter.com/tnmmw',
+      instagram: 'https://www.instagram.com/tnmmw',
+      linkedin: 'https://www.linkedin.com/company/tnm-malawi'
+    }
+  },
+  {
+    name: 'Airtel Malawi',
+    logo: 'https://cdn-webportal.airtelstream.net/website/malawi/assets/images/main-logo.svg',
+    description: 'Experience wide coverage and fast internet with Airtel.',
+    services: ['Mobile Services', '4G Internet', 'Airtel Money'],
+    link: 'https://www.airtel.mw',
+    icon: '📶',
+    socialMedia: {
+      website: 'https://www.airtel.mw',
+      facebook: 'https://www.facebook.com/airtelmw',
+      twitter: 'https://twitter.com/airtelmw',
+      instagram: 'https://www.instagram.com/airtelmw',
+      linkedin: 'https://www.linkedin.com/company/airtel-malawi'
+    }
+  }
+];
+
+const stats = [
+  { number: '60,000+', label: 'Camp Population' },
+  { number: '5', label: 'Main Nationalities' },
+  { number: '1', label: 'Main Health Clinic' },
+  { number: '7', label: 'Learning Centers' }
+];
+
+const nationalities = ['Congolese', 'Burundians', 'Rwandans', 'Somalis', 'Ethiopians'];
+
+---
+
+<Layout title="Welcome to Dzaleka Online Services">
+  <main>
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white overflow-hidden">
+      <div class="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-10"></div>
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative container mx-auto px-4 py-20 md:py-32">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fade-in leading-tight">
+            Connecting Dzaleka Community with Essential Services
+          </h1>
+          <p class="text-xl md:text-2xl mb-12 text-white/90 animate-slide-up leading-relaxed">
+            Find and connect with organizations providing humanitarian aid, education, 
+            healthcare, and more in Dzaleka Refugee Camp.
+          </p>
+          <div class="flex flex-col md:flex-row justify-center items-center gap-6 animate-fade-in">
+            <a 
+              href="/services" 
+              class="w-full md:w-auto px-8 py-4 bg-white text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>Services Directory</span>
+            </a>
+
+            <a 
+              href="/events" 
+              class="w-full md:w-auto px-8 py-4 bg-primary-700 text-white rounded-xl font-semibold hover:bg-primary-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group border border-white/20"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Cultural Events</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="bg-white py-12 -mt-8 relative z-10">
+      <div class="container mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+            {stats.map(stat => (
+              <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold text-primary-600 mb-2">{stat.number}</div>
+                <div class="text-gray-600">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+          <div class="border-t pt-6">
+            <p class="text-center text-gray-600 mb-4">Main Nationalities in Dzaleka:</p>
+            <div class="flex flex-wrap justify-center gap-4">
+              {nationalities.map(nationality => (
+                <span class="px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium">
+                  {nationality}
+                </span>
+              ))}
+            </div>
+            <div class="text-center mt-6 text-sm text-gray-500">
+              Source: <a href="https://hub.dzaleka.com/" class="text-primary-600 hover:underline">hub.dzaleka.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Services -->
+    <FeaturedServices services={featuredServices} />
+
+    <!-- Categories Section -->
+    <div class="container mx-auto px-4 py-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-3 text-center">Our Services</h2>
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+        Explore our comprehensive range of services designed to support and empower the Dzaleka community
+      </p>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {categories.map(category => (
+          <a href={`/services?category=${category.title}`} 
+             class="group bg-white rounded-xl shadow-sm p-8 hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-primary-100">
+            <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+              {category.icon}
+            </div>
+            <h3 class="text-xl font-semibold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors">
+              {category.title}
+            </h3>
+            <p class="text-gray-600">{category.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Upcoming Events Section -->
+    {upcomingEvents.length > 0 && (
+      <div class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold text-gray-900 mb-3 text-center">Upcoming Events</h2>
+          <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Join us at these upcoming community events and cultural celebrations
+          </p>
+          <div class="grid gap-8 md:grid-cols-3">
+            {upcomingEvents.map(event => (
+              <a href={`/events/${event.slug}`} 
+                 class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+                <div class="aspect-w-16 aspect-h-9">
+                  <img 
+                    src={event.data.image} 
+                    alt={event.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div class="p-6">
+                  <div class="text-sm text-primary-600 font-medium mb-2">
+                    {format(new Date(event.data.date), 'MMMM d, yyyy')}
+                  </div>
+                  <h3 class="text-xl font-semibold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors">
+                    {event.data.title}
+                  </h3>
+                  <p class="text-gray-600 line-clamp-2">{event.data.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+          <div class="text-center mt-12">
+            <a 
+              href="/events" 
+              class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
+            >
+              View All Events
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- Mobile Network Services -->
+    <div class="container mx-auto px-4 py-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-3 text-center">
+        Mobile Network Services
+      </h2>
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+        Stay connected with reliable mobile and internet services from our trusted providers
+      </p>
+      <div class="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+        {mobileServices.map(provider => (
+          <MobileServiceCard provider={provider} />
+        ))}
+      </div>
+    </div>
+
+    <!-- Latest Resources Section -->
+    {latestResources.length > 0 && (
+      <div class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold text-gray-900 mb-3 text-center">Latest Resources</h2>
+          <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Access our most recent guides, templates, and educational materials
+          </p>
+          <ResourceGrid resources={latestResources} />
+          <div class="text-center mt-12">
+            <a 
+              href="/resources" 
+              class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
+            >
+              View All Resources
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- Community Section -->
+    <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">Join Our Community</h2>
+          <p class="text-xl text-white/90 mb-12 leading-relaxed">
+            Connect with other community members, share experiences, and get support
+            through our community forum.
+          </p>
+          <a href="/forum" 
+             class="inline-flex items-center px-8 py-4 bg-white text-primary-600 rounded-xl hover:bg-primary-50 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold group">
+            <span>Visit Community Forum</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

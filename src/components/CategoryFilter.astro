@@ -1,0 +1,57 @@
+---
+interface Props {
+  categories: string[];
+  selected: string | null;
+  counts: Record<string, number>;
+}
+
+const { categories, selected, counts } = Astro.props;
+
+// Function to preserve search parameter when changing categories
+const getHref = (category: string | null) => {
+  const params = new URLSearchParams();
+  if (category) {
+    params.set('category', category);
+  }
+  // Preserve search if it exists
+  const searchQuery = Astro.url.searchParams.get('search');
+  if (searchQuery) {
+    params.set('search', searchQuery);
+  }
+  return `/services${params.toString() ? `?${params}` : ''}`;
+};
+---
+
+<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+  <h2 class="text-lg font-semibold text-gray-900 mb-4">Categories</h2>
+  <div class="space-y-2">
+    <a
+      href={getHref(null)}
+      class={`block px-3 py-2 rounded-lg transition-colors ${
+        !selected 
+          ? 'bg-primary-50 text-primary-700' 
+          : 'text-gray-700 hover:bg-gray-50'
+      }`}
+    >
+      All Services
+      <span class="float-right text-sm text-gray-500">
+        {Object.values(counts).reduce((a, b) => a + b, 0)}
+      </span>
+    </a>
+    {categories.map(category => (
+      <a
+        href={getHref(category)}
+        class={`block px-3 py-2 rounded-lg transition-colors ${
+          selected === category 
+            ? 'bg-primary-50 text-primary-700' 
+            : 'text-gray-700 hover:bg-gray-50'
+        }`}
+      >
+        {category}
+        <span class="float-right text-sm text-gray-500">
+          {counts[category]}
+        </span>
+      </a>
+    ))}
+  </div>
+</div>

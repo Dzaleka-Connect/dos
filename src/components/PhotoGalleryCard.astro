@@ -1,0 +1,36 @@
+---
+import { format } from 'date-fns';
+import type { PhotoGallery } from '../types';
+import Badge from './ui/Badge.astro';
+
+interface Props {
+  photo: PhotoGallery;
+}
+
+const { photo } = Astro.props;
+---
+
+<article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+  <div class="relative">
+    <img 
+      src={photo.imageUrl} 
+      alt={photo.title}
+      class="w-full h-48 object-cover"
+    />
+    <time 
+      class="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm"
+      datetime={photo.date.toISOString()}
+    >
+      {format(photo.date, 'MMMM d, yyyy')}
+    </time>
+  </div>
+  <div class="p-4">
+    <h2 class="text-xl font-bold mb-2 text-gray-900">{photo.title}</h2>
+    <div class="prose prose-sm mb-3 text-gray-700" set:html={photo.description} />
+    <div class="flex flex-wrap gap-2">
+      {photo.tags.map(tag => (
+        <Badge variant="blue">{tag}</Badge>
+      ))}
+    </div>
+  </div>
+</article>

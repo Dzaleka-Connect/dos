@@ -1,0 +1,188 @@
+---
+import SocialLinks from './ui/SocialLinks.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  featured?: boolean;
+  verified?: boolean;
+  href: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  logo?: string;
+  socialMedia?: {
+    twitter?: string;
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+    website?: string;
+  };
+}
+
+const { 
+  title, 
+  description, 
+  category,
+  featured,
+  verified,
+  href,
+  email,
+  phone,
+  address,
+  logo,
+  socialMedia
+} = Astro.props;
+
+// Function to get category color
+function getCategoryColor(category: string) {
+  const colors = {
+    'Cultural': 'bg-rose-50 text-rose-700 border-rose-200',
+    'Education': 'bg-blue-50 text-blue-700 border-blue-200',
+    'Youth': 'bg-purple-50 text-purple-700 border-purple-200',
+    'Entrepreneurship': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    'Health': 'bg-teal-50 text-teal-700 border-teal-200',
+    'Humanitarian Aid': 'bg-amber-50 text-amber-700 border-amber-200',
+    'Advocacy': 'bg-red-50 text-red-700 border-red-200'
+  };
+  return colors[category] || 'bg-gray-50 text-gray-700 border-gray-200';
+}
+
+// Debug logging
+console.log('ServiceCard props for', title, ':', {
+  socialMedia,
+  hasWebsite: !!socialMedia?.website,
+  websiteUrl: socialMedia?.website
+});
+---
+
+<article class="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden h-full flex flex-col border border-gray-100">
+  <div class="p-6 flex flex-col h-full">
+    <!-- Header -->
+    <div class="flex items-start gap-4 mb-4">
+      <div class="relative w-20 h-20 flex-shrink-0 bg-gray-50 rounded-lg p-3 flex items-center justify-center border border-gray-100 group-hover:border-gray-200 transition-colors">
+        <img 
+          src={logo || '/logos/default.png'} 
+          alt={`${title} logo`}
+          class="w-full h-full object-contain"
+          loading="lazy"
+          onerror="this.src='/logos/default.png'; this.onerror=null;"
+        />
+      </div>
+      <div class="flex-grow min-w-0 relative">
+        <div class="flex items-start justify-between">
+          <h3 class="text-xl font-bold text-gray-900 truncate mb-2 group-hover:text-primary-600 transition-colors pr-20">
+            {title}
+          </h3>
+          {featured && (
+            <div class="absolute top-0 right-0">
+              <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-50 text-primary-700 rounded-md">
+                Featured
+              </span>
+            </div>
+          )}
+        </div>
+        <span class={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(category)}`}>
+          {category}
+        </span>
+        {verified && (
+          <span class="ml-2 inline-flex items-center text-sm font-medium text-primary-600">
+            <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            Verified
+          </span>
+        )}
+      </div>
+    </div>
+
+    <!-- Description -->
+    <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+      {description}
+    </p>
+
+    <!-- Contact Info -->
+    <div class="mt-auto space-y-3">
+      {(email || phone || address || socialMedia?.website) && (
+        <div class="flex flex-col gap-2 text-sm text-gray-600">
+          {socialMedia?.website && (
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+              <a 
+                href={socialMedia.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-primary-600 transition-colors z-20"
+                onclick="event.stopPropagation();"
+              >
+                {new URL(socialMedia.website).hostname}
+              </a>
+            </div>
+          )}
+          {email && (
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+              </svg>
+              <a href={`mailto:${email}`} class="hover:text-primary-600 transition-colors z-20" onclick="event.stopPropagation();">{email}</a>
+            </div>
+          )}
+          {phone && (
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              <a href={`tel:${phone}`} class="hover:text-primary-600 transition-colors z-20" onclick="event.stopPropagation();">{phone}</a>
+            </div>
+          )}
+          {address && (
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+              </svg>
+              <span>{address}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Social Links -->
+      {socialMedia && Object.values(socialMedia).some(Boolean) && (
+        <div class="border-t border-gray-100 pt-3">
+          <div class="flex items-center justify-between">
+            <SocialLinks
+              facebook={socialMedia.facebook}
+              twitter={socialMedia.twitter}
+              instagram={socialMedia.instagram}
+              linkedin={socialMedia.linkedin}
+              website={socialMedia.website}
+              className="justify-start"
+            />
+            {socialMedia.website && (
+              <a 
+                href={socialMedia.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700 group/link z-20"
+                onclick="event.stopPropagation();"
+              >
+                Visit Website
+                <svg class="w-4 h-4 ml-1 transform transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <a href={href} class="absolute inset-0 z-10" aria-label={`View details for ${title}`}>
+    <span class="sr-only">View details</span>
+  </a>
+</article>

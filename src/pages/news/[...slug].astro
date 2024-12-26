@@ -1,0 +1,156 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+
+export async function getStaticPaths() {
+  const newsEntries = await getCollection('news');
+  return newsEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Format date
+const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Get category label
+const categoryLabels = {
+  'business-spotlight': 'Business Spotlight',
+  'announcement': 'Announcement',
+  'success-story': 'Success Story',
+};
+
+// Get category color
+const categoryColors = {
+  'business-spotlight': 'bg-blue-50 text-blue-700 border-blue-200',
+  'announcement': 'bg-amber-50 text-amber-700 border-amber-200',
+  'success-story': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+};
+---
+
+<Layout title={`${entry.data.title} | Dzaleka Heritage`}>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-8">
+      <a 
+        href="/news" 
+        class="inline-flex items-center text-gray-600 hover:text-primary-600 mb-8 group"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          class="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" 
+          viewBox="0 0 20 20" 
+          fill="currentColor"
+        >
+          <path 
+            fill-rule="evenodd" 
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" 
+            clip-rule="evenodd" 
+          />
+        </svg>
+        Back to News
+      </a>
+
+      <div class="flex flex-wrap gap-3 mb-4">
+        <span class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[entry.data.category]}`}>
+          {categoryLabels[entry.data.category]}
+        </span>
+        {entry.data.featured && (
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-50 text-yellow-700 border border-yellow-200">
+            Featured
+          </span>
+        )}
+      </div>
+
+      <PageHeader
+        title={entry.data.title}
+        description={entry.data.description}
+      />
+
+      <div class="flex items-center gap-2 text-sm text-gray-600 mt-6">
+        <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
+        {entry.data.author && (
+          <>
+            <span>•</span>
+            <span>{entry.data.author}</span>
+          </>
+        )}
+      </div>
+    </div>
+
+    {entry.data.image && (
+      <img
+        src={entry.data.image}
+        alt={entry.data.title}
+        class="w-full h-96 object-cover rounded-2xl mb-12"
+      />
+    )}
+
+    <div class="prose prose-lg max-w-none">
+      <Content />
+    </div>
+
+    {entry.data.businessName && (
+      <div class="mt-12 p-8 bg-gray-50 rounded-2xl">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Business Information</h2>
+        <div class="space-y-4">
+          <div>
+            <p class="text-lg"><span class="font-medium">Business:</span> {entry.data.businessName}</p>
+            {entry.data.businessOwner && (
+              <p class="text-lg mt-2"><span class="font-medium">Owner:</span> {entry.data.businessOwner}</p>
+            )}
+          </div>
+          {entry.data.contactInfo && (
+            <div class="pt-4 border-t space-y-3">
+              <h3 class="font-medium text-gray-900">Contact Information</h3>
+              {entry.data.contactInfo.email && (
+                <a href={`mailto:${entry.data.contactInfo.email}`} class="flex items-center text-primary-600 hover:text-primary-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                  {entry.data.contactInfo.email}
+                </a>
+              )}
+              {entry.data.contactInfo.phone && (
+                <a href={`tel:${entry.data.contactInfo.phone}`} class="flex items-center text-primary-600 hover:text-primary-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                  {entry.data.contactInfo.phone}
+                </a>
+              )}
+              {entry.data.contactInfo.website && (
+                <a href={entry.data.contactInfo.website} target="_blank" rel="noopener noreferrer" class="flex items-center text-primary-600 hover:text-primary-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zm10 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118h1.946a6.004 6.004 0 011.414 4.118zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd" />
+                  </svg>
+                  Visit Website
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+
+    {entry.data.tags && entry.data.tags.length > 0 && (
+      <div class="mt-12">
+        <div class="flex flex-wrap gap-2">
+          {entry.data.tags.map(tag => (
+            <span class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+  </article>
+</Layout>

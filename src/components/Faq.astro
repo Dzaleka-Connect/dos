@@ -1,0 +1,84 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FaqItem[] = [
+  {
+    question: "What services are available at Dzaleka Digital Heritage?",
+    answer: "We offer a range of digital services including resource access, cultural preservation, educational materials, and community support programs."
+  },
+  {
+    question: "How can I access the resources?",
+    answer: "Resources are available through our online platform. Simply browse the Resource Hub and click on the resource you'd like to access."
+  },
+  {
+    question: "Is there a cost associated with using the services?",
+    answer: "Most of our resources are free to access. Some specialized programs or materials may have associated costs, which will be clearly indicated."
+  },
+  {
+    question: "Can I contribute to the platform?",
+    answer: "Yes! We welcome contributions from community members. Please contact us to learn more about sharing your knowledge or resources."
+  },
+  {
+    question: "How often are resources updated?",
+    answer: "We regularly update our resources to ensure they remain relevant and useful. Check the 'last updated' date on each resource for specific information."
+  }
+];
+---
+
+<div class="space-y-4">
+  {faqs.map((faq, index) => (
+    <div class="border rounded-lg">
+      <button
+        class="w-full px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg"
+        id={`faq-button-${index}`}
+        aria-expanded="false"
+        aria-controls={`faq-answer-${index}`}
+      >
+        <div class="flex items-center justify-between">
+          <span class="font-medium text-gray-900">{faq.question}</span>
+          <svg
+            class="w-5 h-5 text-gray-500 transform transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </button>
+      <div
+        id={`faq-answer-${index}`}
+        class="hidden px-6 pb-4 text-gray-600"
+        role="region"
+        aria-labelledby={`faq-button-${index}`}
+      >
+        {faq.answer}
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  const faqButtons = document.querySelectorAll('[id^="faq-button-"]');
+
+  faqButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      const answerId = button.getAttribute('aria-controls');
+      const answer = document.getElementById(answerId!);
+      const icon = button.querySelector('svg');
+
+      button.setAttribute('aria-expanded', (!isExpanded).toString());
+      answer?.classList.toggle('hidden');
+      icon?.classList.toggle('rotate-180');
+    });
+  });
+</script>

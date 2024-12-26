@@ -1,0 +1,435 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FormStatus from '../../components/applications/FormStatus.astro';
+
+const formId = 'photo-submission-form';
+const cloudName = 'dcvwslmow';
+const uploadPreset = 'Dzaleka_Photo_Gallery';
+---
+
+<Layout title="Submit Your Photo">
+  <main class="bg-gray-50 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-lg shadow-sm p-8">
+        <header class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-gray-900 mb-4">Submit Your Photo</h1>
+          <p class="text-lg text-gray-600">
+            Share your story through photography. Submit your photo to be featured in our digital archive.
+          </p>
+        </header>
+
+        <FormStatus formId={formId} />
+
+        <form
+          id={formId}
+          action="https://formspree.io/f/xqaaajae"
+          method="POST"
+          class="space-y-6"
+          data-form-type="photo"
+        >
+          {/* Hidden Fields */}
+          <input type="text" name="_gotcha" style="display:none" />
+          <input type="hidden" name="_subject" value="New Photo Submission" />
+          <input type="hidden" name="cloudinaryUrl" id="cloudinaryUrl" />
+          <input type="hidden" name="cloudinaryPublicId" id="cloudinaryPublicId" />
+
+          {/* Photographer Information */}
+          <div class="space-y-6">
+            <h2 class="text-xl font-semibold text-gray-900">Photographer Information</h2>
+            
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label for="instagram" class="block text-sm font-medium text-gray-700">
+                  Instagram Handle (Optional)
+                </label>
+                <div class="mt-1 flex rounded-md shadow-sm">
+                  <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">
+                    @
+                  </span>
+                  <input
+                    type="text"
+                    name="instagram"
+                    id="instagram"
+                    class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="website" class="block text-sm font-medium text-gray-700">
+                  Website (Optional)
+                </label>
+                <input
+                  type="url"
+                  name="website"
+                  id="website"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="bio" class="block text-sm font-medium text-gray-700">
+                Short Bio
+              </label>
+              <div class="mt-1">
+                <textarea
+                  id="bio"
+                  name="bio"
+                  rows="3"
+                  required
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                ></textarea>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">
+                Brief description about yourself and your photography (max. 200 words)
+              </p>
+            </div>
+          </div>
+
+          {/* Photo Information */}
+          <div class="space-y-6 pt-6 border-t">
+            <h2 class="text-xl font-semibold text-gray-900">Photo Details</h2>
+
+            <div>
+              <label for="title" class="block text-sm font-medium text-gray-700">
+                Photo Title
+              </label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label for="description" class="block text-sm font-medium text-gray-700">
+                Photo Description
+              </label>
+              <div class="mt-1">
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="4"
+                  required
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                ></textarea>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">
+                Tell us the story behind your photo (max. 500 words)
+              </p>
+            </div>
+
+            <div>
+              <label for="location" class="block text-sm font-medium text-gray-700">
+                Photo Location
+              </label>
+              <input
+                type="text"
+                name="location"
+                id="location"
+                required
+                placeholder="e.g., Dzaleka Refugee Camp, Dowa, Malawi"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label for="dateTaken" class="block text-sm font-medium text-gray-700">
+                Date Taken
+              </label>
+              <input
+                type="date"
+                name="dateTaken"
+                id="dateTaken"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label for="tags" class="block text-sm font-medium text-gray-700">
+                Tags
+              </label>
+              <input
+                type="text"
+                name="tags"
+                id="tags"
+                required
+                placeholder="e.g., Culture, Music, Art, Community"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              />
+              <p class="mt-2 text-sm text-gray-500">
+                Separate tags with commas
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">
+                Photo Upload
+              </label>
+              <div 
+                id="upload-widget"
+                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-primary-500 transition-colors cursor-pointer"
+              >
+                <div class="space-y-1 text-center">
+                  <svg
+                    class="mx-auto h-12 w-12 text-gray-400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <div class="flex text-sm text-gray-600 justify-center">
+                    <span class="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                      Upload a photo
+                    </span>
+                    <p class="pl-1">or drag and drop</p>
+                  </div>
+                  <p class="text-xs text-gray-500">
+                    PNG, JPG, GIF up to 10MB
+                  </p>
+                  <div id="upload-preview" class="mt-4 hidden">
+                    <img id="preview-image" class="mx-auto max-h-48 rounded-lg shadow-sm" />
+                    <button 
+                      type="button" 
+                      id="remove-upload"
+                      class="mt-2 text-sm text-red-600 hover:text-red-700"
+                    >
+                      Remove photo
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p id="upload-error" class="mt-2 text-sm text-red-600 hidden"></p>
+            </div>
+          </div>
+
+          {/* Rights and Permissions */}
+          <div class="space-y-6 pt-6 border-t">
+            <h2 class="text-xl font-semibold text-gray-900">Rights and Permissions</h2>
+
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input
+                    id="copyright"
+                    name="copyright"
+                    type="checkbox"
+                    required
+                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="copyright" class="font-medium text-gray-700">
+                    Copyright Declaration
+                  </label>
+                  <p class="text-gray-500">
+                    I confirm that I own the copyright to this photo and grant permission for it to be used in the Dzaleka Heritage Archive.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input
+                    id="permission"
+                    name="permission"
+                    type="checkbox"
+                    required
+                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="permission" class="font-medium text-gray-700">
+                    Usage Permission
+                  </label>
+                  <p class="text-gray-500">
+                    I grant permission for this photo to be used in the Dzaleka Heritage Archive website and related promotional materials.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div class="pt-6">
+            <button
+              type="submit"
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              Submit Photo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script is:inline src="https://upload-widget.cloudinary.com/global/all.js" defer></script>
+<script define:vars={{ cloudName, uploadPreset }}>
+  // Wait for Cloudinary script to load
+  window.addEventListener('load', function() {
+    if (typeof cloudinary === 'undefined') {
+      console.error('Cloudinary script not loaded');
+      return;
+    }
+
+    // Initialize the Cloudinary Upload Widget
+    const myWidget = cloudinary.createUploadWidget(
+      {
+        cloudName: cloudName,
+        uploadPreset: uploadPreset,
+        sources: ['local', 'url', 'camera'],
+        maxFileSize: 10485760, // 10MB
+        maxFiles: 1,
+        resourceType: 'image',
+        multiple: false,
+        cropping: false,
+        showSkipCropButton: false,
+        showPoweredBy: false,
+        styles: {
+          palette: {
+            window: '#FFFFFF',
+            windowBorder: '#90A0B3',
+            tabIcon: '#0E7490',
+            menuIcons: '#5A616A',
+            textDark: '#000000',
+            textLight: '#FFFFFF',
+            link: '#0E7490',
+            action: '#0E7490',
+            inactiveTabIcon: '#0E7490',
+            error: '#F44235',
+            inProgress: '#0078FF',
+            complete: '#20B832',
+            sourceBg: '#E4EBF1'
+          },
+        }
+      },
+      (error, result) => {
+        const uploadError = document.getElementById('upload-error');
+        const uploadPreview = document.getElementById('upload-preview');
+        const previewImage = document.getElementById('preview-image');
+        const urlInput = document.getElementById('cloudinaryUrl');
+        const publicIdInput = document.getElementById('cloudinaryPublicId');
+
+        if (error) {
+          console.error('Upload error:', error);
+          if (uploadError) {
+            uploadError.textContent = error.message || 'Upload failed. Please try again.';
+            uploadError.classList.remove('hidden');
+          }
+          return;
+        }
+
+        if (result.event === 'success') {
+          // Hide any previous errors
+          if (uploadError) {
+            uploadError.classList.add('hidden');
+          }
+          
+          // Store the Cloudinary URL and public ID
+          if (urlInput && publicIdInput) {
+            urlInput.value = result.info.secure_url;
+            publicIdInput.value = result.info.public_id;
+          }
+
+          // Show preview
+          if (previewImage && uploadPreview) {
+            previewImage.src = result.info.thumbnail_url || result.info.secure_url;
+            uploadPreview.classList.remove('hidden');
+          }
+        }
+      }
+    );
+
+    // Attach the widget to the upload button
+    const uploadWidget = document.getElementById('upload-widget');
+    if (uploadWidget) {
+      uploadWidget.addEventListener('click', (e) => {
+        e.preventDefault();
+        myWidget.open();
+      }, false);
+    }
+
+    // Handle remove button click
+    const removeButton = document.getElementById('remove-upload');
+    if (removeButton) {
+      removeButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Clear the upload
+        const urlInput = document.getElementById('cloudinaryUrl');
+        const publicIdInput = document.getElementById('cloudinaryPublicId');
+        const uploadPreview = document.getElementById('upload-preview');
+        
+        if (urlInput) urlInput.value = '';
+        if (publicIdInput) publicIdInput.value = '';
+        if (uploadPreview) uploadPreview.classList.add('hidden');
+      });
+    }
+
+    // Form submission handling
+    const form = document.getElementById('photo-submission-form');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const urlInput = document.getElementById('cloudinaryUrl');
+        const uploadError = document.getElementById('upload-error');
+        
+        if (!urlInput || !urlInput.value) {
+          e.preventDefault();
+          if (uploadError) {
+            uploadError.textContent = 'Please upload a photo before submitting.';
+            uploadError.classList.remove('hidden');
+          }
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  #upload-widget {
+    transition: all 0.2s ease-in-out;
+  }
+  #upload-widget:hover {
+    @apply border-primary-500 bg-primary-50;
+  }
+</style>

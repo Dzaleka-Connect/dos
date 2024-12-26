@@ -1,0 +1,149 @@
+---
+---
+
+<form id="contactForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
+  <div>
+    <label for="name" class="block text-sm font-medium text-gray-700">Name *</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+    />
+  </div>
+
+  <div>
+    <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+    />
+  </div>
+
+  <div>
+    <label for="subject" class="block text-sm font-medium text-gray-700">Subject *</label>
+    <input
+      type="text"
+      id="subject"
+      name="subject"
+      required
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+    />
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-medium text-gray-700">Message *</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="4"
+      required
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+    ></textarea>
+  </div>
+
+  <div id="submitWrapper" class="relative">
+    <button
+      type="submit"
+      id="submitButton"
+      class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+    >
+      <span id="submitText">Send Message</span>
+      <span id="submitSpinner" class="hidden">
+        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Success Message -->
+  <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm font-medium text-green-800">Message sent successfully!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm font-medium text-red-800">Error sending message. Please try again.</p>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+  const submitText = document.getElementById('submitText') as HTMLElement;
+  const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
+  const successMessage = document.getElementById('successMessage') as HTMLElement;
+  const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Show loading state
+      submitButton.disabled = true;
+      submitText.classList.add('hidden');
+      submitSpinner.classList.remove('hidden');
+      successMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Show success message
+          form.reset();
+          successMessage.classList.remove('hidden');
+          setTimeout(() => {
+            successMessage.classList.add('hidden');
+          }, 5000);
+        } else {
+          throw new Error(data.error || 'Error sending message');
+        }
+      } catch (error) {
+        // Show error message
+        console.error('Submission error:', error);
+        errorMessage.classList.remove('hidden');
+        setTimeout(() => {
+          errorMessage.classList.add('hidden');
+        }, 5000);
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitText.classList.remove('hidden');
+        submitSpinner.classList.add('hidden');
+      }
+    });
+  }
+</script>

@@ -1,0 +1,104 @@
+---
+import SearchBar from '../ui/SearchBar.astro';
+
+const navigation = [
+  { name: 'Services', href: '/services' },
+  { name: 'Events', href: '/events' },
+  { name: 'Resources', href: '/resources' },
+  { name: 'About', href: '/about' },
+];
+---
+
+<header class="bg-white shadow-sm">
+  <nav class="container mx-auto px-4 py-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a href="/" class="flex items-center">
+          <img src="/images/logo.png" alt="Dzaleka Heritage Archive" class="h-8 w-auto" />
+          <span class="ml-2 text-xl font-semibold text-gray-900">Dzaleka Heritage</span>
+        </a>
+        
+        <div class="hidden md:flex items-center gap-6">
+          {navigation.map(item => (
+            <a
+              href={item.href}
+              class="text-gray-600 hover:text-gray-900 hover:underline underline-offset-8 decoration-primary-500"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a
+          href="/search"
+          class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+          aria-label="Search"
+        >
+          <svg
+            class="w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </a>
+
+        <button
+          type="button"
+          class="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+          aria-label="Menu"
+          id="menu-button"
+        >
+          <svg
+            class="w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="pt-2 pb-3 space-y-1">
+        {navigation.map(item => (
+          <a
+            href={item.href}
+            class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+          >
+            {item.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const menuButton = document.getElementById('menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (menuButton && mobileMenu) {
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>

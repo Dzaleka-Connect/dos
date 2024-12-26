@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+
+// Get all news items sorted by date
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Separate news by category
+const businessSpotlights = sortedNews.filter(item => item.data.category === 'business-spotlight');
+const announcements = sortedNews.filter(item => item.data.category === 'announcement');
+const successStories = sortedNews.filter(item => item.data.category === 'success-story');
+
+// Get featured news
+const featuredNews = sortedNews.filter(item => item.data.featured);
+---
+
+<Layout title="News & Updates | Dzaleka Heritage">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <PageHeader
+      title="News & Updates"
+      description="Stay informed about the latest happenings in our community, from business success stories to important announcements."
+    />
+
+    {featuredNews.length > 0 && (
+      <section class="mb-16">
+        <div class="grid gap-8 lg:grid-cols-2">
+          {featuredNews.slice(0, 1).map(news => (
+            <div class="lg:col-span-2">
+              <NewsCard news={news} featured={true} large={true} />
+            </div>
+          ))}
+          {featuredNews.slice(1, 3).map(news => (
+            <NewsCard news={news} featured={true} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <div class="space-y-16">
+      {businessSpotlights.length > 0 && (
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Business Spotlights</h2>
+              <p class="mt-1 text-gray-600">Discover thriving businesses in our community</p>
+            </div>
+            <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all
+              <span class="sr-only">business spotlights</span>
+            </a>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {businessSpotlights.slice(0, 3).map(news => (
+              <NewsCard news={news} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {announcements.length > 0 && (
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Community Announcements</h2>
+              <p class="mt-1 text-gray-600">Important updates from our community</p>
+            </div>
+            <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all
+              <span class="sr-only">announcements</span>
+            </a>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {announcements.slice(0, 3).map(news => (
+              <NewsCard news={news} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {successStories.length > 0 && (
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Success Stories</h2>
+              <p class="mt-1 text-gray-600">Celebrating achievements in our community</p>
+            </div>
+            <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all
+              <span class="sr-only">success stories</span>
+            </a>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {successStories.slice(0, 3).map(news => (
+              <NewsCard news={news} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  </div>
+</Layout>

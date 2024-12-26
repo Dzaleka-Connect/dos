@@ -1,0 +1,90 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: (page: number) => string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+// Calculate the range of pages to show
+const maxPagesToShow = 5;
+const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+// Generate page numbers
+const pageNumbers = Array.from(
+  { length: endPage - startPage + 1 },
+  (_, i) => startPage + i
+);
+---
+
+<nav class="flex justify-center space-x-2" aria-label="Pagination">
+  <!-- Previous Page -->
+  {currentPage > 1 && (
+    <a
+      href={baseUrl(currentPage - 1)}
+      class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+      aria-label="Previous page"
+    >
+      Previous
+    </a>
+  )}
+
+  <!-- Page Numbers -->
+  <div class="hidden sm:flex sm:space-x-2">
+    {startPage > 1 && (
+      <>
+        <a
+          href={baseUrl(1)}
+          class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        >
+          1
+        </a>
+        {startPage > 2 && (
+          <span class="px-3 py-2 text-sm text-gray-500">...</span>
+        )}
+      </>
+    )}
+
+    {pageNumbers.map((pageNum) => (
+      <a
+        href={baseUrl(pageNum)}
+        class:list={[
+          "px-3 py-2 text-sm font-medium rounded-md",
+          pageNum === currentPage
+            ? "bg-primary-600 text-white border border-primary-600"
+            : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+        ]}
+        aria-current={pageNum === currentPage ? "page" : undefined}
+      >
+        {pageNum}
+      </a>
+    ))}
+
+    {endPage < totalPages && (
+      <>
+        {endPage < totalPages - 1 && (
+          <span class="px-3 py-2 text-sm text-gray-500">...</span>
+        )}
+        <a
+          href={baseUrl(totalPages)}
+          class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        >
+          {totalPages}
+        </a>
+      </>
+    )}
+  </div>
+
+  <!-- Next Page -->
+  {currentPage < totalPages && (
+    <a
+      href={baseUrl(currentPage + 1)}
+      class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+      aria-label="Next page"
+    >
+      Next
+    </a>
+  )}
+</nav>

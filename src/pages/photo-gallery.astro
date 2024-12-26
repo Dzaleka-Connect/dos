@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+import Badge from '../components/ui/Badge.astro';
+
+const photos = await getCollection('photos');
+const sortedPhotos = photos.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group photos by month and year
+const groupedPhotos = sortedPhotos.reduce((groups, photo) => {
+  const date = photo.data.date;
+  const key = format(date, 'MMMM yyyy');
+  if (!groups[key]) {
+    groups[key] = [];
+  }
+  groups[key].push(photo);
+  return groups;
+}, {} as Record<string, typeof photos>);
+---
+
+<Layout title="Photo Gallery">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-4xl font-bold text-gray-900 mb-8">Photo Gallery</h1>
+
+      {Object.entries(groupedPhotos).map(([dateGroup, photos]) => (
+        <section class="mb-12">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-6">{dateGroup}</h2>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {photos.map(photo => (
+              <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+                <a href={`/photos/${photo.slug}`} class="block">
+                  <div class="relative aspect-w-16 aspect-h-9">
+                    <img 
+                      src={photo.data.image} 
+                      alt={photo.data.title}
+                      class="w-full h-full object-cover"
+                    />
+                    {photo.data.featured && (
+                      <div class="absolute top-4 right-4">
+                        <Badge variant="blue">Featured</Badge>
+                      </div>
+                    )}
+                  </div>
+                  <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                      {photo.data.title}
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                      {photo.data.description}
+                    </p>
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                        <div class="text-sm">
+                          <p class="font-medium text-gray-900">
+                            {photo.data.photographer.name}
+                          </p>
+                          {photo.data.photographer.instagram && (
+                            <a 
+                              href={`https://instagram.com/${photo.data.photographer.instagram}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="text-primary-600 hover:text-primary-700"
+                            >
+                              @{photo.data.photographer.instagram}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                      <time 
+                        datetime={photo.data.date.toISOString()}
+                        class="text-sm text-gray-500"
+                      >
+                        {format(photo.data.date, 'MMM d, yyyy')}
+                      </time>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      {photo.data.tags.map(tag => (
+                        <Badge variant="green">{tag}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</Layout>

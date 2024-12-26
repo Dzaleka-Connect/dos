@@ -1,0 +1,79 @@
+---
+import { format } from 'date-fns';
+import Badge from '../ui/Badge.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  events: CollectionEntry<'events'>[];
+}
+
+const { events } = Astro.props;
+
+// Function to format location
+function formatLocation(location: any) {
+  if (typeof location === 'string') return location;
+  return location.venue && location.city ? `${location.venue}, ${location.city}` : location.venue || location.city || 'Location TBA';
+}
+---
+
+<div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+  {events.map(event => (
+    <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+      <a href={`/events/${event.slug}`} class="block">
+        <div class="aspect-w-16 aspect-h-9">
+          <img 
+            src={event.data.image} 
+            alt={event.data.title}
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute bottom-4 right-4">
+            <Badge variant={event.data.status === 'upcoming' ? 'blue' : 'green'}>
+              {event.data.category}
+            </Badge>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <time datetime={event.data.date.toISOString()} class="text-sm text-gray-500 block">
+                {format(event.data.date, 'MMM d, yyyy')}
+              </time>
+            </div>
+            <span class="text-sm font-medium capitalize" class:list={{
+              'text-blue-600': event.data.status === 'upcoming',
+              'text-gray-500': event.data.status === 'past'
+            }}>
+              {event.data.status}
+            </span>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">{event.data.title}</h3>
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">{event.data.description}</p>
+          
+          {/* Time and Location - Stack on mobile, side by side on desktop */}
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <div class="flex items-center text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+              </svg>
+              <time datetime={event.data.date.toISOString()} class="text-sm">
+                {format(event.data.date, 'h:mm a')}
+              </time>
+            </div>
+            <div class="flex items-center text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">{formatLocation(event.data.location)}</span>
+            </div>
+          </div>
+          
+          <div class="mt-4 flex justify-end">
+            <span class="text-sm font-medium text-primary-600 hover:text-primary-700">
+              Learn More →
+            </span>
+          </div>
+        </div>
+      </a>
+    </article>
+  ))}
+</div>

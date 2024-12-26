@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+const links = [
+  { text: 'Go to Homepage', href: '/' },
+  { text: 'Browse Services', href: '/services' },
+  { text: 'View Events', href: '/events' },
+  { text: 'Visit Resources', href: '/resources' }
+];
+---
+
+<Layout title="Page Not Found - Dzaleka Heritage Archive">
+  <main class="min-h-[80vh] flex items-center justify-center px-6 py-16 bg-gray-50">
+    <div class="max-w-lg w-full text-center space-y-8">
+      {/* 404 Text */}
+      <div class="space-y-2">
+        <h1 class="text-8xl font-black text-primary-600">404</h1>
+        <p class="text-2xl font-bold text-gray-900">Page Not Found</p>
+        <p class="text-gray-600 mt-2">
+          Sorry, we couldn't find the page you're looking for.
+        </p>
+      </div>
+
+      {/* Navigation Links */}
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+          >
+            {link.text}
+          </a>
+        ))}
+      </div>
+
+      {/* Back Button */}
+      <button 
+        onclick="history.back()" 
+        class="text-sm text-gray-500 hover:text-primary-600 flex items-center gap-1 mx-auto"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Go Back
+      </button>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  totalItems: number;
+  startIndex: number;
+  endIndex: number;
+  category?: string;
+  searchQuery?: string;
+}
+
+const { totalItems, startIndex, endIndex, category, searchQuery } = Astro.props;
+---
+
+<div class="mb-6 text-gray-600">
+  Showing {startIndex + 1}-{endIndex} of {totalItems} services
+  {category && (
+    <span> in <span class="font-medium text-primary-600">{decodeURIComponent(category)}</span></span>
+  )}
+  {searchQuery && (
+    <span> matching "<span class="font-medium text-primary-600">{searchQuery}</span>"</span>
+  )}
+</div>

@@ -1,0 +1,66 @@
+---
+import ServiceCard from '../ServiceCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  services: Array<CollectionEntry<'services'>>;
+}
+
+const { services } = Astro.props as Props;
+
+// Debug log
+console.log('ServiceGrid received services:', services.map(s => ({
+  title: s.data.title,
+  hasEmail: !!s.data.contact?.email,
+  hasPhone: !!s.data.contact?.phone,
+  hasWebsite: !!s.data.socialMedia?.website,
+  hasAddress: !!s.data.location?.address,
+  hasLogo: !!s.data.logo,
+  hasSocialMedia: !!s.data.socialMedia
+})));
+
+services.forEach(service => {
+  console.log('Service:', {
+    title: service.data.title,
+    socialMedia: service.data.socialMedia,
+    website: service.data.socialMedia?.website
+  });
+});
+
+---
+
+{services.length === 0 ? (
+  <div class="text-center py-12">
+    <p class="text-gray-600">No services found matching your criteria.</p>
+  </div>
+) : (
+  <div class="grid gap-6 md:grid-cols-2">
+    {services.map(service => {
+      // Only include social media fields that exist
+      const socialMedia = service.data.socialMedia ? {
+        ...(service.data.socialMedia.facebook && { facebook: service.data.socialMedia.facebook }),
+        ...(service.data.socialMedia.twitter && { twitter: service.data.socialMedia.twitter }),
+        ...(service.data.socialMedia.instagram && { instagram: service.data.socialMedia.instagram }),
+        ...(service.data.socialMedia.linkedin && { linkedin: service.data.socialMedia.linkedin }),
+        ...(service.data.socialMedia.website && { website: service.data.socialMedia.website }),
+        ...(service.data.socialMedia.whatsapp && { whatsapp: service.data.socialMedia.whatsapp })
+      } : undefined;
+
+      return (
+        <ServiceCard 
+          title={service.data.title}
+          description={service.data.description}
+          category={service.data.category}
+          featured={service.data.featured}
+          verified={service.data.verified}
+          href={`/services/${service.slug}`}
+          email={service.data.contact?.email}
+          phone={service.data.contact?.phone}
+          address={service.data.location?.address}
+          logo={service.data.logo}
+          socialMedia={socialMedia}
+        />
+      );
+    })}
+  </div>
+)}
