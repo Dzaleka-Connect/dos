@@ -4,18 +4,27 @@ interface Props {
   currentPage: number;
   totalPages: number;
   baseUrl: string;
+  searchQuery?: string;
 }
 
-const { currentPage, totalPages, baseUrl } = Astro.props;
+const { currentPage, totalPages, baseUrl, searchQuery } = Astro.props;
 
 const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+function getPageUrl(page: number) {
+  const searchParam = searchQuery ? `?search=${searchQuery}` : '';
+  if (page === 1) {
+    return `${baseUrl}${searchParam}`;
+  }
+  return `${baseUrl}/${page}${searchParam}`;
+}
 ---
 
 <nav class="flex justify-center mt-8" aria-label="Pagination">
   <ul class="inline-flex items-center -space-x-px">
     <li>
       <a
-        href={currentPage > 1 ? `${baseUrl}${currentPage - 1}` : null}
+        href={currentPage > 1 ? getPageUrl(currentPage - 1) : null}
         class={`block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${
           currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
         }`}
@@ -30,7 +39,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
     {pages.map(page => (
       <li>
         <a
-          href={page === currentPage ? null : `${baseUrl}${page}`}
+          href={page === currentPage ? null : getPageUrl(page)}
           class={`px-3 py-2 leading-tight border border-gray-300 ${
             page === currentPage
               ? 'text-primary-600 bg-primary-50 border-primary-300'
@@ -44,7 +53,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
     ))}
     <li>
       <a
-        href={currentPage < totalPages ? `${baseUrl}${currentPage + 1}` : null}
+        href={currentPage < totalPages ? getPageUrl(currentPage + 1) : null}
         class={`block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${
           currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
         }`}
