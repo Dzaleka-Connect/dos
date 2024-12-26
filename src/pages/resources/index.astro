@@ -8,13 +8,7 @@ import { getCollection } from 'astro:content';
 // Get all resources
 const resources = await getCollection('resources');
 const searchQuery = Astro.url.searchParams.get('search') || '';
-const page = Number(Astro.url.searchParams.get('page')) || 1;
-
-// Get search query if any
-const redirectUrl = `/resources/1${searchQuery ? `?search=${searchQuery}` : ''}`;
-
-// Redirect to first page
-return Astro.redirect(redirectUrl);
+const page = 1; // Always first page
 
 // Filter resources if there's a search query
 let filteredResources = resources;
@@ -36,14 +30,8 @@ filteredResources = filteredResources.sort((a, b) => {
 // Pagination
 const itemsPerPage = 6;
 const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
-
-// Redirect if page is out of bounds
-if (page > totalPages && totalPages > 0) {
-  return Astro.redirect('/resources');
-}
-
-const start = (page - 1) * itemsPerPage;
-const end = Math.min(start + itemsPerPage, filteredResources.length);
+const start = 0; // First page starts at 0
+const end = Math.min(itemsPerPage, filteredResources.length);
 const paginatedResources = filteredResources.slice(start, end);
 ---
 
@@ -81,14 +69,6 @@ const paginatedResources = filteredResources.slice(start, end);
         {totalPages > 1 && (
           <div class="mt-8">
             <nav class="flex justify-center gap-2" aria-label="Pagination">
-              {page > 1 && (
-                <a
-                  href={`/resources?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-                >
-                  Previous
-                </a>
-              )}
               <span class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg">
                 Page {page} of {totalPages}
               </span>
