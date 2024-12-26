@@ -14,7 +14,7 @@ const {
 } = Astro.props;
 
 // Determine the form action based on section
-const formAction = section === 'search' ? '/search' : `/${section || ''}`;
+const formAction = section === 'search' ? '/search/results' : `/${section || ''}`;
 ---
 
 <form
@@ -66,12 +66,15 @@ const formAction = section === 'search' ? '/search' : `/${section || ''}`;
 </form>
 
 <script>
-// Ensure form is not submitted empty
+// Ensure form is not submitted empty and trim input
 document.querySelector('form')?.addEventListener('submit', (e) => {
   const input = document.getElementById('search-input') as HTMLInputElement;
-  if (!input.value.trim()) {
+  const value = input.value.trim();
+  if (!value) {
     e.preventDefault();
     input.focus();
+    return;
   }
+  input.value = value;
 });
 </script>
