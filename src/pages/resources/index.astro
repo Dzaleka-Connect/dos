@@ -67,21 +67,12 @@ const paginatedResources = filteredResources.slice(start, end);
       <>
         <ResourceGrid resources={paginatedResources} />
         {totalPages > 1 && (
-          <div class="mt-8">
-            <nav class="flex justify-center gap-2" aria-label="Pagination">
-              <span class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg">
-                Page {page} of {totalPages}
-              </span>
-              {page < totalPages && (
-                <a
-                  href={`/resources?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-                >
-                  Next
-                </a>
-              )}
-            </nav>
-          </div>
+          <ResourcePagination
+            currentPage={page}
+            totalPages={totalPages}
+            baseUrl="/resources"
+            searchQuery={searchQuery}
+          />
         )}
       </>
     ) : (
