@@ -7,52 +7,46 @@ import { getCollection } from 'astro:content';
 import { sortServices } from '../../utils/serviceHelpers';
 import { calculateServiceStats } from '../../utils/serviceStats';
 
-export async function getStaticPaths({ paginate }) {
+export async function getStaticPaths() {
   const allServices = await getCollection('services');
-  return paginate(allServices, { pageSize: 6 });
+  const itemsPerPage = 6;
+  const totalPages = Math.ceil(allServices.length / itemsPerPage);
+  
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const page = i + 2; // Start from page 2
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    
+    return {
+      params: { page: page.toString() },
+      props: {
+        services: allServices.slice(start, end),
+        currentPage: page,
+        totalPages,
+        totalServices: allServices.length
+      },
+    };
+  });
 }
 
-const { page } = Astro.props;
-const allServices = await getCollection('services');
+// Get the page parameter and props
+const { services, currentPage, totalPages, totalServices } = Astro.props;
 
 // Calculate service stats
-const serviceStats = calculateServiceStats(allServices);
-console.log('Service stats:', serviceStats);
+const serviceStats = calculateServiceStats(services);
 
 // Get URL parameters
 const sortBy = Astro.url.searchParams.get('sort') || 'featured';
 const verifiedOnly = Astro.url.searchParams.get('verified') === 'true';
 
 // Apply verified filter
-let filteredServices = allServices;
+let filteredServices = services;
 if (verifiedOnly) {
   filteredServices = filteredServices.filter(service => service.data.verified);
 }
 
 // Sort services
 const sortedServices = sortServices(filteredServices, sortBy);
-
-// Pagination
-const itemsPerPage = 6;
-const totalItems = sortedServices.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
-const currentPage = page.currentPage;
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-const paginatedServices = sortedServices.slice(startIndex, endIndex);
-
-// Debug logging
-console.log('Paginated services:', paginatedServices.map(service => ({
-  title: service.data.title,
-  socialMedia: service.data.socialMedia,
-  hasWebsite: !!service.data.socialMedia?.website,
-  websiteUrl: service.data.socialMedia?.website
-})));
-
-// Redirect if page is invalid
-if (currentPage < 1) {
-  return Astro.redirect('/services');
-}
 ---
 
 <Layout title="Service Directory">
@@ -64,6 +58,15 @@ if (currentPage < 1) {
         <p class="text-lg text-white/90 mb-8">
           Find and connect with organizations and services in Dzaleka Refugee Camp
         </p>
+        <a 
+          href="/services/register" 
+          class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Register Your Service
+        </a>
       </div>
     </div>
 
@@ -77,7 +80,7 @@ if (currentPage < 1) {
       <div class="flex justify-between items-center mb-8">
         <div>
           <p class="text-gray-600">
-            Showing {startIndex + 1}-{endIndex} of {totalItems} services
+            Showing {(currentPage - 1) * 6 + 1}-{Math.min(currentPage * 6, totalServices)} of {totalServices} services
           </p>
         </div>
 
@@ -105,7 +108,7 @@ if (currentPage < 1) {
       </div>
 
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {paginatedServices.map(service => {
+        {sortedServices.map(service => {
           // Extract all social media data
           const socialMedia = service.data.socialMedia ? {
             ...(service.data.socialMedia.facebook && { facebook: service.data.socialMedia.facebook }),
@@ -139,10 +142,7 @@ if (currentPage < 1) {
           <ServicePagination 
             currentPage={currentPage}
             totalPages={totalPages}
-            baseUrl={`/services?${new URLSearchParams({
-              ...(verifiedOnly && { verified: 'true' }),
-              ...(sortBy !== 'featured' && { sort: sortBy })
-            }).toString()}`}
+            baseUrl="/services"
           />
         </div>
       )}

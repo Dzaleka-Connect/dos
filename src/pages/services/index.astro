@@ -9,11 +9,9 @@ import { calculateServiceStats } from '../../utils/serviceStats';
 
 // Get all services
 const allServices = await getCollection('services');
-console.log('All services:', allServices.length);
 
 // Calculate service stats
 const serviceStats = calculateServiceStats(allServices);
-console.log('Service stats:', serviceStats);
 
 // Get URL parameters
 const sortBy = Astro.url.searchParams.get('sort') || 'featured';
@@ -36,15 +34,6 @@ const currentPage = +(Astro.url.searchParams.get('page') || '1');
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 const paginatedServices = sortedServices.slice(startIndex, endIndex);
-
-// Debug logging
-console.log('Paginated services:', paginatedServices.map(service => ({
-  title: service.data.title,
-  socialMedia: service.data.socialMedia,
-  hasWebsite: !!service.data.socialMedia?.website,
-  websiteUrl: service.data.socialMedia?.website
-})));
-
 ---
 
 <Layout title="Service Directory">
@@ -140,10 +129,7 @@ console.log('Paginated services:', paginatedServices.map(service => ({
           <ServicePagination 
             currentPage={currentPage}
             totalPages={totalPages}
-            baseUrl={`/services?${new URLSearchParams({
-              ...(verifiedOnly && { verified: 'true' }),
-              ...(sortBy !== 'featured' && { sort: sortBy })
-            }).toString()}`}
+            baseUrl="/services"
           />
         </div>
       )}
