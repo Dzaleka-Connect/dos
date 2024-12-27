@@ -192,48 +192,26 @@ const formId = 'leadership-support-form';
               </div>
             </div>
 
-            {/* Supporting Documents */}
+            {/* File Upload Section */}
             <div class="space-y-6 pt-6 border-t">
               <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
               
-              <div>
-                <label for="resume" class="block text-sm font-medium text-gray-700">
-                  Resume/CV (Optional)
-                </label>
-                <input
-                  type="file"
-                  name="resume"
-                  id="resume"
-                  accept=".pdf,.doc,.docx"
-                  class="mt-1 block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-md file:border-0
-                    file:text-sm file:font-medium
-                    file:bg-primary-50 file:text-primary-700
-                    hover:file:bg-primary-100"
-                />
-              </div>
-
-              <div>
-                <label for="projectDocs" class="block text-sm font-medium text-gray-700">
-                  Project Documentation (Optional)
-                </label>
-                <p class="text-sm text-gray-500 mb-2">
-                  You can upload project plans, presentations, or other relevant documents. Maximum file size: 10MB
-                </p>
-                <input
-                  type="file"
-                  name="projectDocs"
-                  id="projectDocs"
-                  multiple
-                  accept=".pdf,.doc,.docx,.ppt,.pptx"
-                  class="mt-1 block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-md file:border-0
-                    file:text-sm file:font-medium
-                    file:bg-primary-50 file:text-primary-700
-                    hover:file:bg-primary-100"
-                />
+              <div class="space-y-4">
+                <div>
+                  <label for="documentLinks" class="block text-sm font-medium text-gray-700">
+                    Document Links
+                  </label>
+                  <p class="text-sm text-gray-500 mb-2">
+                    Please upload your documents (CV, certificates, recommendations) to Google Drive or another file sharing service and paste the links below. Make sure the links are accessible.
+                  </p>
+                  <textarea
+                    name="documentLinks"
+                    id="documentLinks"
+                    rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                    placeholder="Paste your document links here, one per line..."
+                  ></textarea>
+                </div>
               </div>
             </div>
 
@@ -277,3 +255,58 @@ const formId = 'leadership-support-form';
     </div>
   </div>
 </MainLayout>
+
+<script>
+  // Client-side form validation
+  window.addEventListener('load', function() {
+    const form = document.getElementById(formId);
+    const formStatus = document.getElementById('form-status');
+    
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+          if (!(field as HTMLInputElement).value.trim()) {
+            isValid = false;
+            field.classList.add('border-red-500');
+          } else {
+            field.classList.remove('border-red-500');
+          }
+        });
+
+        if (!isValid) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        try {
+          const formData = new FormData(form as HTMLFormElement);
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            // Redirect to thank you page
+            window.location.href = '/thank-you?type=leadership';
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          if (formStatus) {
+            formStatus.textContent = 'There was an error submitting your form. Please try again.';
+            formStatus.classList.remove('hidden');
+          }
+        }
+      });
+    }
+  });
+</script>
