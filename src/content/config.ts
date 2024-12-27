@@ -137,12 +137,26 @@ const docsSchema = z.object({
   order: z.number().optional()
 });
 
-// Define the collections
-const docsCollection = defineCollection({
-  type: 'content',
-  schema: docsSchema,
+// Define the talents schema
+const talentSchema = z.object({
+  name: z.string(),
+  category: z.string(),
+  bio: z.string().optional(),
+  profilePic: z.string(),
+  user: z.string().optional(),
+  instagram: z.string().optional(),
+  twitter: z.string().optional(),
+  linkedin: z.string().optional(),
 });
 
+const talentsSchema = z.object({
+  name: z.string(),
+  category: z.string(),
+  profilePic: z.string(),
+  talents: z.array(talentSchema),
+});
+
+// Define the collections
 const servicesCollection = defineCollection({
   type: 'content',
   schema: serviceSchema,
@@ -173,12 +187,23 @@ const newsCollection = defineCollection({
   schema: newsSchema,
 });
 
+const talentsCollection = defineCollection({
+  type: 'data',
+  schema: talentsSchema,
+});
+
+const docsCollection = defineCollection({
+  type: 'content',
+  schema: docsSchema,
+});
+
 export const collections = {
-  docs: docsCollection,
   services: servicesCollection,
   resources: resourcesCollection,
   events: eventsCollection,
   photos: photosCollection,
   pages: pagesCollection,
   news: newsCollection,
+  talents: talentsCollection,
+  docs: docsCollection,
 };

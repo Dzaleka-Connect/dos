@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import SearchBar from '../../components/ui/SearchBar.astro';
 
@@ -39,12 +39,25 @@ let services = [];
 let events = [];
 let resources = [];
 let photos = [];
+let talents = [];
 
 try {
   services = await getCollection('services') || [];
   events = await getCollection('events') || [];
   resources = await getCollection('resources') || [];
   photos = await getCollection('photos') || [];
+  const talentsData = await getEntry('talents', 'data/talents');
+  if (talentsData && talentsData.data) {
+    talents = talentsData.data.talents.map((talent, index) => ({
+      slug: `talent-${index + 1}`,
+      data: {
+        title: talent.name,
+        description: talent.bio || `${talent.name} - ${talent.category}`,
+        category: talent.category,
+        image: talent.profilePic
+      }
+    })) || [];
+  }
 } catch (error) {
   console.error('Error fetching collections:', error);
 }
@@ -70,6 +83,10 @@ const collections = {
     slug: item.slug,
     data: item.data,
     collection: 'photos'
+  })),
+  talents: talents.map(item => ({
+    ...item,
+    collection: 'talents'
   })),
   applications: internalApplications.map(item => ({
     slug: item.slug,
@@ -324,25 +341,43 @@ function renderApplicationCard(application) {
   `;
 }
 
+// Function to render a talent card
+function renderTalentCard(talent) {
+  return `
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+          <img
+            src="${talent.data.image || '/images/placeholder-profile.png'}"
+            alt="${talent.data.title} profile"
+            class="w-full h-full object-cover rounded-full border-4 border-primary-500"
+            onerror="this.src='/images/placeholder-profile.png'"
+          />
+        </div>
+        <div class="flex-grow">
+          <h3 class="text-lg font-semibold text-gray-900">
+            <a href="/talents" class="hover:text-primary-600">
+              ${talent.data.title}
+            </a>
+          </h3>
+          <p class="mt-2 text-gray-600">${talent.data.description}</p>
+          ${talent.data.category ? `
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 mt-2">
+              ${talent.data.category}
+            </span>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 // Get search query from URL
 const urlParams = new URLSearchParams(window.location.search);
-const query = urlParams.get('q')?.trim() || '';
-
-// Perform search
-const searchResults = {
-  services: searchContent(collections.services || [], query),
-  events: searchContent(collections.events || [], query),
-  resources: searchContent(collections.resources || [], query),
-  photos: searchContent(collections.photos || [], query),
-  applications: searchContent(collections.applications || [], query)
-};
-
-// Calculate total results
-const totalResults = Object.values(searchResults)
-  .reduce((acc, curr) => acc + curr.length, 0);
-
-// Render search results
+const query = urlParams.get('q') || '';
 const resultsContainer = document.getElementById('searchResults');
+
+// Search all collections
 if (resultsContainer) {
   if (!query) {
     resultsContainer.innerHTML = `
@@ -351,80 +386,62 @@ if (resultsContainer) {
           Enter a search term to begin
         </h2>
         <p class="text-gray-600">
-          Search for services, events, resources, photos, and applications
-        </p>
-      </div>
-    `;
-  } else if (totalResults === 0) {
-    resultsContainer.innerHTML = `
-      <div class="text-center py-12 bg-white rounded-lg shadow-sm">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">
-          No matching results found
-        </h2>
-        <p class="text-gray-600">
-          Try adjusting your search terms or browse our categories
+          Search for services, events, resources, photos, talents, and applications
         </p>
       </div>
     `;
   } else {
-    let html = '';
-    
-    if (searchResults.services.length > 0) {
-      html += `
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Services</h2>
+    // Combine all search results
+    const allResults = [
+      ...searchContent(collections.services, query).map(item => ({ ...item, type: 'service' })),
+      ...searchContent(collections.events, query).map(item => ({ ...item, type: 'event' })),
+      ...searchContent(collections.resources, query).map(item => ({ ...item, type: 'resource' })),
+      ...searchContent(collections.photos, query).map(item => ({ ...item, type: 'photo' })),
+      ...searchContent(collections.talents, query).map(item => ({ ...item, type: 'talent' })),
+      ...searchContent(collections.applications, query).map(item => ({ ...item, type: 'application' }))
+    ];
+
+    if (allResults.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="text-center py-12 bg-white rounded-lg shadow-sm">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">
+            No matching results found
+          </h2>
+          <p class="text-gray-600">
+            Try adjusting your search terms or browse our categories
+          </p>
+        </div>
+      `;
+    } else {
+      // Render results
+      resultsContainer.innerHTML = `
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">
+            Found ${allResults.length} result${allResults.length === 1 ? '' : 's'} for "${query}"
+          </h2>
           <div class="space-y-4">
-            ${searchResults.services.map(renderServiceCard).join('')}
+            ${allResults.map(result => {
+              switch (result.type) {
+                case 'service':
+                  return renderServiceCard(result);
+                case 'event':
+                  return renderEventCard(result);
+                case 'resource':
+                  return renderResourceCard(result);
+                case 'photo':
+                  return renderPhotoCard(result);
+                case 'talent':
+                  return renderTalentCard(result);
+                case 'application':
+                  return renderApplicationCard(result);
+                default:
+                  return '';
+              }
+            }).join('')}
           </div>
-        </section>
+        </div>
       `;
     }
-    
-    if (searchResults.events.length > 0) {
-      html += `
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Events</h2>
-          <div class="space-y-4">
-            ${searchResults.events.map(renderEventCard).join('')}
-          </div>
-        </section>
-      `;
-    }
-    
-    if (searchResults.applications.length > 0) {
-      html += `
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Applications</h2>
-          <div class="space-y-4">
-            ${searchResults.applications.map(renderApplicationCard).join('')}
-          </div>
-        </section>
-      `;
-    }
-    
-    if (searchResults.photos.length > 0) {
-      html += `
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Photo Gallery</h2>
-          <div class="space-y-4">
-            ${searchResults.photos.map(renderPhotoCard).join('')}
-          </div>
-        </section>
-      `;
-    }
-    
-    if (searchResults.resources.length > 0) {
-      html += `
-        <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Resources</h2>
-          <div class="space-y-4">
-            ${searchResults.resources.map(renderResourceCard).join('')}
-          </div>
-        </section>
-      `;
-    }
-    
-    resultsContainer.innerHTML = html;
   }
 }
 
