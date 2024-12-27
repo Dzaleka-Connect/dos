@@ -1,11 +1,11 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import FormStatus from '../../components/applications/FormStatus.astro';
+import ApplicationLayout from '../../../layouts/ApplicationLayout.astro';
+import FormStatus from '../../../components/applications/FormStatus.astro';
 
-const formId = 'emergency-relief-form';
+const formId = 'legal-support-form';
 ---
 
-<Layout title="Emergency Relief Application">
+<ApplicationLayout title="Legal Support Application">
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
       <div class="mb-6">
@@ -22,9 +22,9 @@ const formId = 'emergency-relief-form';
 
       <div class="bg-white rounded-xl shadow-sm p-8">
         <header class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-4">Emergency Relief Application</h1>
+          <h1 class="text-3xl font-bold text-gray-900 mb-4">Legal Support Application</h1>
           <p class="text-gray-600">
-            Request emergency assistance for immediate needs. We prioritize cases based on urgency and available resources.
+            Request legal assistance and representation for your case. Please fill out the form below with accurate information.
           </p>
         </header>
 
@@ -36,7 +36,8 @@ const formId = 'emergency-relief-form';
           method="POST"
           class="space-y-6"
           enctype="multipart/form-data"
-          data-netlify-recaptcha="true"
+          data-form-type="legal"
+          onsubmit="return false;"
         >
           {/* Hidden Honeypot Field */}
           <input type="text" name="_gotcha" style="display:none" />
@@ -45,7 +46,7 @@ const formId = 'emergency-relief-form';
           <input 
             type="hidden" 
             name="_subject" 
-            value="New Emergency Relief Request" 
+            value="New Legal Support Application" 
           />
 
           {/* Personal Information */}
@@ -77,7 +78,18 @@ const formId = 'emergency-relief-form';
             </div>
 
             <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number (for urgent contact)</label>
+              <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              />
+            </div>
+
+            <div>
+              <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
               <input
                 type="tel"
                 name="phone"
@@ -86,62 +98,37 @@ const formId = 'emergency-relief-form';
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
               />
             </div>
-
-            <div>
-              <label for="location" class="block text-sm font-medium text-gray-700">Current Location</label>
-              <input
-                type="text"
-                name="location"
-                id="location"
-                required
-                placeholder="e.g., Block/Section number, Dzaleka Refugee Camp"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              />
-            </div>
-
-            <div>
-              <label for="familySize" class="block text-sm font-medium text-gray-700">Number of Family Members</label>
-              <input
-                type="number"
-                name="familySize"
-                id="familySize"
-                min="1"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              />
-            </div>
           </div>
 
-          {/* Emergency Details */}
+          {/* Case Information */}
           <div class="space-y-6 pt-6 border-t">
-            <h2 class="text-xl font-semibold text-gray-900">Emergency Details</h2>
+            <h2 class="text-xl font-semibold text-gray-900">Case Information</h2>
             
             <div>
-              <label for="assistanceType" class="block text-sm font-medium text-gray-700">Type of Assistance Needed</label>
+              <label for="caseType" class="block text-sm font-medium text-gray-700">Type of Legal Assistance</label>
               <select
-                name="assistanceType"
-                id="assistanceType"
+                name="caseType"
+                id="caseType"
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
               >
                 <option value="">Select type of assistance</option>
-                <option value="food">Food Assistance</option>
-                <option value="shelter">Emergency Shelter</option>
-                <option value="medical">Medical Support</option>
-                <option value="necessities">Basic Necessities</option>
-                <option value="other">Other (please specify)</option>
+                <option value="documentation">Documentation Assistance</option>
+                <option value="representation">Legal Representation</option>
+                <option value="rights">Rights Education</option>
+                <option value="advocacy">Case Advocacy</option>
               </select>
             </div>
 
             <div>
-              <label for="situation" class="block text-sm font-medium text-gray-700">Emergency Situation</label>
+              <label for="description" class="block text-sm font-medium text-gray-700">Case Description</label>
               <textarea
-                name="situation"
-                id="situation"
+                name="description"
+                id="description"
                 rows="4"
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                placeholder="Please describe your emergency situation and immediate needs..."
+                placeholder="Please describe your case and the type of assistance you need..."
               ></textarea>
             </div>
 
@@ -154,62 +141,31 @@ const formId = 'emergency-relief-form';
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
               >
                 <option value="">Select urgency level</option>
-                <option value="immediate">Immediate - Need help within 24 hours</option>
-                <option value="urgent">Urgent - Need help within 2-3 days</option>
-                <option value="soon">Soon - Need help within a week</option>
+                <option value="low">Low - Can wait more than a month</option>
+                <option value="medium">Medium - Need assistance within a month</option>
+                <option value="high">High - Need assistance within a week</option>
+                <option value="emergency">Emergency - Need immediate assistance</option>
               </select>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Current Support</label>
-              <div class="mt-2 space-y-2">
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
-                    <input
-                      type="checkbox"
-                      name="currentSupport"
-                      value="unhcr"
-                      class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                    />
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <label class="text-gray-700">Receiving support from UNHCR</label>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
-                    <input
-                      type="checkbox"
-                      name="currentSupport"
-                      value="ngo"
-                      class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                    />
-                  </div>
-                  <div class="ml-3 text-sm">
-                    <label class="text-gray-700">Receiving support from other NGOs</label>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Photo Evidence Section */}
+          {/* File Upload Section */}
           <div class="space-y-6 pt-6 border-t">
-            <h2 class="text-xl font-semibold text-gray-900">Supporting Evidence</h2>
+            <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
             
             <div>
-              <label for="photos" class="block text-sm font-medium text-gray-700">
-                Upload Photos (Optional)
+              <label for="documents" class="block text-sm font-medium text-gray-700">
+                Upload Relevant Documents (Optional)
               </label>
               <p class="text-sm text-gray-500 mb-2">
-                You can upload photos to document your situation. Maximum file size: 10MB per file
+                You can upload relevant documents (ID, previous case files, etc.). Maximum file size: 10MB
               </p>
               <input
                 type="file"
-                name="photos"
-                id="photos"
+                name="documents"
+                id="documents"
                 multiple
-                accept="image/*"
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 class="mt-1 block w-full text-sm text-gray-500
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-md file:border-0
@@ -220,7 +176,7 @@ const formId = 'emergency-relief-form';
             </div>
           </div>
 
-          {/* Consent */}
+          {/* Consent Section */}
           <div class="space-y-6 pt-6 border-t">
             <h2 class="text-xl font-semibold text-gray-900">Consent</h2>
             
@@ -237,25 +193,48 @@ const formId = 'emergency-relief-form';
                 </div>
                 <div class="ml-3 text-sm">
                   <label for="consent" class="font-medium text-gray-700">Information Consent</label>
-                  <p class="text-gray-500">I confirm that the information provided is accurate and consent to its use for processing my emergency assistance request.</p>
+                  <p class="text-gray-500">I consent to the collection and processing of my personal information for the purpose of receiving legal assistance.</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="pt-6">
-            {/* reCAPTCHA */}
-            <div class="mb-6" data-netlify-recaptcha="true"></div>
-            
             <button
               type="submit"
               class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              Submit Emergency Request
+              Submit Application
             </button>
           </div>
         </form>
       </div>
     </div>
   </main>
-</Layout>
+</ApplicationLayout>
+
+<script>
+  // Client-side form validation
+  window.addEventListener('load', function() {
+    const form = document.getElementById('legal-support-form');
+    
+    if (form) {
+      const fileInput = form.querySelector('input[type="file"]');
+      
+      if (fileInput) {
+        fileInput.addEventListener('change', function() {
+          const files = this.files;
+          const maxSize = 10 * 1024 * 1024; // 10MB
+          
+          for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+              alert('File size exceeds 10MB limit. Please choose a smaller file.');
+              this.value = '';
+              break;
+            }
+          }
+        });
+      }
+    }
+  });
+</script>

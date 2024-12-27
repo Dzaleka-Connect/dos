@@ -1,18 +1,204 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import AboutHero from '../components/about/AboutHero.astro';
-import MissionStatement from '../components/about/MissionStatement.astro';
-import CampInfo from '../components/about/CampInfo.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
 
+const partners = [
+  {
+    name: 'UNHCR',
+    description: 'United Nations High Commissioner for Refugees',
+    icon: '🌐'
+  },
+  {
+    name: 'Community Organizations',
+    description: 'Local organizations supporting refugee communities',
+    icon: '🤝'
+  }
+];
+
+const services = [
+  {
+    title: 'Application Services',
+    description: 'Submit and track applications for various community services and programs.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>`
+  },
+  {
+    title: 'Photo Gallery',
+    description: 'Browse and contribute to our collection of community photos and visual memories.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>`
+  },
+  {
+    title: 'Resource Center',
+    description: 'Access educational materials, community resources, and support services.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    </svg>`
+  },
+  {
+    title: 'News & Updates',
+    description: 'Stay informed about community news, events, and important announcements.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15M9 11l3 3m0 0l3-3m-3 3V8" />
+    </svg>`
+  },
+  {
+    title: 'Events Calendar',
+    description: 'Discover and participate in community events, workshops, and gatherings.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>`
+  },
+  {
+    title: 'Community Support',
+    description: 'Get help and guidance from our dedicated support team and community members.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>`
+  }
+];
+
+const serviceList = [
+  {
+    category: 'Internal Support Services',
+    items: [
+      'Legal Support & Advocacy',
+      'Emergency Relief Assistance',
+      'Leadership Support Programs',
+      'Advocacy Campaign Support',
+      'Rights Awareness & Education',
+      'Community Organizing'
+    ]
+  },
+  {
+    category: 'Government Permits',
+    items: [
+      'Temporary Residence Permit',
+      'Business Permit',
+      'Employment Permit',
+      'Student Permit',
+      'Permanent Residence',
+      'Diplomatic Permit'
+    ]
+  },
+  {
+    category: 'Community Services',
+    items: [
+      'Legal Representation',
+      'Documentation Assistance',
+      'Emergency Shelter',
+      'Medical Support',
+      'Leadership Training',
+      'Network Development'
+    ]
+  }
+];
 ---
 
 <Layout title="About Us">
-  <main class="container mx-auto px-4 py-8">
-    <AboutHero 
-      title="About Us"
-      description="Empowering the Dzaleka community through digital connectivity"
-    />
-    <MissionStatement />
-    <CampInfo />
+  <main>
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+      <div class="container mx-auto px-4 py-20">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-5xl font-bold mb-6">About Dzaleka Online Services</h1>
+          <p class="text-xl text-white/90 leading-relaxed">
+            Empowering our community through digital connectivity and service accessibility
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-16">
+      <!-- Mission Section -->
+      <section class="max-w-4xl mx-auto mb-20">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Our Mission</h2>
+        <div class="prose prose-lg prose-primary mx-auto">
+          <p class="mb-6 text-gray-600 leading-relaxed">
+            Dzaleka Online Services is dedicated to enhancing the lives of refugees and community members 
+            by providing easy access to essential services, preserving our cultural heritage, and fostering 
+            community connections through digital solutions.
+          </p>
+          <p class="text-gray-600 leading-relaxed">
+            We strive to create a platform that empowers our community members to access resources, 
+            submit applications, share their stories, and participate in community events seamlessly.
+          </p>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">What We Offer</h2>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {services.map(service => (
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
+              <div class="mb-6" set:html={service.icon} />
+              <h3 class="text-xl font-semibold mb-4 text-gray-900">{service.title}</h3>
+              <p class="text-gray-600 leading-relaxed">
+                {service.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Service Listing Section -->
+      <section class="mb-20 bg-gray-50 py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Our Service Directory</h2>
+          <div class="grid gap-8 md:grid-cols-3">
+            {serviceList.map(category => (
+              <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xl font-semibold mb-6 text-primary-600">{category.category}</h3>
+                <ul class="space-y-3">
+                  {category.items.map(item => (
+                    <li class="flex items-center text-gray-600">
+                      <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Partners Section -->
+      <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Our Partners</h2>
+        <div class="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+          {partners.map(partner => (
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
+              <div class="text-4xl mb-4">{partner.icon}</div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-900">{partner.name}</h3>
+              <p class="text-gray-600 leading-relaxed">{partner.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Get Involved</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed">
+          We welcome community participation and feedback. Reach out to learn more about how 
+          you can contribute to our mission.
+        </p>
+        <a
+          href="/contact"
+          class="inline-flex items-center px-8 py-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
+        >
+          Contact Us
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </section>
+    </div>
   </main>
 </Layout>

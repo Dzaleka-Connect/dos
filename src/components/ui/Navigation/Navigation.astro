@@ -8,116 +8,73 @@ import MobileNavLink from './MobileNavLink.astro';
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
-      <a href="/" class="flex items-center space-x-2">
-        <span class="text-xl font-bold text-primary-600">Heritage Archive</span>
+      <a href="/" class="flex items-center">
+        <span class="text-xl font-semibold text-gray-900">Dzaleka Online Services</span>
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-1">
+      <div class="hidden md:flex items-center space-x-6">
         {navigationLinks.map(({ href, label, icon }) => (
-          <NavLink href={href} icon={icon}>
+          <a
+            href={href}
+            class="flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:underline underline-offset-8 decoration-primary-500"
+          >
+            <Fragment set:html={icon} />
             {label}
-          </NavLink>
+          </a>
         ))}
       </div>
 
       <!-- Mobile Menu Button -->
-      <button 
-        id="mobile-menu-button" 
-        class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
-        aria-expanded="false"
-        aria-label="Toggle navigation menu"
+      <button
+        type="button"
+        class="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+        aria-label="Menu"
+        id="menu-button"
       >
-        <div class="relative w-6 h-6" id="hamburger-icon">
-          <span class="absolute top-0 left-0 w-6 h-0.5 bg-current transform transition-all duration-200"></span>
-          <span class="absolute top-[10px] left-0 w-6 h-0.5 bg-current transform transition-all duration-200"></span>
-          <span class="absolute top-[20px] left-0 w-6 h-0.5 bg-current transform transition-all duration-200"></span>
-        </div>
+        <svg
+          class="w-5 h-5"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
       </button>
     </div>
-  </div>
 
-  <!-- Mobile Menu -->
-  <div 
-    class="fixed inset-0 bg-gray-800/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 md:hidden" 
-    id="mobile-backdrop"
-  ></div>
-  <div 
-    class="fixed top-16 right-0 bottom-0 w-64 bg-white transform translate-x-full transition-transform duration-200 ease-in-out md:hidden"
-    id="mobile-menu"
-  >
-    <div class="px-2 pt-2 pb-3 h-full overflow-y-auto">
-      {navigationLinks.map(({ href, label, icon }) => (
-        <MobileNavLink href={href} icon={icon}>
-          {label}
-        </MobileNavLink>
-      ))}
+    <!-- Mobile Menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="pt-2 pb-3 space-y-1">
+        {navigationLinks.map(({ href, label, icon }) => (
+          <a
+            href={href}
+            class="flex items-center gap-2 px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+          >
+            <Fragment set:html={icon} />
+            {label}
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </nav>
 
 <script>
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const menuButton = document.getElementById('menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
-  const mobileBackdrop = document.getElementById('mobile-backdrop');
-  const hamburgerIcon = document.getElementById('hamburger-icon');
-  let isOpen = false;
 
-  function toggleMenu() {
-    isOpen = !isOpen;
-    
-    // Update button state
-    mobileMenuButton?.setAttribute('aria-expanded', isOpen.toString());
-    
-    // Toggle menu visibility
-    if (mobileMenu) {
-      if (isOpen) {
-        mobileMenu.classList.remove('translate-x-full');
-        mobileMenu.classList.add('translate-x-0');
-      } else {
-        mobileMenu.classList.remove('translate-x-0');
-        mobileMenu.classList.add('translate-x-full');
-      }
-    }
-    
-    // Toggle backdrop
-    if (mobileBackdrop) {
-      if (isOpen) {
-        mobileBackdrop.classList.remove('opacity-0', 'pointer-events-none');
-        mobileBackdrop.classList.add('opacity-100', 'pointer-events-auto');
-      } else {
-        mobileBackdrop.classList.remove('opacity-100', 'pointer-events-auto');
-        mobileBackdrop.classList.add('opacity-0', 'pointer-events-none');
-      }
-    }
-    
-    // Animate hamburger icon
-    if (hamburgerIcon) {
-      const spans = hamburgerIcon.getElementsByTagName('span');
-      if (isOpen) {
-        spans[0].classList.add('rotate-45', 'translate-y-[10px]');
-        spans[1].classList.add('opacity-0');
-        spans[2].classList.add('-rotate-45', '-translate-y-[10px]');
-      } else {
-        spans[0].classList.remove('rotate-45', 'translate-y-[10px]');
-        spans[1].classList.remove('opacity-0');
-        spans[2].classList.remove('-rotate-45', '-translate-y-[10px]');
-      }
-    }
+  if (menuButton && mobileMenu) {
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
   }
-
-  mobileMenuButton?.addEventListener('click', toggleMenu);
-  mobileBackdrop?.addEventListener('click', toggleMenu);
-
-  // Close menu on navigation
-  document.addEventListener('astro:after-navigation', () => {
-    if (isOpen) toggleMenu();
-  });
-
-  // Handle escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isOpen) toggleMenu();
-  });
 </script>
 
 <style>

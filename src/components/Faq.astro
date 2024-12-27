@@ -6,39 +6,51 @@ interface FaqItem {
 
 const faqs: FaqItem[] = [
   {
-    question: "What is Dzaleka Online Service Platform?",
-    answer: "Dzaleka Online Service Platform is a comprehensive directory connecting refugees with essential services and support organizations in the Dzaleka community."
+    question: "What services are available through Dzaleka Online Services?",
+    answer: "We offer a range of services including application processing, resource access, event management, photo gallery submissions, and community support. You can explore all our services in detail on the Services page."
   },
   {
-    question: "How can I access the resources?",
-    answer: "Resources are available through our online platform. Simply browse the Resources section and click on the resource you'd like to access."
+    question: "How do I submit an application for services?",
+    answer: "To submit an application, navigate to the Applications section, select the service you need, fill out the required form, and submit. You'll receive a confirmation email with next steps."
   },
   {
-    question: "Is there a cost associated with using the services?",
-    answer: "Most of our resources are free to access. Some specialized programs or materials may have associated costs, which will be clearly indicated."
+    question: "Can I track the status of my application?",
+    answer: "Yes! Once you submit an application, you'll receive a tracking number. Use this number in the Application Status section to check your application's progress."
   },
   {
-    question: "Can I contribute to the platform?",
-    answer: "Yes! We welcome contributions from community members. Please contact us to learn more about sharing your knowledge or resources."
+    question: "How can I submit resources or photos to the platform?",
+    answer: "Visit the Submit Resource or Submit Photo pages from our main navigation. Follow the guidelines provided, fill out the submission form, and upload your content. Our team will review and publish approved submissions."
   },
   {
-    question: "How often are resources updated?",
-    answer: "We regularly update our resources to ensure they remain relevant and useful. Check the 'last updated' date on each resource for specific information."
+    question: "What should I do if I encounter technical issues?",
+    answer: "For technical issues, first check our troubleshooting guide in the Help Center. If the issue persists, contact our technical support team using the form below or email support@dzalekaonline.org."
   },
   {
-    question: "How can I contact support?",
-    answer: "For support, please reach out to our support team at dzalekaconnect@gmail.com. We are here to help!"
+    question: "How can I get involved in community events?",
+    answer: "Browse our Events section to see upcoming activities. You can register for events, submit event proposals, or volunteer to help organize. We encourage active community participation!"
   },
   {
-    question: "Is my information secure on this platform?",
-    answer: "Yes, all data and communications are encrypted and protected. We take your privacy seriously."
+    question: "Is the platform available in different languages?",
+    answer: "Currently, our platform is available in English. We're working on adding support for additional languages to better serve our diverse community."
+  },
+  {
+    question: "How long does it take to process submissions?",
+    answer: "We typically review and process submissions (photos, resources, or applications) within 2-3 business days. For urgent matters, please indicate this in your submission or contact us directly."
+  },
+  {
+    question: "What happens to my personal information?",
+    answer: "We take data privacy seriously. Your information is securely stored and used only for processing your requests and improving our services. Read our Privacy Policy for detailed information."
+  },
+  {
+    question: "How can I provide feedback or suggestions?",
+    answer: "We welcome your feedback! Use the contact form below, email us at feedback@dzalekaonline.org, or participate in our regular community feedback sessions."
   }
 ];
 ---
 
 <div class="space-y-4">
   {faqs.map((faq, index) => (
-    <div class="border rounded-lg">
+    <div class="border rounded-lg hover:border-primary-500 transition-colors">
       <button
         class="w-full px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg"
         id={`faq-button-${index}`}
@@ -68,7 +80,7 @@ const faqs: FaqItem[] = [
         role="region"
         aria-labelledby={`faq-button-${index}`}
       >
-        {faq.answer}
+        <p class="prose prose-primary">{faq.answer}</p>
       </div>
     </div>
   ))}

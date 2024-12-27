@@ -4,208 +4,271 @@ import Faq from '../components/Faq.astro';
 
 const supportCategories = [
   {
-    title: 'General Support',
-    icon: '🤝',
-    description: 'Basic help and information about our services'
+    title: 'Application Support',
+    icon: '📝',
+    description: 'Help with submitting and tracking applications'
   },
   {
     title: 'Technical Support',
     icon: '🔧',
-    description: 'Help with technical issues and platform access'
+    description: 'Help with platform access and technical issues'
   },
   {
-    title: 'Resource Access',
+    title: 'Content Support',
     icon: '📚',
-    description: 'Assistance with accessing and using resources'
+    description: 'Help with submitting resources and photos'
   },
   {
     title: 'Community Support',
     icon: '👥',
-    description: 'Help with community engagement and participation'
+    description: 'Help with events and community engagement'
+  }
+];
+
+const quickLinks = [
+  {
+    title: 'Resources',
+    description: 'Access community resources and guides',
+    icon: '📚',
+    href: '/resources'
+  },
+  {
+    title: 'Applications',
+    description: 'Submit and track your applications',
+    icon: '📝',
+    href: '/applications'
+  },
+  {
+    title: 'Photo Gallery',
+    description: 'Browse community photos and memories',
+    icon: '📸',
+    href: '/photos'
+  },
+  {
+    title: 'Contact Us',
+    description: 'Get in touch with our team',
+    icon: '📧',
+    href: '/contact'
   }
 ];
 ---
 
 <Layout title="Support">
-  <main class="container mx-auto px-4 py-8">
-    <div class="max-w-5xl mx-auto">
-      <!-- Support Header -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Support Center</h1>
-        <p class="text-xl text-gray-600">
-          Find answers to common questions about our services and platform
-        </p>
+  <main>
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+      <div class="container mx-auto px-4 py-16">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl font-bold mb-4">How Can We Help You?</h1>
+          <p class="text-xl text-white/90">
+            Find answers, submit requests, and get the support you need
+          </p>
+        </div>
       </div>
+    </div>
 
-      <!-- Support Categories -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12">
-        {supportCategories.map(category => (
-          <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-            <div class="text-3xl mb-4">{category.icon}</div>
-            <h2 class="text-xl font-bold text-gray-900 mb-2">{category.title}</h2>
-            <p class="text-gray-600">{category.description}</p>
+    <div class="container mx-auto px-4 py-12">
+      <div class="max-w-5xl mx-auto">
+        <!-- Support Categories -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
+          {supportCategories.map(category => (
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100">
+              <div class="text-3xl mb-4">{category.icon}</div>
+              <h2 class="text-xl font-bold text-gray-900 mb-2">{category.title}</h2>
+              <p class="text-gray-600">{category.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Quick Links -->
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-gray-900 mb-8">Quick Links</h2>
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {quickLinks.map(link => (
+              <a
+                href={link.href}
+                class="flex items-start p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+              >
+                <div class="text-2xl mr-4">{link.icon}</div>
+                <div>
+                  <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 mb-1">
+                    {link.title}
+                  </h3>
+                  <p class="text-sm text-gray-600">{link.description}</p>
+                </div>
+              </a>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      <!-- FAQ Section -->
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-        <Faq />
-      </section>
+        <!-- FAQ Section -->
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-gray-900 mb-8">Frequently Asked Questions</h2>
+          <Faq />
+        </section>
 
-      <!-- Support Form -->
-      <section class="bg-white rounded-xl shadow-sm p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Need More Help? Send Us a Message</h2>
-        <form id="supportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Name *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-            />
-          </div>
+        <!-- Support Form -->
+        <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Still Need Help?</h2>
+          <p class="text-gray-600 mb-8">
+            Can't find what you're looking for? Send us a message and we'll get back to you as soon as possible.
+          </p>
 
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-            />
-          </div>
-
-          <div>
-            <label for="priority" class="block text-sm font-medium text-gray-700">Priority Level</label>
-            <select
-              id="priority"
-              name="priority"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-            >
-              <option value="low">Low - General Question</option>
-              <option value="medium">Medium - Need Assistance</option>
-              <option value="high">High - Urgent Issue</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="message" class="block text-sm font-medium text-gray-700">Message *</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-            ></textarea>
-          </div>
-
-          <div id="submitWrapper" class="relative">
-            <button
-              type="submit"
-              id="submitButton"
-              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-            >
-              <span id="submitText">Submit Support Request</span>
-              <span id="submitSpinner" class="hidden">
-                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              </span>
-            </button>
-          </div>
-
-          <!-- Success Message -->
-          <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
+          <form id="supportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
+            <div class="grid gap-6 md:grid-cols-2">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
               </div>
-              <div class="ml-3">
-                <p class="text-sm font-medium text-green-800">Support request sent successfully!</p>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
               </div>
             </div>
-          </div>
 
-          <!-- Error Message -->
-          <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <p class="text-sm font-medium text-red-800">Error sending support request. Please try again.</p>
-              </div>
+            <div>
+              <label for="subject" class="block text-sm font-medium text-gray-700">Subject *</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              />
             </div>
-          </div>
-        </form>
 
-        <script>
-          const form = document.getElementById('supportForm') as HTMLFormElement;
-          const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
-          const submitText = document.getElementById('submitText') as HTMLElement;
-          const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
-          const successMessage = document.getElementById('successMessage') as HTMLElement;
-          const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+            <div>
+              <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+              <select
+                id="category"
+                name="category"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              >
+                <option value="general">General Inquiry</option>
+                <option value="technical">Technical Issue</option>
+                <option value="application">Application Help</option>
+                <option value="content">Content Submission</option>
+                <option value="feedback">Feedback</option>
+              </select>
+            </div>
 
-          if (form) {
-            form.addEventListener('submit', async (e) => {
-              e.preventDefault();
+            <div>
+              <label for="priority" class="block text-sm font-medium text-gray-700">Priority Level</label>
+              <select
+                id="priority"
+                name="priority"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              >
+                <option value="low">Low - General Question</option>
+                <option value="medium">Medium - Need Assistance</option>
+                <option value="high">High - Urgent Issue</option>
+              </select>
+            </div>
 
-              // Show loading state
-              submitButton.disabled = true;
-              submitText.classList.add('hidden');
-              submitSpinner.classList.remove('hidden');
-              successMessage.classList.add('hidden');
-              errorMessage.classList.add('hidden');
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-700">Message *</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+              ></textarea>
+            </div>
 
-              try {
-                const response = await fetch(form.action, {
-                  method: 'POST',
-                  body: new FormData(form),
-                  headers: {
-                    'Accept': 'application/json'
-                  }
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                  // Show success message
-                  form.reset();
-                  successMessage.classList.remove('hidden');
-                  setTimeout(() => {
-                    successMessage.classList.add('hidden');
-                  }, 5000);
-                } else {
-                  throw new Error(data.error || 'Error sending support request');
-                }
-              } catch (error) {
-                // Show error message
-                console.error('Submission error:', error);
-                errorMessage.classList.remove('hidden');
-                setTimeout(() => {
-                  errorMessage.classList.add('hidden');
-                }, 5000);
-              } finally {
-                // Reset button state
-                submitButton.disabled = false;
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
-              }
-            });
-          }
-        </script>
-      </section>
+            <div>
+              <button
+                type="submit"
+                id="submitButton"
+                class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              >
+                <span id="submitText">Send Message</span>
+                <svg
+                  id="submitSpinner"
+                  class="hidden animate-spin ml-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
     </div>
   </main>
 </Layout>
+
+<script>
+  const form = document.getElementById('supportForm') as HTMLFormElement;
+  const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+  const submitText = document.getElementById('submitText') as HTMLElement;
+  const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
+
+  if (form && submitButton && submitText && submitSpinner) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Disable button and show spinner
+      submitButton.disabled = true;
+      submitText.textContent = 'Sending...';
+      submitSpinner.classList.remove('hidden');
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          // Show success message
+          form.reset();
+          submitText.textContent = 'Message Sent!';
+          setTimeout(() => {
+            submitText.textContent = 'Send Message';
+          }, 3000);
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      } catch (error) {
+        // Show error message
+        submitText.textContent = 'Error! Try Again';
+        console.error('Error:', error);
+      } finally {
+        // Re-enable button and hide spinner
+        submitButton.disabled = false;
+        submitSpinner.classList.add('hidden');
+      }
+    });
+  }
+</script>
