@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
 import Badge from '../components/ui/Badge.astro';
@@ -19,7 +19,7 @@ const groupedPhotos = sortedPhotos.reduce((groups, photo) => {
 }, {} as Record<string, typeof photos>);
 ---
 
-<Layout title="Photo Gallery">
+<MainLayout title="Photo Gallery">
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
       <h1 class="text-4xl font-bold text-gray-900 mb-8">Photo Gallery</h1>
@@ -89,4 +89,4 @@ const groupedPhotos = sortedPhotos.reduce((groups, photo) => {
       ))}
     </div>
   </main>
-</Layout>
+</MainLayout>

@@ -1,11 +1,28 @@
 ---
-import { navigationLinks } from '../../utils/navigationLinks';
-
 const currentPath = Astro.url.pathname;
+
+const navigationLinks = [
+  { href: '/', label: 'Home', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>' },
+  { href: '/applications', label: 'Applications', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>' },
+  { href: '/services', label: 'Services', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>' },
+  { href: '/resources', label: 'Resources', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>' },
+  { href: '/events', label: 'Events', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>' },
+  { href: '/about', label: 'About', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+  { href: '/contact', label: 'Contact', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>' }
+];
+
+const dropdownLinks = [
+  { href: '/applications', label: 'Applications' },
+  { href: '/services', label: 'Services' },
+  { href: '/resources', label: 'Resources' },
+  { href: '/events', label: 'Events' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' }
+];
 ---
 
-<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
-  <div class="container mx-auto px-4">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
       <a href="/" class="flex items-center space-x-2">
@@ -15,32 +32,59 @@ const currentPath = Astro.url.pathname;
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-1">
         {navigationLinks.map(({ href, label, icon }) => (
-          <a
-            href={href}
-            class:list={[
-              'flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600',
-              'hover:text-primary-600 hover:bg-primary-50 transition-colors opacity-70 hover:opacity-100',
-              currentPath === href && 'opacity-100 border-b-2 border-primary-600'
-            ]}
-          >
-            <Fragment set:html={icon} />
-            <span>{label}</span>
-          </a>
+          <div class="relative">
+            <a
+              href={href}
+              class:list={[
+                'flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600',
+                'hover:text-primary-600 hover:bg-primary-50 transition-colors opacity-70 hover:opacity-100',
+                currentPath === href && 'opacity-100 border-b-2 border-primary-600'
+              ]}
+            >
+              <Fragment set:html={icon} />
+              <span>{label}</span>
+            </a>
+            {label === 'More' && (
+              <div class="absolute top-full left-0 w-48 bg-white border border-gray-200 shadow-md">
+                {dropdownLinks.map(({ href, label }) => (
+                  <a
+                    href={href}
+                    class:list={[
+                      'block px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-primary-600 transition-colors'
+                    ]}
+                  >
+                    <span>{label}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
       <!-- Mobile Menu Button -->
-      <button 
-        id="mobile-menu-button" 
-        class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+      <button
+        type="button"
+        class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-primary-600 hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+        aria-controls="mobile-menu"
         aria-expanded="false"
+        id="menu-button"
       >
         <span class="sr-only">Open main menu</span>
-        <svg class="block h-6 w-6" id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg class="hidden h-6 w-6" id="close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg
+          class="block h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
         </svg>
       </button>
     </div>
@@ -68,40 +112,14 @@ const currentPath = Astro.url.pathname;
 </nav>
 
 <script>
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const menuButton = document.getElementById('menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
-  const menuIcon = document.getElementById('menu-icon');
-  const closeIcon = document.getElementById('close-icon');
 
-  function toggleMenu() {
-    const isExpanded = mobileMenuButton?.getAttribute('aria-expanded') === 'true';
-    mobileMenuButton?.setAttribute('aria-expanded', (!isExpanded).toString());
-    mobileMenu?.classList.toggle('hidden');
-    menuIcon?.classList.toggle('hidden');
-    closeIcon?.classList.toggle('hidden');
+  if (menuButton && mobileMenu) {
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
   }
-
-  mobileMenuButton?.addEventListener('click', toggleMenu);
-
-  // Close menu when clicking outside
-  document.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#mobile-menu') && !target.closest('#mobile-menu-button')) {
-      mobileMenu?.classList.add('hidden');
-      menuIcon?.classList.remove('hidden');
-      closeIcon?.classList.add('hidden');
-      mobileMenuButton?.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  // Set active state based on current path
-  const currentPath = window.location.pathname;
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
-    if ((link as HTMLAnchorElement).href === window.location.href) {
-      link.classList.add('active');
-    }
-  });
 </script>
 
 <style>

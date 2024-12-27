@@ -1,5 +1,5 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import EventGrid from '../../../components/events/EventGrid.astro';
 import EventPagination from '../../../components/events/EventPagination.astro';
@@ -48,7 +48,7 @@ export async function getStaticPaths() {
 const { events, currentPage, totalPages, totalEvents } = Astro.props;
 ---
 
-<Layout title={`Past Events - Page ${currentPage}`}>
+<MainLayout title={`Past Events - Page ${currentPage}`}>
   <main class="container mx-auto px-4 py-8">
     <div class="mb-8">
       <div class="flex items-center justify-between mb-6">
@@ -75,4 +75,4 @@ const { events, currentPage, totalPages, totalEvents } = Astro.props;
       </div>
     )}
   </main>
-</Layout>
+</MainLayout>

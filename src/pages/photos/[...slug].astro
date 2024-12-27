@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 import Badge from '../../components/ui/Badge.astro';
 
@@ -19,7 +19,7 @@ const { Content } = await entry.render();
 const photoYear = new Date(entry.data.date).getFullYear();
 ---
 
-<Layout title={entry.data.title}>
+<MainLayout title={entry.data.title}>
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
       <!-- Breadcrumb Navigation -->
@@ -123,4 +123,4 @@ const photoYear = new Date(entry.data.date).getFullYear();
       </div>
     </div>
   </main>
-</Layout>
+</MainLayout>

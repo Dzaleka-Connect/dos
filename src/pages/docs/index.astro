@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import DocsSidebar from '../../components/docs/DocsSidebar.astro';
 import DocsContent from '../../components/docs/DocsContent.astro';
 import { getCollection } from 'astro:content';
@@ -12,7 +12,7 @@ if (!currentDoc) {
 }
 ---
 
-<Layout title={`${currentDoc.data.title} - Documentation`}>
+<MainLayout title={`${currentDoc.data.title} - Documentation`}>
   <div class="bg-gray-50">
     <!-- Documentation Header -->
     <div class="bg-gradient-to-r from-primary-600 to-primary-800">
@@ -168,4 +168,4 @@ if (!currentDoc) {
       </div>
     </div>
   </div>
-</Layout>
+</MainLayout>

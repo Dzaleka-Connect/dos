@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import SearchBar from '../../components/ui/SearchBar.astro';
 
 // Ensure server-side rendering
@@ -117,7 +117,7 @@ function formatDate(date: string | Date) {
 }
 ---
 
-<Layout title={`Search Results ${query ? `for "${query}"` : ''}`}>
+<MainLayout title={`Search Results ${query ? `for "${query}"` : ''}`}>
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-3xl mx-auto">
       <!-- Search Bar -->
@@ -304,7 +304,7 @@ function formatDate(date: string | Date) {
       ) : null}
     </div>
   </main>
-</Layout>
+</MainLayout>
 
 <script>
 // Client-side search fallback

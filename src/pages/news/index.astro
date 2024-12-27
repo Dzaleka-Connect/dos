@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import PageHeader from '../../components/ui/PageHeader.astro';
 
@@ -17,7 +17,7 @@ const successStories = sortedNews.filter(item => item.data.category === 'success
 const featuredNews = sortedNews.filter(item => item.data.featured);
 ---
 
-<Layout title="News & Updates">
+<MainLayout title="News & Updates">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <PageHeader
       title="News & Updates"
@@ -101,4 +101,4 @@ const featuredNews = sortedNews.filter(item => item.data.featured);
       )}
     </div>
   </div>
-</Layout>
+</MainLayout>

@@ -1,240 +1,243 @@
 ---
-import ApplicationLayout from '../../../layouts/ApplicationLayout.astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
 import FormStatus from '../../../components/applications/FormStatus.astro';
 
 const formId = 'legal-support-form';
 ---
 
-<ApplicationLayout title="Legal Support Application">
-  <main class="container mx-auto px-4 py-8">
-    <div class="max-w-2xl mx-auto">
-      <div class="mb-6">
-        <a 
-          href="/applications" 
-          class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-          </svg>
-          Back to Applications
-        </a>
-      </div>
+<MainLayout title="Legal Support Application">
+  <div class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto">
+        <div class="mb-6">
+          <a 
+            href="/applications" 
+            class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back to Applications
+          </a>
+        </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-8">
-        <header class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-4">Legal Support Application</h1>
-          <p class="text-gray-600">
-            Request legal assistance and representation for your case. Please fill out the form below with accurate information.
-          </p>
-        </header>
+        <div class="bg-white rounded-xl shadow-sm p-8">
+          <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Legal Support Application</h1>
+            <p class="text-gray-600">
+              Request legal assistance and representation for your case. Please fill out the form below with accurate information.
+            </p>
+          </header>
 
-        <FormStatus formId={formId} />
+          <FormStatus formId={formId} />
 
-        <form
-          id={formId}
-          action="https://formspree.io/f/xqaaajae"
-          method="POST"
-          class="space-y-6"
-          enctype="multipart/form-data"
-          data-form-type="legal"
-          onsubmit="return false;"
-        >
-          {/* Hidden Honeypot Field */}
-          <input type="text" name="_gotcha" style="display:none" />
+          <form
+            id={formId}
+            action="https://formspree.io/f/xqaaajae"
+            method="POST"
+            class="space-y-6"
+            enctype="multipart/form-data"
+            data-form-type="legal"
+            onsubmit="return false;"
+          >
+            {/* Hidden Honeypot Field */}
+            <input type="text" name="_gotcha" style="display:none" />
 
-          {/* Form Subject */}
-          <input 
-            type="hidden" 
-            name="_subject" 
-            value="New Legal Support Application" 
-          />
+            {/* Form Subject */}
+            <input 
+              type="hidden" 
+              name="_subject" 
+              value="New Legal Support Application" 
+            />
 
-          {/* Personal Information */}
-          <div class="space-y-6">
-            <h2 class="text-xl font-semibold text-gray-900">Personal Information</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  id="firstName"
-                  required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                />
-              </div>
+            {/* Personal Information */}
+            <div class="space-y-6">
+              <h2 class="text-xl font-semibold text-gray-900">Personal Information</h2>
               
-              <div>
-                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  id="lastName"
-                  required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              />
-            </div>
-
-            <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
-              <input
-                type="tel"
-                name="phone"
-                id="phone"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              />
-            </div>
-          </div>
-
-          {/* Case Information */}
-          <div class="space-y-6 pt-6 border-t">
-            <h2 class="text-xl font-semibold text-gray-900">Case Information</h2>
-            
-            <div>
-              <label for="caseType" class="block text-sm font-medium text-gray-700">Type of Legal Assistance</label>
-              <select
-                name="caseType"
-                id="caseType"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              >
-                <option value="">Select type of assistance</option>
-                <option value="documentation">Documentation Assistance</option>
-                <option value="representation">Legal Representation</option>
-                <option value="rights">Rights Education</option>
-                <option value="advocacy">Case Advocacy</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="description" class="block text-sm font-medium text-gray-700">Case Description</label>
-              <textarea
-                name="description"
-                id="description"
-                rows="4"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                placeholder="Please describe your case and the type of assistance you need..."
-              ></textarea>
-            </div>
-
-            <div>
-              <label for="urgency" class="block text-sm font-medium text-gray-700">Urgency Level</label>
-              <select
-                name="urgency"
-                id="urgency"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              >
-                <option value="">Select urgency level</option>
-                <option value="low">Low - Can wait more than a month</option>
-                <option value="medium">Medium - Need assistance within a month</option>
-                <option value="high">High - Need assistance within a week</option>
-                <option value="emergency">Emergency - Need immediate assistance</option>
-              </select>
-            </div>
-          </div>
-
-          {/* File Upload Section */}
-          <div class="space-y-6 pt-6 border-t">
-            <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
-            
-            <div>
-              <label for="documents" class="block text-sm font-medium text-gray-700">
-                Upload Relevant Documents (Optional)
-              </label>
-              <p class="text-sm text-gray-500 mb-2">
-                You can upload relevant documents (ID, previous case files, etc.). Maximum file size: 10MB
-              </p>
-              <input
-                type="file"
-                name="documents"
-                id="documents"
-                multiple
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                class="mt-1 block w-full text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-0
-                  file:text-sm file:font-medium
-                  file:bg-primary-50 file:text-primary-700
-                  hover:file:bg-primary-100"
-              />
-            </div>
-          </div>
-
-          {/* Consent Section */}
-          <div class="space-y-6 pt-6 border-t">
-            <h2 class="text-xl font-semibold text-gray-900">Consent</h2>
-            
-            <div class="space-y-4">
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
                   <input
-                    type="checkbox"
-                    name="consent"
-                    id="consent"
+                    type="text"
+                    name="firstName"
+                    id="firstName"
                     required
-                    class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                   />
                 </div>
-                <div class="ml-3 text-sm">
-                  <label for="consent" class="font-medium text-gray-700">Information Consent</label>
-                  <p class="text-gray-500">I consent to the collection and processing of my personal information for the purpose of receiving legal assistance.</p>
+                
+                <div>
+                  <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            {/* Case Information */}
+            <div class="space-y-6 pt-6 border-t">
+              <h2 class="text-xl font-semibold text-gray-900">Case Information</h2>
+              
+              <div>
+                <label for="caseType" class="block text-sm font-medium text-gray-700">Type of Legal Assistance</label>
+                <select
+                  name="caseType"
+                  id="caseType"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                >
+                  <option value="">Select type of assistance</option>
+                  <option value="documentation">Documentation Assistance</option>
+                  <option value="representation">Legal Representation</option>
+                  <option value="rights">Rights Education</option>
+                  <option value="advocacy">Case Advocacy</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Case Description</label>
+                <textarea
+                  name="description"
+                  id="description"
+                  rows="4"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  placeholder="Please describe your case and the type of assistance you need..."
+                ></textarea>
+              </div>
+
+              <div>
+                <label for="urgency" class="block text-sm font-medium text-gray-700">Urgency Level</label>
+                <select
+                  name="urgency"
+                  id="urgency"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                >
+                  <option value="">Select urgency level</option>
+                  <option value="low">Low - Can wait more than a month</option>
+                  <option value="medium">Medium - Need assistance within a month</option>
+                  <option value="high">High - Need assistance within a week</option>
+                  <option value="emergency">Emergency - Need immediate assistance</option>
+                </select>
+              </div>
+            </div>
+
+            {/* File Upload Section */}
+            <div class="space-y-6 pt-6 border-t">
+              <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
+              
+              <div>
+                <label for="documents" class="block text-sm font-medium text-gray-700">
+                  Upload Relevant Documents (Optional)
+                </label>
+                <p class="text-sm text-gray-500 mb-2">
+                  You can upload relevant documents (ID, previous case files, etc.). Maximum file size: 10MB
+                </p>
+                <input
+                  type="file"
+                  name="documents"
+                  id="documents"
+                  multiple
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  class="mt-1 block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-medium
+                    file:bg-primary-50 file:text-primary-700
+                    hover:file:bg-primary-100"
+                />
+              </div>
+            </div>
+
+            {/* Consent Section */}
+            <div class="space-y-6 pt-6 border-t">
+              <h2 class="text-xl font-semibold text-gray-900">Consent</h2>
+              
+              <div class="space-y-4">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      id="consent"
+                      required
+                      class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="consent" class="font-medium text-gray-700">Information Consent</label>
+                    <p class="text-gray-500">I consent to the collection and processing of my personal information for the purpose of receiving legal assistance.</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="pt-6">
-            <button
-              type="submit"
-              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-            >
-              Submit Application
-            </button>
-          </div>
-        </form>
+            <div class="pt-6">
+              <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              >
+                Submit Application
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </main>
-</ApplicationLayout>
+  </div>
+</MainLayout>
 
 <script>
   // Client-side form validation
   window.addEventListener('load', function() {
-    const form = document.getElementById('legal-support-form');
-    
+    const form = document.getElementById(formId);
     if (form) {
-      const fileInput = form.querySelector('input[type="file"]');
-      
-      if (fileInput) {
-        fileInput.addEventListener('change', function() {
-          const files = this.files;
-          const maxSize = 10 * 1024 * 1024; // 10MB
-          
-          for (let i = 0; i < files.length; i++) {
-            if (files[i].size > maxSize) {
-              alert('File size exceeds 10MB limit. Please choose a smaller file.');
-              this.value = '';
-              break;
-            }
+      form.addEventListener('submit', function(e) {
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+          if (!(field as HTMLInputElement).value.trim()) {
+            isValid = false;
+            field.classList.add('border-red-500');
+          } else {
+            field.classList.remove('border-red-500');
           }
         });
-      }
+
+        if (!isValid) {
+          e.preventDefault();
+          alert('Please fill in all required fields.');
+        }
+      });
     }
   });
 </script>

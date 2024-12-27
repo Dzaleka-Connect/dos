@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import DocsSidebar from '../../components/docs/DocsSidebar.astro';
 import DocsContent from '../../components/docs/DocsContent.astro';
 import { getCollection } from 'astro:content';
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { doc } = Astro.props;
 ---
 
-<Layout title={`${doc.data.title} - Documentation`}>
+<MainLayout title={`${doc.data.title} - Documentation`}>
   <div class="bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="lg:grid lg:grid-cols-12 lg:gap-8">
@@ -24,4 +24,4 @@ const { doc } = Astro.props;
       </div>
     </div>
   </div>
-</Layout>
+</MainLayout>

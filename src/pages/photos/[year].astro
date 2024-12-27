@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 
 export async function getStaticPaths() {
@@ -31,7 +31,7 @@ const prevYear = currentYearIndex < allYears.length - 1 ? allYears[currentYearIn
 const nextYear = currentYearIndex > 0 ? allYears[currentYearIndex - 1] : null;
 ---
 
-<Layout title={`${year} Photos | Dzaleka Heritage`}>
+<MainLayout title={`${year} Photos | Dzaleka Heritage`}>
   <main class="container mx-auto px-4 py-12">
     <div class="max-w-7xl mx-auto">
       <!-- Breadcrumb -->
@@ -138,4 +138,4 @@ const nextYear = currentYearIndex > 0 ? allYears[currentYearIndex - 1] : null;
       )}
     </div>
   </main>
-</Layout>
+</MainLayout>

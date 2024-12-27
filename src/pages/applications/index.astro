@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import ServiceCard from '../../components/applications/ServiceCard.astro';
 
 const internalServices = [
@@ -85,40 +85,87 @@ const governmentPermits = [
     icon: "globe"
   }
 ];
+
+const visaServices = [
+  {
+    title: "Student Visa",
+    description: "Apply for a student visa to continue your education abroad.",
+    icon: "graduation-cap",
+    services: [
+      "University enrollment support",
+      "Visa application assistance",
+      "Documentation guidance",
+      "Interview preparation"
+    ],
+    link: "/applications/visa/student"
+  },
+  {
+    title: "Work Visa",
+    description: "Get assistance with work visa applications and employment opportunities.",
+    icon: "briefcase",
+    services: [
+      "Job search support",
+      "Visa sponsorship",
+      "Skills assessment",
+      "Employment verification"
+    ],
+    link: "/applications/visa/work"
+  },
+  {
+    title: "Family Reunification",
+    description: "Reunite with your family members through visa sponsorship.",
+    icon: "people-roof",
+    services: [
+      "Family sponsorship",
+      "Document preparation",
+      "Application tracking",
+      "Interview support"
+    ],
+    link: "/applications/visa/family"
+  },
+  {
+    title: "Humanitarian Visa",
+    description: "Apply for humanitarian visas and protection in other countries.",
+    icon: "heart-pulse",
+    services: [
+      "Case assessment",
+      "Application support",
+      "Legal assistance",
+      "Travel arrangements"
+    ],
+    link: "/applications/visa/humanitarian"
+  }
+];
 ---
 
-<Layout title="Applications & Services">
+<MainLayout title="Applications & Services">
   <!-- Hero Section -->
   <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white">
     <div class="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-10"></div>
     <div class="absolute inset-0 bg-black/20"></div>
-    <div class="relative max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-          Applications & Services
-        </h1>
-        <p class="mt-6 text-xl text-white/90 max-w-3xl mx-auto">
-          Access a range of services and support programs designed to assist the Dzaleka refugee community. Choose from our available applications below.
-        </p>
-      </div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+      <h1 class="text-4xl font-bold mb-6">Applications & Services</h1>
+      <p class="text-xl max-w-3xl mx-auto opacity-90">
+        Access a range of services and support programs designed to assist refugees and asylum seekers. Choose from our internal support services or get help with official permit applications.
+      </p>
     </div>
   </div>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     {/* Internal Applications Section */}
     <div class="py-20">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">
-          Community Support Services
+          Internal Support Services
         </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Access essential services and support programs available to members of the Dzaleka refugee community.
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Access our range of internal support services designed to assist refugees and asylum seekers within the Dzaleka community.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {internalServices.map(service => (
-          <ServiceCard 
+        {internalServices.map((service) => (
+          <ServiceCard
             title={service.title}
             description={service.description}
             icon={service.icon}
@@ -135,7 +182,7 @@ const governmentPermits = [
         <h2 class="text-3xl font-bold text-gray-900 mb-4">
           Government Permit Applications
         </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
           Official permit applications processed through the Malawi government e-Permit system.
         </p>
       </div>
@@ -195,7 +242,7 @@ const governmentPermits = [
         <h2 class="text-3xl font-bold text-gray-900 mb-4">
           Visa Applications
         </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
           Apply for your Malawi visa through the official e-Visa portal.
         </p>
       </div>
@@ -237,5 +284,5 @@ const governmentPermits = [
         </p>
       </div>
     </div>
-  </main>
-</Layout>
+  </div>
+</MainLayout>
