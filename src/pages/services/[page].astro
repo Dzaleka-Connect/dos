@@ -12,25 +12,26 @@ export async function getStaticPaths() {
   const itemsPerPage = 6;
   const totalPages = Math.ceil(allServices.length / itemsPerPage);
   
-  return Array.from({ length: totalPages - 1 }, (_, i) => {
-    const page = i + 2; // Start from page 2
+  return Array.from({ length: totalPages }, (_, i) => {
+    const page = i + 1; 
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     
     return {
       params: { page: page.toString() },
       props: {
-        services: allServices.slice(start, end),
+        services: allServices,
         currentPage: page,
         totalPages,
-        totalServices: allServices.length
+        totalServices: allServices.length,
+        itemsPerPage
       },
     };
   });
 }
 
 // Get the page parameter and props
-const { services, currentPage, totalPages, totalServices } = Astro.props;
+const { services, currentPage, totalPages, totalServices, itemsPerPage } = Astro.props;
 
 // Calculate service stats
 const serviceStats = calculateServiceStats(services);
@@ -47,6 +48,19 @@ if (verifiedOnly) {
 
 // Sort services
 const sortedServices = sortServices(filteredServices, sortBy);
+
+// Paginate the filtered and sorted services
+const start = (currentPage - 1) * itemsPerPage;
+const end = start + itemsPerPage;
+const paginatedServices = sortedServices.slice(start, end);
+
+// Preserve query parameters for pagination links
+const searchParams = new URLSearchParams();
+if (sortBy !== 'featured') searchParams.set('sort', sortBy);
+if (verifiedOnly) searchParams.set('verified', 'true');
+const queryString = searchParams.toString();
+const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
+
 ---
 
 <MainLayout title="Service Directory">
@@ -108,7 +122,7 @@ const sortedServices = sortServices(filteredServices, sortBy);
       </div>
 
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {sortedServices.map(service => {
+        {paginatedServices.map(service => {
           // Extract all social media data
           const socialMedia = service.data.socialMedia ? {
             ...(service.data.socialMedia.facebook && { facebook: service.data.socialMedia.facebook }),
@@ -137,15 +151,13 @@ const sortedServices = sortServices(filteredServices, sortBy);
       </div>
 
       <!-- Pagination -->
-      {totalPages > 1 && (
-        <div class="mt-12">
-          <ServicePagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            baseUrl="/services"
-          />
-        </div>
-      )}
+      <div class="mt-8">
+        <ServicePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl={baseUrl}
+        />
+      </div>
     </div>
   </main>
 </MainLayout>

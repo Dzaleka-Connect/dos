@@ -16,6 +16,7 @@ const serviceStats = calculateServiceStats(allServices);
 // Get URL parameters
 const sortBy = Astro.url.searchParams.get('sort') || 'featured';
 const verifiedOnly = Astro.url.searchParams.get('verified') === 'true';
+const page = Astro.url.searchParams.get('page') || 1;
 
 // Apply verified filter
 let filteredServices = allServices;
@@ -30,10 +31,18 @@ const sortedServices = sortServices(filteredServices, sortBy);
 const itemsPerPage = 6;
 const totalItems = sortedServices.length;
 const totalPages = Math.ceil(totalItems / itemsPerPage);
-const currentPage = +(Astro.url.searchParams.get('page') || '1');
+const currentPage = parseInt(page);
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 const paginatedServices = sortedServices.slice(startIndex, endIndex);
+
+// Preserve query parameters for pagination links
+const searchParams = new URLSearchParams();
+if (sortBy !== 'featured') searchParams.set('sort', sortBy);
+if (verifiedOnly) searchParams.set('verified', 'true');
+const queryString = searchParams.toString();
+const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
+
 ---
 
 <MainLayout title="Service Directory">
@@ -124,15 +133,13 @@ const paginatedServices = sortedServices.slice(startIndex, endIndex);
       </div>
 
       <!-- Pagination -->
-      {totalPages > 1 && (
-        <div class="mt-12">
-          <ServicePagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            baseUrl="/services"
-          />
-        </div>
-      )}
+      <div class="mt-8">
+        <ServicePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl={baseUrl}
+        />
+      </div>
     </div>
   </main>
 </MainLayout>

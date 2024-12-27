@@ -22,11 +22,14 @@ const pageNumbers = Array.from(
 function getPageUrl(page: number) {
   // Remove any trailing slash from baseUrl
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
-  // Return base URL for page 1
+  
+  // For page 1, return the base URL
   if (page === 1) return cleanBaseUrl;
-  // Otherwise return the paginated URL with no question mark
-  return page === 1 ? cleanBaseUrl : `${cleanBaseUrl}/${page}`;
+  
+  // For other pages, append the page number
+  return `${cleanBaseUrl}/${page}`;
 }
+
 ---
 
 <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 mt-8" aria-label="Pagination">
@@ -76,7 +79,7 @@ function getPageUrl(page: number) {
     {pageNumbers.map((page) => (
       <a
         href={getPageUrl(page)}
-        class:list={[
+        class={[
           "inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium",
           page === currentPage
             ? "border-primary-600 text-primary-600"
