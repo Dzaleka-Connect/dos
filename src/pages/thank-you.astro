@@ -6,6 +6,15 @@ const formType = Astro.url.searchParams.get('type') || 'default';
 
 // Define messages for different form types
 const messages = {
+  visit: {
+    title: 'Thank You for Planning Your Visit',
+    message: 'We have received your visit request and are excited to welcome you to Dzaleka. Our team will review your details and contact you within 24 hours to confirm your visit arrangements.',
+    nextSteps: [
+      'Check your email for a confirmation of your request',
+      'Review our visitor guidelines to prepare for your visit',
+      'Feel free to contact us if you have any immediate questions'
+    ]
+  },
   legal: {
     title: 'Legal Support Application Received',
     message: 'Thank you for submitting your legal support application. Our team will review your case and contact you within 2-3 business days.',
@@ -83,7 +92,7 @@ const currentMessage = messages[formType] || messages.default;
           <ul class="space-y-4">
             {currentMessage.nextSteps.map(step => (
               <li class="flex items-start">
-                <svg class="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
                 <span class="text-gray-700">{step}</span>
@@ -92,52 +101,16 @@ const currentMessage = messages[formType] || messages.default;
           </ul>
         </div>
 
-        {/* Contact Information */}
-        <div class="border-t pt-8">
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Need Help?</h2>
-          <div class="grid gap-6 md:grid-cols-2">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-              </div>
-              <div class="ml-3">
-                <p class="text-sm font-medium text-gray-900">Email Support</p>
-                <a href="mailto:support@dzaleka.org" class="text-sm text-primary-600 hover:text-primary-500">
-                  support@dzaleka.org
-                </a>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                </svg>
-              </div>
-              <div class="ml-3">
-                <p class="text-sm font-medium text-gray-900">Phone Support</p>
-                <a href="tel:+265-1-234-5678" class="text-sm text-primary-600 hover:text-primary-500">
-                  +265 1 234 5678
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="/"
-            class="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+        {/* Return to Home */}
+        <div class="text-center">
+          <a 
+            href="/" 
+            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
           >
-            Return to Homepage
-          </a>
-          <a
-            href="/applications"
-            class="inline-flex justify-center items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-          >
-            View Other Services
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            Return to Home
           </a>
         </div>
       </div>
