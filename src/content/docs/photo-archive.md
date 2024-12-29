@@ -1,6 +1,7 @@
 ---
-title: Photo Archive
-description: Guide to exploring the Dzaleka community photo archive
+title: Photo Archive Guide
+description: Learn how to use and contribute to the photo archive
+section: guides
 ---
 
 ## Exploring the Archive

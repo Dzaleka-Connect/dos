@@ -1,6 +1,7 @@
 ---
 title: Services Guide
-description: Learn how to find and use services on the platform
+description: Learn how to use and offer services on the platform
+section: guides
 ---
 
 ## Finding Services
