@@ -1,0 +1,531 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all profiles
+const profiles = await getCollection('profiles');
+profiles.sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+// Get selected profile from URL parameter
+const selectedProfileId = Astro.url.searchParams.get('profile');
+const selectedProfile = selectedProfileId ? profiles.find(p => p.id.replace('.md', '') === selectedProfileId) : null;
+
+// Create a profiles data object for JavaScript
+const profilesData = Object.fromEntries(
+  profiles.map(profile => [
+    profile.id.replace('.md', ''),
+    {
+      name: profile.data.name,
+      email: profile.data.email,
+      phone: profile.data.phone,
+      skill: profile.data.skill,
+      description: profile.data.description,
+      shortDescription: profile.data.shortDescription,
+      location: profile.data.location,
+      languages: profile.data.languages,
+      availability: profile.data.availability,
+      socialMedia: profile.data.socialMedia,
+      website: profile.data.website,
+      category: profile.data.category,
+      level: profile.data.level,
+      chargeType: profile.data.chargeType,
+      rate: profile.data.rate,
+      paymentMethods: profile.data.paymentMethods
+    }
+  ])
+);
+
+// Get site URL from environment or default to localhost
+const siteUrl = import.meta.env.SITE || 'http://localhost:4321';
+---
+
+<MainLayout
+  title="Update Profile | Skills Exchange"
+  description="Request to update your profile information on the Skills Exchange platform"
+>
+  <div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+          Update Your Profile
+        </h1>
+        <p class="mt-4 text-lg text-gray-500">
+          Request changes to your existing profile listing
+        </p>
+      </div>
+
+      <!-- Form -->
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <form
+          action="https://formspree.io/f/xqaaajae"
+          method="POST"
+          class="space-y-8 divide-y divide-gray-200 p-8"
+          id="profileForm"
+          enctype="multipart/form-data"
+          data-netlify-recaptcha="true"
+        >
+          <input type="hidden" name="profile-id" id="profile-id" />
+          <!-- Profile Selection -->
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Select Your Profile</h3>
+              <p class="mt-1 text-sm text-gray-500">
+                Choose your profile from the list below to pre-fill your current information.
+              </p>
+            </div>
+
+            <div class="sm:col-span-6">
+              <label for="profile-select" class="block text-sm font-medium text-gray-700">
+                Select Profile
+              </label>
+              <div class="mt-1">
+                <select
+                  id="profile-select"
+                  name="profile-select"
+                  class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                >
+                  <option value="">Select your profile</option>
+                  {profiles.map((profile) => (
+                    <option value={profile.id} selected={profile.id.replace('.md', '') === selectedProfileId}>
+                      {profile.data.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Profile Information -->
+          <div class="pt-8 space-y-6">
+            <div>
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Current Profile Information</h3>
+              <p class="mt-1 text-sm text-gray-500">
+                Please provide your current profile details so we can locate your listing.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+              <div class="sm:col-span-3">
+                <label for="current-name" class="block text-sm font-medium text-gray-700">
+                  Current Name
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="current-name"
+                    id="current-name"
+                    required
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-3">
+                <label for="current-email" class="block text-sm font-medium text-gray-700">
+                  Current Email
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="email"
+                    name="current-email"
+                    id="current-email"
+                    required
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Requested Changes -->
+          <div class="pt-8 space-y-6">
+            <div>
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Requested Changes</h3>
+              <p class="mt-1 text-sm text-gray-500">
+                Specify what information you would like to update in your profile.
+              </p>
+            </div>
+
+            <div class="space-y-6">
+              <div class="sm:col-span-6">
+                <label for="new-name" class="block text-sm font-medium text-gray-700">
+                  New Name (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-name"
+                    id="new-name"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-email" class="block text-sm font-medium text-gray-700">
+                  New Email (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="email"
+                    name="new-email"
+                    id="new-email"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-phone" class="block text-sm font-medium text-gray-700">
+                  New Phone (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="tel"
+                    name="new-phone"
+                    id="new-phone"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-skill" class="block text-sm font-medium text-gray-700">
+                  Updated Skills/Services
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-skill"
+                    id="new-skill"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-short-description" class="block text-sm font-medium text-gray-700">
+                  Short Description
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-short-description"
+                    id="new-short-description"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                  <p class="mt-2 text-sm text-gray-500">A brief summary of your profile that appears in listings</p>
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-description" class="block text-sm font-medium text-gray-700">
+                  Full Description
+                </label>
+                <div class="mt-1">
+                  <textarea
+                    name="new-description"
+                    id="new-description"
+                    rows="6"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  ></textarea>
+                  <p class="mt-2 text-sm text-gray-500">Detailed description of your skills, experience, and services</p>
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-location" class="block text-sm font-medium text-gray-700">
+                  New Location (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-location"
+                    id="new-location"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-languages" class="block text-sm font-medium text-gray-700">
+                  New Languages (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-languages"
+                    id="new-languages"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-availability" class="block text-sm font-medium text-gray-700">
+                  New Availability (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-availability"
+                    id="new-availability"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-website" class="block text-sm font-medium text-gray-700">
+                  New Website (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="url"
+                    name="new-website"
+                    id="new-website"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-category" class="block text-sm font-medium text-gray-700">
+                  New Category (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-category"
+                    id="new-category"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-level" class="block text-sm font-medium text-gray-700">
+                  New Level (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-level"
+                    id="new-level"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-charge-type" class="block text-sm font-medium text-gray-700">
+                  New Charge Type (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-charge-type"
+                    id="new-charge-type"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-rate" class="block text-sm font-medium text-gray-700">
+                  New Rate (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-rate"
+                    id="new-rate"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-linkedin" class="block text-sm font-medium text-gray-700">
+                  New LinkedIn (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="url"
+                    name="new-linkedin"
+                    id="new-linkedin"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-twitter" class="block text-sm font-medium text-gray-700">
+                  New Twitter (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="url"
+                    name="new-twitter"
+                    id="new-twitter"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-instagram" class="block text-sm font-medium text-gray-700">
+                  New Instagram (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="url"
+                    name="new-instagram"
+                    id="new-instagram"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="new-payment-methods" class="block text-sm font-medium text-gray-700">
+                  New Payment Methods (if changing)
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="new-payment-methods"
+                    id="new-payment-methods"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:col-span-6">
+                <label for="additional-notes" class="block text-sm font-medium text-gray-700">
+                  Additional Notes
+                </label>
+                <div class="mt-1">
+                  <textarea
+                    id="additional-notes"
+                    name="additional-notes"
+                    rows="4"
+                    class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  ></textarea>
+                  <p class="mt-2 text-sm text-gray-500">Any other information or changes you'd like us to know about.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-8">
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="ml-3 inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              >
+                Submit Update Request
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script define:vars={{ profilesData, selectedProfileId }}>
+  // Function to populate form fields
+  function populateFormFields(profileId) {
+    const profileData = profilesData[profileId];
+    if (profileData) {
+      // Pre-fill current information
+      document.getElementById('current-name').value = profileData.name || '';
+      document.getElementById('current-email').value = profileData.email || '';
+      
+      // Pre-fill new fields with current values
+      document.getElementById('new-name').value = profileData.name || '';
+      document.getElementById('new-email').value = profileData.email || '';
+      document.getElementById('new-phone').value = profileData.phone || '';
+      document.getElementById('new-skill').value = profileData.skill || '';
+      document.getElementById('new-short-description').value = profileData.shortDescription || '';
+      document.getElementById('new-description').value = profileData.description || '';
+      document.getElementById('new-location').value = profileData.location || '';
+      document.getElementById('new-languages').value = (profileData.languages || []).join(', ');
+      document.getElementById('new-availability').value = profileData.availability || '';
+      document.getElementById('new-website').value = profileData.website || '';
+      document.getElementById('new-category').value = profileData.category || '';
+      document.getElementById('new-level').value = profileData.level || '';
+      document.getElementById('new-charge-type').value = profileData.chargeType || '';
+      document.getElementById('new-rate').value = profileData.rate || '';
+      
+      // Handle social media fields
+      if (profileData.socialMedia) {
+        document.getElementById('new-linkedin').value = profileData.socialMedia.linkedin || '';
+        document.getElementById('new-twitter').value = profileData.socialMedia.twitter || '';
+        document.getElementById('new-instagram').value = profileData.socialMedia.instagram || '';
+      }
+      
+      // Handle payment methods
+      if (profileData.paymentMethods) {
+        document.getElementById('new-payment-methods').value = profileData.paymentMethods.map(pm => pm.type).join(', ');
+      }
+    }
+  }
+
+  // Handle profile selection change
+  document.getElementById('profile-select').addEventListener('change', (e) => {
+    const selectedId = e.target.value.replace('.md', '');
+    populateFormFields(selectedId);
+  });
+
+  // Pre-populate form if profile is selected from URL
+  if (selectedProfileId) {
+    populateFormFields(selectedProfileId);
+  }
+
+  // Rest of your existing script
+  const form = document.getElementById('profileForm');
+  if (form) {
+    form.addEventListener('submit', handleSubmit);
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const data = new FormData(form);
+    const action = form.action;
+    
+    try {
+      const response = await fetch(action, {
+        method: 'POST',
+        body: data,
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      
+      if (response.ok) {
+        // Redirect after successful submission
+        window.location.replace('/thank-you?type=profile-update');
+      } else {
+        // Handle error
+        const data = await response.json();
+        if (data.errors) {
+          alert(data.errors.map(error => error.message).join(', '));
+        } else {
+          alert('Oops! There was a problem submitting your form');
+        }
+      }
+    } catch (error) {
+      alert('Oops! There was a problem submitting your form');
+    }
+  }
+</script>
+
+<style>
+  /* Add any custom styles here */
+</style>

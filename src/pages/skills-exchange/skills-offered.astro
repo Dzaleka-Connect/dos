@@ -1,0 +1,401 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import Pagination from '../../components/Pagination.astro';
+
+const pageTitle = "Skills Offered";
+const pageDescription = "Browse all skills offered by community members";
+
+// Get current page from URL
+const currentPage = Number(Astro.url.pathname.split('/').pop()) || 1;
+const itemsPerPage = 6;
+
+// Get all profiles and filter for those offering skills
+const allProfiles = await getCollection('profiles');
+const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available');
+
+// Calculate pagination
+const totalItems = skillsOffered.length;
+const totalPages = Math.ceil(totalItems / itemsPerPage);
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+
+// Get categories
+const categories = [...new Set(skillsOffered.map(profile => profile.data.category))].sort();
+const selectedCategory = Astro.url.searchParams.get('category');
+
+// Filter by category if selected
+const filteredProfiles = selectedCategory
+  ? skillsOffered.filter(profile => profile.data.category === selectedCategory)
+  : skillsOffered;
+
+const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section with Advanced Animated Background -->
+  <div class="relative min-h-[400px] overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0">
+      <!-- Grid Pattern -->
+      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      
+      <!-- Animated Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80"></div>
+      
+      <!-- Floating Shapes -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+      </div>
+      
+      <!-- Animated Dots -->
+      <div class="absolute inset-0">
+        <div class="dots-overlay"></div>
+      </div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
+      <!-- Hero Content -->
+      <div class="text-center max-w-4xl mx-auto animate-fade-in">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+          <span class="block animate-title">Available Skills</span>
+          <span class="block text-primary-200 mt-2 animate-title-delayed">in Our Community</span>
+        </h1>
+        <p class="mt-6 text-xl text-primary-100 max-w-2xl mx-auto animate-fade-in-up">
+          Browse through skills offered by community members and find the expertise you need.
+        </p>
+        <div class="mt-8 flex items-center justify-center gap-4 animate-fade-in-up" style="animation-delay: 400ms;">
+          <a
+            href="/skills-exchange/list-profile"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-primary-900 bg-white hover:bg-primary-50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            <svg class="w-5 h-5 mr-2 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            List Your Profile
+          </a>
+          <a
+            href="/skills-exchange/skills-requested"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+            </svg>
+            Offer Help
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Filters Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 mb-8">
+      <div class="flex-1 min-w-0">
+        <h2 class="text-2xl font-bold text-gray-900">
+          {filteredProfiles.length} Skills Available
+          {selectedCategory && <span class="text-primary-600">in {selectedCategory}</span>}
+        </h2>
+      </div>
+      
+      <!-- Categories Filter -->
+      <div class="flex flex-wrap gap-2">
+        <a
+          href={`/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+          class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            !selectedCategory
+              ? 'bg-primary-100 text-primary-800'
+              : 'text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200'
+          }`}
+        >
+          All Categories
+        </a>
+        {categories.map(category => (
+          <a
+            href={`/skills-exchange/skills-offered${selectedCategory === category ? '' : `?category=${category}`}`}
+            class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              selectedCategory === category
+                ? 'bg-primary-100 text-primary-800'
+                : 'text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200'
+            }`}
+          >
+            {category}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Skills Grid -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {currentProfiles.map(profile => (
+        <a
+          href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`}
+          class="group relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+        >
+          <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+            <img
+              src={profile.data.profileImage}
+              alt=""
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                  <img
+                    src={profile.data.profileImage}
+                    alt=""
+                    class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm"
+                  />
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
+                    {profile.data.name}
+                  </h3>
+                  <p class="text-sm text-gray-500">{profile.data.location}</p>
+                </div>
+              </div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                Available
+              </span>
+            </div>
+            <div>
+              <div class="text-lg font-semibold text-gray-900 mb-2">
+                {profile.data.skill}
+              </div>
+              <p class="text-gray-500 text-sm line-clamp-2">
+                {profile.data.shortDescription}
+              </p>
+            </div>
+            <div class="mt-4 space-y-3">
+              {profile.data.chargeType === 'paid' && (
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {profile.data.rate}
+                    </span>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    {profile.data.paymentMethods?.map(method => (
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        {method.type}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {profile.data.chargeType === 'free' && (
+                <div class="flex items-center">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Free Service
+                  </span>
+                </div>
+              )}
+              
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                    {profile.data.category}
+                  </span>
+                  {profile.data.level && (
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      {profile.data.level}
+                    </span>
+                  )}
+                </div>
+                <span class="text-primary-600 text-sm font-medium group-hover:text-primary-700">
+                  View Profile →
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <nav class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0 mt-12">
+        <div class="w-0 flex-1 flex">
+          {currentPage > 1 && (
+            <a
+              href={`/skills-exchange/skills-offered/${currentPage - 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
+            >
+              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Previous
+            </a>
+          )}
+        </div>
+        <div class="hidden md:flex">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(num => (
+            <a
+              href={`/skills-exchange/skills-offered/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              class={`inline-flex items-center px-4 py-2 text-sm font-medium ${
+                currentPage === num
+                  ? 'text-primary-600 bg-primary-50'
+                  : 'text-gray-700 hover:text-primary-600'
+              }`}
+            >
+              {num}
+            </a>
+          ))}
+        </div>
+        <div class="w-0 flex-1 flex justify-end">
+          {currentPage < totalPages && (
+            <a
+              href={`/skills-exchange/skills-offered/${currentPage + 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
+            >
+              Next
+              <svg class="ml-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          )}
+        </div>
+      </nav>
+    )}
+  </div>
+</MainLayout>
+
+<style>
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: grid-fade 2s ease-out;
+}
+
+.floating-shape {
+  @apply absolute rounded-full opacity-20 bg-white;
+  animation: float 20s infinite ease-in-out;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  left: -100px;
+  top: -100px;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  right: -50px;
+  top: 50%;
+  animation-delay: -5s;
+}
+
+.shape-3 {
+  width: 150px;
+  height: 150px;
+  left: 50%;
+  bottom: -50px;
+  animation-delay: -10s;
+}
+
+.shape-4 {
+  width: 250px;
+  height: 250px;
+  right: 25%;
+  top: -75px;
+  animation-delay: -15s;
+}
+
+.dots-overlay {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  animation: dots-fade 2s ease-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes grid-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.05;
+  }
+}
+
+@keyframes dots-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-title {
+  animation: title-slide 1s ease-out;
+}
+
+.animate-title-delayed {
+  animation: title-slide 1s ease-out;
+  animation-delay: 200ms;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes title-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+</style>

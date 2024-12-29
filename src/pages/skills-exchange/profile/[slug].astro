@@ -1,0 +1,301 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const profiles = await getCollection('profiles');
+  return profiles.map(profile => ({
+    params: { slug: profile.id.replace('.md', '') },
+    props: { profile },
+  }));
+}
+
+const { profile } = Astro.props;
+const { Content } = await profile.render();
+
+const { 
+  name, 
+  skill, 
+  status, 
+  requestStatus,
+  helpOfferedBy,
+  helpOfferedDate,
+  email, 
+  location, 
+  profileImage, 
+  languages, 
+  availability, 
+  shortDescription, 
+  socialMedia, 
+  phone, 
+  website,
+  category,
+  level,
+  chargeType,
+  rate,
+  paymentMethods 
+} = profile.data;
+---
+
+<MainLayout title={`${name} - Skills Profile`} description={shortDescription || `${name}'s skills profile`}>
+  <div class="bg-white">
+    <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
+      <!-- Back Button -->
+      <div class="mb-8">
+        <a
+          href="/skills-exchange"
+          class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary-600"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Skills Exchange
+        </a>
+      </div>
+
+      <!-- Profile Header -->
+      <div class="relative mb-8 sm:mb-12 bg-gradient-to-br from-primary-50 to-gray-50 rounded-xl overflow-hidden">
+        <!-- Status Badge -->
+        <div class="absolute top-4 right-4 z-10 flex items-center gap-2">
+          <a
+            href={`/skills-exchange/update-profile?profile=${Astro.params.slug}`}
+            class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors"
+            title="Update Profile"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </a>
+          <div class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+            status === 'Available' ? 'bg-green-100 text-green-800' :
+            status === 'Unavailable' ? 'bg-red-100 text-red-800' :
+            'bg-yellow-100 text-yellow-800'
+          }`}>
+            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {status}
+          </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="p-4 sm:p-8">
+          <div class="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
+            <div class="w-28 h-28 sm:w-32 sm:h-32 md:w-48 md:h-48 flex-shrink-0">
+              <img
+                src={profileImage}
+                alt={`${name}'s profile picture`}
+                class="w-full h-full object-cover rounded-full ring-4 ring-white shadow-lg"
+              />
+            </div>
+            <div class="flex-1 text-center md:text-left">
+              <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                {name}
+              </h1>
+              <div class="flex flex-wrap gap-2 mb-4 justify-center md:justify-start">
+                <span class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium bg-primary-100 text-primary-800 rounded-full shadow-sm">
+                  {skill}
+                </span>
+                <span class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium bg-gray-100 text-gray-800 rounded-full shadow-sm">
+                  {category}
+                </span>
+                <span class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium bg-blue-100 text-blue-800 rounded-full shadow-sm">
+                  {level}
+                </span>
+                <span class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium bg-green-100 text-green-800 rounded-full shadow-sm">
+                  {chargeType}
+                </span>
+              </div>
+              <p class="text-gray-500 mb-6">
+                {shortDescription}
+              </p>
+
+              <!-- Request Status Section -->
+              {requestStatus && (
+                <div class="mb-6 p-4 rounded-lg bg-gray-50">
+                  <h3 class="font-medium text-gray-900">Request Status</h3>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <span class={`px-3 py-1 text-sm font-medium rounded-full ${
+                      requestStatus === 'Open' ? 'bg-green-100 text-green-800' :
+                      requestStatus === 'HelpOffered' ? 'bg-yellow-100 text-yellow-800' :
+                      requestStatus === 'Completed' ? 'bg-blue-100 text-blue-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {requestStatus}
+                    </span>
+                    {helpOfferedBy && (
+                      <div class="flex flex-col text-sm text-gray-600">
+                        <span>Help offered by: {helpOfferedBy}</span>
+                        {helpOfferedDate && <span>Date: {helpOfferedDate}</span>}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {chargeType === 'paid' && (
+                <div class="mb-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                  <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Payment Information
+                      </div>
+                    </h3>
+                  </div>
+                  <div class="px-4 py-5 sm:px-6 space-y-4">
+                    {rate && (
+                      <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center justify-center p-2 bg-primary-100 rounded-md">
+                          <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-500">Rate</p>
+                          <p class="text-base font-semibold text-gray-900">{rate}</p>
+                        </div>
+                      </div>
+                    )}
+                    {paymentMethods && paymentMethods.length > 0 && (
+                      <div>
+                        <p class="text-sm font-medium text-gray-500 mb-3">Accepted Payment Methods</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {paymentMethods.map((method: { type: string; number: string }) => (
+                            <div class="flex items-center px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+                              <span class="text-sm font-medium text-gray-900">{method.type}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <!-- Contact Buttons -->
+              <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                <a
+                  href={`mailto:${email}`}
+                  class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                  Email
+                </a>
+                {phone && (
+                  <a
+                    href={`tel:${phone}`}
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  >
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                    Call
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {(languages || availability) && (
+          <div class="bg-gray-50 p-6 rounded-lg">
+            {languages && (
+              <div class="mb-4">
+                <h3 class="font-medium text-gray-900 mb-2">Languages</h3>
+                <div class="flex flex-wrap gap-2">
+                  {languages.map((lang: string) => (
+                    <span class="px-3 py-1 text-sm bg-white text-gray-800 rounded-full border border-gray-200">
+                      {lang}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {availability && (
+              <div>
+                <h3 class="font-medium text-gray-900 mb-2">Availability</h3>
+                <p class="text-gray-600">{availability}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div class="bg-gray-50 p-6 rounded-lg">
+          <h3 class="font-medium text-gray-900 mb-2">Location</h3>
+          <p class="text-gray-600">{location}</p>
+        </div>
+      </div>
+
+      <!-- Social Links -->
+      {(socialMedia || website) && (
+        <div class="border-t border-gray-200 py-6 mb-8">
+          <h3 class="font-medium text-gray-900 mb-4">Connect With Me</h3>
+          <div class="flex flex-wrap gap-4">
+            {website && (
+              <a
+                href={website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-600 hover:text-primary-600 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+              </a>
+            )}
+            {socialMedia?.linkedin && (
+              <a
+                href={socialMedia.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-600 hover:text-[#0077b5] transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </a>
+            )}
+            {socialMedia?.twitter && (
+              <a
+                href={socialMedia.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-600 hover:text-[#1DA1F2] transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+              </a>
+            )}
+            {socialMedia?.instagram && (
+              <a
+                href={socialMedia.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-600 hover:text-[#E4405F] transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.897 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.897-.421-.419-.69-.824-1.38-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+                </svg>
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      <!-- Main Content -->
+      <div class="prose prose-primary max-w-none">
+        <Content />
+      </div>
+    </div>
+  </div>
+</MainLayout>

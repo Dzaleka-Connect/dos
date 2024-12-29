@@ -1,0 +1,216 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all profiles
+const allProfiles = await getCollection('profiles');
+const requestedProfiles = allProfiles.filter(profile => 
+  profile.data.status === 'Requested' && 
+  (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+);
+
+// Get categories from profiles
+const categories = [...new Set(requestedProfiles.map(profile => profile.data.category))].sort();
+
+// Get current page from params
+export async function getStaticPaths({ paginate }) {
+  const allProfiles = await getCollection('profiles');
+  const requestedProfiles = allProfiles.filter(profile => 
+    profile.data.status === 'Requested' && 
+    (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+  );
+  return paginate(requestedProfiles, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const currentPath = new URL(Astro.request.url).pathname;
+
+// Get category from URL if present
+const url = new URL(Astro.request.url);
+const selectedCategory = url.searchParams.get('category');
+
+// Filter profiles by category if selected
+const filteredProfiles = selectedCategory
+  ? page.data.filter(profile => profile.data.category === selectedCategory)
+  : page.data;
+---
+
+<MainLayout
+  title="Learning Requests | Skills Exchange"
+  description="Browse learning requests from community members"
+>
+  <!-- Hero Section -->
+  <div class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 py-16">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
+          Learning Requests
+        </h1>
+        <p class="mt-3 max-w-md mx-auto text-base text-primary-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+          Help fellow community members learn new skills. Share your knowledge and make a difference.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Filters Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 mb-8">
+      <div class="flex-1 min-w-0">
+        <h2 class="text-2xl font-bold text-gray-900">
+          {filteredProfiles.length} Learning Requests
+          {selectedCategory && <span class="text-primary-600">in {selectedCategory}</span>}
+        </h2>
+      </div>
+      
+      <!-- Categories Filter -->
+      <div class="flex flex-wrap gap-2">
+        <a
+          href={currentPath}
+          class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            !selectedCategory
+              ? 'bg-primary-100 text-primary-800'
+              : 'text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200'
+          }`}
+        >
+          All Categories
+        </a>
+        {categories.map(category => (
+          <a
+            href={`${currentPath}?category=${category}`}
+            class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              selectedCategory === category
+                ? 'bg-primary-100 text-primary-800'
+                : 'text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200'
+            }`}
+          >
+            {category}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Skills Grid -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {filteredProfiles.map(profile => (
+        <a
+          href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`}
+          class="group relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+        >
+          <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+            <img
+              src={profile.data.profileImage}
+              alt=""
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                  <img
+                    src={profile.data.profileImage}
+                    alt=""
+                    class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm"
+                  />
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
+                    {profile.data.name}
+                  </h3>
+                  <p class="text-sm text-gray-500">{profile.data.location}</p>
+                </div>
+              </div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                Learning
+              </span>
+            </div>
+            <div>
+              <div class="text-lg font-semibold text-gray-900 mb-2">
+                Learning {profile.data.skill}
+              </div>
+              <p class="text-gray-500 text-sm line-clamp-2">
+                {profile.data.shortDescription}
+              </p>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                  {profile.data.category}
+                </span>
+                {profile.data.level && (
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    {profile.data.level}
+                  </span>
+                )}
+              </div>
+              <span class="text-primary-600 text-sm font-medium group-hover:text-primary-700">
+                Offer Help →
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Pagination -->
+    {(page.url.prev || page.url.next) && (
+      <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 mt-12">
+        <div class="-mt-px w-0 flex-1 flex">
+          {page.url.prev && (
+            <a
+              href={page.url.prev}
+              class="inline-flex items-center pt-4 pr-1 text-sm font-medium text-gray-500 hover:text-primary-600 hover:border-primary-300"
+            >
+              <svg class="mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+              </svg>
+              Previous
+            </a>
+          )}
+        </div>
+        <div class="hidden md:-mt-px md:flex">
+          {Array.from({ length: page.lastPage }, (_, i) => i + 1).map(num => (
+            <a
+              href={num === 1 ? '/skills-exchange/skills-requested' : `/skills-exchange/skills-requested/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              class={`inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium ${
+                page.currentPage === num
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-primary-600 hover:border-primary-300'
+              }`}
+            >
+              {num}
+            </a>
+          ))}
+        </div>
+        <div class="-mt-px w-0 flex-1 flex justify-end">
+          {page.url.next && (
+            <a
+              href={`${page.url.next}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              class="inline-flex items-center pt-4 pl-1 text-sm font-medium text-gray-500 hover:text-primary-600 hover:border-primary-300"
+            >
+              Next
+              <svg class="ml-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          )}
+        </div>
+      </nav>
+    )}
+  </div>
+</MainLayout>
+
+<style>
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+</style>

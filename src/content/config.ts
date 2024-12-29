@@ -1,5 +1,38 @@
 import { defineCollection, z } from 'astro:content';
 
+// Define the profile schema
+const profileSchema = z.object({
+  name: z.string(),
+  skill: z.string(),
+  status: z.string(),
+  requestStatus: z.string().optional(),
+  helpOfferedBy: z.string().optional(),
+  helpOfferedDate: z.string().optional(),
+  location: z.string(),
+  category: z.string().optional(),
+  level: z.string().optional(),
+  profileImage: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  website: z.string().optional(),
+  socialMedia: z.object({
+    instagram: z.string().optional(),
+    facebook: z.string().optional(),
+    twitter: z.string().optional(),
+    linkedin: z.string().optional(),
+  }).optional(),
+  chargeType: z.enum(['free', 'paid']).optional(),
+  rate: z.string().optional(),
+  paymentMethods: z.array(
+    z.object({
+      type: z.string(),
+      number: z.string(),
+    })
+  ).optional(),
+  shortDescription: z.string(),
+  description: z.string(),
+});
+
 // Define the service schema
 const serviceSchema = z.object({
   title: z.string(),
@@ -134,7 +167,10 @@ const newsSchema = z.object({
 const docsSchema = z.object({
   title: z.string(),
   description: z.string(),
-  order: z.number().optional()
+  section: z.string(),
+  order: z.number().optional(),
+  featured: z.boolean().optional(),
+  lastUpdated: z.date().optional(),
 });
 
 // Define the talents schema
@@ -157,6 +193,11 @@ const talentsSchema = z.object({
 });
 
 // Define the collections
+const profilesCollection = defineCollection({
+  type: 'content',
+  schema: profileSchema,
+});
+
 const servicesCollection = defineCollection({
   type: 'content',
   schema: serviceSchema,
@@ -197,7 +238,9 @@ const docsCollection = defineCollection({
   schema: docsSchema,
 });
 
+// Export collections
 export const collections = {
+  profiles: profilesCollection,
   services: servicesCollection,
   resources: resourcesCollection,
   events: eventsCollection,

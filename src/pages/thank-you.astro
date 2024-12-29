@@ -52,13 +52,29 @@ const messages = {
     ]
   },
   default: {
-    title: 'Thank You for Your Submission',
-    message: 'We have received your submission and will review it shortly. Our team will contact you with any updates or questions.',
+    title: 'Thank You',
+    message: 'Your submission has been received.',
     nextSteps: [
-      'Check your email for confirmation',
-      'Save your submission reference number',
-      'Contact us if you have any questions'
+      'We will review your submission',
+      'You will receive a confirmation email shortly'
     ]
+  },
+  profile: {
+    title: 'Profile Created Successfully',
+    message: 'Thank you for creating your skills exchange profile. Your profile will be reviewed and published within 24 hours.',
+    nextSteps: [
+      'Check your email for profile confirmation',
+      'Browse other skills while you wait',
+      'Prepare any additional materials you might need for teaching'
+    ]
+  },
+  'profile-update': {
+    title: 'Profile Update Request Received',
+    description: 'Thank you for submitting your profile update request. Our team will review your changes and update your profile accordingly. You will receive a confirmation email once the changes are made.',
+    cta: {
+      text: 'View Skills Exchange',
+      href: '/skills-exchange'
+    }
   }
 };
 
@@ -83,36 +99,55 @@ const currentMessage = messages[formType] || messages.default;
 
         {/* Message */}
         <p class="text-center text-lg text-gray-600 mb-8">
-          {currentMessage.message}
+          {currentMessage.message || currentMessage.description}
         </p>
 
         {/* Next Steps */}
-        <div class="bg-gray-50 rounded-xl p-6 mb-8">
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Next Steps</h2>
-          <ul class="space-y-4">
-            {currentMessage.nextSteps.map(step => (
-              <li class="flex items-start">
-                <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-                <span class="text-gray-700">{step}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {currentMessage.nextSteps && (
+          <div class="bg-gray-50 rounded-xl p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Next Steps</h2>
+            <ul class="space-y-4">
+              {currentMessage.nextSteps.map(step => (
+                <li class="flex items-start">
+                  <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  <span class="text-gray-700">{step}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* CTA */}
+        {currentMessage.cta && (
+          <div class="text-center">
+            <a 
+              href={currentMessage.cta.href} 
+              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              {currentMessage.cta.text}
+            </a>
+          </div>
+        )}
 
         {/* Return to Home */}
-        <div class="text-center">
-          <a 
-            href="/" 
-            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
-          >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-            </svg>
-            Return to Home
-          </a>
-        </div>
+        {!currentMessage.cta && (
+          <div class="text-center">
+            <a 
+              href="/" 
+              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              Return to Home
+            </a>
+          </div>
+        )}
       </div>
     </div>
   </main>

@@ -1,0 +1,354 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+const pageTitle = "Skills Exchange";
+const pageDescription = "Connect, learn, and share skills with the Dzaleka community";
+
+// Get stats for hero section
+const allProfiles = await getCollection('profiles');
+const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available').length;
+const skillsRequested = allProfiles.filter(profile => 
+  profile.data.status === 'Requested' && 
+  (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+).length;
+
+// Get featured profiles
+const featuredOffered = allProfiles
+  .filter(profile => profile.data.status === 'Available')
+  .slice(0, 4);
+const featuredRequested = allProfiles
+  .filter(profile => 
+    profile.data.status === 'Requested' && 
+    (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+  )
+  .slice(0, 4);
+
+// Categories with icons and descriptions
+const categories = [
+  { 
+    name: 'Photography',
+    icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
+    description: 'Capture and share stories through visual artistry',
+    color: 'from-pink-500 to-rose-500'
+  },
+  { 
+    name: 'Business',
+    icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+    description: 'Learn entrepreneurship and business skills',
+    color: 'from-blue-500 to-cyan-500'
+  },
+  { 
+    name: 'Technology',
+    icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+    description: 'Master digital skills and computing',
+    color: 'from-violet-500 to-purple-500'
+  },
+  { 
+    name: 'Language',
+    icon: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129',
+    description: 'Learn new languages and communication',
+    color: 'from-green-500 to-emerald-500'
+  },
+  { 
+    name: 'Arts & Crafts',
+    icon: 'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z',
+    description: 'Express creativity through traditional crafts',
+    color: 'from-orange-500 to-amber-500'
+  },
+  { 
+    name: 'Music',
+    icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
+    description: 'Learn musical instruments and vocals',
+    color: 'from-red-500 to-orange-500'
+  }
+];
+
+// Impact stats
+const impactStats = [
+  { number: skillsOffered + skillsRequested, label: 'Total Skills', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+  { number: skillsOffered, label: 'Skills Shared', icon: 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' },
+  { number: skillsRequested, label: 'Learning Opportunities', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' }
+];
+
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section with Animated Background -->
+  <div class="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <!-- Hero Content -->
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+          <span class="block">Connect, Learn & Grow</span>
+          <span class="block text-primary-200 mt-2">in Our Community</span>
+        </h1>
+        <p class="mt-6 text-xl text-primary-100 max-w-2xl mx-auto">
+          Join our vibrant skills exchange platform where community members share knowledge, learn from each other, and build a stronger future together.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/skills-exchange/skills-offered" 
+             class="inline-flex items-center px-6 py-3 rounded-lg text-primary-900 bg-white hover:bg-primary-50 transition-colors shadow-lg">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            Discover Skills
+          </a>
+          <a href="/skills-exchange/list-profile" 
+             class="inline-flex items-center px-6 py-3 rounded-lg text-white bg-primary-600 hover:bg-primary-500 transition-colors shadow-lg">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+            Share Your Skills
+          </a>
+        </div>
+      </div>
+
+      <!-- Impact Stats -->
+      <div class="mt-16 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {impactStats.map(stat => (
+            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <div class="flex items-center">
+                <div class="p-2 bg-primary-500 bg-opacity-20 rounded-lg">
+                  <svg class="w-6 h-6 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={stat.icon} />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <div class="text-3xl font-bold text-white">{stat.number}</div>
+                  <div class="text-primary-200">{stat.label}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="bg-gray-50">
+    <!-- Categories Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+          Explore Skills by Category
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          Discover the diverse range of skills being shared in our community
+        </p>
+      </div>
+
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map(category => (
+          <a href={`/skills-exchange/skills-offered?category=${category.name}`} 
+             class="group relative rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
+            <div class={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90 group-hover:opacity-100 transition-opacity`}></div>
+            <div class="relative p-8">
+              <div class="flex items-center justify-between">
+                <div class="bg-white/20 rounded-lg p-3">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={category.icon} />
+                  </svg>
+                </div>
+                <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-xl font-semibold text-white">{category.name}</h3>
+              <p class="mt-2 text-white/80">{category.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Featured Skills Section -->
+    <div class="bg-white py-16 sm:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-16">
+          <!-- Featured Skills Offered -->
+          <div>
+            <div class="flex justify-between items-center mb-8">
+              <h2 class="text-2xl font-bold text-gray-900">Featured Skills</h2>
+              <a href="/skills-exchange/skills-offered" class="text-primary-600 hover:text-primary-700 font-medium">
+                View All →
+              </a>
+            </div>
+            <div class="space-y-6">
+              {featuredOffered.map(profile => (
+                <a href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`} 
+                   class="block bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center">
+                    <img src={profile.data.profileImage} alt="" class="w-12 h-12 rounded-full object-cover" />
+                    <div class="ml-4">
+                      <h3 class="text-lg font-medium text-gray-900">{profile.data.skill}</h3>
+                      <p class="text-sm text-gray-500">{profile.data.name}</p>
+                    </div>
+                    <div class="ml-auto">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        Available
+                      </span>
+                    </div>
+                  </div>
+                  <p class="mt-3 text-sm text-gray-600 line-clamp-2">{profile.data.shortDescription}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          
+          <!-- Featured Requests -->
+          <div>
+            <div class="flex justify-between items-center mb-8">
+              <h2 class="text-2xl font-bold text-gray-900">Learning Requests</h2>
+              <a href="/skills-exchange/skills-requested" class="text-primary-600 hover:text-primary-700 font-medium">
+                View All →
+              </a>
+            </div>
+            <div class="space-y-6">
+              {featuredRequested.map(profile => (
+                <a href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`} 
+                   class="block bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center">
+                    <img src={profile.data.profileImage} alt="" class="w-12 h-12 rounded-full object-cover" />
+                    <div class="ml-4">
+                      <h3 class="text-lg font-medium text-gray-900">Learning {profile.data.skill}</h3>
+                      <p class="text-sm text-gray-500">{profile.data.name}</p>
+                    </div>
+                    <div class="ml-auto">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        Requested
+                      </span>
+                    </div>
+                  </div>
+                  <p class="mt-3 text-sm text-gray-600 line-clamp-2">{profile.data.shortDescription}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earning Section -->
+<div class="bg-gradient-to-r from-primary-50 to-gray-50 py-16 sm:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+      <div>
+        <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+          Earn by Sharing Your Skills
+        </h2>
+        <p class="mt-3 max-w-3xl text-lg text-gray-500">
+          Turn your expertise into income by offering paid services. Whether you're a photographer, artist, musician, or have any other valuable skill, you can earn while helping others learn.
+        </p>
+        <!-- Add the three features with SVG icons -->
+        <div class="mt-8">
+          <div class="space-y-4">
+            <!-- Set Your Own Rates -->
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p class="ml-3 text-base text-gray-500">
+                <span class="font-medium text-gray-900">Set Your Own Rates</span> - Choose your pricing and payment methods
+              </p>
+            </div>
+            <!-- Flexible Schedule -->
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p class="ml-3 text-base text-gray-500">
+                <span class="font-medium text-gray-900">Flexible Schedule</span> - Teach when it works for you
+              </p>
+            </div>
+            <!-- Build Your Network -->
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <p class="ml-3 text-base text-gray-500">
+                <span class="font-medium text-gray-900">Build Your Network</span> - Connect with learners and grow your reputation
+              </p>
+            </div>
+          </div>
+          <!-- Call to Action -->
+          <div class="mt-8">
+            <a href="/skills-exchange/list-profile" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
+              Start Teaching
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-3 -mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+            <p class="mt-3 text-sm text-gray-500">
+              Share your skills with the community - it's completely free!
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Payment Methods -->
+      <div class="mt-8 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:mt-0 lg:grid-cols-2">
+        <div class="col-span-1 flex justify-center py-8 px-8 bg-white rounded-lg">
+          <img class="max-h-12" src="https://cdn-webportal.airtelstream.net/website/malawi/assets/images/main-logo.svg" alt="Airtel Money">
+        </div>
+        <div class="col-span-1 flex justify-center py-8 px-8 bg-white rounded-lg">
+          <img class="max-h-12" src="https://www.tnm.co.mw/_nuxt/img/tnm-logo-1.0dd9a10.svg" alt="TNM Mpamba">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Join Community Section -->
+    <div class="relative bg-primary-900 py-16 sm:py-24">
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-800 to-primary-900 opacity-90"></div>
+      </div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+            Ready to Make a Difference?
+          </h2>
+          <p class="mt-4 text-xl text-primary-100">
+            Join our community of skilled individuals making a positive impact. Whether you want to teach or learn, your journey starts here.
+          </p>
+          <div class="mt-8 flex justify-center gap-4">
+            <a href="/skills-exchange/list-profile" 
+               class="inline-flex items-center px-6 py-3 rounded-lg text-primary-900 bg-white hover:bg-primary-50 transition-colors">
+              Create Your Profile
+            </a>
+            <a href="/skills-exchange/about" 
+               class="inline-flex items-center px-6 py-3 rounded-lg text-white border border-white hover:bg-white/10 transition-colors">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+</style>
