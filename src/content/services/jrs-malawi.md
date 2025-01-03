@@ -28,15 +28,4 @@ lastUpdated: 2024-12-24
 
 ## About JRS Malawi
 
-Emergency assistance, education, and psychosocial support for refugees in Dzaleka Camp.
-
-### Our Services
-- Emergency assistance
-- Basic needs support
-- Protection services
-- Community support
-
-### Contact Information
-- **Address:** Dzaleka Refugee Camp, Malawi
-- **Phone:** +265 1 471 102
-- **Email:** mwi.director@jrs.net
+JRS Malawi (Jesuit Refugee Service Malawi) is a non-profit organization that provides humanitarian assistance and advocates for the rights and well-being of refugees in Malawi. With a focus on education, healthcare, livelihoods, and protection, JRS Malawi supports refugees and vulnerable communities by providing essential services, advocating for their rights, and promoting self-reliance. The organization is committed to improving the quality of life for refugees while fostering dignity, peace, and social integration.

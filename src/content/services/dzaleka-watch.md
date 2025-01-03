@@ -20,7 +20,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/dzalekaconnect/'
   website: 'https://watch.dzaleka.com/'
 logo: >-
-  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/242279651_104545395316910_6070014503027272065_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=kqZCYfrBK6oQ7kNvgGPJo5d&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=ASb0kPvg5xtMPcCbMuodAdg&oh=00_AYA7gZLQ_avkt8nFM3Hegv7GllkFOfL7-Phyxr9_yp8vwg&oe=67701D87
+  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/242279651_104545395316910_6070014503027272065_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=VQMgu9bA4-QQ7kNvgG20F9p&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=AikiO6stP9Gvw40XduDKHUu&oh=00_AYAB0gC9MeWwq1JIuDZWwKQ2CnirZtvR8vw_UaMyPHovJw&oe=677D1447
 featured: true
 lastUpdated: 2024-12-24
 ---
@@ -30,12 +30,10 @@ lastUpdated: 2024-12-24
 Dzaleka Watch is the central hub for videos created within Dzaleka Refugee Camp. Our platform showcases documentaries, short films, news reports, and cultural content - all produced by camp residents. We believe in the power of storytelling through video to share our experiences, preserve our cultures, and connect with audiences worldwide.
 
 
-## Our Mission
+### Our Mission
 To amplify voices from Dzaleka Refugee Camp by providing a dedicated platform for community-created videos and stories that showcase our culture, talents, and daily life.
 
-
-
-## What You'll Find:
+### What You'll Find:
 - Original Series: Weekly shows covering camp life, culture, and entertainment
 - Documentaries: In-depth looks at camp initiatives, businesses, and personal stories
 - Music & Performance: Live concerts, dance shows, and traditional performances
@@ -49,7 +47,3 @@ From hard-hitting documentaries to comedy shows, Interview programs to music per
 We're proud of our camp's creative spirit, and we're here to show you the Dzaleka that we know – a place where cultures meet, where artists create, where businesses grow, and where communities support each other despite the challenges.
 
 Dzaleka Watch: All of Dzaleka's best content, one platform. Real stories. Real people. Our home through our eyes.
-
-### Contact Information
-- **Address:** Dzaleka Refugee Camp, Malawi
-- **Email:** contact@mail.dzaleka.com

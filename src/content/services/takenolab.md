@@ -27,16 +27,6 @@ lastUpdated: 2024-12-24
 
 ## About Takenolab
 
-TakenoLAB is a school of technology which teaches communities how to develop software professionally and provides communities with different technological platforms to practice and express skills. It is also helping people to find solutions to their problems by connecting with online jobs. takenoLAB is there to help marginalized communities to become technologically advanced.
+TakenoLAB is a tech hub and ICT academy committed to equipping communities, especially in rural and refugee areas, with skills in software development, cybersecurity, and entrepreneurship. They offer affordable programming courses and foster creativity in tech. With a focus on empowerment, they aim to bridge gaps by creating opportunities for underprivileged individuals, including refugees. 
 
-### Mission
-
-To teach everyone how to code, and to provide platforms for learning, practicing, and expressing skills in constructing meaningful solutions
-
-### Where We are Going
-
-The courses at takenoLAB are provided for free, which allows everyone from different cultural backgrounds to attend. We at takenoLAB are open to both refugees and Malawians who want to advance their knowledge of technology and business. 
-
-The purpose of takenoLAB is to encourage youth that there is hope for their future, regardless of their lack of prior familiarity with technology. takenoLAB centers on empowering women to start their own businesses and advance their careers in technology. 
-
-Additionally, young people who have dropped out of school as a result of different challenges in their lives and lost hope of having a significant impact on their lives and their communities are being given another chance to change their lives and the community through entrepreneurship and technology.
+You can learn more on their [website](https://takenolab.com/).

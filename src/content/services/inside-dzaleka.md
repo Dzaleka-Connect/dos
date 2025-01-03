@@ -29,13 +29,3 @@ lastUpdated: 2024-12-24
 ## About Inside Dzaleka
 
 Inside Dzaleka Is A Platform With The Aim To Educate, Entertain And Expose Dzaleka Refugee Camp To The World.
-
-### Our Services
-- Youth empowerment
-- Skills development
-- Leadership training
-- Mentorship programs
-
-### Contact Information
-- **Address:** Dzaleka Refugee Camp, Malawi
-- **Website:** [Inside Dzaleka](https://www.instagram.com/inside_dzaleka/)

@@ -26,35 +26,6 @@ lastUpdated: 2024-12-24
 
 ## About There is Hope Malawi
 
-There is Hope Malawi provides educational opportunities and vocational training to both refugees and host communities, focusing on:
+**There Is Hope Malawi** is an NGO focused on providing education, income-generating activities, and spiritual well-being to refugees at Dzaleka Refugee Camp and surrounding communities. Their mission is to foster self-reliance and dignity through education and skill development. Their vision aims for sustainable livelihoods by supporting both refugees and host communities, empowering them to achieve independence and economic well-being. 
 
-- Vocational skills training
-- Academic education
-- Community integration
-- Economic empowerment
-
-### Our Programs
-
-#### Vocational Training
-- Carpentry
-- Tailoring
-- Computer skills
-- Business management
-
-#### Academic Support
-- Scholarship programs
-- Tutorial services
-- Language courses
-
-#### Community Integration
-- Joint programs with host community
-- Cultural exchange
-- Social cohesion initiatives
-
-### Impact
-
-Since our establishment, we have:
-- Trained over 500 students in various vocational skills
-- Provided scholarships to more than 200 students
-- Facilitated numerous cultural exchange programs
-- Created sustainable livelihood opportunities for refugees and host communities
+For more details, visit [There Is Hope](https://thereishopemalawi.org/).

@@ -10,7 +10,7 @@ location:
     lat: -13.7833
     lng: 33.9833
 contact:
-  email: "info@dzalekarising.org"
+  email: "dk5.risin@gmail.com"
   phone: "+265 991 234567"
   hours: "Monday-Friday, 9:00 AM - 5:00 PM"
 socialMedia:

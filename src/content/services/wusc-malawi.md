@@ -26,11 +26,24 @@ lastUpdated: 2024-12-24
 
 ## About WUSC Malawi
 
-WUSC is a Canadian non-profit organization improving education, economic, and empowerment opportunities for youth around the world.
+WUSC Malawi, part of the World University Service of Canada (WUSC), is a non-profit organization dedicated to enhancing education, employment, and empowerment opportunities for youth and women in Malawi. Established in 2013, WUSC Malawi focuses on initiatives that promote gender equality, youth entrepreneurship, and sustainable development. 
 
-### Services
-- Skills training
-- Scholarships
-- Academic support
-- Capacity building
-- Educational resources
+**Mission:**
+To create education, employment, and empowerment opportunities for youth and women in Malawi, fostering sustainable development and social inclusion.
+
+**Vision:**
+A Malawi where youth and women have equal access to opportunities, enabling them to contribute meaningfully to the country's development.
+
+WUSC Malawi's programs include:
+
+- **Education Initiatives:** Providing scholarships and educational support to marginalized youth.
+
+- **Employment Programs:** Facilitating job placements and vocational training to enhance employability.
+
+- **Empowerment Projects:** Supporting women and youth-led enterprises through capacity building and mentorship.
+
+For more information, visit WUSC Malawi's [Facebook page](https://www.facebook.com/wuscmw/) or [Instagram profile](https://www.instagram.com/wuscmw/).
+
+To learn more about WUSC Malawi's work, you can watch the following video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OL3nMfYGG54?si=_jovr6e4dsqpVNHL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -26,10 +26,6 @@ lastUpdated: 2024-12-24
 
 ## About ROCK Your World
 
-Youth empowerment through arts and culture.
+Refugee Outreach Collective (ROC) is a non-profit organization dedicated to supporting refugees through education, advocacy, and community outreach. With a focus on providing educational resources like tutoring services and university programs, ROC aims to empower refugees in the U.S. and globally, especially through initiatives like the Global Classroom in Malawi. They collaborate with universities and partners to enhance refugee self-sufficiency, focusing on long-term sustainability and educational access.
 
-### Our Services
-- Youth empowerment
-- Skills development
-- Leadership training
-- Mentorship programs
+Learn more at [ROC's website](https://www.rocyourworld.org/).

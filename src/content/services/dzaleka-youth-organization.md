@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://mw.linkedin.com/company/dzleka-youth-congress'
   website: ''
 logo: >-
-  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/307651683_144428918288746_9019503272497803218_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=kbTG-5qTkYkQ7kNvgGrmxhg&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=Ao_9ViE5nqeUX5TQqrpF_Uj&oh=00_AYCDFNivRhI3KiF8sUOpXTtnn3Ere7qhrsphz1zkrPrFXA&oe=6772C959
+  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-1/307651683_144428918288746_9019503272497803218_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=aQbetl6MZNYQ7kNvgFi5vHh&_nc_zt=24&_nc_ht=scontent.fbne5-1.fna&_nc_gid=Ap7RPa3Yb1Boo0N0zP3Cv-8&oh=00_AYCVHWD6W4m8k15yE5xhmZdfcDRi38Cv3VJ-BXBh8DmCmA&oe=677CF75F
 featured: false
 lastUpdated: 2024-12-24
 ---

@@ -25,15 +25,10 @@ lastUpdated: 2024-12-24
 
 ## About Dzaleka Community Radio
 
-Community-run radio providing news and entertainment.
+Dzaleka Community Radio, known as Yetu Radio, is a community-run station based in Dzaleka Refugee Camp, Malawi. Established in 2018 by the United Nations High Commissioner for Refugees (UNHCR), its mission is to foster peaceful coexistence between Malawian and refugee communities by addressing issues such as child protection, gender-based violence, and human rights. 
 
-### Our Services
-- Cultural events
-- Arts programs
-- Heritage preservation
-- Community engagement
+Broadcasting on 99.1 MHz FM, Yetu Radio is unique in Malawi for its multilingual programming, offering content in English, Chichewa, Kiswahili, French, and Kinyarwanda.  This diversity ensures accessibility to a wide audience within the camp and surrounding areas.
 
-### Contact Information
-- **Address:** Dzaleka Refugee Camp, Malawi
-- **Phone:** +265 992 345678
-- **Email:** contact@dzalekaradio.org
+The station provides a platform for refugees and host community members to share their stories, discuss pertinent issues, and access vital information. By promoting cultural exchange and community engagement, Yetu Radio plays a pivotal role in empowering individuals and fostering a sense of unity among diverse populations.
+
+For more information or to tune in, visit [Yetu Radio's website](https://yeturadio.com/) or follow their [Facebook page](https://www.facebook.com/MalawiSportsNow/). 
