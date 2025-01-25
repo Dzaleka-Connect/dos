@@ -3,13 +3,19 @@ const currentYear = new Date().getFullYear();
 
 const links = {
   services: [
-    { name: 'Services', href: '/services' },
+    { name: 'Browse Services', href: '/services' },
+    { name: 'Community Voices', href: '/voices' },
+    { name: 'Submit Voice', href: '/submit-voice' },
     { name: 'Events', href: '/events' },
     { name: 'News', href: '/news' },
     { name: 'Resources', href: '/resources' },
+    { name: 'Platform Features', href: '/platform-features' }
+  ],
+  community: [
     { name: 'Visit', href: '/visit' },
     { name: 'Applications', href: '/applications' },
-    { name: 'Skills Exchange', href: '/skills-exchange' }
+    { name: 'Skills Exchange', href: '/skills-exchange' },
+    { name: 'Culture', href: '/culture' }
   ],
   about: [
     { name: 'About Us', href: '/about' },
@@ -28,12 +34,12 @@ const links = {
 
 <footer class="bg-white border-t mt-auto">
   <div class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
       <!-- Brand -->
-      <div>
+      <div class="lg:col-span-1">
         <h2 class="text-xl font-bold text-primary-600 mb-4">Dzaleka Online Services</h2>
         <p class="text-gray-600 mb-4">
-          Empowering the Dzaleka community through digital connectivity
+          Empowering the Dzaleka community through digital connectivity and collaboration
         </p>
       </div>
 
@@ -42,6 +48,20 @@ const links = {
         <h3 class="font-semibold text-gray-900 mb-4">Services</h3>
         <ul class="space-y-2">
           {links.services.map(link => (
+            <li>
+              <a href={link.href} class="text-gray-600 hover:text-primary-600 transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Community -->
+      <div>
+        <h3 class="font-semibold text-gray-900 mb-4">Community</h3>
+        <ul class="space-y-2">
+          {links.community.map(link => (
             <li>
               <a href={link.href} class="text-gray-600 hover:text-primary-600 transition-colors">
                 {link.name}

@@ -1,0 +1,273 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const voices = await getCollection('community-voices');
+  return voices.map(voice => ({
+    params: { slug: voice.slug },
+    props: { voice },
+  }));
+}
+
+const { voice } = Astro.props;
+const { Content } = await voice.render();
+
+// Get related stories (same category)
+const allVoices = await getCollection('community-voices');
+const relatedStories = allVoices
+  .filter(v => v.data.category === voice.data.category && v.slug !== voice.slug)
+  .slice(0, 3);
+---
+
+<MainLayout title={`${voice.data.title} - Community Voice`}>
+  <main class="bg-gradient-to-b from-gray-50 to-white min-h-screen pb-16">
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 overflow-hidden">
+      <div class="absolute inset-0 bg-grid-white/[0.2] bg-[length:16px_16px] animate-pulse-slow"></div>
+      {voice.data.image ? (
+        <div class="relative h-[70vh] max-h-[800px]">
+          <img 
+            src={voice.data.image} 
+            alt={voice.data.title}
+            class="w-full h-full object-cover animate-fade-in"
+          />
+          <div class="absolute inset-0 bg-black/40">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+              <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                <div class="max-w-4xl mx-auto">
+                  <div class="flex flex-wrap items-center gap-3 text-white/80 mb-4 animate-fade-in-up">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-500/20 text-primary-100">
+                      {voice.data.category}
+                    </span>
+                    <span>•</span>
+                    <time>{new Date(voice.data.date).toLocaleDateString()}</time>
+                  </div>
+                  <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up [animation-delay:200ms]">
+                    {voice.data.title}
+                  </h1>
+                  <p class="text-xl md:text-2xl text-white/90 mb-6 max-w-3xl animate-fade-in-up [animation-delay:400ms]">
+                    {voice.data.excerpt}
+                  </p>
+                  <div class="text-lg text-white/80 animate-fade-in-up [animation-delay:600ms]">
+                    By {voice.data.author}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div class="relative max-w-4xl mx-auto px-4 py-24">
+          <div class="flex flex-wrap items-center gap-3 text-white/80 mb-4 animate-fade-in">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-500/20 text-primary-100">
+              {voice.data.category}
+            </span>
+            <span>•</span>
+            <time>{new Date(voice.data.date).toLocaleDateString()}</time>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up">
+            {voice.data.title}
+          </h1>
+          <p class="text-xl md:text-2xl text-white/90 mb-6 max-w-3xl animate-fade-in-up [animation-delay:200ms]">
+            {voice.data.excerpt}
+          </p>
+          <div class="text-lg text-white/80 animate-fade-in-up [animation-delay:400ms]">
+            By {voice.data.author}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Content -->
+    <article class="max-w-4xl mx-auto px-4 py-12">
+      <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12 prose prose-primary prose-lg max-w-none">
+        <Content />
+      </div>
+
+      {voice.data.tags && voice.data.tags.length > 0 && (
+        <div class="mt-8 flex flex-wrap gap-2">
+          {voice.data.tags.map(tag => (
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors cursor-pointer">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </article>
+
+    <!-- Related Stories -->
+    {relatedStories.length > 0 && (
+      <section class="max-w-4xl mx-auto px-4 py-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Related Stories</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {relatedStories.map(story => (
+            <a 
+              href={`/community-voices/${story.slug}`}
+              class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                <img 
+                  src={story.data.image || '/images/placeholder-voice.jpg'} 
+                  alt="" 
+                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div class="p-6">
+                <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                  {story.data.title}
+                </h3>
+                <p class="text-sm text-gray-600 line-clamp-2">{story.data.excerpt}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Navigation -->
+    <div class="max-w-4xl mx-auto px-4">
+      <a 
+        href="/community-voice" 
+        class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group"
+      >
+        <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Community Voice
+      </a>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  .bg-grid-white {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+
+  /* Enhanced Typography for Markdown Content */
+  :global(.prose) {
+    max-width: none;
+  }
+  
+  :global(.prose h2) {
+    color: #1a202c;
+    font-weight: 700;
+    font-size: 1.875em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.3;
+  }
+
+  :global(.prose h3) {
+    color: #1a202c;
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    line-height: 1.3;
+  }
+
+  :global(.prose p) {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    line-height: 1.8;
+  }
+
+  :global(.prose strong) {
+    color: #1a202c;
+    font-weight: 600;
+  }
+
+  :global(.prose a) {
+    color: #2563eb;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  :global(.prose a:hover) {
+    color: #1d4ed8;
+  }
+
+  :global(.prose blockquote) {
+    font-style: italic;
+    color: #4a5568;
+    border-left-color: #2563eb;
+    border-left-width: 0.25rem;
+    margin: 2em 0;
+    padding-left: 1.5em;
+  }
+
+  :global(.prose ul) {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    list-style-type: disc;
+    padding-left: 1.625em;
+  }
+
+  :global(.prose li) {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  :global(.prose img) {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  :global(.prose code) {
+    color: #2563eb;
+    background-color: #f1f5f9;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-size: 0.875em;
+  }
+</style>

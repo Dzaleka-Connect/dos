@@ -192,6 +192,18 @@ const talentsSchema = z.object({
   talents: z.array(talentSchema),
 });
 
+// Define the community voice schema
+const communityVoiceSchema = z.object({
+  title: z.string(),
+  author: z.string(),
+  date: z.string(),
+  category: z.string(),
+  excerpt: z.string(),
+  image: z.string().optional(),
+  featured: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
+});
+
 // Define the collections
 const profilesCollection = defineCollection({
   type: 'content',
@@ -233,6 +245,11 @@ const talentsCollection = defineCollection({
   schema: talentsSchema,
 });
 
+const communityVoicesCollection = defineCollection({
+  type: 'content',
+  schema: communityVoiceSchema,
+});
+
 const docsCollection = defineCollection({
   type: 'content',
   schema: docsSchema,
@@ -248,5 +265,6 @@ export const collections = {
   pages: pagesCollection,
   news: newsCollection,
   talents: talentsCollection,
+  'community-voices': communityVoicesCollection,
   docs: docsCollection,
 };

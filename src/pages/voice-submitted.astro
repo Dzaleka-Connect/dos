@@ -1,0 +1,72 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const message = {
+  title: 'Thank You for Sharing Your Voice',
+  message: 'Your voice has been submitted successfully and will be displayed on our Community Voices page after review. We appreciate your contribution to our community dialogue.',
+  nextSteps: [
+    'Your submission will be reviewed within 24-48 hours',
+    'Once approved, it will appear on the Community Voices page',
+    'The Dzaleka Online Service Team may respond to your submission',
+    'You can continue to engage with other voices while you wait'
+  ]
+};
+---
+
+<MainLayout title={message.title}>
+  <main class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12">
+        {/* Success Icon */}
+        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+          <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+
+        {/* Title */}
+        <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          {message.title}
+        </h1>
+
+        {/* Message */}
+        <p class="mt-4 text-center text-lg text-gray-600">
+          {message.message}
+        </p>
+
+        {/* Next Steps */}
+        <div class="mt-8">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">What happens next?</h2>
+          <ul class="space-y-4">
+            {message.nextSteps.map((step) => (
+              <li class="flex items-start">
+                <div class="flex-shrink-0">
+                  <svg class="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p class="ml-3 text-gray-600">{step}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Return Links */}
+        <div class="mt-12 space-y-4">
+          <a
+            href="/community-voice"
+            class="block w-full text-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-200"
+          >
+            Return to Community Voices
+          </a>
+          <a
+            href="/"
+            class="block w-full text-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200"
+          >
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</MainLayout>

@@ -3,87 +3,157 @@ const { content } = Astro.props;
 const { Content } = await content.render();
 ---
 
-<main class="lg:col-span-9">
-  <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-8">
-    <article class="prose prose-blue max-w-none">
-      <h1>{content.data.title}</h1>
-      <Content />
-    </article>
+<article class="prose prose-blue max-w-none">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900">{content.data.title}</h1>
+    {content.data.description && (
+      <p class="mt-4 text-xl text-gray-600">{content.data.description}</p>
+    )}
   </div>
-</main>
+  
+  <div class="content">
+    <Content />
+  </div>
+</article>
 
 <style>
-  /* Custom styles for documentation content */
+  /* Base typography */
+  .prose {
+    @apply text-gray-600 leading-relaxed;
+  }
+
+  /* Headings */
   :global(.prose h1) {
     @apply text-4xl font-bold text-gray-900 mb-8;
   }
+
   :global(.prose h2) {
     @apply text-2xl font-semibold text-gray-900 mt-12 mb-6 flex items-center gap-3;
   }
+
   :global(.prose h2 svg) {
-    @apply w-6 h-6 text-primary-600;
+    @apply w-6 h-6 text-primary-600 flex-shrink-0;
   }
+
   :global(.prose h3) {
     @apply text-xl font-medium text-gray-900 mt-8 mb-4 flex items-center gap-2;
   }
+
   :global(.prose h3 svg) {
-    @apply w-5 h-5 text-primary-500;
+    @apply w-5 h-5 text-primary-500 flex-shrink-0;
   }
+
+  /* Text elements */
   :global(.prose p) {
-    @apply text-gray-600 mb-6;
+    @apply text-gray-600 mb-6 leading-relaxed;
   }
-  :global(.prose ul) {
-    @apply list-none space-y-3 mb-6;
-  }
-  :global(.prose ul li) {
-    @apply flex items-start gap-3;
-  }
-  :global(.prose ul li svg) {
-    @apply w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0;
-  }
-  :global(.prose a) {
-    @apply text-primary-600 hover:text-primary-700;
-  }
+
   :global(.prose strong) {
     @apply font-semibold text-gray-900;
   }
+
+  /* Lists */
+  :global(.prose ul) {
+    @apply list-none space-y-3 mb-6;
+  }
+
+  :global(.prose ul li) {
+    @apply flex items-start gap-3;
+  }
+
+  :global(.prose ul li svg) {
+    @apply w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0;
+  }
+
+  /* Links */
+  :global(.prose a) {
+    @apply text-primary-600 hover:text-primary-700 transition-colors;
+  }
+
+  /* Blockquotes */
   :global(.prose blockquote) {
     @apply border-l-4 border-primary-200 pl-4 italic text-gray-600;
   }
-  :global(.prose code) {
-    @apply bg-gray-100 px-1 py-0.5 rounded text-sm text-gray-800;
+
+  /* Code blocks */
+  :global(.prose pre) {
+    @apply bg-gray-50 rounded-lg p-4 overflow-x-auto text-sm;
   }
+
+  :global(.prose code) {
+    @apply bg-gray-50 px-1.5 py-0.5 rounded text-sm text-gray-800;
+  }
+
+  /* Feature grid */
   :global(.feature-grid) {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8;
   }
+
   :global(.feature-card) {
     @apply bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow;
   }
+
   :global(.feature-card svg) {
     @apply w-8 h-8 text-primary-600 mb-4;
   }
+
   :global(.feature-card h4) {
-    @apply text-lg font-semibold text-gray-900 mb-2;
+    @apply text-lg font-medium text-gray-900 mb-2;
   }
+
   :global(.feature-card p) {
-    @apply text-gray-600 text-sm;
+    @apply text-sm text-gray-600;
   }
+
+  /* Steps list */
   :global(.steps-list) {
-    @apply space-y-6 my-8;
+    @apply space-y-8 my-8;
   }
+
   :global(.step-item) {
     @apply flex items-start gap-4;
   }
+
   :global(.step-number) {
-    @apply flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 text-primary-600 font-semibold flex items-center justify-center;
+    @apply w-8 h-8 rounded-full bg-primary-100 text-primary-600 font-semibold flex items-center justify-center flex-shrink-0;
   }
+
   :global(.step-content) {
-    @apply flex-grow;
+    @apply flex-1;
   }
+
   :global(.step-content h4) {
-    @apply text-lg font-semibold text-gray-900 mb-2;
+    @apply text-lg font-medium text-gray-900 mb-2;
   }
-  :global(.step-content p) {
+
+  /* Tables */
+  :global(.prose table) {
+    @apply w-full text-left border-collapse my-8;
+  }
+
+  :global(.prose table th) {
+    @apply bg-gray-50 px-6 py-3 border-b border-gray-200 text-sm font-semibold text-gray-900;
+  }
+
+  :global(.prose table td) {
+    @apply px-6 py-4 border-b border-gray-200 text-sm text-gray-600;
+  }
+
+  /* Images */
+  :global(.prose img) {
+    @apply rounded-lg shadow-sm my-8;
+  }
+
+  /* Callouts */
+  :global(.callout) {
+    @apply bg-primary-50 rounded-lg p-6 my-8;
+  }
+
+  :global(.callout-title) {
+    @apply flex items-center gap-2 text-lg font-medium text-gray-900 mb-2;
+  }
+
+  :global(.callout-content) {
     @apply text-gray-600;
   }
 </style>

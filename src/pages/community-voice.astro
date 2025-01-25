@@ -1,0 +1,242 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import { getCollection } from 'astro:content';
+
+// Get all community voices
+const allVoices = await getCollection('community-voices');
+const sortedVoices = allVoices.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const featuredVoices = sortedVoices.filter(voice => voice.data.featured);
+
+const categories = [
+  {
+    title: "Stories",
+    icon: "📖",
+    description: "Personal journeys, experiences, and memories from Dzaleka",
+    color: "from-blue-500 to-blue-600"
+  },
+  {
+    title: "Culture",
+    icon: "🎭",
+    description: "Celebrating our diverse cultural heritage through stories and traditions",
+    color: "from-purple-500 to-purple-600"
+  },
+  {
+    title: "Community",
+    icon: "🤝",
+    description: "Community initiatives, events, and people making a difference",
+    color: "from-green-500 to-green-600"
+  }
+];
+---
+
+<MainLayout title="Community Voice - Dzaleka Heritage">
+  <main class="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <!-- Hero Section with Animated Background -->
+    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 overflow-hidden">
+      <div class="absolute inset-0 bg-grid-white/[0.2] bg-[length:16px_16px] animate-pulse-slow"></div>
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-600/50 to-primary-800/50 backdrop-blur-sm"></div>
+      </div>
+      <div class="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight animate-fade-in">
+            Community Voice
+          </h1>
+          <p class="text-xl sm:text-2xl text-white/90 mb-8 max-w-2xl mx-auto animate-fade-in-up">
+            Discover stories, experiences, and perspectives from our vibrant community.
+          </p>
+          <div class="flex justify-center gap-4 animate-fade-in-up">
+            <a 
+              href="/submit-voice" 
+              class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-primary-600 bg-white hover:bg-gray-50 hover:scale-105 transform transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              Share Your Voice
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 -mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </a>
+            <a 
+              href="#stories" 
+              class="inline-flex items-center px-6 py-3 border-2 border-white text-base font-medium rounded-full text-white hover:bg-white/10 transition-all duration-200"
+            >
+              Explore Stories
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 -mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Stories with Parallax -->
+    {featuredVoices.length > 0 && (
+      <section class="relative py-20 overflow-hidden" id="stories">
+        <div class="absolute inset-0 bg-gradient-to-b from-primary-50/50 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Featured Stories</h2>
+          <p class="text-lg text-gray-600 mb-12">Highlighted voices from our community</p>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {featuredVoices.map(voice => (
+              <article class="group relative bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                  <img 
+                    src={voice.data.image || '/images/placeholder-voice.jpg'} 
+                    alt="" 
+                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <div class="flex items-center gap-3 mb-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-500/30 text-white backdrop-blur-sm">
+                      {voice.data.category}
+                    </span>
+                    <time class="text-sm text-white/80">{new Date(voice.data.date).toLocaleDateString()}</time>
+                  </div>
+                  <h3 class="text-2xl font-bold mb-2 group-hover:text-primary-200 transition-colors">
+                    {voice.data.title}
+                  </h3>
+                  <p class="text-white/90 line-clamp-2 mb-4">{voice.data.excerpt}</p>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm text-white/80">By {voice.data.author}</span>
+                    <a 
+                      href={`/community-voices/${voice.slug}`} 
+                      class="inline-flex items-center text-white font-medium hover:text-primary-200 transition-colors"
+                    >
+                      Read More
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Interactive Category Filters -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Browse by Category</h2>
+        <p class="text-lg text-gray-600 mb-12">Explore stories through different perspectives</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {categories.map((category) => (
+            <button 
+              class={`group p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-left relative overflow-hidden`}
+            >
+              <div class={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+              <div class="relative">
+                <div class="flex items-center mb-4">
+                  <span class="text-3xl mr-4 transform group-hover:scale-110 transition-transform duration-300">{category.icon}</span>
+                  <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">{category.title}</h3>
+                </div>
+                <p class="text-gray-600 group-hover:text-gray-900 transition-colors">{category.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- All Stories Grid with Masonry Layout -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">All Stories</h2>
+        <p class="text-lg text-gray-600 mb-12">Voices from our diverse community</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedVoices.map((voice) => (
+            <article class="group bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div class="aspect-w-3 aspect-h-2 bg-gray-200">
+                <img 
+                  src={voice.data.image || '/images/placeholder-voice.jpg'} 
+                  alt="" 
+                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                    {voice.data.category}
+                  </span>
+                  <time class="text-sm text-gray-500">{new Date(voice.data.date).toLocaleDateString()}</time>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                  {voice.data.title}
+                </h3>
+                <p class="text-gray-600 mb-4 line-clamp-2">{voice.data.excerpt}</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-500">By {voice.data.author}</span>
+                  <a 
+                    href={`/community-voices/${voice.slug}`} 
+                    class="inline-flex items-center text-primary-600 font-medium group-hover:text-primary-700"
+                  >
+                    Read More
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .bg-grid-white {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+</style>

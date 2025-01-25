@@ -1,8 +1,34 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import DocsSidebar from '../../components/docs/DocsSidebar.astro';
-import DocsContent from '../../components/docs/DocsContent.astro';
 import { getCollection } from 'astro:content';
+
+// Define documentation groups and structure
+const docGroups = {
+  'getting-started': {
+    title: 'Getting Started',
+    items: ['getting-started', 'platform-features']
+  },
+  'community': {
+    title: 'Community',
+    items: ['community-voice', 'community-events', 'community-resources']
+  },
+  'services': {
+    title: 'Services',
+    items: ['using-services', 'service-providers', 'skills-exchange']
+  },
+  'media': {
+    title: 'Media',
+    items: ['photo-gallery', 'news']
+  },
+  'help': {
+    title: 'Help & Support',
+    items: ['support', 'search', 'visit', 'faq']
+  },
+  'legal': {
+    title: 'Legal',
+    items: ['privacy-terms', 'about']
+  }
+};
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
@@ -13,15 +39,193 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
+const docs = await getCollection('docs');
+
+// Sort docs into their groups
+const groupedDocs = Object.entries(docGroups).reduce((acc, [key, group]) => {
+  acc[key] = {
+    title: group.title,
+    items: group.items
+      .map(slug => docs.find(doc => doc.slug === slug))
+      .filter(Boolean)
+  };
+  return acc;
+}, {});
+
+// Get related documents based on section
+const getRelatedDocs = (doc) => {
+  const currentSection = Object.entries(docGroups).find(([_, group]) => 
+    group.items.includes(doc.slug)
+  )?.[0];
+  
+  return docs.filter(d => 
+    d.slug !== doc.slug && 
+    docGroups[currentSection]?.items.includes(d.slug)
+  );
+};
+
+const relatedDocs = getRelatedDocs(doc);
+const { Content } = await doc.render();
 ---
 
 <MainLayout title={`${doc.data.title} - Documentation`}>
-  <div class="bg-gray-50 min-h-screen">
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+    <!-- Documentation Header -->
+    <div class="bg-gradient-to-r from-primary-600 to-primary-800 relative overflow-hidden">
+      <div class="absolute inset-0 bg-grid-white/[0.1] bg-[size:16px_16px]"></div>
+      <div class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-white/[0.07] to-transparent"></div>
+      <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 relative">
+        <div class="text-center">
+          <h1 class="text-4xl font-extrabold text-white sm:text-5xl sm:tracking-tight lg:text-6xl [text-wrap:balance]">
+            {doc.data.title}
+          </h1>
+          {doc.data.description && (
+            <p class="max-w-2xl mt-6 mx-auto text-lg text-primary-100">
+              {doc.data.description}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="max-w-3xl mx-auto -mt-8 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="bg-white rounded-xl shadow-md border border-gray-200/50 p-3 flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+        <input type="search" 
+               placeholder="Search documentation..." 
+               class="flex-1 border-0 focus:ring-0 focus:outline-none text-gray-900 placeholder-gray-400 text-sm"
+        />
+        <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded">⌘K</kbd>
+      </div>
+    </div>
+
+    <!-- Documentation Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-        <DocsSidebar currentSlug={doc.slug} />
-        <DocsContent content={doc} />
+        <!-- Sidebar - Mobile Dropdown -->
+        <div class="lg:hidden mb-8">
+          <label for="docs-nav" class="sr-only">Select documentation page</label>
+          <select id="docs-nav"
+                  class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" 
+                  onchange="window.location.href=this.value">
+            {Object.entries(groupedDocs).map(([section, { title, items }]) => (
+              <optgroup label={title}>
+                {items.map(d => (
+                  <option value={`/docs/${d.slug}`} selected={d.slug === doc.slug}>
+                    {d.data.title}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+
+        <!-- Sidebar - Desktop -->
+        <div class="hidden lg:block lg:col-span-3">
+          <nav class="sticky top-6 space-y-4" aria-label="Sidebar">
+            {Object.entries(groupedDocs).map(([section, { title, items }]) => (
+              <div class="bg-white rounded-xl border border-gray-200/50 shadow-sm overflow-hidden">
+                <div class="px-4 py-3 bg-gray-50/50 border-b border-gray-200/50">
+                  <h3 class="font-medium text-sm text-gray-900 uppercase tracking-wide">
+                    {title}
+                  </h3>
+                </div>
+                <ul class="divide-y divide-gray-200/50">
+                  {items.map(d => (
+                    <li>
+                      <a
+                        href={`/docs/${d.slug}`}
+                        class={`block px-4 py-3 hover:bg-gray-50/50 transition-colors ${
+                          d.slug === doc.slug
+                            ? 'text-primary-600 font-medium bg-primary-50/50'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        {d.data.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        <!-- Main Content -->
+        <main class="lg:col-span-9 space-y-8">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200/50 p-8">
+            <article class="prose prose-blue max-w-none">
+              <Content />
+            </article>
+          </div>
+
+          {relatedDocs.length > 0 && (
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedDocs.map(d => (
+                <a href={`/docs/${d.slug}`} 
+                   class="group block">
+                  <div class="h-full bg-white rounded-xl border border-gray-200/50 shadow-sm p-6 hover:shadow-md hover:border-primary-100 transition duration-200">
+                    <div class="flex items-start gap-3">
+                      <div class="rounded-lg bg-primary-50/50 p-1.5 group-hover:bg-primary-100/50 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary-600" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 transition duration-200">
+                          {d.data.title}
+                        </h3>
+                        {d.data.description && (
+                          <p class="mt-1.5 text-sm text-gray-600 line-clamp-2">{d.data.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </main>
       </div>
     </div>
   </div>
 </MainLayout>
+
+<style>
+  /* Add smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Improve typography for better readability */
+  .prose {
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+  
+  .prose h1 {
+    @apply text-4xl font-bold text-gray-900 mb-8;
+  }
+  
+  .prose h2 {
+    @apply text-2xl font-semibold text-gray-900 mt-12 mb-6;
+  }
+  
+  .prose p {
+    @apply text-gray-600 leading-relaxed;
+  }
+  
+  /* Improve link styles */
+  .prose a {
+    @apply text-primary-600 hover:text-primary-700 transition-colors;
+  }
+
+  /* Background grid pattern */
+  .bg-grid-white {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+</style>
