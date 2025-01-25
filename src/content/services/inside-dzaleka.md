@@ -21,7 +21,7 @@ socialMedia:
   linkedin: ''
   website: 'https://www.instagram.com/inside_dzaleka/'
 logo: >-
-  /public/images/Inside_dzaleka.jpg
+  /images/Inside_dzaleka.jpg
 featured: false
 lastUpdated: 2024-12-24
 ---

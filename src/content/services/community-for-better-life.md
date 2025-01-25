@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/communityforbetterlife/'
   linkedin: ''
   website: 'https://communityforbetterlife.org/'
-logo: /public/images/community_for_better_life.jpg
+logo: /images/community_for_better_life.jpg
 featured: false
 lastUpdated: 2025-01-03
 ---

@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/children-relief-service-crs/'
   website: 'https://www.crs-org.ga'
 logo: >-
-  /public/images/children_relief_service.jpg
+  /images/children_relief_service.jpg
 featured: false
 lastUpdated: 2025-01-03
 ---

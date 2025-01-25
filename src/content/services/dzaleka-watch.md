@@ -20,7 +20,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/dzalekaconnect/'
   website: 'https://watch.dzaleka.com/'
 logo: >-
-  /public/images/dzaleka_watch.jpg
+  /images/dzaleka_watch.jpg
 featured: true
 lastUpdated: 2024-12-24
 ---

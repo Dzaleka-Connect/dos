@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://mw.linkedin.com/company/dzleka-youth-congress'
   website: ''
 logo: >-
-  /public/images/dzaleka_youth_organisation.jpg
+  /images/dzaleka_youth_organisation.jpg
 featured: false
 lastUpdated: 2024-12-24
 ---

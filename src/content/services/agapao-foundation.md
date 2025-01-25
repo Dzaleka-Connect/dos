@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/umoja-ni-nguvu-organization/'
   website: ''
 logo: >-
-  /public/images/agapao_foundation.png
+  /images/agapao_foundation.png
 featured: false
 lastUpdated: 2025-01-03
 ---
