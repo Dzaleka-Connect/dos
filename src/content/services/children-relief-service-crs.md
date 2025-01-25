@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/children-relief-service-crs/'
   website: 'https://www.crs-org.ga'
 logo: >-
-  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/468159993_878792271107913_1142358787389821847_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=XDW-e6I23XMQ7kNvgGdh3Ls&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=AQqGTat1F5fzp9IhXhPMvT0&oh=00_AYCLrPjEQOV12dHOyIH4omQqx4w5oBhtydvGrcFPeSHrTA&oe=677D2C17
+  /public/images/children_relief_service.jpg
 featured: false
 lastUpdated: 2025-01-03
 ---

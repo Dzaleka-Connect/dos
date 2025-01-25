@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://instagram.com/alpha_techverse?igshid=OGQ5ZDc2ODk2ZA%3D%3D&utm_source=qr'
   linkedin: 'https://www.linkedin.com/company/alpha-techverse/?originalSubdomain=mw'
   website: 'https://www.alpha-techverse.com/'
-logo: https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/274872989_105480215416553_7615034068566375135_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=H4UqC3vxtOUQ7kNvgHPPxcP&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=A-YDW-4s5o8MCAv93TjWMZh&oh=00_AYBCgGwogTVy7apFJQrLs6hCxiOv7zxtnCk50H4Cn9ZqGQ&oe=677D0896
+logo: https://thumbs2.imgbox.com/01/a9/VRSjaaJ5_t.jpg
 featured: false
 lastUpdated: 2025-01-03
 ---

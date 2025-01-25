@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/green_uhuru_organization?igsh=MXZ1dWRhdGh1eWI2ag%3D%3D'
   linkedin: ''
   website: ''
-logo: 'https://instagram.fbne5-1.fna.fbcdn.net/v/t51.2885-19/67513241_2426257204317364_4737624737402847232_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fbne5-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=FzpHaiB8KJUQ7kNvgGNCvkY&_nc_gid=4a8e5b98bf21416888f0b22a7dc2e16b&edm=APoiHPcBAAAA&ccb=7-5&oh=00_AYAihRLBNW5rfmWeMWJ2KVUwd9H_fBpoV7WdK7DmWhl3FQ&oe=6773093B&_nc_sid=22de04'
+logo: '/public/images/GU+Woman+making+briquettes.jpg'
 featured: false
 verified: false
 lastUpdated: 2024-12-24

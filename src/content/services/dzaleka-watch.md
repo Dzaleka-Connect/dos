@@ -2,7 +2,7 @@
 title: Dzaleka Watch
 category: Entrepreneurship
 description: >-
-  zaleka Watch is the central hub for videos created within Dzaleka Refugee Camp. Our platform showcases documentaries, short films, news reports, and cultural content.
+  Dzaleka Watch is the central hub for videos created within Dzaleka Refugee Camp. Our platform showcases documentaries, short films, news reports, and cultural content.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -20,7 +20,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/dzalekaconnect/'
   website: 'https://watch.dzaleka.com/'
 logo: >-
-  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/242279651_104545395316910_6070014503027272065_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=VQMgu9bA4-QQ7kNvgG20F9p&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=AikiO6stP9Gvw40XduDKHUu&oh=00_AYAB0gC9MeWwq1JIuDZWwKQ2CnirZtvR8vw_UaMyPHovJw&oe=677D1447
+  /public/images/dzaleka_watch.jpg
 featured: true
 lastUpdated: 2024-12-24
 ---

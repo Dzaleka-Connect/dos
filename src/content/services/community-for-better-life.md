@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/communityforbetterlife/'
   linkedin: ''
   website: 'https://communityforbetterlife.org/'
-logo: https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/417524242_783254967159559_2073832541230003577_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=M8Dwa7SWlUkQ7kNvgHNSh1L&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=AiKx5qcVzQVWb2updJwmvSd&oh=00_AYA1bl7lOYQc-mUtFvoV1fYfQuwh5rAxwvvhv8jX1s_QFw&oe=677D1306
+logo: /public/images/community_for_better_life.jpg
 featured: false
 lastUpdated: 2025-01-03
 ---

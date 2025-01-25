@@ -17,19 +17,40 @@ const partners = [
 
 const services = [
   {
-    title: 'Application Services',
-    description: 'Submit and track applications for various community services and programs.',
-    icon: '📝'
+    title: 'Digital Archive',
+    description: 'Explore and contribute to our growing collection of photos, videos, and stories that document life in Dzaleka. Help preserve our cultural heritage for future generations.',
+    icon: '📚',
+    url: '/photos'
   },
   {
-    title: 'Digital Archive',
-    description: 'Access and contribute to our growing collection of community stories and history.',
-    icon: '📚'
+    title: 'Community Directory',
+    description: 'Find and connect with local organizations, businesses, and services within Dzaleka. A comprehensive database of community resources at your fingertips.',
+    icon: '🔍',
+    url: '/services'
+  },
+  {
+    title: 'Online Services',
+    description: 'Access essential services digitally - from permit applications to community program registrations. Making administrative tasks more accessible.',
+    icon: '💻',
+    url: '/applications'
+  },
+  {
+    title: 'Cultural Hub',
+    description: 'Share and celebrate our diverse cultures through art, music, and stories. A platform for cultural expression and community connection.',
+    icon: '🎨',
+    url: '/culture'
   },
   {
     title: 'Resource Center',
-    description: 'Find helpful information, guides, and educational materials.',
-    icon: '📋'
+    description: 'Access educational materials, guides, and information about life in Dzaleka. Stay informed about community programs and opportunities.',
+    icon: '📋',
+    url: '/resources'
+  },
+  {
+    title: 'Community Voice',
+    description: 'Share your experiences and perspectives through our curated content platform. Your stories help build understanding and connection.',
+    icon: '🗣️',
+    url: '/stories'
   }
 ];
 
@@ -123,15 +144,31 @@ const serviceList = [
       <!-- Services Section -->
       <section class="mb-20">
         <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">What We Offer</h2>
+        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          Comprehensive digital solutions designed to serve, connect, and empower our community.
+        </p>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map(service => (
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
-              <div class="text-4xl mb-4">{service.icon}</div>
-              <h3 class="text-xl font-semibold mb-4 text-gray-900">{service.title}</h3>
+            <a
+              href={service.url}
+              class="group bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 block"
+            >
+              <div class="flex items-center mb-4">
+                <span class="text-4xl mr-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</span>
+                <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors duration-300">
+                  {service.title}
+                </h3>
+              </div>
               <p class="text-gray-600 leading-relaxed">
                 {service.description}
               </p>
-            </div>
+              <div class="mt-4 flex items-center text-primary-600 font-medium">
+                <span class="mr-2">Learn More</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </a>
           ))}
         </div>
       </section>

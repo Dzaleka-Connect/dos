@@ -2,7 +2,7 @@
 title: "Dzaleka Digital Heritage"
 description: "Dzaleka Digital Heritage is a community-driven initiative focused on preserving the cultural and historical assets of Dzaleka Refugee Camp through digital innovation. "
 category: "Cultural Heritage"
-logo: https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/458490201_1670020087180947_543034666053705109_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=6VF9oK-JYdMQ7kNvgGTNqeh&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=AdlmKqsVpoZ9Rop3YfxPGxh&oh=00_AYDR28Jiriszp8Qq2TcUb_oki6ZyQB2PCNupcE9_r3bkqw&oe=677CED5E
+logo: /public/images/dzaleka-digital-heritage.png
 location:
   address: "Dzaleka Refugee Camp"
   city: "Dowa"

@@ -10,14 +10,14 @@ location:
     lng: 33.9833
 contact:
   email: 'soferesinfo@gmail.com'
-  phone: '+265 992 72 12 32'
-  hours: ''
+  phone: '+265 994 036 644'
+  hours: 'Monday-Friday, 8:00 AM - 4:00 PM'
 socialMedia:
   facebook: 'https://web.facebook.com/SOFERES/?_rdc=3&_rdr'
   twitter: 'https://twitter.com/SolidarityofRe1'
   instagram: ''
   linkedin: ''
-  website: ''
+  website: 'https://soferes.com/'
 logo: https://thumbs2.imgbox.com/aa/d3/8m54BEyt_t.jpg
 featured: false
 lastUpdated: 2025-01-03

@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/umoja-ni-nguvu-organization/'
   website: ''
 logo: >-
-  https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/348220861_815594686568581_2169823050896551875_n.png?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=J3GX1UVWB8MQ7kNvgHOjtP-&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=AmY7Wu1H0ShICnMAbIv4xZ4&oh=00_AYDtDWa8QFragfBStO5Rz4IC0MH5W-SajZORmIGM9u0xng&oe=677CE9BB
+  /public/images/agapao_foundation.png
 featured: false
 lastUpdated: 2025-01-03
 ---
