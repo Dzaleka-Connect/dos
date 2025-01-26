@@ -1,0 +1,128 @@
+---
+const jobTypes = [
+  { value: 'full-time', label: 'Full Time' },
+  { value: 'part-time', label: 'Part Time' },
+  { value: 'contract', label: 'Contract' },
+  { value: 'volunteer', label: 'Volunteer' },
+  { value: 'internship', label: 'Internship' }
+];
+
+const categories = [
+  { value: 'education', label: 'Education' },
+  { value: 'healthcare', label: 'Healthcare' },
+  { value: 'technology', label: 'Technology' },
+  { value: 'community', label: 'Community' },
+  { value: 'business', label: 'Business' },
+  { value: 'arts', label: 'Arts & Culture' },
+  { value: 'services', label: 'Services' },
+  { value: 'other', label: 'Other' }
+];
+
+// Get current filters from URL
+const url = new URL(Astro.request.url);
+const currentType = url.searchParams.get('type');
+const currentCategory = url.searchParams.get('category');
+const currentSort = url.searchParams.get('sort') || 'recent';
+---
+
+<form id="job-filters" class="space-y-8">
+  <!-- Job Type Filter -->
+  <div>
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Job Type</h3>
+    <div class="space-y-3">
+      {jobTypes.map(type => (
+        <div class="flex items-center">
+          <input
+            id={`type-${type.value}`}
+            name="type"
+            value={type.value}
+            type="radio"
+            checked={currentType === type.value}
+            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
+          />
+          <label for={`type-${type.value}`} class="ml-3 text-sm text-gray-600">
+            {type.label}
+          </label>
+        </div>
+      ))}
+      {currentType && (
+        <button
+          type="button"
+          class="mt-2 text-sm text-primary-600 hover:text-primary-500 clear-filter"
+          data-filter="type"
+        >
+          Clear filter
+        </button>
+      )}
+    </div>
+  </div>
+
+  <!-- Category Filter -->
+  <div>
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Category</h3>
+    <div class="space-y-3">
+      {categories.map(category => (
+        <div class="flex items-center">
+          <input
+            id={`category-${category.value}`}
+            name="category"
+            value={category.value}
+            type="radio"
+            checked={currentCategory === category.value}
+            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
+          />
+          <label for={`category-${category.value}`} class="ml-3 text-sm text-gray-600">
+            {category.label}
+          </label>
+        </div>
+      ))}
+      {currentCategory && (
+        <button
+          type="button"
+          class="mt-2 text-sm text-primary-600 hover:text-primary-500 clear-filter"
+          data-filter="category"
+        >
+          Clear filter
+        </button>
+      )}
+    </div>
+  </div>
+
+  <!-- Hidden sort input -->
+  <input type="hidden" name="sort" value={currentSort} />
+</form>
+
+<script>
+  // Function to update URL and refresh page
+  function updateUrl(params: Record<string, string | null>) {
+    const url = new URL(window.location.href);
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === null) {
+        url.searchParams.delete(key);
+      } else {
+        url.searchParams.set(key, value);
+      }
+    });
+    url.searchParams.set('page', '1'); // Reset to first page
+    window.location.href = url.toString();
+  }
+
+  // Handle radio button changes
+  document.querySelectorAll('input[type="radio"]').forEach((input: HTMLInputElement) => {
+    input.addEventListener('change', () => {
+      if (input.checked) {
+        updateUrl({ [input.name]: input.value });
+      }
+    });
+  });
+
+  // Handle clear filter buttons
+  document.querySelectorAll('.clear-filter').forEach((button: HTMLButtonElement) => {
+    button.addEventListener('click', () => {
+      const filterType = button.dataset.filter;
+      if (filterType) {
+        updateUrl({ [filterType]: null });
+      }
+    });
+  });
+</script>

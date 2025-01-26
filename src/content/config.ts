@@ -204,6 +204,36 @@ const communityVoiceSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
+// Define the job schema
+const jobSchema = z.object({
+  title: z.string(),
+  organization: z.string(),
+  location: z.string(),
+  type: z.enum(['full-time', 'part-time', 'contract', 'volunteer', 'internship']),
+  category: z.enum([
+    'education',
+    'healthcare',
+    'technology',
+    'community',
+    'business',
+    'arts',
+    'services',
+    'other'
+  ]),
+  salary: z.string().optional(),
+  deadline: z.coerce.date(),
+  posted: z.coerce.date(),
+  status: z.enum(['open', 'closed', 'draft']).default('open'),
+  featured: z.boolean().default(false),
+  skills: z.array(z.string()),
+  contact: z.object({
+    email: z.string().email(),
+    phone: z.string().optional(),
+    website: z.string().url().optional()
+  }),
+  description: z.string()
+});
+
 // Define the collections
 const profilesCollection = defineCollection({
   type: 'content',
@@ -255,6 +285,11 @@ const docsCollection = defineCollection({
   schema: docsSchema,
 });
 
+const jobsCollection = defineCollection({
+  type: 'content',
+  schema: jobSchema,
+});
+
 // Export collections
 export const collections = {
   profiles: profilesCollection,
@@ -267,4 +302,5 @@ export const collections = {
   talents: talentsCollection,
   'community-voices': communityVoicesCollection,
   docs: docsCollection,
+  jobs: jobsCollection,
 };

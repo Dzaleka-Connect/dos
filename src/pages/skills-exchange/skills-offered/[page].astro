@@ -7,45 +7,61 @@ export async function getStaticPaths() {
   const allProfiles = await getCollection('profiles');
   const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available');
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(skillsOffered.length / itemsPerPage);
   
   // Get all categories for filtering
   const categories = [...new Set(skillsOffered.map(profile => profile.data.category))].sort();
   
-  return Array.from({ length: totalPages }, (_, i) => {
-    const page = i + 1;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    
-    return {
+  // Generate paths for each category and page combination
+  const paths = [];
+  
+  // Add paths for no category (all profiles)
+  const totalPagesAll = Math.ceil(skillsOffered.length / itemsPerPage);
+  for (let page = 1; page <= totalPagesAll; page++) {
+    paths.push({
       params: { page: page.toString() },
       props: { 
         profiles: skillsOffered,
         currentPage: page,
-        totalPages,
+        totalPages: totalPagesAll,
         totalItems: skillsOffered.length,
         categories,
-        itemsPerPage
+        itemsPerPage,
+        selectedCategory: null
       }
-    };
+    });
+  }
+  
+  // Add paths for each category
+  categories.forEach(category => {
+    const categoryProfiles = skillsOffered.filter(profile => profile.data.category === category);
+    const totalPagesCategory = Math.ceil(categoryProfiles.length / itemsPerPage);
+    
+    for (let page = 1; page <= totalPagesCategory; page++) {
+      paths.push({
+        params: { page: page.toString() },
+        props: { 
+          profiles: categoryProfiles,
+          currentPage: page,
+          totalPages: totalPagesCategory,
+          totalItems: categoryProfiles.length,
+          categories,
+          itemsPerPage,
+          selectedCategory: category
+        }
+      });
+    }
   });
+  
+  return paths;
 }
 
 const { page } = Astro.params;
-const { profiles, currentPage, totalPages, totalItems, categories, itemsPerPage } = Astro.props;
+const { profiles, currentPage, totalPages, totalItems, categories, itemsPerPage, selectedCategory } = Astro.props;
 
-// Get selected category from URL
-const selectedCategory = Astro.url.searchParams.get('category');
-
-// Filter by category if selected
-const filteredProfiles = selectedCategory
-  ? profiles.filter(profile => profile.data.category === selectedCategory)
-  : profiles;
-
-// Calculate pagination for filtered profiles
+// Calculate pagination
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
-const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
+const currentProfiles = profiles.slice(startIndex, endIndex);
 
 const pageTitle = "Skills Offered";
 const pageDescription = "Browse skills being shared by community members";
@@ -115,7 +131,7 @@ const pageDescription = "Browse skills being shared by community members";
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 mb-8">
       <div class="flex-1 min-w-0">
         <h2 class="text-2xl font-bold text-gray-900">
-          {filteredProfiles.length} Skills Available
+          {profiles.length} Skills Available
           {selectedCategory && <span class="text-primary-600">in {selectedCategory}</span>}
         </h2>
       </div>
@@ -123,7 +139,7 @@ const pageDescription = "Browse skills being shared by community members";
       <!-- Categories Filter -->
       <div class="flex flex-wrap gap-2">
         <a
-          href={`/skills-exchange/skills-offered/${currentPage}`}
+          href={`/skills-exchange/skills-offered/1`}
           class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             !selectedCategory
               ? 'bg-primary-100 text-primary-800'
@@ -134,7 +150,7 @@ const pageDescription = "Browse skills being shared by community members";
         </a>
         {categories.map(category => (
           <a
-            href={`/skills-exchange/skills-offered/${currentPage}?category=${category}`}
+            href={`/skills-exchange/skills-offered/1?category=${category}`}
             class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === category
                 ? 'bg-primary-100 text-primary-800'
@@ -244,48 +260,16 @@ const pageDescription = "Browse skills being shared by community members";
 
     <!-- Pagination -->
     {totalPages > 1 && (
-      <nav class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0 mt-12">
-        <div class="w-0 flex-1 flex">
-          {currentPage > 1 && (
-            <a
-              href={`/skills-exchange/skills-offered/${currentPage - 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
-            >
-              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-              Previous
-            </a>
-          )}
-        </div>
-        <div class="hidden md:flex">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(num => (
-            <a
-              href={`/skills-exchange/skills-offered/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-              class={`inline-flex items-center px-4 py-2 text-sm font-medium ${
-                currentPage === num
-                  ? 'text-primary-600 bg-primary-50'
-                  : 'text-gray-700 hover:text-primary-600'
-              }`}
-            >
-              {num}
-            </a>
-          ))}
-        </div>
-        <div class="w-0 flex-1 flex justify-end">
-          {currentPage < totalPages && (
-            <a
-              href={`/skills-exchange/skills-offered/${currentPage + 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
-            >
-              Next
-              <svg class="ml-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          )}
-        </div>
-      </nav>
+      <div class="mt-12">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl={selectedCategory 
+            ? `/skills-exchange/skills-offered/?category=${selectedCategory}`
+            : '/skills-exchange/skills-offered/'
+          }
+        />
+      </div>
     )}
   </div>
 </MainLayout>
