@@ -22,27 +22,86 @@ export async function getStaticPaths({ paginate }) {
   return paginate(sortedResources, { pageSize: 6 });
 }
 
+// Enable static pre-rendering for Netlify
+export const prerender = true;
+
+// Resource Types Overview
+const resourceTypes = [
+  {
+    title: "Policy Documents & Legal Frameworks",
+    description: "Access refugee policies, legal documents, and protection guidelines from UNHCR and the Malawian government",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>`,
+    categories: ["Legal", "Policy", "Guidelines"]
+  },
+  {
+    title: "Situation Reports & Updates",
+    description: "Stay informed with the latest updates, factsheets, and reports about Dzaleka Refugee Camp and refugee situations in Malawi",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
+    categories: ["Report", "Situation Reports / Updates", "Brief"]
+  },
+  {
+    title: "Research & Academic Studies",
+    description: "Explore academic research, case studies, and in-depth analysis of refugee issues, rights, and community development",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>`,
+    categories: ["Research", "Research article", "Research & Report"]
+  },
+  {
+    title: "Stories & Insights",
+    description: "Read personal stories, success cases, and insights about life, culture, and community initiatives in Dzaleka",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`,
+    categories: ["Story", "Insight & Analysis"]
+  }
+];
+
+// Thematic Areas
+const thematicAreas = [
+  {
+    title: "Protection & Rights",
+    description: "Legal protection, human rights, and documentation",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    categories: ["Legal", "Policy", "Guidelines"]
+  },
+  {
+    title: "Vulnerable Groups",
+    description: "Women, children, elderly, and special needs",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+    categories: ["Research", "Report"]
+  },
+  {
+    title: "Livelihoods & Services",
+    description: "Economic opportunities and essential services",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>`,
+    categories: ["Situation Reports / Updates", "Brief"]
+  }
+];
+
 const { page } = Astro.props;
 const { search, category } = Astro.url.searchParams;
 
 // Get unique categories for the filter dropdown
-const allResources = await getCollection('resources');
-const categories = [...new Set(allResources.map(resource => resource.data.category))].filter(Boolean).sort();
+const categories = [...new Set(page.data.map(resource => resource.data.category))].filter(Boolean).sort();
 
 // Filter resources based on search and category
-let filteredResources = page.data;
+let filteredResources = [...page.data];
 
+// Search functionality
 if (search) {
-  const searchLower = search.toLowerCase();
-  filteredResources = filteredResources.filter(resource => 
-    resource.data.title.toLowerCase().includes(searchLower) ||
-    resource.data.description.toLowerCase().includes(searchLower) ||
-    resource.data.author?.toLowerCase().includes(searchLower) ||
-    resource.data.category.toLowerCase().includes(searchLower)
-  );
+  const searchLower = search.toLowerCase().trim();
+  filteredResources = filteredResources.filter(resource => {
+    const searchableText = [
+      resource.data.title,
+      resource.data.description,
+      resource.data.author,
+      resource.data.category,
+      ...(resource.data.tags || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    
+    return searchableText.includes(searchLower);
+  });
 }
 
-if (category) {
+// Category filtering (only if not already filtered by URL param)
+if (category && !Astro.params.category) {
   filteredResources = filteredResources.filter(resource => 
     resource.data.category === category
   );
@@ -66,12 +125,13 @@ function buildPaginationUrl(pageNum: number) {
 
 // Category color mapping
 const categoryColors = {
-  'Report': 'bg-purple-100 text-purple-800',
-  'Guide': 'bg-green-100 text-green-800',
-  'Factsheet': 'bg-blue-100 text-blue-800',
-  'Document': 'bg-gray-100 text-gray-800',
+  'Legal': 'bg-blue-100 text-blue-800',
+  'Policy': 'bg-green-100 text-green-800',
+  'Guidelines': 'bg-yellow-100 text-yellow-800',
+  'Report': 'bg-red-100 text-red-800',
   'Research': 'bg-indigo-100 text-indigo-800'
 };
+
 
 ---
 
@@ -81,7 +141,7 @@ const categoryColors = {
     <section class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-600 rounded-2xl mb-12 overflow-hidden">
       {/* Background Pattern */}
       <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2H6zM6 34v-4H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
         </div>
       </div>
       
@@ -102,7 +162,7 @@ const categoryColors = {
             class="inline-flex items-center justify-center px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors group"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transition-transform group-hover:scale-110" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
             </svg>
             Submit a Resource
           </a>
@@ -157,14 +217,63 @@ const categoryColors = {
             </button>
           </form>
         </div>
+      </div>
 
       {/* Decorative Elements */}
       <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -translate-x-1/2 translate-y-1/2"></div>
       <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2"></div>
     </section>
 
+    {/* Resource Types Overview */}
+    <section class="mb-12 bg-gradient-to-br from-gray-50 to-white rounded-xl overflow-hidden">
+      <div class="px-6 py-8 md:px-10">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">What resources can you find here?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {resourceTypes.map(type => (
+            <div class="group relative">
+              {/* Background Pattern */}
+              <div class="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Content */}
+              <div class="relative border-2 border-primary-100 rounded-xl p-6 h-full flex flex-col bg-white/80 backdrop-blur-sm group-hover:border-primary-200 transition-colors duration-300">
+                {/* Icon */}
+                <div class="text-primary-600 mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                  <Fragment set:html={type.icon} />
+                </div>
+                
+                {/* Title & Description */}
+                <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">
+                  {type.title}
+                </h3>
+                <p class="text-gray-600 text-sm mb-4 flex-grow">
+                  {type.description}
+                </p>
+                
+                {/* Categories */}
+                <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-100">
+                  {type.categories.map(cat => (
+                    <a 
+                      href={`/resources?category=${encodeURIComponent(cat)}`}
+                      class="text-xs px-3 py-1.5 bg-white text-primary-700 rounded-full border border-primary-100 hover:bg-primary-50 hover:border-primary-200 transition-colors duration-200"
+                    >
+                      {cat}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     {/* Resources Grid */}
     <section>
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">All Resources</h2>
+        <p class="text-gray-600">Browse our complete collection of resources, reports, and documents</p>
+      </div>
+
       {filteredResources.length > 0 ? (
         <>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
@@ -226,11 +335,74 @@ const categoryColors = {
           )}
         </>
       ) : (
-        <div class="text-center py-12">
+        <div class="text-center py-12 bg-white rounded-lg shadow-sm">
           <h3 class="text-lg font-medium text-gray-900 mb-2">No resources found</h3>
           <p class="text-gray-600">Try adjusting your search or filter criteria</p>
         </div>
       )}
+    </section>
+
+    {/* Information Cards */}
+    <section class="mt-16 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* History Card */}
+        <div class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors">
+          <div class="text-primary-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">History</h3>
+          <p class="text-gray-600 text-sm">
+            Established to preserve and share the rich history and experiences of the Dzaleka refugee community, documenting our journey since 1994.
+          </p>
+        </div>
+
+        {/* Mission & Scope Card */}
+        <div class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors">
+          <div class="text-primary-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Mission & Scope</h3>
+          <p class="text-gray-600 text-sm">
+            Providing free, easy, and speedy access to comprehensive and high-quality resources about refugee rights, protection, and community development.
+          </p>
+        </div>
+
+        {/* Our audience Card */}
+        <div class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors">
+          <div class="text-primary-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Our audience</h3>
+          <p class="text-gray-600 text-sm">
+            Our audience includes displaced individuals, decision-makers, legal experts, policymakers, scholars, UNHCR staff, and the public.
+          </p>
+        </div>
+
+        {/* Contact Us Card */}
+        <a href="/contact" class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors block">
+          <div class="text-primary-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Contact Us</h3>
+          <p class="text-gray-600 text-sm mb-3">
+            Have questions or want to contribute? Reach out to our team for support, feedback, or collaboration opportunities. 
+          </p>
+          <div class="flex items-center text-sm text-primary-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+            </svg>
+            <span>dzalekaconnect@gmail.com</span>
+          </div>
+        </a>
+      </div>
     </section>
   </main>
 </MainLayout>

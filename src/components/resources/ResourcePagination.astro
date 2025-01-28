@@ -13,17 +13,61 @@ const { currentPage, totalPages, baseUrl, searchQuery, category } = Astro.props;
 const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
 function getPageUrl(page: number) {
-  const params = [];
-  if (searchQuery) params.push(`search=${searchQuery}`);
-  if (category) params.push(`category=${category}`);
+  const searchParams = new URLSearchParams();
+  if (searchQuery) searchParams.set('search', searchQuery);
+  if (category) searchParams.set('category', category);
+  const queryString = searchParams.toString();
   
-  const queryString = params.length > 0 ? `?${params.join('&')}` : '';
-  return page === 1 ? `${baseUrl}${queryString}` : `${baseUrl}/${page}${queryString}`;
+  let url = baseUrl;
+  if (page > 1) {
+    url += `/${page}`;
+  }
+  if (queryString) {
+    url += `?${queryString}`;
+  }
+  return url;
 }
+
+// Generate visible page numbers
+function getVisiblePages() {
+  const delta = 2;
+  const range = [];
+  const rangeWithDots = [];
+  let l;
+
+  range.push(1);
+  
+  for (let i = currentPage - delta; i <= currentPage + delta; i++) {
+    if (i < totalPages && i > 1) {
+      range.push(i);
+    }
+  }
+  
+  if (totalPages > 1) {
+    range.push(totalPages);
+  }
+
+  for (const i of range) {
+    if (l) {
+      if (i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (i - l !== 1) {
+        rangeWithDots.push('...');
+      }
+    }
+    rangeWithDots.push(i);
+    l = i;
+  }
+
+  return rangeWithDots;
+}
+
+const visiblePages = getVisiblePages();
 ---
 
 <nav class="flex justify-center mt-8" aria-label="Pagination">
   <ul class="inline-flex items-center -space-x-px">
+    {/* Previous Button */}
     <li>
       <a
         href={currentPage > 1 ? getPageUrl(currentPage - 1) : undefined}
@@ -38,21 +82,31 @@ function getPageUrl(page: number) {
         </svg>
       </a>
     </li>
-    {pages.map(page => (
+
+    {/* Page Numbers */}
+    {visiblePages.map(page => (
       <li>
-        <a
-          href={page === currentPage ? undefined : getPageUrl(page)}
-          class={`px-3 py-2 leading-tight border border-gray-300 ${
-            page === currentPage
-              ? 'text-primary-600 bg-primary-50 border-primary-300'
-              : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'
-          }`}
-          aria-current={page === currentPage ? 'page' : undefined}
-        >
-          {page}
-        </a>
+        {page === '...' ? (
+          <span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">
+            ...
+          </span>
+        ) : (
+          <a
+            href={page === currentPage ? undefined : getPageUrl(page as number)}
+            class={`px-3 py-2 leading-tight border border-gray-300 ${
+              page === currentPage
+                ? 'text-primary-600 bg-primary-50 border-primary-300 font-medium'
+                : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'
+            }`}
+            aria-current={page === currentPage ? 'page' : undefined}
+          >
+            {page}
+          </a>
+        )}
       </li>
     ))}
+
+    {/* Next Button */}
     <li>
       <a
         href={currentPage < totalPages ? getPageUrl(currentPage + 1) : undefined}
