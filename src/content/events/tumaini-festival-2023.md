@@ -2,6 +2,7 @@
 title: "Tumaini Festival 2024"
 description: "Annual arts and cultural festival celebrating refugee talents and promoting intercultural harmony."
 date: 2024-10-31T10:00:00Z
+endDate: 2025-02-07T12:00:00Z
 location: "Dzaleka Refugee Camp Main Ground, Dowa"
 category: "Festival"
 featured: true

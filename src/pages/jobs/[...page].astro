@@ -6,11 +6,26 @@ import JobFilters from '../../components/jobs/JobFilters.astro';
 import JobStats from '../../components/jobs/JobStats.astro';
 import { formatDate, isJobExpired } from '../../utils/dateHelpers';
 
+export function getStaticPaths() {
+  return [
+    { params: { page: undefined } },
+    { params: { page: '1' } },
+    { params: { page: '2' } },
+    { params: { page: '3' } },
+    { params: { page: '4' } },
+    { params: { page: '5' } }
+  ];
+}
+
 // Get URL parameters
 const url = Astro.url;
 const currentType = url.searchParams.get('type');
 const currentCategory = url.searchParams.get('category');
 const currentSort = url.searchParams.get('sort') || 'recent';
+
+// Get page from URL
+const { page } = Astro.params;
+const currentPage = page ? parseInt(page) : 1;
 
 // Get all jobs
 let allJobs = await getCollection('jobs');
@@ -55,9 +70,8 @@ const categories = new Set(allJobs.map(job => job.data.category)).size;
 // Pagination
 const jobsPerPage = 6;
 const totalPages = Math.ceil(allJobs.length / jobsPerPage);
-const currentPage = 1;
-const startIndex = 0;
-const endIndex = jobsPerPage;
+const startIndex = (currentPage - 1) * jobsPerPage;
+const endIndex = startIndex + jobsPerPage;
 const paginatedJobs = allJobs.slice(startIndex, endIndex);
 
 // Function to build URL with parameters
@@ -74,6 +88,11 @@ function buildUrl(pageNum: number) {
   const pageString = pageNum === 1 ? '' : `/${pageNum}`;
   
   return `${basePath}${pageString}${queryString ? '?' + queryString : ''}`;
+}
+
+// Redirect page 1 to base URL
+if (currentPage === 1) {
+  return Astro.redirect('/jobs');
 }
 ---
 
@@ -204,9 +223,14 @@ function buildUrl(pageNum: number) {
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               {/* Previous Page Button */}
               <a
-                href={buildUrl(1)}
-                class="relative inline-flex items-center px-2 py-2 rounded-l-md border text-sm font-medium bg-gray-100 text-gray-400 cursor-not-allowed"
-                aria-disabled={true}
+                href={buildUrl(Math.max(1, currentPage - 1))}
+                class:list={[
+                  'relative inline-flex items-center px-2 py-2 rounded-l-md border text-sm font-medium',
+                  currentPage === 1 
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-500 hover:bg-gray-50'
+                ]}
+                aria-disabled={currentPage === 1}
               >
                 <span class="sr-only">Previous</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -217,34 +241,60 @@ function buildUrl(pageNum: number) {
               {/* First Page */}
               <a
                 href="/jobs"
-                class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                aria-current="page"
+                class:list={[
+                  'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
+                  currentPage === 1
+                    ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
+                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                ]}
+                aria-current={currentPage === 1 ? 'page' : undefined}
               >
                 1
               </a>
 
-              {/* Next pages */}
-              {Array.from({ length: Math.min(2, totalPages - 1) }, (_, i) => (
-                <a
-                  href={buildUrl(i + 2)}
-                  class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                >
-                  {i + 2}
-                </a>
-              ))}
+              {/* Ellipsis if needed */}
+              {currentPage > 3 && (
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                  ...
+                </span>
+              )}
+
+              {/* Current page and surrounding */}
+              {Array.from({ length: 3 }, (_, i) => currentPage + i - 1)
+                .filter(page => page > 1 && page < totalPages)
+                .map(page => (
+                  <a
+                    href={buildUrl(page)}
+                    class:list={[
+                      'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
+                      currentPage === page
+                        ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
+                        : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                    ]}
+                    aria-current={currentPage === page ? 'page' : undefined}
+                  >
+                    {page}
+                  </a>
+                ))}
 
               {/* Ellipsis if needed */}
-              {totalPages > 3 && (
+              {currentPage < totalPages - 2 && (
                 <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
                   ...
                 </span>
               )}
 
               {/* Last Page */}
-              {totalPages > 3 && (
+              {totalPages > 1 && (
                 <a
                   href={buildUrl(totalPages)}
-                  class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  class:list={[
+                    'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
+                    currentPage === totalPages
+                      ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
+                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                  ]}
+                  aria-current={currentPage === totalPages ? 'page' : undefined}
                 >
                   {totalPages}
                 </a>
@@ -252,8 +302,14 @@ function buildUrl(pageNum: number) {
 
               {/* Next Page Button */}
               <a
-                href={buildUrl(2)}
-                class="relative inline-flex items-center px-2 py-2 rounded-r-md border text-sm font-medium bg-white text-gray-500 hover:bg-gray-50"
+                href={buildUrl(Math.min(totalPages, currentPage + 1))}
+                class:list={[
+                  'relative inline-flex items-center px-2 py-2 rounded-r-md border text-sm font-medium',
+                  currentPage === totalPages 
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-500 hover:bg-gray-50'
+                ]}
+                aria-disabled={currentPage === totalPages}
               >
                 <span class="sr-only">Next</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
