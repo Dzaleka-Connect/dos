@@ -21,6 +21,8 @@ socialMedia:
 logo: >-
   https://www.seedsnewcastle.com.au/wp-content/uploads/2017/03/logo-1_300x283.png
 featured: true
+verified: true
+status: "active"
 lastUpdated: 2024-12-24
 ---
 

@@ -23,6 +23,8 @@ socialMedia:
 logo: >-
   https://relonmalawi.org/wp-content/uploads/2024/05/RELON-LGO-Malawi-1536x1536.png
 featured: false
+verified: true
+status: "active"
 lastUpdated: 2024-12-24
 ---
 

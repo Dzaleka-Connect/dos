@@ -22,6 +22,7 @@ socialMedia:
 logo: >-
   https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRshOC3XuIA-V7GVurjsZ0GIqKn_LJfdP1nQg&s
 featured: true
+verified: true
 lastUpdated: 2024-12-24
 ---
 

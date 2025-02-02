@@ -19,6 +19,7 @@ socialMedia:
   instagram: "https://instagram.com/dzalekaradio"
   website: "https://dzalekaradio.org"
 featured: true
+verified: true
 status: "active"
 lastUpdated: 2024-12-24
 ---

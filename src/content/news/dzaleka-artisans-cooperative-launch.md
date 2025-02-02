@@ -4,7 +4,7 @@ description: "Building on our mission to showcase the Refugee Experience in Dzal
 date: 2024-12-24
 category: "business-spotlight"
 featured: true
-image: "https://scontent.fbne5-1.fna.fbcdn.net/v/t39.30808-6/469327672_18341391979180415_9128542224026871222_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ImSWqMn3xJMQ7kNvgGxnqXM&_nc_zt=23&_nc_ht=scontent.fbne5-1.fna&_nc_gid=A32mi-_YnnEvEqzjBWW_QkQ&oh=00_AYBln62QDf4TZIt6Xn0Ydl1Tak1Nns2DNeHS6iZJvvWSbg&oe=677031A2"
+image: "https://www.unhcr.org/sites/default/files/2023-05/RF1285791.jpg"
 author: "Bakari Mustafa"
 businessName: "Dzaleka Digital Heritage"
 businessOwner: "Dzaleka Online"

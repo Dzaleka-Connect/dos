@@ -1,0 +1,383 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="E-Learning Platform - Dzaleka Connect">
+  <main class="min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <!-- Hero Section -->
+    <div class="relative min-h-[600px] flex items-center justify-center text-white overflow-hidden">
+      {/* Background Image */}
+      <div class="absolute inset-0">
+        <img 
+          src="https://alumni.creighton.edu/sites/default/files/externals/3a5e5345aed5539144d93eb04350baaa.jpg" 
+          alt="E-Learning at Dzaleka" 
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/50"></div>
+      </div>
+      {/* Content */}
+      <div class="relative container mx-auto px-4 py-20 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl mx-auto leading-tight">
+          E-Learning Platform
+        </h1>
+        <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto">
+          Access quality education and skill development opportunities through our local and global learning initiatives
+        </p>
+
+        {/* Search Bar */}
+        <div class="max-w-2xl mx-auto">
+          <form id="searchForm" class="relative" onsubmit="event.preventDefault(); window.open('https://campus.kiron.ngo/explore?query=' + encodeURIComponent(this.querySelector('input[name=q]').value), '_blank');">
+            <input
+              type="text"
+              name="q"
+              placeholder="Search courses and skills..."
+              class="w-full px-6 py-4 text-lg rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+              required
+            />
+            <button
+              type="submit"
+              class="absolute right-3 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 rounded-full transition-colors duration-200 flex items-center justify-center"
+              aria-label="Search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        {/* Quick Links */}
+        <div class="mt-12 flex flex-wrap justify-center gap-4">
+          <a 
+            href="https://campus.kiron.ngo/explore" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-full text-white/90 hover:text-white transition-all duration-200"
+          >
+            Browse Courses
+          </a>
+          <a 
+            href="#featured-initiatives" 
+            class="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-full text-white/90 hover:text-white transition-all duration-200"
+          >
+            Local Initiatives
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Why Choose Us Section -->
+      <div class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">World-Class Education for All</h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">Join 150,000+ learners on Kiron Campus accessing 500+ free online courses in IT, business, languages, and more. Quality education designed for refugees and underserved communities.</p>
+        </div>
+        
+        <!-- Kiron Platform Statistics -->
+        <div class="mb-8 text-center">
+          <h3 class="text-xl font-semibold text-gray-700 mb-2">Kiron Campus Platform Impact</h3>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+          <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="flex flex-col items-center">
+              <div class="text-4xl font-bold text-primary-600 mb-2">150K+</div>
+              <div class="text-sm text-gray-600 text-center">Global Kiron Learners</div>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="flex flex-col items-center">
+              <div class="text-4xl font-bold text-primary-600 mb-2">500+</div>
+              <div class="text-sm text-gray-600 text-center">Courses on Kiron Campus</div>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="flex flex-col items-center">
+              <div class="text-4xl font-bold text-primary-600 mb-2">160+</div>
+              <div class="text-sm text-gray-600 text-center">Kiron Partners</div>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="flex flex-col items-center">
+              <div class="text-4xl font-bold text-primary-600 mb-2">10+</div>
+              <div class="text-sm text-gray-600 text-center">Years of Impact</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-white rounded-xl p-6 shadow-sm text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5m0 0l9-5-9-5-9 5 9 5m0 0v6" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Free Online Courses</h3>
+            <p class="text-gray-600">Access hundreds of free courses through Kiron Campus and other learning platforms</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Skill Development</h3>
+            <p class="text-gray-600">Develop practical skills in IT, business, and digital technologies through structured learning paths</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Featured Local Initiatives -->
+      <div id="featured-initiatives" class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Local Initiatives</h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">Discover local organizations providing quality education and skill development opportunities in Dzaleka</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Adai Circle -->
+          <a href="https://adaicircle.com/" target="_blank" rel="noopener noreferrer" 
+             class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col">
+            <div class="relative h-64 overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+              <img src="https://adaicircle.com/images/bg/second.JPG" 
+                   alt="Adai Circle" 
+                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-primary-600 z-20">
+                Digital Skills
+              </div>
+            </div>
+            <div class="p-6 flex-grow bg-white">
+              <div class="flex items-center mb-4">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgkKzgZs6hr3fBf5KrBw2LEKRnaGgxLmJ6Lg&s" alt="Adai Circle Logo" class="w-8 h-8 rounded-full mr-3" />
+                <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Adai Circle</h3>
+              </div>
+              <p class="text-gray-600 mb-4">Empowering underserved communities with AI, ML, and Data Science skills to foster innovation.</p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">AI & ML</span>
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Data Science</span>
+              </div>
+              <div class="flex items-center text-primary-600 font-medium group-hover:text-primary-700 mt-auto">
+                Explore Programs
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Jesuit Worldwide Learning -->
+          <a href="https://www.jwl.org/" target="_blank" rel="noopener noreferrer" 
+             class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col">
+            <div class="relative h-64 overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+              <img src="https://images.squarespace-cdn.com/content/v1/55cb874ce4b05b9a72d3fb90/1487807079219-80GH93UA212UQABP99VK/MALAWI+-+DZALEKA+-+TRESOR+IN+THE+COMPUTER+ROOM+OF+JRS+COMPOUND+-+PHOTO+BY+GIULIO+D%27ERCOLE+-+3390.jpg?format=1500w" 
+                   alt="Jesuit Worldwide Learning" 
+                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-primary-600 z-20">
+                Higher Education
+              </div>
+            </div>
+            <div class="p-6 flex-grow bg-white">
+              <div class="flex items-center mb-4">
+                <img src="https://www.jwl.org/static/images/favicon/favicon-96x96.png" alt="JWL Logo" class="w-8 h-8 rounded-full mr-3" />
+                <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Jesuit Worldwide Learning</h3>
+              </div>
+              <p class="text-gray-600 mb-4">Higher education opportunities for refugees and marginalized communities, providing recognized certificates and diplomas.</p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Diplomas</span>
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Certificates</span>
+              </div>
+              <div class="flex items-center text-primary-600 font-medium group-hover:text-primary-700 mt-auto">
+                Explore Programs
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Takenolab -->
+          <a href="https://takenolab.com/" target="_blank" rel="noopener noreferrer" 
+             class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col">
+            <div class="relative h-64 overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+              <img src="https://takenolab.com/images/tknlb27.jpeg" 
+                   alt="Takenolab" 
+                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-primary-600 z-20">
+                Programming Skills
+              </div>
+            </div>
+            <div class="p-6 flex-grow bg-white">
+              <div class="flex items-center mb-4">
+                <img src="https://takenolab.com/images/logo.png" alt="Takenolab Logo" class="w-8 h-8 rounded-full mr-3" />
+                <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Takenolab</h3>
+              </div>
+              <p class="text-gray-600 mb-4">Supporting refugee entrepreneurs and innovation initiatives through hands-on training in programming and digital skills.</p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Programming</span>
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Digital Skills</span>
+              </div>
+              <div class="flex items-center text-primary-600 font-medium group-hover:text-primary-700 mt-auto">
+                Explore Programs
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- ATE-Hub -->
+          <a href="https://www.atehub.org/" target="_blank" rel="noopener noreferrer" 
+             class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col">
+            <div class="relative h-64 overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+              <img src="https://images.cdn-files-a.com/uploads/6638854/2000_6421401c0a743.jpg" 
+                   alt="ATE-Hub" 
+                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-primary-600 z-20">
+                Tech Education
+              </div>
+            </div>
+            <div class="p-6 flex-grow bg-white">
+              <div class="flex items-center mb-4">
+                <img src="https://images.cdn-files-a.com/uploads/6638854/400_64d9d5333a0ad.png?aspect_ratio=1:1&width=48&format=png" alt="ATE-Hub Logo" class="w-8 h-8 rounded-full mr-3" />
+                <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">ATE-Hub</h3>
+              </div>
+              <p class="text-gray-600 mb-4">Accelerating technology education and digital literacy in refugee communities through innovative learning programs.</p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Digital Literacy</span>
+                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">Tech Skills</span>
+              </div>
+              <div class="flex items-center text-primary-600 font-medium group-hover:text-primary-700 mt-auto">
+                Explore Programs
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Global Learning Resources -->
+      <div class="mb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Global Learning Resources</h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">Access world-class education from leading institutions and organizations around the globe</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- UNHCR Opportunities -->
+          <a href="https://services.unhcr.org/opportunities/search" target="_blank" rel="noopener noreferrer" 
+             class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 ml-4 group-hover:text-blue-600 transition-colors">UNHCR Opportunities</h3>
+            </div>
+            <p class="text-gray-600">Find scholarships, training programs, and educational opportunities specifically for refugees.</p>
+          </a>
+
+          <!-- Coursera -->
+          <a href="https://www.coursera.org/courses?query=free" target="_blank" rel="noopener noreferrer" 
+             class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5m0 0l9-5-9-5-9 5 9 5m0 0v6" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 ml-4 group-hover:text-blue-600 transition-colors">Coursera</h3>
+            </div>
+            <p class="text-gray-600">Access thousands of free courses from top universities and companies worldwide.</p>
+          </a>
+
+          <!-- edX -->
+          <a href="https://www.edx.org/courses?q=free+online+courses" target="_blank" rel="noopener noreferrer" 
+             class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 ml-4 group-hover:text-red-600 transition-colors">edX</h3>
+            </div>
+            <p class="text-gray-600">High-quality courses from leading institutions in science, technology, and humanities.</p>
+          </a>
+
+          <!-- Khan Academy -->
+          <a href="https://www.khanacademy.org" target="_blank" rel="noopener noreferrer" 
+             class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 ml-4 group-hover:text-green-600 transition-colors">Khan Academy</h3>
+            </div>
+            <p class="text-gray-600">Free world-class education in multiple languages, from math to programming.</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Call to Action -->
+      <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-3xl shadow-lg overflow-hidden">
+        <div class="px-6 py-12 md:p-12 text-center">
+          <h2 class="text-3xl font-bold text-white mb-4">Ready to Start Learning?</h2>
+          <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Join our trusted learning platforms and take the first step towards your educational goals
+          </p>
+          <div class="flex justify-center">
+            <a href="https://campus.kiron.ngo/explore" 
+               target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-primary-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-500 focus:ring-white transition-all duration-300">
+              Explore Kiron Campus
+              <svg class="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <div class="mt-12 text-center text-gray-500 text-sm">
+        <p>Course availability and pricing may vary. While these courses are free to audit, some platforms may charge for certificates or additional features.</p>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+
+
+<style>
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

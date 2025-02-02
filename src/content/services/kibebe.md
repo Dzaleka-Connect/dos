@@ -1,5 +1,5 @@
 ---
-title: Kibebe
+title: Kibebe Malawi 
 category: Entrepreneurship
 description: Supporting refugee artisans and craftspeople.
 location:
@@ -24,7 +24,7 @@ featured: false
 lastUpdated: 2024-12-24
 ---
 
-## About Kibebe
+## About Kibebe Malawi 
 
 **Kibébé** is an African lifestyle brand based in Malawi, dedicated to economically empowering refugees and Malawians through the creation of handmade, sustainable, and eco-friendly products. Founded in 2013, Kibébé collaborates with skilled artisans, many of whom are refugees from the Dzaleka Refugee Camp, to transform colorful chitenje (traditional fabric) into a curated collection of handcrafted items. 
 

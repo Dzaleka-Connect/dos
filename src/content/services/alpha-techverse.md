@@ -3,14 +3,14 @@ title: Alpha TechVerse
 category: "Digital Technology"
 description: Alpha TechVerse is a Dzaleka-based organization that empowers refugee youth through technical education in IT, graphic design, and web development.
 location:
-  address: Dzaleka Refugee Camp
+  address: Dzaleka Refugee Camp, Lisungwe
   city: Dowa
   coordinates:
     lat: -13.7833
     lng: 33.9833
 contact:
   email: 'emma.nd440@gmail.com'
-  phone: '+265 992 72 12 32'
+  phone: '+265 995 394 086'
   hours: ''
 socialMedia:
   facebook: 'https://www.facebook.com/alphatechverse/'

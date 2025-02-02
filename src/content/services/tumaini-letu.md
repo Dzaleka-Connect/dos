@@ -21,6 +21,8 @@ socialMedia:
 logo: >-
   https://tumainiletu.org/wp-content/uploads/2021/07/LOGO-tumaini-letu-TEXT-COLOR-png.png
 featured: false
+verified: true
+status: "active"
 lastUpdated: 2024-12-24
 ---
 
