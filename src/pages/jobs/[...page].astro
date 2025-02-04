@@ -2,33 +2,25 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import JobCard from '../../components/jobs/JobCard.astro';
-import JobFilters from '../../components/jobs/JobFilters.astro';
 import JobStats from '../../components/jobs/JobStats.astro';
 import { formatDate, isJobExpired } from '../../utils/dateHelpers';
 
-export function getStaticPaths() {
-  return [
-    { params: { page: undefined } },
-    { params: { page: '1' } },
-    { params: { page: '2' } },
-    { params: { page: '3' } },
-    { params: { page: '4' } },
-    { params: { page: '5' } }
-  ];
+export async function getStaticPaths({ paginate }) {
+  const allJobs = await getCollection('jobs');
+  
+  // Sort jobs based on URL parameter
+  const sortedJobs = [...allJobs].sort((a, b) => {
+    return new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime();
+  });
+  
+  return paginate(sortedJobs, { pageSize: 6 });
 }
 
-// Get URL parameters
-const url = Astro.url;
-const currentType = url.searchParams.get('type');
-const currentCategory = url.searchParams.get('category');
-const currentSort = url.searchParams.get('sort') || 'recent';
-
-// Get page from URL
-const { page } = Astro.params;
-const currentPage = page ? parseInt(page) : 1;
+const { page } = Astro.props;
+const currentSort = Astro.url.searchParams.get('sort') || 'recent';
 
 // Get all jobs
-let allJobs = await getCollection('jobs');
+const allJobs = await getCollection('jobs');
 
 // Filter active jobs (not expired and status is open)
 const activeJobs = allJobs.filter(job => 
@@ -40,16 +32,9 @@ const closedJobs = allJobs.filter(job =>
   job.data.status === 'closed' || isJobExpired(job.data.deadline)
 ).length;
 
-// Apply filters
-if (currentType) {
-  allJobs = allJobs.filter(job => job.data.type === currentType);
-}
-if (currentCategory) {
-  allJobs = allJobs.filter(job => job.data.category === currentCategory);
-}
-
 // Sort jobs
-allJobs = allJobs.sort((a, b) => {
+let sortedJobs = [...page.data];
+sortedJobs = sortedJobs.sort((a, b) => {
   if (currentSort === 'recent') {
     return new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime();
   } else {
@@ -63,100 +48,73 @@ const featuredJobs = allJobs.filter(job =>
 );
 
 // Calculate stats
-const totalJobs = activeJobs.length;
-const organizations = new Set(allJobs.map(job => job.data.organization)).size;
-const categories = new Set(allJobs.map(job => job.data.category)).size;
+const stats = {
+  total: activeJobs.length,
+  featured: featuredJobs.length,
+  categories: [...new Set(allJobs.map(job => job.data.category))].length,
+  organizations: [...new Set(allJobs.map(job => job.data.organization))].length,
+  closed: closedJobs
+};
 
-// Pagination
-const jobsPerPage = 6;
-const totalPages = Math.ceil(allJobs.length / jobsPerPage);
-const startIndex = (currentPage - 1) * jobsPerPage;
-const endIndex = startIndex + jobsPerPage;
-const paginatedJobs = allJobs.slice(startIndex, endIndex);
-
-// Function to build URL with parameters
-function buildUrl(pageNum: number) {
-  const newUrl = new URL(Astro.url);
+// Generate pagination URLs
+function getPaginationUrl(pageNum: number) {
   const basePath = '/jobs';
   const queryParams = new URLSearchParams();
   
-  if (currentType) queryParams.set('type', currentType);
-  if (currentCategory) queryParams.set('category', currentCategory);
-  if (currentSort && currentSort !== 'recent') queryParams.set('sort', currentSort);
+  if (currentSort && currentSort !== 'recent') {
+    queryParams.set('sort', currentSort);
+  }
   
   const queryString = queryParams.toString();
-  const pageString = pageNum === 1 ? '' : `/${pageNum}`;
   
-  return `${basePath}${pageString}${queryString ? '?' + queryString : ''}`;
-}
-
-// Redirect page 1 to base URL
-if (currentPage === 1) {
-  return Astro.redirect('/jobs');
+  if (pageNum === 1) {
+    return `${basePath}${queryString ? `?${queryString}` : ''}`;
+  }
+  
+  return `${basePath}/${pageNum}${queryString ? `?${queryString}` : ''}`;
 }
 ---
 
 <MainLayout title="Community Job Board">
-  <!-- Hero Section with Background Image -->
-  <div class="relative bg-gray-900">
-    <!-- Background Image -->
-    <div class="absolute inset-0">
-      <img 
-        src="/images/dzaleka-hero.jpeg" 
-        alt="Dzaleka Community" 
-        class="w-full h-full object-cover opacity-30"
-      />
-      <div class="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-800/90 mix-blend-multiply"></div>
-    </div>
-
-    <!-- Content -->
-    <div class="relative">
-      <div class="max-w-7xl mx-auto px-4 py-12 sm:py-16 lg:py-20">
-        <div class="text-center">
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-            Community Job Board
-          </h1>
-          <p class="text-xl sm:text-2xl text-primary-100 mb-8 max-w-3xl mx-auto">
-            Find opportunities and connect with organizations in Dzaleka. Together, we build a stronger community.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a 
-              href="/jobs/post" 
-              class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-600 bg-white hover:bg-primary-50 transition-colors"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-              </svg>
-              Post a Job
-            </a>
-            <a 
-              href="/jobs/about" 
-              class="inline-flex items-center px-6 py-3 border border-white rounded-md text-base font-medium text-white hover:bg-white/10 transition-colors"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Learn More
-            </a>
-          </div>
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-primary-600 to-primary-800 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          Community Job Board
+        </h1>
+        <p class="mt-4 text-xl text-primary-100">
+          Find opportunities and make a difference in our community
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a 
+            href="/jobs/post" 
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          >
+            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Post a Job
+          </a>
+          <a 
+            href="/jobs/about" 
+            class="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+          >
+            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+            Learn More
+          </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Job Stats -->
+  <!-- Stats Section -->
   <div class="relative">
-    <div class="max-w-7xl mx-auto px-4 -mt-8 sm:-mt-12 relative z-10">
-      <div class="bg-white shadow-xl rounded-lg border border-gray-200/50">
-        <JobStats 
-          stats={{
-            total: totalJobs,
-            featured: featuredJobs.length,
-            categories,
-            organizations,
-            closed: closedJobs
-          }} 
-        />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+      <div class="bg-white rounded-lg shadow-lg border border-gray-200/50">
+        <JobStats stats={stats} />
       </div>
     </div>
   </div>
@@ -166,195 +124,151 @@ if (currentPage === 1) {
     <div class="lg:grid lg:grid-cols-12 lg:gap-8">
       <!-- Sidebar -->
       <aside class="lg:col-span-3">
-        <div class="sticky top-8 space-y-6">
+        <div class="sticky top-8">
           <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200/50">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Filters</h2>
-            <JobFilters />
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Sort Jobs</h2>
+            <form id="sort-form" class="space-y-4">
+              <div class="space-y-4">
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value="recent"
+                    checked={currentSort === 'recent'}
+                    class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-700">Most Recent</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value="deadline"
+                    checked={currentSort === 'deadline'}
+                    class="form-radio h-4 w-4 text-primary-600 focus:ring-primary-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-700">Deadline</span>
+                </label>
+              </div>
+            </form>
           </div>
         </div>
       </aside>
 
-      <!-- Job Listings -->
-      <main class="lg:col-span-9 mt-8 lg:mt-0">
+      <!-- Main Content Area -->
+      <main class="mt-8 lg:col-span-9 lg:mt-0">
         {featuredJobs.length > 0 && (
           <div class="mb-8">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Featured Opportunities</h2>
-            <div class="grid gap-4">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Featured Opportunities</h2>
+            <div class="grid gap-6">
               {featuredJobs.map(job => (
                 <JobCard 
                   job={job} 
-                  featured={true} 
-                  isExpired={isJobExpired(job.data.deadline)} 
+                  featured={true}
+                  isExpired={isJobExpired(job.data.deadline)}
                 />
               ))}
             </div>
           </div>
         )}
 
-        <div class="mb-6">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <p class="text-gray-600">
-              Showing {startIndex + 1}-{Math.min(endIndex, allJobs.length)} of {allJobs.length} jobs
-            </p>
-            <div class="flex items-center gap-2">
-              <label for="sort-select" class="text-sm text-gray-600">Sort by:</label>
-              <select 
-                id="sort-select"
-                class="form-select rounded-lg border-gray-300 text-sm"
-              >
-                <option value="recent" selected={currentSort === 'recent'}>Most Recent</option>
-                <option value="deadline" selected={currentSort === 'deadline'}>Deadline</option>
-              </select>
-            </div>
+        <div class="mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">All Opportunities</h2>
+          <div class="grid gap-6">
+            {sortedJobs.map(job => (
+              <JobCard 
+                job={job}
+                isExpired={isJobExpired(job.data.deadline)}
+              />
+            ))}
           </div>
-        </div>
 
-        <div class="grid gap-4">
-          {paginatedJobs.map(job => (
-            <JobCard 
-              job={job} 
-              isExpired={isJobExpired(job.data.deadline)} 
-            />
-          ))}
-        </div>
+          {/* Pagination */}
+          {page.lastPage > 1 && (
+            <nav class="mt-8 flex items-center justify-center" aria-label="Pagination">
+              <div class="flex -space-x-px rounded-md">
+                {/* Previous Page */}
+                <a
+                  href={page.url.prev ? getPaginationUrl(page.currentPage - 1) : '#'}
+                  class={`relative inline-flex items-center rounded-l-md px-3 py-2 text-sm font-medium ${
+                    !page.url.prev
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-gray-500 hover:bg-gray-50'
+                  } ring-1 ring-inset ring-gray-300`}
+                  aria-disabled={!page.url.prev}
+                >
+                  <span class="sr-only">Previous</span>
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </a>
 
-        {totalPages > 1 && (
-          <div class="mt-8 flex justify-center">
-            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-              {/* Previous Page Button */}
-              <a
-                href={buildUrl(Math.max(1, currentPage - 1))}
-                class:list={[
-                  'relative inline-flex items-center px-2 py-2 rounded-l-md border text-sm font-medium',
-                  currentPage === 1 
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-white text-gray-500 hover:bg-gray-50'
-                ]}
-                aria-disabled={currentPage === 1}
-              >
-                <span class="sr-only">Previous</span>
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-              </a>
-
-              {/* First Page */}
-              <a
-                href="/jobs"
-                class:list={[
-                  'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
-                  currentPage === 1
-                    ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
-                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                ]}
-                aria-current={currentPage === 1 ? 'page' : undefined}
-              >
-                1
-              </a>
-
-              {/* Ellipsis if needed */}
-              {currentPage > 3 && (
-                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                  ...
-                </span>
-              )}
-
-              {/* Current page and surrounding */}
-              {Array.from({ length: 3 }, (_, i) => currentPage + i - 1)
-                .filter(page => page > 1 && page < totalPages)
-                .map(page => (
+                {/* Page Numbers */}
+                {Array.from({ length: page.lastPage }, (_, i) => i + 1).map(pageNum => (
                   <a
-                    href={buildUrl(page)}
-                    class:list={[
-                      'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
-                      currentPage === page
-                        ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
-                        : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                    ]}
-                    aria-current={currentPage === page ? 'page' : undefined}
+                    href={getPaginationUrl(pageNum)}
+                    class={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${
+                      page.currentPage === pageNum
+                        ? 'z-10 bg-primary-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600'
+                        : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                    }`}
+                    aria-current={page.currentPage === pageNum ? 'page' : undefined}
                   >
-                    {page}
+                    {pageNum}
                   </a>
                 ))}
 
-              {/* Ellipsis if needed */}
-              {currentPage < totalPages - 2 && (
-                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                  ...
-                </span>
-              )}
-
-              {/* Last Page */}
-              {totalPages > 1 && (
+                {/* Next Page */}
                 <a
-                  href={buildUrl(totalPages)}
-                  class:list={[
-                    'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
-                    currentPage === totalPages
-                      ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
-                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                  ]}
-                  aria-current={currentPage === totalPages ? 'page' : undefined}
+                  href={page.url.next ? getPaginationUrl(page.currentPage + 1) : '#'}
+                  class={`relative inline-flex items-center rounded-r-md px-3 py-2 text-sm font-medium ${
+                    !page.url.next
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-gray-500 hover:bg-gray-50'
+                  } ring-1 ring-inset ring-gray-300`}
+                  aria-disabled={!page.url.next}
                 >
-                  {totalPages}
+                  <span class="sr-only">Next</span>
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                  </svg>
                 </a>
-              )}
-
-              {/* Next Page Button */}
-              <a
-                href={buildUrl(Math.min(totalPages, currentPage + 1))}
-                class:list={[
-                  'relative inline-flex items-center px-2 py-2 rounded-r-md border text-sm font-medium',
-                  currentPage === totalPages 
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-white text-gray-500 hover:bg-gray-50'
-                ]}
-                aria-disabled={currentPage === totalPages}
-              >
-                <span class="sr-only">Next</span>
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                </svg>
-              </a>
+              </div>
             </nav>
-          </div>
-        )}
+          )}
 
-        {paginatedJobs.length === 0 && (
-          <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M12 12h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No jobs found</h3>
-            <p class="mt-1 text-sm text-gray-500">Try adjusting your filters or search criteria.</p>
-          </div>
-        )}
+          {sortedJobs.length === 0 && (
+            <div class="text-center py-12">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M12 12h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h3 class="mt-2 text-sm font-semibold text-gray-900">No jobs found</h3>
+              <p class="mt-1 text-sm text-gray-500">Check back later for new opportunities.</p>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   </div>
 </MainLayout>
 
 <script>
-  // Function to update URL and refresh page
-  function updateUrlAndRefresh(params: Record<string, string | null>) {
+  // Function to handle form submission with client-side navigation
+  function handleSort(value: string) {
     const url = new URL(window.location.href);
-    Object.entries(params).forEach(([key, value]) => {
-      if (value === null) {
-        url.searchParams.delete(key);
-      } else {
-        url.searchParams.set(key, value);
-      }
-    });
+    if (value === 'recent') {
+      url.searchParams.delete('sort');
+    } else {
+      url.searchParams.set('sort', value);
+    }
     window.location.href = url.toString();
   }
 
-  // Handle sort select
-  const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
-  if (sortSelect) {
-    sortSelect.addEventListener('change', () => {
-      updateUrlAndRefresh({
-        sort: sortSelect.value
-      });
+  // Add event listeners to radio buttons
+  document.querySelectorAll('input[name="sort"]').forEach((radio) => {
+    radio.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      handleSort(target.value);
     });
-  }
+  });
 </script>

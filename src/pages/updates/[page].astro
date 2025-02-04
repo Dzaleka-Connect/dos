@@ -1,0 +1,141 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { updates, type Update } from '../../data/updates';
+import { format } from 'date-fns';
+
+export async function getStaticPaths() {
+    const itemsPerPage = 5;
+    const totalPages = Math.ceil(updates.length / itemsPerPage);
+    
+    return Array.from({ length: totalPages }, (_, i) => {
+        const page = i + 1;
+        const start = i * itemsPerPage;
+        const end = start + itemsPerPage;
+        return {
+            params: { page: page.toString() },
+            props: { 
+                page,
+                totalPages,
+                updates: updates.slice(start, end)
+            }
+        };
+    });
+}
+
+const { page, totalPages, updates: currentUpdates } = Astro.props;
+
+// Helper function to get type style
+const getTypeStyle = (type: Update['type']) => {
+    switch (type) {
+        case 'feature':
+            return {
+                bg: 'bg-blue-100',
+                text: 'text-blue-600',
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>`
+            };
+        case 'improvement':
+            return {
+                bg: 'bg-green-100',
+                text: 'text-green-600',
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>`
+            };
+        case 'bugfix':
+            return {
+                bg: 'bg-orange-100',
+                text: 'text-orange-600',
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>`
+            };
+        case 'announcement':
+            return {
+                bg: 'bg-purple-100',
+                text: 'text-purple-600',
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                </svg>`
+            };
+    }
+};
+---
+
+<MainLayout title={`Latest Updates - Page ${page} - Dzaleka Online Services`}>
+    <main class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900">Latest Updates</h1>
+                <p class="mt-4 text-lg text-gray-600">
+                    Stay informed about new features, improvements, and announcements
+                </p>
+            </div>
+
+            <div class="space-y-8">
+                {currentUpdates.map((update) => {
+                    const style = getTypeStyle(update.type);
+                    return (
+                        <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-6">
+                            <div class="flex items-start space-x-4">
+                                <div class={`flex-shrink-0 ${style.text}`} set:html={style.icon} />
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2">
+                                        <h3 class="text-lg font-semibold text-gray-900">
+                                            {update.title}
+                                        </h3>
+                                        <span class={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${style.bg} ${style.text}`}>
+                                            {update.type}
+                                        </span>
+                                    </div>
+                                    <p class="mt-1 text-gray-600">{update.description}</p>
+                                    <time class="mt-2 block text-sm text-gray-500">
+                                        {format(new Date(update.date), 'MMMM d, yyyy')}
+                                    </time>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <!-- Pagination -->
+            {totalPages > 1 && (
+                <div class="mt-12 flex items-center justify-center space-x-2">
+                    {page > 1 && (
+                        <a
+                            href={`/updates/${page - 1}`}
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Previous
+                        </a>
+                    )}
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                        <a
+                            href={`/updates/${pageNum}`}
+                            class:list={[
+                                'inline-flex items-center px-4 py-2 border rounded-md text-sm font-medium',
+                                pageNum === page
+                                    ? 'border-primary-600 bg-primary-50 text-primary-600'
+                                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                            ]}
+                        >
+                            {pageNum}
+                        </a>
+                    ))}
+
+                    {page < totalPages && (
+                        <a
+                            href={`/updates/${page + 1}`}
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Next
+                        </a>
+                    )}
+                </div>
+            )}
+        </div>
+    </main>
+</MainLayout>

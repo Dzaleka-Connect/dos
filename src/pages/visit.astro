@@ -69,51 +69,55 @@ const stats = [
     });
   </script>
 
-  <main class="min-h-screen">
+  <main class="min-h-screen bg-gray-50">
     <!-- Hero Section -->
-    <div class="relative h-[70vh] md:h-[70vh] overflow-hidden">
-      <!-- Background layers -->
+    <div class="relative h-[80vh] overflow-hidden">
+      <!-- Background Image with Overlay -->
       <div class="absolute inset-0">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/90 to-primary-900/90"></div>
+        <img 
+          src="https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg" 
+          alt="Dzaleka Community" 
+          class="w-full h-full object-cover"
+        />
       </div>
 
       <!-- Content -->
       <div class="relative z-20 h-full flex flex-col items-center justify-center py-8 md:py-16">
         <div class="container mx-auto px-4 md:px-6">
-          <div class="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
-            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur rounded-full px-4 md:px-6 py-2">
+          <div class="max-w-4xl mx-auto text-center space-y-8">
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-4 md:px-6 py-2">
               <span class="w-2 h-2 rounded-full bg-primary-400 animate-pulse"></span>
-              <span class="text-xs md:text-sm text-white/90 font-medium tracking-wider uppercase">Welcome to Dzaleka Online Services</span>
+              <span class="text-xs md:text-sm text-white/90 font-medium tracking-wider uppercase">Experience Dzaleka</span>
             </div>
             
-            <div class="space-y-4 md:space-y-6">
-              <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight">
-                Visit <span class="text-primary-400">Dzaleka</span>
+            <div class="space-y-6">
+              <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                Visit <span class="text-primary-400">Dzaleka</span><br/>Refugee Camp
               </h1>
               
-              <p class="text-sm md:text-base lg:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed px-4">
-                Experience the vibrant culture and resilient spirit of Malawi's largest refugee community
+              <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                Discover the vibrant culture, resilient spirit, and inspiring stories of Malawi's largest refugee community
               </p>
             </div>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 pt-4 md:pt-6">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 pt-8">
               <button 
                 onclick="document.getElementById('planTripForm').scrollIntoView({behavior: 'smooth'})"
-                class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-4 bg-white hover:bg-primary-400 text-primary-900 hover:text-white font-medium rounded-full transition-all duration-300 group shadow-lg hover:shadow-xl text-sm md:text-base"
+                class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-primary-400 text-primary-900 hover:text-white font-medium rounded-full transition-all duration-300 group shadow-lg hover:shadow-xl text-base"
               >
-                <span>Plan Your Trip</span>
-                <svg class="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span>Plan Your Visit</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
               </button>
               
               <a 
-                href="#learn-more"
-                class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-4 border-2 border-white/30 hover:border-white/80 text-white font-medium rounded-full transition-all duration-300 group hover:bg-white/10 text-sm md:text-base"
+                href="#activities"
+                class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 hover:border-white/80 text-white font-medium rounded-full transition-all duration-300 group hover:bg-white/10 text-base"
               >
-                <span>Learn More</span>
-                <svg class="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span>Explore Activities</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
                 </svg>
               </a>
@@ -123,20 +127,19 @@ const stats = [
       </div>
 
       <!-- Scroll Indicator -->
-      <div class="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
-        <span class="text-xs md:text-sm text-white/50 font-medium mb-2">Scroll to explore</span>
-        <div class="w-[1px] h-8 md:h-12 bg-gradient-to-b from-white/0 via-white/30 to-white/0 animate-pulse"></div>
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce">
+        <div class="w-1 h-16 bg-gradient-to-b from-white/0 via-white/30 to-white/0"></div>
       </div>
-    </div><br><br>
+    </div>
 
     <!-- Stats Section -->
-    <section class="relative z-10 -mt-16 mb-16">
+    <section class="relative z-10 -mt-20">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
-          <div class="bg-white rounded-2xl shadow-xl p-8">
+          <div class="bg-white rounded-2xl shadow-xl p-8 backdrop-blur-lg">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {stats.map(stat => (
-                <div>
+                <div class="p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <div class="text-4xl font-bold text-primary-600 mb-2">{stat.number}</div>
                   <div class="text-gray-600 font-medium">{stat.label}</div>
                 </div>
@@ -147,23 +150,78 @@ const stats = [
       </div>
     </section>
 
+    <!-- Featured Activities -->
+    <section id="activities" class="py-24">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Activities</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Immerse yourself in the rich cultural experiences and community initiatives that make Dzaleka unique</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {activities.map(activity => (
+            <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all">
+              <div class="aspect-w-16 aspect-h-9">
+                <img 
+                  src={activity.image} 
+                  alt={activity.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
+                <div class="absolute bottom-0 left-0 right-0 p-6">
+                  <div class="flex items-center space-x-2 text-white/90 mb-2">
+                    <span class="text-2xl">{activity.icon}</span>
+                    <h3 class="text-xl font-semibold">{activity.title}</h3>
+                  </div>
+                  <p class="text-white/80">{activity.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- Introduction -->
-    <section id="learn-more" class="py-20 bg-white">
+    <section class="py-24 bg-white">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
-          <p class="text-xl text-gray-700 leading-relaxed">
-            Dzaleka Refugee Camp, located approximately 50 km from Lilongwe in Malawi's Dowa District, is the country's sole permanent refugee camp. Established in 1994 by the United Nations High Commissioner for Refugees (UNHCR), it now hosts over 52,000 refugees from nations including the Democratic Republic of Congo, Rwanda, Burundi, Ethiopia, and Somalia.
-          </p>
+          <div class="prose prose-lg">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">About Dzaleka</h2>
+            <p class="text-xl text-gray-700 leading-relaxed">
+              Dzaleka Refugee Camp, located approximately 50 km from Lilongwe in Malawi's Dowa District, is the country's sole permanent refugee camp. Established in 1994 by the United Nations High Commissioner for Refugees (UNHCR), it now hosts over 52,000 refugees from nations including the Democratic Republic of Congo, Rwanda, Burundi, Ethiopia, and Somalia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zones Section -->
+    <section class="py-24 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Camp Zones</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Explore the different areas within Dzaleka</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
+          {zones.map(zone => (
+            <div class="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-all">
+              <span class="text-4xl mb-4 block">{zone.icon}</span>
+              <h3 class="font-medium text-gray-900">{zone.name}</h3>
+            </div>
+          ))}
         </div>
       </div>
     </section>
 
     <!-- Plan Your Trip Form -->
-    <section id="planTripForm" class="py-20 bg-gray-50">
+    <section id="planTripForm" class="py-24 bg-white">
       <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto">
           <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold mb-4">Plan Your Trip</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Plan Your Visit</h2>
             <p class="text-gray-600">Let us help you organize your visit to Dzaleka. Our team will get back to you within 24 hours.</p>
           </div>
 
@@ -262,152 +320,40 @@ const stats = [
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                 </svg>
               </button>
-
-              <!-- Hidden Honeypot Field -->
-              <input type="text" name="_gotcha" style="display:none" />
             </form>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Travel Info Cards -->
-    <section class="py-20 bg-white">
+    <!-- Video Section -->
+    <section class="py-24 bg-gray-50">
       <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div class="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
-            <div class="text-4xl mb-6">✈️</div>
-            <h3 class="text-2xl font-semibold mb-4">Travel Arrangements</h3>
-            <p class="text-gray-600 leading-relaxed">From Lilongwe, Dzaleka is accessible via a 50 km journey northward. Coordinate visits through organizations operating within the camp for a structured experience.</p>
-          </div>
-
-          <div class="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
-            <div class="text-4xl mb-6">🏠</div>
-            <h3 class="text-2xl font-semibold mb-4">Accommodation</h3>
-            <p class="text-gray-600 leading-relaxed mb-4">Experience the Dzaleka Homestay Program for an immersive cultural experience.</p>
-            <a 
-              href="https://tumainiletu.org/the-dzaleka-homestay-program/" 
-              target="_blank" 
-              class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group-hover:translate-x-2 transition-transform"
-            >
-              Learn more about the Homestay Program
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-              </svg>
-            </a>
-          </div>
-
-          <div class="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
-            <div class="text-4xl mb-6">🤝</div>
-            <h3 class="text-2xl font-semibold mb-4">Cultural Sensitivity</h3>
-            <p class="text-gray-600 leading-relaxed">Approach with respect and awareness, engaging with local guides for meaningful interactions and enhanced understanding.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Activities -->
-    <section class="py-20 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4">Things to Do</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Discover the vibrant culture and community life at Dzaleka through our various activities and programs.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {activities.map(activity => (
-            <div class="group bg-white rounded-xl shadow-lg overflow-hidden">
-              <div class="relative h-48">
-                <img 
-                  src={activity.image} 
-                  alt={activity.title}
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div class="absolute bottom-4 left-4 text-white">
-                  <div class="text-3xl mb-1">{activity.icon}</div>
-                  <h3 class="text-xl font-semibold">{activity.title}</h3>
-                </div>
-              </div>
-              <div class="p-6">
-                <p class="text-gray-600">{activity.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Zones -->
-    <section class="py-20 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-          <div class="inline-flex items-center space-x-2 bg-primary-50 rounded-full px-4 py-2 mb-6">
-            <span class="w-2 h-2 rounded-full bg-primary-500"></span>
-            <span class="text-sm text-primary-700 font-medium">Camp Zones</span>
-          </div>
-          <h2 class="text-4xl font-bold mb-6">Dzaleka Zones</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">The camp is divided into zones named after Malawian towns and cities, each with its own unique character. The government set up the zones for administrative purposes.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {zones.map(zone => (
-            <div class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500/30 to-primary-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              <div class="flex items-start space-x-4">
-                <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300">{zone.icon}</div>
-                <div>
-                  <h3 class="text-xl font-semibold text-gray-900">{zone.name}</h3>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Important Considerations -->
-    <section class="py-20 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4">Important Considerations</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Help support our community while ensuring a respectful and meaningful visit.</p>
-        </div>
-
-        <div class="max-w-3xl mx-auto">
-          <div class="bg-white p-8 rounded-xl shadow-lg">
-            <div class="flex items-start space-x-4">
-              <div class="text-4xl text-primary-600 flex-shrink-0">💡</div>
-              <div>
-                <h3 class="text-2xl font-semibold mb-4">Support Local Enterprises</h3>
-                <p class="text-gray-700 leading-relaxed">Engaging with and supporting local businesses within the camp can contribute to the economic well-being of the refugee community. Your participation helps create sustainable opportunities for our residents.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section class="py-20 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4">Experience Dzaleka</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Take a virtual tour of our vibrant community and get a glimpse of daily life in Dzaleka.</p>
-        </div>
-
         <div class="max-w-4xl mx-auto">
-          <div class="relative w-full pb-[56.25%] overflow-hidden rounded-2xl shadow-lg">
-            <iframe 
-              class="absolute top-0 left-0 w-full h-full"
-              src="https://www.youtube.com/embed/T4oSsqeraHE?si=yqwOEDIc52S1kCG-" 
-              title="Experience Dzaleka Refugee Camp"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen
-            ></iframe>
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Experience Dzaleka</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto mb-8">Take a virtual tour of our vibrant community and get a glimpse of daily life in Dzaleka.</p>
+          </div>
+
+          <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div class="relative w-full pb-[56.25%] bg-gray-900">
+              <iframe 
+                class="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/T4oSsqeraHE?si=yqwOEDIc52S1kCG-" 
+                title="Experience Dzaleka Refugee Camp"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">Video courtesy of Perfect Afrika</p>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 </MainLayout>
