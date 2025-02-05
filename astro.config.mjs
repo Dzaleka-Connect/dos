@@ -8,9 +8,12 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid',
-  adapter: node({
-    mode: 'standalone'
+  site: 'https://services.dzaleka.com',
+  output: process.env.NETLIFY ? 'static' : 'hybrid',
+  ...(process.env.NETLIFY ? {} : {
+    adapter: node({
+      mode: 'standalone'
+    })
   }),
   integrations: [
     tailwind(),
@@ -22,7 +25,8 @@ export default defineConfig({
     shikiConfig: {
       theme: 'github-light',
       wrap: true
-    }
+    },
+    rehypePlugins: []
   },
   vite: {
     optimizeDeps: {
