@@ -1,0 +1,268 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { OverviewSection } from '../components/data/sections/OverviewSection';
+import { EventsSection } from '../components/data/sections/EventsSection';
+import { StakeholdersSection } from '../components/data/sections/StakeholdersSection';
+import { EconomicSection } from '../components/data/sections/EconomicSection';
+import { HealthcareSection } from '../components/data/sections/HealthcareSection';
+import { DemographicsSection } from '../components/data/sections/DemographicsSection';
+import { NewsWidget } from '../components/data/NewsWidget';
+import { EmergencyAlerts } from '../components/data/EmergencyAlerts';
+import { ResourcesWidget } from '../components/data/ResourcesWidget';
+import { FinanceWidget } from '../components/data/FinanceWidget';
+import { PopulationChart } from '../components/data/PopulationChart';
+
+const languages = [
+  { code: 'en', name: 'English' },
+  { code: 'fr', name: 'Français' },
+  { code: 'sw', name: 'Kiswahili' }
+];
+---
+
+<MainLayout title="Dzaleka Camp Data Hub">
+  <!-- Hero Section -->
+  <div class="relative">
+    {/* Hero Image */}
+    <div class="absolute inset-0">
+      <img
+        src="/images/dzaleka-hero.jpeg"
+        alt="Dzaleka Refugee Camp"
+        class="w-full h-full object-cover"
+      />
+      {/* Dark Overlay */}
+      <div class="absolute inset-0 bg-black/60"></div>
+    </div>
+
+    {/* Content Overlay */}
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
+          <span class="block">Dzaleka Camp</span>
+          <span class="block text-primary-200">Data & Statistics</span>
+        </h1>
+        <p class="mt-3 max-w-md mx-auto text-base text-gray-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+          Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations.
+        </p>
+      </div>
+
+      {/* Stats */}
+      <div class="mt-16">
+        <dl class="rounded-lg bg-white/10 backdrop-blur-lg shadow-lg sm:grid sm:grid-cols-3">
+          <div class="flex flex-col border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-r">
+            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Total Refugees</dt>
+            <dd class="order-1 text-5xl font-bold text-white">56,760</dd>
+          </div>
+          <div class="flex flex-col border-t border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-l sm:border-r">
+            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Women & Girls</dt>
+            <dd class="order-1 text-5xl font-bold text-white">60%</dd>
+          </div>
+          <div class="flex flex-col border-t border-gray-100/10 p-6 text-center sm:border-0 sm:border-l">
+            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Main Nationalities</dt>
+            <dd class="order-1 text-5xl font-bold text-white">5</dd>
+          </div>
+        </dl>
+        <div class="text-center mt-4 text-sm text-gray-300">
+          <p>Sources: 
+            <a href="https://reliefweb.int/report/malawi/wfp-malawi-country-brief-december-2024" class="underline hover:text-white" target="_blank" rel="noopener noreferrer">WFP Malawi Country Brief (Dec 2024)</a>, 
+            <a href="https://www.unhcr.org/countries/malawi" class="underline hover:text-white" target="_blank" rel="noopener noreferrer">UNHCR Malawi</a>
+          </p>
+          <p class="mt-2 text-xs">Primary origins: DRC (62%), Burundi (19%), Rwanda (7%), Others (2%)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    {/* Quick Navigation */}
+    <nav class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 mb-8 sticky top-4 z-10">
+      <div class="flex flex-wrap gap-2">
+        <a href="#overview" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Overview</a>
+        <a href="#demographics" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Demographics</a>
+        <a href="#events" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Events</a>
+        <a href="#stakeholders" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Stakeholders</a>
+        <a href="#economic" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Economic</a>
+        <a href="#healthcare" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Healthcare</a>
+      </div>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Content Column */}
+      <div class="lg:col-span-2">
+        {/* First Section: Overview & Demographics */}
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Camp Overview</h2>
+          <OverviewSection client:load />
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Demographics</h2>
+          <PopulationChart client:load />
+        </div>
+
+        {/* Second Section: Events & Stakeholders */}
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Events</h2>
+          <EventsSection client:load />
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Key Stakeholders</h2>
+          <StakeholdersSection client:load />
+        </div>
+
+        {/* Third Section: Economic & Healthcare */}
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Economic Impact</h2>
+          <EconomicSection client:load />
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Healthcare Services</h2>
+          <HealthcareSection client:load />
+        </div>
+
+        {/* Fourth Section: Additional Demographics */}
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Additional Demographics</h2>
+          <DemographicsSection client:load />
+        </div>
+      </div>
+
+      {/* Sidebar */}
+      <div class="space-y-8">
+        {/* News */}
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Latest News</h2>
+          <div class="overflow-y-auto max-h-[400px] pr-2">
+            <NewsWidget client:load />
+          </div>
+        </div>
+
+        {/* Emergency Alerts */}
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Emergency Alerts</h2>
+          <div class="overflow-y-auto max-h-[300px] pr-2">
+            <EmergencyAlerts client:load />
+          </div>
+        </div>
+
+        {/* Finance */}
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Finance</h2>
+          <div class="overflow-y-auto max-h-[300px] pr-2">
+            <FinanceWidget client:load />
+          </div>
+        </div>
+
+        {/* Resources */}
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Resources</h2>
+          <div class="overflow-y-auto max-h-[300px] pr-2">
+            <ResourcesWidget client:load />
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  .scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+  .stat-value {
+    transition: opacity 0.2s ease-in-out;
+  }
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+</style>
+
+<script>
+  let currentLanguage = 'en';
+  let isLoading = true;
+  let hasError = false;
+
+  async function fetchData(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  }
+
+  function setLoadingState(loading) {
+    isLoading = loading;
+    const stats = document.querySelectorAll('.stat-value');
+    stats.forEach(stat => {
+      if (loading) {
+        stat.classList.add('animate-pulse');
+      } else {
+        stat.classList.remove('animate-pulse');
+      }
+    });
+  }
+
+  async function fetchCampData() {
+    try {
+      setLoadingState(true);
+      const [population, news, alerts] = await Promise.all([
+        fetchData('/api/population'),
+        fetchData('/api/news'),
+        fetchData('/api/alerts')
+      ]);
+
+      updateDashboard(population);
+      hasError = false;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      showErrorMessage('Unable to fetch latest data. Please try again later.');
+      hasError = true;
+    } finally {
+      setLoadingState(false);
+    }
+  }
+
+  function showErrorMessage(message) {
+    const errorDiv = document.getElementById('error-message');
+    if (errorDiv) {
+      errorDiv.textContent = message;
+      errorDiv.classList.remove('hidden');
+      setTimeout(() => {
+        errorDiv.classList.add('hidden');
+      }, 5000);
+    }
+  }
+
+  function updateDashboard(population) {
+    // Update statistics
+    const totalPopulation = document.getElementById('total-population');
+    const newArrivals = document.getElementById('new-arrivals');
+    const womenPercentage = document.getElementById('women-percentage');
+    const childrenPercentage = document.getElementById('children-percentage');
+
+    if (totalPopulation) totalPopulation.textContent = population.total.toLocaleString();
+    if (newArrivals) newArrivals.textContent = population.newArrivals.toLocaleString();
+    if (womenPercentage) womenPercentage.textContent = `${population.demographics.women}%`;
+    if (childrenPercentage) childrenPercentage.textContent = `${population.demographics.children}%`;
+  }
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', fetchCampData);
+
+  // Refresh data every 5 minutes
+  setInterval(fetchCampData, 300000);
+</script>
+
+<!-- Error Message -->
+<div id="error-message" class="hidden fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+</div>
