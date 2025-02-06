@@ -5,7 +5,7 @@ date: 2025-02-07T09:00:00Z
 location: "Dzaleka Refugee Camp, Dowa"
 category: "Tree Planting"
 featured: true
-image: "https://scontent.fbne6-1.fna.fbcdn.net/v/t39.30808-6/472789260_1152039596923381_4091447421135494912_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5spYpr9oV5YQ7kNvgFKv7fw&_nc_zt=23&_nc_ht=scontent.fbne6-1.fna&_nc_gid=AGMaUKWhOnsIWaWxBRHf-qH&oh=00_AYCZc2djNLJ7fmAmQWmiXDghFNqrCKs6oRdUZsg_Q9bynw&oe=67A2BF74"
+image: "/images/Planting Tree.jpg"
 organizer: "Tumaini Letu"
 status: "upcoming"
 contact:
@@ -14,7 +14,7 @@ contact:
   whatsapp: "+265 8816 42990"
 registration:
   required: false
-  url: "https://tumainifestival.org/register"
+  url: "https://tumainifestival.org/"
 tags: ["Green Dzaleka", "Transforming Dzaleka", "Sustainable Environment", "Tumaini Letu"]
 ---
 
