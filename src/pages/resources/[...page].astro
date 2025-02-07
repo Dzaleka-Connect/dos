@@ -316,7 +316,11 @@ const categoryColors = {
                       )}
                     </div>
                     <time class="text-sm text-gray-500" datetime={resource.data.lastUpdated || resource.data.date}>
-                      {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString()}
+                      {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
                     </time>
                   </div>
                 </article>

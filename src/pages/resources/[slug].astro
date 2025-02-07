@@ -210,7 +210,11 @@ const relatedResources = allResources
                         Last Updated
                       </dt>
                       <dd class="text-sm text-gray-900">
-                        {new Date(resource.data.lastUpdated).toLocaleDateString()}
+                        {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
                       </dd>
                     </div>
                   )}
