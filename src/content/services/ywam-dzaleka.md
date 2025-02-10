@@ -9,8 +9,8 @@ location:
     lat: -13.7833
     lng: 33.9833
 contact:
-  email: ''
-  phone: '+265993955620'
+  email: 'tresorweny8@gmail.com'
+  phone: '+265 993955620'
   hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
 socialMedia:
   facebook: 'https://www.facebook.com/YouthWithAMission/'
@@ -18,7 +18,7 @@ socialMedia:
   twitter: ''
   instagram: 'https://www.instagram.com/ywam_org'
   linkedin: ''
-  website: 'https://ywam.org/location/ywam-dzaleka/b-2493'
+  website: 'https://dzaleka.ywam.ws/'
 logo: 'https://images.squarespace-cdn.com/content/v1/651709bd2a8e797db3a8335f/b0918795-26ca-42b7-8334-896b0b1565ba/310228103_479245374231222_4666940611261082184_n.png?format=2500w'
 featured: false
 verified: true
@@ -27,7 +27,12 @@ lastUpdated: 2024-12-24
 
 ## About Youth With A Mission Dzaleka
 
-YWAM Dzaleka is located in Dowa district of Malawi, the big focus is for refugees that are in Dzaleka Refugee camp in where there are 50.000 refugee and the community surrounding it. we are a prayer and missions base and believing that justice will happen through prayers. Ywam Dzaleka is also 50 km from Lilongwe capital city.
+We are a multi-cultural and interdenominational Christian community located in Dzaleka refugee camp, Malawi.
+We aim to share God’s love and presence with refugees, empowering them to trust in Him wherever they go.
+
+We also aim to equip them with foundational farming skills, providing a sustainable foundation for their future.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6qesPu1CvH8?si=OExr2VjQZU84ztty" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Organization Details
 - *Language(s)*: English, Swahili, Chichewa

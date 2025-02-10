@@ -7,7 +7,7 @@ category: "Tree Planting"
 featured: true
 image: "/images/Planting Tree.jpg"
 organizer: "Tumaini Letu"
-status: "upcoming"
+status: "past"
 contact:
   email: "programs.tumaini@gmail.com"
   phone: "+265 8816 42990"
