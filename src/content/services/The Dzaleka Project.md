@@ -1,6 +1,6 @@
 ---
 title: The Dzaleka Project Society
-category: 
+category: Nonprofit organization
 description: Changing the lives of refugees in Dzaleka Refugee Camp
 location:
   address: Dzaleka Refugee Camp
