@@ -8,7 +8,7 @@ category: "Zoom Meeting"
 image: "https://pbs.twimg.com/media/GjHEX_YXEAEstF2?format=jpg&name=4096x4096"
 featured: true
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   phone: "+265 882 717 995"
