@@ -201,14 +201,28 @@ export async function restoreFromBackup() {
 // Get analytics data from storage
 export async function getAnalyticsData() {
   try {
+    // Check if we're in the browser
+    if (typeof window === 'undefined') {
+      return { totalViews: 0 };
+    }
+
     const data = localStorage.getItem(STORAGE_KEY);
     if (data) {
-      return JSON.parse(data);
+      const parsedData = JSON.parse(data);
+      // Ensure totalViews exists and is a number
+      if (typeof parsedData.totalViews !== 'number') {
+        parsedData.totalViews = Object.values(parsedData.pageViews || {}).reduce((sum, views) => sum + views, 0);
+      }
+      return parsedData;
     }
     
     // Try to restore from backup
     const backupData = await restoreFromBackup();
     if (backupData) {
+      // Ensure totalViews exists in backup data
+      if (typeof backupData.totalViews !== 'number') {
+        backupData.totalViews = Object.values(backupData.pageViews || {}).reduce((sum, views) => sum + views, 0);
+      }
       await storeAnalyticsData(backupData);
       return backupData;
     }
@@ -235,7 +249,7 @@ export async function getAnalyticsData() {
     return emptyData;
   } catch (error) {
     console.error('Error getting analytics data:', error);
-    return null;
+    return { totalViews: 0 };
   }
 }
 
@@ -326,10 +340,21 @@ export function trackPagePerformance() {
 // Track user interactions
 export function trackInteraction(type, element) {
   try {
-    const data = getAnalyticsData();
+    let data = getAnalyticsData();
+    if (!data) {
+      data = {
+        sessions: {},
+        pageViews: {},
+        visitors: {},
+        totalViews: 0
+      };
+    }
     const sessionId = getSessionId();
     const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
     const deviceSessionId = `${sessionId}_${deviceId}`;
+    
+    // Initialize sessions if it doesn't exist
+    data.sessions = data.sessions || {};
     
     if (!data.sessions[deviceSessionId]) {
       data.sessions[deviceSessionId] = {
@@ -636,18 +661,20 @@ export async function trackPageView() {
     const path = window.location.pathname;
     const timestamp = new Date().toISOString();
     const sessionId = getSessionId();
-    const visitorId = getVisitorId();
     const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
-    
-    // Update page views
-    data.pageViews = data.pageViews || {};
-    data.pageViews[path] = (data.pageViews[path] || 0) + 1;
-    data.totalViews = (data.totalViews || 0) + 1;
-    
-    // Update session data
-    data.sessions = data.sessions || {};
     const deviceSessionId = `${sessionId}_${deviceId}`;
     
+    // Ensure data structures exist
+    data.sessions = data.sessions || {};
+    data.pageViews = data.pageViews || {};
+    data.visitors = data.visitors || {};
+    data.totalViews = typeof data.totalViews === 'number' ? data.totalViews : 0;
+    
+    // Update page views
+    data.pageViews[path] = (data.pageViews[path] || 0) + 1;
+    data.totalViews += 1;
+    
+    // Update session data
     if (!data.sessions[deviceSessionId]) {
       data.sessions[deviceSessionId] = {
         startTime: timestamp,
@@ -660,7 +687,7 @@ export async function trackPageView() {
         screenSize: `${window.innerWidth}x${window.innerHeight}`,
         language: navigator.language || 'unknown',
         deviceId: deviceId,
-        visitorId: visitorId
+        visitorId: getVisitorId()
       };
     } else {
       data.sessions[deviceSessionId].lastActive = timestamp;
@@ -668,49 +695,39 @@ export async function trackPageView() {
       data.sessions[deviceSessionId].pages.push(path);
     }
     
-    // Update device stats
-    const deviceKey = getDeviceType();
-    data.devices = data.devices || {};
-    data.devices[deviceKey] = (data.devices[deviceKey] || 0) + 1;
-    
-    // Update browser stats
-    const browserKey = getBrowserName();
-    data.browsers = data.browsers || {};
-    data.browsers[browserKey] = (data.browsers[browserKey] || 0) + 1;
-    
-    // Update visitor data with device info
+    // Update visitor data
     const today = timestamp.split('T')[0];
-    data.visitors = data.visitors || {};
     data.visitors[today] = data.visitors[today] || [];
     const visitorEntry = {
-      id: visitorId,
+      id: getVisitorId(),
       deviceId: deviceId,
       timestamp: timestamp
     };
-    if (!data.visitors[today].some(v => v.id === visitorId && v.deviceId === deviceId)) {
+    if (!data.visitors[today].some(v => v.id === visitorEntry.id && v.deviceId === visitorEntry.deviceId)) {
       data.visitors[today].push(visitorEntry);
-    }
-    
-    // Update referrer data if coming from external site
-    if (document.referrer && !document.referrer.includes(window.location.hostname)) {
-      data.referrers = data.referrers || {};
-      const referrerDomain = new URL(document.referrer).hostname;
-      data.referrers[referrerDomain] = (data.referrers[referrerDomain] || 0) + 1;
-    }
-    
-    // Update timestamps
-    data.lastVisit = timestamp;
-    if (!data.firstVisit) {
-      data.firstVisit = timestamp;
     }
     
     // Store updated data
     await storeAnalyticsData(data);
     
+    // Double-check the data was stored correctly
+    const storedData = await getAnalyticsData();
+    if (storedData.totalViews !== data.totalViews) {
+      console.warn('Total views mismatch, fixing...');
+      storedData.totalViews = data.totalViews;
+      await storeAnalyticsData(storedData);
+    }
+    
     return data;
   } catch (error) {
     console.error('Error tracking page view:', error);
-    return null;
+    // Return a valid initial state if there's an error
+    return {
+      sessions: {},
+      pageViews: {},
+      visitors: {},
+      totalViews: 0
+    };
   }
 }
 

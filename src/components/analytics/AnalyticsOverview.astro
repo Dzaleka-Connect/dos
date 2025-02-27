@@ -2,6 +2,37 @@
 // Analytics Overview Component
 ---
 
+import { getAnalyticsData } from '../../utils/analytics-utils';
+import { formatPagePath } from '../../utils/analytics-utils';
+
+const data = await getAnalyticsData();
+
+function renderRealtimeActivity(data) {
+  const recentSessions = Object.entries(data.sessions || {})
+    .filter(([, session]) => {
+      const lastActive = new Date(session.lastActive);
+      return Date.now() - lastActive.getTime() < 300000; // Active in last 5 minutes
+    })
+    .sort(([, a], [, b]) => new Date(b.lastActive) - new Date(a.lastActive));
+
+  if (recentSessions.length === 0) {
+    return `<div class="text-center text-gray-500 py-4">No active sessions</div>`;
+  }
+
+  return recentSessions.map(([, session]) => `
+    <div class="flex items-center justify-between py-2">
+      <div class="flex items-center space-x-3">
+        <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
+        <span class="text-sm text-gray-600">${session.device}</span>
+        <span class="text-sm text-gray-400">${session.browser}</span>
+      </div>
+      <div class="text-sm text-gray-500">
+        ${formatPagePath(session.pages[session.pages.length - 1])}
+      </div>
+    </div>
+  `).join('');
+}
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
   <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Overview</h3>
@@ -38,4 +69,61 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+<div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-medium text-gray-900">Real-time Activity</h3>
+    <span class="flex items-center text-green-600">
+      <span class="h-2 w-2 bg-green-600 rounded-full mr-2 animate-pulse"></span>
+      Live
+    </span>
+  </div>
+  <div class="space-y-4" id="realtime-activity">
+    {renderRealtimeActivity(data)}
+  </div>
+</div>
+
+<script>
+  import { getAnalyticsData } from '../../utils/analytics-utils';
+  import { formatPagePath } from '../../utils/analytics-utils';
+
+  // Function to update real-time activity
+  async function updateRealtimeActivity() {
+    try {
+      const data = await getAnalyticsData();
+      const recentSessions = Object.entries(data.sessions || {})
+        .filter(([, session]) => {
+          const lastActive = new Date(session.lastActive);
+          return Date.now() - lastActive.getTime() < 300000;
+        })
+        .sort(([, a], [, b]) => new Date(b.lastActive) - new Date(a.lastActive));
+
+      const container = document.getElementById('realtime-activity');
+      if (!container) return;
+
+      if (recentSessions.length === 0) {
+        container.innerHTML = `<div class="text-center text-gray-500 py-4">No active sessions</div>`;
+        return;
+      }
+
+      container.innerHTML = recentSessions.map(([, session]) => `
+        <div class="flex items-center justify-between py-2">
+          <div class="flex items-center space-x-3">
+            <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-sm text-gray-600">${session.device}</span>
+            <span class="text-sm text-gray-400">${session.browser}</span>
+          </div>
+          <div class="text-sm text-gray-500">
+            ${formatPagePath(session.pages[session.pages.length - 1])}
+          </div>
+        </div>
+      `).join('');
+    } catch (error) {
+      console.warn('Error updating real-time activity:', error);
+    }
+  }
+
+  // Update real-time activity every 5 seconds
+  setInterval(updateRealtimeActivity, 5000);
+</script> 
