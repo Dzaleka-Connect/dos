@@ -93,30 +93,85 @@ export function convertToCSV(data) {
 // Storage key for analytics data
 const STORAGE_KEY = 'dzaleka_analytics';
 
-// Backup data to server/database (if available)
+export const MAX_BACKUP_SIZE = 2000000; // 2MB limit for localStorage
+
+// Clean up old data to prevent storage overflow
+export function cleanupOldData(data) {
+  try {
+    // Keep only last 30 days of visitor data
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    if (data.visitors) {
+      Object.keys(data.visitors).forEach(date => {
+        if (new Date(date) < thirtyDaysAgo) {
+          delete data.visitors[date];
+        }
+      });
+    }
+    
+    // Keep only last 100 sessions
+    if (data.sessions) {
+      const sessionIds = Object.keys(data.sessions);
+      if (sessionIds.length > 100) {
+        const oldestSessions = sessionIds
+          .sort((a, b) => new Date(data.sessions[a].startTime) - new Date(data.sessions[b].startTime))
+          .slice(0, sessionIds.length - 100);
+        
+        oldestSessions.forEach(id => {
+          delete data.sessions[id];
+          if (data.locations?.[id]) delete data.locations[id];
+        });
+      }
+    }
+    
+    // Limit error logs
+    if (data.errors?.jsErrors) {
+      data.errors.jsErrors = data.errors.jsErrors.slice(-100);
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Error cleaning up old data:', error);
+    return data;
+  }
+}
+
+// Also export the compression function since it's used by other functions
+export function compressData(data) {
+  try {
+    const jsonString = JSON.stringify(data);
+    // Basic compression by removing unnecessary whitespace
+    return jsonString.replace(/\s+/g, '');
+  } catch (error) {
+    console.error('Error compressing data:', error);
+    return null;
+  }
+}
+
+// Backup data to storage
 export async function backupAnalyticsData(data) {
   try {
-    // You can implement server backup here
-    // Example using localStorage as backup:
-    const backup = localStorage.getItem('dzaleka_analytics_backup');
-    const backups = backup ? JSON.parse(backup) : [];
+    // Clean up old data first
+    const cleanedData = cleanupOldData(data);
     
-    // Keep last 7 days of backups
-    backups.push({
-      timestamp: new Date().toISOString(),
-      data: data
-    });
+    // Compress the data
+    const compressedData = compressData(cleanedData);
+    if (!compressedData) return false;
     
-    // Only keep last 7 days
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const filteredBackups = backups.filter(b => 
-      new Date(b.timestamp) > sevenDaysAgo
-    );
-    
-    localStorage.setItem('dzaleka_analytics_backup', 
-      JSON.stringify(filteredBackups)
-    );
+    // Check if we're within storage limits
+    if (compressedData.length > MAX_BACKUP_SIZE) {
+      console.warn('Backup data exceeds size limit, performing additional cleanup');
+      // Additional aggressive cleanup if needed
+      delete cleanedData.interactions; // Remove detailed interaction logs
+      const recompressedData = compressData(cleanedData);
+      if (!recompressedData || recompressedData.length > MAX_BACKUP_SIZE) {
+        throw new Error('Data too large even after cleanup');
+      }
+      localStorage.setItem('dzaleka_analytics_backup', recompressedData);
+    } else {
+      localStorage.setItem('dzaleka_analytics_backup', compressedData);
+    }
     
     return true;
   } catch (error) {
@@ -270,20 +325,34 @@ export function trackPagePerformance() {
 
 // Track user interactions
 export function trackInteraction(type, element) {
-  const data = getAnalyticsData();
-  const sessionId = getSessionId();
-  
-  if (!data.sessions[sessionId].interactions) {
-    data.sessions[sessionId].interactions = [];
+  try {
+    const data = getAnalyticsData();
+    const sessionId = getSessionId();
+    const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
+    const deviceSessionId = `${sessionId}_${deviceId}`;
+    
+    if (!data.sessions[deviceSessionId]) {
+      data.sessions[deviceSessionId] = {
+        interactions: [],
+        startTime: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      };
+    }
+    
+    if (!data.sessions[deviceSessionId].interactions) {
+      data.sessions[deviceSessionId].interactions = [];
+    }
+    
+    data.sessions[deviceSessionId].interactions.push({
+      type,
+      element,
+      timestamp: new Date().toISOString()
+    });
+    
+    storeAnalyticsData(data);
+  } catch (error) {
+    console.error('Error tracking interaction:', error);
   }
-  
-  data.sessions[sessionId].interactions.push({
-    type,
-    element,
-    timestamp: new Date().toISOString()
-  });
-  
-  storeAnalyticsData(data);
 }
 
 // Track scroll depth
@@ -522,7 +591,7 @@ export function trackContentInteraction(data, element) {
   };
   
   // Track reading depth
-  const observer = new IntersectionObserver((entries) => {
+  const readingObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const elementPath = getElementPath(entry.target);
@@ -535,8 +604,29 @@ export function trackContentInteraction(data, element) {
     });
   }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
   
+  // Track content changes
+  const contentObserver = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+      if (mutation.type === 'childList' || mutation.type === 'characterData') {
+        const elementPath = getElementPath(mutation.target);
+        data.content.timeOnContent[elementPath] = {
+          timestamp: new Date().toISOString(),
+          type: mutation.type
+        };
+        storeAnalyticsData(data);
+      }
+    });
+  });
+  
   // Observe content sections
-  document.querySelectorAll('article, section, .content').forEach(el => observer.observe(el));
+  document.querySelectorAll('article, section, .content').forEach(el => {
+    readingObserver.observe(el);
+    contentObserver.observe(el, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  });
 }
 
 // Track page views
@@ -547,6 +637,7 @@ export async function trackPageView() {
     const timestamp = new Date().toISOString();
     const sessionId = getSessionId();
     const visitorId = getVisitorId();
+    const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
     
     // Update page views
     data.pageViews = data.pageViews || {};
@@ -555,8 +646,10 @@ export async function trackPageView() {
     
     // Update session data
     data.sessions = data.sessions || {};
-    if (!data.sessions[sessionId]) {
-      data.sessions[sessionId] = {
+    const deviceSessionId = `${sessionId}_${deviceId}`;
+    
+    if (!data.sessions[deviceSessionId]) {
+      data.sessions[deviceSessionId] = {
         startTime: timestamp,
         lastActive: timestamp,
         pageViews: 1,
@@ -565,20 +658,37 @@ export async function trackPageView() {
         device: getDeviceType(),
         browser: getBrowserName(),
         screenSize: `${window.innerWidth}x${window.innerHeight}`,
-        language: navigator.language || 'unknown'
+        language: navigator.language || 'unknown',
+        deviceId: deviceId,
+        visitorId: visitorId
       };
     } else {
-      data.sessions[sessionId].lastActive = timestamp;
-      data.sessions[sessionId].pageViews += 1;
-      data.sessions[sessionId].pages.push(path);
+      data.sessions[deviceSessionId].lastActive = timestamp;
+      data.sessions[deviceSessionId].pageViews += 1;
+      data.sessions[deviceSessionId].pages.push(path);
     }
     
-    // Update visitor data
+    // Update device stats
+    const deviceKey = getDeviceType();
+    data.devices = data.devices || {};
+    data.devices[deviceKey] = (data.devices[deviceKey] || 0) + 1;
+    
+    // Update browser stats
+    const browserKey = getBrowserName();
+    data.browsers = data.browsers || {};
+    data.browsers[browserKey] = (data.browsers[browserKey] || 0) + 1;
+    
+    // Update visitor data with device info
     const today = timestamp.split('T')[0];
     data.visitors = data.visitors || {};
     data.visitors[today] = data.visitors[today] || [];
-    if (!data.visitors[today].includes(visitorId)) {
-      data.visitors[today].push(visitorId);
+    const visitorEntry = {
+      id: visitorId,
+      deviceId: deviceId,
+      timestamp: timestamp
+    };
+    if (!data.visitors[today].some(v => v.id === visitorId && v.deviceId === deviceId)) {
+      data.visitors[today].push(visitorEntry);
     }
     
     // Update referrer data if coming from external site
@@ -602,4 +712,14 @@ export async function trackPageView() {
     console.error('Error tracking page view:', error);
     return null;
   }
+}
+
+// Update visitor counting
+export function getTotalVisitors(data, date) {
+  if (!data?.visitors?.[date]) return 0;
+  // Count unique combinations of visitor ID and device ID
+  const uniqueVisitors = new Set(
+    data.visitors[date].map(v => `${v.id}_${v.deviceId}`)
+  );
+  return uniqueVisitors.size;
 } 
