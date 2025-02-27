@@ -21,8 +21,8 @@ socialMedia:
 logo: >-
   /images/Dzaleka Project Society.jpg
 featured: false
-verified: true
 status: "active"
+verified: true
 lastUpdated: 2025-02-24
 ---
 

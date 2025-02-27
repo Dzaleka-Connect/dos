@@ -1,0 +1,168 @@
+---
+// DeviceAnalytics component for showing device-related analytics
+---
+
+<div class="device-analytics">
+  <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Device Information</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-blue-50 rounded-lg p-4">
+        <p class="text-sm text-gray-600 font-semibold mb-2">Device Types</p>
+        <div id="device-types-list" class="text-sm">Loading...</div>
+      </div>
+      <div class="bg-green-50 rounded-lg p-4">
+        <p class="text-sm text-gray-600 font-semibold mb-2">Browsers</p>
+        <div id="browsers-list" class="text-sm">Loading...</div>
+      </div>
+      <div class="bg-purple-50 rounded-lg p-4">
+        <p class="text-sm text-gray-600 font-semibold mb-2">Screen Sizes</p>
+        <div id="screen-sizes-list" class="text-sm">Loading...</div>
+      </div>
+      <div class="bg-orange-50 rounded-lg p-4">
+        <p class="text-sm text-gray-600 font-semibold mb-2">Languages</p>
+        <div id="languages-list" class="text-sm">Loading...</div>
+      </div>
+    </div>
+    
+    <!-- Device distribution charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      <div class="bg-white rounded-lg p-4 border border-gray-200">
+        <h4 class="text-md font-medium text-gray-700 mb-2">Device Distribution</h4>
+        <div id="device-distribution-chart" class="h-64"></div>
+      </div>
+      <div class="bg-white rounded-lg p-4 border border-gray-200">
+        <h4 class="text-md font-medium text-gray-700 mb-2">Browser Distribution</h4>
+        <div id="browser-distribution-chart" class="h-64"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Import the analytics module
+    const analyticsModule = await import('../scripts/analytics-client.js');
+    
+    // Get the analytics data
+    const analyticsData = analyticsModule.getAnalyticsData();
+    
+    // Get the session data
+    const sessions = analyticsData.sessions || {};
+    
+    // Count devices, browsers, screen sizes, and languages
+    const deviceTypes = {};
+    const browsers = {};
+    const screenSizes = {};
+    const languages = {};
+    
+    Object.values(sessions).forEach(session => {
+      // Count device types
+      if (session.device) {
+        deviceTypes[session.device] = (deviceTypes[session.device] || 0) + 1;
+      }
+      
+      // Count browsers
+      if (session.browser) {
+        browsers[session.browser] = (browsers[session.browser] || 0) + 1;
+      }
+      
+      // Count screen sizes
+      if (session.screenSize) {
+        screenSizes[session.screenSize] = (screenSizes[session.screenSize] || 0) + 1;
+      }
+      
+      // Count languages
+      if (session.language) {
+        languages[session.language] = (languages[session.language] || 0) + 1;
+      }
+    });
+    
+    // If no data available, try to get current device info
+    if (Object.keys(deviceTypes).length === 0 && analyticsModule.getDeviceType) {
+      deviceTypes[analyticsModule.getDeviceType()] = 1;
+    }
+    
+    if (Object.keys(browsers).length === 0 && analyticsModule.getBrowserName) {
+      browsers[analyticsModule.getBrowserName()] = 1;
+    }
+    
+    if (Object.keys(screenSizes).length === 0 && analyticsModule.getScreenSize) {
+      screenSizes[analyticsModule.getScreenSize()] = 1;
+    }
+    
+    if (Object.keys(languages).length === 0) {
+      const currentLanguage = navigator.language || navigator.userLanguage || 'unknown';
+      languages[currentLanguage] = 1;
+    }
+    
+    // Create HTML for each list
+    const deviceTypesHtml = Object.entries(deviceTypes)
+      .map(([device, count]) => `<div class="flex justify-between"><span>${device}</span><span class="font-semibold">${count}</span></div>`)
+      .join('') || '<div>No device data</div>';
+      
+    const browsersHtml = Object.entries(browsers)
+      .map(([browser, count]) => `<div class="flex justify-between"><span>${browser}</span><span class="font-semibold">${count}</span></div>`)
+      .join('') || '<div>No browser data</div>';
+      
+    const screenSizesHtml = Object.entries(screenSizes)
+      .map(([size, count]) => `<div class="flex justify-between"><span>${size}</span><span class="font-semibold">${count}</span></div>`)
+      .join('') || '<div>No screen size data</div>';
+      
+    const languagesHtml = Object.entries(languages)
+      .map(([lang, count]) => `<div class="flex justify-between"><span>${lang}</span><span class="font-semibold">${count}</span></div>`)
+      .join('') || '<div>No language data</div>';
+    
+    // Update the HTML elements
+    document.getElementById('device-types-list').innerHTML = deviceTypesHtml;
+    document.getElementById('browsers-list').innerHTML = browsersHtml;
+    document.getElementById('screen-sizes-list').innerHTML = screenSizesHtml;
+    document.getElementById('languages-list').innerHTML = languagesHtml;
+    
+    // Check if SimpleChart exists
+    if (typeof SimpleChart !== 'undefined') {
+      // Render device distribution chart
+      const deviceChart = document.getElementById('device-distribution-chart');
+      if (deviceChart && Object.keys(deviceTypes).length > 0) {
+        new SimpleChart(deviceChart, {
+          type: 'pie',
+          data: {
+            labels: Object.keys(deviceTypes),
+            datasets: [{
+              data: Object.values(deviceTypes),
+              backgroundColor: ['#4285F4', '#34A853', '#FBBC05', '#EA4335']
+            }]
+          },
+          options: {
+            responsive: true,
+            title: 'Device Distribution'
+          }
+        });
+      }
+      
+      // Render browser distribution chart
+      const browserChart = document.getElementById('browser-distribution-chart');
+      if (browserChart && Object.keys(browsers).length > 0) {
+        new SimpleChart(browserChart, {
+          type: 'pie',
+          data: {
+            labels: Object.keys(browsers),
+            datasets: [{
+              data: Object.values(browsers),
+              backgroundColor: ['#4285F4', '#34A853', '#FBBC05', '#EA4335', '#9C27B0']
+            }]
+          },
+          options: {
+            responsive: true,
+            title: 'Browser Distribution'
+          }
+        });
+      }
+    }
+  });
+</script>
+
+<style>
+  .device-analytics {
+    margin-bottom: 2rem;
+  }
+</style>

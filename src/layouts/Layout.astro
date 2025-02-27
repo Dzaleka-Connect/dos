@@ -34,16 +34,202 @@ const { title } = Astro.props;
 		<title>{title} | Dzaleka Online Services</title>
 
 		<!-- Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-V28XG9CN72"></script>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-V28XG9CN72" crossorigin="anonymous"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
-			gtag('config', 'G-V28XG9CN72');
+			gtag('config', 'G-V28XG9CN72', {
+				transport_url: 'https://ssl.google-analytics.com',
+				cookie_flags: 'Secure;SameSite=None',
+				send_page_view: true
+			});
 		</script>
 	</head>
 	<body class="flex flex-col min-h-screen pt-16">
 		<slot />
+		
+		<!-- Site Analytics Tracking -->
+		<script>
+			window.addEventListener('DOMContentLoaded', async () => {
+				try {
+					const { 
+						getAnalyticsData, 
+						storeAnalyticsData,
+						getSessionId,
+						getVisitorId,
+						getDeviceType,
+						getBrowserName,
+						trackInteraction,
+						trackScrollDepth,
+						trackPagePerformance,
+						trackEngagement,
+						trackErrors,
+						trackWebVitals,
+						trackUserJourney,
+						trackContentInteraction,
+						trackPageView,
+						backupAnalyticsData,
+						restoreFromBackup
+					} = await import('../utils/analytics-utils.js');
+					
+					// Listen for storage changes
+					window.addEventListener('storage', async (e) => {
+						if (e.key === 'dzaleka_analytics') {
+							// Storage was cleared or modified
+							const data = await getAnalyticsData();
+							if (!data) {
+								// Try to restore from backup
+								const restored = await restoreFromBackup();
+								if (restored) {
+									await storeAnalyticsData(restored);
+								}
+							}
+						}
+					});
+
+					// Warn before clearing site data
+					window.addEventListener('beforeunload', (e) => {
+						if (document.hasStorageAccess && !document.hasStorageAccess()) {
+							const msg = 'Warning: Clearing site data will erase analytics. Export your data first.';
+							e.returnValue = msg;
+							return msg;
+						}
+					});
+
+					// Initialize page view tracking
+					let data = await trackPageView();
+					
+					// Get session ID after trackPageView
+					const sessionId = getSessionId();
+					const visitorId = getVisitorId();
+					
+					// Update session data
+					data.sessions = data.sessions || {};
+					const timestamp = new Date().toISOString();
+					
+					// Initialize device and browser stats if they don't exist
+					data.devices = data.devices || {};
+					data.browsers = data.browsers || {};
+					
+					// Get current device and browser info
+					const deviceType = getDeviceType();
+					const browserName = getBrowserName();
+					
+					// Initialize visitor data structure if it doesn't exist
+					data.visitors = data.visitors || {};
+					const today = timestamp.split('T')[0];
+					data.visitors[today] = data.visitors[today] || [];
+					
+					if (!data.sessions[sessionId]) {
+						data.sessions[sessionId] = {
+							startTime: timestamp,
+							lastActive: timestamp,
+							pageViews: 1,
+							pages: [window.location.pathname],
+							entryPage: window.location.pathname,
+							device: deviceType,
+							browser: browserName,
+							screenSize: `${window.innerWidth}x${window.innerHeight}`,
+							language: navigator.language || 'unknown',
+							visitorId: visitorId
+						};
+					} else {
+						data.sessions[sessionId].lastActive = timestamp;
+						data.sessions[sessionId].pageViews += 1;
+						data.sessions[sessionId].pages.push(window.location.pathname);
+					}
+					
+					// Update device stats for every page view
+					data.devices[deviceType] = (data.devices[deviceType] || 0) + 1;
+					
+					// Update browser stats for every page view
+					data.browsers[browserName] = (data.browsers[browserName] || 0) + 1;
+					
+					// Update visitor data
+					if (!data.visitors[today].includes(visitorId)) {
+						data.visitors[today].push(visitorId);
+						// Store the first visit time for new visitors
+						data.visitorFirstVisits = data.visitorFirstVisits || {};
+						data.visitorFirstVisits[visitorId] = data.visitorFirstVisits[visitorId] || timestamp;
+					}
+					
+					// Update referrer data if coming from external site
+					if (document.referrer && !document.referrer.includes(window.location.hostname)) {
+						data.referrers = data.referrers || {};
+						const referrerDomain = new URL(document.referrer).hostname;
+						data.referrers[referrerDomain] = (data.referrers[referrerDomain] || 0) + 1;
+					}
+					
+					// Update timestamps
+					data.lastVisit = timestamp;
+					if (!data.firstVisit) {
+						data.firstVisit = timestamp;
+					}
+					
+					// Initialize new tracking features
+					trackErrors(data);
+					trackWebVitals(data);
+					data = trackUserJourney(data);
+					trackContentInteraction(data);
+					
+					// Track user engagement
+					document.addEventListener('click', () => {
+						data = trackEngagement(data, 'click');
+						storeAnalyticsData(data);
+					});
+					
+					// Track form submissions
+					document.addEventListener('submit', () => {
+						data = trackEngagement(data, 'form');
+						storeAnalyticsData(data);
+					});
+					
+					// Track page unload to record time spent
+					window.addEventListener('beforeunload', async () => {
+						const timeSpent = Date.now() - new Date(data.sessions[sessionId].lastActive).getTime();
+						data.sessions[sessionId].timeOnPage = data.sessions[sessionId].timeOnPage || {};
+						data.sessions[sessionId].timeOnPage[window.location.pathname] = timeSpent;
+						await storeAnalyticsData(data);
+					});
+
+					// Track scroll depth
+					trackScrollDepth();
+					
+					// Track page performance
+					const performance = trackPagePerformance();
+					if (performance) {
+						data.sessions[sessionId].performance = performance;
+						await storeAnalyticsData(data);
+					}
+					
+					// Track clicks on interactive elements
+					document.addEventListener('click', (e) => {
+						const target = e.target.closest('a, button, [role="button"]');
+						if (target) {
+							trackInteraction('click', {
+								type: target.tagName.toLowerCase(),
+								text: target.textContent?.trim(),
+								href: target.href,
+								id: target.id,
+								class: target.className
+							});
+						}
+					});
+
+					// Track client-side navigation
+					const originalPushState = history.pushState;
+					history.pushState = function() {
+						originalPushState.apply(this, arguments);
+						trackPageView();
+					};
+					window.addEventListener('popstate', trackPageView);
+
+				} catch (error) {
+					console.error('Error recording page view:', error);
+				}
+			});
+		</script>
 	</body>
 </html>
 
