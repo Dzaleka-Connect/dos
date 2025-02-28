@@ -52,7 +52,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
       <!-- Analytics Content will be rendered by JavaScript -->
       <div id="analytics-content" class="hidden"></div>
 
-      <!-- Data Management -->
+        <!-- Data Management -->
       <div class="flex flex-col gap-4 items-center mt-8">
         <div class="flex gap-4">
           <button id="exportBtn" 
@@ -61,7 +61,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <span>Export Data</span>
           </button>
           <button id="backupBtn"
-            class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700
+            class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 
             transition duration-150 flex items-center gap-2 font-medium">
             <span>Create Backup</span>
           </button>
@@ -96,7 +96,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
   <!-- Load Chart.js first -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-  <script>
+    <script>
     let Chart;
     // Import all necessary functions
     import { 
@@ -133,7 +133,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
     let sessionStartTime = new Date();
     let analyticsModule = null;
     let currentErrorPage = 1;
-
+    
     // Format date for display
     const formatDate = (dateString) => {
       if (!dateString) return '-';
@@ -220,8 +220,8 @@ const title = "Analytics | Dzaleka Heritage Archive";
                 </div>
                 <span class="text-sm text-gray-600">${percentage}%</span>
               </div>
-            </div>
-          `;
+          </div>
+        `;
         }).join('');
     }
 
@@ -414,24 +414,24 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <h3 class="text-sm font-medium text-gray-500">Total Page Views</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${data.totalViews || 0}</p>
             <p class="text-sm text-gray-500 mt-1">All time</p>
-          </div>
+              </div>
           <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500">Today's Visitors</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${todayVisitors}</p>
             <p class="text-sm text-gray-500 mt-1">Unique visitors today</p>
-          </div>
+              </div>
           <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500">Total Visitors</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${totalVisitors}</p>
             <p class="text-sm text-gray-500 mt-1">Since ${formatDate(data.firstVisit)}</p>
-          </div>
+              </div>
           <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500">Active Sessions</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${activeSessions}</p>
             <p class="text-sm text-gray-500 mt-1">Last 5 minutes</p>
+            </div>
           </div>
-        </div>
-
+          
         <!-- Real-time Activity -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <div class="flex items-center justify-between mb-4">
@@ -440,19 +440,19 @@ const title = "Analytics | Dzaleka Heritage Archive";
               <span class="h-2 w-2 bg-green-600 rounded-full mr-2 animate-pulse"></span>
               Live
             </span>
-          </div>
+            </div>
           <div class="space-y-4">
             ${renderRealtimeActivity(data)}
           </div>
         </div>
-
+        
         <!-- Engagement Metrics -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h3 class="text-lg font-medium text-gray-900 mb-4">Engagement Metrics</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             ${renderEngagementMetrics(data)}
-          </div>
-        </div>
+            </div>
+            </div>
 
         <!-- Popular Pages -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8 popular-pages">
@@ -461,7 +461,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
             ${renderPopularPagesTable(data)}
           </div>
         </div>
-
+        
         <!-- User Journey Section -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <div class="flex items-center justify-between mb-6">
@@ -469,15 +469,15 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <div class="flex items-center gap-4">
               <div class="text-sm text-gray-500">
                 ${Object.keys(data.journeys || {}).length} total sessions
-              </div>
+            </div>
               <button id="toggleJourneys" class="text-sm text-blue-600 hover:text-blue-800">
                 Show All
               </button>
             </div>
-          </div>
+            </div>
           <div class="space-y-4" id="journeysContainer">
             ${renderUserJourneys(data)}
-          </div>
+            </div>
         </div>
 
         <!-- Location and Device Stats -->
@@ -487,16 +487,16 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <h3 class="text-lg font-medium text-gray-900 mb-4">Visitor Locations</h3>
             <div class="space-y-2">
               ${renderLocationMetrics(data)}
-            </div>
           </div>
-          
+        </div>
+        
           <!-- Device Stats -->
           <div class="bg-white rounded-xl shadow-sm p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Device Distribution</h3>
             ${renderDeviceDistribution(data)}
           </div>
         </div>
-
+        
         <!-- Storage Usage -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <div class="flex items-center justify-between mb-4">
@@ -644,14 +644,14 @@ const title = "Analytics | Dzaleka Heritage Archive";
 
       return `
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
+              <thead class="bg-gray-50">
+                <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Page</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% of Total</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg. Time</th>
-            </tr>
-          </thead>
+                </tr>
+              </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             ${paginatedPages
               .map(([page, views]) => {
@@ -668,14 +668,14 @@ const title = "Analytics | Dzaleka Heritage Archive";
                   </tr>
                 `;
               }).join('')}
-          </tbody>
-        </table>
+              </tbody>
+            </table>
         ${totalPages > 1 ? `
           <div class="mt-4 flex items-center justify-between">
             <div class="text-sm text-gray-500">
               Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, sortedPages.length)} 
               of ${sortedPages.length} pages
-            </div>
+          </div>
             <div class="flex gap-1">
               <button 
                 class="pages-btn px-2 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 
@@ -706,8 +706,8 @@ const title = "Analytics | Dzaleka Heritage Archive";
               >
                 →
               </button>
-            </div>
-          </div>
+        </div>
+        </div>
         ` : ''}
       `;
     }
@@ -743,14 +743,14 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <div>
               <h4 class="text-sm font-medium text-gray-900">${formatSessionId(sessionId)}</h4>
               <p class="text-xs text-gray-500">Started ${formatDate(journey.startTime)}</p>
-            </div>
+                </div>
             <div class="text-right">
               <p class="text-sm font-medium text-gray-900">${journey.path?.length || 0} pages</p>
               <p class="text-xs text-gray-500">
                 ${formatDuration(Math.round((new Date(journey.path?.[journey.path?.length - 1]?.timestamp || journey.startTime) - new Date(journey.startTime)) / 1000))}
               </p>
+              </div>
             </div>
-          </div>
           <div class="flex flex-nowrap overflow-x-auto gap-2 pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             ${journey.path?.map((p, i) => `
               <div class="flex items-center group text-xs whitespace-nowrap">
@@ -765,7 +765,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                   </svg>
                 ` : ''}
-              </div>
+          </div>
             `).join('')}
           </div>
           <div class="mt-2 pt-2 border-t flex items-center gap-3 text-xs text-gray-500">
@@ -829,7 +829,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
         visitorTrendData.activeSessions.push(activeSessions);
       }
 
-      return `
+        return `
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <!-- Visitor Trend Chart -->
           <div class="bg-white rounded-xl shadow-sm p-6 md:col-span-2">
@@ -874,7 +874,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
     }
 
     function renderPerformanceMetrics(data) {
-      return `
+        return `
         <div class="bg-white rounded-xl shadow-sm p-6">
           <h3 class="text-lg font-medium text-gray-900 mb-4">Performance Metrics</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -997,15 +997,15 @@ const title = "Analytics | Dzaleka Heritage Archive";
         if (visitorTrendCtx) {
           new Chart(visitorTrendCtx, {
             id: 'visitor-trend-chart',
-            type: 'line',
-            data: {
+          type: 'line',
+          data: {
               labels: visitorTrendData.labels,
-              datasets: [{
+            datasets: [{
                 label: 'Visitors',
                 data: visitorTrendData.visitors,
                 borderColor: '#3B82F6',
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                fill: true,
+              fill: true,
                 tension: 0.4
               }, {
                 label: 'Page Views',
@@ -1021,21 +1021,21 @@ const title = "Analytics | Dzaleka Heritage Archive";
                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 fill: true,
                 tension: 0.4
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: true,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
                   position: 'top',
                   labels: {
                     usePointStyle: true,
                     padding: 20
                   }
-                },
-                tooltip: {
+              },
+              tooltip: {
                   callbacks: {
                     label: (context) => {
                       const label = context.dataset.label;
@@ -1045,21 +1045,21 @@ const title = "Analytics | Dzaleka Heritage Archive";
                   }
                 }
               },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
                     stepSize: 1
                   }
                 },
                 x: {
                   grid: {
                     display: false
-                  }
                 }
               }
             }
-          });
+          }
+        });
         }
 
         // Device Distribution Chart
@@ -1144,7 +1144,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
     function safeRenderCharts(data) {
       try {
         return renderCharts(data);
-      } catch (error) {
+        } catch (error) {
         console.error('Error rendering charts:', error);
         return `
           <div class="bg-red-50 p-4 rounded-lg">
@@ -1379,9 +1379,9 @@ const title = "Analytics | Dzaleka Heritage Archive";
 
     // File import handler
     async function handleFileImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      
+        const file = event.target.files[0];
+        if (!file) return;
+        
       try {
         const text = await file.text();
         const data = JSON.parse(text);
@@ -1417,7 +1417,7 @@ const title = "Analytics | Dzaleka Heritage Archive";
           } else if (current >= total - 2) {
             // Near end
             pages.push('...', total - 3, total - 2, total - 1, total);
-          } else {
+            } else {
             // Middle
             pages.push('...', current - 1, current, current + 1, '...', total);
           }
