@@ -27,76 +27,130 @@ import {
   trackPageView,
   cleanupOldData,
   MAX_BACKUP_SIZE,
-  getTotalVisitors
+  getTotalVisitors,
+  getTotalViews
 } from '../utils/analytics-utils';
 
 const title = "Analytics | Dzaleka Heritage Archive";
 ---
 
 <MainLayout title={title}>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-center mb-2">Dzaleka Online Services Analytics</h1>
-      <p class="text-center text-gray-600">Privacy-friendly, client-side analytics for Dzaleka Heritage Archives</p>
-    </div>
-
-    <div id="analytics-container" class="space-y-8">
-      <!-- Loading State -->
-      <div class="animate-pulse" id="loading-state">
-        <div class="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-        <div class="h-4 bg-gray-200 rounded w-full mb-3"></div>
-        <div class="h-4 bg-gray-200 rounded w-5/6 mb-3"></div>
-        <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header Section -->
+      <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-900 mb-3">Analytics Dashboard</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Privacy-focused analytics for tracking and improving the Dzaleka Heritage Archives digital experience
+        </p>
       </div>
 
-      <!-- Analytics Content will be rendered by JavaScript -->
-      <div id="analytics-content" class="hidden"></div>
+      <div id="analytics-container" class="space-y-8">
+        <!-- Loading State with Improved Animation -->
+        <div class="animate-pulse" id="loading-state">
+          <div class="bg-white rounded-xl shadow-sm p-8 space-y-4">
+            <div class="h-8 bg-gray-200 rounded-lg w-1/3 mx-auto mb-6"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="h-32 bg-gray-200 rounded-lg"></div>
+              <div class="h-32 bg-gray-200 rounded-lg"></div>
+              <div class="h-32 bg-gray-200 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Data Management -->
-      <div class="flex flex-col gap-4 items-center mt-8">
-        <div class="flex gap-4">
-          <button id="exportBtn" 
-            class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
-            transition duration-150 flex items-center gap-2 font-medium">
-            <span>Export Data</span>
-          </button>
-          <button id="backupBtn"
-            class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 
-            transition duration-150 flex items-center gap-2 font-medium">
-            <span>Create Backup</span>
-          </button>
-          <button id="importBtn" 
-            class="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 
-            transition duration-150 flex items-center gap-2 font-medium">
-            <span>Import Data</span>
-          </button>
+        <!-- Analytics Content -->
+        <div id="analytics-content" class="hidden space-y-8">
+          <!-- Content will be rendered by JavaScript -->
         </div>
-        <p class="text-sm text-gray-500 mt-2">
-          ⚠️ Analytics data is stored locally. Export or backup regularly to prevent data loss.
-        </p>
-        <div class="flex gap-2">
-          <button id="exportCsvBtn" 
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-            Export CSV
-          </button>
-          <button id="exportPdfBtn"
-            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
-            Export PDF
-          </button>
-          <button id="exportJsonBtn"
-            class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm">
-            Export JSON
-          </button>
+
+        <!-- Data Management Section -->
+        <div class="bg-white rounded-xl shadow-sm p-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Data Management</h2>
+          
+          <div class="flex flex-col gap-6">
+            <!-- Primary Actions -->
+            <div class="flex flex-wrap gap-4 justify-center">
+              <button id="exportBtn" 
+                class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
+                transition duration-150 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Export Data
+              </button>
+              
+              <button id="backupBtn"
+                class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 
+                transition duration-150 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                </svg>
+                Create Backup
+              </button>
+              
+              <button id="importBtn" 
+                class="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 
+                transition duration-150 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                Import Data
+              </button>
+            </div>
+
+            <!-- Warning Message -->
+            <div class="flex items-center justify-center p-4 bg-amber-50 rounded-lg border border-amber-200">
+              <svg class="w-5 h-5 text-amber-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+              <p class="text-sm text-amber-700">
+                Analytics data is stored locally. Export or backup regularly to prevent data loss.
+              </p>
+            </div>
+
+            <!-- Export Options -->
+            <div class="flex flex-wrap gap-3 justify-center">
+              <button id="exportCsvBtn" 
+                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 
+                transition duration-150 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Export CSV
+              </button>
+              
+              <button id="exportPdfBtn"
+                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 
+                transition duration-150 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                Export PDF
+              </button>
+              
+              <button id="exportJsonBtn"
+                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 
+                transition duration-150 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/>
+                </svg>
+                Export JSON
+              </button>
+            </div>
+          </div>
         </div>
-        <input type="file" id="fileInput" accept=".json" class="hidden" />
       </div>
     </div>
   </div>
 
-  <!-- Load Chart.js first -->
+  <!-- Hidden File Input -->
+  <input type="file" id="fileInput" accept=".json" class="hidden" />
+
+  <!-- Load Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <script>
+  <!-- Rest of the script remains unchanged -->
+  <script>
     let Chart;
     // Import all necessary functions
     import { 
@@ -124,7 +178,8 @@ const title = "Analytics | Dzaleka Heritage Archive";
       trackPageView,
       cleanupOldData,
       MAX_BACKUP_SIZE,
-      getTotalVisitors
+      getTotalVisitors,
+      getTotalViews
     } from '../utils/analytics-utils';
     
     // Track if we're using fallback/session data
@@ -1514,49 +1569,61 @@ const title = "Analytics | Dzaleka Heritage Archive";
   </script>
 
   <style>
-    .loading, .no-data, .error {
-      text-align: center;
-      padding: 30px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      margin: 30px 0;
+    /* Enhanced Loading Animation */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .5; }
     }
-    
+
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Improved Scrollbars */
+    .scrollbar-thin {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.5);
+      border-radius: 3px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(156, 163, 175, 0.7);
+    }
+
+    /* Focus Styles */
+    :focus-visible {
+      outline: 2px solid #3B82F6;
+      outline-offset: 2px;
+    }
+
+    /* Transition Styles */
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    /* Card Hover Effects */
     .analytics-card {
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
-    
-    .analytics-section {
-      margin-bottom: 15px;
-    }
-    
-    .analytics-section h4 {
-      margin-bottom: 5px;
-      color: #333;
-    }
-    
-    .analytics-section ul {
-      margin: 0;
-      padding-left: 20px;
-    }
-    
-    .footer-note {
-      background-color: #f0f0f0;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 20px;
-      font-size: 0.9em;
-    }
-    
-    .note {
-      background-color: #fff3cd;
-      border-left: 4px solid #ffc107;
-      padding: 10px;
-      margin-top: 10px;
+
+    .analytics-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
   </style>
 </MainLayout>

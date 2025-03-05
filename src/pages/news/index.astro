@@ -12,20 +12,69 @@ const sortedNews = allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.va
 const businessSpotlights = sortedNews.filter(item => item.data.category === 'business-spotlight');
 const announcements = sortedNews.filter(item => item.data.category === 'announcement');
 const successStories = sortedNews.filter(item => item.data.category === 'success-story');
+const businessGuides = sortedNews.filter(item => item.data.category === 'business-guide');
 
 // Get featured news
 const featuredNews = sortedNews.filter(item => item.data.featured);
+
+// Categories with icons and descriptions
+const categories = [
+  { 
+    name: 'Business Spotlights',
+    icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+    description: 'Discover thriving businesses in our community',
+    color: 'from-blue-500 to-cyan-500',
+    count: businessSpotlights.length
+  },
+  { 
+    name: 'Announcements',
+    icon: 'M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z',
+    description: 'Important updates from our community',
+    color: 'from-red-500 to-orange-500',
+    count: announcements.length
+  },
+  { 
+    name: 'Success Stories',
+    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+    description: 'Celebrating achievements in our community',
+    color: 'from-green-500 to-emerald-500',
+    count: successStories.length
+  },
+  { 
+    name: 'Business Guides',
+    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+    description: 'Practical resources for entrepreneurs',
+    color: 'from-purple-500 to-indigo-500',
+    count: businessGuides.length
+  }
+];
 ---
 
 <MainLayout title="News & Updates">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <PageHeader
-      title="News & Updates"
-      description="Stay informed about the latest happenings in our community, from business success stories to important announcements."
-    />
+  <!-- Hero Section with Animated Background -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80"></div>
+    </div>
 
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <!-- Hero Content -->
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+          <span class="block">News & Updates</span>
+          <span class="block text-primary-200 mt-2">from Our Community</span>
+        </h1>
+        <p class="mt-6 text-xl text-primary-100 max-w-2xl mx-auto">
+          Stay informed about the latest happenings in our community, from business success stories to important announcements and practical guides.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     {featuredNews.length > 0 && (
-      <section class="mb-16">
+      <section class="mb-16 -mt-24 relative z-10">
         <div class="grid gap-8 lg:grid-cols-2">
           {featuredNews.slice(0, 1).map(news => (
             <div class="lg:col-span-2">
@@ -39,7 +88,61 @@ const featuredNews = sortedNews.filter(item => item.data.featured);
       </section>
     )}
 
+    <!-- Categories Section -->
+    <div class="py-16">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+          Browse by Category
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          Explore our diverse collection of news, stories, and resources
+        </p>
+      </div>
+
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {categories.map(category => (
+          <div class="relative rounded-2xl overflow-hidden shadow-md">
+            <div class={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90 transition-opacity`}></div>
+            <div class="relative p-8">
+              <div class="flex items-center justify-between">
+                <div class="bg-white/20 rounded-lg p-3">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={category.icon} />
+                  </svg>
+                </div>
+                <span class="bg-white/30 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  {category.count}
+                </span>
+              </div>
+              <h3 class="mt-4 text-xl font-semibold text-white">{category.name}</h3>
+              <p class="mt-2 text-white/80">{category.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
     <div class="space-y-16">
+      {businessGuides.length > 0 && (
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Business Guides</h2>
+              <p class="mt-1 text-gray-600">Practical resources for entrepreneurs and business owners</p>
+            </div>
+            <a href="/news/category/business-guide" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all →
+              <span class="sr-only">business guides</span>
+            </a>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {businessGuides.slice(0, 3).map(news => (
+              <NewsCard news={news} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {businessSpotlights.length > 0 && (
         <section>
           <div class="flex items-center justify-between mb-8">
@@ -47,8 +150,8 @@ const featuredNews = sortedNews.filter(item => item.data.featured);
               <h2 class="text-2xl font-bold text-gray-900">Business Spotlights</h2>
               <p class="mt-1 text-gray-600">Discover thriving businesses in our community</p>
             </div>
-            <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">
-              View all
+            <a href="/news/category/business-spotlight" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all →
               <span class="sr-only">business spotlights</span>
             </a>
           </div>
@@ -67,8 +170,8 @@ const featuredNews = sortedNews.filter(item => item.data.featured);
               <h2 class="text-2xl font-bold text-gray-900">Community Announcements</h2>
               <p class="mt-1 text-gray-600">Important updates from our community</p>
             </div>
-            <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">
-              View all
+            <a href="/news/category/announcement" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all →
               <span class="sr-only">announcements</span>
             </a>
           </div>
@@ -87,8 +190,8 @@ const featuredNews = sortedNews.filter(item => item.data.featured);
               <h2 class="text-2xl font-bold text-gray-900">Success Stories</h2>
               <p class="mt-1 text-gray-600">Celebrating achievements in our community</p>
             </div>
-            <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">
-              View all
+            <a href="/news/category/success-story" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all →
               <span class="sr-only">success stories</span>
             </a>
           </div>
@@ -100,5 +203,118 @@ const featuredNews = sortedNews.filter(item => item.data.featured);
         </section>
       )}
     </div>
+
+    <!-- Newsletter Section -->
+    <div class="bg-primary-50 rounded-2xl mt-16 p-8 sm:p-12">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+        <div>
+          <h2 class="text-3xl font-extrabold text-gray-900">Stay Updated</h2>
+          <p class="mt-4 text-lg text-gray-600">
+            Subscribe to our newsletter to receive the latest news, stories, and updates directly in your inbox.
+          </p>
+        </div>
+        <div class="mt-8 lg:mt-0">
+          <form id="newsletterForm" action="https://formspree.io/f/xqaaajae" method="POST" class="sm:flex">
+            <label for="email-address" class="sr-only">Email address</label>
+            <input id="email-address" name="email" type="email" autocomplete="email" required class="w-full px-5 py-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500 sm:max-w-xs rounded-md" placeholder="Enter your email">
+            <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3 sm:flex-shrink-0">
+              <button type="submit" id="submitButton" class="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <span id="submitText">Subscribe</span>
+                <span id="submitSpinner" class="hidden ml-2">
+                  <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </form>
+          
+          <!-- Success Message -->
+          <div id="successMessage" class="hidden mt-3 text-sm text-green-600">
+            Thank you for subscribing! You'll receive our updates soon.
+          </div>
+          
+          <!-- Error Message -->
+          <div id="errorMessage" class="hidden mt-3 text-sm text-red-600">
+            There was an error submitting your subscription. Please try again.
+          </div>
+          
+          <p class="mt-3 text-sm text-gray-500">
+            We care about your data. Read our <a href="#" class="font-medium text-primary-600 hover:text-primary-500">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </MainLayout>
+
+<style>
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+</style>
+
+<script>
+  const form = document.getElementById('newsletterForm') as HTMLFormElement;
+  const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+  const submitText = document.getElementById('submitText') as HTMLElement;
+  const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
+  const successMessage = document.getElementById('successMessage') as HTMLElement;
+  const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Show loading state
+      submitButton.disabled = true;
+      submitText.textContent = 'Subscribing...';
+      submitSpinner.classList.remove('hidden');
+      successMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Show success message
+          form.reset();
+          successMessage.classList.remove('hidden');
+          submitText.textContent = 'Subscribe';
+          
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            successMessage.classList.add('hidden');
+          }, 5000);
+        } else {
+          throw new Error(data.error || 'Error subscribing');
+        }
+      } catch (error) {
+        // Show error message
+        console.error('Submission error:', error);
+        errorMessage.classList.remove('hidden');
+        
+        // Hide error message after 5 seconds
+        setTimeout(() => {
+          errorMessage.classList.add('hidden');
+        }, 5000);
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitSpinner.classList.add('hidden');
+      }
+    });
+  }
+</script>

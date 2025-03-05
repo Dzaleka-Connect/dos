@@ -6,6 +6,9 @@
 let previousPage = null;
 let pageLoadTime = new Date();
 
+// Check if we're in a browser environment
+const isBrowser = typeof window !== 'undefined';
+
 // A simple mock Chart class for when Chart.js isn't available
 class SimpleChart {
   constructor(ctx, config) {
@@ -76,7 +79,8 @@ const getEmptyAnalyticsStructure = () => {
     entryPages: {},
     exitPages: {},
     firstVisit: null,
-    lastVisit: null
+    lastVisit: null,
+    totalViews: getTotalViews() // Always use current total views
   };
 };
 
@@ -105,6 +109,50 @@ function calculatePagesPerSession(data) {
   const totalPageViews = sessions.reduce((acc, session) => acc + (session.pageViews || 0), 0);
   return sessions.length > 0 ? (totalPageViews / sessions.length).toFixed(1) : '0.0';
 }
+
+// Modified normalizeAnalyticsData function with browser checks
+const normalizeAnalyticsData = (data) => {
+  if (!data || typeof data !== 'object') {
+    return getEmptyAnalyticsStructure();
+  }
+  
+  // Create a new object with the empty structure as base
+  const normalized = { ...getEmptyAnalyticsStructure() };
+  
+  // Always use the current total views
+  normalized.totalViews = getTotalViews();
+  
+  // Copy and normalize pageViews
+  if (data.pageViews && typeof data.pageViews === 'object') {
+    Object.entries(data.pageViews).forEach(([path, count]) => {
+      normalized.pageViews[path] = typeof count === 'number' ? count : parseInt(count) || 0;
+    });
+  }
+  
+  // Copy and normalize sessions
+  if (data.sessions && typeof data.sessions === 'object') {
+    Object.entries(data.sessions).forEach(([id, session]) => {
+      if (session && typeof session === 'object') {
+        normalized.sessions[id] = {
+          startTime: session.startTime || new Date().toISOString(),
+          lastActive: session.lastActive || new Date().toISOString(),
+          pageViews: typeof session.pageViews === 'number' ? session.pageViews : 1,
+          pages: Array.isArray(session.pages) ? session.pages : [isBrowser ? window.location.pathname : '/'],
+          entryPage: session.entryPage || (isBrowser ? window.location.pathname : '/'),
+          device: session.device || (isBrowser ? getDeviceType() : 'unknown'),
+          browser: session.browser || (isBrowser ? getBrowserName() : 'unknown'),
+          screenSize: session.screenSize || (isBrowser ? `${window.innerWidth}x${window.innerHeight}` : 'unknown'),
+          language: session.language || (isBrowser ? (navigator.language || 'unknown') : 'unknown'),
+          visitorId: session.visitorId || (isBrowser ? getVisitorId() : 'unknown')
+        };
+      }
+    });
+  }
+  
+  // Rest of the function remains the same...
+  
+  return normalized;
+};
 
 // Modify the storage mechanism to use multiple storage methods
 const STORAGE_KEYS = {
@@ -375,7 +423,7 @@ const recordTimeOnPage = (path) => {
   }
 };
 
-// Modify the recordPageView function to track real data
+// Modified recordPageView function to use new total views tracking
 const recordPageView = async (path = window.location.pathname) => {
   try {
     if (isAnalyticsPage()) return;
@@ -389,28 +437,14 @@ const recordPageView = async (path = window.location.pathname) => {
     
     // Initialize data structure if needed
     if (!currentData || Object.keys(currentData).length === 0) {
-      currentData = {
-        pageViews: {},
-        sessions: {},
-        visitors: {},
-        referrers: {},
-        devices: {},
-        browsers: {},
-        screenSizes: {},
-        languages: {},
-        timeOnPage: {},
-        loadTimes: {},
-        entryPages: {},
-        exitPages: {},
-        firstVisit: timestamp,
-        lastVisit: timestamp,
-        totalViews: 0
-      };
+      currentData = getEmptyAnalyticsStructure();
+      currentData.firstVisit = timestamp;
+      currentData.lastVisit = timestamp;
     }
 
-    // Record page view
+    // Record page view and update total views
     currentData.pageViews[path] = (currentData.pageViews[path] || 0) + 1;
-    currentData.totalViews = (currentData.totalViews || 0) + 1;
+    currentData.totalViews = updateTotalViews();
 
     // Record referrer
     const referrer = document.referrer;
@@ -499,7 +533,7 @@ const recordPageView = async (path = window.location.pathname) => {
     return currentData;
   } catch (error) {
     console.error('Error recording page view:', error);
-    return null;
+    return getEmptyAnalyticsStructure();
   }
 };
 
@@ -600,6 +634,184 @@ const exportAnalyticsData = () => {
     console.error('Error exporting analytics data:', error);
     return false;
   }
+};
+
+/**
+ * Merges two analytics data objects, preserving the most comprehensive information from both
+ * @param {Object} currentData - The existing analytics data
+ * @param {Object} importedData - The imported analytics data to merge
+ * @returns {Object} - The merged analytics data
+ */
+const mergeAnalyticsData = (currentData, importedData) => {
+  if (!currentData || Object.keys(currentData).length === 0) return importedData;
+  if (!importedData || Object.keys(importedData).length === 0) return currentData;
+  
+  // Create a deep copy of current data as the base for merging
+  const mergedData = JSON.parse(JSON.stringify(currentData));
+  
+  // Merge page views
+  if (importedData.pageViews) {
+    mergedData.pageViews = mergedData.pageViews || {};
+    Object.entries(importedData.pageViews).forEach(([path, count]) => {
+      mergedData.pageViews[path] = (mergedData.pageViews[path] || 0) + count;
+    });
+  }
+  
+  // Merge sessions (keep both sets of sessions)
+  if (importedData.sessions) {
+    mergedData.sessions = mergedData.sessions || {};
+    Object.entries(importedData.sessions).forEach(([id, session]) => {
+      // Only add if session doesn't already exist
+      if (!mergedData.sessions[id]) {
+        mergedData.sessions[id] = session;
+      }
+    });
+  }
+  
+  // Merge visitors data by date
+  if (importedData.visitors) {
+    mergedData.visitors = mergedData.visitors || {};
+    Object.entries(importedData.visitors).forEach(([date, visitors]) => {
+      if (!mergedData.visitors[date]) {
+        mergedData.visitors[date] = [];
+      }
+      
+      // Add unique visitors that don't already exist
+      visitors.forEach(visitor => {
+        const visitorExists = mergedData.visitors[date].some(v => 
+          v.id === visitor.id && v.deviceId === visitor.deviceId
+        );
+        
+        if (!visitorExists) {
+          mergedData.visitors[date].push(visitor);
+        }
+      });
+    });
+  }
+  
+  // Merge referrers
+  if (importedData.referrers) {
+    mergedData.referrers = mergedData.referrers || {};
+    Object.entries(importedData.referrers).forEach(([domain, count]) => {
+      mergedData.referrers[domain] = (mergedData.referrers[domain] || 0) + count;
+    });
+  }
+  
+  // Merge device data
+  if (importedData.devices) {
+    mergedData.devices = mergedData.devices || {};
+    Object.entries(importedData.devices).forEach(([device, count]) => {
+      mergedData.devices[device] = (mergedData.devices[device] || 0) + count;
+    });
+  }
+  
+  // Merge browser data
+  if (importedData.browsers) {
+    mergedData.browsers = mergedData.browsers || {};
+    Object.entries(importedData.browsers).forEach(([browser, count]) => {
+      mergedData.browsers[browser] = (mergedData.browsers[browser] || 0) + count;
+    });
+  }
+  
+  // Merge screen sizes
+  if (importedData.screenSizes) {
+    mergedData.screenSizes = mergedData.screenSizes || {};
+    Object.entries(importedData.screenSizes).forEach(([size, count]) => {
+      mergedData.screenSizes[size] = (mergedData.screenSizes[size] || 0) + count;
+    });
+  }
+  
+  // Merge languages
+  if (importedData.languages) {
+    mergedData.languages = mergedData.languages || {};
+    Object.entries(importedData.languages).forEach(([lang, count]) => {
+      mergedData.languages[lang] = (mergedData.languages[lang] || 0) + count;
+    });
+  }
+  
+  // Merge time on page data
+  if (importedData.timeOnPage) {
+    mergedData.timeOnPage = mergedData.timeOnPage || {};
+    Object.entries(importedData.timeOnPage).forEach(([path, data]) => {
+      if (!mergedData.timeOnPage[path]) {
+        mergedData.timeOnPage[path] = { total: 0, count: 0 };
+      }
+      mergedData.timeOnPage[path].total += data.total || 0;
+      mergedData.timeOnPage[path].count += data.count || 0;
+    });
+  }
+  
+  // Merge load times
+  if (importedData.loadTimes) {
+    mergedData.loadTimes = mergedData.loadTimes || {};
+    Object.entries(importedData.loadTimes).forEach(([path, times]) => {
+      mergedData.loadTimes[path] = mergedData.loadTimes[path] || [];
+      mergedData.loadTimes[path] = [...mergedData.loadTimes[path], ...times];
+    });
+  }
+  
+  // Merge entry pages
+  if (importedData.entryPages) {
+    mergedData.entryPages = mergedData.entryPages || {};
+    Object.entries(importedData.entryPages).forEach(([path, count]) => {
+      mergedData.entryPages[path] = (mergedData.entryPages[path] || 0) + count;
+    });
+  }
+  
+  // Merge exit pages
+  if (importedData.exitPages) {
+    mergedData.exitPages = mergedData.exitPages || {};
+    Object.entries(importedData.exitPages).forEach(([path, count]) => {
+      mergedData.exitPages[path] = (mergedData.exitPages[path] || 0) + count;
+    });
+  }
+  
+  // Merge custom events if they exist
+  if (importedData.customEvents) {
+    mergedData.customEvents = mergedData.customEvents || {};
+    Object.entries(importedData.customEvents).forEach(([eventName, events]) => {
+      mergedData.customEvents[eventName] = mergedData.customEvents[eventName] || [];
+      mergedData.customEvents[eventName] = [...mergedData.customEvents[eventName], ...events];
+    });
+  }
+  
+  // Merge goals if they exist
+  if (importedData.goals) {
+    mergedData.goals = mergedData.goals || {};
+    Object.entries(importedData.goals).forEach(([goalName, data]) => {
+      if (!mergedData.goals[goalName]) {
+        mergedData.goals[goalName] = { completions: 0, value: 0 };
+      }
+      mergedData.goals[goalName].completions += data.completions || 0;
+      mergedData.goals[goalName].value += data.value || 0;
+    });
+  }
+  
+  // Merge countries data
+  if (importedData.countries) {
+    mergedData.countries = mergedData.countries || {};
+    Object.entries(importedData.countries).forEach(([country, count]) => {
+      mergedData.countries[country] = (mergedData.countries[country] || 0) + count;
+    });
+  }
+  
+  // Update total views
+  mergedData.totalViews = (mergedData.totalViews || 0) + (importedData.totalViews || 0);
+  
+  // Use the earliest first visit date
+  if (importedData.firstVisit && (!mergedData.firstVisit || new Date(importedData.firstVisit) < new Date(mergedData.firstVisit))) {
+    mergedData.firstVisit = importedData.firstVisit;
+  }
+  
+  // Use the latest last visit date
+  if (importedData.lastVisit && (!mergedData.lastVisit || new Date(importedData.lastVisit) > new Date(mergedData.lastVisit))) {
+    mergedData.lastVisit = importedData.lastVisit;
+  }
+  
+  // Update the lastUpdated timestamp
+  mergedData.lastUpdated = new Date().toISOString();
+  
+  return mergedData;
 };
 
 // Import analytics data from a JSON file
@@ -725,7 +937,9 @@ export {
   SimpleChart,
   calculateBounceRate,
   calculateAvgSessionDuration,
-  calculatePagesPerSession
+  calculatePagesPerSession,
+  getTotalViews,
+  updateTotalViews
 };
 
 export function trackCustomEvent(eventName, eventData) {

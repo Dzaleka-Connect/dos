@@ -1,0 +1,108 @@
+<div class="country-analytics bg-white p-6 rounded-lg shadow-md">
+  <h3 class="text-xl font-semibold mb-4">Visitor Countries</h3>
+  <div id="country-chart-container" class="h-64">
+    <canvas id="countryChart"></canvas>
+  </div>
+  <div id="country-list" class="mt-4">
+    <div class="animate-pulse">
+      <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+      <div class="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Import the analytics module
+    const analyticsModule = await import('../scripts/analytics-client.js');
+    
+    // Get the analytics data
+    const analyticsData = await analyticsModule.getAnalyticsData();
+    
+    // Get the country data
+    const countries = analyticsData.countries || {};
+    
+    // Sort countries by visit count
+    const sortedCountries = Object.entries(countries)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10); // Top 10 countries
+    
+    // Prepare data for chart
+    const labels = sortedCountries.map(([country]) => country);
+    const data = sortedCountries.map(([, count]) => count);
+    
+    // Create the chart
+    const ctx = document.getElementById('countryChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Visitors by Country',
+          data: data,
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(199, 199, 199, 0.6)',
+            'rgba(83, 102, 255, 0.6)',
+            'rgba(40, 159, 64, 0.6)',
+            'rgba(210, 199, 199, 0.6)'
+          ],
+          borderColor: [
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(199, 199, 199, 1)',
+            'rgba(83, 102, 255, 1)',
+            'rgba(40, 159, 64, 1)',
+            'rgba(210, 199, 199, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            }
+          }
+        }
+      }
+    });
+    
+    // Create the country list
+    const countryList = document.getElementById('country-list');
+    countryList.innerHTML = '';
+    
+    if (sortedCountries.length === 0) {
+      countryList.innerHTML = '<p class="text-gray-500 text-center">No country data available yet</p>';
+    } else {
+      const list = document.createElement('ul');
+      list.className = 'divide-y divide-gray-200';
+      
+      sortedCountries.forEach(([country, count]) => {
+        const item = document.createElement('li');
+        item.className = 'py-2 flex justify-between';
+        item.innerHTML = `
+          <span class="font-medium">${country}</span>
+          <span class="text-gray-600">${count} visit${count !== 1 ? 's' : ''}</span>
+        `;
+        list.appendChild(item);
+      });
+      
+      countryList.appendChild(list);
+    }
+  });
+</script> 

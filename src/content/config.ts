@@ -149,7 +149,7 @@ const newsSchema = z.object({
   title: z.string(),
   description: z.string(),
   date: z.date(),
-  category: z.enum(['business-spotlight', 'announcement', 'success-story']),
+  category: z.enum(['business-spotlight', 'announcement', 'success-story', 'business-guide']),
   featured: z.boolean().optional(),
   image: z.string().optional(),
   author: z.string().optional(),

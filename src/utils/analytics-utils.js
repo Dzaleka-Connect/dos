@@ -92,8 +92,32 @@ export function convertToCSV(data) {
 
 // Storage key for analytics data
 const STORAGE_KEY = 'dzaleka_analytics';
+const TOTAL_VIEWS_KEY = 'dzaleka_total_views';
 
 export const MAX_BACKUP_SIZE = 2000000; // 2MB limit for localStorage
+
+// Get total views synchronously
+export function getTotalViews() {
+  try {
+    const totalViews = localStorage.getItem(TOTAL_VIEWS_KEY);
+    return totalViews ? parseInt(totalViews, 10) : 0;
+  } catch (error) {
+    console.error('Error getting total views:', error);
+    return 0;
+  }
+}
+
+// Update total views synchronously
+function updateTotalViews(increment = 1) {
+  try {
+    const currentViews = getTotalViews();
+    localStorage.setItem(TOTAL_VIEWS_KEY, (currentViews + increment).toString());
+    return currentViews + increment;
+  } catch (error) {
+    console.error('Error updating total views:', error);
+    return getTotalViews();
+  }
+}
 
 // Clean up old data to prevent storage overflow
 export function cleanupOldData(data) {
@@ -198,7 +222,7 @@ export async function restoreFromBackup() {
   }
 }
 
-// Get analytics data from storage
+// Get analytics data with guaranteed total views
 export async function getAnalyticsData() {
   try {
     // Check if we're in the browser
@@ -209,20 +233,16 @@ export async function getAnalyticsData() {
     const data = localStorage.getItem(STORAGE_KEY);
     if (data) {
       const parsedData = JSON.parse(data);
-      // Ensure totalViews exists and is a number
-      if (typeof parsedData.totalViews !== 'number') {
-        parsedData.totalViews = Object.values(parsedData.pageViews || {}).reduce((sum, views) => sum + views, 0);
-      }
+      // Always use the separate total views counter
+      parsedData.totalViews = getTotalViews();
       return parsedData;
     }
     
     // Try to restore from backup
     const backupData = await restoreFromBackup();
     if (backupData) {
-      // Ensure totalViews exists in backup data
-      if (typeof backupData.totalViews !== 'number') {
-        backupData.totalViews = Object.values(backupData.pageViews || {}).reduce((sum, views) => sum + views, 0);
-      }
+      // Always use the separate total views counter
+      backupData.totalViews = getTotalViews();
       await storeAnalyticsData(backupData);
       return backupData;
     }
@@ -243,19 +263,21 @@ export async function getAnalyticsData() {
       exitPages: {},
       firstVisit: new Date().toISOString(),
       lastVisit: new Date().toISOString(),
-      totalViews: 0
+      totalViews: getTotalViews() // Always use the separate total views counter
     };
     await storeAnalyticsData(emptyData);
     return emptyData;
   } catch (error) {
     console.error('Error getting analytics data:', error);
-    return { totalViews: 0 };
+    return { totalViews: getTotalViews() }; // Always return current total views
   }
 }
 
-// Store analytics data
+// Store analytics data while preserving total views
 export async function storeAnalyticsData(data) {
   try {
+    // Ensure total views is always current
+    data.totalViews = getTotalViews();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     // Create backup after storing
     await backupAnalyticsData(data);
@@ -340,41 +362,60 @@ export function trackPagePerformance() {
 // Track user interactions
 export function trackInteraction(type, element) {
   try {
-    let data = getAnalyticsData();
-    if (!data) {
-      data = {
-        sessions: {},
-        pageViews: {},
-        visitors: {},
-        totalViews: 0
-      };
-    }
+    const data = getAnalyticsData() || {
+      sessions: {},
+      pageViews: {},
+      visitors: {},
+      totalViews: 0
+    };
+
     const sessionId = getSessionId();
+    if (!sessionId) {
+      console.warn('No session ID available');
+      return;
+    }
+
     const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
     const deviceSessionId = `${sessionId}_${deviceId}`;
     
     // Initialize sessions if it doesn't exist
-    data.sessions = data.sessions || {};
+    if (!data.sessions) {
+      data.sessions = {};
+    }
     
+    // Initialize or update session data
     if (!data.sessions[deviceSessionId]) {
       data.sessions[deviceSessionId] = {
+        id: deviceSessionId,
         interactions: [],
         startTime: new Date().toISOString(),
-        lastActive: new Date().toISOString()
+        lastActive: new Date().toISOString(),
+        device: getDeviceType(),
+        browser: getBrowserName(),
+        screenSize: `${window.innerWidth}x${window.innerHeight}`,
+        pageViews: 0,
+        pages: []
       };
     }
     
+    // Ensure interactions array exists
     if (!data.sessions[deviceSessionId].interactions) {
       data.sessions[deviceSessionId].interactions = [];
     }
     
+    // Add the interaction
     data.sessions[deviceSessionId].interactions.push({
       type,
       element,
       timestamp: new Date().toISOString()
     });
     
+    // Update last active time
+    data.sessions[deviceSessionId].lastActive = new Date().toISOString();
+    
+    // Store the updated data
     storeAnalyticsData(data);
+    
   } catch (error) {
     console.error('Error tracking interaction:', error);
   }
@@ -384,18 +425,45 @@ export function trackInteraction(type, element) {
 export function trackScrollDepth() {
   let maxScroll = 0;
   
-  window.addEventListener('scroll', () => {
-    const percent = Math.round(
-      (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
-    );
-    
-    if (percent > maxScroll) {
-      maxScroll = percent;
-      const data = getAnalyticsData();
-      const sessionId = getSessionId();
+  window.addEventListener('scroll', async () => {
+    try {
+      const percent = Math.round(
+        (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
+      );
       
-      data.sessions[sessionId].maxScroll = maxScroll;
-      storeAnalyticsData(data);
+      if (percent > maxScroll) {
+        maxScroll = percent;
+        const data = await getAnalyticsData();
+        const sessionId = getSessionId();
+        
+        if (!data || !data.sessions) {
+          console.warn('No analytics data or sessions available');
+          return;
+        }
+        
+        const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
+        const deviceSessionId = `${sessionId}_${deviceId}`;
+        
+        // Initialize session if it doesn't exist
+        if (!data.sessions[deviceSessionId]) {
+          data.sessions[deviceSessionId] = {
+            id: deviceSessionId,
+            startTime: new Date().toISOString(),
+            lastActive: new Date().toISOString(),
+            maxScroll: 0,
+            device: getDeviceType(),
+            browser: getBrowserName(),
+            screenSize: `${window.innerWidth}x${window.innerHeight}`,
+            pageViews: 0,
+            pages: []
+          };
+        }
+        
+        data.sessions[deviceSessionId].maxScroll = maxScroll;
+        await storeAnalyticsData(data);
+      }
+    } catch (error) {
+      console.error('Error tracking scroll depth:', error);
     }
   });
 }
@@ -581,80 +649,272 @@ export function trackWebVitals(data) {
 
 // Track user journey/flow
 export function trackUserJourney(data) {
-  const sessionId = getSessionId();
-  data.journeys = data.journeys || {};
-  
-  if (!data.journeys[sessionId]) {
-    data.journeys[sessionId] = {
-      path: [],
-      interactions: [],
-      startTime: new Date().toISOString(),
-      completedGoals: [],
-      abandonedForms: [],
-      searchBehavior: []
-    };
+  try {
+    if (!data) {
+      console.warn('No analytics data available');
+      return data;
+    }
+
+    const sessionId = getSessionId();
+    if (!sessionId) {
+      console.warn('No session ID available');
+      return data;
+    }
+
+    // Initialize journeys if it doesn't exist
+    if (!data.journeys) {
+      data.journeys = {};
+    }
+    
+    // Initialize session journey if it doesn't exist
+    if (!data.journeys[sessionId]) {
+      data.journeys[sessionId] = {
+        path: [],
+        interactions: [],
+        startTime: new Date().toISOString(),
+        completedGoals: [],
+        abandonedForms: [],
+        searchBehavior: []
+      };
+    }
+    
+    // Track page navigation
+    data.journeys[sessionId].path.push({
+      page: window.location.pathname,
+      timestamp: new Date().toISOString(),
+      referrer: document.referrer
+    });
+    
+    return data;
+  } catch (error) {
+    console.error('Error tracking user journey:', error);
+    return data;
   }
-  
-  // Track page navigation
-  data.journeys[sessionId].path.push({
-    page: window.location.pathname,
-    timestamp: new Date().toISOString(),
-    referrer: document.referrer
-  });
-  
-  return data;
 }
 
-// Track content interaction
-export function trackContentInteraction(data, element) {
-  data.content = data.content || {
-    readingDepth: {},
-    timeOnContent: {},
-    highlights: [],
-    shares: [],
-    comments: []
-  };
-  
-  // Track reading depth
-  const readingObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const elementPath = getElementPath(entry.target);
-        data.content.readingDepth[elementPath] = {
-          timestamp: new Date().toISOString(),
-          viewTime: entry.time
-        };
-        storeAnalyticsData(data);
-      }
-    });
-  }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
-  
-  // Track content changes
-  const contentObserver = new MutationObserver((mutations) => {
-    mutations.forEach(mutation => {
-      if (mutation.type === 'childList' || mutation.type === 'characterData') {
-        const elementPath = getElementPath(mutation.target);
-        data.content.timeOnContent[elementPath] = {
-          timestamp: new Date().toISOString(),
-          type: mutation.type
-        };
-        storeAnalyticsData(data);
-      }
-    });
-  });
-  
-  // Observe content sections
-  document.querySelectorAll('article, section, .content').forEach(el => {
-    readingObserver.observe(el);
-    contentObserver.observe(el, {
-      childList: true,
-      subtree: true,
-      characterData: true
-    });
-  });
+// Helper function to escape special characters in CSS selectors
+function escapeSelector(str) {
+  if (!str) return '';
+  return str.replace(/[!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g, '\\$&');
 }
 
-// Track page views
+// Helper function to get unique element path
+function getElementPath(element) {
+  try {
+    if (!element || !element.tagName) return '';
+    
+    const path = [];
+    let currentElement = element;
+    
+    while (currentElement) {
+      let selector = currentElement.tagName.toLowerCase();
+      
+      // Add id if exists
+      if (currentElement.id) {
+        // Escape special characters in ID
+        selector += `#${escapeSelector(currentElement.id)}`;
+      } else {
+        // Add classes if no id
+        const classes = Array.from(currentElement.classList)
+          .map(className => escapeSelector(className))
+          .join('.');
+        
+        if (classes) {
+          selector += `.${classes}`;
+        }
+        
+        // Add position among siblings if no unique identifier
+        try {
+          if (!currentElement.id && (!classes || document.querySelectorAll(selector).length > 1)) {
+            const siblings = Array.from(currentElement.parentNode?.children || [])
+              .filter(child => child.tagName === currentElement.tagName);
+            const index = siblings.indexOf(currentElement) + 1;
+            selector += `:nth-child(${index})`;
+          }
+        } catch (selectorError) {
+          // Fallback to nth-child if selector is invalid
+          const index = Array.from(currentElement.parentNode?.children || []).indexOf(currentElement) + 1;
+          selector += `:nth-child(${index})`;
+        }
+      }
+      
+      path.unshift(selector);
+      currentElement = currentElement.parentElement;
+      
+      // Limit path length to prevent extremely long selectors
+      if (path.length >= 5) break;
+    }
+    
+    // Validate the final selector before returning
+    const finalPath = path.join(' > ');
+    try {
+      document.querySelectorAll(finalPath);
+      return finalPath;
+    } catch (error) {
+      // If the selector is invalid, return a simplified version
+      return path.map(p => p.split('.')[0]).join(' > '); // Only use tag names
+    }
+  } catch (error) {
+    console.error('Error generating element path:', error);
+    return element.tagName.toLowerCase(); // Fallback to just the tag name
+  }
+}
+
+// Track content interaction with improved error handling and performance
+export function trackContentInteraction(data) {
+  try {
+    if (!data) {
+      console.warn('No analytics data available for content tracking');
+      return;
+    }
+
+    // Initialize content tracking data structure
+    data.content = data.content || {
+      readingDepth: {},
+      timeOnContent: {},
+      highlights: [],
+      shares: [],
+      comments: [],
+      interactions: {}
+    };
+
+    // Track reading depth with debouncing
+    let readingDepthTimeout;
+    const readingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        try {
+          if (entry.isIntersecting) {
+            clearTimeout(readingDepthTimeout);
+            readingDepthTimeout = setTimeout(() => {
+              const elementPath = getElementPath(entry.target);
+              if (!elementPath) return;
+
+              const key = `${elementPath}_${Date.now()}`; // Use timestamp to ensure uniqueness
+              data.content.readingDepth[key] = {
+                timestamp: new Date().toISOString(),
+                viewTime: entry.time,
+                intersectionRatio: entry.intersectionRatio,
+                viewportHeight: window.innerHeight,
+                elementType: entry.target.tagName.toLowerCase(),
+                elementClasses: Array.from(entry.target.classList)
+              };
+              storeAnalyticsData(data);
+            }, 1000); // Debounce for 1 second
+          }
+        } catch (error) {
+          console.error('Error tracking reading depth:', error);
+        }
+      });
+    }, { 
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+      rootMargin: '0px'
+    });
+
+    // Track content changes with throttling
+    let lastContentUpdate = 0;
+    const THROTTLE_DELAY = 2000; // 2 seconds
+    
+    const contentObserver = new MutationObserver((mutations) => {
+      const now = Date.now();
+      if (now - lastContentUpdate < THROTTLE_DELAY) return;
+      
+      lastContentUpdate = now;
+      
+      mutations.forEach(mutation => {
+        try {
+          if (mutation.type === 'childList' || mutation.type === 'characterData') {
+            const elementPath = getElementPath(mutation.target);
+            if (!elementPath) return;
+
+            data.content.timeOnContent[elementPath] = {
+              timestamp: new Date().toISOString(),
+              type: mutation.type,
+              changes: {
+                addedNodes: mutation.addedNodes.length,
+                removedNodes: mutation.removedNodes.length,
+                characterData: mutation.type === 'characterData'
+              }
+            };
+            storeAnalyticsData(data);
+          }
+        } catch (error) {
+          console.error('Error tracking content changes:', error);
+        }
+      });
+    });
+
+    // Track user interactions with content
+    const interactionHandler = (event) => {
+      try {
+        const target = event.target;
+        const elementPath = getElementPath(target);
+        if (!elementPath) return;
+
+        // Track only relevant interactions
+        if (target.closest('article, section, .content')) {
+          data.content.interactions[elementPath] = data.content.interactions[elementPath] || [];
+          data.content.interactions[elementPath].push({
+            type: event.type,
+            timestamp: new Date().toISOString(),
+            details: {
+              x: event.clientX,
+              y: event.clientY,
+              elementType: target.tagName.toLowerCase(),
+              classes: Array.from(target.classList),
+              text: target.textContent?.slice(0, 100) // Limit text length
+            }
+          });
+
+          // Throttle storage updates
+          clearTimeout(data.content._storeTimeout);
+          data.content._storeTimeout = setTimeout(() => {
+            storeAnalyticsData(data);
+          }, 1000);
+        }
+      } catch (error) {
+        console.error('Error tracking content interaction:', error);
+      }
+    };
+
+    // Observe content sections with error handling
+    document.querySelectorAll('article, section, .content').forEach(el => {
+      try {
+        readingObserver.observe(el);
+        contentObserver.observe(el, {
+          childList: true,
+          subtree: true,
+          characterData: true
+        });
+
+        // Add interaction listeners
+        el.addEventListener('click', interactionHandler);
+        el.addEventListener('mouseover', interactionHandler);
+        el.addEventListener('scroll', interactionHandler, { passive: true });
+      } catch (error) {
+        console.error('Error setting up content observers:', error);
+      }
+    });
+
+    // Cleanup function
+    return () => {
+      try {
+        readingObserver.disconnect();
+        contentObserver.disconnect();
+        document.querySelectorAll('article, section, .content').forEach(el => {
+          el.removeEventListener('click', interactionHandler);
+          el.removeEventListener('mouseover', interactionHandler);
+          el.removeEventListener('scroll', interactionHandler);
+        });
+      } catch (error) {
+        console.error('Error cleaning up content tracking:', error);
+      }
+    };
+  } catch (error) {
+    console.error('Error initializing content tracking:', error);
+  }
+}
+
+// Track page views with immediate total views update
 export async function trackPageView() {
   try {
     let data = await getAnalyticsData();
@@ -668,11 +928,10 @@ export async function trackPageView() {
     data.sessions = data.sessions || {};
     data.pageViews = data.pageViews || {};
     data.visitors = data.visitors || {};
-    data.totalViews = typeof data.totalViews === 'number' ? data.totalViews : 0;
     
-    // Update page views
+    // Update page views and total views
     data.pageViews[path] = (data.pageViews[path] || 0) + 1;
-    data.totalViews += 1;
+    data.totalViews = updateTotalViews(); // Update total views immediately
     
     // Update session data
     if (!data.sessions[deviceSessionId]) {
@@ -710,23 +969,14 @@ export async function trackPageView() {
     // Store updated data
     await storeAnalyticsData(data);
     
-    // Double-check the data was stored correctly
-    const storedData = await getAnalyticsData();
-    if (storedData.totalViews !== data.totalViews) {
-      console.warn('Total views mismatch, fixing...');
-      storedData.totalViews = data.totalViews;
-      await storeAnalyticsData(storedData);
-    }
-    
     return data;
   } catch (error) {
     console.error('Error tracking page view:', error);
-    // Return a valid initial state if there's an error
     return {
       sessions: {},
       pageViews: {},
       visitors: {},
-      totalViews: 0
+      totalViews: getTotalViews() // Always return current total views
     };
   }
 }
