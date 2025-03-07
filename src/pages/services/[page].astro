@@ -103,16 +103,16 @@ const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
           <label class="flex items-center">
             <input 
               type="checkbox" 
+              id="verifiedFilter"
               checked={verifiedOnly}
               class="form-checkbox h-5 w-5 text-primary-600 rounded"
-              onchange="window.location.href = new URL(window.location.href).searchParams.set('verified', this.checked).toString()"
             />
             <span class="ml-2 text-gray-700">Verified Only</span>
           </label>
           
           <select 
+            id="sortFilter"
             class="form-select rounded-lg border-gray-300"
-            onchange="window.location.href = new URL(window.location.href).searchParams.set('sort', this.value).toString()"
           >
             <option value="featured" selected={sortBy === 'featured'}>Featured First</option>
             <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
@@ -161,3 +161,43 @@ const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
     </div>
   </main>
 </MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const verifiedFilter = document.getElementById('verifiedFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    
+    function updateFilters() {
+      const url = new URL(window.location.href);
+      
+      // Update verified filter
+      if (verifiedFilter.checked) {
+        url.searchParams.set('verified', 'true');
+      } else {
+        url.searchParams.delete('verified');
+      }
+      
+      // Update sort filter
+      if (sortFilter.value !== 'featured') {
+        url.searchParams.set('sort', sortFilter.value);
+      } else {
+        url.searchParams.delete('sort');
+      }
+      
+      // Preserve the page parameter if it exists
+      const page = url.searchParams.get('page');
+      if (page && page !== '1') {
+        url.searchParams.set('page', page);
+      } else {
+        url.searchParams.delete('page');
+      }
+      
+      // Navigate to the new URL
+      window.location.href = url.toString();
+    }
+    
+    // Add event listeners
+    verifiedFilter?.addEventListener('change', updateFilters);
+    sortFilter?.addEventListener('change', updateFilters);
+  });
+</script>

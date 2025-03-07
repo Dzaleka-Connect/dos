@@ -12,6 +12,8 @@ interface Props {
     address?: string;
     logo?: string;
     featured?: boolean;
+    status?: 'active' | 'inactive';
+    verified?: boolean;
     order?: number;
     contact?: {
       email?: string;
@@ -49,9 +51,30 @@ const title = service.title || service.name;
         <h3 class="text-xl font-bold text-gray-900 truncate mb-2 group-hover:text-primary-600 transition-colors">
           {title}
         </h3>
-        <span class="inline-flex items-center px-3 py-1 text-sm font-medium bg-gray-100 text-gray-800 rounded-full group-hover:bg-primary-50 group-hover:text-primary-700 transition-colors">
-          {service.category}
-        </span>
+        <div class="flex flex-wrap gap-2 items-center">
+          <span class="inline-flex items-center px-3 py-1 text-sm font-medium bg-gray-100 text-gray-800 rounded-full group-hover:bg-primary-50 group-hover:text-primary-700 transition-colors">
+            {service.category}
+          </span>
+          
+          {service.status && (
+            <span class={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full ${
+              service.status === 'active' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-gray-100 text-gray-800'
+            }`}>
+              {service.status === 'active' ? 'Active' : 'Inactive'}
+            </span>
+          )}
+          
+          {service.verified && (
+            <span class="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 rounded-full">
+              <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Verified
+            </span>
+          )}
+        </div>
       </div>
     </div>
 

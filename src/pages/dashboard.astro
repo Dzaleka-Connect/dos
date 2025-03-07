@@ -1,0 +1,1633 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all collections that exist in /src/content
+const services = await getCollection('services');
+const resources = await getCollection('resources');
+const photos = await getCollection('photos');
+const events = await getCollection('events');
+const talents = await getCollection('talents');
+const jobs = await getCollection('jobs');
+const docs = await getCollection('docs');
+const communityVoices = await getCollection('community-voices');
+const profiles = await getCollection('profiles');
+const gallery = await getCollection('gallery');
+const news = await getCollection('news');
+const pages = await getCollection('pages');
+
+// For Skills Exchange, we use the profiles collection
+// Filter profiles for skills offered and requested
+const skillsOffered = profiles.filter(profile => profile.data.status === 'Available');
+const skillsRequested = profiles.filter(profile => 
+  profile.data.status === 'Requested' && 
+  (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+);
+const skills = [...skillsOffered, ...skillsRequested];
+
+// Helper function for date checking
+const isWithinLast30Days = (date) => {
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  return new Date(date) > thirtyDaysAgo;
+};
+
+// Calculate service statistics
+const serviceStats = {
+  total: services.length,
+  verified: services.filter(s => s.data.verified).length,
+  active: services.filter(s => s.data.status === 'active').length,
+  categories: [...new Set(services.map(s => s.data.category))].length
+};
+
+// Combine photos and gallery for a consolidated view
+const allPhotos = [...photos, ...gallery];
+const allAlbums = [...new Set([
+  ...photos.map(p => p.data.album || 'Uncategorized'),
+  ...gallery.map(g => g.data.album || 'Uncategorized')
+])];
+
+// Calculate other statistics
+const stats = {
+  resources: {
+    total: resources.length,
+    recent: resources.filter(r => isWithinLast30Days(r.data.publishDate || r.data.date)).length,
+    categories: [...new Set(resources.map(r => r.data.category))].length
+  },
+  photos: {
+    total: allPhotos.length,
+    albums: allAlbums.length,
+    recent: allPhotos.filter(p => isWithinLast30Days(p.data.date)).length
+  },
+  events: {
+    total: events.length,
+    upcoming: events.filter(e => new Date(e.data.date) > new Date()).length,
+    categories: [...new Set(events.map(e => e.data.category))].length
+  },
+  talents: {
+    total: talents.length,
+    categories: [...new Set(talents.map(t => t.data.category))].length,
+    recent: talents.filter(t => isWithinLast30Days(t.data.date)).length
+  },
+  jobs: {
+    total: jobs.length,
+    active: jobs.filter(j => j.data.status === 'active').length,
+    recent: jobs.filter(j => isWithinLast30Days(j.data.date)).length
+  },
+  skills: {
+    total: skills.length,
+    offered: skillsOffered.length,
+    requested: skillsRequested.length,
+    categories: [...new Set(skills.map(s => s.data.category))].length,
+    recent: skills.filter(s => isWithinLast30Days(s.data.date)).length || 0,
+    active: skillsOffered.length
+  },
+  docs: {
+    total: docs.length,
+    categories: [...new Set(docs.map(d => d.data.category))].length,
+    recent: docs.filter(d => isWithinLast30Days(d.data.date)).length
+  },
+  communityVoices: {
+    total: communityVoices.length,
+    categories: [...new Set(communityVoices.map(v => v.data.category))].length,
+    recent: communityVoices.filter(v => isWithinLast30Days(v.data.date)).length
+  },
+  profiles: {
+    total: profiles.length,
+    recent: profiles.filter(p => isWithinLast30Days(p.data.date)).length
+  },
+  news: {
+    total: news.length,
+    categories: [...new Set(news.map(n => n.data.category))].length,
+    recent: news.filter(n => isWithinLast30Days(n.data.date)).length
+  }
+};
+
+// Get services by category
+const servicesByCategory = services.reduce((acc, service) => {
+  const category = service.data.category;
+  if (!acc[category]) {
+    acc[category] = 0;
+  }
+  acc[category]++;
+  return acc;
+}, {});
+
+// Sort categories by number of services
+const sortedCategories = Object.entries(servicesByCategory)
+  .sort(([,a], [,b]) => b - a)
+  .slice(0, 5);
+
+// Calculate recent activity (last 30 days)
+const thirtyDaysAgo = new Date();
+thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+const recentServices = services.filter(service => {
+  const lastUpdated = service.data.lastUpdated ? new Date(service.data.lastUpdated) : null;
+  return lastUpdated && lastUpdated > thirtyDaysAgo;
+}).length;
+
+// Get skills by category
+const skillsByCategory = skills.reduce((acc, skill) => {
+  const category = skill.data.category || 'Uncategorized';
+  if (!acc[category]) {
+    acc[category] = 0;
+  }
+  acc[category]++;
+  return acc;
+}, {});
+
+// Sort categories by number of skills
+const sortedSkillCategories = Object.entries(skillsByCategory)
+  .sort(([,a], [,b]) => b - a)
+  .slice(0, 5);
+
+// Prepare all chart data
+const chartData = {
+  serviceStatus: {
+    labels: ['Active', 'Inactive'],
+    values: [serviceStats.active, serviceStats.total - serviceStats.active]
+  },
+  recentActivity: {
+    labels: ['Services', 'Resources', 'Events', 'Photos', 'News', 'Skills', 'Jobs'],
+    values: [
+      recentServices,
+      stats.resources.recent,
+      stats.events.upcoming,
+      stats.photos.recent,
+      stats.news.recent,
+      stats.skills.recent || 0,
+      stats.jobs.recent || 0
+    ]
+  },
+  categoryDistribution: {
+    labels: sortedCategories.map(([category]) => category),
+    values: sortedCategories.map(([, count]) => count)
+  },
+  resourceStats: {
+    labels: ['Recent', 'Older'],
+    values: [stats.resources.recent, stats.resources.total - stats.resources.recent]
+  },
+  resourceCategories: {
+    labels: [...new Set(resources.map(r => r.data.category))].slice(0, 5),
+    values: [...new Set(resources.map(r => r.data.category))]
+      .slice(0, 5)
+      .map(category => resources.filter(r => r.data.category === category).length)
+  },
+  skillsDistribution: {
+    labels: ['Offered', 'Requested'],
+    values: [stats.skills.offered, stats.skills.requested]
+  },
+  skillsCategories: {
+    labels: sortedSkillCategories.map(([category]) => category),
+    values: sortedSkillCategories.map(([, count]) => count)
+  },
+  jobsStatus: {
+    labels: ['Active', 'Inactive'],
+    values: [stats.jobs.active, stats.jobs.total - stats.jobs.active]
+  }
+};
+
+---
+
+<MainLayout title="Dashboard - Analytics">
+  <!-- Load Chart.js from CDN with defer attribute -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
+  
+  <!-- Pass data to client-side JavaScript -->
+  <script is:inline define:vars={{ chartDataJSON: JSON.stringify(chartData) }}>
+    // Wait for Chart.js to load
+    window.addEventListener('load', function() {
+      // Check if Chart is available
+      if (typeof Chart === 'undefined') {
+        console.error('Chart.js library not loaded. Loading it now...');
+        
+        // If Chart.js failed to load, try loading it again
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
+        script.onload = initCharts;
+        script.onerror = function() {
+          console.error('Failed to load Chart.js library. Charts will not be displayed.');
+          document.querySelectorAll('.chart-container').forEach(container => {
+            container.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-gray-500">Chart could not be loaded</p></div>';
+          });
+        };
+        document.head.appendChild(script);
+      } else {
+        // Chart.js is already loaded, initialize charts
+        initCharts();
+      }
+    });
+
+    // Function to initialize all charts
+    function initCharts() {
+      try {
+        // Parse the stringified data
+        const chartData = JSON.parse(chartDataJSON);
+        
+        // Define colors for consistent styling
+        const colors = [
+          '#3B82F6', // blue
+          '#10B981', // green
+          '#F59E0B', // amber
+          '#EF4444', // red
+          '#8B5CF6', // purple
+          '#EC4899', // pink
+          '#6366F1'  // indigo
+        ];
+        
+        // Helper to create charts
+        function createChart(elementId, type, chartData, options = {}) {
+          const canvas = document.getElementById(elementId);
+          if (!canvas) {
+            console.error(`Canvas element with id ${elementId} not found`);
+            return;
+          }
+          
+          const ctx = canvas.getContext('2d');
+          
+          // Default options based on chart type
+          const defaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                position: type === 'bar' ? 'top' : 'bottom',
+                labels: {
+                  font: {
+                    size: 12
+                  }
+                }
+              },
+              tooltip: {
+                enabled: true
+              }
+            }
+          };
+          
+          // Add scales for bar charts
+          if (type === 'bar') {
+            defaultOptions.scales = {
+              y: {
+                beginAtZero: true
+              }
+            };
+            defaultOptions.plugins.legend.display = false;
+          }
+          
+          // Create the chart
+          return new Chart(ctx, {
+            type,
+            data: {
+              labels: chartData.labels,
+              datasets: [{
+                data: chartData.values,
+                backgroundColor: colors.slice(0, chartData.values.length),
+                borderWidth: 0
+              }]
+            },
+            options: {
+              ...defaultOptions,
+              ...options
+            }
+          });
+        }
+
+        // Create all charts with a small delay to ensure canvas elements are ready
+        setTimeout(() => {
+          try {
+            // Service Status Chart
+            createChart(
+              'serviceStatusChart',
+              'doughnut',
+              chartData.serviceStatus
+            );
+
+            // Recent Activity Chart
+            createChart(
+              'recentActivityChart',
+              'bar',
+              chartData.recentActivity
+            );
+
+            // Category Distribution Chart
+            createChart(
+              'categoryDistributionChart',
+              'pie',
+              chartData.categoryDistribution
+            );
+
+            // Resource Status Chart
+            createChart(
+              'resourceStatusChart',
+              'doughnut',
+              chartData.resourceStats
+            );
+
+            // Resource Categories Chart
+            createChart(
+              'resourceCategoriesChart',
+              'bar',
+              chartData.resourceCategories
+            );
+            
+            // Skills Distribution Chart
+            createChart(
+              'skillsDistributionChart',
+              'doughnut',
+              chartData.skillsDistribution
+            );
+            
+            // Skills Categories Chart
+            createChart(
+              'skillsCategoriesChart',
+              'bar',
+              chartData.skillsCategories
+            );
+            
+            // Jobs Status Chart
+            createChart(
+              'jobsStatusChart',
+              'doughnut',
+              chartData.jobsStatus
+            );
+            
+            console.log('All charts initialized successfully');
+          } catch (error) {
+            console.error('Error initializing charts:', error);
+          }
+        }, 300); // Increased delay to ensure DOM is fully ready
+      } catch (error) {
+        console.error('Error in chart initialization:', error);
+      }
+    }
+  </script>
+
+  <main class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p class="mt-2 text-gray-600">Overview of platform statistics and analytics</p>
+      </div>
+
+      <!-- Service Statistics -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Service Statistics</h2>
+        <p class="text-gray-600 mb-4">Key metrics about services registered on the platform. These cards provide a quick overview of service status and categories.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Services -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Total Services</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{serviceStats.total}</p>
+            </div>
+            <div class="p-3 bg-primary-50 rounded-lg">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center">
+              <span class="text-sm text-gray-500">Active services: {serviceStats.active}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verified Services -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Verified Services</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{serviceStats.verified}</p>
+            </div>
+            <div class="p-3 bg-green-50 rounded-lg">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center">
+              <span class="text-sm text-gray-500">
+                {Math.round((serviceStats.verified / serviceStats.total) * 100)}% of total services
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Categories -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Categories</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{serviceStats.categories}</p>
+            </div>
+            <div class="p-3 bg-blue-50 rounded-lg">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center">
+              <span class="text-sm text-gray-500">Avg. {Math.round(serviceStats.total / serviceStats.categories)} services per category</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Recent Updates</p>
+              <p class="text-2xl font-bold text-gray-900 mt-1">{recentServices}</p>
+            </div>
+            <div class="p-3 bg-yellow-50 rounded-lg">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center">
+              <span class="text-sm text-gray-500">In the last 30 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Actions</h3>
+        <p class="text-sm text-gray-600 mb-4">Common tasks and shortcuts to help you navigate the platform efficiently. Click on any card to access the corresponding section.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a 
+            href="/services/register" 
+            class="flex items-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors"
+          >
+            <div class="p-2 bg-primary-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-primary-900">Add Service</h4>
+              <p class="text-xs text-primary-700 mt-1">Register a new service</p>
+            </div>
+          </a>
+
+          <a 
+            href="/services" 
+            class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+          >
+            <div class="p-2 bg-blue-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-blue-900">View Services</h4>
+              <p class="text-xs text-blue-700 mt-1">Browse all services</p>
+            </div>
+          </a>
+
+          <a 
+            href="/skills-exchange" 
+            class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+          >
+            <div class="p-2 bg-purple-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-purple-900">Skills Exchange</h4>
+              <p class="text-xs text-purple-700 mt-1">Offer or request skills</p>
+            </div>
+          </a>
+
+          <a 
+            href="/analytics" 
+            class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
+          >
+            <div class="p-2 bg-green-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-green-900">Detailed Analytics</h4>
+              <p class="text-xs text-green-700 mt-1">View full statistics</p>
+            </div>
+          </a>
+
+          <a 
+            href="/services/update-request" 
+            class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors"
+          >
+            <div class="p-2 bg-yellow-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-yellow-900">Update Requests</h4>
+              <p class="text-xs text-yellow-700 mt-1">View pending updates</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Category Distribution -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Category Analysis</h2>
+        <p class="text-gray-600 mb-4">Breakdown of service categories and their distribution. This section shows the most popular categories and their relative proportions.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Top Categories -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Service Categories</h3>
+          <div class="space-y-4">
+            {sortedCategories.map(([category, count]) => (
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <span class="text-sm font-medium text-gray-900">{category}</span>
+                </div>
+                <div class="flex items-center">
+                  <span class="text-sm font-semibold text-gray-900">{count}</span>
+                  <span class="ml-2 text-xs text-gray-500">
+                    ({Math.round((count / serviceStats.total) * 100)}%)
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Visual Analytics</h2>
+        <p class="text-gray-600 mb-4">Interactive charts providing visual insights into platform data. These visualizations help identify trends and patterns at a glance.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Service Status Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Service Status Distribution</h3>
+          <div class="h-64 chart-container">
+            <canvas id="serviceStatusChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Shows the proportion of active vs. inactive services in the platform.</p>
+        </div>
+
+        <!-- Recent Activity Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity Overview</h3>
+          <div class="h-64 chart-container">
+            <canvas id="recentActivityChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Displays recent updates across different content types in the last 30 days.</p>
+        </div>
+
+        <!-- Category Distribution Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Category Distribution</h3>
+          <div class="h-64 chart-container">
+            <canvas id="categoryDistributionChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Illustrates how services are distributed across different categories.</p>
+        </div>
+      </div>
+
+      <!-- Resource Charts Section -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Resource Analytics</h2>
+        <p class="text-gray-600 mb-4">Analysis of resource usage and distribution across categories. These charts help understand how resources are being utilized on the platform.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Resource Status Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Resource Activity Distribution</h3>
+          <div class="h-64 chart-container">
+            <canvas id="resourceStatusChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Compares recently added resources to older resources in the platform.</p>
+        </div>
+
+        <!-- Resource Categories Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Resource Categories</h3>
+          <div class="h-64 chart-container">
+            <canvas id="resourceCategoriesChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Shows the most popular resource categories by number of items.</p>
+        </div>
+      </div>
+
+      <!-- Skills Exchange Charts Section -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Skills Exchange Analytics</h2>
+        <p class="text-gray-600 mb-4">Insights into the Skills Exchange marketplace, showing the balance between skills offered and requested, and popular skill categories.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Skills Distribution Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Skills Exchange Distribution</h3>
+            <a href="/skills-exchange" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+          </div>
+          <div class="h-64 chart-container">
+            <canvas id="skillsDistributionChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Compares the number of skills being offered versus skills being requested.</p>
+          <div class="mt-4 pt-4 border-t border-gray-100">
+            <div class="grid grid-cols-2 gap-4">
+              <a href="/skills-exchange/skills-offered" class="flex flex-col items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                <span class="text-sm font-medium text-green-800">Skills Offered</span>
+                <span class="text-lg font-bold text-green-900">{stats.skills.offered}</span>
+              </a>
+              <a href="/skills-exchange/skills-requested" class="flex flex-col items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                <span class="text-sm font-medium text-blue-800">Skills Requested</span>
+                <span class="text-lg font-bold text-blue-900">{stats.skills.requested}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Categories Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Top Skill Categories</h3>
+            <a href="/skills-exchange" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+          </div>
+          <div class="h-64 chart-container">
+            <canvas id="skillsCategoriesChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Displays the most common skill categories in the Skills Exchange.</p>
+          <div class="mt-4 pt-4 border-t border-gray-100">
+            <div class="space-y-2">
+              {sortedSkillCategories.map(([category, count]) => (
+                <div class="flex items-center justify-between">
+                  <a href={`/skills-exchange?category=${category}`} class="text-sm font-medium text-gray-900 hover:text-primary-600 transition-colors">
+                    {category}
+                  </a>
+                  <div class="flex items-center">
+                    <span class="text-sm font-semibold text-gray-900">{count}</span>
+                    <span class="ml-2 text-xs text-gray-500">
+                      ({Math.round((count / stats.skills.total) * 100)}%)
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jobs Analytics Section -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Jobs Analytics</h2>
+        <p class="text-gray-600 mb-4">Overview of job listings and employment opportunities on the platform. This section shows active job postings and recent activity.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Jobs Status Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Jobs Status Distribution</h3>
+            <a href="/jobs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+          </div>
+          <div class="h-64 chart-container">
+            <canvas id="jobsStatusChart"></canvas>
+          </div>
+          <p class="mt-4 text-sm text-gray-600 text-center">Shows the proportion of active vs. inactive job listings on the platform.</p>
+          <div class="mt-4 pt-4 border-t border-gray-100">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="flex flex-col items-center p-3 bg-green-50 rounded-lg">
+                <span class="text-sm font-medium text-green-800">Active Jobs</span>
+                <span class="text-lg font-bold text-green-900">{stats.jobs.active}</span>
+              </div>
+              <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-sm font-medium text-gray-800">Total Jobs</span>
+                <span class="text-lg font-bold text-gray-900">{stats.jobs.total}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jobs Activity -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Recent Job Activity</h3>
+            <a href="/jobs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+          </div>
+          <div class="space-y-4">
+            {jobs
+              .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+              .slice(0, 5)
+              .map(job => (
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer" onclick={`window.location.href='/jobs/${job.id.replace('.md', '')}'`}>
+                  <div>
+                    <div class="text-sm font-medium text-gray-900">{job.data.title}</div>
+                    <div class="text-xs text-gray-500">{job.data.company || job.data.organization || 'No company specified'}</div>
+                  </div>
+                  <div class="flex items-center">
+                    <span class={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      job.data.status === 'active' 
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {job.data.status || 'Inactive'}
+                    </span>
+                  </div>
+                </div>
+              ))
+            }
+            {jobs.length === 0 && (
+              <div class="text-center py-4 text-gray-500">
+                No job listings available
+              </div>
+            )}
+          </div>
+          <div class="mt-4 pt-4 border-t border-gray-100">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-600">Recent job postings</span>
+              <span class="text-sm font-semibold text-gray-900">{stats.jobs.recent} in the last 30 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Tables -->
+      <div class="mb-2">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Recent Activity</h2>
+        <p class="text-gray-600 mb-4">Latest updates and activities across the platform. These tables show the most recent changes to services and skills exchange listings.</p>
+      </div>
+      
+      <!-- Recent Activity Table -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Recent Service Activity</h3>
+            <p class="text-sm text-gray-600 mt-1">The most recently updated services on the platform. Click on any row to view details.</p>
+          </div>
+          <a href="/services" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all services</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {services
+                .filter(service => service.data.lastUpdated)
+                .sort((a, b) => new Date(b.data.lastUpdated) - new Date(a.data.lastUpdated))
+                .slice(0, 5)
+                .map(service => (
+                  <tr class="hover:bg-gray-50 cursor-pointer transition-colors" onclick={`window.location.href='/services/${service.id.replace('.md', '')}'`}>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                          <img 
+                            class="h-10 w-10 rounded-lg object-cover" 
+                            src={service.data.logo || '/images/logos/default-service.svg'} 
+                            alt={service.data.title} 
+                          />
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">{service.data.title}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{service.data.category}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        service.data.status === 'active' 
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {service.data.status || 'Inactive'}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(service.data.lastUpdated).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Skills Exchange Activity -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-8">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Recent Skills Exchange Activity</h3>
+            <p class="text-sm text-gray-600 mt-1">Latest skills being offered or requested in the Skills Exchange. Click on any row to view profile details.</p>
+          </div>
+          <a href="/skills-exchange" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all skills</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Skill</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {profiles
+                .filter(profile => profile.data.status === 'Available' || profile.data.status === 'Requested')
+                .slice(0, 5)
+                .map(profile => (
+                  <tr class="hover:bg-gray-50 cursor-pointer transition-colors" onclick={`window.location.href='/skills-exchange/profile/${profile.id.replace('.md', '')}'`}>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                          <img 
+                            class="h-10 w-10 rounded-full object-cover" 
+                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
+                            alt={profile.data.name} 
+                          />
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">{profile.data.name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{profile.data.skill}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{profile.data.category || 'Uncategorized'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        profile.data.status === 'Available' 
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-blue-100 text-blue-800'
+                      }`}>
+                        {profile.data.status}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {profile.data.location}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div> <br>
+
+      <!-- Platform Statistics -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Platform Overview</h2>
+        <p class="text-gray-600 mb-6">A comprehensive view of all content types across the platform. Each card shows key metrics and provides quick access to the full section.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Resources Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Resources</h3>
+              <a href="/resources" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Resources</span>
+                <span class="font-semibold">{stats.resources.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.resources.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Uploads</span>
+                <span class="font-semibold">{stats.resources.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Events Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Events</h3>
+              <a href="/events" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Events</span>
+                <span class="font-semibold">{stats.events.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Upcoming Events</span>
+                <span class="font-semibold">{stats.events.upcoming}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.events.categories}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Photos Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Photo Gallery</h3>
+              <a href="/gallery" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Photos</span>
+                <span class="font-semibold">{stats.photos.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Albums</span>
+                <span class="font-semibold">{stats.photos.albums}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Uploads</span>
+                <span class="font-semibold">{stats.photos.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Exchange Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Skills Exchange</h3>
+              <a href="/skills-exchange" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Skills</span>
+                <span class="font-semibold">{stats.skills.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Skills Offered</span>
+                <span class="font-semibold">{stats.skills.offered}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Skills Requested</span>
+                <span class="font-semibold">{stats.skills.requested}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.skills.categories}</span>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-gray-100">
+              <div class="flex space-x-2">
+                <a href="/skills-exchange/skills-offered" class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">Skills Offered</a>
+                <a href="/skills-exchange/skills-requested" class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">Skills Requested</a>
+                <a href="/skills-exchange/request" class="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-full">Request Skill</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Community Voices Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Community Voices</h3>
+              <a href="/community-voices" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Voices</span>
+                <span class="font-semibold">{stats.communityVoices.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.communityVoices.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Submissions</span>
+                <span class="font-semibold">{stats.communityVoices.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profiles Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Profiles</h3>
+              <a href="/profiles" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Profiles</span>
+                <span class="font-semibold">{stats.profiles.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Profiles</span>
+                <span class="font-semibold">{stats.profiles.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- News Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">News</h3>
+              <a href="/news" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Articles</span>
+                <span class="font-semibold">{stats.news.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.news.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent News</span>
+                <span class="font-semibold">{stats.news.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documentation Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Documentation</h3>
+              <a href="/docs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Documents</span>
+                <span class="font-semibold">{stats.docs.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.docs.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Updates</span>
+                <span class="font-semibold">{stats.docs.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jobs Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Jobs</h3>
+              <a href="/jobs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Jobs</span>
+                <span class="font-semibold">{stats.jobs.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Active Jobs</span>
+                <span class="font-semibold">{stats.jobs.active}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Postings</span>
+                <span class="font-semibold">{stats.jobs.recent}</span>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-gray-100">
+              <div class="flex space-x-2">
+                <a href="/jobs/post" class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">Post a Job</a>
+                <a href="/jobs?status=active" class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">Active Jobs</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Data Section -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Export Data</h2>
+        <p class="text-gray-600 mb-6">
+          Download platform data for analysis and reporting. Select the data types you want to export, 
+          choose a format, and set optional filters. Exports can be used for offline analysis, 
+          reporting, or data backup. Click on any row in the Recent Exports table to download again.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Export Options -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Select Data to Export</h3>
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <input type="checkbox" id="export-services" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" checked>
+                <label for="export-services" class="ml-2 block text-sm text-gray-700">Services</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-resources" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" checked>
+                <label for="export-resources" class="ml-2 block text-sm text-gray-700">Resources</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-events" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300">
+                <label for="export-events" class="ml-2 block text-sm text-gray-700">Events</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-photos" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-photos" class="ml-2 block text-sm text-gray-700">Photos</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-skills" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-skills" class="ml-2 block text-sm text-gray-700">Skills Exchange</label>
+                <span class="ml-2 text-xs text-gray-500">(Skills offered & requested)</span>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-voices" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-voices" class="ml-2 block text-sm text-gray-700">Community Voices</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-news" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-news" class="ml-2 block text-sm text-gray-700">News</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-jobs" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-jobs" class="ml-2 block text-sm text-gray-700">Jobs</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-all" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-all" class="ml-2 block text-sm text-gray-700">All Data</label>
+              </div>
+            </div>
+            
+            <div class="mt-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Date Range</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="start-date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                  <input type="date" id="start-date" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                </div>
+                <div>
+                  <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                  <input type="date" id="end-date" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Export Format -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Export Format</h3>
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <input type="radio" id="format-csv" name="export-format" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300" checked>
+                <label for="format-csv" class="ml-2 block text-sm text-gray-700">CSV Format</label>
+                <span class="ml-2 text-xs text-gray-500">(Compatible with Excel, Google Sheets)</span>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="format-json" name="export-format" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300">
+                <label for="format-json" class="ml-2 block text-sm text-gray-700">JSON Format</label>
+                <span class="ml-2 text-xs text-gray-500">(For developers, data analysis)</span>
+              </div>
+              
+              <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Export Options</h3>
+                <div class="space-y-3">
+                  <div class="flex items-center">
+                    <input type="checkbox" id="include-metadata" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" checked>
+                    <label for="include-metadata" class="ml-2 block text-sm text-gray-700">Include Metadata</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input type="checkbox" id="include-stats" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" checked>
+                    <label for="include-stats" class="ml-2 block text-sm text-gray-700">Include Statistics</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-8">
+                <button type="button" id="export-button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Export Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Exports -->
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Exports</h3>
+          <p class="text-sm text-gray-600 mb-4">Your most recent data exports are listed below. Click on any row or the Download button to download the file again.</p>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200 recent-exports">
+                <thead>
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Type</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Format</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  <tr class="hover:bg-gray-100 cursor-pointer transition-colors" data-file="services_export.csv">
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{new Date().toLocaleDateString()}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Services</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">CSV</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">24 KB</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                      <button class="text-primary-600 hover:text-primary-900 download-btn" data-file="services_export.csv">Download</button>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-100 cursor-pointer transition-colors" data-file="all_data_export.json">
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(Date.now() - 86400000).toLocaleDateString()}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">All Data</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">JSON</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">156 KB</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                      <button class="text-primary-600 hover:text-primary-900 download-btn" data-file="all_data_export.json">Download</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add client-side JavaScript for export functionality -->
+      <script is:inline define:vars={{ collections: { 
+        services: services.length,
+        resources: resources.length,
+        photos: photos.length,
+        events: events.length,
+        communityVoices: communityVoices.length,
+        news: news.length,
+        jobs: jobs.length,
+        talents: talents.length,
+        docs: docs.length,
+        profiles: profiles.length,
+        skills: skills.length
+      } }}>
+        document.addEventListener('DOMContentLoaded', function() {
+          const exportButton = document.getElementById('export-button');
+          const exportAllCheckbox = document.getElementById('export-all');
+          const dataCheckboxes = [
+            document.getElementById('export-services'),
+            document.getElementById('export-resources'),
+            document.getElementById('export-events'),
+            document.getElementById('export-photos'),
+            document.getElementById('export-skills'),
+            document.getElementById('export-voices'),
+            document.getElementById('export-news'),
+            document.getElementById('export-jobs')
+          ];
+          
+          // Handle "All Data" checkbox
+          exportAllCheckbox.addEventListener('change', function() {
+            dataCheckboxes.forEach(checkbox => {
+              checkbox.checked = exportAllCheckbox.checked;
+              checkbox.disabled = exportAllCheckbox.checked;
+            });
+          });
+          
+          // Handle download buttons and clickable rows
+          document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+              event.stopPropagation(); // Prevent row click from triggering
+              const filename = this.getAttribute('data-file');
+              downloadExport(filename, event);
+            });
+          });
+          
+          // Make export rows clickable
+          document.querySelectorAll('.recent-exports tbody tr').forEach(row => {
+            row.addEventListener('click', function() {
+              const filename = this.getAttribute('data-file');
+              downloadExport(filename, { target: this.querySelector('.download-btn') });
+            });
+          });
+          
+          // Function to download existing exports
+          function downloadExport(filename, event) {
+            // Create a loading indicator
+            const button = event.target.closest('button');
+            const originalText = button.textContent;
+            button.textContent = 'Downloading...';
+            button.disabled = true;
+            
+            // Extract format from filename
+            const format = filename.endsWith('.csv') ? 'csv' : 'json';
+            
+            // Extract collection from filename
+            let collections = ['all'];
+            if (filename.includes('services')) collections = ['services'];
+            else if (filename.includes('resources')) collections = ['resources'];
+            // Add more conditions as needed
+            
+            // Call the API endpoint
+            fetch('/api/export', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                format,
+                collections,
+                dateRange: { start: null, end: null },
+                options: { includeMetadata: true, includeStats: true }
+              })
+            })
+            .then(response => {
+              if (!response.ok) {
+                return response.json().then(data => {
+                  throw new Error(data.error || data.message || `Export failed: ${response.status} ${response.statusText}`);
+                });
+              }
+              
+              // Get filename from Content-Disposition header if available
+              const contentDisposition = response.headers.get('Content-Disposition');
+              let downloadFilename = filename;
+              if (contentDisposition) {
+                const filenameMatch = contentDisposition.match(/filename="(.+?)"/);
+                if (filenameMatch && filenameMatch[1]) {
+                  downloadFilename = filenameMatch[1];
+                }
+              }
+              
+              // Handle different formats
+              if (format === 'csv') {
+                return response.text().then(text => {
+                  return { data: text, type: 'text/csv', filename: downloadFilename };
+                });
+              } else {
+                return response.json().then(json => {
+                  return { data: JSON.stringify(json, null, 2), type: 'application/json', filename: downloadFilename };
+                });
+              }
+            })
+            .then(({ data, type, filename }) => {
+              // Create a blob and download it
+              const blob = new Blob([data], { type });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              
+              // Reset the button
+              button.textContent = originalText;
+              button.disabled = false;
+              
+              // Show success message
+              showNotification('Export downloaded successfully');
+            })
+            .catch(error => {
+              console.error('Download error:', error);
+              
+              // Reset the button
+              button.textContent = originalText;
+              button.disabled = false;
+              
+              // Show error message
+              showNotification(`Failed to download export: ${error.message}`, 'error');
+            });
+          }
+          
+          // Handle export button click
+          exportButton.addEventListener('click', function() {
+            // Disable the button during export
+            exportButton.disabled = true;
+            exportButton.innerHTML = `
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Generating Export...
+            `;
+            
+            // Get selected format
+            const format = document.getElementById('format-csv').checked ? 'csv' : 'json';
+            
+            // Get selected data types
+            const selectedData = [];
+            if (exportAllCheckbox.checked) {
+              selectedData.push('all');
+            } else {
+              if (document.getElementById('export-services').checked) selectedData.push('services');
+              if (document.getElementById('export-resources').checked) selectedData.push('resources');
+              if (document.getElementById('export-events').checked) selectedData.push('events');
+              if (document.getElementById('export-photos').checked) selectedData.push('photos');
+              if (document.getElementById('export-skills').checked) selectedData.push('skills');
+              if (document.getElementById('export-voices').checked) selectedData.push('community-voices');
+              if (document.getElementById('export-news').checked) selectedData.push('news');
+              if (document.getElementById('export-jobs').checked) selectedData.push('jobs');
+            }
+            
+            // If no data types selected, show error
+            if (selectedData.length === 0) {
+              showNotification('Please select at least one data type to export', 'error');
+              resetExportButton();
+              return;
+            }
+            
+            // Get date range
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            
+            // Get options
+            const includeMetadata = document.getElementById('include-metadata').checked;
+            const includeStats = document.getElementById('include-stats').checked;
+            
+            // Prepare export data
+            const exportData = {
+              format,
+              collections: selectedData,
+              dateRange: {
+                start: startDate || null,
+                end: endDate || null
+              },
+              options: {
+                includeMetadata,
+                includeStats
+              }
+            };
+            
+            // Show processing notification
+            showNotification('Processing export request...', 'info');
+            
+            // Call the API endpoint
+            fetch('/api/export', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(exportData)
+            })
+            .then(response => {
+              if (!response.ok) {
+                return response.json().then(data => {
+                  throw new Error(data.error || data.message || `Export failed: ${response.status} ${response.statusText}`);
+                });
+              }
+              
+              // Get filename from Content-Disposition header if available
+              const contentDisposition = response.headers.get('Content-Disposition');
+              let filename = `export_${new Date().toISOString().split('T')[0]}.${format}`;
+              if (contentDisposition) {
+                const filenameMatch = contentDisposition.match(/filename="(.+?)"/);
+                if (filenameMatch && filenameMatch[1]) {
+                  filename = filenameMatch[1];
+                }
+              }
+              
+              // Handle different formats
+              if (format === 'csv') {
+                return response.text().then(text => {
+                  return { data: text, type: 'text/csv', filename };
+                });
+              } else {
+                return response.json().then(json => {
+                  return { data: JSON.stringify(json, null, 2), type: 'application/json', filename };
+                });
+              }
+            })
+            .then(({ data, type, filename }) => {
+              // Create a blob and download it
+              const blob = new Blob([data], { type });
+              const url = URL.createObjectURL(blob);
+              
+              // Calculate file size
+              const fileSizeKB = Math.round(blob.size / 1024);
+              
+              // Add to recent exports
+              const exportInfo = {
+                filename,
+                format: format.toUpperCase(),
+                collections: exportData.collections,
+                size: `${fileSizeKB} KB`,
+                date: new Date()
+              };
+              
+              // Add to recent exports table
+              addToRecentExports(exportInfo);
+              
+              // Download the file
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              
+              // Reset the export button
+              resetExportButton();
+              
+              // Show success notification
+              showNotification('Export generated and downloaded successfully', 'success');
+            })
+            .catch(error => {
+              console.error('Export error:', error);
+              
+              // Reset the export button
+              resetExportButton();
+              
+              // Show error notification
+              showNotification(`Failed to generate export: ${error.message}`, 'error');
+            });
+          });
+          
+          // Function to reset export button
+          function resetExportButton() {
+            exportButton.disabled = false;
+            exportButton.innerHTML = `
+              <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Export Data
+            `;
+          }
+          
+          // Function to add export to recent exports table
+          function addToRecentExports(exportData) {
+            const tbody = document.querySelector('.recent-exports tbody');
+            if (tbody) {
+              const tr = document.createElement('tr');
+              tr.className = 'hover:bg-gray-100 cursor-pointer transition-colors';
+              tr.setAttribute('data-file', exportData.filename);
+              tr.innerHTML = `
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.date.toLocaleDateString()}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.collections.join(', ')}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.format}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.size}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  <button class="text-primary-600 hover:text-primary-900 download-btn" data-file="${exportData.filename}">Download</button>
+                </td>
+              `;
+              
+              // Add event listener to the new download button
+              const downloadBtn = tr.querySelector('.download-btn');
+              downloadBtn.addEventListener('click', function(event) {
+                event.stopPropagation(); // Prevent row click from triggering
+                const filename = this.getAttribute('data-file');
+                downloadExport(filename, event);
+              });
+              
+              // Add event listener to the row
+              tr.addEventListener('click', function() {
+                const filename = this.getAttribute('data-file');
+                downloadExport(filename, { target: this.querySelector('.download-btn') });
+              });
+              
+              // Add to the top of the table
+              if (tbody.firstChild) {
+                tbody.insertBefore(tr, tbody.firstChild);
+              } else {
+                tbody.appendChild(tr);
+              }
+            }
+          }
+          
+          // Function to show notifications
+          function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg ${
+              type === 'success' ? 'bg-green-500' : 
+              type === 'error' ? 'bg-red-500' : 
+              type === 'info' ? 'bg-blue-500' : 'bg-gray-500'
+            } text-white text-sm font-medium z-50 transform transition-transform duration-300 translate-y-0`;
+            notification.textContent = message;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+              notification.classList.add('translate-y-full', 'opacity-0');
+              setTimeout(() => {
+                document.body.removeChild(notification);
+              }, 300);
+            }, 3000);
+          }
+        });
+      </script>
+    </div>
+  </main>
+</MainLayout> 
