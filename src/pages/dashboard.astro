@@ -1838,20 +1838,11 @@ const chartData = {
     
     // Determine base URL - specifically optimized for Netlify
     const getBaseUrl = () => {
-      // Check if we're on Netlify or other production environment
-      const isProduction = window.location.hostname !== 'localhost' && 
-                           window.location.hostname !== '127.0.0.1';
-      
-      if (isProduction) {
-        // For Netlify, we need to use the site URL as the base
-        const baseUrl = `${window.location.protocol}//${window.location.host}`;
-        console.log(`Using production base URL: ${baseUrl}`);
-        return baseUrl;
-      }
-      
-      // For local development, use relative paths
-      console.log('Using relative paths for local development');
-      return '';
+      // Always use the current window location as the base URL
+      // This ensures we're using the same domain the site is hosted on
+      const baseUrl = `${window.location.protocol}//${window.location.host}`;
+      console.log(`Using base URL: ${baseUrl}`);
+      return baseUrl;
     };
     
     // Get the base URL for API requests
