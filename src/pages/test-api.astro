@@ -22,8 +22,10 @@ const apiEndpoints = {
   ...collections.reduce((acc, collection) => {
     acc[collection] = `/api/${collection}`;
     return acc;
-  }, {} as Record<string, string>)
+  }, {})
 };
+
+type ApiEndpoints = Record<string, string>;
 ---
 
 <Layout title="API Test">
