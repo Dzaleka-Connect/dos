@@ -2,9 +2,6 @@
 title: API Documentation
 description: Complete guide to using the Dzaleka Online Services API for developers
 section: developers
-date: 2023-03-08
-category: Technical
-featured: true
 ---
 
 # Dzaleka Online Services API
