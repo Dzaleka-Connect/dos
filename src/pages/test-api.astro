@@ -180,21 +180,21 @@ const apiEndpoints = {
 <script define:vars={{ apiEndpoints, collections }}>
   // Update direct API URL when collection changes
   document.getElementById('directCollection')?.addEventListener('change', (e) => {
-    const collection = (e.target as HTMLSelectElement).value;
-    const directApiUrlInput = document.getElementById('directApiUrl') as HTMLInputElement;
+    const collection = e.target.value;
+    const directApiUrlInput = document.getElementById('directApiUrl');
     directApiUrlInput.value = `/api/${collection}`;
   });
   
   // Initialize direct API URL
-  const initialCollection = (document.getElementById('directCollection') as HTMLSelectElement)?.value || 'services';
-  const directApiUrlInput = document.getElementById('directApiUrl') as HTMLInputElement;
+  const initialCollection = document.getElementById('directCollection')?.value || 'services';
+  const directApiUrlInput = document.getElementById('directApiUrl');
   if (directApiUrlInput) {
     directApiUrlInput.value = `/api/${initialCollection}`;
   }
   
   // Copy URL buttons
   document.getElementById('copyExportUrl')?.addEventListener('click', () => {
-    const exportApiUrlInput = document.getElementById('exportApiUrl') as HTMLInputElement;
+    const exportApiUrlInput = document.getElementById('exportApiUrl');
     navigator.clipboard.writeText(exportApiUrlInput.value);
     
     const button = document.getElementById('copyExportUrl');
@@ -210,7 +210,7 @@ const apiEndpoints = {
   });
   
   document.getElementById('copyDirectUrl')?.addEventListener('click', () => {
-    const directApiUrlInput = document.getElementById('directApiUrl') as HTMLInputElement;
+    const directApiUrlInput = document.getElementById('directApiUrl');
     navigator.clipboard.writeText(directApiUrlInput.value);
     
     const button = document.getElementById('copyDirectUrl');
@@ -455,7 +455,7 @@ const apiEndpoints = {
       if (collection) {
         document.getElementById('directCollection').value = collection;
         // Update the direct API URL
-        const directApiUrlInput = document.getElementById('directApiUrl') as HTMLInputElement;
+        const directApiUrlInput = document.getElementById('directApiUrl');
         if (directApiUrlInput) {
           directApiUrlInput.value = `/api/${collection}`;
         }
@@ -468,13 +468,13 @@ const apiEndpoints = {
   document.querySelectorAll('.test-collection-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation(); // Prevent the card click event from firing
-      const card = (e.target as HTMLElement).closest('.collection-card');
+      const card = e.target.closest('.collection-card');
       const collection = card?.dataset.collection;
       
       if (collection) {
         // Set up the direct API test
         document.getElementById('directCollection').value = collection;
-        const directApiUrlInput = document.getElementById('directApiUrl') as HTMLInputElement;
+        const directApiUrlInput = document.getElementById('directApiUrl');
         if (directApiUrlInput) {
           directApiUrlInput.value = `/api/${collection}`;
         }
