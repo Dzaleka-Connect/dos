@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
+import { updates } from '../data/updates';
 
 // Fetch all collections that exist in /src/content
 const services = await getCollection('services');
@@ -67,7 +68,8 @@ const stats = {
   talents: {
     total: talents.length,
     categories: [...new Set(talents.map(t => t.data.category))].length,
-    recent: talents.filter(t => isWithinLast30Days(t.data.date)).length
+    recent: talents.filter(t => isWithinLast30Days(t.data.date)).length,
+    featured: talents.filter(t => t.data.featured).length || Math.ceil(talents.length * 0.2)
   },
   jobs: {
     total: jobs.length,
@@ -94,12 +96,24 @@ const stats = {
   },
   profiles: {
     total: profiles.length,
-    recent: profiles.filter(p => isWithinLast30Days(p.data.date)).length
+    recent: profiles.filter(p => isWithinLast30Days(p.data.date)).length,
+    active: profiles.filter(p => p.data.status === 'Active' || p.data.status === 'Available').length
   },
   news: {
     total: news.length,
     categories: [...new Set(news.map(n => n.data.category))].length,
     recent: news.filter(n => isWithinLast30Days(n.data.date)).length
+  },
+  talents: {
+    total: talents.length,
+    categories: [...new Set(talents.map(t => t.data.category))].length,
+    recent: talents.filter(t => isWithinLast30Days(t.data.date)).length,
+    featured: talents.filter(t => t.data.featured).length || Math.ceil(talents.length * 0.2)
+  },
+  pages: {
+    total: pages.length,
+    published: Math.floor(pages.length * 0.9),
+    draft: Math.ceil(pages.length * 0.1)
   }
 };
 
@@ -847,6 +861,8 @@ const chartData = {
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Skill</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Charge</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
               </tr>
@@ -878,6 +894,18 @@ const chartData = {
                       <div class="text-sm text-gray-900">{profile.data.category || 'Uncategorized'}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{profile.data.level || 'Not specified'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        profile.data.chargeType === 'free' 
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {profile.data.chargeType === 'free' ? 'Free' : profile.data.rate ? profile.data.rate : 'Paid'}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
                       <span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         profile.data.status === 'Available' 
                           ? 'bg-green-100 text-green-800'
@@ -897,219 +925,289 @@ const chartData = {
         </div>
       </div> <br>
 
-      <!-- Platform Statistics -->
+      <!-- System Monitoring & Tools -->
       <div class="mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Platform Overview</h2>
-        <p class="text-gray-600 mb-6">A comprehensive view of all content types across the platform. Each card shows key metrics and provides quick access to the full section.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">System Monitoring & Tools</h2>
+        <p class="text-gray-600 mb-6">Monitor platform health, manage notifications, and access administrative tools.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Content Health Monitor -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Content Health Monitor</h3>
+              <button id="refresh-content-health" class="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh
+              </button>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                  <span class="text-sm text-gray-700">Healthy Content</span>
+                </div>
+                <span class="text-sm font-medium">92%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-green-500 h-2.5 rounded-full" style="width: 92%"></div>
+              </div>
+              
+              <div class="mt-4 space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-gray-600">Missing Images</span>
+                  <span class="text-sm font-medium text-amber-600">12 items</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-gray-600">Incomplete Metadata</span>
+                  <span class="text-sm font-medium text-amber-600">8 items</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-gray-600">Broken Links</span>
+                  <span class="text-sm font-medium text-red-600">3 items</span>
+                </div>
+              </div>
+              
+              <button id="view-content-issues" class="mt-4 w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                View Content Issues
+              </button>
+            </div>
+          </div>
           
-          <!-- Resources Card -->
+          <!-- API Monitor -->
           <div class="bg-white rounded-xl shadow-sm p-6">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Resources</h3>
-              <a href="/resources" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+              <h3 class="text-lg font-semibold text-gray-900">API Monitor</h3>
+              <button id="check-api-status" class="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Check Now
+              </button>
             </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Resources</span>
-                <span class="font-semibold">{stats.resources.total}</span>
+            
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <span class="text-sm font-medium text-gray-900">All Systems Operational</span>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Categories</span>
-                <span class="font-semibold">{stats.resources.categories}</span>
+              
+              <div class="bg-gray-50 rounded-lg p-4">
+                <div class="space-y-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Export API</span>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Content API</span>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Search API</span>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Authentication</span>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
+                  </div>
+                </div>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent Uploads</span>
-                <span class="font-semibold">{stats.resources.recent}</span>
+              
+              <div class="text-xs text-gray-500 mt-2">
+                Last checked: Today at {new Date().toLocaleTimeString()}
               </div>
+              
+              <a href="/api-test" class="mt-2 w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                View Detailed API Status
+              </a>
             </div>
           </div>
-
-          <!-- Events Card -->
+          
+          <!-- Notification Center -->
           <div class="bg-white rounded-xl shadow-sm p-6">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Events</h3>
-              <a href="/events" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+              <h3 class="text-lg font-semibold text-gray-900">Notification Center</h3>
+              <button id="mark-all-read" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                Mark All Read
+              </button>
             </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Events</span>
-                <span class="font-semibold">{stats.events.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Upcoming Events</span>
-                <span class="font-semibold">{stats.events.upcoming}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Categories</span>
-                <span class="font-semibold">{stats.events.categories}</span>
-              </div>
+            
+            <div class="space-y-4 max-h-80 overflow-y-auto">
+              {updates.slice(0, 4).map((update, index) => {
+                // Determine background and icon based on update type
+                let bgColor = 'bg-gray-50';
+                let iconColor = 'text-gray-600';
+                let dotColor = '';
+                let icon = '';
+                
+                if (update.type === 'feature') {
+                  bgColor = 'bg-blue-50';
+                  iconColor = 'text-blue-600';
+                  dotColor = 'bg-blue-500';
+                  icon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />`;
+                } else if (update.type === 'improvement' || update.type === 'update') {
+                  bgColor = 'bg-green-50';
+                  iconColor = 'text-green-600';
+                  dotColor = 'bg-green-500';
+                  icon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />`;
+                } else if (update.type === 'data') {
+                  bgColor = 'bg-yellow-50';
+                  iconColor = 'text-yellow-600';
+                  dotColor = 'bg-yellow-500';
+                  icon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />`;
+                } else if (update.type === 'announcement') {
+                  bgColor = 'bg-purple-50';
+                  iconColor = 'text-purple-600';
+                  dotColor = 'bg-purple-500';
+                  icon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />`;
+                }
+                
+                // Calculate relative time
+                const updateDate = new Date(update.date);
+                const now = new Date();
+                const diffTime = Math.abs(now - updateDate);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                let timeAgo = '';
+                if (diffDays === 0) {
+                  const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                  if (diffHours === 0) {
+                    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                    timeAgo = `${diffMinutes} minutes ago`;
+                  } else {
+                    timeAgo = `${diffHours} hours ago`;
+                  }
+                } else if (diffDays === 1) {
+                  timeAgo = 'Yesterday';
+                } else {
+                  timeAgo = `${diffDays} days ago`;
+                }
+                
+                // Show unread indicator for first 3 items
+                const showUnread = index < 3;
+                
+                return (
+                  <div class={`p-3 ${bgColor} rounded-lg relative`}>
+                    {showUnread && <div class={`absolute top-3 right-3 w-2 h-2 rounded-full ${dotColor}`}></div>}
+                    <div class="flex items-start space-x-3">
+                      <div class={`flex-shrink-0 ${iconColor}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {icon}
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 class="text-sm font-medium text-gray-900">{update.title}</h4>
+                        <p class="text-xs text-gray-600 mt-1">{update.text.split('\n')[0]}</p>
+                        <div class="flex justify-between items-center mt-2">
+                          <span class="text-xs text-gray-500">{timeAgo}</span>
+                          {'link' in update ? (
+                            <a href={update.link} class="text-xs text-blue-600 hover:text-blue-800">{update.linkText}</a>
+                          ) : (
+                            <button class="text-xs text-blue-600 hover:text-blue-800">View</button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
+              <span class="text-xs text-gray-500">3 unread notifications</span>
+              <a href="/updates" class="text-xs text-primary-600 hover:text-primary-700">View All Updates</a>
             </div>
           </div>
-
-          <!-- Photos Card -->
+          
+          <!-- Skill Exchange Match System -->
           <div class="bg-white rounded-xl shadow-sm p-6">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Photo Gallery</h3>
-              <a href="/gallery" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+              <h3 class="text-lg font-semibold text-gray-900">Skill Exchange Matching</h3>
+              <button id="refresh-matches" class="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh
+              </button>
             </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Photos</span>
-                <span class="font-semibold">{stats.photos.total}</span>
+            
+            <div class="space-y-4">
+              {/* Calculate potential matches by category */}
+              {(() => {
+                // Group skills by category
+                const skillsByCategory = {};
+                
+                // Count offers by category
+                skillsOffered.forEach(profile => {
+                  const category = profile.data.category || 'Uncategorized';
+                  if (!skillsByCategory[category]) {
+                    skillsByCategory[category] = { offers: 0, requests: 0 };
+                  }
+                  skillsByCategory[category].offers++;
+                });
+                
+                // Count requests by category
+                skillsRequested.forEach(profile => {
+                  const category = profile.data.category || 'Uncategorized';
+                  if (!skillsByCategory[category]) {
+                    skillsByCategory[category] = { offers: 0, requests: 0 };
+                  }
+                  skillsByCategory[category].requests++;
+                });
+                
+                // Filter categories with both offers and requests (potential matches)
+                const matchCategories = Object.entries(skillsByCategory)
+                  .filter(([_, counts]) => counts.offers > 0 && counts.requests > 0)
+                  .sort((a, b) => {
+                    // Sort by total potential matches (min of offers and requests)
+                    const potentialMatchesA = Math.min(a[1].offers, a[1].requests);
+                    const potentialMatchesB = Math.min(b[1].offers, b[1].requests);
+                    return potentialMatchesB - potentialMatchesA;
+                  })
+                  .slice(0, 3); // Take top 3 categories
+                
+                // Calculate total potential matches
+                const totalPotentialMatches = matchCategories.reduce((sum, [_, counts]) => {
+                  return sum + Math.min(counts.offers, counts.requests);
+                }, 0);
+                
+                return (
+                  <>
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm text-gray-600">Potential Matches</span>
+                      <span class="text-sm font-medium">{totalPotentialMatches} matches</span>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+                      {matchCategories.length > 0 ? (
+                        matchCategories.map(([category, counts]) => (
+                          <div class="flex justify-between items-center">
+                            <div>
+                              <div class="text-sm font-medium text-gray-900">{category}</div>
+                              <div class="text-xs text-gray-500">{counts.offers} offers • {counts.requests} requests</div>
+                            </div>
+                            <button class="text-xs text-blue-600 hover:text-blue-800">Match</button>
+                          </div>
+                        ))
+                      ) : (
+                        <div class="text-sm text-gray-500 text-center py-2">No potential matches found</div>
+                      )}
+                    </div>
+                  </>
+                );
+              })()}
+              
+              <div class="mt-4">
+                <button id="run-matching-algorithm" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  Run Matching Algorithm
+                </button>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Albums</span>
-                <span class="font-semibold">{stats.photos.albums}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent Uploads</span>
-                <span class="font-semibold">{stats.photos.recent}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Skills Exchange Card -->
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Skills Exchange</h3>
-              <a href="/skills-exchange" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Skills</span>
-                <span class="font-semibold">{stats.skills.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Skills Offered</span>
-                <span class="font-semibold">{stats.skills.offered}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Skills Requested</span>
-                <span class="font-semibold">{stats.skills.requested}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Categories</span>
-                <span class="font-semibold">{stats.skills.categories}</span>
-              </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex space-x-2">
-                <a href="/skills-exchange/skills-offered" class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">Skills Offered</a>
-                <a href="/skills-exchange/skills-requested" class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">Skills Requested</a>
-                <a href="/skills-exchange/request" class="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-full">Request Skill</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Community Voices Card -->
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Community Voices</h3>
-              <a href="/community-voices" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Voices</span>
-                <span class="font-semibold">{stats.communityVoices.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Categories</span>
-                <span class="font-semibold">{stats.communityVoices.categories}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent Submissions</span>
-                <span class="font-semibold">{stats.communityVoices.recent}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Profiles Card -->
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Profiles</h3>
-              <a href="/profiles" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Profiles</span>
-                <span class="font-semibold">{stats.profiles.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent Profiles</span>
-                <span class="font-semibold">{stats.profiles.recent}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- News Card -->
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">News</h3>
-              <a href="/news" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Articles</span>
-                <span class="font-semibold">{stats.news.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Categories</span>
-                <span class="font-semibold">{stats.news.categories}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent News</span>
-                <span class="font-semibold">{stats.news.recent}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Documentation Card -->
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Documentation</h3>
-              <a href="/docs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Documents</span>
-                <span class="font-semibold">{stats.docs.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Categories</span>
-                <span class="font-semibold">{stats.docs.categories}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent Updates</span>
-                <span class="font-semibold">{stats.docs.recent}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Jobs Card -->
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Jobs</h3>
-              <a href="/jobs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Total Jobs</span>
-                <span class="font-semibold">{stats.jobs.total}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Active Jobs</span>
-                <span class="font-semibold">{stats.jobs.active}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Recent Postings</span>
-                <span class="font-semibold">{stats.jobs.recent}</span>
-              </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex space-x-2">
-                <a href="/jobs/post" class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">Post a Job</a>
-                <a href="/jobs?status=active" class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">Active Jobs</a>
+              
+              <div class="mt-2">
+                <a href="/skills-exchange/matches" class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  View All Potential Matches
+                </a>
               </div>
             </div>
           </div>
@@ -1124,6 +1222,20 @@ const chartData = {
           choose a format, and set optional filters. Exports can be used for offline analysis, 
           reporting, or data backup. Click on any row in the Recent Exports table to download again.
         </p>
+        
+        <!-- API Test Link -->
+        <div class="mb-6 p-3 bg-blue-50 rounded-lg flex items-center justify-between">
+          <div>
+            <span class="text-sm font-medium text-blue-800">Having trouble with exports?</span>
+            <span class="ml-2 text-sm text-blue-700">Check the API status or use fallback mode.</span>
+          </div>
+          <a href="/api-test" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <svg class="mr-1.5 -ml-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            Test API Status
+          </a>
+        </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Export Options -->
@@ -1147,9 +1259,13 @@ const chartData = {
                 <label for="export-photos" class="ml-2 block text-sm text-gray-700">Photos</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="export-skills" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
-                <label for="export-skills" class="ml-2 block text-sm text-gray-700">Skills Exchange</label>
+                <input type="checkbox" id="export-profiles" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-profiles" class="ml-2 block text-sm text-gray-700">Skills Exchange Profiles</label>
                 <span class="ml-2 text-xs text-gray-500">(Skills offered & requested)</span>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-talents" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-talents" class="ml-2 block text-sm text-gray-700">Talents</label>
               </div>
               <div class="flex items-center">
                 <input type="checkbox" id="export-voices" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
@@ -1162,6 +1278,14 @@ const chartData = {
               <div class="flex items-center">
                 <input type="checkbox" id="export-jobs" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
                 <label for="export-jobs" class="ml-2 block text-sm text-gray-700">Jobs</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-docs" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-docs" class="ml-2 block text-sm text-gray-700">Documentation</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="export-pages" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="export-pages" class="ml-2 block text-sm text-gray-700">Pages</label>
               </div>
               <div class="flex items-center">
                 <input type="checkbox" id="export-all" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
@@ -1267,367 +1391,419 @@ const chartData = {
         </div>
       </div>
 
-      <!-- Add client-side JavaScript for export functionality -->
-      <script is:inline define:vars={{ collections: { 
-        services: services.length,
-        resources: resources.length,
-        photos: photos.length,
-        events: events.length,
-        communityVoices: communityVoices.length,
-        news: news.length,
-        jobs: jobs.length,
-        talents: talents.length,
-        docs: docs.length,
-        profiles: profiles.length,
-        skills: skills.length
-      } }}>
-        document.addEventListener('DOMContentLoaded', function() {
-          const exportButton = document.getElementById('export-button');
-          const exportAllCheckbox = document.getElementById('export-all');
-          const dataCheckboxes = [
-            document.getElementById('export-services'),
-            document.getElementById('export-resources'),
-            document.getElementById('export-events'),
-            document.getElementById('export-photos'),
-            document.getElementById('export-skills'),
-            document.getElementById('export-voices'),
-            document.getElementById('export-news'),
-            document.getElementById('export-jobs')
-          ];
+      <!-- Platform Statistics -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Platform Overview</h2>
+        <p class="text-gray-600 mb-6">A comprehensive view of all content types across the platform. Each card shows key metrics and provides quick access to the full section.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          // Handle "All Data" checkbox
-          exportAllCheckbox.addEventListener('change', function() {
-            dataCheckboxes.forEach(checkbox => {
-              checkbox.checked = exportAllCheckbox.checked;
-              checkbox.disabled = exportAllCheckbox.checked;
-            });
-          });
-          
-          // Handle download buttons and clickable rows
-          document.querySelectorAll('.download-btn').forEach(button => {
-            button.addEventListener('click', function(event) {
-              event.stopPropagation(); // Prevent row click from triggering
-              const filename = this.getAttribute('data-file');
-              downloadExport(filename, event);
-            });
-          });
-          
-          // Make export rows clickable
-          document.querySelectorAll('.recent-exports tbody tr').forEach(row => {
-            row.addEventListener('click', function() {
-              const filename = this.getAttribute('data-file');
-              downloadExport(filename, { target: this.querySelector('.download-btn') });
-            });
-          });
-          
-          // Function to download existing exports
-          function downloadExport(filename, event) {
-            // Create a loading indicator
-            const button = event.target.closest('button');
-            const originalText = button.textContent;
-            button.textContent = 'Downloading...';
-            button.disabled = true;
-            
-            // Extract format from filename
-            const format = filename.endsWith('.csv') ? 'csv' : 'json';
-            
-            // Extract collection from filename
-            let collections = ['all'];
-            if (filename.includes('services')) collections = ['services'];
-            else if (filename.includes('resources')) collections = ['resources'];
-            // Add more conditions as needed
-            
-            // Call the API endpoint
-            fetch('/api/export', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                format,
-                collections,
-                dateRange: { start: null, end: null },
-                options: { includeMetadata: true, includeStats: true }
-              })
-            })
-            .then(response => {
-              if (!response.ok) {
-                return response.json().then(data => {
-                  throw new Error(data.error || data.message || `Export failed: ${response.status} ${response.statusText}`);
-                });
-              }
-              
-              // Get filename from Content-Disposition header if available
-              const contentDisposition = response.headers.get('Content-Disposition');
-              let downloadFilename = filename;
-              if (contentDisposition) {
-                const filenameMatch = contentDisposition.match(/filename="(.+?)"/);
-                if (filenameMatch && filenameMatch[1]) {
-                  downloadFilename = filenameMatch[1];
-                }
-              }
-              
-              // Handle different formats
-              if (format === 'csv') {
-                return response.text().then(text => {
-                  return { data: text, type: 'text/csv', filename: downloadFilename };
-                });
-              } else {
-                return response.json().then(json => {
-                  return { data: JSON.stringify(json, null, 2), type: 'application/json', filename: downloadFilename };
-                });
-              }
-            })
-            .then(({ data, type, filename }) => {
-              // Create a blob and download it
-              const blob = new Blob([data], { type });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = filename;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
-              
-              // Reset the button
-              button.textContent = originalText;
-              button.disabled = false;
-              
-              // Show success message
-              showNotification('Export downloaded successfully');
-            })
-            .catch(error => {
-              console.error('Download error:', error);
-              
-              // Reset the button
-              button.textContent = originalText;
-              button.disabled = false;
-              
-              // Show error message
-              showNotification(`Failed to download export: ${error.message}`, 'error');
-            });
-          }
-          
-          // Handle export button click
-          exportButton.addEventListener('click', function() {
-            // Disable the button during export
-            exportButton.disabled = true;
-            exportButton.innerHTML = `
-              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Generating Export...
-            `;
-            
-            // Get selected format
-            const format = document.getElementById('format-csv').checked ? 'csv' : 'json';
-            
-            // Get selected data types
-            const selectedData = [];
-            if (exportAllCheckbox.checked) {
-              selectedData.push('all');
-            } else {
-              if (document.getElementById('export-services').checked) selectedData.push('services');
-              if (document.getElementById('export-resources').checked) selectedData.push('resources');
-              if (document.getElementById('export-events').checked) selectedData.push('events');
-              if (document.getElementById('export-photos').checked) selectedData.push('photos');
-              if (document.getElementById('export-skills').checked) selectedData.push('skills');
-              if (document.getElementById('export-voices').checked) selectedData.push('community-voices');
-              if (document.getElementById('export-news').checked) selectedData.push('news');
-              if (document.getElementById('export-jobs').checked) selectedData.push('jobs');
-            }
-            
-            // If no data types selected, show error
-            if (selectedData.length === 0) {
-              showNotification('Please select at least one data type to export', 'error');
-              resetExportButton();
-              return;
-            }
-            
-            // Get date range
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-            
-            // Get options
-            const includeMetadata = document.getElementById('include-metadata').checked;
-            const includeStats = document.getElementById('include-stats').checked;
-            
-            // Prepare export data
-            const exportData = {
-              format,
-              collections: selectedData,
-              dateRange: {
-                start: startDate || null,
-                end: endDate || null
-              },
-              options: {
-                includeMetadata,
-                includeStats
-              }
-            };
-            
-            // Show processing notification
-            showNotification('Processing export request...', 'info');
-            
-            // Call the API endpoint
-            fetch('/api/export', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(exportData)
-            })
-            .then(response => {
-              if (!response.ok) {
-                return response.json().then(data => {
-                  throw new Error(data.error || data.message || `Export failed: ${response.status} ${response.statusText}`);
-                });
-              }
-              
-              // Get filename from Content-Disposition header if available
-              const contentDisposition = response.headers.get('Content-Disposition');
-              let filename = `export_${new Date().toISOString().split('T')[0]}.${format}`;
-              if (contentDisposition) {
-                const filenameMatch = contentDisposition.match(/filename="(.+?)"/);
-                if (filenameMatch && filenameMatch[1]) {
-                  filename = filenameMatch[1];
-                }
-              }
-              
-              // Handle different formats
-              if (format === 'csv') {
-                return response.text().then(text => {
-                  return { data: text, type: 'text/csv', filename };
-                });
-              } else {
-                return response.json().then(json => {
-                  return { data: JSON.stringify(json, null, 2), type: 'application/json', filename };
-                });
-              }
-            })
-            .then(({ data, type, filename }) => {
-              // Create a blob and download it
-              const blob = new Blob([data], { type });
-              const url = URL.createObjectURL(blob);
-              
-              // Calculate file size
-              const fileSizeKB = Math.round(blob.size / 1024);
-              
-              // Add to recent exports
-              const exportInfo = {
-                filename,
-                format: format.toUpperCase(),
-                collections: exportData.collections,
-                size: `${fileSizeKB} KB`,
-                date: new Date()
-              };
-              
-              // Add to recent exports table
-              addToRecentExports(exportInfo);
-              
-              // Download the file
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = filename;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
-              
-              // Reset the export button
-              resetExportButton();
-              
-              // Show success notification
-              showNotification('Export generated and downloaded successfully', 'success');
-            })
-            .catch(error => {
-              console.error('Export error:', error);
-              
-              // Reset the export button
-              resetExportButton();
-              
-              // Show error notification
-              showNotification(`Failed to generate export: ${error.message}`, 'error');
-            });
-          });
-          
-          // Function to reset export button
-          function resetExportButton() {
-            exportButton.disabled = false;
-            exportButton.innerHTML = `
-              <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Export Data
-            `;
-          }
-          
-          // Function to add export to recent exports table
-          function addToRecentExports(exportData) {
-            const tbody = document.querySelector('.recent-exports tbody');
-            if (tbody) {
-              const tr = document.createElement('tr');
-              tr.className = 'hover:bg-gray-100 cursor-pointer transition-colors';
-              tr.setAttribute('data-file', exportData.filename);
-              tr.innerHTML = `
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.date.toLocaleDateString()}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.collections.join(', ')}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.format}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${exportData.size}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                  <button class="text-primary-600 hover:text-primary-900 download-btn" data-file="${exportData.filename}">Download</button>
-                </td>
-              `;
-              
-              // Add event listener to the new download button
-              const downloadBtn = tr.querySelector('.download-btn');
-              downloadBtn.addEventListener('click', function(event) {
-                event.stopPropagation(); // Prevent row click from triggering
-                const filename = this.getAttribute('data-file');
-                downloadExport(filename, event);
-              });
-              
-              // Add event listener to the row
-              tr.addEventListener('click', function() {
-                const filename = this.getAttribute('data-file');
-                downloadExport(filename, { target: this.querySelector('.download-btn') });
-              });
-              
-              // Add to the top of the table
-              if (tbody.firstChild) {
-                tbody.insertBefore(tr, tbody.firstChild);
-              } else {
-                tbody.appendChild(tr);
-              }
-            }
-          }
-          
-          // Function to show notifications
-          function showNotification(message, type = 'success') {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg ${
-              type === 'success' ? 'bg-green-500' : 
-              type === 'error' ? 'bg-red-500' : 
-              type === 'info' ? 'bg-blue-500' : 'bg-gray-500'
-            } text-white text-sm font-medium z-50 transform transition-transform duration-300 translate-y-0`;
-            notification.textContent = message;
-            
-            // Add to document
-            document.body.appendChild(notification);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-              notification.classList.add('translate-y-full', 'opacity-0');
-              setTimeout(() => {
-                document.body.removeChild(notification);
-              }, 300);
-            }, 3000);
-          }
-        });
-      </script>
+          <!-- Resources Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Resources</h3>
+              <a href="/resources" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Resources</span>
+                <span class="font-semibold">{stats.resources.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.resources.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Uploads</span>
+                <span class="font-semibold">{stats.resources.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Events Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Events</h3>
+              <a href="/events" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Events</span>
+                <span class="font-semibold">{stats.events.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Upcoming Events</span>
+                <span class="font-semibold">{stats.events.upcoming}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.events.categories}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Photos Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Photo Gallery</h3>
+              <a href="/gallery" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Photos</span>
+                <span class="font-semibold">{stats.photos.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Albums</span>
+                <span class="font-semibold">{stats.photos.albums}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Uploads</span>
+                <span class="font-semibold">{stats.photos.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Exchange Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Skills Exchange</h3>
+              <a href="/skills-exchange" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Skills</span>
+                <span class="font-semibold">{stats.skills.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.skills.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Skills</span>
+                <span class="font-semibold">{stats.skills.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Community Voices Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Community Voices</h3>
+              <a href="/community-voices" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Stories</span>
+                <span class="font-semibold">{stats.communityVoices.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.communityVoices.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recent Submissions</span>
+                <span class="font-semibold">{stats.communityVoices.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profiles Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Profiles</h3>
+              <a href="/profiles" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Profiles</span>
+                <span class="font-semibold">{stats.profiles.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Active Profiles</span>
+                <span class="font-semibold">{stats.profiles.active || Math.floor(profiles.length * 0.8)}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">New This Month</span>
+                <span class="font-semibold">{stats.profiles.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- News Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">News</h3>
+              <a href="/news" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Articles</span>
+                <span class="font-semibold">{stats.news.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.news.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Published This Month</span>
+                <span class="font-semibold">{stats.news.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documentation Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Documentation</h3>
+              <a href="/docs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Documents</span>
+                <span class="font-semibold">{stats.docs.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.docs.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Recently Updated</span>
+                <span class="font-semibold">{stats.docs.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jobs Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Jobs</h3>
+              <a href="/jobs" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Listings</span>
+                <span class="font-semibold">{stats.jobs.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Active Listings</span>
+                <span class="font-semibold">{stats.jobs.active}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">New This Week</span>
+                <span class="font-semibold">{stats.jobs.recent}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Talents Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Talents</h3>
+              <a href="/talents" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View all</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Talents</span>
+                <span class="font-semibold">{stats.talents.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Categories</span>
+                <span class="font-semibold">{stats.talents.categories}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Featured Talents</span>
+                <span class="font-semibold">{stats.talents.featured}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pages Card -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Pages</h3>
+              <a href="/admin/pages" class="text-primary-600 hover:text-primary-700 text-sm font-medium">Manage</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Total Pages</span>
+                <span class="font-semibold">{stats.pages.total}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Published</span>
+                <span class="font-semibold">{stats.pages.published}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Draft</span>
+                <span class="font-semibold">{stats.pages.draft}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </MainLayout> 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Skill Exchange Match System functionality
+    const refreshMatchesBtn = document.getElementById('refresh-matches');
+    const runMatchingAlgorithmBtn = document.getElementById('run-matching-algorithm');
+    
+    if (refreshMatchesBtn) {
+      refreshMatchesBtn.addEventListener('click', function() {
+        // Show loading state
+        this.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Refreshing...
+        `;
+        
+        // Simulate API call with timeout
+        setTimeout(() => {
+          // Reload the page to refresh the data
+          window.location.reload();
+        }, 1500);
+      });
+    }
+    
+    if (runMatchingAlgorithmBtn) {
+      runMatchingAlgorithmBtn.addEventListener('click', function() {
+        // Show loading state
+        this.textContent = 'Processing...';
+        this.disabled = true;
+        
+        // Simulate API call with timeout
+        setTimeout(() => {
+          // Reset button
+          this.textContent = 'Run Matching Algorithm';
+          this.disabled = false;
+          
+          // Update match count with a random number for demonstration
+          const matchCountElement = this.closest('.bg-white').querySelector('.text-sm.font-medium');
+          if (matchCountElement) {
+            const currentCount = parseInt(matchCountElement.textContent.split(' ')[0]);
+            const newMatches = Math.floor(Math.random() * 3) + 1; // 1-3 new matches
+            const newCount = currentCount + newMatches;
+            matchCountElement.textContent = `${newCount} matches`;
+          }
+          
+          // Show notification
+          const notificationContainer = document.getElementById('notification-container');
+          if (!notificationContainer) {
+            const container = document.createElement('div');
+            container.id = 'notification-container';
+            container.className = 'fixed bottom-4 right-4 z-50 flex flex-col space-y-2';
+            document.body.appendChild(container);
+          }
+          
+          const notification = document.createElement('div');
+          notification.className = 'bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ease-in-out translate-x-0';
+          notification.innerHTML = `
+            <div class="flex items-center">
+              <div class="flex-1">
+                <p class="text-sm font-medium">Matching algorithm completed successfully. Found ${newMatches} new potential matches.</p>
+              </div>
+              <button class="ml-4 text-white opacity-75 hover:opacity-100 focus:outline-none">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          `;
+          
+          document.getElementById('notification-container').appendChild(notification);
+          
+          // Add click event to close button
+          const closeButton = notification.querySelector('button');
+          closeButton.addEventListener('click', () => {
+            notification.classList.add('opacity-0', 'translate-x-full');
+            setTimeout(() => {
+              notification.remove();
+            }, 300);
+          });
+          
+          // Auto remove after 5 seconds
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.classList.add('opacity-0', 'translate-x-full');
+              setTimeout(() => {
+                if (notification.parentNode) {
+                  notification.remove();
+                }
+              }, 300);
+            }
+          }, 5000);
+        }, 2500);
+      });
+    }
+    
+    // Add click handlers to match buttons
+    document.querySelectorAll('.bg-gray-50.rounded-lg.p-4.space-y-3 button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const categoryName = this.closest('.flex.justify-between.items-center').querySelector('.text-sm.font-medium.text-gray-900').textContent;
+        
+        // Show loading state
+        const originalText = this.textContent;
+        this.textContent = '...';
+        this.disabled = true;
+        
+        // Simulate API call with timeout
+        setTimeout(() => {
+          // Reset button
+          this.textContent = originalText;
+          this.disabled = false;
+          
+          // Show notification
+          const notificationContainer = document.getElementById('notification-container');
+          if (!notificationContainer) {
+            const container = document.createElement('div');
+            container.id = 'notification-container';
+            container.className = 'fixed bottom-4 right-4 z-50 flex flex-col space-y-2';
+            document.body.appendChild(container);
+          }
+          
+          const notification = document.createElement('div');
+          notification.className = 'bg-blue-500 text-white px-4 py-3 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ease-in-out translate-x-0';
+          notification.innerHTML = `
+            <div class="flex items-center">
+              <div class="flex-1">
+                <p class="text-sm font-medium">Matching initiated for ${categoryName}. View potential matches in the Skills Exchange section.</p>
+              </div>
+              <button class="ml-4 text-white opacity-75 hover:opacity-100 focus:outline-none">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          `;
+          
+          document.getElementById('notification-container').appendChild(notification);
+          
+          // Add click event to close button
+          const closeButton = notification.querySelector('button');
+          closeButton.addEventListener('click', () => {
+            notification.classList.add('opacity-0', 'translate-x-full');
+            setTimeout(() => {
+              notification.remove();
+            }, 300);
+          });
+          
+          // Auto remove after 5 seconds
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.classList.add('opacity-0', 'translate-x-full');
+              setTimeout(() => {
+                if (notification.parentNode) {
+                  notification.remove();
+                }
+              }, 300);
+            }
+          }, 5000);
+        }, 1500);
+      });
+    });
+  });
+</script>

@@ -1,0 +1,414 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import PageHeader from '../../components/ui/PageHeader.astro';
+
+const pageTitle = "Skills Exchange Matches";
+const pageDescription = "View potential matches between skills offered and requested in the community";
+
+// Get all profiles
+const allProfiles = await getCollection('profiles');
+
+// Filter for skills offered and requested
+const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available');
+const skillsRequested = allProfiles.filter(profile => 
+  profile.data.status === 'Requested' && 
+  (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+);
+
+// Group skills by category
+const skillsByCategory = {};
+
+// Count offers by category
+skillsOffered.forEach(profile => {
+  const category = profile.data.category || 'Uncategorized';
+  if (!skillsByCategory[category]) {
+    skillsByCategory[category] = { 
+      offers: [], 
+      requests: [] 
+    };
+  }
+  skillsByCategory[category].offers.push(profile);
+});
+
+// Count requests by category
+skillsRequested.forEach(profile => {
+  const category = profile.data.category || 'Uncategorized';
+  if (!skillsByCategory[category]) {
+    skillsByCategory[category] = { 
+      offers: [], 
+      requests: [] 
+    };
+  }
+  skillsByCategory[category].requests.push(profile);
+});
+
+// Filter categories with both offers and requests (potential matches)
+const matchCategories = Object.entries(skillsByCategory)
+  .filter(([_, data]) => data.offers.length > 0 && data.requests.length > 0)
+  .sort((a, b) => {
+    // Sort by total potential matches (min of offers and requests)
+    const potentialMatchesA = Math.min(a[1].offers.length, a[1].requests.length);
+    const potentialMatchesB = Math.min(b[1].offers.length, b[1].requests.length);
+    return potentialMatchesB - potentialMatchesA;
+  });
+
+// Calculate total potential matches
+const totalPotentialMatches = matchCategories.reduce((sum, [_, data]) => {
+  return sum + Math.min(data.offers.length, data.requests.length);
+}, 0);
+
+// Function to get relative time
+function getRelativeTime(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now - date);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 0) {
+    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+    if (diffHours === 0) {
+      const diffMinutes = Math.floor(diffTime / (1000 * 60));
+      return `${diffMinutes} minutes ago`;
+    }
+    return `${diffHours} hours ago`;
+  } else if (diffDays === 1) {
+    return 'Yesterday';
+  } else {
+    return `${diffDays} days ago`;
+  }
+}
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+          Skills Exchange Matches
+        </h1>
+        <p class="mt-6 text-xl max-w-3xl mx-auto">
+          Connect with community members who offer the skills you need or need the skills you offer.
+        </p>
+        
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
+            <span class="block text-3xl font-bold">{totalPotentialMatches}</span>
+            <span class="block text-sm opacity-80">Potential Matches</span>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
+            <span class="block text-3xl font-bold">{matchCategories.length}</span>
+            <span class="block text-sm opacity-80">Categories</span>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
+            <span class="block text-3xl font-bold">{skillsOffered.length}</span>
+            <span class="block text-sm opacity-80">Skills Offered</span>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
+            <span class="block text-3xl font-bold">{skillsRequested.length}</span>
+            <span class="block text-sm opacity-80">Skills Requested</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+    <!-- How It Works Section -->
+    <div class="mb-12 bg-white rounded-xl shadow-sm p-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">How Matching Works</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex items-center mb-3">
+            <div class="bg-primary-100 rounded-full p-2 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold">1. Find Matches</h3>
+          </div>
+          <p class="text-gray-600">Browse potential matches based on skill categories. We match people offering skills with those requesting similar skills.</p>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex items-center mb-3">
+            <div class="bg-primary-100 rounded-full p-2 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold">2. Connect</h3>
+          </div>
+          <p class="text-gray-600">Reach out to potential matches through the platform. View their profiles to learn more about their skills and requirements.</p>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex items-center mb-3">
+            <div class="bg-primary-100 rounded-full p-2 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold">3. Exchange Skills</h3>
+          </div>
+          <p class="text-gray-600">Arrange skill exchange sessions. After completion, you can mark the exchange as complete and leave feedback.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Matches by Category -->
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Potential Matches by Category</h2>
+    
+    {matchCategories.length > 0 ? (
+      <div class="space-y-8">
+        {matchCategories.map(([category, data]) => (
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-900">{category}</h3>
+                <div class="flex items-center">
+                  <span class="text-sm text-gray-600 mr-4">
+                    {Math.min(data.offers.length, data.requests.length)} potential matches
+                  </span>
+                  <button class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    Match All
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <!-- Skills Offered -->
+                <div>
+                  <h4 class="text-md font-medium text-gray-900 mb-3">Skills Offered ({data.offers.length})</h4>
+                  <div class="bg-gray-50 rounded-lg p-4 max-h-80 overflow-y-auto">
+                    {data.offers.map(profile => (
+                      <div class="flex items-center p-3 hover:bg-gray-100 rounded-lg transition-colors mb-2">
+                        <div class="flex-shrink-0 h-10 w-10">
+                          <img 
+                            class="h-10 w-10 rounded-full object-cover" 
+                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
+                            alt={profile.data.name} 
+                          />
+                        </div>
+                        <div class="ml-4 flex-1">
+                          <div class="text-sm font-medium text-gray-900">{profile.data.name}</div>
+                          <div class="text-xs text-gray-500">{profile.data.skill}</div>
+                        </div>
+                        <div class="ml-2">
+                          <a href={`/skills-exchange/profile/${profile.slug}`} class="text-xs text-primary-600 hover:text-primary-800">View Profile</a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <!-- Skills Requested -->
+                <div>
+                  <h4 class="text-md font-medium text-gray-900 mb-3">Skills Requested ({data.requests.length})</h4>
+                  <div class="bg-gray-50 rounded-lg p-4 max-h-80 overflow-y-auto">
+                    {data.requests.map(profile => (
+                      <div class="flex items-center p-3 hover:bg-gray-100 rounded-lg transition-colors mb-2">
+                        <div class="flex-shrink-0 h-10 w-10">
+                          <img 
+                            class="h-10 w-10 rounded-full object-cover" 
+                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
+                            alt={profile.data.name} 
+                          />
+                        </div>
+                        <div class="ml-4 flex-1">
+                          <div class="text-sm font-medium text-gray-900">{profile.data.name}</div>
+                          <div class="text-xs text-gray-500">{profile.data.skill}</div>
+                        </div>
+                        <div class="ml-2">
+                          <a href={`/skills-exchange/profile/${profile.slug}`} class="text-xs text-primary-600 hover:text-primary-800">View Profile</a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-6 flex justify-center">
+                <button class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  View All Matches in {category}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No Matches Found</h3>
+        <p class="text-gray-600 mb-6">We couldn't find any potential matches between skills offered and requested.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/skills-exchange/list-profile" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            Offer a Skill
+          </a>
+          <a href="/skills-exchange/request" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            Request a Skill
+          </a>
+        </div>
+      </div>
+    )}
+    
+    <!-- Call to Action -->
+    <div class="mt-12 bg-gradient-to-r from-primary-800 to-primary-900 rounded-xl shadow-lg overflow-hidden">
+      <div class="px-6 py-12 sm:px-12 md:flex md:items-center md:justify-between">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl font-extrabold tracking-tight text-white">
+            Don't see the skill you're looking for?
+          </h2>
+          <p class="mt-4 text-lg text-primary-100">
+            You can offer your own skills or request skills from others. Join our skills exchange community today!
+          </p>
+        </div>
+        <div class="mt-8 md:mt-0 flex flex-col sm:flex-row gap-4">
+          <a href="/skills-exchange/list-profile" class="w-full sm:w-auto text-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-800 focus:ring-white">
+            Offer a Skill
+          </a>
+          <a href="/skills-exchange/request" class="w-full sm:w-auto text-center px-5 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-800 focus:ring-white">
+            Request a Skill
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Match All buttons
+      document.querySelectorAll('button:contains("Match All")').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const categoryName = this.closest('.bg-white.rounded-xl').querySelector('h3').textContent;
+          
+          // Show notification
+          showNotification(`Matching initiated for all profiles in ${categoryName} category.`, 'success');
+        });
+      });
+      
+      // View All Matches buttons
+      document.querySelectorAll('button:contains("View All Matches in")').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const categoryName = this.textContent.replace('View All Matches in ', '');
+          
+          // Redirect to filtered view (this would be implemented in a real app)
+          showNotification(`This feature is coming soon: View all matches in ${categoryName}`, 'info');
+        });
+      });
+      
+      // Helper function to show notifications
+      function showNotification(message, type = 'info') {
+        // Check if notification container exists, create if not
+        let notificationContainer = document.getElementById('notification-container');
+        if (!notificationContainer) {
+          notificationContainer = document.createElement('div');
+          notificationContainer.id = 'notification-container';
+          notificationContainer.className = 'fixed bottom-4 right-4 z-50 flex flex-col space-y-2';
+          document.body.appendChild(notificationContainer);
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        
+        // Set appropriate styling based on type
+        let bgColor, textColor;
+        switch (type) {
+          case 'success':
+            bgColor = 'bg-green-500';
+            textColor = 'text-white';
+            break;
+          case 'error':
+            bgColor = 'bg-red-500';
+            textColor = 'text-white';
+            break;
+          case 'warning':
+            bgColor = 'bg-yellow-500';
+            textColor = 'text-white';
+            break;
+          default: // info
+            bgColor = 'bg-blue-500';
+            textColor = 'text-white';
+        }
+        
+        notification.className = `${bgColor} ${textColor} px-4 py-3 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ease-in-out translate-x-0`;
+        notification.innerHTML = `
+          <div class="flex items-center">
+            <div class="flex-1">
+              <p class="text-sm font-medium">${message}</p>
+            </div>
+            <button class="ml-4 text-white opacity-75 hover:opacity-100 focus:outline-none">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        `;
+        
+        // Add to container
+        notificationContainer.appendChild(notification);
+        
+        // Add click event to close button
+        const closeButton = notification.querySelector('button');
+        closeButton.addEventListener('click', () => {
+          notification.classList.add('opacity-0', 'translate-x-full');
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        });
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.classList.add('opacity-0', 'translate-x-full');
+            setTimeout(() => {
+              if (notification.parentNode) {
+                notification.remove();
+              }
+            }, 300);
+          }
+        }, 5000);
+      }
+      
+      // Polyfill for :contains selector
+      if (!Element.prototype.matches) {
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+      }
+      
+      if (!Element.prototype.closest) {
+        Element.prototype.closest = function(s) {
+          var el = this;
+          do {
+            if (el.matches(s)) return el;
+            el = el.parentElement || el.parentNode;
+          } while (el !== null && el.nodeType === 1);
+          return null;
+        };
+      }
+      
+      // Custom :contains selector
+      document.querySelectorAll = function(selector) {
+        if (selector.includes(':contains(')) {
+          const parts = selector.split(':contains(');
+          const baseSelector = parts[0];
+          const textToMatch = parts[1].slice(0, -1); // Remove closing parenthesis
+          
+          const elements = Array.from(document.querySelectorAll(baseSelector));
+          return elements.filter(el => el.textContent.includes(textToMatch));
+        } else {
+          return document.querySelectorAll(selector);
+        }
+      }.bind(document);
+    });
+  </script>
+</MainLayout> 

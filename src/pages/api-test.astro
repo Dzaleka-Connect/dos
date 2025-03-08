@@ -1,0 +1,619 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="API Test - Dzaleka Heritage Archive">
+  <main class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">API Test Page</h1>
+        <p class="mt-2 text-gray-600">Use this page to test API endpoints and diagnose issues</p>
+      </div>
+
+      <!-- API Test Section -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Export API Test</h2>
+        <p class="text-gray-600 mb-6">
+          Test the export API endpoint to ensure it's working correctly. This tool will help diagnose any issues with the API.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Test Options -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Test Configuration</h3>
+            <div class="space-y-4">
+              <div>
+                <label for="api-url" class="block text-sm font-medium text-gray-700 mb-1">API URL</label>
+                <input type="text" id="api-url" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md" value="/api/export">
+              </div>
+              
+              <div>
+                <label for="test-collection" class="block text-sm font-medium text-gray-700 mb-1">Collection to Test</label>
+                <select id="test-collection" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                  <option value="services">Services</option>
+                  <option value="resources">Resources</option>
+                  <option value="events">Events</option>
+                  <option value="photos">Photos</option>
+                  <option value="profiles">Profiles</option>
+                  <option value="talents">Talents</option>
+                  <option value="jobs">Jobs</option>
+                  <option value="docs">Docs</option>
+                  <option value="community-voices">Community Voices</option>
+                  <option value="news">News</option>
+                  <option value="pages">Pages</option>
+                  <option value="all">All Collections</option>
+                </select>
+              </div>
+              
+              <div>
+                <label for="test-format" class="block text-sm font-medium text-gray-700 mb-1">Format</label>
+                <select id="test-format" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                  <option value="json">JSON</option>
+                  <option value="csv">CSV</option>
+                </select>
+              </div>
+              
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Date Range (Optional)</label>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label for="date-start" class="block text-xs text-gray-500 mb-1">Start Date</label>
+                    <input type="date" id="date-start" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                  </div>
+                  <div>
+                    <label for="date-end" class="block text-xs text-gray-500 mb-1">End Date</label>
+                    <input type="date" id="date-end" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <input id="use-date-range" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                  <label for="use-date-range" class="ml-2 block text-sm text-gray-700">Apply Date Filter</label>
+                </div>
+              </div>
+              
+              <div class="flex items-center">
+                <input id="include-metadata" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" checked>
+                <label for="include-metadata" class="ml-2 block text-sm text-gray-700">Include Metadata</label>
+              </div>
+              
+              <div class="flex items-center">
+                <input id="include-stats" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" checked>
+                <label for="include-stats" class="ml-2 block text-sm text-gray-700">Include Stats</label>
+              </div>
+              
+              <div class="pt-4 flex space-x-2">
+                <button type="button" id="test-button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Test API Endpoint
+                </button>
+                
+                <button type="button" id="simple-test-button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Simple Test
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Test Results -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Test Results</h3>
+            <div class="bg-gray-50 rounded-lg p-4 h-64 overflow-auto">
+              <pre id="test-results" class="text-sm text-gray-800 whitespace-pre-wrap">Results will appear here...</pre>
+            </div>
+            
+            <div class="mt-4 flex items-center">
+              <div id="status-indicator" class="w-4 h-4 rounded-full bg-gray-300 mr-2"></div>
+              <span id="status-text" class="text-sm text-gray-600">Ready to test</span>
+            </div>
+            
+            <!-- Response Statistics -->
+            <div id="response-stats" class="mt-4 p-4 bg-gray-50 rounded-lg hidden">
+              <h4 class="text-sm font-medium text-gray-700 mb-2">Response Statistics</h4>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p><span class="font-medium">Total Items:</span> <span id="stats-total-items">0</span></p>
+                  <p><span class="font-medium">Collections:</span> <span id="stats-collections">None</span></p>
+                  <p><span class="font-medium">Format:</span> <span id="stats-format">None</span></p>
+                </div>
+                <div>
+                  <p><span class="font-medium">Response Size:</span> <span id="stats-size">0 KB</span></p>
+                  <p><span class="font-medium">Processing Time:</span> <span id="stats-time">0 ms</span></p>
+                  <div class="mt-2">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                      <div id="stats-size-bar" class="bg-primary-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Response size indicator</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-4">
+              <button type="button" id="download-test-result" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 hidden">
+                <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download Test Result
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Network Information -->
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Network Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-medium text-gray-700 mb-2">Request Details</h4>
+              <div class="bg-gray-50 rounded-lg p-4 h-32 overflow-auto">
+                <pre id="request-details" class="text-xs text-gray-800 whitespace-pre-wrap">No request made yet</pre>
+              </div>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-gray-700 mb-2">Response Headers</h4>
+              <div class="bg-gray-50 rounded-lg p-4 h-32 overflow-auto">
+                <pre id="response-headers" class="text-xs text-gray-800 whitespace-pre-wrap">No response received yet</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Troubleshooting Tips -->
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Troubleshooting Tips</h3>
+          <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><strong>404 Not Found</strong>: Check if the API endpoint path is correct. Make sure the API route exists at <code>/api/export</code>.</li>
+            <li><strong>500 Internal Server Error</strong>: There might be an error in the API implementation. Check server logs for details. Common causes include:
+              <ul class="list-circle pl-5 mt-1 space-y-1">
+                <li>Invalid collection names (use the dropdown to select valid collections)</li>
+                <li>Issues with data structure in collections</li>
+                <li>Server-side processing errors</li>
+              </ul>
+            </li>
+            <li><strong>400 Bad Request</strong>: The API request was invalid. Ensure:
+              <ul class="list-circle pl-5 mt-1 space-y-1">
+                <li>The request body is properly formatted JSON</li>
+                <li>All required fields are included (collections, format, etc.)</li>
+                <li>Collection names are valid</li>
+              </ul>
+            </li>
+            <li><strong>Empty Results</strong>: If you receive empty data:
+              <ul class="list-circle pl-5 mt-1 space-y-1">
+                <li>The collection might be empty or not exist</li>
+                <li>Date filters might be excluding all data</li>
+                <li>Try a different collection from the dropdown</li>
+              </ul>
+            </li>
+            <li><strong>JSON Parse Error</strong>: The API might be returning HTML instead of JSON. This often happens with server errors.</li>
+            <li><strong>Network Error</strong>: Check your internet connection and ensure the server is running.</li>
+          </ul>
+          
+          <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+            <h4 class="text-sm font-medium text-blue-800 mb-2">API Status Check</h4>
+            <p class="text-sm text-blue-700">
+              You can perform a simple API status check by sending a GET request to <code>/api/export</code>. 
+              This will return basic information about the API, including available collections.
+            </p>
+            <button type="button" id="check-api-status" class="mt-2 inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Check API Status
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const testButton = document.getElementById('test-button');
+      const downloadButton = document.getElementById('download-test-result');
+      const resultsElement = document.getElementById('test-results');
+      const requestDetailsElement = document.getElementById('request-details');
+      const responseHeadersElement = document.getElementById('response-headers');
+      const statusIndicator = document.getElementById('status-indicator');
+      const statusText = document.getElementById('status-text');
+      
+      let testResponseData = null;
+      let testResponseType = null;
+      
+      // Add a GET request to check API status
+      fetch('/api/export', { 
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        },
+        mode: 'cors',
+        cache: 'no-cache'
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('API Status:', data);
+        if (data.status === 'ok') {
+          statusIndicator.className = 'w-4 h-4 rounded-full bg-green-500 mr-2';
+          statusText.textContent = 'API is online';
+          statusText.className = 'text-sm text-green-600';
+        }
+      })
+      .catch(error => {
+        console.warn('API Status Check Error:', error);
+      });
+      
+      testButton.addEventListener('click', function() {
+        // Reset UI
+        statusIndicator.className = 'w-4 h-4 rounded-full bg-yellow-400 mr-2';
+        statusText.textContent = 'Testing...';
+        statusText.className = 'text-sm text-yellow-600';
+        resultsElement.textContent = 'Sending request...';
+        requestDetailsElement.textContent = 'Preparing request...';
+        responseHeadersElement.textContent = 'Waiting for response...';
+        downloadButton.classList.add('hidden');
+        testResponseData = null;
+        
+        // Get test configuration
+        const apiUrl = document.getElementById('api-url').value;
+        const collection = document.getElementById('test-collection').value;
+        const format = document.getElementById('test-format').value;
+        const includeMetadata = document.getElementById('include-metadata').checked;
+        const includeStats = document.getElementById('include-stats').checked;
+        
+        // Get date range if enabled
+        let dateRange = { start: null, end: null };
+        if (document.getElementById('use-date-range').checked) {
+          const startDate = document.getElementById('date-start').value;
+          const endDate = document.getElementById('date-end').value;
+          dateRange = {
+            start: startDate || null,
+            end: endDate || null
+          };
+        }
+        
+        // Prepare request data
+        const requestData = {
+          format: format,
+          collections: collection === 'all' ? ['all'] : [collection],
+          dateRange: dateRange,
+          options: { 
+            includeMetadata: includeMetadata, 
+            includeStats: includeStats 
+          }
+        };
+        
+        // Log the request data for debugging
+        console.log('Sending request with data:', requestData);
+        
+        // Update request details
+        requestDetailsElement.textContent = `URL: ${window.location.origin}${apiUrl}
+Method: POST
+Headers: 
+Content-Type: application/json
+Accept: application/json, text/csv
+Body: ${JSON.stringify(requestData, null, 2)}`;
+        
+        // Ensure we're sending a properly stringified JSON body
+        const requestBody = JSON.stringify(requestData);
+        
+        // Make the request
+        const startTime = performance.now();
+        
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json, text/csv'
+          },
+          body: requestBody,
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin'
+        })
+        .then(response => {
+          const endTime = performance.now();
+          const duration = (endTime - startTime).toFixed(2);
+          
+          // Store duration for later use
+          document.getElementById('stats-time').textContent = `${duration} ms`;
+          
+          // Display response headers
+          const headers = Array.from(response.headers.entries())
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('\n');
+          responseHeadersElement.textContent = `Status: ${response.status} ${response.statusText}\nTime: ${duration}ms\n\n${headers}`;
+          
+          if (!response.ok) {
+            statusIndicator.className = 'w-4 h-4 rounded-full bg-red-500 mr-2';
+            statusText.textContent = `Failed: ${response.status} ${response.statusText}`;
+            statusText.className = 'text-sm text-red-600';
+            
+            return response.text().then(text => {
+              try {
+                // Try to parse as JSON
+                const data = JSON.parse(text);
+                resultsElement.textContent = JSON.stringify(data, null, 2);
+                console.error('API Error Response:', data);
+                return { success: false, error: data };
+              } catch (e) {
+                // If not JSON, show the response text
+                resultsElement.textContent = text.length > 2000 
+                  ? text.substring(0, 2000) + '... (truncated)'
+                  : text;
+                console.error('API Error (non-JSON):', text);
+                return { success: false, error: text };
+              }
+            });
+          }
+          
+          // Check response type
+          const contentType = response.headers.get('Content-Type');
+          
+          if (contentType && contentType.includes('application/json')) {
+            return response.json().then(data => {
+              testResponseData = data;
+              testResponseType = 'json';
+              return { success: true, data };
+            });
+          } else if (contentType && contentType.includes('text/csv')) {
+            return response.text().then(text => {
+              testResponseData = text;
+              testResponseType = 'csv';
+              return { success: true, text };
+            });
+          } else {
+            return response.text().then(text => {
+              testResponseData = text;
+              testResponseType = 'text';
+              return { success: true, text };
+            });
+          }
+        })
+        .then(result => {
+          if (result.success) {
+            statusIndicator.className = 'w-4 h-4 rounded-full bg-green-500 mr-2';
+            statusText.textContent = 'Success!';
+            statusText.className = 'text-sm text-green-600';
+            
+            // Show response stats
+            const statsElement = document.getElementById('response-stats');
+            statsElement.classList.remove('hidden');
+            
+            if (result.data) {
+              // JSON response
+              const formattedJson = JSON.stringify(result.data, null, 2);
+              resultsElement.textContent = formattedJson.length > 2000 
+                ? formattedJson.substring(0, 2000) + '... (truncated)'
+                : formattedJson;
+              
+              // Update stats
+              let totalItems = 0;
+              let collections = [];
+              
+              // Extract stats from the response
+              if (result.data.data) {
+                Object.keys(result.data.data).forEach(collection => {
+                  const items = result.data.data[collection];
+                  if (Array.isArray(items)) {
+                    totalItems += items.length;
+                    collections.push(`${collection} (${items.length})`);
+                  }
+                });
+              }
+              
+              // If stats are included in the response
+              if (result.data.stats) {
+                document.getElementById('stats-total-items').textContent = result.data.stats.totalItems || totalItems;
+                document.getElementById('stats-collections').textContent = result.data.stats.collections?.join(', ') || collections.join(', ') || 'None';
+              } else {
+                document.getElementById('stats-total-items').textContent = totalItems;
+                document.getElementById('stats-collections').textContent = collections.join(', ') || 'None';
+              }
+              
+              document.getElementById('stats-format').textContent = 'JSON';
+              
+              // Calculate response size
+              const responseSize = new Blob([JSON.stringify(result.data)]).size;
+              const formattedSize = formatFileSize(responseSize);
+              document.getElementById('stats-size').textContent = formattedSize;
+              
+              // Set size bar (max at 5MB)
+              const sizePercentage = Math.min(responseSize / (5 * 1024 * 1024) * 100, 100);
+              document.getElementById('stats-size-bar').style.width = `${sizePercentage}%`;
+              
+            } else if (result.text) {
+              // Text/CSV response
+              resultsElement.textContent = result.text.length > 2000 
+                ? result.text.substring(0, 2000) + '... (truncated)'
+                : result.text;
+              
+              // Update stats for CSV
+              const lines = result.text.split('\n').length - 1; // -1 for header
+              document.getElementById('stats-total-items').textContent = lines;
+              document.getElementById('stats-collections').textContent = document.getElementById('test-collection').value;
+              document.getElementById('stats-format').textContent = 'CSV';
+              
+              // Calculate response size
+              const responseSize = new Blob([result.text]).size;
+              const formattedSize = formatFileSize(responseSize);
+              document.getElementById('stats-size').textContent = formattedSize;
+              
+              // Set size bar (max at 5MB)
+              const sizePercentage = Math.min(responseSize / (5 * 1024 * 1024) * 100, 100);
+              document.getElementById('stats-size-bar').style.width = `${sizePercentage}%`;
+            }
+            
+            // Show download button
+            downloadButton.classList.remove('hidden');
+          }
+        })
+        .catch(error => {
+          console.error('API test error:', error);
+          
+          statusIndicator.className = 'w-4 h-4 rounded-full bg-red-500 mr-2';
+          statusText.textContent = 'Error!';
+          statusText.className = 'text-sm text-red-600';
+          
+          resultsElement.textContent = `Error: ${error.message}\n\nThis could indicate a network issue, CORS problem, or server error.`;
+          responseHeadersElement.textContent = 'No response headers received due to error';
+        });
+      });
+      
+      // Handle download button
+      downloadButton.addEventListener('click', function() {
+        if (!testResponseData) return;
+        
+        let fileContent, fileType, fileName;
+        
+        if (testResponseType === 'json') {
+          fileContent = JSON.stringify(testResponseData, null, 2);
+          fileType = 'application/json';
+          fileName = `api_test_result_${new Date().toISOString().split('T')[0]}.json`;
+        } else if (testResponseType === 'csv') {
+          fileContent = testResponseData;
+          fileType = 'text/csv';
+          fileName = `api_test_result_${new Date().toISOString().split('T')[0]}.csv`;
+        } else {
+          fileContent = testResponseData;
+          fileType = 'text/plain';
+          fileName = `api_test_result_${new Date().toISOString().split('T')[0]}.txt`;
+        }
+        
+        // Create and download the file
+        const blob = new Blob([fileContent], { type: fileType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      // Add API status check button functionality
+      const checkApiStatusButton = document.getElementById('check-api-status');
+      if (checkApiStatusButton) {
+        checkApiStatusButton.addEventListener('click', function() {
+          statusIndicator.className = 'w-4 h-4 rounded-full bg-yellow-400 mr-2';
+          statusText.textContent = 'Checking API status...';
+          statusText.className = 'text-sm text-yellow-600';
+          resultsElement.textContent = 'Sending GET request to /api/export...';
+          
+          fetch('/api/export', { 
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json'
+            },
+            mode: 'cors',
+            cache: 'no-cache'
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            statusIndicator.className = 'w-4 h-4 rounded-full bg-green-500 mr-2';
+            statusText.textContent = 'API is online';
+            statusText.className = 'text-sm text-green-600';
+            resultsElement.textContent = JSON.stringify(data, null, 2);
+          })
+          .catch(error => {
+            statusIndicator.className = 'w-4 h-4 rounded-full bg-red-500 mr-2';
+            statusText.textContent = 'API Status Check Failed';
+            statusText.className = 'text-sm text-red-600';
+            resultsElement.textContent = `Error checking API status: ${error.message}`;
+          });
+        });
+      }
+
+      // Add simple test button functionality
+      const simpleTestButton = document.getElementById('simple-test-button');
+      if (simpleTestButton) {
+        simpleTestButton.addEventListener('click', function() {
+          // Reset UI
+          statusIndicator.className = 'w-4 h-4 rounded-full bg-yellow-400 mr-2';
+          statusText.textContent = 'Testing with minimal request...';
+          statusText.className = 'text-sm text-yellow-600';
+          resultsElement.textContent = 'Sending minimal request...';
+          
+          // Create a minimal request
+          const minimalRequest = {
+            format: 'json',
+            collections: ['services']
+          };
+          
+          // Update request details
+          requestDetailsElement.textContent = `URL: ${window.location.origin}/api/export
+Method: POST
+Headers: Content-Type: application/json
+Body: ${JSON.stringify(minimalRequest, null, 2)}`;
+          
+          // Make the request with explicit settings
+          fetch('/api/export', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(minimalRequest),
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin'
+          })
+          .then(response => {
+            // Display response headers
+            const headers = Array.from(response.headers.entries())
+              .map(([key, value]) => `${key}: ${value}`)
+              .join('\n');
+            responseHeadersElement.textContent = `Status: ${response.status} ${response.statusText}\n\n${headers}`;
+            
+            if (!response.ok) {
+              statusIndicator.className = 'w-4 h-4 rounded-full bg-red-500 mr-2';
+              statusText.textContent = `Simple Test Failed: ${response.status}`;
+              statusText.className = 'text-sm text-red-600';
+            }
+            
+            return response.text();
+          })
+          .then(text => {
+            try {
+              // Try to parse as JSON
+              const data = JSON.parse(text);
+              resultsElement.textContent = JSON.stringify(data, null, 2);
+              
+              if (data.error) {
+                console.error('Simple Test Error:', data);
+              } else {
+                statusIndicator.className = 'w-4 h-4 rounded-full bg-green-500 mr-2';
+                statusText.textContent = 'Simple Test Succeeded!';
+                statusText.className = 'text-sm text-green-600';
+              }
+            } catch (e) {
+              // If not JSON, show the response text
+              resultsElement.textContent = text;
+            }
+          })
+          .catch(error => {
+            console.error('Simple test error:', error);
+            statusIndicator.className = 'w-4 h-4 rounded-full bg-red-500 mr-2';
+            statusText.textContent = 'Simple Test Error!';
+            statusText.className = 'text-sm text-red-600';
+            resultsElement.textContent = `Error: ${error.message}`;
+          });
+        });
+      }
+    });
+
+    // Helper function to format file size
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+  </script>
+</MainLayout> 

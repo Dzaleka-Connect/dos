@@ -1,6 +1,6 @@
 export interface Update {
     date: string;
-    type: 'announcement' | 'feature' | 'update' | 'data';
+    type: 'announcement' | 'feature' | 'update' | 'data' | 'improvement';
     title: string;
     text: string;
 }
@@ -11,6 +11,42 @@ export interface UpdateWithLink extends Update {
 }
 
 export const updates: (Update | UpdateWithLink)[] = [
+    {
+        date: '2025-02-10',
+        type: 'feature',
+        title: 'Skills Exchange Matching',
+        text: 'New matching algorithm helps connect people offering skills with those requesting them. The system now suggests potential matches based on skill categories and availability.',
+        link: '/skills-exchange/matches',
+        linkText: 'View Matches'
+    },
+    {
+        date: '2025-02-09',
+        type: 'improvement',
+        title: 'API Performance Improved',
+        text: 'Export API response time reduced by 40%. Data exports now process faster with improved error handling and better format options.'
+    },
+    {
+        date: '2025-02-08',
+        type: 'data',
+        title: 'Content Update Required',
+        text: '5 resources need metadata updates. Please review and update the missing information to improve searchability.',
+        link: '/dashboard',
+        linkText: 'View Content Issues'
+    },
+    {
+        date: '2025-02-07',
+        type: 'announcement',
+        title: 'New Community Voice Submission',
+        text: 'A new community story has been submitted for review. Check the submission and approve or request changes.',
+        link: '/community-voices/admin',
+        linkText: 'Review Submission'
+    },
+    {
+        date: '2025-02-06',
+        type: 'improvement',
+        title: 'Dashboard Enhancements',
+        text: 'Added new Platform Overview cards for all content types. The dashboard now provides comprehensive statistics for all collections including Talents, Documentation, and Pages.'
+    },
     {
         date: '2025-02-05',
         type: 'announcement',
