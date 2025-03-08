@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Define all available collections
+// Define all available collections as simple array
 const collections = [
   'profiles',
   'services', 
@@ -16,15 +16,8 @@ const collections = [
   'jobs'
 ];
 
-// Define API endpoints
-const apiEndpoints = {
-  export: '/api/export'
-};
-
-// Add collection endpoints
-collections.forEach(collection => {
-  apiEndpoints[collection] = `/api/${collection}`;
-});
+// Define export API endpoint
+const exportApiEndpoint = '/api/export';
 ---
 
 <Layout title="API Test">
@@ -46,7 +39,7 @@ collections.forEach(collection => {
         <div class="mb-4">
           <label for="exportApiUrl" class="block text-sm font-medium text-gray-700 mb-1">API URL:</label>
           <div class="flex">
-            <input type="text" id="exportApiUrl" value={apiEndpoints.export} class="w-full p-2 border border-gray-300 rounded-md text-sm bg-gray-50" readonly />
+            <input type="text" id="exportApiUrl" value={exportApiEndpoint} class="w-full p-2 border border-gray-300 rounded-md text-sm bg-gray-50" readonly />
             <button id="copyExportUrl" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded text-sm">
               Copy
             </button>
@@ -160,9 +153,9 @@ collections.forEach(collection => {
       
       <div id="collectionStatus" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {collections.map(collection => (
-          <div class="collection-card border rounded-lg p-3" data-collection={collection} data-endpoint={apiEndpoints[collection]}>
+          <div class="collection-card border rounded-lg p-3" data-collection={collection} data-endpoint={`/api/${collection}`}>
             <h3 class="font-medium text-gray-800">{collection}</h3>
-            <div class="text-xs text-gray-500 mb-2 endpoint-url">{apiEndpoints[collection]}</div>
+            <div class="text-xs text-gray-500 mb-2 endpoint-url">{`/api/${collection}`}</div>
             <div class="flex items-center mt-2">
               <div class="status-indicator w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
               <span class="status-text text-sm text-gray-500">Not checked</span>
@@ -179,7 +172,7 @@ collections.forEach(collection => {
     <!-- Hidden inputs to store collection data -->
     <div style="display: none;">
       <input type="hidden" id="collectionsData" value={collections.join(',')} />
-      <input type="hidden" id="exportApiEndpoint" value={apiEndpoints.export} />
+      <input type="hidden" id="exportApiEndpoint" value={exportApiEndpoint} />
     </div>
   </main>
 </Layout>
