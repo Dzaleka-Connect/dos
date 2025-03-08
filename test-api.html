@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow: auto;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Test</h1>
+    
+    <div>
+        <button id="testGet">Test GET</button>
+        <button id="testPostServices">Test POST (services)</button>
+        <button id="testPostResources">Test POST (resources)</button>
+    </div>
+    
+    <h2>Response:</h2>
+    <pre id="response">Click a button to test the API...</pre>
+    
+    <script>
+        document.getElementById('testGet').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = `Error: ${error.message}`;
+            }
+        });
+        
+        document.getElementById('testPostServices').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        format: 'json',
+                        collections: ['services'],
+                        options: {
+                            includeMetadata: true,
+                            includeStats: true
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = `Error: ${error.message}`;
+            }
+        });
+        
+        document.getElementById('testPostResources').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/export', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        format: 'json',
+                        collections: ['resources'],
+                        options: {
+                            includeMetadata: true,
+                            includeStats: true
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html> 
