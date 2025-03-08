@@ -177,12 +177,18 @@ const apiEndpoints = {
   </main>
 </Layout>
 
-<script define:vars={{ apiEndpoints, collections }}>
+<script>
+  // Get variables from Astro
+  const apiEndpoints = JSON.parse(document.currentScript.getAttribute('data-api-endpoints'));
+  const collections = JSON.parse(document.currentScript.getAttribute('data-collections'));
+  
   // Update direct API URL when collection changes
   document.getElementById('directCollection')?.addEventListener('change', (e) => {
     const collection = e.target.value;
     const directApiUrlInput = document.getElementById('directApiUrl');
-    directApiUrlInput.value = `/api/${collection}`;
+    if (directApiUrlInput) {
+      directApiUrlInput.value = `/api/${collection}`;
+    }
   });
   
   // Initialize direct API URL
@@ -195,38 +201,42 @@ const apiEndpoints = {
   // Copy URL buttons
   document.getElementById('copyExportUrl')?.addEventListener('click', () => {
     const exportApiUrlInput = document.getElementById('exportApiUrl');
-    navigator.clipboard.writeText(exportApiUrlInput.value);
-    
-    const button = document.getElementById('copyExportUrl');
-    if (button) {
-      const originalText = button.textContent;
-      button.textContent = 'Copied!';
-      button.classList.add('bg-green-200');
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.classList.remove('bg-green-200');
-      }, 1500);
+    if (exportApiUrlInput) {
+      navigator.clipboard.writeText(exportApiUrlInput.value);
+      
+      const button = document.getElementById('copyExportUrl');
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.classList.add('bg-green-200');
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('bg-green-200');
+        }, 1500);
+      }
     }
   });
   
   document.getElementById('copyDirectUrl')?.addEventListener('click', () => {
     const directApiUrlInput = document.getElementById('directApiUrl');
-    navigator.clipboard.writeText(directApiUrlInput.value);
-    
-    const button = document.getElementById('copyDirectUrl');
-    if (button) {
-      const originalText = button.textContent;
-      button.textContent = 'Copied!';
-      button.classList.add('bg-green-200');
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.classList.remove('bg-green-200');
-      }, 1500);
+    if (directApiUrlInput) {
+      navigator.clipboard.writeText(directApiUrlInput.value);
+      
+      const button = document.getElementById('copyDirectUrl');
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.classList.add('bg-green-200');
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('bg-green-200');
+        }, 1500);
+      }
     }
   });
   
   // Helper function to display response
-  function displayResponse(requestText, responseData, isError = false) {
+  function displayResponse(requestText, responseData, isError) {
     const requestEl = document.getElementById('request');
     const responseEl = document.getElementById('response');
     
@@ -285,9 +295,14 @@ const apiEndpoints = {
   // Test POST on export API
   document.getElementById('testExportPost')?.addEventListener('click', async () => {
     try {
-      const collection = document.getElementById('exportCollection')?.value || 'services';
-      const includeMetadata = document.getElementById('includeMetadata')?.checked || false;
-      const includeStats = document.getElementById('includeStats')?.checked || false;
+      const collectionEl = document.getElementById('exportCollection');
+      const collection = collectionEl ? collectionEl.value : 'services';
+      
+      const metadataEl = document.getElementById('includeMetadata');
+      const includeMetadata = metadataEl ? metadataEl.checked : false;
+      
+      const statsEl = document.getElementById('includeStats');
+      const includeStats = statsEl ? statsEl.checked : false;
       
       const requestBody = {
         format: 'json',
@@ -319,7 +334,8 @@ const apiEndpoints = {
   // Test GET on direct collection API
   document.getElementById('testDirectGet')?.addEventListener('click', async () => {
     try {
-      const collection = document.getElementById('directCollection')?.value || 'services';
+      const collectionEl = document.getElementById('directCollection');
+      const collection = collectionEl ? collectionEl.value : 'services';
       const requestText = `GET /api/${collection}`;
       
       displayResponse(requestText, { message: 'Loading...' });
@@ -334,7 +350,8 @@ const apiEndpoints = {
       const data = await response.json();
       displayResponse(requestText, data);
     } catch (error) {
-      const collection = document.getElementById('directCollection')?.value || 'services';
+      const collectionEl = document.getElementById('directCollection');
+      const collection = collectionEl ? collectionEl.value : 'services';
       displayResponse(`GET /api/${collection}`, error instanceof Error ? error.message : String(error), true);
     }
   });
@@ -342,9 +359,14 @@ const apiEndpoints = {
   // Test POST on direct collection API
   document.getElementById('testDirectPost')?.addEventListener('click', async () => {
     try {
-      const collection = document.getElementById('directCollection')?.value || 'services';
-      const includeMetadata = document.getElementById('directIncludeMetadata')?.checked || false;
-      const includeStats = document.getElementById('directIncludeStats')?.checked || false;
+      const collectionEl = document.getElementById('directCollection');
+      const collection = collectionEl ? collectionEl.value : 'services';
+      
+      const metadataEl = document.getElementById('directIncludeMetadata');
+      const includeMetadata = metadataEl ? metadataEl.checked : false;
+      
+      const statsEl = document.getElementById('directIncludeStats');
+      const includeStats = statsEl ? statsEl.checked : false;
       
       const requestBody = {
         options: {
@@ -367,16 +389,23 @@ const apiEndpoints = {
       const data = await response.json();
       displayResponse(requestText, data);
     } catch (error) {
-      const collection = document.getElementById('directCollection')?.value || 'services';
+      const collectionEl = document.getElementById('directCollection');
+      const collection = collectionEl ? collectionEl.value : 'services';
       displayResponse(`POST /api/${collection}`, error instanceof Error ? error.message : String(error), true);
     }
   });
   
   // Check all collections
   document.getElementById('checkAllCollections')?.addEventListener('click', async () => {
-    const collections = Array.from(document.querySelectorAll('.collection-card')).map(
-      card => card.dataset.collection
-    );
+    const collectionCards = document.querySelectorAll('.collection-card');
+    const collections = [];
+    
+    collectionCards.forEach(card => {
+      const collection = card.dataset.collection;
+      if (collection) {
+        collections.push(collection);
+      }
+    });
     
     // Update button to show loading state
     const checkAllBtn = document.getElementById('checkAllCollections');
@@ -453,13 +482,21 @@ const apiEndpoints = {
     card.addEventListener('click', () => {
       const collection = card.dataset.collection;
       if (collection) {
-        document.getElementById('directCollection').value = collection;
+        const directCollectionEl = document.getElementById('directCollection');
+        if (directCollectionEl) {
+          directCollectionEl.value = collection;
+        }
+        
         // Update the direct API URL
         const directApiUrlInput = document.getElementById('directApiUrl');
         if (directApiUrlInput) {
           directApiUrlInput.value = `/api/${collection}`;
         }
-        document.getElementById('testDirectGet').click();
+        
+        const testDirectGetBtn = document.getElementById('testDirectGet');
+        if (testDirectGetBtn) {
+          testDirectGetBtn.click();
+        }
       }
     });
   });
@@ -473,7 +510,11 @@ const apiEndpoints = {
       
       if (collection) {
         // Set up the direct API test
-        document.getElementById('directCollection').value = collection;
+        const directCollectionEl = document.getElementById('directCollection');
+        if (directCollectionEl) {
+          directCollectionEl.value = collection;
+        }
+        
         const directApiUrlInput = document.getElementById('directApiUrl');
         if (directApiUrlInput) {
           directApiUrlInput.value = `/api/${collection}`;
@@ -481,15 +522,26 @@ const apiEndpoints = {
         
         // Scroll to the test section
         const testSection = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-2');
-        testSection?.scrollIntoView({ behavior: 'smooth' });
+        if (testSection) {
+          testSection.scrollIntoView({ behavior: 'smooth' });
+        }
         
         // Run the test after a short delay to allow scrolling
         setTimeout(() => {
-          document.getElementById('testDirectGet').click();
+          const testDirectGetBtn = document.getElementById('testDirectGet');
+          if (testDirectGetBtn) {
+            testDirectGetBtn.click();
+          }
         }, 300);
       }
     });
   });
+</script>
+
+<script is:inline>
+  // Serialize data for the client-side script
+  document.currentScript.setAttribute('data-api-endpoints', JSON.stringify({apiEndpoints}));
+  document.currentScript.setAttribute('data-collections', JSON.stringify({collections}));
 </script>
 
 <style>
