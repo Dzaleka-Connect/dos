@@ -181,22 +181,51 @@ const exportApiEndpoint = '/api/export';
   // Get collections from hidden input
   const collectionsData = document.getElementById('collectionsData').value.split(',');
   
-  // Create API endpoints object
+  // Determine base URL - specifically optimized for Netlify
+  const getBaseUrl = () => {
+    // Check if we're on Netlify or other production environment
+    const isProduction = window.location.hostname !== 'localhost' && 
+                         window.location.hostname !== '127.0.0.1';
+    
+    if (isProduction) {
+      // For Netlify, we need to use the site URL as the base
+      const baseUrl = `${window.location.protocol}//${window.location.host}`;
+      
+      // Check if we're on a Netlify deploy preview or branch deploy
+      const isNetlifyPreview = window.location.hostname.includes('netlify.app');
+      
+      // On Netlify, API endpoints might be served through Netlify Functions or redirects
+      // The base URL should be the same as the site URL
+      return baseUrl;
+    }
+    
+    // For local development, use relative paths
+    return '';
+  };
+  
+  // Get the base URL for API requests
+  const baseUrl = getBaseUrl();
+  console.log(`Using base URL: ${baseUrl || '(relative paths)'}`);
+  
+  // Create API endpoints object with proper base URL
   const apiEndpoints = {
-    export: document.getElementById('exportApiEndpoint').value
+    export: `${baseUrl}/api/export`
   };
   
   // Add collection endpoints
   collectionsData.forEach(collection => {
-    apiEndpoints[collection] = `/api/${collection}`;
+    apiEndpoints[collection] = `${baseUrl}/api/${collection}`;
   });
+  
+  // Log API endpoints for debugging
+  console.log('API Endpoints:', apiEndpoints);
   
   // Update direct API URL when collection changes
   document.getElementById('directCollection')?.addEventListener('change', (e) => {
     const collection = e.target.value;
     const directApiUrlInput = document.getElementById('directApiUrl');
     if (directApiUrlInput) {
-      directApiUrlInput.value = `/api/${collection}`;
+      directApiUrlInput.value = apiEndpoints[collection];
     }
   });
   
@@ -204,14 +233,14 @@ const exportApiEndpoint = '/api/export';
   const initialCollection = document.getElementById('directCollection')?.value || 'services';
   const directApiUrlInput = document.getElementById('directApiUrl');
   if (directApiUrlInput) {
-    directApiUrlInput.value = `/api/${initialCollection}`;
+    directApiUrlInput.value = apiEndpoints[initialCollection];
   }
   
   // Copy URL buttons
   document.getElementById('copyExportUrl')?.addEventListener('click', () => {
     const exportApiUrlInput = document.getElementById('exportApiUrl');
     if (exportApiUrlInput) {
-      navigator.clipboard.writeText(exportApiUrlInput.value);
+      navigator.clipboard.writeText(apiEndpoints.export);
       
       const button = document.getElementById('copyExportUrl');
       if (button) {
@@ -244,6 +273,28 @@ const exportApiEndpoint = '/api/export';
     }
   });
   
+  // Update the export API URL input
+  const exportApiUrlInput = document.getElementById('exportApiUrl');
+  if (exportApiUrlInput) {
+    exportApiUrlInput.value = apiEndpoints.export;
+  }
+  
+  // Helper function for API requests with proper error handling
+  async function makeApiRequest(url, options = {}) {
+    try {
+      const response = await fetch(url, options);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`API request error for ${url}:`, error);
+      throw error;
+    }
+  }
+  
   // Helper function to display response
   function displayResponse(requestText, responseData, isError) {
     const requestEl = document.getElementById('request');
@@ -255,6 +306,7 @@ const exportApiEndpoint = '/api/export';
       if (isError) {
         responseEl.textContent = `Error: ${responseData}`;
         responseEl.classList.add('text-red-500');
+        console.error('API Error:', responseData);
       } else {
         // Format the response data
         let formattedData = responseData;
@@ -285,19 +337,18 @@ const exportApiEndpoint = '/api/export';
   // Test GET on export API
   document.getElementById('testGet')?.addEventListener('click', async () => {
     try {
-      displayResponse('GET /api/export', { message: 'Loading...' });
+      displayResponse(`GET ${apiEndpoints.export}`, { message: 'Loading...' });
       
-      const response = await fetch('/api/export', {
+      const data = await makeApiRequest(apiEndpoints.export, {
         method: 'GET',
         headers: {
           'Accept': 'application/json'
         }
       });
       
-      const data = await response.json();
-      displayResponse('GET /api/export', data);
+      displayResponse(`GET ${apiEndpoints.export}`, data);
     } catch (error) {
-      displayResponse('GET /api/export', error instanceof Error ? error.message : String(error), true);
+      displayResponse(`GET ${apiEndpoints.export}`, error instanceof Error ? error.message : String(error), true);
     }
   });
   
@@ -322,10 +373,10 @@ const exportApiEndpoint = '/api/export';
         }
       };
       
-      const requestText = `POST /api/export\n${JSON.stringify(requestBody, null, 2)}`;
+      const requestText = `POST ${apiEndpoints.export}\n${JSON.stringify(requestBody, null, 2)}`;
       displayResponse(requestText, { message: 'Loading...' });
       
-      const response = await fetch('/api/export', {
+      const data = await makeApiRequest(apiEndpoints.export, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -333,10 +384,9 @@ const exportApiEndpoint = '/api/export';
         body: JSON.stringify(requestBody)
       });
       
-      const data = await response.json();
       displayResponse(requestText, data);
     } catch (error) {
-      displayResponse('POST /api/export', error instanceof Error ? error.message : String(error), true);
+      displayResponse(`POST ${apiEndpoints.export}`, error instanceof Error ? error.message : String(error), true);
     }
   });
   
@@ -345,23 +395,23 @@ const exportApiEndpoint = '/api/export';
     try {
       const collectionEl = document.getElementById('directCollection');
       const collection = collectionEl ? collectionEl.value : 'services';
-      const requestText = `GET /api/${collection}`;
+      const apiUrl = apiEndpoints[collection];
+      const requestText = `GET ${apiUrl}`;
       
       displayResponse(requestText, { message: 'Loading...' });
       
-      const response = await fetch(`/api/${collection}`, {
+      const data = await makeApiRequest(apiUrl, {
         method: 'GET',
         headers: {
           'Accept': 'application/json'
         }
       });
       
-      const data = await response.json();
       displayResponse(requestText, data);
     } catch (error) {
       const collectionEl = document.getElementById('directCollection');
       const collection = collectionEl ? collectionEl.value : 'services';
-      displayResponse(`GET /api/${collection}`, error instanceof Error ? error.message : String(error), true);
+      displayResponse(`GET ${apiEndpoints[collection]}`, error instanceof Error ? error.message : String(error), true);
     }
   });
   
@@ -370,6 +420,7 @@ const exportApiEndpoint = '/api/export';
     try {
       const collectionEl = document.getElementById('directCollection');
       const collection = collectionEl ? collectionEl.value : 'services';
+      const apiUrl = apiEndpoints[collection];
       
       const metadataEl = document.getElementById('directIncludeMetadata');
       const includeMetadata = metadataEl ? metadataEl.checked : false;
@@ -384,10 +435,10 @@ const exportApiEndpoint = '/api/export';
         }
       };
       
-      const requestText = `POST /api/${collection}\n${JSON.stringify(requestBody, null, 2)}`;
+      const requestText = `POST ${apiUrl}\n${JSON.stringify(requestBody, null, 2)}`;
       displayResponse(requestText, { message: 'Loading...' });
       
-      const response = await fetch(`/api/${collection}`, {
+      const data = await makeApiRequest(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -395,12 +446,11 @@ const exportApiEndpoint = '/api/export';
         body: JSON.stringify(requestBody)
       });
       
-      const data = await response.json();
       displayResponse(requestText, data);
     } catch (error) {
       const collectionEl = document.getElementById('directCollection');
       const collection = collectionEl ? collectionEl.value : 'services';
-      displayResponse(`POST /api/${collection}`, error instanceof Error ? error.message : String(error), true);
+      displayResponse(`POST ${apiEndpoints[collection]}`, error instanceof Error ? error.message : String(error), true);
     }
   });
   
@@ -438,18 +488,14 @@ const exportApiEndpoint = '/api/export';
         statusText.className = 'status-text text-sm text-yellow-500';
         
         try {
-          const response = await fetch(`/api/${collection}`, {
+          const apiUrl = apiEndpoints[collection];
+          const data = await makeApiRequest(apiUrl, {
             method: 'GET',
             headers: {
               'Accept': 'application/json'
             }
           });
           
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
           const count = data.count || (data.data && data.data[collection] ? data.data[collection].length : 0);
           
           if (count > 0) {
@@ -474,6 +520,7 @@ const exportApiEndpoint = '/api/export';
           statusText.className = 'status-text text-sm text-red-600';
           if (itemCount) itemCount.textContent = 'API endpoint not found';
           card.classList.add('border-red-200');
+          console.error(`Error checking collection ${collection}:`, error);
         }
       }
     }
@@ -486,8 +533,21 @@ const exportApiEndpoint = '/api/export';
     }
   });
   
-  // Make collection cards clickable to test them
+  // Update collection cards with proper API URLs
   document.querySelectorAll('.collection-card').forEach(card => {
+    const collection = card.dataset.collection;
+    if (collection) {
+      // Update the endpoint URL display
+      const endpointUrlEl = card.querySelector('.endpoint-url');
+      if (endpointUrlEl) {
+        endpointUrlEl.textContent = apiEndpoints[collection];
+      }
+      
+      // Update the data-endpoint attribute
+      card.dataset.endpoint = apiEndpoints[collection];
+    }
+    
+    // Add click event
     card.addEventListener('click', () => {
       const collection = card.dataset.collection;
       if (collection) {
@@ -499,7 +559,7 @@ const exportApiEndpoint = '/api/export';
         // Update the direct API URL
         const directApiUrlInput = document.getElementById('directApiUrl');
         if (directApiUrlInput) {
-          directApiUrlInput.value = `/api/${collection}`;
+          directApiUrlInput.value = apiEndpoints[collection];
         }
         
         const testDirectGetBtn = document.getElementById('testDirectGet');
@@ -526,7 +586,7 @@ const exportApiEndpoint = '/api/export';
         
         const directApiUrlInput = document.getElementById('directApiUrl');
         if (directApiUrlInput) {
-          directApiUrlInput.value = `/api/${collection}`;
+          directApiUrlInput.value = apiEndpoints[collection];
         }
         
         // Scroll to the test section
@@ -545,6 +605,33 @@ const exportApiEndpoint = '/api/export';
       }
     });
   });
+  
+  // Add a notice about Netlify deployment if we're on Netlify
+  if (window.location.hostname.includes('netlify.app')) {
+    const mainContainer = document.querySelector('main.container');
+    if (mainContainer) {
+      const netlifyNotice = document.createElement('div');
+      netlifyNotice.className = 'mb-6 bg-purple-50 p-4 rounded-lg border border-purple-200';
+      netlifyNotice.innerHTML = `
+        <h2 class="text-lg font-semibold text-purple-800 mb-2">Netlify Deployment Detected</h2>
+        <p class="text-sm text-purple-700 mb-2">
+          This API test dashboard is running on Netlify. API requests will be made to: <code class="bg-purple-100 px-2 py-1 rounded">${baseUrl}</code>
+        </p>
+        <p class="text-sm text-purple-700">
+          If you're experiencing 404 errors, make sure your Netlify configuration includes proper redirects for API endpoints.
+        </p>
+      `;
+      
+      // Insert after the first info box
+      const firstInfoBox = mainContainer.querySelector('.bg-blue-50');
+      if (firstInfoBox && firstInfoBox.parentNode) {
+        firstInfoBox.parentNode.insertBefore(netlifyNotice, firstInfoBox.nextSibling);
+      } else {
+        // Or insert at the beginning if the info box isn't found
+        mainContainer.insertBefore(netlifyNotice, mainContainer.firstChild);
+      }
+    }
+  }
 </script>
 
 <style>
