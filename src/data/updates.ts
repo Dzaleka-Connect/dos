@@ -56,6 +56,14 @@ export const updates: (Update | UpdateWithLink)[] = [
         linkText: 'View Jobs'
     },
     {
+        date: '2025-02-04',
+        type: 'feature',
+        title: 'API Documentation & Improvements',
+        text: 'Released comprehensive API documentation for developers. Enhanced API endpoints for all collections with improved error handling and Netlify compatibility.',
+        link: '/docs/api-documentation',
+        linkText: 'View API Docs'
+    },
+    {
         date: '2025-02-03',
         type: 'feature',
         title: 'WhatsNew Widget Added',
