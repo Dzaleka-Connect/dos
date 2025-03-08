@@ -24,8 +24,6 @@ const apiEndpoints = {
     return acc;
   }, {})
 };
-
-type ApiEndpoints = Record<string, string>;
 ---
 
 <Layout title="API Test">
@@ -179,7 +177,7 @@ type ApiEndpoints = Record<string, string>;
   </main>
 </Layout>
 
-<script>
+<script define:vars={{ apiEndpoints, collections }}>
   // Update direct API URL when collection changes
   document.getElementById('directCollection')?.addEventListener('change', (e) => {
     const collection = (e.target as HTMLSelectElement).value;
