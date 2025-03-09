@@ -1,7 +1,7 @@
 ---
-title: UMOJA People with Disabilities Group
+title: Umoja People With Disabilities Organization (UPD)
 category: Non-profit Organizations
-description: Dzaleka Azimai Union (DAU) is a women-led, non-profit organization in Dzaleka Refugee Camp, established to empower refugee women and girls facing war, gender-based violence, and cultural discrimination.
+description: Umoja is a non-profit organization that assists the mobility challenged individuals to build better lives through social integration, skill development, and useful representation in all aspects of life.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -10,22 +10,24 @@ location:
     lng: 33.9833
 contact:
   email: 'umojapeopledisabilitiesgroup@gmail.com'
-  phone: ''
-  hours: ''
+  phone: '+265 994 413301'
+  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
 socialMedia:
-  facebook: 'https://web.facebook.com/profile.php?id=100083382738628'
-  twitter: 'https://twitter.com/umojawith'
-  instagram: 'https://www.instagram.com/umoja'
-  linkedin: 'https://www.linkedin.com/mynetwork/discover-hub/'
-  website: ''
+  facebook: 'https://web.facebook.com/profile.php?id=100083382738628&_rdc=1&_rdr'
+  twitter: 'https://x.com/UmojaWith'
+  instagram: 'https://www.instagram.com/umojaoffice/'
+  linkedin: 'https://www.linkedin.com/in/umoja-people-with-657647240/'
+  website: 'https://umojaupd.org/'
 logo: https://images2.imgbox.com/a7/35/CoJMRhW1_o.jpg
 featured: false
-lastUpdated: 2025-01-03
+verifed: true
+status: "active"
+lastUpdated: 2025-03-09
 ---
 
-## About UMOJA People with Disabilities Group
+## About Umoja People With Disabilities Organization (UPD)
 
-**UMOJA People with Disabilities Group (UPDG)** is a non-profit organization in Dzaleka Refugee Camp dedicated to raising awareness and advocating for the rights of people with disabilities and other vulnerable groups. We focus on improving the quality of life, fighting poverty, promoting equal opportunities, and eliminating stigma through social integration, skill development, and advocacy. Our mission is to empower individuals with disabilities by providing support, protection, and resources, and to create a world where their rights are respected and their lives are comfortable.
+**Umoja People With Disabilities Organization (UPD)** is a non-profit organization in Dzaleka Refugee Camp dedicated to raising awareness and advocating for the rights of people with disabilities and other vulnerable groups. We focus on improving the quality of life, fighting poverty, promoting equal opportunities, and eliminating stigma through social integration, skill development, and advocacy. Our mission is to empower individuals with disabilities by providing support, protection, and resources, and to create a world where their rights are respected and their lives are comfortable.
 
 **Mission:** To enhance the capacity and environment of persons with disabilities through aid services, advocacy, and social support.
 
