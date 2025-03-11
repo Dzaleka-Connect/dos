@@ -3,7 +3,7 @@ title: Women and Orphans Lifeline Empowering Organization
 category: "Non-profit Organizations"
 description: WOLEO is a non-profit organization launched and established on October 11, 2020, with a mission to reduce poverty by empowering vulnerable people.
 location:
-  address: Dzaleka Refugee Camp
+  address: karonga 303, Dzaleka
   city: Dowa
   coordinates:
     lat: -13.7833
@@ -20,7 +20,9 @@ socialMedia:
   website: 'https://www.woleorg.com/'
 logo: https://images2.imgbox.com/5e/0d/RQXPZzvV_o.jpg
 featured: false
-lastUpdated: 2025-01-03
+verified: false
+status: "active"
+lastUpdated: 2025-03-11
 ---
 
 ## About Women and Orphans Lifeline Empowering Organization (WOLEO)
@@ -30,11 +32,8 @@ WOLEO is a non-profit organization launched and established on October 11, 2020,
 ### Mission
 The mission is to reduce poverty by empowering vulnerable people. The Organization can be aware of self-empowerment, self-assistance, and becoming independent in their own lives and helpful for the community all targeted people such as young people, Vulnerable people, and Orphans.
 
-Our goals are as follows: 
-- Make a professional living facility for vulnerable persons. 
-- Establish computer and English language training facility. 
-- Teaching people how to care themselves by managing their finances, economic condition well. 
-- Assisting small groups in rural regions of the community (Host Communities) and in the camp with resources, physical presence, psycho-social aid, and moral assistance through the development of a Networking System (NS) that will assist them in becoming strong in the future.
+### Vision
+The overall vision of the Organization is to ensure that there is a better life to the vulnerable or poor people.
 
 
 

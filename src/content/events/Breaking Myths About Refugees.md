@@ -4,7 +4,7 @@ description: "Refugees and migrants face misconceptions worldwide, but in this s
 date: 2025-04-24T13:00:00Z
 endDate: 2025-04-24
 location: "Online"
-category: "Webinar"
+category: "Zoom Meeting"
 image: "https://alumni.creighton.edu/sites/default/files/externals/7fe45be3aa4b9a7e7698f971033cbcc6.jpg"
 featured: true
 organizer: "Inua Advocacy"
@@ -20,7 +20,7 @@ registration:
 tags: ["Refugees", "Malawi", "Laws", "Inua Advocacy"]
 ---
 
-## Webinar Overview
+## Zoom Meeting Overview
 
 Refugees and migrants face misconceptions worldwide, but in this session, we focus on Malawi and the broader sub-Saharan Africa region. What are the most common myths, why do they persist, and how do these misconceptions shape perceptions and impact both refugees and host communities?
 

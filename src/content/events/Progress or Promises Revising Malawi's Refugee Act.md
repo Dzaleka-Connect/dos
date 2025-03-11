@@ -4,7 +4,7 @@ description: "The current Refugee Act is outdated and misaligned with Malawi’s
 date: 2025-03-20T13:00:00Z
 endDate: 2025-03-20
 location: "Online"
-category: "Webinar"
+category: "Zoom Meeting"
 image: "https://www.hrw.org/sites/default/files/styles/embed_xxl/public/media_2023/06/202306africa_malawi_camp.jpg?itok=rg1nwvsJ"
 featured: true
 organizer: "Inua Advocacy"
@@ -20,7 +20,7 @@ registration:
 tags: ["Refugees", "Malawi", "Laws", "Inua Advocacy"]
 ---
 
-## Webinar Overview
+## Zoom Meeting Overview
 
 The current Refugee Act is outdated and misaligned with Malawi’s constitution, yet it continues to shape the lives of refugees. This discussion will examine its flaws, explore the expectations for the revised act, and provide insights into the timeline for these changes.
 

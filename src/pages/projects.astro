@@ -1,0 +1,233 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const projects = await getCollection('projects');
+
+const projectCategories = [
+  {
+    title: 'Technology & Education',
+    description: 'Innovative solutions empowering refugees through digital skills and education',
+    icon: '💻'
+  },
+  {
+    title: 'Health & Wellbeing',
+    description: 'Projects addressing healthcare and personal wellbeing challenges',
+    icon: '🏥'
+  },
+  {
+    title: 'Arts & Culture',
+    description: 'Cultural initiatives celebrating diversity and fostering community connections',
+    icon: '🎨'
+  },
+  {
+    title: 'Economic Empowerment',
+    description: 'Solutions creating sustainable income opportunities for refugees',
+    icon: '💪'
+  }
+];
+
+const highlights = [
+  {
+    number: '4+',
+    label: 'MIT Solve Solutions'
+  },
+  {
+    number: '50K+',
+    label: 'Festival Attendees'
+  },
+  {
+    number: '1.2K+',
+    label: 'Youth Trained'
+  },
+  {
+    number: '200+',
+    label: 'Women Empowered'
+  }
+];
+---
+
+<MainLayout title="Projects | MIT Solve Solutions">
+  <main>
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+      </div>
+      
+      <div class="container mx-auto px-4 py-24 relative">
+        <div class="max-w-3xl mx-auto text-center">
+          <div class="inline-block animate-bounce-slow mb-8">
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-white/20 backdrop-blur-sm">
+              🏆 MIT Solve Recognition
+            </span>
+          </div>
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Innovative Solutions from Dzaleka
+          </h1>
+          <p class="text-xl text-white/90 leading-relaxed mb-8">
+            Discover how our community is addressing global challenges through technology, culture, and social enterprise
+          </p>
+          <div class="flex flex-wrap gap-4 justify-center">
+            <a href="#projects" class="inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary-600 font-medium hover:bg-white/90 transition-colors duration-200">
+              View Projects
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+            <a href="https://solve.mit.edu/challenges" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-colors duration-200">
+              MIT Solve Challenges
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-16">
+      <!-- Impact Stats -->
+      <section class="mb-20 -mt-12 relative z-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+          {highlights.map(stat => (
+            <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-1 transition-all duration-300">
+              <div class="text-4xl font-bold text-primary-600 mb-2 animate-count">{stat.number}</div>
+              <div class="text-gray-600 font-medium">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Categories Section -->
+      <section class="mb-20">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Project Categories</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Explore our diverse range of innovative solutions across different domains
+          </p>
+        </div>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {projectCategories.map(category => (
+            <div class="group bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-100 transition-all duration-300 relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="relative">
+                <div class="flex items-center mb-4">
+                  <span class="text-4xl mr-4 transform group-hover:scale-110 transition-transform duration-300">{category.icon}</span>
+                  <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors duration-300">{category.title}</h3>
+                </div>
+                <p class="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                  {category.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Projects Grid -->
+      <section class="mb-20" id="projects">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <div class="inline-block mb-4">
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-50 text-primary-600">
+              💡 MIT Solve Solutions
+            </span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Discover innovative solutions from our community that have been recognized by MIT Solve
+          </p>
+        </div>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, index) => (
+            <article 
+              class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-600 group-hover:bg-primary-100 transition-colors">
+                    {project.data.category}
+                  </span>
+                  <span class="text-sm text-gray-500">{project.data.mitSolve?.submissionYear}</span>
+                </div>
+                <a href={`/projects/${project.slug}`} class="block group">
+                  <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">{project.data.title}</h3>
+                  <p class="text-gray-600 mb-4 line-clamp-3 group-hover:text-gray-700 transition-colors">{project.data.description}</p>
+                </a>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  {project.data.impact?.slice(0, 2).map(impact => (
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-600 group-hover:bg-gray-100 transition-colors">
+                      {impact}
+                    </span>
+                  ))}
+                </div>
+                <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                  <a 
+                    href={`/projects/${project.slug}`}
+                    class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
+                  >
+                    View Details
+                    <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                  <a 
+                    href={project.data.mitSolve?.solutionUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center text-gray-500 hover:text-gray-700"
+                  >
+                    MIT Solve
+                    <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Call to Action -->
+      <section class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-600/5 to-primary-600/10 -z-10"></div>
+        <div class="max-w-4xl mx-auto text-center py-16 px-4">
+          <div class="inline-block animate-bounce-slow mb-8">
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-50 text-primary-600">
+              🚀 Get Involved
+            </span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Have an Innovative Solution?</h2>
+          <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            Join our community of innovators and submit your solution to MIT Solve. Together, we can create positive change and transform lives.
+          </p>
+          <div class="flex flex-wrap gap-4 justify-center">
+            <a 
+              href="https://solve.mit.edu/submit-solution" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 transform hover:-translate-y-1 transition-all duration-300"
+            >
+              Submit Your Solution
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+            <a 
+              href="/contact" 
+              class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transform hover:-translate-y-1 transition-all duration-300"
+            >
+              Contact Us
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</MainLayout>
