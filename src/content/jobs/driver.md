@@ -6,7 +6,7 @@ type: "full-time"
 category: "services"
 posted: "2025-02-05"
 deadline: "2025-02-21"
-status: "open"
+status: "closed"
 featured: true
 skills:
   - Driving

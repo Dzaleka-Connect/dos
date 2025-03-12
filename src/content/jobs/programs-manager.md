@@ -6,7 +6,7 @@ type: full-time
 category: community
 posted: 2025-01-26
 deadline: 2025-02-03
-status: open
+status: "closed"
 featured: true
 skills:
   - Program Management

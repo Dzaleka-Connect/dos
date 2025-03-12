@@ -6,7 +6,7 @@ type: contract
 category: technology
 posted: 2025-01-26
 deadline: 2025-01-15
-status: open
+status: closed
 featured: true
 skills:
   - Social media management

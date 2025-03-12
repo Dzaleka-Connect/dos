@@ -6,7 +6,7 @@ type: full-time
 category: education
 posted: 2023-05-01
 deadline: 2023-05-31
-status: closed
+status: "closed"
 featured: false
 skills:
   - Teaching

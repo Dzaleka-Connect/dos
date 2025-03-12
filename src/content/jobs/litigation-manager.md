@@ -6,7 +6,7 @@ type: full-time
 category: services
 posted: 2024-03-01
 deadline: 2024-03-31
-status: open
+status: "closed"
 featured: true
 skills:
   - Legal Advocacy

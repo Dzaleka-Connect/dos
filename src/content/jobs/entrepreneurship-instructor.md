@@ -6,7 +6,7 @@ type: "full-time"
 category: "education"
 posted: "2025-01-09"
 deadline: "2025-01-17"
-status: "open"
+status: "closed"
 featured: true
 skills:
   - Business Administration

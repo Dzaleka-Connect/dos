@@ -6,7 +6,7 @@ type: full-time
 category: business
 posted: 2024-03-01
 deadline: 2024-04-01
-status: open
+status: "closed"
 featured: false
 skills:
   - Social Media Management
