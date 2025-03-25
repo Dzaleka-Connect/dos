@@ -1,0 +1,729 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Define SEO metadata
+const pageTitle = "Become a Local Guide | Visit Dzaleka";
+const description = "Join our team of local guides and share the rich culture and stories of Dzaleka Refugee Camp with visitors from around the world.";
+const keywords = "Dzaleka tour guide, refugee camp guide, local guide opportunity, cultural tourism, Malawi tourism job, Dzaleka community guide";
+const ogImage = "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg";
+---
+
+<MainLayout title={pageTitle} description={description} keywords={keywords} ogImage={ogImage}>
+  <script>
+    // Form validation and submission handler
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('guideRegistrationForm');
+      
+      if (form) {
+        // Handle conditional fields visibility
+        const hasExperienceRadios = document.querySelectorAll('input[name="hasExperience"]');
+        const experienceDetailsContainer = document.getElementById('experienceDetailsContainer');
+        
+        hasExperienceRadios.forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            if (e.target.value === 'yes' && experienceDetailsContainer) {
+              experienceDetailsContainer.classList.remove('hidden');
+            } else if (experienceDetailsContainer) {
+              experienceDetailsContainer.classList.add('hidden');
+            }
+          });
+        });
+        
+        // Form submission
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          
+          try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+            
+            if (response.ok) {
+              window.location.href = '/thank-you?type=guide-registration';
+            }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        });
+      }
+    });
+  </script>
+
+  <main class="min-h-screen bg-gray-50">
+    <!-- Back Button -->
+    <div class="container mx-auto px-4 pt-6">
+      <a href="/visit" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group">
+        <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Back to Visit Page</span>
+      </a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="relative h-[50vh] overflow-hidden">
+      <!-- Background Image with Overlay -->
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/90 to-primary-900/90"></div>
+        <img 
+          src="https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg" 
+          alt="Dzaleka Community Guides" 
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Content -->
+      <div class="relative z-20 h-full flex flex-col items-center justify-center py-8 md:py-16">
+        <div class="container mx-auto px-4 md:px-6">
+          <div class="max-w-4xl mx-auto text-center space-y-8">
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-4 md:px-6 py-2">
+              <span class="w-2 h-2 rounded-full bg-primary-400 animate-pulse"></span>
+              <span class="text-xs md:text-sm text-white/90 font-medium tracking-wider uppercase">Join Our Team</span>
+            </div>
+            
+            <div class="space-y-6">
+              <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                Become a <span class="text-primary-400">Local Guide</span>
+              </h1>
+              
+              <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                Share your knowledge, experience, and passion for Dzaleka with visitors from around the world
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration Form Section -->
+    <section class="py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Local Guide Registration Form</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Please complete the following form to register as a local guide with Visit Dzaleka. Your information will help us match you with tours and ensure a smooth and organized experience for visitors.</p>
+          </div>
+          
+          <!-- Registration Form -->
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <form 
+              id="guideRegistrationForm"
+              action="https://formspree.io/f/xqaaajae" 
+              method="POST" 
+              class="space-y-8"
+            >
+              <input type="hidden" name="form_type" value="guide_registration">
+              <input type="hidden" name="_next" value="/thank-you?type=guide-registration">
+              
+              <!-- 1. Personal Information -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">1. Personal Information</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="fullName">Full Name</label>
+                    <input 
+                      type="text" 
+                      id="fullName" 
+                      name="fullName" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      required
+                    >
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="email">Email Address</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      required
+                    >
+                  </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="phone">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      name="phone" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      placeholder="+265 XX XXX XXXX"
+                      required
+                    >
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="dateOfBirth">Date of Birth</label>
+                    <input 
+                      type="date" 
+                      id="dateOfBirth" 
+                      name="dateOfBirth" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      required
+                    >
+                  </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                    <div class="space-y-2">
+                      <label class="inline-flex items-center">
+                        <input type="radio" name="gender" value="male" class="form-radio text-primary-600" required>
+                        <span class="ml-2">Male</span>
+                      </label>
+                      <label class="inline-flex items-center ml-6">
+                        <input type="radio" name="gender" value="female" class="form-radio text-primary-600">
+                        <span class="ml-2">Female</span>
+                      </label>
+                      <label class="inline-flex items-center ml-6">
+                        <input type="radio" name="gender" value="other" class="form-radio text-primary-600">
+                        <span class="ml-2">Other</span>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="languages">Languages Spoken</label>
+                    <input 
+                      type="text" 
+                      id="languages" 
+                      name="languages" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      placeholder="English, French, Swahili, etc."
+                      required
+                    >
+                  </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="emergencyContactName">Emergency Contact Name</label>
+                    <input 
+                      type="text" 
+                      id="emergencyContactName" 
+                      name="emergencyContactName" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      required
+                    >
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="emergencyContactNumber">Emergency Contact Number</label>
+                    <input 
+                      type="tel" 
+                      id="emergencyContactNumber" 
+                      name="emergencyContactNumber" 
+                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                      placeholder="+265 XX XXX XXXX"
+                      required
+                    >
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 2. Tour Guide Availability -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">2. Tour Guide Availability</h3>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-4">Available Days (Select All That Apply)</label>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="monday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Monday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="tuesday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Tuesday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="wednesday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Wednesday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="thursday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Thursday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="friday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Friday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="saturday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Saturday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="availableDays" value="sunday" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Sunday</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mt-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-4">Preferred Tour Times</label>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="preferredTimes" value="morning" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Morning (8:00 AM - 12:00 PM)</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="preferredTimes" value="afternoon" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Afternoon (12:00 PM - 4:00 PM)</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="preferredTimes" value="evening" class="form-checkbox text-primary-600">
+                      <span class="ml-2">Evening (4:00 PM - 7:00 PM)</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 3. Experience & Interest -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">3. Experience & Interest</h3>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-4">Previous Tour Guide Experience (if any)</label>
+                  <div class="flex items-center space-x-6">
+                    <label class="inline-flex items-center">
+                      <input type="radio" name="hasExperience" value="yes" class="form-radio text-primary-600" required>
+                      <span class="ml-2">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="radio" name="hasExperience" value="no" class="form-radio text-primary-600">
+                      <span class="ml-2">No</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div id="experienceDetailsContainer" class="mt-6 hidden">
+                  <label class="block text-sm font-medium text-gray-700 mb-2" for="experienceDetails">If Yes, please briefly describe your experience:</label>
+                  <textarea 
+                    id="experienceDetails" 
+                    name="experienceDetails" 
+                    rows="3" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                  ></textarea>
+                </div>
+                
+                <div class="mt-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-2" for="interestReason">Why are you interested in becoming a local guide for Visit Dzaleka?</label>
+                  <textarea 
+                    id="interestReason" 
+                    name="interestReason" 
+                    rows="4" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              
+              <!-- 4. Other Relevant Skills/Experience -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">4. Other Relevant Skills/Experience</h3>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2" for="otherSkills">
+                    For example, customer service, hospitality, or any skills that would be helpful in guiding tourists
+                  </label>
+                  <textarea 
+                    id="otherSkills" 
+                    name="otherSkills" 
+                    rows="4" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              
+              <!-- 5. References -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">5. References</h3>
+                <p class="text-sm text-gray-600 mb-4">Please provide two references who can speak to your reliability and work ethic</p>
+                
+                <div class="space-y-6">
+                  <!-- Reference 1 -->
+                  <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Reference 1</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref1Name">Name</label>
+                        <input 
+                          type="text" 
+                          id="ref1Name" 
+                          name="ref1Name" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          required
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref1Relationship">Relationship</label>
+                        <input 
+                          type="text" 
+                          id="ref1Relationship" 
+                          name="ref1Relationship" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          required
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref1Phone">Phone Number</label>
+                        <input 
+                          type="tel" 
+                          id="ref1Phone" 
+                          name="ref1Phone" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          placeholder="+265 XX XXX XXXX"
+                          required
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref1Email">Email Address</label>
+                        <input 
+                          type="email" 
+                          id="ref1Email" 
+                          name="ref1Email" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          required
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Reference 2 -->
+                  <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Reference 2</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref2Name">Name</label>
+                        <input 
+                          type="text" 
+                          id="ref2Name" 
+                          name="ref2Name" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          required
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref2Relationship">Relationship</label>
+                        <input 
+                          type="text" 
+                          id="ref2Relationship" 
+                          name="ref2Relationship" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          required
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref2Phone">Phone Number</label>
+                        <input 
+                          type="tel" 
+                          id="ref2Phone" 
+                          name="ref2Phone" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          placeholder="+265 XX XXX XXXX"
+                          required
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="ref2Email">Email Address</label>
+                        <input 
+                          type="email" 
+                          id="ref2Email" 
+                          name="ref2Email" 
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                          required
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 6. Payment Preferences -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">6. Payment Preferences</h3>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-4">Preferred Method of Payment</label>
+                  <div class="flex flex-wrap gap-6">
+                    <label class="inline-flex items-center">
+                      <input type="radio" name="paymentMethod" value="cash" class="form-radio text-primary-600" required>
+                      <span class="ml-2">Cash</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="radio" name="paymentMethod" value="airtelMoney" class="form-radio text-primary-600">
+                      <span class="ml-2">Airtel Money</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="radio" name="paymentMethod" value="tnmMpamba" class="form-radio text-primary-600">
+                      <span class="ml-2">TNM Mpamba</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 7. Additional Comments or Questions -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">7. Additional Comments or Questions</h3>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2" for="additionalComments">Any additional comments or questions for the Visit Dzaleka team?</label>
+                  <textarea 
+                    id="additionalComments" 
+                    name="additionalComments" 
+                    rows="4" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                  ></textarea>
+                </div>
+              </div>
+              
+              <!-- Consent & Signature -->
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 pb-2 mb-6 border-b border-gray-200">Consent & Signature</h3>
+                
+                <div class="space-y-4">
+                  <label class="flex items-start">
+                    <input 
+                      type="checkbox" 
+                      name="confirmAccurate" 
+                      class="form-checkbox text-primary-600 mt-1" 
+                      required
+                    >
+                    <span class="ml-3 text-gray-700">
+                      I confirm that the information provided in this form is accurate and complete to the best of my knowledge.
+                    </span>
+                  </label>
+                  
+                  <label class="flex items-start">
+                    <input 
+                      type="checkbox" 
+                      name="consentDataUse" 
+                      class="form-checkbox text-primary-600 mt-1" 
+                      required
+                    >
+                    <span class="ml-3 text-gray-700">
+                      I consent to Visit Dzaleka using the information provided for operational purposes, including tour scheduling and communication.
+                    </span>
+                  </label>
+                  
+                  <div class="grid md:grid-cols-2 gap-6 mt-8">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2" for="digitalSignature">Digital Signature (Type Full Name)</label>
+                      <input 
+                        type="text" 
+                        id="digitalSignature" 
+                        name="digitalSignature" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                        required
+                      >
+                    </div>
+                    
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2" for="signatureDate">Date</label>
+                      <input 
+                        type="date" 
+                        id="signatureDate" 
+                        name="signatureDate" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                        required
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Submit Button -->
+              <div class="pt-4">
+                <button 
+                  type="submit" 
+                  class="w-full md:w-auto px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-all flex items-center justify-center group"
+                >
+                  <span>Submit Registration</span>
+                  <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Guide Benefits Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Benefits of Becoming a Local Guide</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Join our team and enjoy these advantages while sharing your knowledge and experiences</p>
+          </div>
+          
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="h-14 w-14 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Earn Income</h3>
+              <p class="text-gray-600">Receive competitive compensation for each tour you lead, with opportunities to earn additional income during peak seasons.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="h-14 w-14 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Cultural Exchange</h3>
+              <p class="text-gray-600">Interact with visitors from around the world, sharing your experiences while learning about different cultures and perspectives.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="h-14 w-14 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Skills Development</h3>
+              <p class="text-gray-600">Enhance your communication, leadership, and customer service skills through regular training and hands-on experience.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="h-14 w-14 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Community Representation</h3>
+              <p class="text-gray-600">Serve as an ambassador for your community, helping to share authentic stories and change perceptions.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="h-14 w-14 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Flexible Schedule</h3>
+              <p class="text-gray-600">Choose your availability and work hours that fit your lifestyle and other commitments.</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="h-14 w-14 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Continued Learning</h3>
+              <p class="text-gray-600">Access training opportunities and resources to enhance your knowledge of local history, culture, and tourism practices.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Application Process Section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Application Process</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Here's what to expect after submitting your application</p>
+          </div>
+          
+          <div class="relative">
+            <!-- Process Timeline -->
+            <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary-100 -translate-x-1/2"></div>
+            
+            <!-- Process Steps -->
+            <div class="space-y-12 md:space-y-24 relative">
+              <!-- Step 1 -->
+              <div class="flex flex-col md:flex-row md:items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0 md:pr-12 md:text-right">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">Application Review</h3>
+                  <p class="text-gray-600">Our team will review your application within 7 business days to assess your qualifications and experience.</p>
+                </div>
+                
+                <div class="relative md:static flex md:justify-center">
+                  <div class="h-12 w-12 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-xl z-10">1</div>
+                  <div class="md:hidden absolute top-12 bottom-0 left-6 w-0.5 bg-primary-100"></div>
+                </div>
+                
+                <div class="md:w-1/2 pt-6 md:pt-0 md:pl-12">
+                  <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-primary-600">
+                    <p class="text-sm text-gray-500">What we look for: Good communication skills, knowledge of the camp, reliability, and a passion for sharing stories.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="flex flex-col md:flex-row md:items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0 order-1 md:order-3 md:pl-12">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">Interview & Orientation</h3>
+                  <p class="text-gray-600">Selected candidates will be invited for an interview and orientation session to learn more about the tour program.</p>
+                </div>
+                
+                <div class="relative md:static flex md:justify-center order-2 md:order-2">
+                  <div class="h-12 w-12 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-xl z-10">2</div>
+                  <div class="md:hidden absolute top-12 bottom-0 left-6 w-0.5 bg-primary-100"></div>
+                </div>
+                
+                <div class="md:w-1/2 pt-6 md:pt-0 order-3 md:order-1 md:pr-12 md:text-right">
+                  <div class="bg-gray-50 rounded-lg p-4 border-r-4 border-primary-600">
+                    <p class="text-sm text-gray-500">Be prepared to share your knowledge of Dzaleka and demonstrate your storytelling abilities during the interview.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 3 -->
+              <div class="flex flex-col md:flex-row md:items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0 md:pr-12 md:text-right">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">On-the-Job Training</h3>
+                  <p class="text-gray-600">Begin working as a guide and learn on the go while we provide ongoing support to develop your guiding skills, knowledge of tour routes, and understanding of visitor expectations.</p>
+                </div>
+                
+                <div class="relative md:static flex md:justify-center">
+                  <div class="h-12 w-12 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-xl z-10">3</div>
+                </div>
+                
+                <div class="md:w-1/2 pt-6 md:pt-0 md:pl-12">
+                  <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-primary-600">
+                    <p class="text-sm text-gray-500">You'll shadow experienced guides initially and gradually take on more responsibility as you become more comfortable with the role.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-16 text-center">
+            <a href="/contact" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
+              <span>Have questions? Contact our team</span>
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout> 
