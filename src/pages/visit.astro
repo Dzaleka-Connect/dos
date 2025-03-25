@@ -1,6 +1,12 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 
+// Define SEO metadata
+const pageTitle = "Visit Dzaleka Refugee Camp | Guided Tours & Cultural Experiences";
+const description = "Explore Dzaleka Refugee Camp with guided tours highlighting vibrant culture, rich heritage, and resilient community. Book your visit to Malawi's largest refugee community today.";
+const keywords = "Dzaleka tour, refugee camp visit, cultural tourism, Malawi tourism, guided refugee camp tour, cultural experience, Dzaleka community, humanitarian tourism";
+const ogImage = "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg";
+
 const zones = [
   { name: 'Lisungwi', icon: '🏘️' },
   { name: 'Kawale 1 & 2', icon: '🏡' },
@@ -39,7 +45,58 @@ const stats = [
 ];
 ---
 
-<MainLayout title="Visit Dzaleka">
+<MainLayout title={pageTitle} description={description} keywords={keywords} ogImage={ogImage}>
+  <!-- JSON-LD Structured Data for TouristAttraction -->
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org",
+      "@type": "TouristAttraction",
+      "name": "Visit Dzaleka",
+      "description": "Guided tours of Dzaleka Refugee Camp in Malawi, showcasing vibrant culture, rich heritage, and resilient community.",
+      "url": "https://services.dzaleka.com/visit",
+      "isAccessibleForFree": false,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dowa District",
+        "addressRegion": "Central Region",
+        "addressCountry": "Malawi"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -13.7333,
+        "longitude": 33.9333
+      },
+      "openingHours": "Mo-Fr 10:00-16:00",
+      "image": "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg",
+      "telephone": "+265 XX XXX XXXX",
+      "touristType": [
+        "Cultural Tourism",
+        "Educational Tourism",
+        "Humanitarian Tourism"
+      ],
+      "priceRange": "MWK 7,000-12,000",
+      "sameAs": [
+        "https://services.dzaleka.com/visit"
+      ],
+      "potentialAction": {
+        "@type": "ReserveAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://services.dzaleka.com/visit#planTripForm",
+          "inLanguage": "en",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "result": {
+          "@type": "Reservation",
+          "name": "Tour Reservation"
+        }
+      }
+    }
+  </script>
+
   <script>
     // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', () => {
@@ -197,6 +254,197 @@ const stats = [
       </div>
     </section>
 
+    <!-- About the Tour -->
+    <section class="py-24 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">About the Tour</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Everything you need to know to prepare for your visit</p>
+          </div>
+
+          <!-- Tour Experience -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-10">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-2/5 bg-primary-700 text-white p-8 flex items-center">
+                <div>
+                  <div class="inline-block p-3 bg-white/10 rounded-lg mb-5">
+                    <span class="text-4xl">🧭</span>
+                  </div>
+                  <h3 class="text-2xl font-bold mb-3">Tour Experience</h3>
+                  <p class="text-white/90">Your journey through Dzaleka with knowledgeable guides who know the community well</p>
+                </div>
+              </div>
+              <div class="md:w-3/5 p-8">
+                <p class="text-gray-700 leading-relaxed">
+                  Explore Dzaleka Refugee Camp with a knowledgeable guide who will take you through the camp's historical sites and vibrant community areas. During the tour, you'll gain insights into the camp's rich cultural heritage, the lives of its residents, and the history of the camp itself. Our tours are designed to be engaging, educational, and respectful of the community.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tour Duration & Meeting Points -->
+          <div class="grid md:grid-cols-2 gap-8 mb-10">
+            <!-- Tour Duration -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden h-full">
+              <div class="p-6 bg-primary-50 border-b border-primary-100">
+                <div class="flex items-center space-x-3">
+                  <span class="text-3xl">⏱️</span>
+                  <h3 class="text-xl font-bold text-gray-900">Tour Duration</h3>
+                </div>
+              </div>
+              <div class="p-6">
+                <ul class="space-y-4">
+                  <li class="flex items-start">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4">
+                      <span class="text-primary-700 font-semibold">1h</span>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold text-gray-900">Standard Tour</h4>
+                      <p class="text-gray-600 text-sm">Our standard tour covering the main areas of interest</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4">
+                      <span class="text-primary-700 font-semibold">2-3h</span>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold text-gray-900">Half-Day Tour</h4>
+                      <p class="text-gray-600 text-sm">Extended experience for a deeper understanding</p>
+                    </div>
+                  </li>
+                </ul>
+                <p class="mt-4 text-sm text-gray-500 italic">
+                  If you have a specific time requirement, please let us know in advance, and we can tailor the tour accordingly.
+                </p>
+              </div>
+            </div>
+
+            <!-- Meeting Points -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden h-full">
+              <div class="p-6 bg-primary-50 border-b border-primary-100">
+                <div class="flex items-center space-x-3">
+                  <span class="text-3xl">🗺️</span>
+                  <h3 class="text-xl font-bold text-gray-900">Meeting Points & Times</h3>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="font-semibold text-gray-900 mb-3">Recommended Meeting Locations:</h4>
+                <ul class="space-y-2 mb-4">
+                  <li class="flex items-center">
+                    <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                    <span class="text-gray-700">UNHCR Office</span>
+                  </li>
+                  <li class="flex items-center">
+                    <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                    <span class="text-gray-700">Appfactory</span>
+                  </li>
+                  <li class="flex items-center">
+                    <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                    <span class="text-gray-700">JRS (Jesuit Refugee Service)</span>
+                  </li>
+                </ul>
+                
+                <h4 class="font-semibold text-gray-900 mb-2">Start Times:</h4>
+                <div class="flex space-x-4 mb-4">
+                  <div class="py-2 px-4 bg-primary-100 rounded-full text-primary-700 text-sm font-medium">10:00 AM</div>
+                  <div class="py-2 px-4 bg-primary-100 rounded-full text-primary-700 text-sm font-medium">2:00 PM</div>
+                </div>
+                
+                <p class="text-sm text-gray-500 italic">
+                  Please arrive 10-15 minutes before your tour start time to ensure a prompt departure.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- What's Included & Guidelines -->
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- What's Included -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div class="p-6 bg-primary-50 border-b border-primary-100">
+                <div class="flex items-center space-x-3">
+                  <span class="text-3xl">📋</span>
+                  <h3 class="text-xl font-bold text-gray-900">What's Included & What's Not</h3>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="mb-6">
+                  <h4 class="inline-flex items-center text-gray-900 font-semibold mb-3">
+                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Included
+                  </h4>
+                  <ul class="space-y-2 ml-7">
+                    <li class="text-gray-700 text-sm list-disc">Guided walking tour of Dzaleka Refugee Camp</li>
+                    <li class="text-gray-700 text-sm list-disc">Insights into camp history, culture, and community</li>
+                    <li class="text-gray-700 text-sm list-disc">Community interaction and Q&A opportunities</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 class="inline-flex items-center text-gray-900 font-semibold mb-3">
+                    <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Not Included
+                  </h4>
+                  <ul class="space-y-2 ml-7">
+                    <li class="text-gray-700 text-sm list-disc">Transportation to/from the camp</li>
+                    <li class="text-gray-700 text-sm list-disc">Meals or refreshments</li>
+                    <li class="text-gray-700 text-sm list-disc">Entrance fees to other locations</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Guidelines -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div class="p-6 bg-primary-50 border-b border-primary-100">
+                <div class="flex items-center space-x-3">
+                  <span class="text-3xl">📝</span>
+                  <h3 class="text-xl font-bold text-gray-900">Visitor Guidelines & Etiquette</h3>
+                </div>
+              </div>
+              <div class="p-6">
+                <ul class="space-y-4">
+                  <li class="flex">
+                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3 mt-0.5">1</div>
+                    <div>
+                      <h4 class="font-medium text-gray-900">Respect the community</h4>
+                      <p class="text-gray-600 text-sm">Ask permission before taking photos of people and be mindful of local customs</p>
+                    </div>
+                  </li>
+                  <li class="flex">
+                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3 mt-0.5">2</div>
+                    <div>
+                      <h4 class="font-medium text-gray-900">Dress appropriately</h4>
+                      <p class="text-gray-600 text-sm">Wear comfortable walking shoes, a hat, and bring water and sunscreen</p>
+                    </div>
+                  </li>
+                  <li class="flex">
+                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3 mt-0.5">3</div>
+                    <div>
+                      <h4 class="font-medium text-gray-900">No smoking or littering</h4>
+                      <p class="text-gray-600 text-sm">Help us keep the environment clean and healthy for residents</p>
+                    </div>
+                  </li>
+                  <li class="flex">
+                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3 mt-0.5">4</div>
+                    <div>
+                      <h4 class="font-medium text-gray-900">Be patient and respectful</h4>
+                      <p class="text-gray-600 text-sm">Remember that Dzaleka is home to many families and communities</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Zones Section -->
     <section class="py-24 bg-gray-50">
       <div class="container mx-auto px-4">
@@ -222,7 +470,7 @@ const stats = [
         <div class="max-w-2xl mx-auto">
           <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Plan Your Visit</h2>
-            <p class="text-gray-600">Let us help you organize your visit to Dzaleka. Our team will get back to you within 24 hours.</p>
+            <p class="text-gray-600">Let us help you organize your visit to Dzaleka. Our team will get back to you within 24-48 hours.</p>
           </div>
 
           <div class="bg-white rounded-2xl shadow-xl p-8">
@@ -233,6 +481,8 @@ const stats = [
               class="space-y-6"
             >
               <input type="hidden" name="_next" value="/thank-you?type=visit">
+              
+              <!-- Personal Information -->
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2" for="name">Full Name</label>
@@ -256,6 +506,20 @@ const stats = [
                 </div>
               </div>
 
+              <!-- Phone Number -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="phone">Phone Number</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                  placeholder="+265 XX XXX XXXX"
+                  required
+                >
+              </div>
+
+              <!-- Visit Details -->
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2" for="visitDate">Preferred Visit Date</label>
@@ -267,6 +531,20 @@ const stats = [
                     required
                   >
                 </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2" for="visitTime">Preferred Start Time</label>
+                  <input 
+                    type="time" 
+                    id="visitTime" 
+                    name="visitTime" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                    required
+                  >
+                  <p class="mt-1 text-xs text-gray-500">Standard start times: 10:00 AM and 2:00 PM</p>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2" for="groupSize">Group Size</label>
                   <select 
@@ -282,25 +560,169 @@ const stats = [
                     <option value="10+">10+ people</option>
                   </select>
                 </div>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-3">Areas of Interest</label>
-                <div class="grid sm:grid-cols-2 gap-3">
-                  {['Cultural Activities', 'Educational Programs', 'Community Projects', 'Homestay Program'].map(interest => (
-                    <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        name="interests" 
-                        value={interest.toLowerCase().replace(' ', '-')} 
-                        class="w-5 h-5 rounded text-primary-600 focus:ring-primary-500"
-                      >
-                      <span class="ml-3 text-gray-700">{interest}</span>
-                    </label>
-                  ))}
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2" for="tourType">Tour Type (Duration)</label>
+                  <select 
+                    id="tourType" 
+                    name="tourType" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                    required
+                  >
+                    <option value="">Select tour type</option>
+                    <option value="standard">Standard Tour (1 hour)</option>
+                    <option value="half-day">Half-day Tour (2-3 hours)</option>
+                  </select>
                 </div>
               </div>
 
+              <!-- Meeting Point -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Meeting Point</label>
+                <div class="grid grid-cols-3 gap-3">
+                  <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="meetingPoint" 
+                      value="unhcr-office" 
+                      class="w-5 h-5 rounded-full text-primary-600 focus:ring-primary-500"
+                      required
+                    >
+                    <span class="ml-3 text-gray-700">UNHCR Office</span>
+                  </label>
+                  <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="meetingPoint" 
+                      value="appfactory" 
+                      class="w-5 h-5 rounded-full text-primary-600 focus:ring-primary-500"
+                    >
+                    <span class="ml-3 text-gray-700">Appfactory</span>
+                  </label>
+                  <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="meetingPoint" 
+                      value="jrs" 
+                      class="w-5 h-5 rounded-full text-primary-600 focus:ring-primary-500"
+                    >
+                    <span class="ml-3 text-gray-700">JRS</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Payment Method -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                <div class="grid grid-cols-3 gap-3">
+                  <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="paymentMethod" 
+                      value="airtel-money" 
+                      class="w-5 h-5 rounded-full text-primary-600 focus:ring-primary-500"
+                      required
+                    >
+                    <span class="ml-3 text-gray-700">Airtel Money</span>
+                  </label>
+                  <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="paymentMethod" 
+                      value="tnm-mpamba" 
+                      class="w-5 h-5 rounded-full text-primary-600 focus:ring-primary-500"
+                    >
+                    <span class="ml-3 text-gray-700">TNM Mpamba</span>
+                  </label>
+                  <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="paymentMethod" 
+                      value="cash" 
+                      class="w-5 h-5 rounded-full text-primary-600 focus:ring-primary-500"
+                    >
+                    <span class="ml-3 text-gray-700">Cash</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Areas of Interest -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-3">Areas of Interest (Select all that apply)</label>
+                <div class="mb-4">
+                  <h4 class="text-sm font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Camp Zones</h4>
+                  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3 mb-2">
+                    {['Lisungwi', 'Kawale 1 & 2', 'Likuni 1 & 2', 'Zomba', 'Blantyre', 'Katubza'].map(zone => (
+                      <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          name="zones" 
+                          value={zone.toLowerCase().replace(/\s+/g, '-')} 
+                          class="w-5 h-5 rounded text-primary-600 focus:ring-primary-500"
+                        >
+                        <span class="ml-3 text-gray-700">{zone}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 class="text-sm font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Points of Interest</h4>
+                  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {['Community Life', 'Cultural Heritage Sites', 'History of Dzaleka', 'Local Markets', 'Cultural Activities', 'Educational Programs', 'Community Projects'].map(interest => (
+                      <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          name="interests" 
+                          value={interest.toLowerCase().replace(/\s+/g, '-')} 
+                          class="w-5 h-5 rounded text-primary-600 focus:ring-primary-500"
+                        >
+                        <span class="ml-3 text-gray-700">{interest}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <!-- How Did You Hear About Us -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="referralSource">How Did You Hear About Us?</label>
+                <select 
+                  id="referralSource" 
+                  name="referralSource" 
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all" 
+                  required
+                >
+                  <option value="">Please select</option>
+                  <option value="social-media">Social Media</option>
+                  <option value="word-of-mouth">Word of Mouth</option>
+                  <option value="website">Website</option>
+                  <option value="other">Other (Please Specify)</option>
+                </select>
+              </div>
+
+              <!-- Referral Source Other -->
+              <div id="referralOther" class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="referralOtherText">Please Specify:</label>
+                <input 
+                  type="text" 
+                  id="referralOtherText" 
+                  name="referralOtherText" 
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                >
+              </div>
+
+              <!-- Accessibility Needs -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="accessibilityNeeds">Any Accessibility Needs or Special Requests</label>
+                <textarea 
+                  id="accessibilityNeeds" 
+                  name="accessibilityNeeds" 
+                  rows="3" 
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                ></textarea>
+              </div>
+
+              <!-- Additional Information -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2" for="message">Additional Information</label>
                 <textarea 
@@ -324,6 +746,24 @@ const stats = [
           </div>
         </div>
       </div>
+
+      <script>
+        // Show/hide the "Other" field for referral source
+        document.addEventListener('DOMContentLoaded', () => {
+          const referralSelect = document.getElementById('referralSource');
+          const referralOther = document.getElementById('referralOther');
+          
+          if (referralSelect && referralOther) {
+            referralSelect.addEventListener('change', () => {
+              if (referralSelect.value === 'other') {
+                referralOther.classList.remove('hidden');
+              } else {
+                referralOther.classList.add('hidden');
+              }
+            });
+          }
+        });
+      </script>
     </section>
 
     <!-- Video Section -->
@@ -350,6 +790,294 @@ const stats = [
 
           <div class="mt-6 text-center">
             <p class="text-sm text-gray-500">Video courtesy of Perfect Afrika</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing & Bookings Section -->
+    <section id="pricing" class="py-24 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Pricing & Bookings</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Plan your visit with our transparent pricing and simple booking process</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-12">
+            <!-- Pricing Cards -->
+            <div>
+              <h3 class="text-2xl font-bold text-primary-700 mb-6">Pricing Structure (Per Hour)</h3>
+              <div class="space-y-4">
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-800 font-medium">1 Person</span>
+                    <span class="text-primary-700 font-bold">MWK 12,000</span>
+                  </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-800 font-medium">2–5 People</span>
+                    <span class="text-primary-700 font-bold">MWK 10,000 per person</span>
+                  </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-800 font-medium">6–10 People</span>
+                    <span class="text-primary-700 font-bold">MWK 8,000 per person</span>
+                  </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-800 font-medium">10+ People</span>
+                    <span class="text-primary-700 font-bold">MWK 7,000 per person</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">Note: Tours are conducted on foot, and we do not provide transport.</p>
+            </div>
+            
+            <!-- Booking Process -->
+            <div>
+              <h3 class="text-2xl font-bold text-primary-700 mb-6">How to Book</h3>
+              <div class="space-y-6">
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold">1</div>
+                  <div>
+                    <p class="text-gray-800">Fill out our booking form with your preferred date, group size, and contact details.</p>
+                  </div>
+                </div>
+                
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold">2</div>
+                  <div>
+                    <p class="text-gray-800">We will confirm your tour and provide the guide's contact information.</p>
+                  </div>
+                </div>
+                
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold">3</div>
+                  <div>
+                    <p class="text-gray-800">Payment can be made on the day via:</p>
+                    <ul class="mt-2 space-y-1">
+                      <li class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Airtel Money</span>
+                      </li>
+                      <li class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>TNM Mpamba</span>
+                      </li>
+                      <li class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Cash: Accepted upon arrival</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h4 class="font-medium text-gray-900 mb-2">Need to Reschedule?</h4>
+                <p class="text-gray-700">If your plans change, let us know as soon as possible, and we will do our best to accommodate you.</p>
+                <p class="mt-2 text-sm text-gray-600">For inquiries, contact us at <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:underline">dzalekaconnect@gmail.com</a>.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-12 text-center">
+            <a 
+              href="#planTripForm" 
+              class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-all group"
+            >
+              <span>Book Your Tour Now</span>
+              <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Find answers to common questions about visiting Dzaleka</p>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">What types of tours do you offer?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>We offer guided walking tours of Dzaleka Refugee Camp, where visitors can explore key areas, learn about the camp's history, and engage with the community.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">Do you offer group discounts?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>Yes! We provide discounts for groups larger than 10 people. Contact us for more details.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">Can I change my tour date?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>If your plans change, you may be able to reschedule based on availability. Let us know as soon as possible so we can assist you.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">Are the tours family-friendly?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>Yes, our tours are suitable for all ages. However, please note that they involve walking, so comfortable shoes are recommended.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">How do I book a tour?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>Simply fill out our enquiry form with your preferred date and details, and we will confirm your booking.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">What is your cancellation policy?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>We understand that plans can change. If you need to cancel, please let us know in advance.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">What should I bring?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>We recommend wearing comfortable walking shoes and bringing a hat, sunscreen, water, and a camera.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">What happens if the weather is bad?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>Our tours run in most weather conditions, but in case of extreme weather, we may reschedule or cancel. We will notify you if any changes occur.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">Do you provide transport for the tour?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>No, we do not provide transport. All tours are conducted on foot within the camp.</p>
+                </div>
+              </details>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+              <details class="group">
+                <summary class="flex items-center justify-between p-6 cursor-pointer">
+                  <h3 class="text-lg font-medium text-gray-900">How can I contact you?</h3>
+                  <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 text-gray-700">
+                  <p>You can reach us via email or phone. Once your tour is confirmed, we will also provide the contact details of your tour guide.</p>
+                </div>
+              </details>
+            </div>
           </div>
         </div>
       </div>

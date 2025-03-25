@@ -1,9 +1,22 @@
 ---
 interface Props {
 	title: string;
+	description?: string;
+	keywords?: string;
+	ogImage?: string;
 }
 
-const { title } = Astro.props;
+const { title, description, keywords, ogImage } = Astro.props;
+
+// Default values
+const defaultDescription = "Dzaleka Online Service - Your comprehensive platform for accessing refugee services, and community resources in Malawi. Supporting the Dzaleka refugee community with digital solutions.";
+const defaultKeywords = "Dzaleka, refugee services, Malawi permits, visa application, community support, legal aid, emergency relief, refugee resources, online services, Dzaleka heritage, refugee camp, humanitarian aid";
+const defaultOgImage = "/images/dzaleka-hero.jpeg";
+
+// Use provided values or defaults
+const metaDescription = description || defaultDescription;
+const metaKeywords = keywords || defaultKeywords;
+const metaOgImage = ogImage || defaultOgImage;
 ---
 
 <!DOCTYPE html>
@@ -11,27 +24,30 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="description" content="Dzaleka Online Service - Your comprehensive platform for accessing refugee services, and community resources in Malawi. Supporting the Dzaleka refugee community with digital solutions." />
-		<meta name="keywords" content="Dzaleka, refugee services, Malawi permits, visa application, community support, legal aid, emergency relief, refugee resources, online services, Dzaleka heritage, refugee camp, humanitarian aid" />
+		<meta name="description" content={metaDescription} />
+		<meta name="keywords" content={metaKeywords} />
 		<meta name="robots" content="index, follow" />
 		<meta name="author" content="Dzaleka Online Services" />
 		
 		<!-- OpenGraph Meta Tags -->
 		<meta property="og:title" content={title} />
-		<meta property="og:description" content="Dzaleka Online Service - Your comprehensive platform for accessing refugee services, and community resources in Malawi. Supporting the Dzaleka refugee community with digital solutions." />
-		<meta property="og:image" content="/images/dzaleka-hero.jpeg" />
+		<meta property="og:description" content={metaDescription} />
+		<meta property="og:image" content={metaOgImage} />
 		<meta property="og:type" content="website" />
 		
 		<!-- Twitter Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content="Dzaleka Online Service - Your comprehensive platform for accessing refugee services, permits, visas, and community resources in Malawi." />
-		<meta name="twitter:image" content="/images/dzaleka-hero.jpeg" />
+		<meta name="twitter:description" content={metaDescription} />
+		<meta name="twitter:image" content={metaOgImage} />
 		
 		<link rel="icon" type="image/png" href="/images/dzaleka-digital-heritage.png" />
 		<link rel="canonical" href={`https://services.dzaleka.com${Astro.url.pathname}`} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | Dzaleka Online Services</title>
+
+		<!-- Slot for additional head content -->
+		<slot name="head" />
 
 		<!-- Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-V28XG9CN72" crossorigin="anonymous"></script>
