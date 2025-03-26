@@ -13,7 +13,9 @@ const zones = [
   { name: 'Likuni 1 & 2', icon: '🏢' },
   { name: 'Zomba', icon: '🏪' },
   { name: 'Blantyre', icon: '🏬' },
-  { name: 'Katubza', icon: '🏘️' }
+  { name: 'Katubza', icon: '🏘️' },
+  { name: 'New Katubza', icon: '🏘️' },
+  { name: 'Dzaleka Hill', icon: '⛰️' }
 ];
 
 const activities = [
@@ -652,15 +654,15 @@ const stats = [
                 <div class="mb-4">
                   <h4 class="text-sm font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Camp Zones</h4>
                   <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3 mb-2">
-                    {['Lisungwi', 'Kawale 1 & 2', 'Likuni 1 & 2', 'Zomba', 'Blantyre', 'Katubza'].map(zone => (
+                    {zones.map(zone => (
                       <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
                         <input 
                           type="checkbox" 
                           name="zones" 
-                          value={zone.toLowerCase().replace(/\s+/g, '-')} 
+                          value={zone.name.toLowerCase().replace(/\s+/g, '-')} 
                           class="w-5 h-5 rounded text-primary-600 focus:ring-primary-500"
                         >
-                        <span class="ml-3 text-gray-700">{zone}</span>
+                        <span class="ml-3 text-gray-700">{zone.name}</span>
                       </label>
                     ))}
                   </div>
