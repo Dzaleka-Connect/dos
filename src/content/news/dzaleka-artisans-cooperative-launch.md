@@ -10,7 +10,7 @@ businessName: "Dzaleka Digital Heritage"
 businessOwner: "Dzaleka Online"
 contactInfo:
   email: "dzalekaconnect@gmail.com"
-  phone: "+265 991 234567"
+  phone: ""
   website: "https://dzaleka.com"
 tags: ["Digital Innovation ", "Refugee Voices", "Community Empowerment"]
 ---
