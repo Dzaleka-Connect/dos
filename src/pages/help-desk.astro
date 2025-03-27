@@ -679,6 +679,7 @@ const faqs = [
                 method="POST" 
                 data-netlify="true" 
                 class="space-y-4 support-form"
+                action="/"
               >
                 <input type="hidden" name="form-name" value="support-form" />
                 <input type="hidden" name="subject" value="" />
@@ -859,22 +860,35 @@ const faqs = [
         if (theForm) {
           theForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form submitted, sending data to Netlify...');
             
+            // Ensure form-name field is present for Netlify forms
             const formData = new FormData(theForm);
+            if (!formData.has('form-name')) {
+              formData.append('form-name', 'support-form');
+            }
             
-            fetch(theForm.action, {
+            // Log form data for debugging (remove in production)
+            for (let [key, value] of formData.entries()) {
+              console.log(`${key}: ${value}`);
+            }
+            
+            fetch('/', {
               method: 'POST',
-              body: formData
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams(formData).toString()
             })
             .then(response => {
+              console.log('Response status:', response.status);
               if (response.ok) {
+                console.log('Form submitted successfully');
                 // Hide form and show thank you message
                 theForm.classList.add('hidden');
                 if (thankYouMessage) thankYouMessage.classList.remove('hidden');
                 // Reset form for future submissions
                 theForm.reset();
               } else {
-                console.error('Form submission failed');
+                console.error('Form submission failed with status:', response.status);
                 alert('There was a problem submitting your request. Please try again later.');
               }
             })
