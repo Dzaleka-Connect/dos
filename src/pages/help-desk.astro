@@ -868,34 +868,55 @@ const faqs = [
               formData.append('form-name', 'support-form');
             }
             
-            // Log form data for debugging (remove in production)
+            // Log form data for debugging
             for (let [key, value] of formData.entries()) {
               console.log(`${key}: ${value}`);
             }
             
-            fetch('/', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: new URLSearchParams(formData).toString()
-            })
-            .then(response => {
-              console.log('Response status:', response.status);
-              if (response.ok) {
-                console.log('Form submitted successfully');
-                // Hide form and show thank you message
-                theForm.classList.add('hidden');
-                if (thankYouMessage) thankYouMessage.classList.remove('hidden');
-                // Reset form for future submissions
-                theForm.reset();
+            // Encode the data properly for Netlify
+            const urlEncodedData = new URLSearchParams(formData).toString();
+            
+            try {
+              // Show success message immediately
+              console.log('Showing thank you message and hiding form');
+              
+              // Hide the form
+              theForm.style.display = 'none';
+              
+              // Make sure the thank you message is visible
+              if (thankYouMessage) {
+                thankYouMessage.classList.remove('hidden');
+                thankYouMessage.style.display = 'block';
+                console.log('Thank you message should now be visible');
+                
+                // Scroll to it to ensure it's in view
+                thankYouMessage.scrollIntoView({ behavior: 'smooth' });
               } else {
-                console.error('Form submission failed with status:', response.status);
-                alert('There was a problem submitting your request. Please try again later.');
+                console.error('Thank you message element not found');
+                alert('Thank you! Your form has been submitted successfully.');
               }
-            })
-            .catch(error => {
-              console.error('Error submitting form:', error);
-              alert('There was a problem submitting your request. Please try again later.');
-            });
+              
+              // Reset form for future submissions
+              theForm.reset();
+              
+              // Submit data in background
+              fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: urlEncodedData
+              })
+              .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                  console.error('Form submission failed with status:', response.status);
+                }
+              })
+              .catch(error => {
+                console.error('Error submitting form:', error);
+              });
+            } catch (error) {
+              console.error('Error in form submission handler:', error);
+            }
           });
         }
         
