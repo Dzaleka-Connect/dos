@@ -856,69 +856,48 @@ const faqs = [
           });
         }
         
-        // Handle form submission
-        if (theForm) {
-          theForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('Form submitted, sending data to Netlify...');
+        // Handle form submission with the cleaner implementation
+        const handleSubmit = event => {
+          event.preventDefault();
+
+          const myForm = event.target;
+          const formData = new FormData(myForm);
+          
+          // Ensure form-name field is present for Netlify forms
+          if (!formData.has('form-name')) {
+            formData.append('form-name', 'support-form');
+          }
+          
+          // Log form data for debugging
+          console.log('---- FORM DATA DETAILS ----');
+          for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+          }
+          
+          // Hide the form and show thank you message
+          theForm.style.display = 'none';
+          if (thankYouMessage) {
+            thankYouMessage.classList.remove('hidden');
+            thankYouMessage.style.display = 'block';
+            thankYouMessage.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            alert('Thank you! Your form has been submitted successfully.');
+          }
+
+          // Submit the form data
+          fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formData).toString()
+          })
+            .then(() => console.log("Form successfully submitted"))
+            .catch(error => alert(error));
             
-            // Ensure form-name field is present for Netlify forms
-            const formData = new FormData(theForm);
-            if (!formData.has('form-name')) {
-              formData.append('form-name', 'support-form');
-            }
-            
-            // Log form data for debugging
-            for (let [key, value] of formData.entries()) {
-              console.log(`${key}: ${value}`);
-            }
-            
-            // Encode the data properly for Netlify
-            const urlEncodedData = new URLSearchParams(formData).toString();
-            
-            try {
-              // Show success message immediately
-              console.log('Showing thank you message and hiding form');
-              
-              // Hide the form
-              theForm.style.display = 'none';
-              
-              // Make sure the thank you message is visible
-              if (thankYouMessage) {
-                thankYouMessage.classList.remove('hidden');
-                thankYouMessage.style.display = 'block';
-                console.log('Thank you message should now be visible');
-                
-                // Scroll to it to ensure it's in view
-                thankYouMessage.scrollIntoView({ behavior: 'smooth' });
-              } else {
-                console.error('Thank you message element not found');
-                alert('Thank you! Your form has been submitted successfully.');
-              }
-              
-              // Reset form for future submissions
-              theForm.reset();
-              
-              // Submit data in background
-              fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: urlEncodedData
-              })
-              .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                  console.error('Form submission failed with status:', response.status);
-                }
-              })
-              .catch(error => {
-                console.error('Error submitting form:', error);
-              });
-            } catch (error) {
-              console.error('Error in form submission handler:', error);
-            }
-          });
-        }
+          // Reset form for future submissions
+          theForm.reset();
+        };
+
+        theForm.addEventListener("submit", handleSubmit);
         
         console.log('Using form:', theForm.id || theForm.name || 'unnamed form');
         
