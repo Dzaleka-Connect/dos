@@ -1,0 +1,1310 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const pageTitle = "Help Desk & Support Center";
+const description = "Get comprehensive support for all Dzaleka Online Services. Our dedicated help desk provides assistance for technical issues, business services, community resources, and more. Fast response within 24-48 hours.";
+const keywords = "help desk, support center, technical support, customer service, Dzaleka services, business support, community support, cultural support, education support, employment support, gallery support, event support, resource center";
+const ogImage = "https://services.dzaleka.com/images/Visit_Dzaleka.png";
+
+// Additional SEO metadata
+const canonicalUrl = "https://services.dzaleka.com/help-desk";
+const author = "Dzaleka Online Services";
+const twitterHandle = "@dzalekaonline";
+const ogType = "website";
+const ogSiteName = "Dzaleka Online Services";
+
+const supportCategories = [
+  {
+    id: "technical",
+    title: "Technical Support",
+    description: "Get help with website access, account issues, or technical problems",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+    </svg>`,
+    formId: "technical-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "issue_type", 
+        label: "Issue Type",
+        required: true,
+        options: [
+          { value: "", label: "Select issue type" },
+          { value: "website", label: "Website Access" },
+          { value: "account", label: "Account Issues" },
+          { value: "technical", label: "Technical Problems" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "visit",
+    title: "Visit Dzaleka",
+    description: "Questions about tours, bookings, or becoming a guide",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+    </svg>`,
+    formId: "visit-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "inquiry_type", 
+        label: "Inquiry Type",
+        required: true,
+        options: [
+          { value: "", label: "Select inquiry type" },
+          { value: "tour", label: "Tour Booking" },
+          { value: "guide", label: "Becoming a Guide" },
+          { value: "information", label: "General Information" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "business",
+    title: "Business Services",
+    description: "Support for business registration, permits, and related services",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+    </svg>`,
+    formId: "business-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "service_type", 
+        label: "Service Type",
+        required: true,
+        options: [
+          { value: "", label: "Select service type" },
+          { value: "registration", label: "Business Registration" },
+          { value: "permits", label: "Permits & Licenses" },
+          { value: "consultation", label: "Business Consultation" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "community",
+    title: "Community Voice",
+    description: "Submit stories, experiences, or community-related inquiries",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+    </svg>`,
+    formId: "community-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "content_type", 
+        label: "Content Type",
+        required: true,
+        options: [
+          { value: "", label: "Select content type" },
+          { value: "story", label: "Personal Story" },
+          { value: "experience", label: "Community Experience" },
+          { value: "feedback", label: "Community Feedback" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "culture",
+    title: "Culture & Heritage",
+    description: "Questions about cultural events, heritage preservation, or cultural activities",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+    </svg>`,
+    formId: "culture-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "topic", 
+        label: "Topic",
+        required: true,
+        options: [
+          { value: "", label: "Select topic" },
+          { value: "events", label: "Cultural Events" },
+          { value: "heritage", label: "Heritage Preservation" },
+          { value: "activities", label: "Cultural Activities" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "education",
+    title: "E-Learning",
+    description: "Support for online learning, courses, or educational resources",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+    </svg>`,
+    formId: "education-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "topic", 
+        label: "Topic",
+        required: true,
+        options: [
+          { value: "", label: "Select topic" },
+          { value: "courses", label: "Course Access" },
+          { value: "resources", label: "Learning Resources" },
+          { value: "technical", label: "Technical Issues" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "jobs",
+    title: "Jobs & Employment",
+    description: "Inquiries about job opportunities, employment services, or career development",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+    </svg>`,
+    formId: "jobs-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "topic", 
+        label: "Topic",
+        required: true,
+        options: [
+          { value: "", label: "Select topic" },
+          { value: "opportunities", label: "Job Opportunities" },
+          { value: "services", label: "Employment Services" },
+          { value: "training", label: "Career Training" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "gallery",
+    title: "Photo Gallery",
+    description: "Submit photos, request photo access, or report gallery issues",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>`,
+    formId: "gallery-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "inquiry_type", 
+        label: "Inquiry Type",
+        required: true,
+        options: [
+          { value: "", label: "Select inquiry type" },
+          { value: "submit", label: "Submit Photos" },
+          { value: "access", label: "Request Access" },
+          { value: "report", label: "Report Issue" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "events",
+    title: "Events",
+    description: "Questions about upcoming events, event registration, or event hosting",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>`,
+    formId: "events-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "inquiry_type", 
+        label: "Inquiry Type",
+        required: true,
+        options: [
+          { value: "", label: "Select inquiry type" },
+          { value: "info", label: "Event Information" },
+          { value: "register", label: "Event Registration" },
+          { value: "host", label: "Host an Event" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "resources",
+    title: "Resources",
+    description: "Access to documents, guides, and other community resources",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+    </svg>`,
+    formId: "resources-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "resource_type", 
+        label: "Resource Type",
+        required: true,
+        options: [
+          { value: "", label: "Select resource type" },
+          { value: "documents", label: "Documents" },
+          { value: "guides", label: "Guides" },
+          { value: "templates", label: "Templates" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "skills",
+    title: "Skills Exchange",
+    description: "Learn about skill sharing opportunities and workshops",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+    </svg>`,
+    formId: "skills-support",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { 
+        type: "select", 
+        name: "inquiry_type", 
+        label: "Inquiry Type",
+        required: true,
+        options: [
+          { value: "", label: "Select inquiry type" },
+          { value: "learn", label: "Learn a Skill" },
+          { value: "teach", label: "Teach a Skill" },
+          { value: "workshop", label: "Workshop Information" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  },
+  {
+    id: "general",
+    title: "General Inquiry",
+    description: "Other questions or concerns not covered above",
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>`,
+    formId: "general-inquiry",
+    fields: [
+      { type: "text", name: "name", label: "Full Name", required: true },
+      { type: "email", name: "email", label: "Email Address", required: true },
+      { type: "textarea", name: "message", label: "Your Message", required: true }
+    ]
+  }
+];
+
+const faqs = [
+  {
+    question: "What is the typical response time?",
+    answer: "We aim to respond to all inquiries within 24 hours. For urgent issues, we prioritize quick responses."
+  },
+  {
+    question: "What information should I include in my request?",
+    answer: "Please include your full name, contact information, and a detailed description of your issue or question. For technical issues, please provide any relevant error messages or screenshots."
+  },
+  {
+    question: "What are your business hours?",
+    answer: "Our support team is available Monday through Friday, 8:00 AM to 5:00 PM (Malawi Time). For urgent issues outside these hours, please use our emergency contact number."
+  },
+  {
+    question: "What languages do you support?",
+    answer: "We provide support in English, French, and Swahili. Please indicate your preferred language in your request."
+  }
+];
+---
+
+<MainLayout 
+  title={pageTitle} 
+  description={description} 
+  keywords={keywords} 
+  ogImage={ogImage}
+  canonicalUrl={canonicalUrl}
+  author={author}
+  twitterHandle={twitterHandle}
+  ogType={ogType}
+  ogSiteName={ogSiteName}
+>
+  <!-- JSON-LD Structured Data for Help Desk -->
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Dzaleka Online Services Help Desk",
+      "description": "Comprehensive support center providing assistance for technical issues, business services, community resources, and more.",
+      "url": "https://services.dzaleka.com/help-desk",
+      "areaServed": {
+        "@type": "City",
+        "name": "Dzaleka Refugee Camp"
+      },
+      "availableLanguage": ["English", "French", "Swahili"],
+      "serviceType": "Customer Support",
+      "provider": {
+        "@type": "Organization",
+        "name": "Dzaleka Online Services",
+        "url": "https://services.dzaleka.com"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "MWK"
+      },
+      "responseTime": "24-48 hours",
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00",
+        "validFrom": "2024-01-01",
+        "validThrough": "2024-12-31"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "dzalekaconnect@gmail.com",
+          "areaServed": "Dzaleka Refugee Camp",
+          "availableLanguage": ["English", "French", "Swahili"]
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Support Categories",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Technical Support",
+              "description": "Get help with website access, account issues, or technical problems"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Business Services Support",
+              "description": "Support for business registration, permits, and related services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Community Support",
+              "description": "Submit stories, experiences, or community-related inquiries"
+            }
+          }
+        ]
+      }
+    }
+  </script>
+
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the typical response time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We aim to respond to all inquiries within 24 hours. For urgent issues, we prioritize quick responses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What information should I include in my request?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Please include your full name, contact information, and a detailed description of your issue or question. For technical issues, please provide any relevant error messages or screenshots."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are your business hours?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our support team is available Monday through Friday, 8:00 AM to 5:00 PM (Malawi Time). For urgent issues outside these hours, please use our emergency contact number."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What languages do you support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We provide support in English, French, and Swahili. Please indicate your preferred language in your request."
+          }
+        }
+      ]
+    }
+  </script>
+
+  <!-- Breadcrumb Structured Data -->
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://services.dzaleka.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Help Desk",
+          "item": "https://services.dzaleka.com/help-desk"
+        }
+      ]
+    }
+  </script>
+
+  <main class="min-h-screen bg-gray-50">
+    <!-- Hero Section -->
+    <div class="relative h-[60vh] overflow-hidden">
+      <!-- Background Image with Overlay -->
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/90 to-primary-900/90"></div>
+        <img 
+          src="/images/Visit_Dzaleka.png" 
+          alt="Dzaleka Community Support" 
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Content -->
+      <div class="relative z-20 h-full flex flex-col items-center justify-center py-8 md:py-16">
+        <div class="container mx-auto px-4 md:px-6">
+          <div class="max-w-4xl mx-auto text-center space-y-8">
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-4 md:px-6 py-2">
+              <span class="w-2 h-2 rounded-full bg-primary-400 animate-pulse"></span>
+              <span class="text-xs md:text-sm text-white/90 font-medium tracking-wider uppercase">24-48 Hours Response Time</span>
+            </div>
+            
+            <div class="space-y-6">
+              <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                How Can We <span class="text-primary-400">Help</span> You?
+              </h1>
+              
+              <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                Our dedicated support team is here to assist you with any questions, concerns, or technical issues you may have.
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 pt-8">
+              <button 
+                onclick="document.getElementById('supportFormSection').scrollIntoView({behavior: 'smooth'})"
+                class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-primary-400 text-primary-900 hover:text-white font-medium rounded-full transition-all duration-300 group shadow-lg hover:shadow-xl text-base"
+              >
+                <span>Submit a Request</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </button>
+              
+              <a 
+                href="#faq"
+                class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 hover:border-white/80 text-white font-medium rounded-full transition-all duration-300 group hover:bg-white/10 text-base"
+              >
+                <span>View FAQs</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Features -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <!-- Search Bar -->
+        <div class="max-w-2xl mx-auto mb-12">
+          <div class="relative">
+          <form action="/search/results/" method="GET" class="relative"> 
+            <input 
+              type="text" name="q"
+              placeholder="Search organizations and resources..." 
+              class="w-full px-6 py-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            />
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-primary-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div class="text-center p-6">
+            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl">📝</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Easy Submission</h3>
+            <p class="text-gray-600">Submit your requests through our simple, user-friendly forms</p>
+          </div>
+          
+          <div class="text-center p-6">
+            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl">⚡</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Quick Response</h3>
+            <p class="text-gray-600">Get assistance within 24-48 hours for all inquiries</p>
+          </div>
+          
+          <div class="text-center p-6">
+            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl">💬</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Direct Support</h3>
+            <p class="text-gray-600">Connect with our support team through multiple channels</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Knowledge Base Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Knowledge Base</h2>
+            <p class="text-gray-600">Browse our comprehensive documentation and guides</p>
+          </div>
+
+          <div class="flex justify-center">
+            <a href="/docs/getting-started" class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow max-w-md w-full">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                  <span class="text-2xl">📱</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Platform Guide</h3>
+              </div>
+              <p class="text-gray-600 mb-4">Learn how to navigate and use our platform's features and services</p>
+              <span class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                View Documentation
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="mt-8 text-center">
+            <a 
+              href="/docs" 
+              class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
+            >
+              <span>Browse All Documentation</span>
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support Form Section -->
+    <section id="supportFormSection" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Submit Your Request</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+              Select a category below and fill out the form to get started. Our support team will respond via email.
+            </p>
+          </div>
+
+          <!-- Category Selection -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {supportCategories.map(category => (
+              <button
+                class="category-btn bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all text-center border-2 border-transparent hover:border-primary-500"
+                data-category={category.id}
+              >
+                <div class="text-primary-600 mb-2 flex justify-center" set:html={category.icon}></div>
+                <h3 class="font-medium text-gray-900">{category.title}</h3>
+              </button>
+            ))}
+          </div>
+
+          <!-- Support Form -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-6">
+              <form 
+                id="supportForm"
+                name="support-form"
+                method="POST" 
+                data-netlify="true" 
+                class="space-y-4 support-form"
+              >
+                <input type="hidden" name="form-name" value="support-form" />
+                <input type="hidden" name="subject" value="" />
+                
+                <!-- Form Header -->
+                <div class="flex items-center space-x-3 mb-6">
+                  <span class="text-3xl category-icon text-gray-400">❓</span>
+                  <div>
+                    <h2 class="text-2xl font-bold category-title text-gray-400">Select a Category</h2>
+                    <p class="text-gray-400 category-description">Choose a category above to get started</p>
+                  </div>
+                </div>
+                
+                <div class="form-fields">
+                  <!-- Default form fields -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="name">
+                      Full Name
+                    </label>
+                    <input 
+                      type="text"
+                      id="name"
+                      name="name"
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="email">
+                      Email Address
+                    </label>
+                    <input 
+                      type="email"
+                      id="email"
+                      name="email"
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="message">
+                      Your Message
+                    </label>
+                    <textarea 
+                      id="message"
+                      name="message"
+                      rows="4"
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      required
+                      placeholder="Please provide detailed information about your request..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <button 
+                  type="submit"
+                  class="w-full inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  <span>Submit Request</span>
+                  <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </button>
+              </form>
+              
+              <!-- Thank You Message (Hidden by default) -->
+              <div id="thankYouMessage" class="hidden text-center py-12">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
+                <p class="text-gray-600 mb-6">
+                  Your request has been submitted successfully. Our team will respond to your inquiry within 24-48 hours.
+                </p>
+                <button 
+                  id="submitAnotherBtn"
+                  class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  <span>Submit Another Request</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p class="text-gray-600">
+              Find quick answers to common questions about our support services.
+            </p>
+          </div>
+          
+          <div class="space-y-6">
+            {faqs.map(faq => (
+              <div class="bg-gray-50 rounded-xl shadow-sm overflow-hidden">
+                <details class="group">
+                  <summary class="flex items-center justify-between p-6 cursor-pointer">
+                    <h3 class="text-lg font-medium text-gray-900">{faq.question}</h3>
+                    <span class="ml-6 flex-shrink-0 text-primary-600 group-open:rotate-180 transition-transform">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </span>
+                  </summary>
+                  <div class="px-6 pb-6 text-gray-700">
+                    <p>{faq.answer}</p>
+                  </div>
+                </details>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">Need Immediate Assistance?</h2>
+          <p class="text-xl text-gray-600 mb-8">
+            If you need immediate help, you can reach us through via email:
+          </p>
+          
+          <div class="flex justify-center">
+            <div class="bg-white rounded-xl p-6 shadow-sm max-w-sm w-full">
+              <div class="text-3xl mb-4">📧</div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Email</h3>
+              <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:text-primary-700">
+                dzalekaconnect@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM content loaded');
+      
+      setTimeout(function() {
+        console.log('Setting up category buttons...');
+        
+        // Get all forms on the page
+        const allForms = document.querySelectorAll('form');
+        console.log('Forms found on page:', allForms.length);
+        
+        // Since there's only one form in the page, we'll use the first one
+        const theForm = allForms[0];
+        if (!theForm) {
+          console.error('No forms found on page');
+          return;
+        }
+        
+        // Get thank you message element
+        const thankYouMessage = document.getElementById('thankYouMessage');
+        const submitAnotherBtn = document.getElementById('submitAnotherBtn');
+        
+        if (submitAnotherBtn) {
+          submitAnotherBtn.addEventListener('click', function() {
+            // Hide thank you message and show form again
+            if (thankYouMessage) thankYouMessage.classList.add('hidden');
+            if (theForm) theForm.classList.remove('hidden');
+          });
+        }
+        
+        // Handle form submission
+        if (theForm) {
+          theForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(theForm);
+            
+            fetch(theForm.action, {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => {
+              if (response.ok) {
+                // Hide form and show thank you message
+                theForm.classList.add('hidden');
+                if (thankYouMessage) thankYouMessage.classList.remove('hidden');
+                // Reset form for future submissions
+                theForm.reset();
+              } else {
+                console.error('Form submission failed');
+                alert('There was a problem submitting your request. Please try again later.');
+              }
+            })
+            .catch(error => {
+              console.error('Error submitting form:', error);
+              alert('There was a problem submitting your request. Please try again later.');
+            });
+          });
+        }
+        
+        console.log('Using form:', theForm.id || theForm.name || 'unnamed form');
+        
+        // Find form elements
+        const formFields = document.querySelector('.form-fields');
+        const categoryTitle = document.querySelector('.category-title');
+        const categoryDescription = document.querySelector('.category-description');
+        const categoryIcon = document.querySelector('.category-icon');
+        const subjectInput = document.querySelector('input[name="subject"]');
+        
+        console.log('Form elements found:', {
+          formFields: !!formFields,
+          categoryTitle: !!categoryTitle,
+          categoryDescription: !!categoryDescription,
+          categoryIcon: !!categoryIcon,
+          subjectInput: !!subjectInput
+        });
+        
+        if (!formFields || !categoryTitle || !categoryDescription || !categoryIcon || !subjectInput) {
+          console.error('Missing required form elements');
+          return;
+        }
+        
+        // Define ALL categories matching the server-side supportCategories array
+        const categories = [
+          {
+            id: "technical",
+            title: "Technical Support",
+            description: "Get help with website access, account issues, or technical problems",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "issue_type", 
+                label: "Issue Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select issue type" },
+                  { value: "website", label: "Website Access" },
+                  { value: "account", label: "Account Issues" },
+                  { value: "technical", label: "Technical Problems" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "visit",
+            title: "Visit Dzaleka",
+            description: "Questions about tours, bookings, or becoming a guide",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "inquiry_type", 
+                label: "Inquiry Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select inquiry type" },
+                  { value: "tour", label: "Tour Booking" },
+                  { value: "guide", label: "Becoming a Guide" },
+                  { value: "information", label: "General Information" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "business",
+            title: "Business Services",
+            description: "Support for business registration, permits, and related services",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "service_type", 
+                label: "Service Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select service type" },
+                  { value: "registration", label: "Business Registration" },
+                  { value: "permits", label: "Permits & Licenses" },
+                  { value: "consultation", label: "Business Consultation" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "community",
+            title: "Community Voice",
+            description: "Submit stories, experiences, or community-related inquiries",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "content_type", 
+                label: "Content Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select content type" },
+                  { value: "story", label: "Personal Story" },
+                  { value: "experience", label: "Community Experience" },
+                  { value: "feedback", label: "Community Feedback" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "culture",
+            title: "Culture & Heritage",
+            description: "Questions about cultural events, heritage preservation, or cultural activities",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "topic", 
+                label: "Topic",
+                required: true,
+                options: [
+                  { value: "", label: "Select topic" },
+                  { value: "events", label: "Cultural Events" },
+                  { value: "heritage", label: "Heritage Preservation" },
+                  { value: "activities", label: "Cultural Activities" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "education",
+            title: "E-Learning",
+            description: "Support for online learning, courses, or educational resources",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "topic", 
+                label: "Topic",
+                required: true,
+                options: [
+                  { value: "", label: "Select topic" },
+                  { value: "courses", label: "Course Access" },
+                  { value: "resources", label: "Learning Resources" },
+                  { value: "technical", label: "Technical Issues" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "jobs",
+            title: "Jobs & Employment",
+            description: "Inquiries about job opportunities, employment services, or career development",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "topic", 
+                label: "Topic",
+                required: true,
+                options: [
+                  { value: "", label: "Select topic" },
+                  { value: "opportunities", label: "Job Opportunities" },
+                  { value: "services", label: "Employment Services" },
+                  { value: "training", label: "Career Training" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "gallery",
+            title: "Photo Gallery",
+            description: "Submit photos, request photo access, or report gallery issues",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "inquiry_type", 
+                label: "Inquiry Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select inquiry type" },
+                  { value: "submit", label: "Submit Photos" },
+                  { value: "access", label: "Request Access" },
+                  { value: "report", label: "Report Issue" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "events",
+            title: "Events",
+            description: "Questions about upcoming events, event registration, or event hosting",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "inquiry_type", 
+                label: "Inquiry Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select inquiry type" },
+                  { value: "info", label: "Event Information" },
+                  { value: "register", label: "Event Registration" },
+                  { value: "host", label: "Host an Event" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "resources",
+            title: "Resources",
+            description: "Access to documents, guides, and other community resources",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "resource_type", 
+                label: "Resource Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select resource type" },
+                  { value: "documents", label: "Documents" },
+                  { value: "guides", label: "Guides" },
+                  { value: "templates", label: "Templates" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "skills",
+            title: "Skills Exchange",
+            description: "Learn about skill sharing opportunities and workshops",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { 
+                type: "select", 
+                name: "inquiry_type", 
+                label: "Inquiry Type",
+                required: true,
+                options: [
+                  { value: "", label: "Select inquiry type" },
+                  { value: "learn", label: "Learn a Skill" },
+                  { value: "teach", label: "Teach a Skill" },
+                  { value: "workshop", label: "Workshop Information" },
+                  { value: "other", label: "Other" }
+                ]
+              },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          },
+          {
+            id: "general",
+            title: "General Inquiry",
+            description: "Other questions or concerns not covered above",
+            icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>`,
+            fields: [
+              { type: "text", name: "name", label: "Full Name", required: true },
+              { type: "email", name: "email", label: "Email Address", required: true },
+              { type: "textarea", name: "message", label: "Your Message", required: true }
+            ]
+          }
+        ];
+        
+        // Find and setup all category buttons
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        console.log('Category buttons found:', categoryButtons.length);
+        
+        if (categoryButtons.length === 0) {
+          console.error('No category buttons found');
+          return;
+        }
+        
+        // Add click handlers to all category buttons
+        categoryButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const categoryId = this.dataset.category;
+            console.log('Category button clicked:', categoryId);
+            
+            if (!categoryId) {
+              console.error('Button missing category ID');
+              return;
+            }
+            
+            // Find matching category 
+            const category = categories.find(c => c.id === categoryId);
+            if (!category) {
+              console.error('No matching category for ID:', categoryId);
+              return;
+            }
+            
+            try {
+              // Update form header
+              categoryTitle.textContent = category.title;
+              categoryTitle.className = 'text-2xl font-bold category-title text-gray-900';
+              
+              categoryDescription.textContent = category.description;
+              categoryDescription.className = 'text-gray-600 category-description';
+              
+              categoryIcon.innerHTML = category.icon;
+              categoryIcon.className = 'text-3xl category-icon text-primary-600';
+              
+              subjectInput.value = category.title;
+              
+              // Update form fields
+              formFields.innerHTML = category.fields.map(field => `
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="${field.name}">
+                    ${field.label}
+                  </label>
+                  ${field.type === "textarea" ? `
+                    <textarea 
+                      id="${field.name}"
+                      name="${field.name}"
+                      rows="4"
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      ${field.required ? 'required' : ''}
+                      placeholder="Please provide detailed information about your request..."
+                    ></textarea>
+                  ` : field.type === "select" ? `
+                    <select 
+                      id="${field.name}"
+                      name="${field.name}"
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      ${field.required ? 'required' : ''}
+                    >
+                      ${field.options.map(option => `
+                        <option value="${option.value}">${option.label}</option>
+                      `).join('')}
+                    </select>
+                  ` : `
+                    <input 
+                      type="${field.type}"
+                      id="${field.name}"
+                      name="${field.name}"
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      placeholder="${field.placeholder || ''}"
+                      ${field.required ? 'required' : ''}
+                    />
+                  `}
+                </div>
+              `).join('');
+              
+              // Update button states
+              categoryButtons.forEach(btn => {
+                btn.classList.remove('border-primary-500');
+              });
+              this.classList.add('border-primary-500');
+              
+              console.log('Form updated successfully for category:', categoryId);
+            } catch (error) {
+              console.error('Error updating form:', error, error.stack);
+            }
+          });
+        });
+        
+        console.log('Category buttons setup complete');
+      }, 1000); // Increased timeout to 1 second
+    });
+  </script>
+</MainLayout> 
