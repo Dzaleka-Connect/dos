@@ -5,23 +5,40 @@
   publish = "dist"
   command = "npm run build"
 
-# Redirects for API endpoints
+# Handle API endpoints first
 [[redirects]]
   from = "/api/*"
-  to = "/api/:splat"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Handle static files and other routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
 
-# Handle 404s
+# Handle 404s last
 [[redirects]]
   from = "/*"
   to = "/404"
   status = 404
+  conditions = {Not = [{Path = ["/api/*", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/*.ttf", "/*.eot", "/*.json", "/*.xml", "/*.txt", "/*.pdf", "/*.zip", "/*.rar", "/*.doc", "/*.docx", "/*.xls", "/*.xlsx", "/*.ppt", "/*.pptx", "/*.csv", "/*.tsv", "/*.md", "/*.html"]}]}
+
+# Specific redirects
+[[redirects]]
+  from = "/updates"
+  to = "/updates/1"
+  status = 302
 
 # Environment variables
 [build.environment]
   NODE_VERSION = "18"
 
-[[redirects]]
-  from = "/updates"
-  to = "/updates/1"
-  status = 302
+# Headers for security and CORS
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
