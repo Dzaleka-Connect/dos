@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/adai.circle/'
   linkedin: 'https://www.linkedin.com/company/adaicircle/'
   website: 'https://adaicircle.com/'
-logo: 'https://media.licdn.com/dms/image/v2/D4D0BAQGXuNb-7mItig/img-crop_100/img-crop_100/0/1733081763222?e=1743033600&v=beta&t=2Q98KuibtBW63KJ2GelQutAvyR-sz7JW9M9ugxhGYe0'
+logo: '/images/1733081763222.jpeg'
 featured: true
 verified: true
 lastUpdated: 2024-12-24

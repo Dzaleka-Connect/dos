@@ -122,36 +122,85 @@ function updateTotalViews(increment = 1) {
 // Clean up old data to prevent storage overflow
 export function cleanupOldData(data) {
   try {
-    // Keep only last 30 days of visitor data
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    // Keep only last 3 days of visitor data (reduced from 7)
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
     
     if (data.visitors) {
       Object.keys(data.visitors).forEach(date => {
-        if (new Date(date) < thirtyDaysAgo) {
+        if (new Date(date) < threeDaysAgo) {
           delete data.visitors[date];
         }
       });
     }
     
-    // Keep only last 100 sessions
+    // Keep only last 25 sessions (reduced from 50)
     if (data.sessions) {
       const sessionIds = Object.keys(data.sessions);
-      if (sessionIds.length > 100) {
+      if (sessionIds.length > 25) {
         const oldestSessions = sessionIds
           .sort((a, b) => new Date(data.sessions[a].startTime) - new Date(data.sessions[b].startTime))
-          .slice(0, sessionIds.length - 100);
+          .slice(0, sessionIds.length - 25);
         
         oldestSessions.forEach(id => {
           delete data.sessions[id];
           if (data.locations?.[id]) delete data.locations[id];
         });
       }
+      
+      // Clean up session data to keep only essential information
+      Object.values(data.sessions).forEach(session => {
+        // Keep only last 5 pages visited
+        if (session.pages && session.pages.length > 5) {
+          session.pages = session.pages.slice(-5);
+        }
+        // Remove detailed interaction data
+        delete session.interactions;
+        // Keep only essential session data
+        const essentialData = {
+          startTime: session.startTime,
+          lastActive: session.lastActive,
+          pageViews: session.pageViews,
+          pages: session.pages,
+          entryPage: session.entryPage,
+          device: session.device,
+          browser: session.browser,
+          screenSize: session.screenSize
+        };
+        Object.assign(session, essentialData);
+      });
     }
     
-    // Limit error logs
+    // Limit error logs to last 25 (reduced from 50)
     if (data.errors?.jsErrors) {
-      data.errors.jsErrors = data.errors.jsErrors.slice(-100);
+      data.errors.jsErrors = data.errors.jsErrors.slice(-25);
+    }
+    
+    // Clean up engagement data
+    if (data.engagement) {
+      // Keep only last 3 days of engagement data
+      Object.keys(data.engagement).forEach(key => {
+        if (Array.isArray(data.engagement[key])) {
+          data.engagement[key] = data.engagement[key].slice(-3);
+        }
+      });
+      
+      // Remove detailed interaction data
+      delete data.engagement.interactions;
+      delete data.engagement.timeOnElements;
+    }
+    
+    // Remove detailed interaction logs
+    delete data.interactions;
+    
+    // Clean up performance data
+    if (data.performance) {
+      // Keep only last 3 days of performance data
+      Object.keys(data.performance).forEach(key => {
+        if (Array.isArray(data.performance[key])) {
+          data.performance[key] = data.performance[key].slice(-3);
+        }
+      });
     }
     
     return data;
@@ -161,19 +210,26 @@ export function cleanupOldData(data) {
   }
 }
 
-// Also export the compression function since it's used by other functions
+// Enhanced compression function
 export function compressData(data) {
   try {
+    // Remove unnecessary whitespace and newlines
     const jsonString = JSON.stringify(data);
-    // Basic compression by removing unnecessary whitespace
-    return jsonString.replace(/\s+/g, '');
+    // Remove null and undefined values
+    const cleanedString = jsonString.replace(/"[^"]+":null/g, '')
+                                   .replace(/"[^"]+":undefined/g, '')
+                                   .replace(/,{2,}/g, ',')
+                                   .replace(/\[{2,}/g, '[')
+                                   .replace(/\]{2,}/g, ']')
+                                   .replace(/\s+/g, '');
+    return cleanedString;
   } catch (error) {
     console.error('Error compressing data:', error);
     return null;
   }
 }
 
-// Backup data to storage
+// Backup data to storage with enhanced cleanup
 export async function backupAnalyticsData(data) {
   try {
     // Clean up old data first
@@ -186,13 +242,95 @@ export async function backupAnalyticsData(data) {
     // Check if we're within storage limits
     if (compressedData.length > MAX_BACKUP_SIZE) {
       console.warn('Backup data exceeds size limit, performing additional cleanup');
-      // Additional aggressive cleanup if needed
-      delete cleanedData.interactions; // Remove detailed interaction logs
-      const recompressedData = compressData(cleanedData);
+      
+      // Additional aggressive cleanup
+      const aggressiveCleanup = (data) => {
+        // Remove detailed data
+        delete data.interactions;
+        delete data.errors;
+        delete data.loadTimes;
+        delete data.timeOnPage;
+        delete data.performance;
+        delete data.vitals;
+        delete data.journeys;
+        delete data.content;
+        
+        // Keep only last 24 hours of visitor data
+        if (data.visitors) {
+          const oneDayAgo = new Date();
+          oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+          Object.keys(data.visitors).forEach(date => {
+            if (new Date(date) < oneDayAgo) {
+              delete data.visitors[date];
+            }
+          });
+        }
+        
+        // Keep only last 10 sessions
+        if (data.sessions) {
+          const sessionIds = Object.keys(data.sessions);
+          if (sessionIds.length > 10) {
+            const oldestSessions = sessionIds
+              .sort((a, b) => new Date(data.sessions[a].startTime) - new Date(data.sessions[b].startTime))
+              .slice(0, sessionIds.length - 10);
+            
+            oldestSessions.forEach(id => {
+              delete data.sessions[id];
+              if (data.locations?.[id]) delete data.locations[id];
+            });
+          }
+          
+          // Further clean up session data
+          Object.values(data.sessions).forEach(session => {
+            // Keep only last 3 pages visited
+            if (session.pages && session.pages.length > 3) {
+              session.pages = session.pages.slice(-3);
+            }
+            // Keep only essential session data
+            const essentialData = {
+              startTime: session.startTime,
+              lastActive: session.lastActive,
+              pageViews: session.pageViews,
+              pages: session.pages,
+              device: session.device,
+              browser: session.browser
+            };
+            Object.assign(session, essentialData);
+          });
+        }
+        
+        // Clean up engagement data
+        if (data.engagement) {
+          Object.keys(data.engagement).forEach(key => {
+            if (Array.isArray(data.engagement[key])) {
+              data.engagement[key] = data.engagement[key].slice(-1);
+            }
+          });
+        }
+        
+        return data;
+      };
+      
+      const aggressivelyCleanedData = aggressiveCleanup(cleanedData);
+      const recompressedData = compressData(aggressivelyCleanedData);
+      
       if (!recompressedData || recompressedData.length > MAX_BACKUP_SIZE) {
-        throw new Error('Data too large even after cleanup');
+        // If still too large, keep only essential data
+        const essentialData = {
+          totalViews: cleanedData.totalViews || 0,
+          firstVisit: cleanedData.firstVisit,
+          lastVisit: new Date().toISOString(),
+          pageViews: cleanedData.pageViews || {}
+        };
+        
+        const finalData = compressData(essentialData);
+        if (!finalData || finalData.length > MAX_BACKUP_SIZE) {
+          throw new Error('Data too large even after cleanup');
+        }
+        localStorage.setItem('dzaleka_analytics_backup', finalData);
+      } else {
+        localStorage.setItem('dzaleka_analytics_backup', recompressedData);
       }
-      localStorage.setItem('dzaleka_analytics_backup', recompressedData);
     } else {
       localStorage.setItem('dzaleka_analytics_backup', compressedData);
     }
@@ -261,6 +399,12 @@ export async function getAnalyticsData() {
       loadTimes: {},
       entryPages: {},
       exitPages: {},
+      engagement: {
+        scrollDepth: {},
+        timeOnSite: {},
+        interactions: {},
+        contentViews: {}
+      },
       firstVisit: new Date().toISOString(),
       lastVisit: new Date().toISOString(),
       totalViews: getTotalViews() // Always use the separate total views counter

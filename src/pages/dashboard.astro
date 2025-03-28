@@ -2,6 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import { updates } from '../data/updates';
+import { checkContentHealth, checkApiHealth, calculateSystemHealth } from '../utils/monitoring-utils';
 
 // Fetch all collections that exist in /src/content
 const services = await getCollection('services');
@@ -13,7 +14,6 @@ const jobs = await getCollection('jobs');
 const docs = await getCollection('docs');
 const communityVoices = await getCollection('community-voices');
 const profiles = await getCollection('profiles');
-const gallery = await getCollection('gallery');
 const news = await getCollection('news');
 const pages = await getCollection('pages');
 
@@ -42,11 +42,8 @@ const serviceStats = {
 };
 
 // Combine photos and gallery for a consolidated view
-const allPhotos = [...photos, ...gallery];
-const allAlbums = [...new Set([
-  ...photos.map(p => p.data.album || 'Uncategorized'),
-  ...gallery.map(g => g.data.album || 'Uncategorized')
-])];
+const allPhotos = photos;
+const allAlbums = [...new Set(photos.map(p => p.data.album || 'Uncategorized'))];
 
 // Calculate other statistics
 const stats = {
@@ -200,6 +197,85 @@ const chartData = {
     labels: ['Active', 'Inactive'],
     values: [stats.jobs.active, stats.jobs.total - stats.jobs.active]
   }
+};
+
+// Calculate content health metrics
+const contentHealthData = {
+  services: checkContentHealth(services, 'services'),
+  resources: checkContentHealth(resources, 'resources'),
+  events: checkContentHealth(events, 'events'),
+  photos: checkContentHealth(photos, 'photos'),
+  talents: checkContentHealth(talents, 'talents'),
+  jobs: checkContentHealth(jobs, 'jobs'),
+  profiles: checkContentHealth(profiles, 'profiles'),
+  news: checkContentHealth(news, 'news'),
+  pages: checkContentHealth(pages, 'pages')
+};
+
+// Aggregate content health metrics
+const contentHealth = {
+  total: Object.values(contentHealthData).reduce((sum, data) => sum + data.total, 0),
+  missingImages: Object.values(contentHealthData).reduce((sum, data) => sum + data.missingImages.length, 0),
+  incompleteMetadata: Object.values(contentHealthData).reduce((sum, data) => sum + data.incompleteMetadata.length, 0),
+  brokenLinks: Object.values(contentHealthData).reduce((sum, data) => sum + data.brokenLinks.length, 0)
+};
+
+contentHealth.healthyContent = contentHealth.total - (contentHealth.missingImages + contentHealth.incompleteMetadata + contentHealth.brokenLinks);
+const healthPercentage = Math.round((contentHealth.healthyContent / contentHealth.total) * 100);
+
+// Initialize API health data with actual endpoints
+const initialApiHealth = [
+  { name: 'Services API', status: 'checking...', latency: '...' },
+  { name: 'Resources API', status: 'checking...', latency: '...' },
+  { name: 'Events API', status: 'checking...', latency: '...' },
+  { name: 'Photos API', status: 'checking...', latency: '...' },
+  { name: 'Jobs API', status: 'checking...', latency: '...' },
+  { name: 'Profiles API', status: 'checking...', latency: '...' }
+];
+
+// Calculate API health
+const apiHealth = {
+  exportApi: {
+    status: 'operational',
+    latency: '120ms'
+  },
+  contentApi: {
+    status: 'operational',
+    latency: '85ms'
+  },
+  searchApi: {
+    status: 'operational',
+    latency: '95ms'
+  },
+  authApi: {
+    status: 'operational',
+    latency: '110ms'
+  }
+};
+
+// Helper function to validate URLs
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+// SEO metadata
+const seo = {
+  title: 'Admin Dashboard - Dzaleka Online Services',
+  description: 'Manage and monitor Dzaleka Online Services. Access analytics, content management, and service monitoring tools.',
+  image: '/images/20241023_205851_3.jpg',
+  keywords: [
+    'Dzaleka Dashboard',
+    'Admin Panel',
+    'Service Management',
+    'Analytics',
+    'Content Monitoring'
+  ].filter(Boolean).join(', '),
+  type: 'website'
 };
 
 ---
@@ -948,24 +1024,24 @@ const chartData = {
                   <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
                   <span class="text-sm text-gray-700">Healthy Content</span>
                 </div>
-                <span class="text-sm font-medium">92%</span>
+                <span class="text-sm font-medium">{healthPercentage}%</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="bg-green-500 h-2.5 rounded-full" style="width: 92%"></div>
+                <div class="bg-green-500 h-2.5 rounded-full" style={`width: ${healthPercentage}%`}></div>
               </div>
               
               <div class="mt-4 space-y-3">
                 <div class="flex justify-between items-center">
                   <span class="text-sm text-gray-600">Missing Images</span>
-                  <span class="text-sm font-medium text-amber-600">12 items</span>
+                  <span class="text-sm font-medium text-amber-600">{contentHealth.missingImages} items</span>
                 </div>
                 <div class="flex justify-between items-center">
                   <span class="text-sm text-gray-600">Incomplete Metadata</span>
-                  <span class="text-sm font-medium text-amber-600">8 items</span>
+                  <span class="text-sm font-medium text-amber-600">{contentHealth.incompleteMetadata} items</span>
                 </div>
                 <div class="flex justify-between items-center">
                   <span class="text-sm text-gray-600">Broken Links</span>
-                  <span class="text-sm font-medium text-red-600">3 items</span>
+                  <span class="text-sm font-medium text-red-600">{contentHealth.brokenLinks} items</span>
                 </div>
               </div>
               
@@ -989,33 +1065,26 @@ const chartData = {
             
             <div class="space-y-4">
               <div class="flex items-center">
-                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-                <span class="text-sm font-medium text-gray-900">All Systems Operational</span>
+                <div id="overall-status-indicator" class="w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
+                <span id="overall-status" class="text-sm font-medium text-gray-900">Checking System Status...</span>
               </div>
               
               <div class="bg-gray-50 rounded-lg p-4">
-                <div class="space-y-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Export API</span>
-                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Content API</span>
-                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Search API</span>
-                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Authentication</span>
-                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Operational</span>
-                  </div>
+                <div id="api-status-list" class="space-y-3">
+                  {initialApiHealth.map(api => (
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">{api.name}</span>
+                        <span class="text-xs text-gray-500">{api.latency}</span>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">{api.status}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
               
-              <div class="text-xs text-gray-500 mt-2">
-                Last checked: Today at {new Date().toLocaleTimeString()}
+              <div class="text-xs text-gray-500 mt-2" id="last-checked">
+                Last checked: Never
               </div>
               
               <a href="/api-test" class="mt-2 w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
@@ -1992,7 +2061,8 @@ const chartData = {
       fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': format === 'csv' ? 'text/csv' : 'application/json'
         },
         body: JSON.stringify(requestBody)
       })
@@ -2000,10 +2070,26 @@ const chartData = {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
+        
+        // Get the filename from the Content-Disposition header if present
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = `dzaleka-${selectedCollections.join('-')}-${new Date().toISOString().split('T')[0]}.${format}`;
+        if (contentDisposition) {
+          const matches = /filename="([^"]*)"/.exec(contentDisposition);
+          if (matches && matches[1]) {
+            filename = matches[1];
+          }
+        }
+
+        // Handle different response types
+        if (format === 'csv') {
+          return response.blob().then(blob => ({ blob, filename }));
+        } else {
+          return response.json().then(data => ({ data, filename }));
+        }
       })
-      .then(data => {
-        console.log('Export successful:', data);
+      .then(({ data, blob, filename }) => {
+        console.log('Export successful');
         
         // Reset button
         exportButton.disabled = false;
@@ -2017,33 +2103,32 @@ const chartData = {
         // Update status
         exportStatus.textContent = 'Export completed successfully!';
         exportStatus.className = 'mt-2 text-sm text-green-600';
-        
-        // If it's a small amount of data, we can trigger a download
-        if (format === 'json') {
-          // For JSON, create a data URL and trigger download
-          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `dzaleka-export-${new Date().toISOString().split('T')[0]}.json`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        } else {
-          // For CSV, the API should return CSV content
-          // We'd need to handle this differently based on the API implementation
-          // This is a simplified example
-          const csvContent = data.csvContent || '';
-          const blob = new Blob([csvContent], { type: 'text/csv' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `dzaleka-export-${new Date().toISOString().split('T')[0]}.csv`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
+
+        // Create download
+        const url = blob ? URL.createObjectURL(blob) : URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Add to recent exports table
+        const recentExportsTable = document.getElementById('recent-exports-table');
+        if (recentExportsTable) {
+          const newRow = document.createElement('tr');
+          newRow.className = 'hover:bg-gray-50 cursor-pointer';
+          newRow.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date().toLocaleString()}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${selectedCollections.join(', ')}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${format.toUpperCase()}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${blob ? formatBytes(blob.size) : 'N/A'}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+            </td>
+          `;
+          recentExportsTable.insertBefore(newRow, recentExportsTable.firstChild);
         }
       })
       .catch(error => {
@@ -2092,6 +2177,139 @@ const chartData = {
       }
     }
   });
+
+  // Helper function to format bytes
+  function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  }
+
+  // Function to check API health
+  async function checkApiHealth() {
+    const endpoints = [
+      { name: 'Services API', path: '/api/services' },
+      { name: 'Resources API', path: '/api/resources' },
+      { name: 'Events API', path: '/api/events' },
+      { name: 'Photos API', path: '/api/photos' },
+      { name: 'Jobs API', path: '/api/jobs' },
+      { name: 'Profiles API', path: '/api/profiles' }
+    ];
+
+    return Promise.all(endpoints.map(async endpoint => {
+      const start = performance.now();
+      try {
+        const response = await fetch(endpoint.path);
+        const latency = Math.round(performance.now() - start);
+        return {
+          name: endpoint.name,
+          status: response.ok ? 'operational' : 'error',
+          latency: `${latency}ms`
+        };
+      } catch (error) {
+        return {
+          name: endpoint.name,
+          status: 'error',
+          latency: 'N/A'
+        };
+      }
+    }));
+  }
+
+  // Function to calculate system health
+  function calculateSystemHealth(apiResults) {
+    const operational = apiResults.filter(result => result.status === 'operational').length;
+    const total = apiResults.length;
+    return {
+      status: operational === total ? 'All Systems Operational' : `${operational}/${total} Systems Operational`,
+      isHealthy: operational === total
+    };
+  }
+
+  // Add click handler for content health refresh button
+  document.getElementById('refresh-content-health')?.addEventListener('click', function() {
+    this.innerHTML = `
+      <svg class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Refreshing...
+    `;
+    
+    // Simulate refresh with timeout
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  });
+
+  // Add click handler for API status check button
+  document.getElementById('check-api-status')?.addEventListener('click', async function() {
+    this.innerHTML = `
+      <svg class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Checking...
+    `;
+    
+    try {
+      // Get API health status
+      const apiResults = await checkApiHealth();
+      const systemHealth = calculateSystemHealth(apiResults);
+      
+      // Update overall status
+      const overallIndicator = document.getElementById('overall-status-indicator');
+      const overallStatus = document.getElementById('overall-status');
+      
+      if (overallIndicator && overallStatus) {
+        overallIndicator.className = `w-3 h-3 rounded-full ${systemHealth.isHealthy ? 'bg-green-500' : 'bg-red-500'} mr-2`;
+        overallStatus.textContent = systemHealth.status;
+      }
+      
+      // Update individual API statuses
+      const statusList = document.getElementById('api-status-list');
+      if (statusList) {
+        statusList.innerHTML = apiResults.map(api => `
+          <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+              <span class="text-sm text-gray-600">${api.name}</span>
+              <span class="text-xs text-gray-500">${api.latency}</span>
+            </div>
+            <span class="px-2 py-1 text-xs font-medium rounded-full ${
+              api.status === 'operational' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }">${api.status}</span>
+          </div>
+        `).join('');
+      }
+      
+      // Update last checked time
+      const lastChecked = document.getElementById('last-checked');
+      if (lastChecked) {
+        lastChecked.textContent = `Last checked: ${new Date().toLocaleTimeString()}`;
+      }
+    } catch (error) {
+      console.error('Error checking API status:', error);
+    }
+    
+    // Reset button
+    this.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      Check Now
+    `;
+  });
+
+  // Automatically check API status on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const checkButton = document.getElementById('check-api-status');
+    if (checkButton) {
+      checkButton.click();
+    }
+  });
 </script>
 
 <style>
@@ -2099,3 +2317,199 @@ const chartData = {
     font-family: monospace;
   }
 </style>
+
+<!-- Content Issues Modal -->
+<div id="content-issues-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden" style="z-index: 50;">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[80vh] flex flex-col">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-gray-900">Content Issues</h3>
+        <button id="close-modal" class="text-gray-400 hover:text-gray-500">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Modal Content -->
+      <div class="px-6 py-4 flex-1 overflow-auto">
+        <!-- Missing Images Section -->
+        <div class="mb-8">
+          <h4 class="text-md font-semibold text-gray-900 mb-4 flex items-center">
+            <svg class="h-5 w-5 text-amber-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Missing Images ({contentHealth.missingImages} items)
+          </h4>
+          <div id="missing-images-list" class="space-y-2">
+            <!-- Content will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Incomplete Metadata Section -->
+        <div class="mb-8">
+          <h4 class="text-md font-semibold text-gray-900 mb-4 flex items-center">
+            <svg class="h-5 w-5 text-amber-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Incomplete Metadata ({contentHealth.incompleteMetadata} items)
+          </h4>
+          <div id="incomplete-metadata-list" class="space-y-2">
+            <!-- Content will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Broken Links Section -->
+        <div class="mb-8">
+          <h4 class="text-md font-semibold text-gray-900 mb-4 flex items-center">
+            <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Broken Links ({contentHealth.brokenLinks} items)
+          </h4>
+          <div id="broken-links-list" class="space-y-2">
+            <!-- Content will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-gray-200">
+        <div class="flex justify-end">
+          <button id="close-modal-btn" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ contentHealthData: contentHealthData }}>
+  // Get content health data from the server-side props
+  const contentHealthDataObj = contentHealthData;
+
+  // Function to format collection name for display
+  function formatCollectionName(name) {
+    return name.split('-').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  }
+
+  // Function to populate the modal with content issues
+  function populateContentIssues() {
+    console.log('Content Health Data:', contentHealthDataObj); // Debug log
+    
+    // Populate Missing Images
+    const missingImagesList = document.getElementById('missing-images-list');
+    if (missingImagesList) {
+      let missingImagesHtml = '';
+      Object.entries(contentHealthDataObj).forEach(([collection, data]) => {
+        if (data.missingImages && data.missingImages.length > 0) {
+          missingImagesHtml += `
+            <div class="bg-amber-50 p-3 rounded-lg">
+              <h5 class="font-medium text-amber-900 mb-2">${formatCollectionName(collection)}</h5>
+              <ul class="list-disc list-inside space-y-1">
+                ${data.missingImages.map(item => `
+                  <li class="text-sm text-amber-800">
+                    ${item.title} 
+                    <span class="text-amber-600">(ID: ${item.id})</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          `;
+        }
+      });
+      missingImagesList.innerHTML = missingImagesHtml || '<p class="text-gray-500 text-sm">No missing images found.</p>';
+    }
+
+    // Populate Incomplete Metadata
+    const incompleteMetadataList = document.getElementById('incomplete-metadata-list');
+    if (incompleteMetadataList) {
+      let metadataHtml = '';
+      Object.entries(contentHealthDataObj).forEach(([collection, data]) => {
+        if (data.incompleteMetadata && data.incompleteMetadata.length > 0) {
+          metadataHtml += `
+            <div class="bg-amber-50 p-3 rounded-lg">
+              <h5 class="font-medium text-amber-900 mb-2">${formatCollectionName(collection)}</h5>
+              <ul class="list-disc list-inside space-y-1">
+                ${data.incompleteMetadata.map(item => `
+                  <li class="text-sm text-amber-800">
+                    ${item.title} 
+                    <span class="text-amber-600">(Missing: ${item.missingFields.join(', ')})</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          `;
+        }
+      });
+      incompleteMetadataList.innerHTML = metadataHtml || '<p class="text-gray-500 text-sm">No incomplete metadata found.</p>';
+    }
+
+    // Populate Broken Links
+    const brokenLinksList = document.getElementById('broken-links-list');
+    if (brokenLinksList) {
+      let linksHtml = '';
+      Object.entries(contentHealthDataObj).forEach(([collection, data]) => {
+        if (data.brokenLinks && data.brokenLinks.length > 0) {
+          linksHtml += `
+            <div class="bg-red-50 p-3 rounded-lg">
+              <h5 class="font-medium text-red-900 mb-2">${formatCollectionName(collection)}</h5>
+              <ul class="list-disc list-inside space-y-1">
+                ${data.brokenLinks.map(item => `
+                  <li class="text-sm text-red-800">
+                    ${item.title} 
+                    <span class="text-red-600">(${item.brokenUrl})</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          `;
+        }
+      });
+      brokenLinksList.innerHTML = linksHtml || '<p class="text-gray-500 text-sm">No broken links found.</p>';
+    }
+  }
+
+  // Modal functionality
+  const modal = document.getElementById('content-issues-modal');
+  const viewIssuesBtn = document.getElementById('view-content-issues');
+  const closeModalBtn = document.getElementById('close-modal');
+  const closeModalFooterBtn = document.getElementById('close-modal-btn');
+
+  if (modal && viewIssuesBtn && closeModalBtn && closeModalFooterBtn) {
+    // Open modal
+    viewIssuesBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      populateContentIssues();
+    });
+
+    // Close modal functions
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalFooterBtn.addEventListener('click', closeModal);
+
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
+</script>
+

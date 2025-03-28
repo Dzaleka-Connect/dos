@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -113,20 +114,44 @@ const relatedServices = await getCollection('services')
   );
 
 // Generate meta description
-const metaDescription = `${service.data.title} - ${service.data.shortDescription || 'A service provided by the Dzaleka community'}. ${service.data.contact?.email ? `Contact: ${service.data.contact.email}` : ''} ${service.data.location?.address ? `Location: ${service.data.location.address}` : ''}`.trim();
+const metaDescription = service.data.description || 'A service provided by the Dzaleka community';
 
 // Generate share title
-const shareTitle = `${service.data.title} | Dzaleka Heritage Archive`;
+const shareTitle = `${service.data.title} | Dzaleka Online Services`;
 
 // Current URL for sharing
 const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
+// Get the service logo URL
+const logoUrl = service.data.logo || '/images/logos/default-service.svg';
+
+// SEO metadata
+const seo = {
+  title: service.data.title || 'Service Details',
+  description: metaDescription,
+  image: logoUrl,
+  keywords: [
+    service.data.category,
+    'Dzaleka Services',
+    'Refugee Services',
+    service.data.title,
+    ...(service.data.tags || [])
+  ].filter(Boolean).join(', '),
+  type: 'article',
+  publishedDate: service.data.date,
+  modifiedDate: service.data.lastUpdated || service.data.date
+};
+
 ---
 
 <MainLayout 
-  title={shareTitle}
-  description={metaDescription}
-  ogImage={service.data.image}
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  type={seo.type}
+  keywords={seo.keywords}
+  publishedDate={seo.publishedDate}
+  modifiedDate={seo.modifiedDate}
 >
   <main class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <div class="container mx-auto px-4 py-12">

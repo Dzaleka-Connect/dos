@@ -43,9 +43,42 @@ if (verifiedOnly) searchParams.set('verified', 'true');
 const queryString = searchParams.toString();
 const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
 
+// Group services by category
+const servicesByCategory = allServices.reduce((acc, service) => {
+  const category = service.data.category;
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(service);
+  return acc;
+}, {});
+
+// Sort categories alphabetically
+const sortedCategories = Object.keys(servicesByCategory).sort();
+
+// SEO metadata
+const seo = {
+  title: 'Services Directory - Dzaleka Online Services',
+  description: 'Explore essential services in Dzaleka Refugee Camp. Browse healthcare, education, business services, and more.',
+  image: '/images/services-directory.jpg',
+  keywords: [
+    'Dzaleka Services',
+    'Refugee Services',
+    'Service Directory',
+    'Malawi Refugee Services'
+  ].filter(Boolean).join(', '),
+  type: 'website'
+};
+
 ---
 
-<MainLayout title="Service Directory">
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  type={seo.type}
+  keywords={seo.keywords}
+>
   <main>
     <!-- Hero Section -->
     <div class="bg-gradient-to-r from-primary-600 to-primary-800 px-4 py-16">
