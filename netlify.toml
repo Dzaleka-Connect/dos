@@ -5,32 +5,25 @@
   publish = "dist"
   command = "npm run build"
 
-# Handle API endpoints first
+# Redirects for API endpoints
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  to = "https://services.dzaleka.com/api/:splat"
   status = 200
-  force = true
+  force = true  # Ensures the redirect works even if the route exists
 
-# Handle static files and other routes
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
 
-# Handle 404s last
+# Handle 404s
 [[redirects]]
   from = "/*"
   to = "/404"
   status = 404
-  conditions = {Not = [{Path = ["/api/*", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/*.ttf", "/*.eot", "/*.json", "/*.xml", "/*.txt", "/*.pdf", "/*.zip", "/*.rar", "/*.doc", "/*.docx", "/*.xls", "/*.xlsx", "/*.ppt", "/*.pptx", "/*.csv", "/*.tsv", "/*.md", "/*.html"]}]}
-
-# Specific redirects
-[[redirects]]
-  from = "/updates"
-  to = "/updates/1"
-  status = 302
 
 # Environment variables
 [build.environment]
   NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/updates"
+  to = "/updates/1"
+  status = 302"
