@@ -115,61 +115,34 @@ const currentMessage = messages[formType] || messages.default;
         </div>
 
         {/* Title */}
-        <h1 class="text-center text-3xl font-bold text-gray-900 mb-4">
+        <h1 id="thank-you-title" class="text-center text-3xl font-bold text-gray-900 mb-4">
           {currentMessage.title}
         </h1>
 
         {/* Message */}
-        <p class="text-center text-lg text-gray-600 mb-8">
+        <p id="thank-you-message" class="text-center text-lg text-gray-600 mb-8">
           {currentMessage.message || currentMessage.description}
         </p>
 
         {/* Next Steps */}
-        {currentMessage.nextSteps && (
-          <div class="bg-gray-50 rounded-xl p-6 mb-8">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Next Steps</h2>
-            <ul class="space-y-4">
-              {currentMessage.nextSteps.map(step => (
-                <li class="flex items-start">
-                  <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                  <span class="text-gray-700">{step}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div id="thank-you-next-steps" class="bg-gray-50 rounded-xl p-6 mb-8 hidden">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Next Steps</h2>
+          <ul class="space-y-4" id="next-steps-list">
+          </ul>
+        </div>
 
         {/* CTA */}
-        {currentMessage.cta && (
-          <div class="text-center">
-            <a 
-              href={currentMessage.cta.href} 
-              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-              </svg>
-              {currentMessage.cta.text}
-            </a>
-          </div>
-        )}
-
-        {/* Return to Home */}
-        {!currentMessage.cta && (
-          <div class="text-center">
-            <a 
-              href="/" 
-              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-              </svg>
-              Return to Home
-            </a>
-          </div>
-        )}
+        <div id="thank-you-cta" class="text-center hidden">
+          <a 
+            href="/" 
+            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            Return to Home
+          </a>
+        </div>
       </div>
     </div>
   </main>
@@ -195,22 +168,23 @@ const currentMessage = messages[formType] || messages.default;
       document.title = currentMessage.title;
       
       // Update heading
-      const heading = document.querySelector('h1');
+      const heading = document.getElementById('thank-you-title');
       if (heading) {
         heading.textContent = currentMessage.title;
       }
       
       // Update message
-      const message = document.querySelector('p');
+      const message = document.getElementById('thank-you-message');
       if (message) {
         message.textContent = currentMessage.message || currentMessage.description;
       }
       
       // Update next steps if they exist
       if (currentMessage.nextSteps) {
-        const nextStepsContainer = document.querySelector('.bg-gray-50');
+        const nextStepsContainer = document.getElementById('thank-you-next-steps');
         if (nextStepsContainer) {
-          const nextStepsList = nextStepsContainer.querySelector('ul');
+          nextStepsContainer.classList.remove('hidden');
+          const nextStepsList = document.getElementById('next-steps-list');
           if (nextStepsList) {
             nextStepsList.innerHTML = currentMessage.nextSteps.map(step => `
               <li class="flex items-start">
@@ -220,6 +194,24 @@ const currentMessage = messages[formType] || messages.default;
                 <span class="text-gray-700">${step}</span>
               </li>
             `).join('');
+          }
+        }
+      }
+      
+      // Update CTA if it exists
+      if (currentMessage.cta) {
+        const ctaContainer = document.getElementById('thank-you-cta');
+        if (ctaContainer) {
+          ctaContainer.classList.remove('hidden');
+          const ctaLink = ctaContainer.querySelector('a');
+          if (ctaLink) {
+            ctaLink.href = currentMessage.cta.href;
+            ctaLink.innerHTML = `
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              ${currentMessage.cta.text}
+            `;
           }
         }
       }
