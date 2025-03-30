@@ -176,50 +176,53 @@ const currentMessage = messages[formType] || messages.default;
 </MainLayout>
 
 <script>
-  // Get the form type from URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const formType = urlParams.get('type') || 'default';
-  
-  // Get messages from the hidden data element
-  const messagesElement = document.getElementById('thank-you-messages');
-  const messages = messagesElement ? JSON.parse(messagesElement.textContent) : {};
-  
-  // Get the current message
-  const currentMessage = messages[formType] || messages.default;
-  
-  // Update the page content
-  if (currentMessage) {
-    // Update title
-    document.title = currentMessage.title;
+  // Run immediately when the script loads
+  (function() {
+    // Get the form type from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const formType = urlParams.get('type') || 'default';
     
-    // Update heading
-    const heading = document.querySelector('h1');
-    if (heading) {
-      heading.textContent = currentMessage.title;
-    }
+    // Get messages from the hidden data element
+    const messagesElement = document.getElementById('thank-you-messages');
+    if (!messagesElement) return;
     
-    // Update message
-    const message = document.querySelector('p');
-    if (message) {
-      message.textContent = currentMessage.message || currentMessage.description;
-    }
+    const messages = JSON.parse(messagesElement.textContent);
+    const currentMessage = messages[formType] || messages.default;
     
-    // Update next steps if they exist
-    if (currentMessage.nextSteps) {
-      const nextStepsContainer = document.querySelector('.bg-gray-50');
-      if (nextStepsContainer) {
-        const nextStepsList = nextStepsContainer.querySelector('ul');
-        if (nextStepsList) {
-          nextStepsList.innerHTML = currentMessage.nextSteps.map(step => `
-            <li class="flex items-start">
-              <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-              <span class="text-gray-700">${step}</span>
-            </li>
-          `).join('');
+    // Update the page content
+    if (currentMessage) {
+      // Update title
+      document.title = currentMessage.title;
+      
+      // Update heading
+      const heading = document.querySelector('h1');
+      if (heading) {
+        heading.textContent = currentMessage.title;
+      }
+      
+      // Update message
+      const message = document.querySelector('p');
+      if (message) {
+        message.textContent = currentMessage.message || currentMessage.description;
+      }
+      
+      // Update next steps if they exist
+      if (currentMessage.nextSteps) {
+        const nextStepsContainer = document.querySelector('.bg-gray-50');
+        if (nextStepsContainer) {
+          const nextStepsList = nextStepsContainer.querySelector('ul');
+          if (nextStepsList) {
+            nextStepsList.innerHTML = currentMessage.nextSteps.map(step => `
+              <li class="flex items-start">
+                <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <span class="text-gray-700">${step}</span>
+              </li>
+            `).join('');
+          }
         }
       }
     }
-  }
+  })();
 </script>
