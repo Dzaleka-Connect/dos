@@ -6,6 +6,15 @@ const formType = Astro.url.searchParams.get('type') || 'default';
 
 // Define messages for different form types
 const messages = {
+  support: {
+    title: 'Support Request Received',
+    message: 'Thank you for contacting our support team. We have received your request and will respond within 24-48 hours.',
+    nextSteps: [
+      'Check your email for a confirmation of your request',
+      'Keep your contact information handy for our response',
+      'For urgent issues, you can contact us directly at dzalekaconnect@gmail.com'
+    ]
+  },
   visit: {
     title: 'Thank You for Planning Your Visit',
     message: 'We have received your visit request and are excited to welcome you to Dzaleka. Our team will review your details and contact you within 24-48 hours to confirm your visit arrangements.',
@@ -92,6 +101,9 @@ const currentMessage = messages[formType] || messages.default;
 ---
 
 <MainLayout title={currentMessage.title}>
+  <!-- Hidden data element for messages -->
+  <script id="thank-you-messages" type="application/json" set:html={JSON.stringify(messages)}></script>
+  
   <main class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto">
       <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12">
@@ -162,3 +174,37 @@ const currentMessage = messages[formType] || messages.default;
     </div>
   </main>
 </MainLayout>
+
+<script>
+  // Get the form type from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const formType = urlParams.get('type') || 'default';
+  
+  // Get messages from the hidden data element
+  const messagesElement = document.getElementById('thank-you-messages');
+  const messages = messagesElement ? JSON.parse(messagesElement.textContent) : {};
+  
+  // Get the current message
+  const currentMessage = messages[formType] || messages.default;
+  
+  // Update the page content
+  if (currentMessage) {
+    document.title = currentMessage.title;
+    document.querySelector('h1').textContent = currentMessage.title;
+    document.querySelector('p').textContent = currentMessage.message || currentMessage.description;
+    
+    // Update next steps if they exist
+    const nextStepsContainer = document.querySelector('.bg-gray-50');
+    if (currentMessage.nextSteps && nextStepsContainer) {
+      const nextStepsList = nextStepsContainer.querySelector('ul');
+      nextStepsList.innerHTML = currentMessage.nextSteps.map(step => `
+        <li class="flex items-start">
+          <svg class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <span class="text-gray-700">${step}</span>
+        </li>
+      `).join('');
+    }
+  }
+</script>
