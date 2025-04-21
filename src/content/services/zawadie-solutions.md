@@ -22,7 +22,8 @@ socialMedia:
 logo: >-
   https://zawadie.com/wp-content/uploads/2024/02/WhatsApp_Image_2024-01-19_at_01.20.27-removebg-preview.png
 featured: true
-lastUpdated: 2024-12-24
+verified: true
+lastUpdated: 2025-04-21
 ---
 
 ## About Zawadie Solutions

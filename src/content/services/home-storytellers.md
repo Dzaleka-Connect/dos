@@ -21,7 +21,7 @@ socialMedia:
   website: 'https://www.homestorytellers.org/'
 logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMAUrUL1r_AOwBG1rywdungabWnU8FnCbwYw&s'
 featured: false
-verified: false
+verified: true
 lastUpdated: 2024-12-24
 ---
 

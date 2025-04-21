@@ -18,11 +18,11 @@ socialMedia:
   instagram: 'https://www.instagram.com/phainkydesign5/'
   linkedin: 'https://www.linkedin.com/in/phainky-organization-a0534022a/'
   website: 'https://phainky.com/'
-logo: 'https://media.licdn.com/dms/image/v2/C4D03AQG-u_z9GidzWA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1641138601039?e=1744243200&v=beta&t=AQQqoMTBYHy6-Y5yHYycWIM79iNakWl6N4tDh4-c4VA'
+logo: 'https://phainky.com/wp-content/uploads/2024/07/phainkylogo.jpg'
 featured: true
 verified: true
 status: "active"
-lastUpdated: 2024-12-24
+lastUpdated: 2025-04-21
 ---
 
 ## About Phainky

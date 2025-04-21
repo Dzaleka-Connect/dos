@@ -19,10 +19,10 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/imagineworldwide/about'
   website: 'https://www.imagineworldwide.org/'
 logo: >-
-  https://media.licdn.com/dms/image/v2/D560BAQGfOxX-MgIyJg/company-logo_200_200/company-logo_200_200/0/1712361288668/imagineworldwide_logo?e=1743638400&v=beta&t=8ZQehkgSV3SBy7T1uVmQrf8abRLlDo0mdNIpJ_u-tIc
+  https://cdn.getro.com/companies/d3b9011e-6b86-5811-987b-5e8a0d8e7e91-1740140108
 featured: false
 verified: true
-lastUpdated: 2025-01-03
+lastUpdated: 2025-04-21
 ---
 
 ## About Imagine Worldwide Ltd

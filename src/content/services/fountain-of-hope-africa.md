@@ -21,6 +21,7 @@ socialMedia:
 logo: >-
   https://fountainofhopeafrica.org/wp-content/uploads/2023/02/Fountain-Of-Hope-LOGO-400Png.png
 featured: false
+verified: true
 lastUpdated: 2024-12-24
 ---
 
