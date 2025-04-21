@@ -20,9 +20,73 @@ function formatLocation(location: any) {
   if (typeof location === 'string') return location;
   return location.venue && location.city ? `${location.venue}, ${location.city}` : location.venue || location.city || 'Location TBA';
 }
+
+// Format date for structured data
+const formattedDate = format(entry.data.date, 'yyyy-MM-dd');
+const formattedTime = format(entry.data.date, 'HH:mm');
+
+// Create structured data for event
+const eventStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": entry.data.title,
+  "description": entry.data.description,
+  "image": entry.data.image,
+  "startDate": `${formattedDate}T${formattedTime}`,
+  "endDate": `${formattedDate}T${formattedTime}`, // Assuming 1 hour duration if not specified
+  "eventStatus": entry.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": formatLocation(entry.data.location)
+  },
+  "organizer": entry.data.organizer ? {
+    "@type": "Organization",
+    "name": entry.data.organizer
+  } : undefined,
+  "offers": entry.data.registration?.url ? {
+    "@type": "Offer",
+    "url": entry.data.registration.url,
+    "availability": "https://schema.org/InStock"
+  } : undefined
+};
+
+// Create SEO metadata
+const seo = {
+  title: `${entry.data.title}`,
+  description: entry.data.description,
+  image: entry.data.image,
+  type: "event",
+  canonical: `https://services.dzaleka.com/events/${entry.slug}`,
+  openGraph: {
+    title: `${entry.data.title}`,
+    description: entry.data.description,
+    image: entry.data.image,
+    type: "event",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/events/${entry.slug}`
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${entry.data.title}`,
+    description: entry.data.description,
+    image: entry.data.image
+  }
+};
 ---
 
-<MainLayout title={entry.data.title}>
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  image={seo.image} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(eventStructuredData)} />
+  
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
       {/* Back Button */}

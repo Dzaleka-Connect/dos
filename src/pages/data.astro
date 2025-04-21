@@ -12,6 +12,72 @@ import { ResourcesWidget } from '../components/data/ResourcesWidget';
 import { FinanceWidget } from '../components/data/FinanceWidget';
 import { PopulationChart } from '../components/data/PopulationChart';
 
+// Create SEO metadata
+const seo = {
+  description: "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations. Access statistics, demographics, economic impact, healthcare services, and more.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/data",
+  openGraph: {
+    description: "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations. Access statistics, demographics, economic impact, healthcare services, and more.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/data"
+  },
+  twitter: {
+    card: "summary",
+    description: "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations. Access statistics, demographics, economic impact, healthcare services, and more."
+  }
+};
+
+// Create structured data for the data hub
+const dataHubStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Dzaleka Camp Data Hub",
+  "description": "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations.",
+  "url": "https://services.dzaleka.com/data",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://services.dzaleka.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Data Hub",
+        "item": "https://services.dzaleka.com/data"
+      }
+    ]
+  },
+  "about": {
+    "@type": "Place",
+    "name": "Dzaleka Refugee Camp",
+    "description": "A refugee camp in Malawi housing over 56,000 refugees from various countries including DRC, Burundi, and Rwanda."
+  },
+  "variableMeasured": [
+    {
+      "@type": "PropertyValue",
+      "name": "Total Refugees",
+      "value": "56,760"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Women & Girls",
+      "value": "60%"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Main Nationalities",
+      "value": "5"
+    }
+  ]
+};
+
 const languages = [
   { code: 'en', name: 'English' },
   { code: 'fr', name: 'Français' },
@@ -19,7 +85,16 @@ const languages = [
 ];
 ---
 
-<MainLayout title="Dzaleka Camp Data Hub">
+<MainLayout 
+  title="Dzaleka Camp Data Hub"
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(dataHubStructuredData)} />
+  
   <!-- Hero Section -->
   <div class="relative">
     {/* Hero Image */}

@@ -1,8 +1,96 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+
+// Create SEO metadata
+const seo = {
+  description: "Access quality education and skill development opportunities through our local and global learning initiatives. Join 150,000+ learners on Kiron Campus accessing 500+ free online courses in IT, business, languages, and more.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/e-learning",
+  openGraph: {
+    description: "Access quality education and skill development opportunities through our local and global learning initiatives. Join 150,000+ learners on Kiron Campus accessing 500+ free online courses in IT, business, languages, and more.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/e-learning"
+  },
+  twitter: {
+    card: "summary",
+    description: "Access quality education and skill development opportunities through our local and global learning initiatives. Join 150,000+ learners on Kiron Campus accessing 500+ free online courses in IT, business, languages, and more."
+  }
+};
+
+// Create structured data for the e-learning platform
+const eLearningStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Dzaleka E-Learning Platform",
+  "description": "Access quality education and skill development opportunities through our local and global learning initiatives.",
+  "url": "https://services.dzaleka.com/e-learning",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://services.dzaleka.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "E-Learning",
+        "item": "https://services.dzaleka.com/e-learning"
+      }
+    ]
+  },
+  "offers": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "Course",
+      "name": "Online Courses",
+      "description": "Access hundreds of free courses through Kiron Campus and other learning platforms",
+      "provider": {
+        "@type": "Organization",
+        "name": "Kiron Campus",
+        "url": "https://campus.kiron.ngo/explore"
+      }
+    }
+  },
+  "statistics": [
+    {
+      "@type": "PropertyValue",
+      "name": "Global Kiron Learners",
+      "value": "150K+"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Courses on Kiron Campus",
+      "value": "500+"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Kiron Partners",
+      "value": "160+"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Years of Impact",
+      "value": "10+"
+    }
+  ]
+};
 ---
 
-<MainLayout title="E-Learning Platform - Dzaleka Connect">
+<MainLayout 
+  title="E-Learning Platform"
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(eLearningStructuredData)} />
+  
   <main class="min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-hidden">
     <!-- Hero Section -->
     <div class="relative min-h-[600px] flex items-center justify-center text-white overflow-hidden">

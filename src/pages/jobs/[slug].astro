@@ -28,9 +28,99 @@ const relatedJobs = allJobs
     (j.data.category === job.data.category || j.data.type === job.data.type)
   )
   .slice(0, 3);
+
+// Create SEO metadata
+const seo = {
+  description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`,
+  type: "article",
+  canonical: `https://services.dzaleka.com/jobs/${job.slug}`,
+  openGraph: {
+    title: `${job.data.title}`,
+    description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`,
+    type: "article",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/jobs/${job.slug}`
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${job.data.title} | Dzaleka Online Services`,
+    description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`
+  }
+};
+
+// Create structured data for the job posting
+const jobStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": job.data.title,
+  "description": job.data.description,
+  "datePosted": job.data.posted,
+  "validThrough": job.data.deadline,
+  "employmentType": job.data.type,
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": job.data.organization
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Dzaleka",
+      "addressRegion": "Dowa",
+      "addressCountry": "Malawi"
+    }
+  },
+  "applicationRequirements": job.data.skills?.join(", "),
+  "baseSalary": job.data.salary ? {
+    "@type": "MonetaryAmount",
+    "currency": "MWK",
+    "value": {
+      "@type": "QuantitativeValue",
+      "value": job.data.salary
+    }
+  } : undefined,
+  "url": `https://services.dzaleka.com/jobs/${job.slug}`
+};
+
+// Create breadcrumb structured data
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://services.dzaleka.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Jobs",
+      "item": "https://services.dzaleka.com/jobs"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": job.data.title,
+      "item": `https://services.dzaleka.com/jobs/${job.slug}`
+    }
+  ]
+};
 ---
 
-<MainLayout title={job.data.title}>
+<MainLayout 
+  title={job.data.title}
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jobStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
+  
   <div class="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
     <!-- Job Header -->
     <div class="bg-gradient-to-r from-primary-600 to-primary-800">

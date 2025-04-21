@@ -39,9 +39,87 @@ const relatedResources = allResources
      r.data.tags?.some(tag => resource.data.tags?.includes(tag)))
   )
   .slice(0, 3);
+
+// Create SEO metadata
+const seo = {
+  description: `${resource.data.description || `Learn about ${resource.data.title}, a ${resource.data.category} resource for the Dzaleka community.`}`,
+  type: "article",
+  canonical: `https://services.dzaleka.com/resources/${resource.slug}`,
+  openGraph: {
+    title: `${resource.data.title} | Dzaleka Heritage`,
+    description: resource.data.description || `Learn about ${resource.data.title}, a ${resource.data.category} resource for the Dzaleka community.`,
+    type: "article",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/resources/${resource.slug}`
+  },
+  twitter: {
+    card: "summary_large_image",
+    description: resource.data.description || `Learn about ${resource.data.title}, a ${resource.data.category} resource for the Dzaleka community.`
+  }
+};
+
+// Create structured data for the resource
+const resourceStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": resource.data.title,
+  "description": resource.data.description,
+  "datePublished": resource.data.date,
+  "dateModified": resource.data.lastUpdated || resource.data.date,
+  "author": {
+    "@type": "Organization",
+    "name": resource.data.author || "Dzaleka Service Online"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dzaleka Service Online",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png"
+    }
+  },
+  "url": `https://services.dzaleka.com/resources/${resource.slug}`
+};
+
+// Create breadcrumb structured data
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://services.dzaleka.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Resources",
+      "item": "https://services.dzaleka.com/resources"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": resource.data.title,
+      "item": `https://services.dzaleka.com/resources/${resource.slug}`
+    }
+  ]
+};
 ---
 
-<MainLayout title={`${resource.data.title} - Dzaleka Heritage`}>
+<MainLayout 
+  title={`${resource.data.title} - Dzaleka Service Online`}
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(resourceStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
+  
   <main class="min-h-screen">
     {/* Back Button */}
     <div class="container mx-auto px-4 py-6">
@@ -172,7 +250,7 @@ const relatedResources = allResources
                     <div class="flex justify-between items-center">
                       <dt class="text-sm text-gray-500 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
+                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
                         </svg>
                         File Type
                       </dt>
@@ -183,7 +261,7 @@ const relatedResources = allResources
                     <div class="flex justify-between items-center">
                       <dt class="text-sm text-gray-500 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
                         </svg>
                         Size
                       </dt>

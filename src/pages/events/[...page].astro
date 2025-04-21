@@ -41,9 +41,91 @@ const paginatedEvents = sortedEvents.slice(startIndex, endIndex);
 if (currentPage < 2) {
   return Astro.redirect('/events');
 }
+
+// Create SEO metadata
+const seo = {
+  title: `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+  description: `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`,
+  type: "website",
+  canonical: `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`,
+  openGraph: {
+    title: `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+    description: `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`,
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`
+  },
+  twitter: {
+    card: "summary",
+    title: `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+    description: `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`
+  }
+};
+
+// Create structured data for events list
+const eventsStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": paginatedEvents.map((event, index) => ({
+    "@type": "ListItem",
+    "position": startIndex + index + 1,
+    "item": {
+      "@type": "Event",
+      "name": event.data.title,
+      "description": event.data.description,
+      "image": event.data.image,
+      "startDate": event.data.date.toISOString(),
+      "eventStatus": event.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
+      "url": `https://services.dzaleka.com/events/${event.slug}`
+    }
+  }))
+};
+
+// Create pagination structured data
+const paginationStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+  "description": `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`,
+  "url": `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`,
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://services.dzaleka.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Events",
+        "item": "https://services.dzaleka.com/events"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": `Page ${validCurrentPage}`,
+        "item": `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`
+      }
+    ]
+  },
+  "mainEntity": eventsStructuredData
+};
 ---
 
-<MainLayout title="Events">
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(paginationStructuredData)} />
+  
   <main class="container mx-auto px-4 py-8">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
       <h1 class="text-3xl font-bold text-gray-900">Events</h1>

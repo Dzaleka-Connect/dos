@@ -5,9 +5,141 @@ import FormStatus from '../../components/applications/FormStatus.astro';
 const formId = 'photo-submission-form';
 const cloudName = 'dcvwslmow';
 const uploadPreset = 'Dzaleka_Photo_Gallery';
+
+// Create SEO metadata
+const seo = {
+  title: "Submit Your Photo",
+  description: "Share your story through photography. Submit your photo to be featured in our digital archive documenting life, culture, and stories from Dzaleka Refugee Camp.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/photos/submit",
+  openGraph: {
+    title: "Submit Your Photo",
+    description: "Share your story through photography. Submit your photo to be featured in our digital archive documenting life, culture, and stories from Dzaleka Refugee Camp.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/photos/submit"
+  },
+  twitter: {
+    card: "summary",
+    title: "Submit Your Photo | Dzaleka Online Services",
+    description: "Share your story through photography. Submit your photo to be featured in our digital archive documenting life, culture, and stories from Dzaleka Refugee Camp."
+  }
+};
+
+// Create structured data for the submission form
+const formStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Submit Your Photo | Dzaleka Online Services",
+  "description": "Share your story through photography. Submit your photo to be featured in our digital archive documenting life, culture, and stories from Dzaleka Refugee Camp.",
+  "url": "https://services.dzaleka.com/photos/submit",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://services.dzaleka.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Photo Gallery",
+        "item": "https://services.dzaleka.com/photos"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Submit Your Photo",
+        "item": "https://services.dzaleka.com/photos/submit"
+      }
+    ]
+  },
+  "mainEntity": {
+    "@type": "WebForm",
+    "name": "Photo Submission Form",
+    "description": "Form for submitting photos to the Dzaleka Heritage Archive",
+    "action": "https://formspree.io/f/xqaaajae",
+    "method": "POST",
+    "formType": "photo",
+    "input": [
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "name",
+        "valueRequired": true,
+        "description": "Full Name"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "email",
+        "valueRequired": true,
+        "description": "Email Address"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "instagram",
+        "valueRequired": false,
+        "description": "Instagram Handle"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "website",
+        "valueRequired": false,
+        "description": "Website"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "bio",
+        "valueRequired": true,
+        "description": "Short Bio"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "title",
+        "valueRequired": true,
+        "description": "Photo Title"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "description",
+        "valueRequired": true,
+        "description": "Photo Description"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "location",
+        "valueRequired": true,
+        "description": "Photo Location"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "dateTaken",
+        "valueRequired": true,
+        "description": "Date Taken"
+      },
+      {
+        "@type": "PropertyValueSpecification",
+        "name": "tags",
+        "valueRequired": true,
+        "description": "Tags"
+      }
+    ]
+  }
+};
 ---
 
-<MainLayout title="Submit Your Photo">
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(formStructuredData)} />
+  
   <main class="bg-gray-50 py-12">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="bg-white rounded-lg shadow-sm p-8">

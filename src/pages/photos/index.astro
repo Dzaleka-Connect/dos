@@ -49,9 +49,82 @@ function getPaginationUrl(year: number, page: number) {
   params.set(`${year}Page`, page.toString());
   return `?${params.toString()}#${year}`;
 }
+
+// Create SEO metadata
+const seo = {
+  title: "Photo Gallery",
+  description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/photos",
+  openGraph: {
+    title: "Photo Gallery",
+    description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/photos"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Photo Gallery | Dzaleka Online Services",
+    description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community."
+  }
+};
+
+// Create structured data for photo gallery
+const galleryStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Photo Gallery | Dzaleka Online Services",
+  "description": "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp.",
+  "url": "https://services.dzaleka.com/photos",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://services.dzaleka.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Photo Gallery",
+        "item": "https://services.dzaleka.com/photos"
+      }
+    ]
+  },
+  "mainEntity": {
+    "@type": "ImageGallery",
+    "name": "Dzaleka Photo Gallery",
+    "description": "A collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp",
+    "numberOfItems": photos.length,
+    "itemListElement": years.map((year, yearIndex) => ({
+      "@type": "ListItem",
+      "position": yearIndex + 1,
+      "item": {
+        "@type": "CollectionPage",
+        "name": `${year} Photos`,
+        "description": `Photographs from the year ${year} in Dzaleka Refugee Camp`,
+        "url": `https://services.dzaleka.com/photos/${year}`,
+        "numberOfItems": photosByYear[year].length
+      }
+    }))
+  }
+};
 ---
 
-<MainLayout title="Photo Gallery">
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(galleryStructuredData)} />
+  
   <main class="container mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">
       <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Photo Gallery</h1>
