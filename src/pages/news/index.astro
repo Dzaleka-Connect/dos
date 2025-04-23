@@ -13,9 +13,69 @@ const businessSpotlights = sortedNews.filter(item => item.data.category === 'bus
 const announcements = sortedNews.filter(item => item.data.category === 'announcement');
 const successStories = sortedNews.filter(item => item.data.category === 'success-story');
 const businessGuides = sortedNews.filter(item => item.data.category === 'business-guide');
+const communityUpdates = sortedNews.filter(item => item.data.category === 'news');
 
 // Get featured news
 const featuredNews = sortedNews.filter(item => item.data.featured);
+
+// Create SEO metadata
+const seo = {
+  title: "News & Updates",
+  description: "Stay informed about the latest happenings in our community, from business success stories to important announcements and practical guides for entrepreneurs in Dzaleka Refugee Camp.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/news",
+  openGraph: {
+    title: "News & Updates | Dzaleka Online Services",
+    description: "Stay informed about the latest happenings in our community, from business success stories to important announcements and practical guides for entrepreneurs in Dzaleka Refugee Camp.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/news",
+    image: {
+      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "Dzaleka Online Services News"
+    }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "News & Updates | Dzaleka Online Services",
+    description: "Stay informed about the latest happenings in our community, from business success stories to important announcements and practical guides for entrepreneurs in Dzaleka Refugee Camp.",
+    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
+  }
+};
+
+// Create structured data for the news page
+const newsStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "News & Updates",
+  "description": "Stay informed about the latest happenings in our community, from business success stories to important announcements and practical guides for entrepreneurs in Dzaleka Refugee Camp.",
+  "url": "https://services.dzaleka.com/news",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png"
+    }
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": sortedNews.slice(0, 6).map((news, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Article",
+        "headline": news.data.title,
+        "description": news.data.description,
+        "datePublished": news.data.date.toISOString(),
+        "url": `https://services.dzaleka.com/news/${news.slug}`
+      }
+    }))
+  }
+};
 
 // Categories with icons and descriptions
 const categories = [
@@ -46,11 +106,27 @@ const categories = [
     description: 'Practical resources for entrepreneurs',
     color: 'from-purple-500 to-indigo-500',
     count: businessGuides.length
+  },
+  { 
+    name: 'Community Updates',
+    icon: 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z',
+    description: 'Latest developments and initiatives',
+    color: 'from-yellow-500 to-amber-500',
+    count: communityUpdates.length
   }
 ];
 ---
 
-<MainLayout title="News & Updates">
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(newsStructuredData)} />
+  
   <!-- Hero Section with Animated Background -->
   <div class="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900">
     <div class="absolute inset-0">
@@ -137,6 +213,26 @@ const categories = [
           </div>
           <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {businessGuides.slice(0, 3).map(news => (
+              <NewsCard news={news} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {communityUpdates.length > 0 && (
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Community Updates</h2>
+              <p class="mt-1 text-gray-600">Latest developments and initiatives in Dzaleka</p>
+            </div>
+            <a href="/news/category/news" class="text-primary-600 hover:text-primary-700 font-medium">
+              View all →
+              <span class="sr-only">community updates</span>
+            </a>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {communityUpdates.slice(0, 3).map(news => (
               <NewsCard news={news} />
             ))}
           </div>
