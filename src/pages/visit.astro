@@ -45,249 +45,249 @@ const stats = [
   { number: '1994', label: 'Established' },
   { number: '5+', label: 'Nations' }
 ];
----
 
-<MainLayout title={pageTitle} description={description} keywords={keywords} ogImage={ogImage}>
-  <!-- JSON-LD Structured Data for TouristAttraction -->
-  <script type="application/ld+json" slot="head">
+// Create the structured data object
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@graph": [
+      "@type": "TouristAttraction",
+      "name": "Visit Dzaleka",
+      "alternateName": "Visit Dzaleka Refugee Camp",
+      "description": "Explore Dzaleka Refugee Camp with guided tours highlighting vibrant culture, rich heritage, and resilient community. Book your visit to Malawi's largest refugee community today.",
+      "url": "https://services.dzaleka.com/visit",
+      "isAccessibleForFree": false,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Dzaleka Refugee Camp",
+        "addressLocality": "Dowa District",
+        "addressRegion": "Central Region",
+        "postalCode": "DZ001",
+        "addressCountry": "Malawi"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -13.7333,
+        "longitude": 33.9333,
+        "elevation": "1200m"
+      },
+      "openingHours": ["Mo-Fr 10:00-16:00"],
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg",
+        "width": "1200",
+        "height": "630",
+        "creditText": "Photo by Badre Bahaji",
+        "copyrightNotice": "© 2024 Tumaini Letu. All rights reserved."
+      },
+      "touristType": [
+        "Cultural Tourism",
+        "Educational Tourism",
+        "Humanitarian Tourism",
+        "Community Tourism"
+      ],
+      "priceRange": "MWK 15,000-100,000",
+      "sameAs": [
+        "https://services.dzaleka.com/visit",
+        "https://dzaleka.com"
+      ],
+      "amenityFeature": [
         {
-          "@type": "TouristAttraction",
-          "name": "Visit Dzaleka",
-          "alternateName": "Visit Dzaleka Refugee Camp",
-          "description": "Experience guided tours of Dzaleka Refugee Camp in Malawi, showcasing vibrant culture, rich heritage, and resilient community through cultural exchanges, educational workshops, and community initiatives.",
-          "url": "https://services.dzaleka.com/visit",
-          "isAccessibleForFree": false,
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Dzaleka Refugee Camp",
-            "addressLocality": "Dowa District",
-            "addressRegion": "Central Region",
-            "postalCode": "DZ001",
-            "addressCountry": "Malawi"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": -13.7333,
-            "longitude": 33.9333,
-            "elevation": "1200m"
-          },
-          "openingHours": ["Mo-Fr 10:00-16:00"],
-          "image": {
-            "@type": "ImageObject",
-            "url": "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg",
-            "width": "1200",
-            "height": "630",
-            "creditText": "Photo by Badre Bahaji",
-            "copyrightNotice": "© 2024 Tumaini Letu. All rights reserved."
-          },
-          "touristType": [
-            "Cultural Tourism",
-            "Educational Tourism",
-            "Humanitarian Tourism",
-            "Community Tourism"
-          ],
-          "priceRange": "MWK 15,000-100,000",
-          "sameAs": [
-            "https://services.dzaleka.com/visit",
-            "https://dzaleka.com"
-          ],
-          "amenityFeature": [
-            {
-              "@type": "LocationFeatureSpecification",
-              "name": "Guided Tours",
-              "value": true
-            },
-            {
-              "@type": "LocationFeatureSpecification",
-              "name": "Cultural Activities",
-              "value": true
-            },
-            {
-              "@type": "LocationFeatureSpecification",
-              "name": "Educational Workshops",
-              "value": true
-            },
-            {
-              "@type": "LocationFeatureSpecification",
-              "name": "Kawale 1 & 2",
-              "value": true
-            },
-            {
-              "@type": "LocationFeatureSpecification",
-              "name": "Dzaleka Hill",
-              "value": true
-            }
-          ],
-          "publicAccess": true,
-          "hasMap": "https://www.google.com/maps?q=dzaleka+refugee+camp",
-          "maximumAttendeeCapacity": 50,
-          "availableLanguage": [
-            "English",
-            "Swahili",
-            "French",
-            "Kirundi",
-            "Kinyarwanda"
-          ],
-          "tourBookingPage": "https://services.dzaleka.com/visit#planTripForm",
-          "additionalProperty": [
-            {
-              "@type": "PropertyValue",
-              "name": "Tour Duration",
-              "value": "2-4 hours"
-            },
-            {
-              "@type": "PropertyValue",
-              "name": "Group Size",
-              "value": "1-50 people"
-            },
-            {
-              "@type": "PropertyValue",
-              "name": "Established",
-              "value": "1994"
-            }
-          ],
-          "subjectOf": [
-            {
-              "@type": "Event",
-              "name": "Tumaini Festival",
-              "description": "Annual cultural festival showcasing music, art, and performances"
-            }
-          ],
-          "potentialAction": {
-            "@type": "BookAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "https://services.dzaleka.com/visit#planTripForm",
-              "inLanguage": "en",
-              "actionPlatform": [
-                "http://schema.org/DesktopWebPlatform",
-                "http://schema.org/MobileWebPlatform"
-              ]
-            }
-          }
+          "@type": "LocationFeatureSpecification",
+          "name": "Guided Tours",
+          "value": true
         },
         {
-          "@type": "TourGuide",
-          "name": "Dzaleka Community Tour Guides",
-          "description": "Professional local guides offering cultural and educational tours of Dzaleka Refugee Camp",
-          "areaServed": {
-            "@type": "City",
-            "name": "Dzaleka Refugee Camp",
-            "containedInPlace": {
-              "@type": "AdministrativeArea",
-              "name": "Dowa District"
-            }
-          }
+          "@type": "LocationFeatureSpecification",
+          "name": "Cultural Activities",
+          "value": true
         },
         {
-          "@type": "Organization",
-          "name": "Dzaleka Online Services",
-          "url": "https://services.dzaleka.com",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
-            "width": "200",
-            "height": "200"
-          },
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "customer service",
-            "email": "dzalekaconnect@gmail.com",
-            "availableLanguage": ["English", "Swahili", "French"]
-          }
+          "@type": "LocationFeatureSpecification",
+          "name": "Educational Workshops",
+          "value": true
         },
         {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What types of tours do you offer?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We offer guided walking tours of Dzaleka Refugee Camp, where visitors can explore key areas, learn about the camp's history, and engage with the community."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How much do tours cost?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Tour prices range from MWK 15,000 for individuals to MWK 100,000 for groups of 10+ people. Additional hours are charged at MWK 10,000 per hour."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What are the different zones in Dzaleka Refugee Camp?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Dzaleka Refugee Camp is divided into several distinct zones: Lisungwi, Kawale 1 & 2, Likuni 1 & 2, Zomba, Blantyre, Katubza, New Katubza, and Dzaleka Hill. Each zone has its own unique characteristics and community features."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What should I bring for the tour?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We recommend wearing comfortable walking shoes, bringing a hat, sunscreen, water, and a camera. The tours involve walking, so comfortable attire is essential."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What activities can I experience during the visit?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Visitors can experience cultural exchanges, educational workshops, community initiatives, and during special events, the Tumaini Festival which showcases music, art, and performances. You can also engage with local entrepreneurs and artisans."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What are the tour timings?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Tours operate Monday through Friday, with standard start times at 10:00 AM and 2:00 PM. The standard tour duration is 2 hours, with options for extended tours."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Do you offer group discounts?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, we offer special rates for groups. Groups of 6-10 people pay MWK 80,000, while groups of 10+ people pay MWK 100,000 for a standard 2-hour tour."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is your cancellation policy?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We understand that plans can change. Please inform us as soon as possible if you need to cancel or reschedule your tour, and we will do our best to accommodate your needs."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Are the tours family-friendly?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, our tours are suitable for all ages and are designed to be family-friendly. We can adjust the tour content and pace to accommodate families with children."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Where do tours start from?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Tours can start from three recommended meeting points: the UNHCR Office, Appfactory, or JRS (Jesuit Refugee Service). The specific meeting point will be confirmed upon booking."
-              }
-            }
+          "@type": "LocationFeatureSpecification",
+          "name": "Kawale 1 & 2",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Dzaleka Hill",
+          "value": true
+        }
+      ],
+      "publicAccess": true,
+      "hasMap": "https://www.google.com/maps?q=dzaleka+refugee+camp",
+      "maximumAttendeeCapacity": 50,
+      "availableLanguage": [
+        "English",
+        "Swahili",
+        "French",
+        "Kirundi",
+        "Kinyarwanda"
+      ],
+      "tourBookingPage": "https://services.dzaleka.com/visit#planTripForm",
+      "additionalProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "Tour Duration",
+          "value": "2-4 hours"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Group Size",
+          "value": "1-50 people"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Established",
+          "value": "1994"
+        }
+      ],
+      "subjectOf": [
+        {
+          "@type": "Event",
+          "name": "Tumaini Festival",
+          "description": "Annual cultural festival showcasing music, art, and performances"
+        }
+      ],
+      "potentialAction": {
+        "@type": "BookAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://services.dzaleka.com/visit#planTripForm",
+          "inLanguage": "en",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
           ]
+        }
+      }
+    },
+    {
+      "@type": "TourGuide",
+      "name": "Visit Dzaleka",
+      "description": "Professional local guides offering cultural and educational tours of Dzaleka Refugee Camp",
+      "areaServed": {
+        "@type": "City",
+        "name": "Dzaleka Refugee Camp",
+        "containedInPlace": {
+          "@type": "AdministrativeArea",
+          "name": "Dowa District"
+        }
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Dzaleka Online Services",
+      "url": "https://services.dzaleka.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
+        "width": "200",
+        "height": "200"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "dzalekaconnect@gmail.com",
+        "availableLanguage": ["English", "Swahili", "French"]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What types of tours do you offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer guided walking tours of Dzaleka Refugee Camp, where visitors can explore key areas, learn about the camp's history, and engage with the community."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much do tours cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tour prices range from MWK 15,000 for individuals to MWK 100,000 for groups of 10+ people. Additional hours are charged at MWK 10,000 per hour."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the different zones in Dzaleka Refugee Camp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Dzaleka Refugee Camp is divided into several distinct zones: Lisungwi, Kawale 1 & 2, Likuni 1 & 2, Zomba, Blantyre, Katubza, New Katubza, and Dzaleka Hill. Each zone has its own unique characteristics and community features."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What should I bring for the tour?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We recommend wearing comfortable walking shoes, bringing a hat, sunscreen, water, and a camera. The tours involve walking, so comfortable attire is essential."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What activities can I experience during the visit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Visitors can experience cultural exchanges, educational workshops, community initiatives, and during special events, the Tumaini Festival which showcases music, art, and performances. You can also engage with local entrepreneurs and artisans."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the tour timings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tours operate Monday through Friday, with standard start times at 10:00 AM and 2:00 PM. The standard tour duration is 2 hours, with options for extended tours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer group discounts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, we offer special rates for groups. Groups of 6-10 people pay MWK 80,000, while groups of 10+ people pay MWK 100,000 for a standard 2-hour tour."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is your cancellation policy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We understand that plans can change. Please inform us as soon as possible if you need to cancel or reschedule your tour, and we will do our best to accommodate your needs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are the tours family-friendly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, our tours are suitable for all ages and are designed to be family-friendly. We can adjust the tour content and pace to accommodate families with children."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do tours start from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tours can start from three recommended meeting points: the UNHCR Office, Appfactory, or JRS (Jesuit Refugee Service). The specific meeting point will be confirmed upon booking."
+          }
         }
       ]
     }
-  </script>
+  ]
+};
+---
 
+<MainLayout title={pageTitle} description={description} keywords={keywords} ogImage={ogImage}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData, null, 2)} />
+  
   <script>
     // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', () => {
