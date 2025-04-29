@@ -51,7 +51,7 @@ const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "TouristAttraction",
+      "@type": ["TouristAttraction", "Place"],
       "name": "Visit Dzaleka",
       "alternateName": "Visit Dzaleka Refugee Camp",
       "description": "Explore Dzaleka Refugee Camp with guided tours highlighting vibrant culture, rich heritage, and resilient community. Book your visit to Malawi's largest refugee community today.",
@@ -68,10 +68,16 @@ const structuredData = {
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": -13.7333,
-        "longitude": 33.9333,
-        "elevation": "1200m"
+        "longitude": 33.9333
       },
-      "openingHours": ["Mo-Fr 10:00-16:00"],
+      "hoursAvailable": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "10:00",
+          "closes": "16:00"
+        }
+      ],
       "image": {
         "@type": "ImageObject",
         "url": "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg",
@@ -80,13 +86,10 @@ const structuredData = {
         "creditText": "Photo by Badre Bahaji",
         "copyrightNotice": "© 2024 Tumaini Letu. All rights reserved."
       },
-      "touristType": [
-        "Cultural Tourism",
-        "Educational Tourism",
-        "Humanitarian Tourism",
-        "Community Tourism"
+      "additionalType": [
+        "https://schema.org/CulturalCenter",
+        "https://schema.org/TouristDestination"
       ],
-      "priceRange": "MWK 15,000-100,000",
       "sameAs": [
         "https://services.dzaleka.com/visit",
         "https://dzaleka.com"
@@ -128,7 +131,6 @@ const structuredData = {
         "Kirundi",
         "Kinyarwanda"
       ],
-      "tourBookingPage": "https://services.dzaleka.com/visit#planTripForm",
       "additionalProperty": [
         {
           "@type": "PropertyValue",
@@ -144,9 +146,14 @@ const structuredData = {
           "@type": "PropertyValue",
           "name": "Established",
           "value": "1994"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Price Range",
+          "value": "MWK 15,000-100,000"
         }
       ],
-      "subjectOf": [
+      "event": [
         {
           "@type": "Event",
           "name": "Tumaini Festival",
@@ -154,7 +161,7 @@ const structuredData = {
         }
       ],
       "potentialAction": {
-        "@type": "BookAction",
+        "@type": "ReserveAction",
         "target": {
           "@type": "EntryPoint",
           "urlTemplate": "https://services.dzaleka.com/visit#planTripForm",
@@ -167,8 +174,8 @@ const structuredData = {
       }
     },
     {
-      "@type": "TourGuide",
-      "name": "Visit Dzaleka",
+      "@type": ["Person", "LocalBusiness"],
+      "name": "Visit Dzaleka Tour Guides",
       "description": "Professional local guides offering cultural and educational tours of Dzaleka Refugee Camp",
       "areaServed": {
         "@type": "City",
