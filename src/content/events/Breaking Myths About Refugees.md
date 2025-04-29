@@ -8,7 +8,7 @@ category: "Zoom Meeting"
 image: "https://alumni.creighton.edu/sites/default/files/externals/7fe45be3aa4b9a7e7698f971033cbcc6.jpg"
 featured: true
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   phone: "+265 882 717 995"

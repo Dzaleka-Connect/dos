@@ -66,18 +66,21 @@ const jobStructuredData = {
     "@type": "Place",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": job.data.location.includes("Dzaleka") ? "Dzaleka Refugee Camp" : job.data.location,
       "addressLocality": "Dzaleka",
       "addressRegion": "Dowa",
+      "postalCode": "DZ001",
       "addressCountry": "Malawi"
     }
   },
   "applicationRequirements": job.data.skills?.join(", "),
-  "baseSalary": job.data.salary ? {
+  "baseSalary": job.data.contact?.salary ? {
     "@type": "MonetaryAmount",
     "currency": "MWK",
     "value": {
       "@type": "QuantitativeValue",
-      "value": job.data.salary
+      "value": job.data.contact.salary.replace(/[^0-9]/g, ""),
+      "unitText": "MONTH"
     }
   } : undefined,
   "url": `https://services.dzaleka.com/jobs/${job.slug}`
