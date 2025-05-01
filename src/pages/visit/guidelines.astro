@@ -1,0 +1,381 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const pageTitle = "Visitor Guidelines | Dzaleka Refugee Camp";
+const description = "Essential guidelines and protocols for visiting Dzaleka Refugee Camp. Learn about cultural sensitivity, photography policies, dress code, and best practices for a respectful visit.";
+
+const seo = {
+  title: pageTitle,
+  description,
+  openGraph: {
+    title: pageTitle,
+    description,
+    type: 'article',
+    url: 'https://services.dzaleka.com/visit/guidelines',
+    image: 'https://services.dzaleka.com/images/Visit_Dzaleka.png'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: pageTitle,
+    description,
+    image: 'https://services.dzaleka.com/images/Visit_Dzaleka.png'
+  }
+};
+
+const guidelines = [
+  {
+    category: "Cultural Sensitivity",
+    icon: "🤝",
+    items: [
+      "Always ask permission before taking photographs of people",
+      "Respect personal space and privacy",
+      "Be mindful of different cultural backgrounds",
+      "Listen more than you speak",
+      "Show appreciation for shared stories"
+    ]
+  },
+  {
+    category: "Dress Code",
+    icon: "👕",
+    items: [
+      "Wear modest, culturally appropriate clothing",
+      "Comfortable walking shoes are essential",
+      "Bring a hat or umbrella for sun protection",
+      "Avoid revealing or inappropriate attire",
+      "Consider weather conditions when planning your outfit"
+    ]
+  },
+  {
+    category: "Photography & Media",
+    icon: "📸",
+    items: [
+      "Always obtain explicit permission before photographing individuals",
+      "No photos of government or security facilities",
+      "Respect 'no photography' zones",
+      "Be mindful of context when sharing photos",
+      "Consider privacy implications"
+    ]
+  },
+  {
+    category: "Health & Safety",
+    icon: "🏥",
+    items: [
+      "Bring sufficient water and stay hydrated",
+      "Use sunscreen and insect repellent",
+      "Follow your guide's safety instructions",
+      "Keep valuables secure",
+      "Be aware of your surroundings"
+    ]
+  }
+];
+
+const practicalTips = [
+  {
+    title: "Documentation",
+    description: "Bring valid identification and any required permits",
+    icon: "📄"
+  },
+  {
+    title: "Timing",
+    description: "Arrive 15 minutes before your scheduled tour",
+    icon: "⏰"
+  },
+  {
+    title: "Communication",
+    description: "Save important contact numbers including your guide's",
+    icon: "📱"
+  },
+  {
+    title: "Payments",
+    description: "Bring local currency for any purchases or donations",
+    icon: "💳"
+  }
+];
+
+const dosDonts = {
+  dos: [
+    "Ask questions respectfully",
+    "Follow guide instructions",
+    "Support local businesses",
+    "Be punctual for tours",
+    "Show gratitude",
+    "Maintain positive attitude"
+  ],
+  donts: [
+    "Make promises you can't keep",
+    "Give money to individuals",
+    "Take photos without permission",
+    "Ignore cultural customs",
+    "Share sensitive information",
+    "Wander off alone"
+  ]
+};
+
+// Create structured data for the guidelines page
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://services.dzaleka.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Visit",
+          "item": "https://services.dzaleka.com/visit"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Visitor Guidelines",
+          "item": "https://services.dzaleka.com/visit/guidelines"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What should I wear when visiting Dzaleka Refugee Camp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wear modest, culturally appropriate clothing and comfortable walking shoes. Bring a hat or umbrella for sun protection and avoid revealing or inappropriate attire. Consider weather conditions when planning your outfit."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the photography rules at Dzaleka Refugee Camp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Always obtain explicit permission before photographing individuals, do not take photos of government or security facilities, respect 'no photography' zones, and be mindful of context when sharing photos. Consider privacy implications of all photography."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What documents do I need to bring for my visit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bring valid identification and any required permits. Save important contact numbers including your guide's number, and arrive 15 minutes before your scheduled tour."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the health and safety guidelines?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bring sufficient water and stay hydrated, use sunscreen and insect repellent, follow your guide's safety instructions, keep valuables secure, and be aware of your surroundings at all times."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Visit Dzaleka Refugee Camp Respectfully",
+      "description": "Guidelines for ensuring a respectful and meaningful visit to Dzaleka Refugee Camp while maintaining cultural sensitivity and community comfort.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://services.dzaleka.com/images/441259874_18314784967180415_6501749961090280063_n.jpg",
+        "height": "630",
+        "width": "1200"
+      },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Cultural Sensitivity",
+          "text": "Respect personal space and privacy, be mindful of different cultural backgrounds, listen more than you speak, and show appreciation for shared stories.",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://services.dzaleka.com/images/361579234_611191654478987_355961963947114655_n.jpg"
+          }
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Documentation and Preparation",
+          "text": "Bring valid identification, required permits, and save important contact numbers including your guide's contact information.",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://services.dzaleka.com/images/283945145_548818096818208_2823546272117801301_n.jpg"
+          }
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Health and Safety",
+          "text": "Bring water, use sun protection, follow guide instructions, and maintain awareness of surroundings.",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://services.dzaleka.com/images/Dzaleka Health Centre.jpg"
+          }
+        }
+      ],
+      "totalTime": "PT2H"
+    },
+    {
+      "@type": "Article",
+      "headline": "Visitor Guidelines for Dzaleka Refugee Camp",
+      "description": description,
+      "image": "https://services.dzaleka.com/images/Visit_Dzaleka.png",
+      "datePublished": "2024-01-01T08:00:00+00:00",
+      "dateModified": "2024-04-01T08:00:00+00:00",
+      "author": {
+        "@type": "Organization",
+        "name": "Dzaleka Online Services",
+        "url": "https://services.dzaleka.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Dzaleka Online Services",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
+          "width": "200",
+          "height": "200"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://services.dzaleka.com/visit/guidelines"
+      }
+    }
+  ]
+};
+---
+
+<MainLayout title={seo.title} description={seo.description} openGraph={seo.openGraph} twitter={seo.twitter}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData, null, 2)} />
+  
+  <main class="min-h-screen bg-gray-50">
+    {/* Hero Section */}
+    <div class="relative bg-primary-600 text-white py-24">
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-800/90"></div>
+      </div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">Visitor Guidelines</h1>
+          <p class="text-xl text-white/90 max-w-2xl mx-auto">
+            Essential information to ensure a respectful and meaningful visit to Dzaleka Refugee Camp
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* Main Content */}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* Introduction */}
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <p class="text-lg text-gray-700 leading-relaxed">
+          Welcome to Dzaleka Refugee Camp. These guidelines are designed to help you have a respectful and meaningful visit while ensuring the comfort and privacy of our community members.
+        </p>
+      </div>
+
+      {/* Guidelines Grid */}
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        {guidelines.map(section => (
+          <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-center gap-4 mb-6">
+              <span class="text-4xl">{section.icon}</span>
+              <h2 class="text-2xl font-bold text-gray-900">{section.category}</h2>
+            </div>
+            <ul class="space-y-4">
+              {section.items.map(item => (
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-primary-600 mr-3 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span class="text-gray-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* Practical Tips */}
+      <div class="mb-16">
+        <h2 class="text-3xl font-bold text-center mb-12">Practical Tips</h2>
+        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+          {practicalTips.map(tip => (
+            <div class="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-all duration-300">
+              <span class="text-4xl mb-4 block">{tip.icon}</span>
+              <h3 class="font-bold text-gray-900 mb-2">{tip.title}</h3>
+              <p class="text-gray-600 text-sm">{tip.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dos and Don'ts */}
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        <div class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-green-500">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+            <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Do's
+          </h2>
+          <ul class="space-y-4">
+            {dosDonts.dos.map(item => (
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-green-500 mr-3 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-gray-700">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-red-500">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+            <svg class="w-6 h-6 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            Don'ts
+          </h2>
+          <ul class="space-y-4">
+            {dosDonts.donts.map(item => (
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-red-500 mr-3 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                <span class="text-gray-700">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div class="bg-primary-50 rounded-2xl p-8 text-center">
+        <h2 class="text-2xl font-bold text-primary-900 mb-4">Ready to Visit?</h2>
+        <p class="text-primary-800 mb-6 max-w-2xl mx-auto">
+          Now that you're familiar with our guidelines, book your visit to Dzaleka Refugee Camp and experience our vibrant community.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a 
+            href="/visit#planTripForm" 
+            class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors group"
+          >
+            Book Your Visit
+            <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a 
+            href="/visit/travel-guide" 
+            class="inline-flex items-center px-6 py-3 border-2 border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
+          >
+            View Travel Guide
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</MainLayout> 
