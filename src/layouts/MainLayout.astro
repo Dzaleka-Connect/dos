@@ -8,17 +8,78 @@ interface Props {
 	title: string;
 	description?: string;
 	keywords?: string;
-	ogImage?: string;
+	type?: string;
+	canonical?: string;
+	image?: string;
+	openGraph?: {
+		title?: string;
+		description?: string;
+		type?: string;
+		image?: {
+			url: string;
+			width?: number;
+			height?: number;
+			alt?: string;
+			type?: string;
+		} | string;
+		site_name?: string;
+		locale?: string;
+		url?: string;
+		article?: {
+			publishedTime?: string;
+			modifiedTime?: string;
+			author?: string | string[];
+			tags?: string[];
+			section?: string;
+		};
+		event?: {
+			startTime?: string;
+			endTime?: string;
+			location?: string;
+			organizer?: string;
+		};
+	};
+	twitter?: {
+		card?: string;
+		title?: string;
+		description?: string;
+		image?: string;
+		creator?: string;
+	};
 }
 
-const { title, description, keywords, ogImage } = Astro.props;
+const { 
+	title,
+	description,
+	keywords,
+	type = "website",
+	canonical = Astro.url.pathname,
+	image,
+	openGraph,
+	twitter
+} = Astro.props;
+
+// Prepare OpenGraph image for Layout
+const ogImage = openGraph?.image 
+	? (typeof openGraph.image === 'string' ? openGraph.image : openGraph.image.url)
+	: image;
 ---
 
-<Layout title={title} description={description} keywords={keywords} ogImage={ogImage}>
-  <Header />
-  <main class="flex-grow">
-    <slot />
-  </main>
-  <Footer />
-  <PageViewCounter />
+<Layout 
+	title={title}
+	description={description}
+	keywords={keywords}
+	type={type}
+	canonical={canonical}
+	ogImage={ogImage}
+	openGraph={openGraph}
+	twitter={twitter}
+>
+	<slot name="head" slot="head" />
+	<Header />
+	<main class="flex-grow">
+		<slot />
+	</main>
+	<Footer />
+	<PageViewCounter />
 </Layout>

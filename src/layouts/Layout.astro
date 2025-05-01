@@ -3,10 +3,56 @@ interface Props {
 	title: string;
 	description?: string;
 	keywords?: string;
+	type?: string;
+	canonical?: string;
 	ogImage?: string;
+	openGraph?: {
+		title?: string;
+		description?: string;
+		type?: string;
+		image?: {
+			url: string;
+			width?: number;
+			height?: number;
+			alt?: string;
+			type?: string;
+		} | string;
+		site_name?: string;
+		locale?: string;
+		url?: string;
+		article?: {
+			publishedTime?: string;
+			modifiedTime?: string;
+			author?: string | string[];
+			tags?: string[];
+			section?: string;
+		};
+		event?: {
+			startTime?: string;
+			endTime?: string;
+			location?: string;
+			organizer?: string;
+		};
+	};
+	twitter?: {
+		card?: string;
+		title?: string;
+		description?: string;
+		image?: string;
+		creator?: string;
+	};
 }
 
-const { title, description, keywords, ogImage } = Astro.props;
+const { 
+	title, 
+	description, 
+	keywords, 
+	type = "website",
+	canonical,
+	ogImage,
+	openGraph,
+	twitter
+} = Astro.props;
 
 // Default values
 const defaultDescription = "Dzaleka Online Service - Your comprehensive platform for accessing refugee services, and community resources in Malawi. Supporting the Dzaleka refugee community with digital solutions.";
@@ -17,6 +63,7 @@ const defaultOgImage = "/images/dzaleka-hero.jpeg";
 const metaDescription = description || defaultDescription;
 const metaKeywords = keywords || defaultKeywords;
 const metaOgImage = ogImage || defaultOgImage;
+const canonicalUrl = `https://services.dzaleka.com${canonical || Astro.url.pathname}`;
 ---
 
 <!DOCTYPE html>
@@ -30,19 +77,59 @@ const metaOgImage = ogImage || defaultOgImage;
 		<meta name="author" content="Dzaleka Online Services" />
 		
 		<!-- OpenGraph Meta Tags -->
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={metaDescription} />
-		<meta property="og:image" content={metaOgImage} />
-		<meta property="og:type" content="website" />
+		<meta property="og:title" content={openGraph?.title || title} />
+		<meta property="og:description" content={openGraph?.description || metaDescription} />
+		<meta property="og:type" content={openGraph?.type || type} />
+		<meta property="og:site_name" content={openGraph?.site_name || "Dzaleka Online Services"} />
+		<meta property="og:url" content={openGraph?.url || canonicalUrl} />
+		<meta property="og:locale" content={openGraph?.locale || "en_US"} />
+		
+		{/* OpenGraph Image Tags */}
+		{openGraph?.image && typeof openGraph.image === 'object' ? (
+			<>
+				<meta property="og:image" content={openGraph.image.url} />
+				{openGraph.image.width && <meta property="og:image:width" content={openGraph.image.width.toString()} />}
+				{openGraph.image.height && <meta property="og:image:height" content={openGraph.image.height.toString()} />}
+				{openGraph.image.alt && <meta property="og:image:alt" content={openGraph.image.alt} />}
+				{openGraph.image.type && <meta property="og:image:type" content={openGraph.image.type} />}
+			</>
+		) : (
+			<meta property="og:image" content={metaOgImage} />
+		)}
+
+		{/* OpenGraph Article Tags */}
+		{openGraph?.article && (
+			<>
+				{openGraph.article.publishedTime && <meta property="article:published_time" content={openGraph.article.publishedTime} />}
+				{openGraph.article.modifiedTime && <meta property="article:modified_time" content={openGraph.article.modifiedTime} />}
+				{openGraph.article.author && (Array.isArray(openGraph.article.author) 
+					? openGraph.article.author.map(author => <meta property="article:author" content={author} />)
+					: <meta property="article:author" content={openGraph.article.author} />
+				)}
+				{openGraph.article.section && <meta property="article:section" content={openGraph.article.section} />}
+				{openGraph.article.tags?.map(tag => <meta property="article:tag" content={tag} />)}
+			</>
+		)}
+
+		{/* OpenGraph Event Tags */}
+		{openGraph?.event && (
+			<>
+				{openGraph.event.startTime && <meta property="event:start_time" content={openGraph.event.startTime} />}
+				{openGraph.event.endTime && <meta property="event:end_time" content={openGraph.event.endTime} />}
+				{openGraph.event.location && <meta property="event:location" content={openGraph.event.location} />}
+				{openGraph.event.organizer && <meta property="event:organizer" content={openGraph.event.organizer} />}
+			</>
+		)}
 		
 		<!-- Twitter Meta Tags -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={metaDescription} />
-		<meta name="twitter:image" content={metaOgImage} />
+		<meta name="twitter:card" content={twitter?.card || "summary_large_image"} />
+		<meta name="twitter:title" content={twitter?.title || title} />
+		<meta name="twitter:description" content={twitter?.description || metaDescription} />
+		<meta name="twitter:image" content={twitter?.image || metaOgImage} />
+		{twitter?.creator && <meta name="twitter:creator" content={twitter.creator} />}
 		
 		<link rel="icon" type="image/png" href="/images/dzaleka-digital-heritage.png" />
-		<link rel="canonical" href={`https://services.dzaleka.com${Astro.url.pathname}`} />
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | Dzaleka Online Services</title>
 
