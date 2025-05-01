@@ -28,17 +28,24 @@ const seo = {
   openGraph: {
     title: `${entry.data.title}`,
     description: entry.data.description || `A photograph by ${entry.data.photographer.name} taken on ${format(entry.data.date, 'MMMM d, yyyy')}${entry.data.location ? ` in ${entry.data.location}` : ''}.`,
-    image: entry.data.image,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/photos/${entry.slug}`
+    url: `https://services.dzaleka.com/photos/${entry.slug}`,
+    image: {
+      url: entry.data.image,
+      width: 1200,
+      height: 630,
+      alt: entry.data.title,
+      type: "image/jpeg"
+    }
   },
   twitter: {
     card: "summary_large_image",
     title: `${entry.data.title} | Dzaleka Photo Gallery`,
     description: entry.data.description || `A photograph by ${entry.data.photographer.name} taken on ${format(entry.data.date, 'MMMM d, yyyy')}${entry.data.location ? ` in ${entry.data.location}` : ''}.`,
-    image: entry.data.image
+    image: entry.data.image,
+    creator: entry.data.photographer.twitter || "@DzalekaConnect"
   }
 };
 

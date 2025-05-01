@@ -50,24 +50,35 @@ const seo = {
     site_name: "Dzaleka Online Services",
     locale: "en_US",
     url: `https://services.dzaleka.com/news/${entry.slug}`,
-    image: {
-      url: entry.data.image,
+    image: entry.data.image ? {
+      url: entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
       width: 1200,
       height: 630,
-      alt: entry.data.title
+      alt: entry.data.title,
+      type: "image/jpeg"
+    } : {
+      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "Dzaleka Online Services",
+      type: "image/jpeg"
     },
     article: {
       publishedTime: entry.data.date.toISOString(),
       modifiedTime: entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
       authors: entry.data.author ? [entry.data.author] : undefined,
       tags: entry.data.tags || [],
+      section: categoryLabels[entry.data.category] || "News"
     }
   },
   twitter: {
     card: "summary_large_image",
     title: entry.data.title,
     description: entry.data.description,
-    image: entry.data.image
+    image: entry.data.image ? (
+      entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
+    ) : "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+    creator: entry.data.author ? `@${entry.data.author.replace(/\s+/g, '')}` : "@DzalekaConnect"
   }
 };
 
@@ -79,7 +90,9 @@ const articleStructuredData = {
   "description": entry.data.description,
   "image": {
     "@type": "ImageObject",
-    "url": entry.data.image,
+    "url": entry.data.image ? (
+      entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
+    ) : "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
     "width": 1200,
     "height": 630,
     "acquireLicensePage": "https://services.dzaleka.com/contact/",
@@ -105,7 +118,9 @@ const articleStructuredData = {
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": `https://services.dzaleka.com/news/${entry.slug}`
-  }
+  },
+  "articleSection": categoryLabels[entry.data.category] || "News",
+  "keywords": entry.data.tags ? entry.data.tags.join(", ") : undefined
 };
 ---
 

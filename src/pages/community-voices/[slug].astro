@@ -18,9 +18,102 @@ const allVoices = await getCollection('community-voices');
 const relatedStories = allVoices
   .filter(v => v.data.category === voice.data.category && v.slug !== voice.slug)
   .slice(0, 3);
+
+// Create SEO metadata
+const seo = {
+  title: `${voice.data.title} - Community Voice | Dzaleka Online Services`,
+  description: voice.data.excerpt,
+  type: "article",
+  canonical: `https://services.dzaleka.com/community-voices/${voice.slug}`,
+  openGraph: {
+    title: voice.data.title,
+    description: voice.data.excerpt,
+    type: "article",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/community-voices/${voice.slug}`,
+    image: voice.data.image ? {
+      url: voice.data.image.startsWith('http') ? voice.data.image : `https://services.dzaleka.com${voice.data.image}`,
+      width: 1200,
+      height: 630,
+      alt: voice.data.title,
+      type: "image/jpeg"
+    } : {
+      url: "https://services.dzaleka.com/images/placeholder-voice.jpg",
+      width: 1200,
+      height: 630,
+      alt: "Dzaleka Community Voices",
+      type: "image/jpeg"
+    },
+    article: {
+      publishedTime: voice.data.date.toISOString(),
+      author: voice.data.author,
+      tags: voice.data.tags || [],
+      section: voice.data.category
+    }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${voice.data.title} | Community Voice`,
+    description: voice.data.excerpt,
+    image: voice.data.image ? (
+      voice.data.image.startsWith('http') ? voice.data.image : `https://services.dzaleka.com${voice.data.image}`
+    ) : "https://services.dzaleka.com/images/placeholder-voice.jpg",
+    creator: "@DzalekaConnect"
+  }
+};
+
+// Create structured data
+const articleStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": voice.data.title,
+  "description": voice.data.excerpt,
+  "image": {
+    "@type": "ImageObject",
+    "url": voice.data.image ? (
+      voice.data.image.startsWith('http') ? voice.data.image : `https://services.dzaleka.com${voice.data.image}`
+    ) : "https://services.dzaleka.com/images/placeholder-voice.jpg",
+    "width": 1200,
+    "height": 630,
+    "creditText": `Photo by ${voice.data.author}`,
+    "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
+  },
+  "datePublished": voice.data.date.toISOString(),
+  "dateModified": voice.data.date.toISOString(),
+  "author": {
+    "@type": "Person",
+    "name": voice.data.author
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
+      "width": "200",
+      "height": "200"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://services.dzaleka.com/community-voices/${voice.slug}`
+  },
+  "keywords": voice.data.tags ? voice.data.tags.join(", ") : undefined,
+  "articleSection": voice.data.category
+};
 ---
 
-<MainLayout title={`${voice.data.title} - Community Voice`}>
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleStructuredData)} />
+  
   <main class="bg-gradient-to-b from-gray-50 to-white min-h-screen pb-16">
     <!-- Hero Section -->
     <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 overflow-hidden">

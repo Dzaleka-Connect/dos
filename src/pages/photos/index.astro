@@ -52,22 +52,30 @@ function getPaginationUrl(year: number, page: number) {
 
 // Create SEO metadata
 const seo = {
-  title: "Photo Gallery",
+  title: "Photo Gallery | Dzaleka Online Services",
   description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
   type: "website",
   canonical: "https://services.dzaleka.com/photos",
   openGraph: {
-    title: "Photo Gallery",
+    title: "Dzaleka Photo Gallery",
     description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
     type: "website",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: "https://services.dzaleka.com/photos"
+    url: "https://services.dzaleka.com/photos",
+    image: {
+      url: photos[0]?.data.image || "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "Dzaleka Photo Gallery",
+      type: "image/jpeg"
+    }
   },
   twitter: {
     card: "summary_large_image",
     title: "Photo Gallery | Dzaleka Online Services",
-    description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community."
+    description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
+    image: photos[0]?.data.image || "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
   }
 };
 
