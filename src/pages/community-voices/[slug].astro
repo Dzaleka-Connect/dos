@@ -46,7 +46,9 @@ const seo = {
       type: "image/jpeg"
     },
     article: {
-      publishedTime: voice.data.date.toISOString(),
+      publishedTime: voice.data.date instanceof Date 
+        ? voice.data.date.toISOString()
+        : new Date(voice.data.date).toISOString(),
       author: voice.data.author,
       tags: voice.data.tags || [],
       section: voice.data.category
@@ -79,8 +81,12 @@ const articleStructuredData = {
     "creditText": `Photo by ${voice.data.author}`,
     "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
   },
-  "datePublished": voice.data.date.toISOString(),
-  "dateModified": voice.data.date.toISOString(),
+  "datePublished": voice.data.date instanceof Date 
+    ? voice.data.date.toISOString()
+    : new Date(voice.data.date).toISOString(),
+  "dateModified": voice.data.date instanceof Date 
+    ? voice.data.date.toISOString()
+    : new Date(voice.data.date).toISOString(),
   "author": {
     "@type": "Person",
     "name": voice.data.author
