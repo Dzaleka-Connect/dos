@@ -1,0 +1,414 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const pageTitle = "Visit Pricing | Dzaleka Refugee Camp";
+const description = "Plan your visit to Dzaleka Refugee Camp. Get instant pricing for guided tours based on group size. Flexible payment options including mobile money and cash. Book your cultural experience today.";
+
+const seo = {
+  title: pageTitle,
+  description,
+  openGraph: {
+    title: pageTitle,
+    description,
+    type: 'website',
+    url: 'https://services.dzaleka.com/visit/pricing',
+    image: 'https://services.dzaleka.com/images/Visit_Dzaleka.png',
+    site_name: 'Dzaleka Refugee Camp',
+    locale: 'en_US'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: pageTitle,
+    description,
+    image: 'https://services.dzaleka.com/images/Visit_Dzaleka.png'
+  },
+  additionalMetaTags: [
+    {
+      name: 'keywords',
+      content: 'Dzaleka Refugee Camp, guided tours, cultural visits, group tours, Malawi tourism, refugee camp visits, educational tours'
+    },
+    {
+      name: 'author',
+      content: 'Dzaleka Online Services'
+    }
+  ]
+};
+
+// Pricing data for structured data
+const pricingData = [
+  { groupSize: '1 person', price: '15000', currency: 'MWK' },
+  { groupSize: '2-5 people', price: '50000', currency: 'MWK' },
+  { groupSize: '6-10 people', price: '80000', currency: 'MWK' },
+  { groupSize: '10+ people', price: '100000', currency: 'MWK' }
+];
+
+// Structured data for the page
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristAttraction",
+  "name": "Dzaleka Refugee Camp Tours",
+  "description": description,
+  "url": "https://services.dzaleka.com/visit/pricing",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Dowa",
+    "addressRegion": "Central Region",
+    "addressCountry": "Malawi"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -13.662767,
+    "longitude": 33.870807
+  },
+  "offers": pricingData.map(pricing => ({
+    "@type": "Offer",
+    "name": `Group Tour (${pricing.groupSize})`,
+    "price": pricing.price,
+    "priceCurrency": pricing.currency,
+    "availability": "https://schema.org/InStock",
+    "validFrom": new Date().toISOString().split('T')[0],
+    "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
+  })),
+  "tourBookingPage": "https://services.dzaleka.com/visit/guidelines",
+  "paymentAccepted": ["Cash", "Airtel Money", "TNM Mpamba"],
+  "openingHours": "Mo-Fr 09:00-17:00",
+  "isAccessibleForFree": false,
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Tour Duration",
+      "value": "2 hours (standard)"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Additional Hours",
+      "value": "MWK 10,000 per hour"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Transportation",
+      "value": "Walking tour only"
+    }
+  ]
+};
+
+// FAQ structured data
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does it cost to visit Dzaleka Refugee Camp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prices vary by group size: MWK 15,000 for 1 person, MWK 50,000 for 2-5 people, MWK 80,000 for 6-10 people, and MWK 100,000 for groups of 10 or more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What payment methods are accepted?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We accept Airtel Money, TNM Mpamba, and cash payments upon arrival at the camp."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long are the tours?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard tours are 2 hours long. Additional hours can be added for MWK 10,000 per hour."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is transportation provided during the tour?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, tours are conducted entirely on foot. Visitors should be prepared for walking throughout the camp."
+      }
+    }
+  ]
+};
+---
+
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+  additionalMetaTags={seo.additionalMetaTags}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData, null, 2)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData, null, 2)} />
+
+  <main class="min-h-screen bg-gray-50">
+    {/* Back Button */}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <a href="/visit" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600">
+        <svg class="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Visit
+      </a>
+    </div>
+
+    {/* Hero Section */}
+    <div class="relative bg-primary-600 text-white py-16">
+      <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-800/90"></div>
+      </div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">Visit Pricing</h1>
+          <p class="text-xl text-white/90 max-w-2xl mx-auto">
+            Plan your visit and get an instant quote for your group
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* Pricing Calculator Section */}
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="p-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Pricing Calculator</h2>
+          
+          {/* Pricing Notice */}
+          <div class="mb-8 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  Pricing can vary based on the complexity of tours. For custom quotes, please use our contact form or email us directly at <a href="mailto:dzalekaconnect@gmail.com" class="font-medium underline">dzalekaconnect@gmail.com</a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-8">
+            {/* Group Size Selection */}
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Group Size</label>
+              <select id="groupSize" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md">
+                <option value="1">1 person (MWK 15,000)</option>
+                <option value="2">2-5 people (MWK 50,000)</option>
+                <option value="6">6-10 people (MWK 80,000)</option>
+                <option value="11">10+ people (MWK 100,000)</option>
+              </select>
+            </div>
+
+            {/* Duration Selection */}
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Additional Hours</label>
+              <div class="flex items-center gap-4">
+                <button id="decreaseHours" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 focus:outline-none">
+                  <span class="sr-only">Decrease hours</span>
+                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                  </svg>
+                </button>
+                <span id="additionalHours" class="text-lg font-medium text-gray-900 w-8 text-center">0</span>
+                <button id="increaseHours" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 focus:outline-none">
+                  <span class="sr-only">Increase hours</span>
+                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/>
+                  </svg>
+                </button>
+                <span class="text-sm text-gray-500">(MWK 10,000 per additional hour)</span>
+              </div>
+            </div>
+
+            {/* Total Cost Display */}
+            <div class="bg-gray-50 rounded-xl p-6">
+              <div class="flex justify-between items-center mb-4">
+                <span class="text-gray-600">Base Price:</span>
+                <span id="basePrice" class="text-lg font-medium text-gray-900">MWK 15,000</span>
+              </div>
+              <div class="flex justify-between items-center mb-4">
+                <span class="text-gray-600">Additional Hours:</span>
+                <span id="additionalCost" class="text-lg font-medium text-gray-900">MWK 0</span>
+              </div>
+              <div class="border-t border-gray-200 pt-4">
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-medium text-gray-900">Total Cost:</span>
+                  <span id="totalCost" class="text-2xl font-bold text-primary-600">MWK 15,000</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Booking Button */}
+            <div class="mt-8 space-y-4">
+              <a href="/visit/#planTripForm" class="block w-full bg-primary-600 text-white text-center py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                Book Your Visit
+              </a>
+              <div class="flex gap-4">
+                <a href="/visit/guidelines" class="flex-1 text-center py-2 px-4 rounded-lg border border-gray-300 hover:border-primary-500 hover:text-primary-600 transition-colors">
+                  View Guidelines
+                </a>
+                <a href="/visit/travel-guide" class="flex-1 text-center py-2 px-4 rounded-lg border border-gray-300 hover:border-primary-500 hover:text-primary-600 transition-colors">
+                  Travel Guide
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Terms & Conditions */}
+          <div class="mt-8 border-t border-gray-200 pt-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Terms & Conditions</h3>
+            <div class="prose prose-sm text-gray-600">
+              <ul class="space-y-2">
+                <li>All bookings must be made at least 48 hours in advance</li>
+                <li>Payment methods available:
+                  <ul class="ml-4 mt-2 space-y-1">
+                    <li class="flex items-center gap-2">
+                      <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                      Airtel Money
+                    </li>
+                    <li class="flex items-center gap-2">
+                      <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                      TNM Mpamba
+                    </li>
+                    <li class="flex items-center gap-2">
+                      <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                      Cash (accepted upon arrival)
+                    </li>
+                  </ul>
+                </li>
+                <li>Cancellations must be made 24 hours before the scheduled visit</li>
+                <li>Tours are subject to weather conditions and camp accessibility</li>
+                <li>Visitors must follow camp guidelines and respect local customs</li>
+                <li>Photography requires prior permission and must follow guidelines</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Important Notes */}
+          <div class="mt-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Important Notes:</h3>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Standard visit duration is up to 2 hours
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Additional hours are charged at MWK 10,000 per hour for any group size
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Tours are conducted entirely on foot - no transportation is provided
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Meals and refreshments are not included in the tour price
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Prices include guided tour and local community support
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Please review our visitor guidelines before booking
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Form Link */}
+          <div class="mt-8 bg-gray-50 rounded-xl p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Need a Custom Quote?</h3>
+            <p class="text-gray-600 mb-4">For specialized tours or group arrangements, please reach out to us:</p>
+            <div class="space-y-3">
+              <a href="/contact" class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-center hover:border-primary-500 hover:text-primary-600 transition-colors">
+                Contact Us Form
+              </a>
+              <a href="mailto:dzalekaconnect@gmail.com" class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-center hover:border-primary-500 hover:text-primary-600 transition-colors">
+                Email: dzalekaconnect@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Price configuration
+    const prices = {
+      1: 15000,  // 1 person
+      2: 50000,  // 2-5 people
+      6: 80000,  // 6-10 people
+      11: 100000 // 10+ people
+    };
+    const additionalHourRate = 10000;
+
+    // Get DOM elements
+    const groupSizeSelect = document.getElementById('groupSize');
+    const decreaseHoursBtn = document.getElementById('decreaseHours');
+    const increaseHoursBtn = document.getElementById('increaseHours');
+    const additionalHoursDisplay = document.getElementById('additionalHours');
+    const basePriceDisplay = document.getElementById('basePrice');
+    const additionalCostDisplay = document.getElementById('additionalCost');
+    const totalCostDisplay = document.getElementById('totalCost');
+
+    // State
+    let additionalHours = 0;
+
+    // Format currency
+    const formatCurrency = (amount) => `MWK ${amount.toLocaleString()}`;
+
+    // Calculate and update total
+    const updateTotal = () => {
+      const basePrice = prices[groupSizeSelect.value];
+      const additionalCost = additionalHours * additionalHourRate;
+      const total = basePrice + additionalCost;
+
+      basePriceDisplay.textContent = formatCurrency(basePrice);
+      additionalCostDisplay.textContent = formatCurrency(additionalCost);
+      totalCostDisplay.textContent = formatCurrency(total);
+    };
+
+    // Event listeners
+    groupSizeSelect.addEventListener('change', updateTotal);
+
+    decreaseHoursBtn.addEventListener('click', () => {
+      if (additionalHours > 0) {
+        additionalHours--;
+        additionalHoursDisplay.textContent = additionalHours;
+        updateTotal();
+      }
+    });
+
+    increaseHoursBtn.addEventListener('click', () => {
+      additionalHours++;
+      additionalHoursDisplay.textContent = additionalHours;
+      updateTotal();
+    });
+
+    // Initialize
+    updateTotal();
+  </script>
+</MainLayout> 
