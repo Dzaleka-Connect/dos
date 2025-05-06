@@ -1,93 +1,108 @@
 ---
 title: Visit Dzaleka
-description: Plan your visit to Dzaleka Refugee Camp
+description: Experience the vibrant culture and community life at Dzaleka Refugee Camp through guided cultural tours and educational visits
 section: visit
 ---
 
 # Visit Dzaleka
 
-Information for visiting Dzaleka Refugee Camp and our cultural centers.
+Welcome to Dzaleka Refugee Camp. Our guided visits offer a unique opportunity to experience the vibrant culture, resilient community, and rich heritage of our diverse refugee population.
 
-## Visit Types
+## Tour Options
 
-### Cultural Visits
-- Heritage center
-- Cultural exhibitions
-- Art galleries
-- Performance venues
-- Community spaces
+### Cultural Experience Tour
+- Meet local artisans and craftspeople
+- Visit cultural exhibitions and art galleries
+- Experience traditional performances
+- Explore community marketplaces
+- Learn about refugee stories and heritage
+- Duration: 2 hours (standard)
 
-### Educational Visits
-- Learning centers
-- Skills workshops
-- Training programs
-- Cultural classes
-- Resource centers
+### Educational Visit
+- Visit learning and vocational centers
+- Observe skills training programs
+- Meet with educational initiatives
+- Learn about refugee education
+- Interact with community projects
+- Perfect for schools and institutions
 
-### Community Visits
-- Service providers
-- Community events
-- Local markets
-- Meeting spaces
-- Support centers
+### Community Engagement
+- Connect with local organizations
+- Participate in community activities
+- Visit social enterprise projects
+- Learn about refugee initiatives
+- Support local businesses
+- Ideal for NGOs and researchers
 
 ## Planning Your Visit
 
-### Before Visit
-1. Check [Visit Guidelines](/visit/guidelines)
-2. Review requirements
-3. Schedule appointment
-4. Prepare documents
-5. Plan transportation
+### Before You Come
+1. Check our [current pricing](/visit/pricing)
+2. Review [visitor guidelines](/visit/guidelines)
+3. Book through our [planning form](/visit/#planTripForm)
+4. Plan your transportation to Dowa
 
-### During Visit
-- Check-in process
-- Safety guidelines
-- Cultural respect
-- Photography rules
-- Local customs
+### What to Expect
+- Walking tour (no vehicle transport provided)
+- Professional local guides
+- Cultural interaction opportunities
+- Photography (with permission)
+- Community-led experiences
 
-### After Visit
-- Share feedback
-- Submit photos
-- Connect online
-- Stay involved
-- Support community
+### What to Bring
+- Comfortable walking shoes
+- Water bottle
+- Sun protection
+- Modest clothing
+- Cash or mobile money for payment
 
-## Visit Features
+## Visitor Guidelines
 
-### Guided Tours
-- Cultural tours
-- Historical sites
-- Community centers
-- Art spaces
-- Local markets
+### Important Rules
+- Advance booking required (48 hours minimum)
+- Follow guide instructions at all times
+- Respect privacy and personal space
+- Photography requires permission
+- Stay with your guide
 
-### Programs
-- Cultural workshops
-- Community events
-- Skills training
-- Art activities
-- Educational programs
+### Cultural Respect
+- Dress modestly
+- Ask before taking photos
+- Respect religious spaces
+- Follow local customs
+- Be mindful of privacy
 
-## Guidelines
+## Payment Options
 
-### Visit Rules
-- Registration
-- Documentation
-- Behavior code
-- Safety rules
-- Privacy respect
+### Methods Accepted
+- Airtel Money
+- TNM Mpamba
+- Cash (upon arrival)
 
-### Cultural Guidelines
-- Local customs
-- Photography rules
-- Communication
-- Dress code
-- Gift giving
+### Pricing Structure
+- 1 person: MWK 15,000
+- 2-5 people: MWK 50,000
+- 6-10 people: MWK 80,000
+- 10+ people: MWK 100,000
+- Additional hours: MWK 10,000/hour
 
-## Need Help?
+## Contact Information
 
+### Book a Visit
+- Use our [planning form](/visit/#planTripForm)
+- Email: dzalekaconnect@gmail.com
+- [View travel guide](/visit/travel-guide)
+
+### Need Help?
 - [Visit FAQ](/visit/faq)
-- [Contact Us](/contact)
-- [Support](/support)
+- [Contact support](/contact)
+- [Travel information](/visit/travel-guide)
+
+## Important Notes
+
+- Tours conducted on foot only
+- Standard visit is 2 hours
+- Meals not included
+- Booking confirmation required
+- Weather-dependent activities
+- Local guide provided

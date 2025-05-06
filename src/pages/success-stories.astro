@@ -2,38 +2,99 @@
 import MainLayout from '../layouts/MainLayout.astro';
 
 const title = "Success Stories | Dzaleka Online Services";
-const description = "Inspiring stories of achievement, resilience, and innovation from the Dzaleka refugee community.";
+const description = "Inspiring stories of achievement, resilience, and innovation from the Dzaleka refugee community. Discover how refugees are making a difference through innovation, arts, education, and entrepreneurship.";
+
+const seo = {
+  title,
+  description,
+  type: "website",
+  canonical: "https://services.dzaleka.com/success-stories",
+  keywords: "Dzaleka success stories, refugee achievements, innovation, arts, education, entrepreneurship, Malawi refugees",
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/success-stories",
+    images: [
+      {
+        url: "https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Dzaleka Refugee Success Stories"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@Dzalekaconnect",
+    creator: "@Dzalekaconnect",
+    title,
+    description,
+    image: "https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg"
+  }
+};
+
+// Structured data for success stories
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Success Stories",
+  "description": description,
+  "url": "https://services.dzaleka.com/success-stories",
+  "about": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services",
+    "description": "A platform showcasing the achievements and contributions of the Dzaleka refugee community."
+  }
+};
 ---
 
-<MainLayout title={title}>
-  <main class="py-16">
-    <div class="container mx-auto px-4">
-      <!-- Hero Section -->
-      <div class="max-w-3xl mx-auto text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          Success Stories
-        </h1>
-        <p class="text-xl text-gray-600">
-          Celebrating the achievements and contributions of our community members who are making a difference through innovation, arts, education, and entrepreneurship.
-        </p>
-      </div>
+<MainLayout {...seo}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-      <!-- Stories Grid -->
+  <main class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-r from-primary-700 to-primary-900 text-white py-16 md:py-24">
+      <div class="absolute inset-0 bg-[url('https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg')] bg-cover bg-center opacity-10"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-primary-900/95 to-primary-800/95"></div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+            Success Stories
+          </h1>
+          <p class="text-xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed">
+            Celebrating the achievements and contributions of our community members who are making a difference through innovation, arts, education, and entrepreneurship.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stories Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         <!-- Innocent Magambi Story -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden">
-          <img src="/success-story-1.jpg" alt="Innocent Magambi" class="w-full h-64 object-cover" />
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
+          <div class="relative overflow-hidden">
+            <img 
+              src="https://scd.infomigrants.net/media/resize/my_image_big/0d95d4ebde63adb1109a368f653d8a8d39b3aa10.png" 
+              alt="Innocent Magambi" 
+              class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" 
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
           <div class="p-6">
             <h2 class="text-2xl font-semibold text-gray-900 mb-4">Innocent Magambi</h2>
             <p class="text-gray-600 mb-4">Arrived at Dzaleka in 2003, Innocent's journey began with a scholarship to study theology through an international church in Lilongwe. He founded There is Hope (TIH), which now employs 60 people and assists over 300 individuals annually.</p>
             <p class="text-gray-600 mb-4">In 2007, he made the bold decision to relinquish his refugee status to expand his impact. After leading TIH for 15 years, he transitioned to lead Inua Advocacy, continuing his work for refugee rights.</p>
             <div class="text-sm text-gray-500">
-              Key Achievements:
-              <ul class="list-disc list-inside mt-2">
+              <h3 class="font-semibold text-gray-700 mb-2">Key Achievements:</h3>
+              <ul class="list-disc list-inside space-y-1">
                 <li>Founded There is Hope (TIH)</li>
                 <li>Employs 60 people</li>
                 <li>Assists 300+ individuals annually</li>
-                <li>Extended medical support to 70,000+ at Dzaleka Clinic</li>
+                <li>Extended medical support to 52,000+ at Dzaleka Health Centre</li>
                 <li>Established Inua Advocacy</li>
               </ul>
             </div>
@@ -41,15 +102,22 @@ const description = "Inspiring stories of achievement, resilience, and innovatio
         </div>
 
         <!-- Menes la Plume Story -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden">
-          <img src="/success-story-2.jpg" alt="Menes la Plume" class="w-full h-64 object-cover" />
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
+          <div class="relative overflow-hidden">
+            <img 
+              src="https://reifoundation.com/media/pages/partners/36d33e8d4a-1716269840/menes-la-plume-1-logo.jpg" 
+              alt="Menes la Plume" 
+              class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" 
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
           <div class="p-6">
             <h2 class="text-2xl font-semibold text-gray-900 mb-4">Menes la Plume (Trésor Nzengu Mpauni)</h2>
             <p class="text-gray-600 mb-4">A Congolese poet and musician who has become a symbol of resilience and hope for refugees in Malawi. Through his art, he has empowered refugees and promoted cultural understanding.</p>
             <p class="text-gray-600 mb-4">His crowning achievement is the Tumaini Festival, the world's first music and arts festival held in a refugee camp, which has significantly boosted Malawi's tourism industry and the camp's informal economy.</p>
             <div class="text-sm text-gray-500">
-              Impact Areas:
-              <ul class="list-disc list-inside mt-2">
+              <h3 class="font-semibold text-gray-700 mb-2">Impact Areas:</h3>
+              <ul class="list-disc list-inside space-y-1">
                 <li>Founded Tumaini Festival</li>
                 <li>Cultural preservation</li>
                 <li>Tourism development</li>
@@ -61,14 +129,21 @@ const description = "Inspiring stories of achievement, resilience, and innovatio
         </div>
 
         <!-- Remy Gakwaya Story -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden">
-          <img src="/success-story-3.jpg" alt="Remy Gakwaya" class="w-full h-64 object-cover" />
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
+          <div class="relative overflow-hidden">
+            <img 
+              src="https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg" 
+              alt="Remy Gakwaya" 
+              class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" 
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
           <div class="p-6">
             <h2 class="text-2xl font-semibold text-gray-900 mb-4">Remy Gakwaya</h2>
             <p class="text-gray-600 mb-4">A self-taught computer programmer who revolutionized tech education in Dzaleka through TakenoLAB. His vision expanded beyond technology when he founded RELON Malawi, creating a network for all refugee-led organizations.</p>
             <div class="text-sm text-gray-500">
-              Achievements:
-              <ul class="list-disc list-inside mt-2">
+              <h3 class="font-semibold text-gray-700 mb-2">Achievements:</h3>
+              <ul class="list-disc list-inside space-y-1">
                 <li>Founded TakenoLAB</li>
                 <li>Established RELON Malawi</li>
                 <li>Tech education pioneer</li>
@@ -85,25 +160,25 @@ const description = "Inspiring stories of achievement, resilience, and innovatio
         <h2 class="text-3xl font-bold text-gray-900 mb-8">More Success Stories</h2>
         
         <!-- Mirash Films -->
-        <div class="bg-white rounded-xl shadow-sm p-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
           <h3 class="text-2xl font-semibold text-gray-900 mb-4">Mirash Films</h3>
           <p class="text-gray-600 mb-4">Founded by Raphael Ndabaga, this film production company has earned recognition for its compelling storytelling and technical excellence, winning 6 awards at national and international film festivals in Malawi between 2023 and 2024.</p>
         </div>
 
         <!-- Salama Africa -->
-        <div class="bg-white rounded-xl shadow-sm p-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
           <h3 class="text-2xl font-semibold text-gray-900 mb-4">Salama Africa</h3>
           <p class="text-gray-600 mb-4">Founded by Freddy Farini, Toussaint Farini, Alain Tenta and Iris Nganji, Salama Africa has become a cornerstone of Malawi's dance scene. Their performances alongside well-known Malawian artists and multiple national awards showcase the power of cultural expression.</p>
         </div>
 
         <!-- Amahoro Burundian Drummers -->
-        <div class="bg-white rounded-xl shadow-sm p-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
           <h3 class="text-2xl font-semibold text-gray-900 mb-4">Amahoro Burundian Drummers</h3>
           <p class="text-gray-600 mb-4">Started in 2006 by Stanislas Nshimirimana, a Burundian refugee with a rich multicultural background, Amahoro has become a cultural ambassador. Their performances at major festivals, corporate events, and presidential galas spread a message of peace and cultural heritage preservation.</p>
         </div>
 
         <!-- Fountain of Hope -->
-        <div class="bg-white rounded-xl shadow-sm p-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
           <h3 class="text-2xl font-semibold text-gray-900 mb-4">Fountain of Hope</h3>
           <p class="text-gray-600 mb-4">Founded by Marcel Chiruza, who brought his community development expertise from DRC, Fountain of Hope has made significant contributions to education and income-generation. Their work benefits both refugees and Malawians, demonstrating the power of inclusive development.</p>
         </div>
@@ -111,3 +186,42 @@ const description = "Inspiring stories of achievement, resilience, and innovatio
     </div>
   </main>
 </MainLayout>
+
+<style>
+  /* Card hover effects */
+  .group:hover .group-hover\:scale-105 {
+    transform: scale(1.05);
+  }
+
+  /* Smooth transitions */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  /* Gradient overlay */
+  .bg-gradient-to-t {
+    background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  }
+
+  /* Shadow effects */
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .text-4xl {
+      font-size: 2rem;
+    }
+    
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+  }
+</style>

@@ -12,32 +12,118 @@ import { ResourcesWidget } from '../components/data/ResourcesWidget';
 import { FinanceWidget } from '../components/data/FinanceWidget';
 import { PopulationChart } from '../components/data/PopulationChart';
 
-// Create SEO metadata
+// Enhanced SEO metadata
+const pageTitle = "Dzaleka Camp Data Hub | Statistics & Demographics";
 const seo = {
-  description: "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations. Access statistics, demographics, economic impact, healthcare services, and more.",
+  title: pageTitle,
+  description: "Access comprehensive data insights into Dzaleka Refugee Camp: population statistics, demographics, economic impact, healthcare services, and real-time updates. Official source for refugee camp data.",
   type: "website",
   canonical: "https://services.dzaleka.com/data",
+  keywords: "Dzaleka refugee camp, Malawi refugee statistics, refugee demographics, humanitarian data, camp population, refugee services",
   openGraph: {
-    description: "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations. Access statistics, demographics, economic impact, healthcare services, and more.",
+    title: pageTitle,
+    description: "Access comprehensive data insights into Dzaleka Refugee Camp: population statistics, demographics, economic impact, healthcare services, and real-time updates. Official source for refugee camp data.",
     type: "website",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: "https://services.dzaleka.com/data"
+    url: "https://services.dzaleka.com/data",
+    images: [
+      {
+        url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Dzaleka Refugee Camp Aerial View"
+      }
+    ]
   },
   twitter: {
-    card: "summary",
-    description: "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations. Access statistics, demographics, economic impact, healthcare services, and more."
+    card: "summary_large_image",
+    site: "@DzalekaServices",
+    creator: "@DzalekaServices",
+    title: pageTitle,
+    description: "Access comprehensive data insights into Dzaleka Refugee Camp: population statistics, demographics, economic impact, healthcare services, and real-time updates.",
+    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
   }
 };
 
-// Create structured data for the data hub
-const dataHubStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "Dzaleka Camp Data Hub",
-  "description": "Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations.",
-  "url": "https://services.dzaleka.com/data",
-  "breadcrumb": {
+// Enhanced structured data
+const structuredData = [
+  // Dataset Schema
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Dzaleka Camp Data Hub",
+    "description": "Comprehensive statistical data about Dzaleka Refugee Camp including population demographics, economic impact, and services.",
+    "url": "https://services.dzaleka.com/data",
+    "keywords": ["refugee statistics", "demographics", "humanitarian data", "camp population", "refugee services"],
+    "creator": {
+      "@type": "Organization",
+      "name": "Dzaleka Online Services",
+      "url": "https://services.dzaleka.com"
+    },
+    "dateModified": new Date().toISOString(),
+    "variableMeasured": [
+      {
+        "@type": "PropertyValue",
+        "name": "Total Population",
+        "value": "56,760",
+        "unitText": "Refugees"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Women and Girls Percentage",
+        "value": "60",
+        "unitText": "Percent"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Nationalities",
+        "value": "5",
+        "unitText": "Countries"
+      }
+    ],
+    "distribution": {
+      "@type": "DataDownload",
+      "encodingFormat": "HTML",
+      "contentUrl": "https://services.dzaleka.com/data"
+    },
+    "temporalCoverage": "2024",
+    "spatialCoverage": {
+      "@type": "Place",
+      "name": "Dzaleka Refugee Camp",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Malawi",
+        "addressRegion": "Dowa District"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -13.7047,
+        "longitude": 33.9245
+      }
+    }
+  },
+  // Organization Schema
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Dzaleka Online Services",
+    "url": "https://services.dzaleka.com",
+    "logo": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
+    "sameAs": [
+      "https://x.com/Dzalekaconnect",
+      "https://facebook.com/dzalekaonline"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+265-xxx-xxxx",
+      "contactType": "customer service",
+      "availableLanguage": ["English", "French", "Swahili"]
+    }
+  },
+  // Breadcrumb Schema
+  {
+    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
       {
@@ -53,30 +139,8 @@ const dataHubStructuredData = {
         "item": "https://services.dzaleka.com/data"
       }
     ]
-  },
-  "about": {
-    "@type": "Place",
-    "name": "Dzaleka Refugee Camp",
-    "description": "A refugee camp in Malawi housing over 56,000 refugees from various countries including DRC, Burundi, and Rwanda."
-  },
-  "variableMeasured": [
-    {
-      "@type": "PropertyValue",
-      "name": "Total Refugees",
-      "value": "56,760"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "Women & Girls",
-      "value": "60%"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "Main Nationalities",
-      "value": "5"
-    }
-  ]
-};
+  }
+];
 
 const languages = [
   { code: 'en', name: 'English' },
@@ -86,14 +150,28 @@ const languages = [
 ---
 
 <MainLayout 
-  title="Dzaleka Camp Data Hub"
+  title={seo.title}
   description={seo.description} 
   type={seo.type} 
-  canonical={seo.canonical} 
+  canonical={seo.canonical}
+  keywords={seo.keywords}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(dataHubStructuredData)} />
+  {/* Enhanced Meta Tags */}
+  <link rel="alternate" hreflang="en" href="https://services.dzaleka.com/data" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Dzaleka Online Services" />
+  <meta name="revisit-after" content="7 days" />
+  <meta name="geo.region" content="MW-DO" />
+  <meta name="geo.placename" content="Dzaleka Refugee Camp" />
+  <meta name="geo.position" content="-13.7047;33.9245" />
+  <meta name="ICBM" content="-13.7047, 33.9245" />
+
+  {/* Structured Data */}
+  {structuredData.map(data => (
+    <script type="application/ld+json" set:html={JSON.stringify(data)} />
+  ))}
   
   <!-- Hero Section -->
   <div class="relative">
