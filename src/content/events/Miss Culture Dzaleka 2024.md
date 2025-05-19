@@ -5,7 +5,7 @@ date: 2024-08-03T10:00:00Z
 location: "Dzaleka Refugee Camp, Dowa"
 category: "Cultural"
 featured: true
-image: "images/481465050_632224406175859_7536536813728888727_n.jpg"
+image: "/images/481465050_632224406175859_7536536813728888727_n.jpg"
 organizer: "Dzaleka Youth Organization"
 status: "past"
 contact:

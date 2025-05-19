@@ -8,7 +8,7 @@ category: "Zoom Meeting"
 image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZBJqdubGjuBdbsi8WaizDXxURASG3H9mz5qwyXeT62H9heiF-2yJ9ChjuRaRrBs3StNSg0HRRPzKG7wBTjwEtxW2bifljGyBfh26Ld89l8RNRYTSjxWxZXCHO5YiNLZ85PaRr4b5vroULRB5Z95Fzz0_wUia1JMGWMO9Uw-kCRPGE2rfZ3-MApln1EPI/s16000-rw/header-malawi-refugee-smugglers.jpg.webp"
 featured: true
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   phone: "+265 882 717 995"

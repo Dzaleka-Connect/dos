@@ -1,7 +1,7 @@
 ---
 title: Inua Advocacy
-category: Advocacy
-description: Legal support and advocacy services for refugees in Malawi.
+category: Non-profit Organizations
+description: Promoting refugee rights and dignity in Malawi through legal aid, advocacy, and lasting solutions.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -23,31 +23,24 @@ logo: >-
   https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRshOC3XuIA-V7GVurjsZ0GIqKn_LJfdP1nQg&s
 featured: true
 verified: true
-lastUpdated: 2024-12-24
+lastUpdated: 2025-05-19
 ---
 
 ## About Inua Advocacy
 
-Inua Advocacy is a non-profit organization dedicated to empowering refugees and advocating for their rights. Founded by former refugees, Inua Advocacy works tirelessly to improve the lives of displaced persons in Dzaleka Refugee Camp and beyond.
+Inua Advocacy is a Malawian civil society organization dedicated to defending and promoting the rights and dignity of refugees. Founded by Innocent Magambi, a former refugee, the organization works to empower displaced persons through legal aid, policy advocacy, and community engagement. Inua Advocacy is actively involved in efforts to amend Malawi's 1989 Refugee Act, advocating for reforms that promote self-reliance and integration of refugees into society.
 
-### Mission
+## Key Services:
 
-Inua Advocacy's mission is to amplify the voices of refugees, provide accurate information about refugee situations, and advocate for policies that protect and empower displaced persons. We believe in the power of education, community engagement, and policy reform to create lasting change.
+- Legal Aid: Providing legal assistance to refugees facing discrimination and injustice.
+- Policy Advocacy: Lobbying for the amendment of the 1989 Refugee Act to support refugee rights and integration.
+- Community Empowerment: Supporting emerging refugee leaders and fostering community-based solutions.
+- Emergency Relief: Offering food, medical care, and shelter to refugees in need.
+- Research & Documentation: Conducting research on refugee issues and sharing refugee stories to raise awareness.
 
-### Key Initiatives
+## Recent Milestones:
+- Granted Observer Status by the African Commission on Human and Peoples’ Rights (ACHPR) in 2024.
+- Advocated for post-relocation support for refugees in Malawi.
+- Published a position paper on the revision of the Malawi Refugee Act. [Download the paper (PDF)](https://inuaadvocacy.org/2025/04/position-paper-on-the-revision-of-the-malawi-refugee-act/)
 
-- Documenting and sharing refugee stories
-- Conducting research on refugee issues in Malawi
-- Advocating for improved living conditions in Dzaleka Refugee Camp
-- Promoting education and skills development among refugees
-- Collaborating with local and international organizations to support refugee rights
-
-### Get Involved
-You can support Inua Advocacy's work in several ways:
-
-- Volunteer your skills and time
-- [Donate to support their initiatives](https://inuaadvocacy.org/donate/)
-- Share Inua Advocacy resources and raise awareness about refugee issues
-- Collaborate with Inua Advocacy on research or advocacy projects
-
-Visit [Inua Advocacy Website](https://inuaadvocacy.org/) to learn more.
+For more information or to support their initiatives, visit [inuaadvocacy.org](https://inuaadvocacy.org/).
