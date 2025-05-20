@@ -60,9 +60,8 @@ const {
 } = Astro.props;
 
 // Prepare OpenGraph image for Layout
-const ogImage = openGraph?.image 
-	? (typeof openGraph.image === 'string' ? openGraph.image : openGraph.image.url)
-	: image;
+const ogImage = openGraph?.images?.[0]?.url
+	|| (openGraph?.image ? (typeof openGraph.image === 'string' ? openGraph.image : openGraph.image.url) : image);
 ---
 
 <Layout 
