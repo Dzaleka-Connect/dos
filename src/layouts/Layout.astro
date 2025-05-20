@@ -63,7 +63,9 @@ const defaultOgImage = "/images/dzaleka-hero.jpeg";
 const metaDescription = description || defaultDescription;
 const metaKeywords = keywords || defaultKeywords;
 const metaOgImage = ogImage || defaultOgImage;
-const canonicalUrl = `https://services.dzaleka.com${canonical || Astro.url.pathname}`;
+const canonicalUrl = canonical && canonical.startsWith('http')
+	? canonical
+	: `https://services.dzaleka.com${canonical || Astro.url.pathname}`;
 ---
 
 <!DOCTYPE html>
