@@ -1,0 +1,804 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import NewsWidget from '../components/radio/NewsWidget.astro';
+
+const title = "Yetu Radio 99.1 MHz | Dzaleka Community Radio";
+const description = "Listen to Yetu Radio, broadcasting on 99.1 MHz across central Malawi. The only radio station in Malawi broadcasting in five languages (English, Chichewa, Kiswahili, French, and Kinyarwanda) from Dzaleka Refugee Camp.";
+
+const seo = {
+  title,
+  description,
+  type: "website",
+  canonical: "https://services.dzaleka.com/yetu-radio",
+  keywords: "Yetu Radio, 99.1 MHz, Dzaleka radio, refugee radio, Malawi radio, community radio, UNHCR radio, multilingual radio, Chichewa radio, Kiswahili radio, French radio, Kinyarwanda radio, central Malawi radio",
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    site_name: "Yetu Radio",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/yetu-radio",
+    images: [
+      {
+        url: "https://www.unhcr.org/sites/default/files/styles/d12/public/RF1321732.webp?itok=r_DIA-bu&t=1707819930",
+        width: 1200,
+        height: 630,
+        alt: "Yetu Radio - Voice of Dzaleka Refugee Camp"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@Dzalekaconnect",
+    creator: "@Dzalekaconnect",
+    title,
+    description,
+    image: "https://www.unhcr.org/sites/default/files/styles/d12/public/RF1321732.webp?itok=r_DIA-bu&t=1707819930"
+  },
+  additionalMetaTags: [
+    {
+      name: "geo.region",
+      content: "MW"
+    },
+    {
+      name: "geo.placename",
+      content: "Dzaleka Refugee Camp"
+    },
+    {
+      name: "geo.position",
+      content: "-13.7000;33.9333"
+    },
+    {
+      name: "ICBM",
+      content: "-13.7000, 33.9333"
+    },
+    {
+      name: "language",
+      content: "en,ny,sw,fr,rw"
+    },
+    {
+      name: "frequency",
+      content: "99.1 MHz"
+    },
+    {
+      name: "broadcast-area",
+      content: "Central Region, Malawi"
+    }
+  ]
+};
+
+// Enhanced structured data for radio station
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "RadioStation",
+  "name": "Yetu Radio",
+  "description": description,
+  "url": "https://services.dzaleka.com/yetu-radio",
+  "broadcastDisplayName": "Yetu Radio 99.1 MHz",
+  "broadcastTimezone": "Africa/Blantyre",
+  "inLanguage": ["en", "ny", "sw", "fr", "rw"],
+  "broadcastArea": {
+    "@type": "Place",
+    "name": "Central Region, Malawi",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "Malawi",
+      "addressRegion": "Central Region"
+    }
+  },
+  "foundingDate": "2018",
+  "foundingOrganization": {
+    "@type": "Organization",
+    "name": "United Nations High Commissioner for Refugees",
+    "abbreviation": "UNHCR"
+  },
+  "broadcastFrequency": "99.1 MHz",
+  "genre": ["Community Radio", "Multilingual Radio", "Refugee Radio"],
+  "slogan": "Voice of Dzaleka Refugee Camp",
+  "location": {
+    "@type": "Place",
+    "name": "Dzaleka Refugee Camp",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-13.7000",
+      "longitude": "33.9333"
+    }
+  },
+  "potentialAction": {
+    "@type": "ListenAction",
+    "target": "https://play.streamafrica.net/yetu"
+  }
+};
+---
+
+<MainLayout {...seo}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <!-- Add language switcher meta tags -->
+  <link rel="alternate" hreflang="en" href="https://services.dzaleka.com/yetu-radio" />
+  <link rel="alternate" hreflang="ny" href="https://services.dzaleka.com/yetu-radio" />
+  <link rel="alternate" hreflang="sw" href="https://services.dzaleka.com/yetu-radio" />
+  <link rel="alternate" hreflang="fr" href="https://services.dzaleka.com/yetu-radio" />
+  <link rel="alternate" hreflang="rw" href="https://services.dzaleka.com/yetu-radio" />
+  <link rel="alternate" hreflang="x-default" href="https://services.dzaleka.com/yetu-radio" />
+
+  <main class="min-h-screen bg-white">
+    <!-- Hero Section -->
+    <div class="relative py-16 md:py-24">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-gray-900">
+            Yetu Radio
+          </h1>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
+            The Voice of Dzaleka Refugee Camp. Listen to live music, news, and community updates.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modern Radio Player -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+        <!-- Language Badges -->
+        <div class="px-4 sm:px-6 py-3 bg-primary-50 border-b border-primary-100">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+            <div class="flex items-center space-x-2">
+              <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+              <span class="text-sm font-medium text-primary-900">Broadcasting in 5 Languages</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 text-xs font-medium bg-white text-primary-800 rounded-full border border-primary-200">English</span>
+              <span class="px-2 py-1 text-xs font-medium bg-white text-primary-800 rounded-full border border-primary-200">Chichewa</span>
+              <span class="px-2 py-1 text-xs font-medium bg-white text-primary-800 rounded-full border border-primary-200">Kiswahili</span>
+              <span class="px-2 py-1 text-xs font-medium bg-white text-primary-800 rounded-full border border-primary-200">French</span>
+              <span class="px-2 py-1 text-xs font-medium bg-white text-primary-800 rounded-full border border-primary-200">Kinyarwanda</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Radio Status -->
+        <div class="px-4 sm:px-6 py-4 bg-gradient-to-r from-primary-50 to-white border-b border-gray-200">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-100 flex items-center justify-center">
+                  <div class="radio-waves-large"></div>
+                  <svg class="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-900">Radio Status</h3>
+                <div class="flex items-center space-x-2">
+                  <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  <p class="text-sm text-gray-500">Live Broadcasting 24/7</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <span class="text-sm text-gray-600">99.1 MHz</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="text-sm text-gray-600">Central Region</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Now Playing Bar -->
+        <div class="p-4 sm:p-6 border-b border-gray-200">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="relative group">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden shadow-md transform transition-transform duration-300 group-hover:scale-105">
+                  <img 
+                    src="https://cdn.onlineradiobox.com/img/l/9/111679.v19.png" 
+                    alt="Yetu Radio Logo" 
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-primary-600 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                  </svg>
+                  <h3 class="text-sm font-medium text-gray-500">NOW PLAYING</h3>
+                </div>
+                <p class="text-base sm:text-lg font-semibold text-gray-900" id="nowPlaying">Yetu Radio</p>
+                <p class="text-sm text-gray-500" id="artistInfo">Live from Dzaleka Refugee Camp</p>
+                <div class="flex items-center space-x-2 mt-1">
+                  <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                  </svg>
+                  <p class="text-sm font-medium text-primary-600">99.1 MHz • Central Region</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4">
+              <button 
+                id="favoriteButton"
+                class="text-gray-500 hover:text-red-500 transition-colors transform hover:scale-110"
+                aria-label="Add to favorites"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
+              <button 
+                id="shareButton"
+                class="text-gray-500 hover:text-primary-600 transition-colors transform hover:scale-110"
+                aria-label="Share radio"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="p-4 sm:p-6">
+          <div class="flex flex-col items-center space-y-4">
+            <!-- Live Indicator -->
+            <div class="flex items-center space-x-4 text-sm text-gray-500">
+              <span class="flex items-center">
+                <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2"></span>
+                Live Broadcast
+              </span>
+              <span class="flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                24/7
+              </span>
+            </div>
+
+            <!-- Main Controls -->
+            <div class="flex items-center justify-center">
+              <button 
+                id="playButton"
+                class="station_play b-play w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary-600 hover:bg-primary-700 text-white flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                aria-label="Listen live"
+                title="Listen to radio"
+                stream="https://play.streamafrica.net/yetu"
+                streamtype="mp3"
+                radioid="mw.yetu"
+                radioimg="//cdn.onlineradiobox.com/img/l/9/111679.v19.png"
+                radioname="Yetu Radio"
+              >
+                <svg class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Volume Control -->
+            <div class="flex items-center space-x-4 w-full max-w-xs">
+              <button id="muteButton" class="text-gray-500 hover:text-gray-900 transition-colors transform hover:scale-110">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
+                </svg>
+              </button>
+              <input 
+                type="range" 
+                id="volumeSlider" 
+                min="0" 
+                max="100" 
+                value="100" 
+                class="w-full h-1 bg-gray-200 rounded-full appearance-none cursor-pointer"
+              />
+              <span id="volumeValue" class="text-sm text-gray-500">100%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="p-6 bg-gray-50 border-t border-gray-200">
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <div class="flex items-center space-x-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>High Quality Stream</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Live Broadcast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Section -->
+      <div class="mt-8 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">About Yetu Radio</h2>
+        <p class="text-gray-600 mb-4">
+          Yetu community radio was established in 2018 by the United Nations High Commissioner for Refugees (UNHCR) with the mission of serving as a model of peaceful co-existence between the Malawian and refugee communities in addressing issues of child protection, GBV, and human rights by providing a platform for all people to access information and speak on issues that affect them through media programming.
+        </p>
+        <p class="text-gray-600">
+          Yetu community radio boasts of being a unique radio as it is based in a refugee camp setup and is the only radio in Malawi that broadcasts in five languages, namely; English, Chichewa, Kiswahili, French, and Kinyarwanda. The station broadcasts on 99.1 MHZ across the central region of Malawi.
+        </p>
+      </div>
+
+      <!-- News & Announcements Section -->
+      <div class="mt-8 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Latest News & Announcements</h2>
+        <div class="space-y-4">
+          <!-- Latest News -->
+          <div class="mt-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Latest News from Dzaleka</h3>
+            <NewsWidget />
+          </div>
+
+          <!-- View All Link -->
+          <div class="mt-4 text-center">
+            <a href="/news" class="text-sm font-medium text-primary-600 hover:text-primary-700">
+              View all news and announcements
+              <span aria-hidden="true"> &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="mt-8 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Contact & Service Information</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Contact Information -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 mb-3">Contact Details</h3>
+            <div class="space-y-3">
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Location</p>
+                  <p class="text-gray-600">Dzaleka Refugee Camp, Dowa District, Central Region, Malawi</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Phone</p>
+                  <p class="text-gray-600">+265 992 900 276</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Email</p>
+                  <p class="text-gray-600">jelium.kamphandira@yeturadio.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service Information -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 mb-3">Service Information</h3>
+            <div class="space-y-3">
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Broadcast Hours</p>
+                  <p class="text-gray-600">24/7 Live Broadcasting</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Frequency</p>
+                  <p class="text-gray-600">99.1 MHz FM</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Coverage Area</p>
+                  <p class="text-gray-600">Central Region, Malawi</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <div>
+                  <p class="text-gray-900 font-medium">Languages</p>
+                  <p class="text-gray-600">English, Chichewa, Kiswahili, French, Kinyarwanda</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="mt-6 pt-6 border-t border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">Connect With Us</h3>
+          <div class="flex space-x-4">
+            <a href="https://www.facebook.com/MalawiSportsNow/" class="text-gray-500 hover:text-gray-900 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  /* Player animations */
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .playing {
+    animation: pulse 2s infinite;
+  }
+
+  /* Radio waves animation */
+  .radio-waves-large {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .radio-waves-large::before,
+  .radio-waves-large::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #4f46e5;
+    border-radius: 50%;
+    animation: radio-wave-large 2s linear infinite;
+  }
+
+  .radio-waves-large::after {
+    animation-delay: 1s;
+  }
+
+  @keyframes radio-wave-large {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* Smooth transitions */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  /* Button hover effects */
+  button:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Custom volume slider styling */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #4f46e5;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #4f46e5;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.2);
+  }
+</style>
+
+<script>
+  // Audio player functionality
+  let audioPlayer = null;
+  const playButton = document.getElementById('playButton');
+  const nowPlaying = document.getElementById('nowPlaying');
+  const artistInfo = document.getElementById('artistInfo');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const volumeValue = document.getElementById('volumeValue');
+  const muteButton = document.getElementById('muteButton');
+  let previousVolume = 100;
+
+  function initializePlayer() {
+    const streamUrl = playButton.getAttribute('stream');
+    audioPlayer = new Audio(streamUrl);
+    
+    // Set initial volume
+    audioPlayer.volume = volumeSlider.value / 100;
+    
+    audioPlayer.addEventListener('playing', () => {
+      playButton.innerHTML = `
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+      `;
+      playButton.classList.add('playing');
+      updateNowPlaying();
+    });
+
+    audioPlayer.addEventListener('pause', () => {
+      playButton.innerHTML = `
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      `;
+      playButton.classList.remove('playing');
+      nowPlaying.textContent = "Yetu Radio";
+      artistInfo.textContent = "Click to start listening";
+    });
+
+    audioPlayer.addEventListener('error', () => {
+      playButton.innerHTML = `
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      `;
+      playButton.classList.remove('playing');
+      nowPlaying.textContent = "Yetu Radio";
+      artistInfo.textContent = "Click to start listening";
+    });
+  }
+
+  playButton.addEventListener('click', () => {
+    if (!audioPlayer) {
+      initializePlayer();
+    }
+
+    if (audioPlayer.paused) {
+      audioPlayer.play();
+    } else {
+      audioPlayer.pause();
+    }
+  });
+
+  // Volume control
+  volumeSlider.addEventListener('input', (e) => {
+    const volume = e.target.value;
+    if (audioPlayer) {
+      audioPlayer.volume = volume / 100;
+    }
+    volumeValue.textContent = `${volume}%`;
+    
+    // Update mute button icon
+    if (volume > 0) {
+      muteButton.innerHTML = `
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
+        </svg>
+      `;
+    } else {
+      muteButton.innerHTML = `
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+        </svg>
+      `;
+    }
+  });
+
+  // Mute toggle
+  muteButton.addEventListener('click', () => {
+    if (!audioPlayer) return;
+    
+    if (audioPlayer.volume > 0) {
+      previousVolume = audioPlayer.volume * 100;
+      audioPlayer.volume = 0;
+      volumeSlider.value = 0;
+      volumeValue.textContent = '0%';
+      muteButton.innerHTML = `
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+        </svg>
+      `;
+    } else {
+      audioPlayer.volume = previousVolume / 100;
+      volumeSlider.value = previousVolume;
+      volumeValue.textContent = `${previousVolume}%`;
+      muteButton.innerHTML = `
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
+        </svg>
+      `;
+    }
+  });
+
+  // Update now playing info
+  function updateNowPlaying() {
+    const currentTime = new Date();
+    const hour = currentTime.getHours();
+    
+    // Define programming schedule based on time of day
+    let programInfo = {
+      title: "Yetu Radio",
+      artist: "Live from Dzaleka Refugee Camp"
+    };
+
+    // Morning programming (6:00 - 12:00)
+    if (hour >= 6 && hour < 12) {
+      programInfo = {
+        title: "Morning Show",
+        artist: "News, Music & Community Updates"
+      };
+    }
+    // Afternoon programming (12:00 - 18:00)
+    else if (hour >= 12 && hour < 18) {
+      programInfo = {
+        title: "Afternoon Mix",
+        artist: "Music & Entertainment"
+      };
+    }
+    // Evening programming (18:00 - 22:00)
+    else if (hour >= 18 && hour < 22) {
+      programInfo = {
+        title: "Evening Program",
+        artist: "Music & Cultural Shows"
+      };
+    }
+    // Late night programming (22:00 - 6:00)
+    else {
+      programInfo = {
+        title: "Late Night Radio",
+        artist: "Music & Special Programs"
+      };
+    }
+
+    nowPlaying.textContent = programInfo.title;
+    artistInfo.textContent = programInfo.artist;
+  }
+
+  // Update now playing info every hour
+  setInterval(updateNowPlaying, 3600000);
+  updateNowPlaying(); // Initial update
+
+  // Favorite button functionality
+  const favoriteButton = document.getElementById('favoriteButton');
+  let isFavorited = false;
+
+  favoriteButton.addEventListener('click', () => {
+    isFavorited = !isFavorited;
+    if (isFavorited) {
+      favoriteButton.innerHTML = `
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      `;
+      favoriteButton.classList.remove('text-gray-500');
+      favoriteButton.classList.add('text-red-500');
+      // Save to localStorage
+      localStorage.setItem('yetuRadioFavorited', 'true');
+    } else {
+      favoriteButton.innerHTML = `
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      `;
+      favoriteButton.classList.remove('text-red-500');
+      favoriteButton.classList.add('text-gray-500');
+      // Remove from localStorage
+      localStorage.removeItem('yetuRadioFavorited');
+    }
+  });
+
+  // Check if radio was previously favorited
+  if (localStorage.getItem('yetuRadioFavorited') === 'true') {
+    isFavorited = true;
+    favoriteButton.innerHTML = `
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+      </svg>
+    `;
+    favoriteButton.classList.remove('text-gray-500');
+    favoriteButton.classList.add('text-red-500');
+  }
+
+  // Share button functionality
+  const shareButton = document.getElementById('shareButton');
+  
+  shareButton.addEventListener('click', async () => {
+    const shareData = {
+      title: 'Yetu Radio',
+      text: 'Listen to Yetu Radio, broadcasting on 99.1 MHz across central Malawi. The only radio station in Malawi broadcasting in five languages.',
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for browsers that don't support the Web Share API
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent(shareData.text);
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+      }
+    } catch (err) {
+      console.log('Error sharing:', err);
+    }
+  });
+</script> 

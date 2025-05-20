@@ -12,6 +12,30 @@ export interface UpdateWithLink extends Update {
 
 export const updates: (Update | UpdateWithLink)[] = [
     {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'Enhanced Radio Player Features',
+        text: 'Added new interactive features to the Yetu Radio player including favorite button with local storage persistence, share functionality with Web Share API support, and dynamic now playing information based on time of day.'
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'Radio Player Visual Enhancements',
+        text: 'Introduced new visual elements to the radio player including animated radio waves, pulsing status indicators, and improved volume control with custom styling. Added smooth transitions and hover effects for better interactivity.'
+    },
+    {
+        date: '2025-02-11',
+        type: 'improvement',
+        title: 'Radio Player Mobile Optimization',
+        text: 'Enhanced mobile responsiveness of the Yetu Radio player. Improved layout and controls for better user experience on mobile devices, including optimized language badges, status indicators, and player controls.'
+    },
+    {
+        date: '2025-02-11',
+        type: 'improvement',
+        title: 'Radio Status Display Enhancement',
+        text: 'Streamlined the radio status display by combining live broadcast and 24/7 indicators. Added clear frequency and coverage area information with improved visual hierarchy.'
+    },
+    {
         date: '2025-02-10',
         type: 'feature',
         title: 'Skills Exchange Matching',
@@ -134,5 +158,45 @@ export const updates: (Update | UpdateWithLink)[] = [
 • Main nationalities: DRC (62%), Burundi (19%), Rwanda (7%), Others (2%)
 
 Source: WFP Malawi Country Brief (Dec 2024) & UNHCR Malawi`
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'Help Desk & Support Center Launched',
+        text: 'Introduced a new Help Desk page for user support, including a support form, FAQ, and support categories. Users can now submit requests and get assistance for technical, business, and community issues.',
+        link: '/help-desk',
+        linkText: 'Visit Help Desk'
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'API Test Page',
+        text: 'Added an API Test page for developers and admins to test API endpoints, view request/response details, and debug data collections.',
+        link: '/api-test',
+        linkText: 'Try API Test'
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'Weather & Climate Page',
+        text: 'Launched a real-time weather and climate information page for Dzaleka, including live weather, seasonal patterns, and weather alerts.',
+        link: '/weather',
+        linkText: 'View Weather'
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'Analytics Dashboard',
+        text: 'Released a privacy-focused analytics dashboard for tracking site activity, engagement, and performance metrics.',
+        link: '/analytics',
+        linkText: 'View Analytics'
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'Projects & MIT Solve Solutions Page',
+        text: 'Created a new Projects page showcasing innovative solutions from Dzaleka recognized by MIT Solve, with categories, highlights, and project details.',
+        link: '/projects',
+        linkText: 'Explore Projects'
     }
 ];
