@@ -4,8 +4,13 @@ import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
 import Badge from '../components/ui/Badge.astro';
 
+// Get all photos and sort by date
 const photos = await getCollection('photos');
-const sortedPhotos = photos.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const sortedPhotos = photos.sort((a, b) => {
+  const dateA = new Date(a.data.date).getTime();
+  const dateB = new Date(b.data.date).getTime();
+  return dateB - dateA; // Sort in descending order (newest first)
+});
 
 // Group photos by month and year
 const groupedPhotos = sortedPhotos.reduce((groups, photo) => {
@@ -17,76 +22,75 @@ const groupedPhotos = sortedPhotos.reduce((groups, photo) => {
   groups[key].push(photo);
   return groups;
 }, {} as Record<string, typeof photos>);
+
+// Create SEO metadata
+const seo = {
+  title: "Photo Gallery | Dzaleka Heritage Archive",
+  description: "Explore our collection of photographs documenting life in Dzaleka Refugee Camp, Malawi.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/photo-gallery",
+  openGraph: {
+    title: "Photo Gallery | Dzaleka Heritage Archive",
+    description: "Explore our collection of photographs documenting life in Dzaleka Refugee Camp, Malawi.",
+    type: "website",
+    site_name: "Dzaleka Heritage Archive",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/photo-gallery"
+  }
+};
 ---
 
-<MainLayout title="Photo Gallery">
-  <main class="container mx-auto px-4 py-8">
-    <div class="max-w-7xl mx-auto">
-      <h1 class="text-4xl font-bold text-gray-900 mb-8">Photo Gallery</h1>
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Photo Gallery</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Explore our collection of photographs documenting life in Dzaleka Refugee Camp, Malawi.
+        </p>
+      </div>
 
-      {Object.entries(groupedPhotos).map(([dateGroup, photos]) => (
-        <section class="mb-12">
-          <h2 class="text-2xl font-semibold text-gray-800 mb-6">{dateGroup}</h2>
-          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {photos.map(photo => (
-              <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
-                <a href={`/photos/${photo.slug}`} class="block">
-                  <div class="relative aspect-w-16 aspect-h-9">
-                    <img 
-                      src={photo.data.image} 
-                      alt={photo.data.title}
-                      class="w-full h-full object-cover"
-                    />
-                    {photo.data.featured && (
-                      <div class="absolute top-4 right-4">
-                        <Badge variant="blue">Featured</Badge>
-                      </div>
-                    )}
-                  </div>
-                  <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">
-                      {photo.data.title}
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                      {photo.data.description}
-                    </p>
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center">
-                        <div class="text-sm">
-                          <p class="font-medium text-gray-900">
-                            {photo.data.photographer.name}
-                          </p>
-                          {photo.data.photographer.instagram && (
-                            <a 
-                              href={`https://instagram.com/${photo.data.photographer.instagram}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              class="text-primary-600 hover:text-primary-700"
-                            >
-                              @{photo.data.photographer.instagram}
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                      <time 
-                        datetime={photo.data.date.toISOString()}
-                        class="text-sm text-gray-500"
-                      >
-                        {format(photo.data.date, 'MMM d, yyyy')}
-                      </time>
-                    </div>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                      {photo.data.tags.map(tag => (
-                        <Badge variant="green">{tag}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                </a>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+      <!-- Photo Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedPhotos.map(photo => (
+          <a 
+            href={`/photos/${photo.slug}`}
+            class="group block bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+          >
+            <div class="aspect-w-16 aspect-h-9">
+              <img 
+                src={photo.data.image} 
+                alt={photo.data.title}
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-4">
+              <h2 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                {photo.data.title}
+              </h2>
+              <p class="text-sm text-gray-500 mt-1">
+                {format(new Date(photo.data.date), 'MMMM d, yyyy')}
+              </p>
+              {photo.data.photographer?.name && (
+                <p class="text-sm text-gray-500 mt-1">
+                  By {photo.data.photographer.name}
+                </p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
+
+<style>
+  /* Add any component-specific styles here */
+</style>
