@@ -6,8 +6,9 @@ photographer:
   instagram: "dress4ourtime"
   website: "https://www.sustainable-fashion.com/meet-the-team/prof-helen-storey---mbe%2C-rdi%2C-frsa"
   bio: "Helen works across design,  science and technology in service to humanity"
+contributor: "helen-storey"
 image: "https://static.wixstatic.com/media/9dbc3c_56ead5c914924fb68566fa47a630f579~mv2.jpg"
-date: 2023-06-09
+date: "2023-06-09"
 tags: ["Empowerment", "Gender Violence", "Healing"]
 featured: true
 location: "Dzaleka Refugee Camp"

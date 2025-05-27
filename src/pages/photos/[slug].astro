@@ -1,0 +1,254 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+
+export async function getStaticPaths() {
+  const photos = await getCollection('photos');
+  return photos.map(photo => ({
+    params: { slug: photo.slug },
+    props: { photo }
+  }));
+}
+
+const { photo } = Astro.props;
+const { title, description, photographer, image, date, tags, location } = photo.data;
+const { Content } = await photo.render();
+
+// Get related photos based on tags and location
+const allPhotos = await getCollection('photos');
+const relatedPhotos = allPhotos
+  .filter(p => 
+    p.slug !== photo.slug && // Exclude current photo
+    (
+      // Match by tags
+      (p.data.tags && photo.data.tags && 
+        p.data.tags.some(tag => photo.data.tags.includes(tag))) ||
+      // Match by location
+      (p.data.location === photo.data.location) ||
+      // Match by photographer
+      (p.data.photographer?.name === photo.data.photographer?.name)
+    )
+  )
+  .slice(0, 3); // Limit to 3 related photos
+
+// Create SEO metadata
+const seo = {
+  title: `${title} | Dzaleka Heritage Archive`,
+  description: description,
+  image: image,
+  type: "article",
+  canonical: `https://services.dzaleka.com/photos/${photo.slug}`,
+  openGraph: {
+    title: `${title} | Dzaleka Heritage Archive`,
+    description: description,
+    type: "article",
+    site_name: "Dzaleka Heritage Archive",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/photos/${photo.slug}`,
+    image: {
+      url: image,
+      width: 1200,
+      height: 630,
+      alt: title,
+      type: "image/jpeg"
+    }
+  }
+};
+---
+
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  image={seo.image} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Back Button -->
+      <div class="mb-6">
+        <a 
+          href="/photos" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Back to Photos</span>
+        </a>
+      </div>
+
+      <!-- Photo Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Photo and Info -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Photo -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <img 
+              src={image} 
+              alt={title}
+              class="w-full h-auto"
+            />
+          </div>
+
+          <!-- Download Options -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Download Options</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <a 
+                href={image} 
+                download
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Original Size
+              </a>
+              <a 
+                href={`${image}?w=1200`} 
+                download
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Medium (1200px)
+              </a>
+              <a 
+                href={`${image}?w=800`} 
+                download
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Small (800px)
+              </a>
+            </div>
+            <div class="mt-4">
+              <a 
+                href={`/photos/${photo.slug}/print`}
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print Version
+              </a>
+            </div>
+
+            <!-- About This Photo -->
+            <div class="mt-8 pt-8 border-t">
+              <div class="prose prose-sm max-w-none">
+                <Content />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Photo Info -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">{title}</h1>
+            <p class="text-gray-600 mb-4">{description}</p>
+            
+            <div class="space-y-4">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Photographer</h3>
+                <p class="text-gray-900">
+                  <a 
+                    href={`/photos/contributor/${photo.data.contributor}`}
+                    class="text-primary-600 hover:text-primary-700 hover:underline"
+                  >
+                    {photographer.name}
+                  </a>
+                  {photographer.instagram && (
+                    <a 
+                      href={`https://instagram.com/${photographer.instagram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-primary-600 hover:text-primary-700 ml-2"
+                    >
+                      @{photographer.instagram}
+                    </a>
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Date</h3>
+                <p class="text-gray-900">{format(new Date(date), 'MMMM d, yyyy')}</p>
+              </div>
+
+              {location && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Location</h3>
+                  <p class="text-gray-900">{location}</p>
+                </div>
+              )}
+
+              {tags && tags.length > 0 && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500 mb-2">Tags</h3>
+                  <div class="flex flex-wrap gap-2">
+                    {tags.map(tag => (
+                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <!-- Related Photos -->
+          {relatedPhotos.length > 0 && (
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-lg font-semibold text-gray-900 mb-4">Related Photos</h2>
+              <div class="space-y-4">
+                {relatedPhotos.map(relatedPhoto => (
+                  <a 
+                    href={`/photos/${relatedPhoto.slug}`}
+                    class="block group"
+                  >
+                    <div class="flex gap-4">
+                      <div class="w-24 h-24 flex-shrink-0">
+                        <img 
+                          src={relatedPhoto.data.image} 
+                          alt={relatedPhoto.data.title}
+                          class="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <div>
+                        <h3 class="text-sm font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
+                          {relatedPhoto.data.title}
+                        </h3>
+                        <p class="text-xs text-gray-500 mt-1">
+                          {format(new Date(relatedPhoto.data.date), 'MMMM d, yyyy')}
+                        </p>
+                        {relatedPhoto.data.photographer?.name && (
+                          <p class="text-xs text-gray-500 mt-1">
+                            By {relatedPhoto.data.photographer.name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  /* Add any component-specific styles here */
+</style> 

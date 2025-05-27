@@ -2,12 +2,13 @@
 title: "Strings of Hope: Obadiah’s Journey Through Music in Dzaleka"
 description: "Obadiah, a Congolese musician in Dzaleka, finds hope through music. Despite COVID-19 interruptions, he continues to play, sharing his story and striving to return to the stage."
 photographer:
-  name: "WFP/Badre Bahaji"
+  name: "Badre Bahaji"
   instagram: "badrebahaji"
   website: "https://mw.linkedin.com/in/badre-bahaji-1bb67942"
   bio: "Photography based in Uganda"
+contributor: "badre-bahaji"
 image: "https://www.wfp.org/sites/default/files/styles/media_embed/public/2021-06/Malawi%204.jpg?itok=tzu5xhKc"
-date: 2021-06-18
+date: "2021-06-18"
 tags: ["Refugee Talent", "Music as Therapy", "Artistic Resilience","Festival Performer"]
 featured: true
 location: "Dzaleka Refugee Camp"

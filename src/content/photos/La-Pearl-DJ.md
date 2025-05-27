@@ -2,12 +2,13 @@
 title: "Breaking Barriers: DJ La Pearl Spins Hope in Dzaleka"
 description: "DJ La Pearl, a Congolese refugee in Dzaleka, defies stereotypes to pursue her passion for music."
 photographer:
-  name: "WFP/Badre Bahaji"
+  name: "Badre Bahaji"
   instagram: "badrebahaji"
   website: "https://mw.linkedin.com/in/badre-bahaji-1bb67942"
   bio: "Photography based in Uganda"
+contributor: "badre-bahaji"
 image: "https://www.wfp.org/sites/default/files/styles/media_embed/public/2021-06/20210518_MWI_Badre-Bahaji_IO_-6.JPG?itok=Gg7-hCsz"
-date: 2021-06-18
+date: "2021-06-18"
 tags: ["Female Empowerment", "Breaking Stereotypes", "DJ La Pearl"]
 featured: true
 location: "Dzaleka Refugee Camp"

@@ -6,8 +6,9 @@ photographer:
   instagram: "dzalekaonline"
   website: "https://www.instagram.com/dzalekaonline/"
   bio: "Visual storyteller focusing on youth empowerment and innovation in refugee communities."
+contributor: "carlos-martinez"
 image: "https://ep00.epimg.net/elpais/imagenes/2016/06/20/album/1466383678_828939_1466384261_album_normal.jpg"
-date: 2023-10-15
+date: "2023-10-15"
 tags: ["UNHCR", "Cardboard Collection", "Refugee Life"]
 featured: true
 location: "Dzaleka Refugee Camp"

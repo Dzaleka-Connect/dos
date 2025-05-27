@@ -6,8 +6,9 @@ photographer:
   instagram: "goalclick"
   website: "https://www.goal-click.com/"
   bio: "Goal Click Refugees is an ongoing project collaborating with refugees, asylum seekers and internally displaced people from around the world."
+contributor: "goal-click"
 image: "https://images.squarespace-cdn.com/content/v1/6218c0b66ea9365b6e572281/91853e7c-21fc-426b-b2ac-ae2f3a79bf5f/Malawi+-+UNHCR+-+Solange+A1-min.jpg?format=2500w"
-date: 2022-06-29
+date: "2022-06-29"
 tags: ["Football", "Empowerment", "Girl"]
 featured: true
 location: "Dzaleka Refugee Camp"

@@ -1,0 +1,336 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+
+export async function getStaticPaths() {
+  const photos = await getCollection('photos');
+  const photographers = new Map();
+  
+  // Process all photos to build photographer data
+  for (const photo of photos) {
+    const { photographer } = photo.data;
+    if (!photographer?.name) continue;
+    
+    const key = photo.data.contributor || photographer.name.toLowerCase().replace(/\s+/g, '-');
+    
+    if (!photographers.has(key)) {
+      photographers.set(key, {
+        name: photographer.name,
+        bio: photographer.bio || '',
+        instagram: photographer.instagram || '',
+        website: photographer.website || '',
+        photoCount: 0,
+        latestPhoto: null,
+        tags: new Set(),
+        locations: new Set(),
+        firstPhotoDate: new Date(photo.data.date),
+        lastPhotoDate: new Date(photo.data.date),
+        photosByYear: new Map()
+      });
+    }
+    
+    const photographerData = photographers.get(key);
+    photographerData.photoCount++;
+    
+    // Update dates
+    const photoDate = new Date(photo.data.date);
+    if (photoDate < photographerData.firstPhotoDate) {
+      photographerData.firstPhotoDate = photoDate;
+    }
+    if (photoDate > photographerData.lastPhotoDate) {
+      photographerData.lastPhotoDate = photoDate;
+    }
+
+    // Add tags and locations
+    if (photo.data.tags) {
+      photo.data.tags.forEach(tag => photographerData.tags.add(tag));
+    }
+    if (photo.data.location) {
+      photographerData.locations.add(photo.data.location);
+    }
+
+    // Group photos by year
+    const year = photoDate.getFullYear();
+    if (!photographerData.photosByYear.has(year)) {
+      photographerData.photosByYear.set(year, []);
+    }
+    photographerData.photosByYear.get(year).push(photo);
+    
+    // Update latest photo if this one is newer
+    if (!photographerData.latestPhoto || photoDate > new Date(photographerData.latestPhoto.data.date)) {
+      photographerData.latestPhoto = photo;
+    }
+  }
+  
+  // Generate paths for each photographer
+  return Array.from(photographers.entries()).map(([key, data]) => ({
+    params: { name: key },
+    props: { 
+      photographer: data,
+      title: `${data.name}'s Photos`
+    }
+  }));
+}
+
+const { photographer, title } = Astro.props;
+const photos = await getCollection('photos', (photo) => 
+  photo.data.contributor === Astro.params.name || 
+  (photo.data.photographer?.name && photo.data.photographer.name.toLowerCase().replace(/\s+/g, '-') === Astro.params.name)
+);
+
+// Sort photos by date
+photos.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Calculate statistics
+const totalPhotos = photos.length;
+const yearsActive = new Date(photographer.lastPhotoDate).getFullYear() - new Date(photographer.firstPhotoDate).getFullYear() + 1;
+const averagePhotosPerYear = Math.round(totalPhotos / yearsActive);
+const uniqueLocations = photographer.locations.size;
+const uniqueTags = photographer.tags.size;
+
+// Create SEO metadata
+const seo = {
+  title: `${photographer.name}'s Photos | Dzaleka Heritage Archive`,
+  description: photographer.bio || `View ${photographer.name}'s collection of ${totalPhotos} photos documenting life in Dzaleka Refugee Camp.`,
+  image: photographer.latestPhoto.data.image,
+  type: "profile",
+  canonical: `https://services.dzaleka.com/photos/contributor/${Astro.params.name}`,
+  openGraph: {
+    title: `${photographer.name}'s Photos | Dzaleka Heritage Archive`,
+    description: photographer.bio || `View ${photographer.name}'s collection of ${totalPhotos} photos documenting life in Dzaleka Refugee Camp.`,
+    type: "profile",
+    site_name: "Dzaleka Heritage Archive",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/photos/contributor/${Astro.params.name}`,
+    image: {
+      url: photographer.latestPhoto.data.image,
+      width: 1200,
+      height: 630,
+      alt: `${photographer.name}'s latest photo`,
+      type: "image/jpeg"
+    }
+  }
+};
+
+// Create structured data
+const photographerStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": photographer.name,
+  "description": photographer.bio,
+  "url": `https://services.dzaleka.com/photos/contributor/${Astro.params.name}`,
+  "image": photographer.latestPhoto.data.image,
+  "sameAs": [
+    photographer.instagram ? `https://instagram.com/${photographer.instagram}` : null,
+    photographer.website
+  ].filter(Boolean),
+  "knowsAbout": Array.from(photographer.tags),
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Dzaleka Heritage Archive"
+  }
+};
+---
+
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  image={seo.image} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(photographerStructuredData)} />
+  
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Back Button -->
+      <div class="mb-6">
+        <a 
+          href="/photos/contributors" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Back to Photographers</span>
+        </a>
+      </div>
+
+      <!-- Photographer Header -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+        <div class="relative h-64 md:h-96">
+          <img 
+            src={photographer.latestPhoto.data.image} 
+            alt={`Latest photo by ${photographer.name}`}
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+            <h1 class="text-4xl font-bold mb-4">{photographer.name}</h1>
+            {photographer.bio && (
+              <p class="text-lg text-gray-200 max-w-3xl">{photographer.bio}</p>
+            )}
+            <div class="mt-4 flex items-center gap-4">
+              {photographer.instagram && (
+                <a 
+                  href={`https://instagram.com/${photographer.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-white hover:text-gray-200 flex items-center gap-2"
+                >
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                  @{photographer.instagram}
+                </a>
+              )}
+              {photographer.website && (
+                <a 
+                  href={photographer.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-white hover:text-gray-200 flex items-center gap-2"
+                >
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  </svg>
+                  Portfolio
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="text-3xl font-bold text-primary-600">{totalPhotos}</div>
+          <div class="text-sm text-gray-600 mt-1">Total Photos</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="text-3xl font-bold text-primary-600">{yearsActive}</div>
+          <div class="text-sm text-gray-600 mt-1">Years Active</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="text-3xl font-bold text-primary-600">{averagePhotosPerYear}</div>
+          <div class="text-sm text-gray-600 mt-1">Photos per Year</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="text-3xl font-bold text-primary-600">{uniqueLocations}</div>
+          <div class="text-sm text-gray-600 mt-1">Unique Locations</div>
+        </div>
+      </div>
+
+      <!-- Tags and Locations -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {photographer.tags.size > 0 && (
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Photo Categories</h3>
+            <div class="relative">
+              <div class="flex overflow-x-auto gap-2 pb-2 scrollbar-hide">
+                {Array.from(photographer.tags).map(tag => (
+                  <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors whitespace-nowrap">
+                    <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <span class="text-sm text-gray-700">{tag}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white pointer-events-none"></div>
+            </div>
+          </div>
+        )}
+        {photographer.locations.size > 0 && (
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Photo Locations</h3>
+            <div class="space-y-2">
+              {Array.from(photographer.locations).map(location => (
+                <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span class="text-sm text-gray-700">{location}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Photos by Year -->
+      <div class="space-y-12">
+        {Array.from(photographer.photosByYear.entries())
+          .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+          .map(([year, yearPhotos]) => (
+            <section>
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">
+                  {year}
+                  <span class="text-lg text-gray-500 font-normal ml-2">
+                    ({yearPhotos.length} photos)
+                  </span>
+                </h2>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {yearPhotos
+                  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+                  .map(photo => (
+                    <a 
+                      href={`/photos/${photo.slug}`}
+                      class="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+                    >
+                      <div class="aspect-w-4 aspect-h-3 bg-gray-100">
+                        <img
+                          src={photo.data.image}
+                          alt={photo.data.title}
+                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                          {photo.data.title}
+                        </h3>
+                        <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                          <span>{format(new Date(photo.data.date), 'MMMM d, yyyy')}</span>
+                          {photo.data.location && (
+                            <span class="flex items-center gap-1">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              {photo.data.location}
+                            </span>
+                          )}
+                        </div>
+                        <p class="mt-2 text-sm text-gray-600 line-clamp-2">
+                          {photo.data.description}
+                        </p>
+                        {photo.data.tags && (
+                          <div class="mt-3 flex flex-wrap gap-2">
+                            {photo.data.tags.slice(0, 3).map(tag => (
+                              <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </a>
+                  ))}
+              </div>
+            </section>
+          ))}
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  /* Add any component-specific styles here */
+</style> 

@@ -1,0 +1,568 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all photos
+const allPhotos = await getCollection('photos');
+
+// Create a map of photographers and their photos
+const photographers = allPhotos.reduce((acc, photo) => {
+  const photographer = photo.data.photographer;
+  if (!photographer?.name) return acc;
+
+  const key = photo.data.contributor || photographer.name.toLowerCase().replace(/\s+/g, '-');
+  
+  if (!acc[key]) {
+    acc[key] = {
+      name: photographer.name,
+      bio: photographer.bio,
+      instagram: photographer.instagram,
+      website: photographer.website,
+      photoCount: 0,
+      latestPhoto: photo,
+      tags: new Set(),
+      locations: new Set(),
+      firstPhotoDate: new Date(photo.data.date),
+      lastPhotoDate: new Date(photo.data.date)
+    };
+  }
+
+  const photographerData = acc[key];
+  photographerData.photoCount++;
+  
+  // Update dates
+  const photoDate = new Date(photo.data.date);
+  if (photoDate < photographerData.firstPhotoDate) {
+    photographerData.firstPhotoDate = photoDate;
+  }
+  if (photoDate > photographerData.lastPhotoDate) {
+    photographerData.lastPhotoDate = photoDate;
+  }
+
+  // Add tags and locations
+  if (photo.data.tags) {
+    photo.data.tags.forEach(tag => photographerData.tags.add(tag));
+  }
+  if (photo.data.location) {
+    photographerData.locations.add(photo.data.location);
+  }
+
+  // Update latest photo if this one is newer
+  if (photoDate > new Date(photographerData.latestPhoto.data.date)) {
+    photographerData.latestPhoto = photo;
+  }
+
+  return acc;
+}, {});
+
+// Convert to array and sort by photo count
+const sortedPhotographers = Object.values(photographers).sort((a, b) => b.photoCount - a.photoCount);
+
+// Calculate statistics
+const totalPhotos = allPhotos.length;
+const totalPhotographers = sortedPhotographers.length;
+const averagePhotosPerPhotographer = Math.round(totalPhotos / totalPhotographers);
+
+// Calculate additional statistics
+const allTags = new Set();
+const allLocations = new Set();
+let earliestDate = new Date();
+let latestDate = new Date(0);
+
+allPhotos.forEach(photo => {
+  // Track tags
+  if (photo.data.tags) {
+    photo.data.tags.forEach(tag => allTags.add(tag));
+  }
+  // Track locations
+  if (photo.data.location) {
+    allLocations.add(photo.data.location);
+  }
+  // Track date range
+  const photoDate = new Date(photo.data.date);
+  if (photoDate < earliestDate) earliestDate = photoDate;
+  if (photoDate > latestDate) latestDate = photoDate;
+});
+
+const yearsOfCoverage = latestDate.getFullYear() - earliestDate.getFullYear() + 1;
+const totalTags = allTags.size;
+const totalLocations = allLocations.size;
+
+// Calculate most active photographers
+const mostActivePhotographers = sortedPhotographers
+  .slice(0, 3)
+  .map(p => ({ name: p.name, count: p.photoCount }));
+
+// Calculate most common tags
+const tagCounts = new Map();
+allPhotos.forEach(photo => {
+  if (photo.data.tags) {
+    photo.data.tags.forEach(tag => {
+      tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+    });
+  }
+});
+const mostCommonTags = Array.from(tagCounts.entries())
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5)
+  .map(([tag, count]) => ({ tag, count }));
+
+// Add pagination logic
+const PHOTOGRAPHERS_PER_PAGE = 8;
+const totalPages = Math.ceil(sortedPhotographers.length / PHOTOGRAPHERS_PER_PAGE);
+
+const title = "Photographers | Dzaleka Heritage Archive";
+---
+
+<MainLayout title={title}>
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header with enhanced styling -->
+      <div class="mb-12 text-center">
+        <h1 class="text-5xl font-bold text-gray-900 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800">
+          Our Photographers
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Meet the talented photographers who have captured the stories of Dzaleka Refugee Camp
+        </p>
+      </div>
+
+      <!-- Search and Filter Section with modern design -->
+      <div class="mb-12">
+        <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Search with enhanced styling -->
+            <div>
+              <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Search Photographers</label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="search"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                  placeholder="Search by name, bio, or tags..."
+                />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filters with improved layout -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Tags</label>
+              <div class="relative">
+                <div class="flex overflow-x-auto gap-2 pb-2 scrollbar-hide">
+                  {Array.from(allTags).map(tag => (
+                    <button
+                      class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-primary-50 hover:text-primary-700 transition-colors whitespace-nowrap flex-shrink-0 border border-gray-200"
+                      data-tag={tag}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+                <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Filters with modern design -->
+          <div class="mt-4 flex flex-wrap gap-2" id="activeFilters">
+            <!-- Active filters will be added here dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Photographers Grid with enhanced cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8" id="photographersGrid">
+        {sortedPhotographers.map(photographer => (
+          <article 
+            class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+            data-photographer={photographer.name.toLowerCase()}
+            data-tags={Array.from(photographer.tags).join(' ')}
+          >
+            <a href={`/photos/contributor/${photographer.name.toLowerCase().replace(/\s+/g, '-')}`} class="block">
+              <div class="relative">
+                <img 
+                  src={photographer.latestPhoto.data.image} 
+                  alt={`Latest photo by ${photographer.name}`}
+                  class="w-full h-56 object-cover"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <h2 class="text-2xl font-semibold mb-2">
+                    {photographer.name}
+                  </h2>
+                  <div class="flex items-center gap-2 text-sm">
+                    <span class="bg-white/20 px-2 py-1 rounded-full">{photographer.photoCount} photos</span>
+                    <span>•</span>
+                    <span>Since {photographer.firstPhotoDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-6">
+                {photographer.bio && (
+                  <p class="text-sm text-gray-600 mb-4 line-clamp-2">
+                    {photographer.bio}
+                  </p>
+                )}
+                
+                {photographer.tags.size > 0 && (
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {Array.from(photographer.tags).slice(0, 3).map(tag => (
+                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs border border-gray-200">
+                        {tag}
+                      </span>
+                    ))}
+                    {photographer.tags.size > 3 && (
+                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs border border-gray-200">
+                        +{photographer.tags.size - 3} more
+                      </span>
+                    )}
+                  </div>
+                )}
+                
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <div class="flex gap-3">
+                    {photographer.instagram && (
+                      <a 
+                        href={`https://instagram.com/${photographer.instagram}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
+                      >
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                        @{photographer.instagram}
+                      </a>
+                    )}
+                    {photographer.website && (
+                      <a 
+                        href={photographer.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        Portfolio →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="flex justify-center items-center gap-2 mb-12">
+        <button
+          id="prevPage"
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          disabled
+        >
+          Previous
+        </button>
+        <div class="flex items-center gap-1">
+          <span class="text-sm text-gray-700">Page</span>
+          <span id="currentPage" class="text-sm font-medium text-primary-600">1</span>
+          <span class="text-sm text-gray-700">of</span>
+          <span id="totalPages" class="text-sm font-medium text-gray-700">{totalPages}</span>
+        </div>
+        <button
+          id="nextPage"
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          disabled={totalPages <= 1}
+        >
+          Next
+        </button>
+      </div>
+
+      <!-- No Results Message with enhanced styling -->
+      <div id="noResults" class="hidden text-center py-16">
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-lg mx-auto">
+          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-2">No Photographers Found</h2>
+          <p class="text-gray-600">
+            Try adjusting your search or filters to find what you're looking for.
+          </p>
+        </div>
+      </div>
+
+      <!-- Archive Stats Section -->
+      <div class="mt-16 bg-gray-50 rounded-2xl p-8 border border-gray-100">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Archive Overview</h2>
+        
+        <!-- Basic Stats with improved layout -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
+          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-2xl font-bold text-primary-600">{totalPhotographers}</div>
+              <div class="p-2 bg-primary-50 rounded-lg">
+                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            </div>
+            <div class="text-sm font-medium text-gray-600">Total Photographers</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-2xl font-bold text-primary-600">{totalPhotos}</div>
+              <div class="p-2 bg-primary-50 rounded-lg">
+                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+            </div>
+            <div class="text-sm font-medium text-gray-600">Total Photos</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-2xl font-bold text-primary-600">{yearsOfCoverage}</div>
+              <div class="p-2 bg-primary-50 rounded-lg">
+                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+            </div>
+            <div class="text-sm font-medium text-gray-600">Years of Coverage</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-2xl font-bold text-primary-600">{totalLocations}</div>
+              <div class="p-2 bg-primary-50 rounded-lg">
+                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+            </div>
+            <div class="text-sm font-medium text-gray-600">Unique Locations</div>
+          </div>
+        </div>
+
+        <!-- Detailed Stats with modern cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <!-- Most Active Photographers -->
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Most Active Photographers
+            </h3>
+            <div class="space-y-4">
+              {mostActivePhotographers.map(({ name, count }) => (
+                <div class="flex items-center justify-between group p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  <span class="text-gray-700 group-hover:text-primary-600 transition-colors font-medium">{name}</span>
+                  <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{count} photos</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Most Common Tags -->
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+              Most Common Tags
+            </h3>
+            <div class="space-y-4">
+              {mostCommonTags.map(({ tag, count }) => (
+                <div class="flex items-center justify-between group p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  <span class="text-gray-700 group-hover:text-primary-600 transition-colors font-medium">{tag}</span>
+                  <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{count} photos</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Date Range with enhanced styling -->
+        <div class="mt-6 text-center">
+          <p class="text-gray-600 text-lg">
+            Archive coverage from {earliestDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })} to {latestDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  // Search and filter functionality
+  const searchInput = document.getElementById('search');
+  const photographersGrid = document.getElementById('photographersGrid');
+  const photographerCards = photographersGrid.getElementsByTagName('article');
+  const noResults = document.getElementById('noResults');
+  const activeFilters = document.getElementById('activeFilters');
+  const tagButtons = document.querySelectorAll('[data-tag]');
+  
+  let selectedTags = new Set();
+
+  // Search function
+  function performSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    let hasResults = false;
+
+    Array.from(photographerCards).forEach(card => {
+      const photographerName = card.dataset.photographer;
+      const tags = card.dataset.tags.toLowerCase();
+      const isVisible = 
+        photographerName.includes(searchTerm) || 
+        tags.includes(searchTerm);
+
+      // Check if card matches selected tags
+      const matchesTags = selectedTags.size === 0 || 
+        Array.from(selectedTags).some(tag => tags.includes(tag.toLowerCase()));
+
+      if (isVisible && matchesTags) {
+        card.classList.remove('hidden');
+        hasResults = true;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    // Show/hide no results message
+    noResults.classList.toggle('hidden', hasResults);
+  }
+
+  // Tag filter functionality
+  tagButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tag = button.dataset.tag;
+      
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        button.classList.remove('bg-primary-100', 'text-primary-700');
+        button.classList.add('bg-gray-100', 'text-gray-700');
+      } else {
+        selectedTags.add(tag);
+        button.classList.remove('bg-gray-100', 'text-gray-700');
+        button.classList.add('bg-primary-100', 'text-primary-700');
+      }
+
+      // Update active filters display
+      updateActiveFilters();
+      
+      // Perform search with new filters
+      performSearch();
+    });
+  });
+
+  // Update active filters display
+  function updateActiveFilters() {
+    activeFilters.innerHTML = Array.from(selectedTags).map(tag => `
+      <span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+        ${tag}
+        <button 
+          class="hover:text-primary-900"
+          onclick="removeFilter('${tag}')"
+        >
+          ×
+        </button>
+      </span>
+    `).join('');
+  }
+
+  // Remove filter function
+  window.removeFilter = function(tag) {
+    selectedTags.delete(tag);
+    const button = document.querySelector(`[data-tag="${tag}"]`);
+    if (button) {
+      button.classList.remove('bg-primary-100', 'text-primary-700');
+      button.classList.add('bg-gray-100', 'text-gray-700');
+    }
+    updateActiveFilters();
+    performSearch();
+  };
+
+  // Search input event listener
+  searchInput.addEventListener('input', performSearch);
+
+  // Pagination functionality
+  let currentPage = 1;
+  const photographersPerPage = 8;
+  
+  const prevPageBtn = document.getElementById('prevPage');
+  const nextPageBtn = document.getElementById('nextPage');
+  const currentPageSpan = document.getElementById('currentPage');
+  const totalPagesSpan = document.getElementById('totalPages');
+
+  function updatePagination() {
+    // Get all cards
+    const allCards = Array.from(photographerCards);
+    const actualTotalPages = Math.max(1, Math.ceil(allCards.length / photographersPerPage));
+    
+    // Update page numbers
+    currentPageSpan.textContent = currentPage;
+    totalPagesSpan.textContent = actualTotalPages;
+
+    // Update button states
+    prevPageBtn.disabled = currentPage <= 1;
+    nextPageBtn.disabled = currentPage >= actualTotalPages;
+
+    // Show/hide photographers based on current page
+    const start = (currentPage - 1) * photographersPerPage;
+    const end = start + photographersPerPage;
+
+    allCards.forEach((card, index) => {
+      // Show the card if it's in the current page range
+      if (index >= start && index < end) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+
+  // Event listeners for pagination
+  prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      updatePagination();
+    }
+  });
+
+  nextPageBtn.addEventListener('click', () => {
+    const allCards = Array.from(photographerCards);
+    const actualTotalPages = Math.max(1, Math.ceil(allCards.length / photographersPerPage));
+    
+    if (currentPage < actualTotalPages) {
+      currentPage++;
+      updatePagination();
+    }
+  });
+
+  // Modify the search function to reset pagination
+  const originalPerformSearch = performSearch;
+  performSearch = function() {
+    originalPerformSearch();
+    currentPage = 1;
+    updatePagination();
+  };
+
+  // Initialize pagination
+  updatePagination();
+</script>
+
+<style>
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+</style> 

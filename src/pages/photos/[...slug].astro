@@ -162,8 +162,13 @@ const photoStructuredData = {
 
         <!-- Content -->
         <div class="p-8">
+          <!-- Photo Description and Story -->
+          <div class="prose prose-lg max-w-none">
+            <Content />
+          </div>
+
           <!-- Photographer Info -->
-          <div class="flex items-center justify-between mb-8 pb-8 border-b">
+          <div class="flex items-center justify-between mt-8 pt-8 border-t">
             <div class="flex items-center gap-4">
               <div>
                 <h2 class="text-xl font-bold text-gray-900">
@@ -206,15 +211,44 @@ const photoStructuredData = {
               {entry.data.location && (
                 <p class="text-gray-500 mt-1">{entry.data.location}</p>
               )}
+              <button 
+                onclick="window.print()"
+                class="mt-4 inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 group"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                <span>Print</span>
+              </button>
             </div>
-          </div>
-
-          <!-- Photo Description and Story -->
-          <div class="prose prose-lg max-w-none">
-            <Content />
           </div>
         </div>
       </div>
     </div>
   </main>
 </MainLayout>
+
+<style>
+  @media print {
+    /* Hide elements that shouldn't be printed */
+    nav, button, .no-print {
+      display: none !important;
+    }
+    
+    /* Ensure the image and content are properly displayed */
+    img {
+      max-height: 50vh !important;
+      object-fit: contain !important;
+    }
+    
+    /* Adjust text colors for better printing */
+    .text-gray-500, .text-gray-600 {
+      color: #000 !important;
+    }
+    
+    /* Ensure proper page breaks */
+    .prose {
+      page-break-inside: avoid;
+    }
+  }
+</style>

@@ -121,19 +121,38 @@ const eventSchema = z.object({
 const photoSchema = z.object({
   title: z.string(),
   description: z.string(),
-  date: z.date(),
-  image: z.string(),
-  photographer: z.union([
+  date: z.union([
     z.string(),
-    z.object({
-      name: z.string(),
-      instagram: z.string().optional(),
-      website: z.string().optional(),
-    }),
-  ]),
-  location: z.string().optional(),
+    z.number(),
+    z.date()
+  ]).transform((val) => {
+    if (val instanceof Date) return val;
+    const date = new Date(val);
+    if (isNaN(date.getTime())) {
+      throw new Error(`Invalid date: ${val}`);
+    }
+    return date;
+  }),
+  image: z.string().refine((val) => {
+    // Accept both relative paths to public directory and absolute URLs
+    if (val.startsWith('/images/')) return true;
+    try {
+      new URL(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }, "Image must be either a path starting with '/images/' or a valid URL"),
+  photographer: z.object({
+    name: z.string(),
+    bio: z.string().optional(),
+    instagram: z.string().optional(),
+    website: z.string().url().optional()
+  }),
+  contributor: z.string().optional(),
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
+  location: z.string().optional()
 });
 
 // Define the page schema
@@ -234,6 +253,33 @@ const jobSchema = z.object({
   description: z.string()
 });
 
+// Define the story schema
+const storySchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  author: z.object({
+    name: z.string(),
+    role: z.string().optional(),
+    bio: z.string().optional(),
+  }),
+  date: z.string(),
+  tags: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
+  coverImage: z.string(),
+  photos: z.array(z.object({
+    image: z.string(),
+    caption: z.string().optional(),
+    text: z.string().optional(),
+    photographer: z.string().optional(),
+    date: z.string().optional(),
+  })),
+  content: z.array(z.object({
+    image: z.string().optional(),
+    caption: z.string().optional(),
+    text: z.string().optional(),
+  })).optional(),
+});
+
 // Define the collections
 const profilesCollection = defineCollection({
   type: 'content',
@@ -290,17 +336,43 @@ const jobsCollection = defineCollection({
   schema: jobSchema,
 });
 
+const photos = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    photographer: z.object({
+      name: z.string(),
+      instagram: z.string().optional(),
+      website: z.string().optional(),
+      bio: z.string().optional(),
+    }),
+    contributor: z.string().optional(),
+    image: z.string(),
+    date: z.string(),
+    tags: z.array(z.string()).optional(),
+    featured: z.boolean().optional(),
+    location: z.string().optional(),
+  }),
+});
+
+const stories = defineCollection({
+  type: 'content',
+  schema: storySchema,
+});
+
 // Export collections
 export const collections = {
   profiles: profilesCollection,
   services: servicesCollection,
   resources: resourcesCollection,
   events: eventsCollection,
-  photos: photosCollection,
   pages: pagesCollection,
   news: newsCollection,
   talents: talentsCollection,
   'community-voices': communityVoicesCollection,
   docs: docsCollection,
   jobs: jobsCollection,
-};
+  photos: photos,
+  stories: stories,
+} as const;

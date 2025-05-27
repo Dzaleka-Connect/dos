@@ -6,8 +6,9 @@ photographer:
   instagram: "dzalekaonline"
   website: "https://sarahamaclean.weebly.com/dzaleka-refugee-camp"
   bio: "Pediatrics/Global Health PGY-1 at CHOP. Studied at UNC Chapel Hill, with experiences in Chile, Peru, and Malawi. Passionate about public health, asylum seeker advocacy, and child mental health. Loves hiking, cross-stitching, thrift shopping, and traveling."
+contributor: "sarah-mclean"
 image: "/images/6690864_orig.jpg"
-date: 2015-11-15
+date: "2015-11-15"
 tags: ["UNHCR", "Play", "Refugee Life", "Malawi"]
 featured: true
 location: "Dzaleka Refugee Camp"

@@ -1,13 +1,14 @@
 ---
-title: "The “Living Hope” nursery school in Dzaleka Refugee Camp"
-description: "This excerpt highlights the challenges faced by researchers working with vulnerable communities impacted by climate change and displacement."
+title: "The Living Hope nursery school in Dzaleka Refugee Camp"
+description: "This excerpt highlights the challenges faced by researchers working with vulnerable communities impacted by climate change and displacement"
 photographer:
   name: "Helen Storey"
   instagram: "dress4ourtime"
   website: "https://www.sustainable-fashion.com/meet-the-team/prof-helen-storey---mbe%2C-rdi%2C-frsa"
-  bio: "Helen works across design,  science and technology in service to humanity"
+  bio: "Helen works across design, science and technology in service to humanity"
+contributor: "helen-storey"
 image: "https://static.wixstatic.com/media/9dbc3c_c2ec6de7069c4ec38976716b1f8d9ff2~mv2.jpg"
-date: 2023-06-09
+date: "2023-06-09"
 tags: ["Climate Change", "Trauma Informed", "Community Building"]
 featured: true
 location: "Dzaleka Refugee Camp"
@@ -15,7 +16,7 @@ location: "Dzaleka Refugee Camp"
 
 ## About This Photo
 
-The “Living Hope” nursery school in Dzaleka Refugee Camp, Malawi. Photo by Helen Storey.
+The "Living Hope" nursery school in Dzaleka Refugee Camp, Malawi. Photo by Helen Storey.
 
 ## What challenges are you facing? 
  
@@ -28,7 +29,7 @@ Another challenge is trying to do this work based in the UK, whilst our own gove
 We need to have effective safeguarding measures and support systems in place. We also need to collaborate with professionals from other sectors who are trauma-informed and can deal with the dark side of designing for social good. 
 
 
-*Lucy*: For me, the main challenge is the longevity of our projects and how to sustain the momentum and relationships. We’re building empathy, we're building community. What happens to those communities once our research projects and funding ends? 
+*Lucy*: For me, the main challenge is the longevity of our projects and how to sustain the momentum and relationships. We're building empathy, we're building community. What happens to those communities once our research projects and funding ends? 
 
 
 We all need to be adequately equipped to understand trauma, to read the signs of the effect of our work on others, and to be able to provide or indicate where support can be accessed. 
