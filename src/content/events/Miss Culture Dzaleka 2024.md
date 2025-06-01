@@ -1,7 +1,8 @@
 ---
 title: "Miss Culture Dzaleka 2024"
 description: "Annual arts and cultural festival celebrating refugee talents and promoting intercultural harmony."
-date: 2024-08-03T10:00:00Z
+date: 2024-06-29T10:00:00Z
+endDate: 2024-06-29T22:00:00Z
 location: "Dzaleka Refugee Camp, Dowa"
 category: "Cultural"
 featured: true
