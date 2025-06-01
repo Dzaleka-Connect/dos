@@ -2,26 +2,26 @@
 title: "Tumaini Festival 2024"
 description: "Annual arts and cultural festival celebrating refugee talents and promoting intercultural harmony."
 date: 2024-10-31T10:00:00Z
-endDate: 2025-02-07T12:00:00Z
+endDate: 2024-11-02T22:00:00Z
 location: "Dzaleka Refugee Camp Main Ground, Dowa"
 category: "Festival"
 featured: true
 image: "https://idsb.tmgrup.com.tr/ly/uploads/images/2024/11/04/thumbs/800x531/353421.jpg?v=1730720194"
 organizer: "Tumaini Letu"
-status: "upcoming"
+status: "past"
 contact:
-  email: "festival@tumainifestival.org"
-  phone: "+265 991 234567"
-  whatsapp: "+265 991 234567"
+  email: "info@tumainiletu.org"
+  phone: "+265 993 380 983"
+  whatsapp: "+265 993 380 983"
 registration:
   required: false
-  url: "https://tumainifestival.org/register"
+  url: "https://tumainiletu.org/tumaini-festival/"
 tags: ["music", "dance", "arts", "culture", "community"]
 ---
 
 ## Event Highlights
 
-Tumaini Festival returns for its annual celebration of arts, music, and cultural exchange at Dzaleka Refugee Camp. Join us for a day filled with performances, exhibitions, and community activities.
+Tumaini Festival returns for its annual celebration of arts, music, and cultural exchange at Dzaleka Refugee Camp. Join us for a three-day festival filled with performances, exhibitions, and community activities.
 
 ### Main Stage Performances
 

@@ -2,12 +2,13 @@
 title: "Tree Planting"
 description: "Transfroming Dzaleka Refugee Camp One Seedling at a Time."
 date: 2025-02-07T09:00:00Z
+endDate: 2025-02-07T17:00:00Z
 location: "Dzaleka Refugee Camp, Dowa"
 category: "Tree Planting"
 featured: true
 image: "/images/Planting Tree.jpg"
 organizer: "Tumaini Letu"
-status: "past"
+status: "upcoming"
 contact:
   email: "programs.tumaini@gmail.com"
   phone: "+265 8816 42990"
