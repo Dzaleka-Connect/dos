@@ -2,6 +2,7 @@
 title: "Tumaini Letu Youth Conference | Dzaleka Refugee Camp"
 description: "Engaging The Youth As Agents Of Social Cohesion & Peaceful Coexistence Between Refugees And Host Communities."
 date: 2024-08-28T16:30:00Z
+endDate: 2024-08-28
 location: "There Is Hope, Technical and Vocational Training Centre"
 category: "Youth Conference"
 featured: true
