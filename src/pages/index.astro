@@ -17,8 +17,19 @@ const featuredServices = services
 // Get upcoming events
 const events = await getCollection('events');
 const upcomingEvents = events
-  .filter(event => new Date(event.data.date) >= new Date())
-  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
+  .filter(event => {
+    // Check if event is TBA either in data or title
+    const isTBA = event.data.isTBA || event.data.title.toLowerCase().includes('tba');
+    return isTBA || new Date(event.data.date) >= new Date();
+  })
+  .sort((a, b) => {
+    // Put TBA events at the end
+    const aIsTBA = a.data.isTBA || a.data.title.toLowerCase().includes('tba');
+    const bIsTBA = b.data.isTBA || b.data.title.toLowerCase().includes('tba');
+    if (aIsTBA) return 1;
+    if (bIsTBA) return -1;
+    return new Date(a.data.date).getTime() - new Date(b.data.date).getTime();
+  })
   .slice(0, 3);
 
 // Fetch latest resources
@@ -344,27 +355,32 @@ const seo = {
             Discover and join the vibrant community events, cultural celebrations, and activities happening in Dzaleka Refugee Camp
           </p>
           <div class="grid gap-8 md:grid-cols-3">
-            {upcomingEvents.map(event => (
-              <a href={`/events/${event.slug}`} 
-                 class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-                <div class="aspect-w-16 aspect-h-9">
-                  <img 
-                    src={event.data.image} 
-                    alt={event.data.title}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div class="p-6">
-                  <div class="text-sm text-primary-600 font-medium mb-2">
-                    {format(new Date(event.data.date), 'MMMM d, yyyy')}
+            {upcomingEvents.map(event => {
+              const isTBA = event.data.isTBA || event.data.title.toLowerCase().includes('tba');
+              return (
+                <a href={`/events/${event.slug}`} 
+                   class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+                  <div class="aspect-w-16 aspect-h-9">
+                    <img 
+                      src={event.data.image} 
+                      alt={event.data.title}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                  <h3 class="text-xl font-semibold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors">
-                    {event.data.title}
-                  </h3>
-                  <p class="text-gray-600 line-clamp-2">{event.data.description}</p>
-                </div>
-              </a>
-            ))}
+                  <div class="p-6">
+                    <div class="text-sm font-medium mb-2" class:list={[
+                      isTBA ? 'text-yellow-600 italic' : 'text-primary-600'
+                    ]}>
+                      {isTBA ? 'Date TBA' : format(new Date(event.data.date), 'MMMM d, yyyy')}
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors">
+                      {event.data.title}
+                    </h3>
+                    <p class="text-gray-600 line-clamp-2">{event.data.description}</p>
+                  </div>
+                </a>
+              );
+            })}
           </div>
           <div class="text-center mt-12">
             <a 
