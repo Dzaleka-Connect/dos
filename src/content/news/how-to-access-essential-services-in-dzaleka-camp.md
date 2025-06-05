@@ -9,50 +9,38 @@ category: "news"
 tags: ["Services", "Health", "Emergency", "Legal", "Support", "UNHCR", "NGOs"]
 ---
 
-Dzaleka Refugee Camp provides various essential services to support the well-being and safety of its residents. This guide will help you navigate and access these critical services effectively.
+Dzaleka Refugee Camp, home to over 60,000 residents from 5 main nationalities (Congolese, Burundians, Rwandans, Somalis, and Ethiopians), provides various essential services to support the well-being and safety of its residents. This guide will help you navigate and access these critical services effectively.
 
 ## Health Services
 
 ### Medical Facilities
 - **Dzaleka Health Center**: Primary healthcare services
-  - General consultations
-  - Maternal and child health
+  - General consultations (Monday-Friday, 8:00 AM - 4:00 PM)
+  - Maternal and child health services
   - Basic laboratory services
   - Pharmacy services
-- **MSF (Doctors Without Borders) Clinic**: Specialized medical care
-  - Emergency medical services
-  - Mental health support
-  - Chronic disease management
+  - Emergency services (24/7)
 
 ### Mental Health Support
-- **Fountain of Hope Africa**: Mental health counseling
-- **JRS (Jesuit Refugee Service)**: Psychosocial support
-- **There Is Hope Malawi**: Trauma counseling and support groups
+- **Fountain of Hope Africa**: Mental health counseling and support groups
+- **JRS (Jesuit Refugee Service)**: Psychosocial support and trauma counseling
+- **There Is Hope Malawi**: Mental health services and community support
 
-## Emergency Services
+## Emergency Services & Support
 
-### Police and Security
-- **Dzaleka Police Post**: 24/7 emergency response
-  - Report crimes and incidents
-  - Security assistance
-  - Community policing
+### Medical Emergency
+- **Dzaleka Health Centre**: Located within Dzaleka Refugee Camp, providing essential medical services
 
-### Emergency Contacts
-- Dzaleka Dowa Police: +256 887 393636
-- UNHCR Malawi: +265 1 772 155
+### Legal Aid
+- **Inua Advocacy**
+  - Contact: +265 886 44 72 77 / +265 996 44 72 78
+  - Email: info@inuaadvocacy.org
+  - Website: [Inua Advocacy](https://inuaadvocacy.org)
 
-
-## Legal Services
-
-### Legal Aid Organizations
-- **Inua Advocacy**: Legal assistance and representation
-  - Refugee rights
-  - Documentation support
-  - Legal counseling
-- **UNHCR Legal Unit**: Refugee status and protection
-  - Status determination
-  - Family reunification
-  - Legal documentation
+### Protection Services
+- **UNHCR & Police**
+  - UNHCR Malawi: +265 1 772 155
+  - Dzaleka Dowa Police
 
 ## Education and Training
 
@@ -60,103 +48,91 @@ Dzaleka Refugee Camp provides various essential services to support the well-bei
 - **Dzaleka Community Day Secondary School**: Secondary education
 - **Jesuit Worldwide Learning**: Higher education opportunities
 - **There Is Hope Malawi**: Vocational training programs
+- **7 Learning Centers**: Various educational programs
 
 ### Skills Development
-- **ADAI Circle**: Technology training
-- **Alpha Techverse**: Digital skills development
 - **TakenoLAB**: ICT and innovation training
+- **Alpha Techverse**: Digital skills and entrepreneurship training
+- **JRS Skills Center**: Vocational training and skills development
 
-## Food and Nutrition
+## Mobile Network Services
 
-### Food Distribution
-- **WFP (World Food Programme)**: Monthly food assistance
-  - Food distribution points
-  - Nutrition programs
-  - Special dietary needs
+### TNM Malawi
+- Mobile Services
+- Internet
+- Mpamba
+- Website: [TNM Malawi](https://www.tnm.co.mw)
 
-### Nutrition Support
-- **UNHCR Nutrition Unit**: Nutritional assessment and support
-- **MSF Nutrition Program**: Therapeutic feeding programs
+### Airtel Malawi
+- Mobile Services
+- 4G Internet
+- Airtel Money
+- Website: [Airtel Malawi](https://www.airtel.mw)
 
-## Housing and Shelter
+## Community Resources
 
-### Shelter Services
-- **UNHCR Shelter Unit**: Housing assistance
-  - Shelter maintenance
-  - Emergency housing
-  - Housing improvements
+### Resources Library
+- Access to documents and resources
+- WFP reports and updates
+- Research articles
+- Situation reports
+- Visit: [Resources Library](https://services.dzaleka.com/resources)
 
-### Community Facilities
-- **Community Centers**: Meeting spaces and activities
-- **Water Points**: Access to clean water
-- **Sanitation Facilities**: Public toilets and showers
+### Community Directory
+- Connect with essential services
+- Refugee-led organizations
+- Community support networks
+- Visit: [Community Directory](https://services.dzaleka.com/services)
 
-## How to Access Services
+## Refugee-Led Organizations
 
-### Registration Process
-1. Visit the UNHCR registration center
-2. Complete necessary documentation
-3. Receive service access card
-4. Register with specific service providers
+### RELON Malawi (Refugees-led Organization Network Of Malawi)
+- Networking opportunities
+- Funding support
+- Capacity building
+- Collective advocacy
+- Website: [RELON Malawi](https://relonmalawi.org)
 
-### Required Documentation
-- UNHCR registration card
-- Proof of identity
-- Medical records (if applicable)
-- Previous service records
+### Key Organizations
+- **There is Hope**: Healthcare and education initiatives
+  - Website: [There is Hope](https://thereishope.org)
+- **Tumaini Festival**: Cultural expression and economic opportunity
+  - Website: [Tumaini Festival](https://tumainifestival.org)
+- **TakenoLAB & RELON**: Digital skills and leadership
+  - Website: [TakenoLAB](https://takenolab.org)
+- **Mirash Films**: Film production and storytelling
+- **Salama Africa**: Cultural fusion and artistic excellence
+  - Website: [Salama Africa](https://salamaafrica.org)
+- **Amahoro Drummers**: Cultural heritage preservation
+- **Fountain of Hope**: Education and economic opportunities
+  - Website: [Fountain of Hope](https://fountainofhopeafrica.org)
 
-## Support Organizations
+## Digital Services
 
-### Key NGOs
-- **JRS (Jesuit Refugee Service)**
-  - Education programs
-  - Psychosocial support
-  - Community development
+### Dzaleka Online Services
+- Job Board: [Jobs](https://services.dzaleka.com/jobs)
+- E-Learning Platform: [E-Learning](https://services.dzaleka.com/e-learning)
+- Community Voice: [Community Voice](https://services.dzaleka.com/community-voice)
+- Events Calendar: [Events](https://services.dzaleka.com/events)
+- News Updates: [News](https://services.dzaleka.com/news)
+- Resources Hub: [Resources](https://services.dzaleka.com/resources)
 
-- **MSF (Doctors Without Borders)**
-  - Medical services
-  - Mental health support
-  - Emergency response
-
-- **There Is Hope Malawi**
-  - Education support
-  - Skills training
-  - Community programs
-
-### Community-Based Organizations
-- **Women for Action (W4A)**: Gender-based support
-- **Salama Africa**: Cultural and social programs
-- **Art for Hope**: Creative and therapeutic activities
-
-## Tips for Effective Service Access
-
-1. **Keep Documentation Updated**
-   - Maintain current registration
-   - Update contact information
-   - Keep medical records organized
-
-2. **Know Your Rights**
-   - Understand service entitlements
-   - Be aware of complaint procedures
-   - Know emergency protocols
-
-3. **Build Support Networks**
-   - Connect with community leaders
-   - Join support groups
-   - Participate in community programs
-
-4. **Plan Ahead**
-   - Schedule appointments early
-   - Prepare required documents
-   - Know service operating hours
+### Community Media
+- **Dzaleka Watch**: Original shows and videos
+  - Website: [Dzaleka Watch](https://watch.dzaleka.com)
+- **Dzaleka Connect**: Showcasing talents and stories
+  - Website: [Dzaleka Connect](https://dzalekaconnect.com)
+- **Community Radio**: Local news and information
+  - Listen Live: [Dzaleka Radio](/yetu-radio/)
 
 ## Getting Help
 
 If you need assistance accessing services:
-- Visit the [Help Desk](/help-desk) for guidance
+- Visit the [Help Desk](https://services.dzaleka.com/help-desk) for guidance
 - Contact community leaders
 - Reach out to service providers directly
-- Use the [Services Directory](/services) for detailed information
+- Use the [Services Directory](https://services.dzaleka.com/services) for detailed information
+- Call the UNHCR hotline for urgent assistance
 
 ## Stay Informed
 
@@ -164,7 +140,12 @@ If you need assistance accessing services:
 - Attend community meetings
 - Follow official announcements
 - Subscribe to our newsletter for updates
+- Join community WhatsApp groups
+- Follow social media channels:
+  - [Facebook](https://facebook.com/DzalekaOnline)
+  - [Instagram](https://instagram.com/DzalekaOnline)
+  - [Twitter](https://twitter.com/DzalekaConnect)
 
 Remember that all services are designed to support your well-being and integration into the community. Don't hesitate to seek help when needed, and always keep your documentation up to date.
 
-[View all available services](/services) or [contact our support team](/help-desk) for assistance. 
+[View all available services](https://services.dzaleka.com/services) or [contact our support team](https://services.dzaleka.com/help-desk) for assistance. 

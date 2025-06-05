@@ -194,32 +194,26 @@ function renderNewsCard(news) {
   
   if (news.data.image) {
     if (news.data.image.startsWith('http')) {
-      // External URL
       imagePath = news.data.image;
     } else if (news.data.image.startsWith('/')) {
-      // Absolute path
       imagePath = news.data.image;
     } else {
-      // Relative path
       imagePath = `/images/news/${news.data.image}`;
     }
   } else if (news.data.heroImage) {
     if (news.data.heroImage.startsWith('http')) {
-      // External URL
       imagePath = news.data.heroImage;
     } else if (news.data.heroImage.startsWith('/')) {
-      // Absolute path
       imagePath = news.data.heroImage;
     } else {
-      // Relative path
       imagePath = `/images/news/${news.data.heroImage}`;
     }
   }
 
   return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+    <article class="bg-white rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border border-gray-100">
+      <div class="flex flex-col sm:flex-row items-start gap-4">
+        <div class="w-full sm:w-16 h-32 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
           <img
             src="${imagePath}"
             alt="${news.data.title}"
@@ -227,21 +221,21 @@ function renderNewsCard(news) {
             onerror="this.src='/images/placeholder-news.png'"
           />
         </div>
-        <div class="flex-grow">
-          <div class="flex items-center justify-between mb-2">
+        <div class="flex-grow w-full">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
             <h3 class="text-lg font-semibold text-gray-900">
               <a href="/news/${news.slug}" class="hover:text-primary-600 transition-colors">
                 ${news.data.title}
               </a>
             </h3>
             ${news.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 self-start sm:self-center">
                 ${news.data.category}
               </span>
             ` : ''}
           </div>
           <p class="text-gray-600 line-clamp-2">${news.data.description}</p>
-          <div class="flex items-center gap-3 mt-3">
+          <div class="flex flex-wrap items-center gap-3 mt-3">
             ${news.data.date ? `
               <div class="flex items-center text-sm text-gray-500">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,9 +266,9 @@ function renderNewsCard(news) {
 // Function to render a service card
 function renderServiceCard(service) {
   return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+    <article class="bg-white rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border border-gray-100">
+      <div class="flex flex-col sm:flex-row items-start gap-4">
+        <div class="w-full sm:w-16 h-32 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
           <img
             src="${service.data.logo || '/images/placeholder-logo.png'}"
             alt="${service.data.title} logo"
@@ -282,15 +276,15 @@ function renderServiceCard(service) {
             onerror="this.src='/images/placeholder-logo.png'"
           />
         </div>
-        <div class="flex-grow">
-          <div class="flex items-center justify-between mb-2">
+        <div class="flex-grow w-full">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
             <h3 class="text-lg font-semibold text-gray-900">
               <a href="/services/${service.slug}" class="hover:text-primary-600 transition-colors">
                 ${service.data.title}
               </a>
             </h3>
             ${service.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 self-start sm:self-center">
                 ${service.data.category}
               </span>
             ` : ''}
@@ -305,9 +299,9 @@ function renderServiceCard(service) {
 // Function to render an event card
 function renderEventCard(event) {
   return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+    <article class="bg-white rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border border-gray-100">
+      <div class="flex flex-col sm:flex-row items-start gap-4">
+        <div class="w-full sm:w-16 h-32 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
           <img
             src="${event.data.image || '/images/placeholder-event.png'}"
             alt="${event.data.title} image"
@@ -315,21 +309,21 @@ function renderEventCard(event) {
             onerror="this.src='/images/placeholder-event.png'"
           />
         </div>
-        <div class="flex-grow">
-          <div class="flex items-center justify-between mb-2">
+        <div class="flex-grow w-full">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
             <h3 class="text-lg font-semibold text-gray-900">
               <a href="/events/${event.slug}" class="hover:text-primary-600 transition-colors">
                 ${event.data.title}
               </a>
             </h3>
             ${event.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 self-start sm:self-center">
                 ${event.data.category}
               </span>
             ` : ''}
           </div>
           <p class="text-gray-600 line-clamp-2">${event.data.description}</p>
-          <div class="flex items-center gap-3 mt-3">
+          <div class="flex flex-wrap items-center gap-3 mt-3">
             ${event.data.date ? `
               <div class="flex items-center text-sm text-gray-500">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -493,14 +487,14 @@ const resultsContainer = document.getElementById('searchResults');
 if (resultsContainer) {
   if (!query) {
     resultsContainer.innerHTML = `
-      <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="text-center py-8 sm:py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+        <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
           Enter a search term to begin
         </h2>
-        <p class="text-gray-600 max-w-md mx-auto">
+        <p class="text-gray-600 max-w-md mx-auto px-4">
           Search for news, services, events, resources, photos, talents, and applications
         </p>
       </div>
@@ -519,14 +513,14 @@ if (resultsContainer) {
 
     if (allResults.length === 0) {
       resultsContainer.innerHTML = `
-        <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="text-center py-8 sm:py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+          <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+          <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
             No matching results found
           </h2>
-          <p class="text-gray-600 max-w-md mx-auto">
+          <p class="text-gray-600 max-w-md mx-auto px-4">
             Try adjusting your search terms or browse our categories
           </p>
         </div>
@@ -543,12 +537,12 @@ if (resultsContainer) {
 
       // Render results
       resultsContainer.innerHTML = `
-        <div class="space-y-12">
-          <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-semibold text-gray-900">
+        <div class="space-y-8 sm:space-y-12">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
               Found ${allResults.length} result${allResults.length === 1 ? '' : 's'} for "${query}"
             </h2>
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
               ${Object.keys(groupedResults).map(type => `
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
                   ${groupedResults[type].length} ${type === 'news' ? 'news' : type + 's'}
