@@ -31,7 +31,16 @@ export function filterServices(
 }
 
 export function sortServices(services: CollectionEntry<'services'>[], sortBy: string = 'featured') {
+  if (!services || !Array.isArray(services)) {
+    return [];
+  }
+
   return [...services].sort((a, b) => {
+    // Ensure we have valid data objects
+    if (!a?.data || !b?.data) {
+      return 0;
+    }
+
     switch (sortBy) {
       case 'featured':
         // First sort by featured status
@@ -39,10 +48,10 @@ export function sortServices(services: CollectionEntry<'services'>[], sortBy: st
           return a.data.featured ? -1 : 1;
         }
         // Then sort alphabetically by title
-        return a.data.title.localeCompare(b.data.title);
+        return (a.data.title || '').localeCompare(b.data.title || '');
 
       case 'name':
-        return a.data.title.localeCompare(b.data.title);
+        return (a.data.title || '').localeCompare(b.data.title || '');
 
       case 'newest':
         const dateA = new Date(a.data.lastUpdated || 0);

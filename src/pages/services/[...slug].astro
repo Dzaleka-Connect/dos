@@ -125,6 +125,99 @@ const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
 // Get the service logo URL
 const logoUrl = service.data.logo || '/images/logos/default-service.svg';
 
+// Generate Organization schema
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": service.data.title,
+  "description": service.data.description,
+  "url": currentUrl,
+  "logo": {
+    "@type": "ImageObject",
+    "url": logoUrl
+  },
+  "address": service.data.location?.address ? {
+    "@type": "PostalAddress",
+    "streetAddress": service.data.location.address,
+    "addressLocality": service.data.location.city || "Dzaleka Refugee Camp",
+    "addressCountry": "MW"
+  } : undefined,
+  "contactPoint": service.data.contact ? {
+    "@type": "ContactPoint",
+    "telephone": service.data.contact.phone,
+    "email": service.data.contact.email,
+    "contactType": "customer service",
+    "availableLanguage": ["English", "Swahili", "French"]
+  } : undefined,
+  "sameAs": service.data.socialMedia ? [
+    service.data.socialMedia.facebook,
+    service.data.socialMedia.twitter,
+    service.data.socialMedia.instagram,
+    service.data.socialMedia.linkedin,
+    service.data.socialMedia.website
+  ].filter(Boolean) : undefined,
+  "openingHoursSpecification": service.data.contact?.hours ? service.data.contact.hours.split('\n').map(schedule => {
+    const [days, times] = schedule.split(': ');
+    if (!days || !times) return null;
+
+    const [startTime, endTime] = times.split(' - ');
+    if (!startTime || !endTime) return null;
+
+    const dayMap = {
+      'mon': 'Monday',
+      'tue': 'Tuesday',
+      'wed': 'Wednesday',
+      'thu': 'Thursday',
+      'fri': 'Friday',
+      'sat': 'Saturday',
+      'sun': 'Sunday'
+    };
+
+    const [startDay, endDay] = days.split('-').map(d => dayMap[d.toLowerCase().trim()]);
+    if (!startDay || !endDay) return null;
+
+    // Convert time to 24-hour format
+    const convertTime = (time) => {
+      const [timePart, period] = time.split(' ');
+      let [hours, minutes] = timePart.split(':');
+      hours = parseInt(hours);
+      if (period.toLowerCase() === 'pm' && hours !== 12) hours += 12;
+      if (period.toLowerCase() === 'am' && hours === 12) hours = 0;
+      return `${hours.toString().padStart(2, '0')}:${minutes}`;
+    };
+
+    return {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [startDay, endDay],
+      "opens": convertTime(startTime),
+      "closes": convertTime(endTime)
+    };
+  }).filter(Boolean) : undefined,
+  "areaServed": {
+    "@type": "City",
+    "name": "Dzaleka Refugee Camp",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "MW"
+    }
+  },
+  "location": service.data.location?.coordinates ? {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": service.data.location.coordinates.lat,
+      "longitude": service.data.location.coordinates.lng
+    }
+  } : undefined,
+  "status": service.data.status === 'active' ? 'https://schema.org/ActiveActionStatus' : 'https://schema.org/InactiveActionStatus',
+  "additionalType": `https://schema.org/${service.data.category.replace(/\s+/g, '')}`,
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": "Service ID",
+    "value": service.slug
+  }
+};
+
 // SEO metadata
 const seo = {
   title: service.data.title || 'Service Details',
@@ -153,6 +246,9 @@ const seo = {
   publishedDate={seo.publishedDate}
   modifiedDate={seo.modifiedDate}
 >
+  <slot name="head">
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  </slot>
   <main class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <div class="container mx-auto px-4 py-12">
       <div class="max-w-5xl mx-auto">

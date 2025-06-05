@@ -16,7 +16,17 @@ const serviceStats = calculateServiceStats(allServices);
 // Get URL parameters
 const sortBy = Astro.url.searchParams.get('sort') || 'featured';
 const verifiedOnly = Astro.url.searchParams.get('verified') === 'true';
-const page = Astro.url.searchParams.get('page') || 1;
+const page = Astro.url.searchParams.get('page');
+
+// If page query parameter is present and not 1, redirect to path-based pagination
+if (page && page !== '1') {
+  const searchParams = new URLSearchParams();
+  if (sortBy !== 'featured') searchParams.set('sort', sortBy);
+  if (verifiedOnly) searchParams.set('verified', 'true');
+  const queryString = searchParams.toString();
+  const redirectUrl = `/services/${page}${queryString ? `?${queryString}` : ''}`;
+  return Astro.redirect(redirectUrl);
+}
 
 // Apply verified filter
 let filteredServices = allServices;
@@ -31,9 +41,9 @@ const sortedServices = sortServices(filteredServices, sortBy);
 const itemsPerPage = 6;
 const totalItems = sortedServices.length;
 const totalPages = Math.ceil(totalItems / itemsPerPage);
-const currentPage = parseInt(page);
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+const currentPage = 1;
+const startIndex = 0;
+const endIndex = Math.min(itemsPerPage, totalItems);
 const paginatedServices = sortedServices.slice(startIndex, endIndex);
 
 // Preserve query parameters for pagination links
@@ -79,102 +89,100 @@ const seo = {
   type={seo.type}
   keywords={seo.keywords}
 >
-  <main>
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-primary-600 to-primary-800 px-4 py-16">
-      <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-4xl font-bold text-white mb-4">Discover Local Services</h1>
-        <p class="text-lg text-white/90 mb-8">
-          Find and connect with organizations and services in Dzaleka Refugee Camp
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-primary-600 to-primary-800 px-4 py-16">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-4xl font-bold text-white mb-4">Discover Local Services</h1>
+      <p class="text-lg text-white/90 mb-8">
+        Find and connect with organizations and services in Dzaleka Refugee Camp
+      </p>
+      <a 
+        href="/services/register" 
+        class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Register Your Service
+      </a>
+    </div>
+  </div>
+
+  <!-- Service Stats -->
+  <div class="max-w-7xl mx-auto px-4 -mt-8">
+    <ServiceStats stats={serviceStats} />
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <p class="text-gray-600">
+          Showing {startIndex + 1}-{endIndex} of {totalItems} services
         </p>
-        <a 
-          href="/services/register" 
-          class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+      </div>
+
+      <!-- Filters -->
+      <div class="flex items-center gap-4">
+        <label class="flex items-center">
+          <input 
+            type="checkbox" 
+            id="verifiedFilter"
+            checked={verifiedOnly}
+            class="form-checkbox h-5 w-5 text-primary-600 rounded"
+          />
+          <span class="ml-2 text-gray-700">Verified Only</span>
+        </label>
+        
+        <select 
+          id="sortFilter"
+          class="form-select rounded-lg border-gray-300"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-          </svg>
-          Register Your Service
-        </a>
+          <option value="featured" selected={sortBy === 'featured'}>Featured First</option>
+          <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
+          <option value="newest" selected={sortBy === 'newest'}>Recently Updated</option>
+        </select>
       </div>
     </div>
 
-    <!-- Service Stats -->
-    <div class="max-w-7xl mx-auto px-4 -mt-8">
-      <ServiceStats stats={serviceStats} />
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {paginatedServices.map(service => {
+        // Extract all social media data
+        const socialMedia = service.data.socialMedia ? {
+          ...(service.data.socialMedia.facebook && { facebook: service.data.socialMedia.facebook }),
+          ...(service.data.socialMedia.twitter && { twitter: service.data.socialMedia.twitter }),
+          ...(service.data.socialMedia.instagram && { instagram: service.data.socialMedia.instagram }),
+          ...(service.data.socialMedia.linkedin && { linkedin: service.data.socialMedia.linkedin }),
+          ...(service.data.socialMedia.website && { website: service.data.socialMedia.website })
+        } : undefined;
+
+        return (
+          <ServiceCard 
+            title={service.data.title}
+            description={service.data.description}
+            category={service.data.category}
+            featured={service.data.featured}
+            verified={service.data.verified}
+            href={`/services/${service.slug}`}
+            email={service.data.contact?.email}
+            phone={service.data.contact?.phone}
+            address={service.data.location?.address}
+            logo={service.data.logo}
+            socialMedia={socialMedia}
+          />
+        );
+      })}
     </div>
 
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 py-12">
-      <div class="flex justify-between items-center mb-8">
-        <div>
-          <p class="text-gray-600">
-            Showing {startIndex + 1}-{endIndex} of {totalItems} services
-          </p>
-        </div>
-
-        <!-- Filters -->
-        <div class="flex items-center gap-4">
-          <label class="flex items-center">
-            <input 
-              type="checkbox" 
-              id="verifiedFilter"
-              checked={verifiedOnly}
-              class="form-checkbox h-5 w-5 text-primary-600 rounded"
-            />
-            <span class="ml-2 text-gray-700">Verified Only</span>
-          </label>
-          
-          <select 
-            id="sortFilter"
-            class="form-select rounded-lg border-gray-300"
-          >
-            <option value="featured" selected={sortBy === 'featured'}>Featured First</option>
-            <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
-            <option value="newest" selected={sortBy === 'newest'}>Recently Updated</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {paginatedServices.map(service => {
-          // Extract all social media data
-          const socialMedia = service.data.socialMedia ? {
-            ...(service.data.socialMedia.facebook && { facebook: service.data.socialMedia.facebook }),
-            ...(service.data.socialMedia.twitter && { twitter: service.data.socialMedia.twitter }),
-            ...(service.data.socialMedia.instagram && { instagram: service.data.socialMedia.instagram }),
-            ...(service.data.socialMedia.linkedin && { linkedin: service.data.socialMedia.linkedin }),
-            ...(service.data.socialMedia.website && { website: service.data.socialMedia.website })
-          } : undefined;
-
-          return (
-            <ServiceCard 
-              title={service.data.title}
-              description={service.data.description}
-              category={service.data.category}
-              featured={service.data.featured}
-              verified={service.data.verified}
-              href={`/services/${service.slug}`}
-              email={service.data.contact?.email}
-              phone={service.data.contact?.phone}
-              address={service.data.location?.address}
-              logo={service.data.logo}
-              socialMedia={socialMedia}
-            />
-          );
-        })}
-      </div>
-
-      <!-- Pagination -->
-      <div class="mt-8">
-        <ServicePagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          baseUrl={baseUrl}
-        />
-      </div>
+    <!-- Pagination -->
+    <div class="mt-8">
+      <ServicePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        baseUrl={baseUrl}
+      />
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>
@@ -197,14 +205,6 @@ const seo = {
         url.searchParams.set('sort', sortFilter.value);
       } else {
         url.searchParams.delete('sort');
-      }
-      
-      // Preserve the page parameter if it exists
-      const page = url.searchParams.get('page');
-      if (page && page !== '1') {
-        url.searchParams.set('page', page);
-      } else {
-        url.searchParams.delete('page');
       }
       
       // Navigate to the new URL

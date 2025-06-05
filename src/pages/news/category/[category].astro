@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import NewsCard from '../../../components/NewsCard.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
+
+export async function getStaticPaths() {
+  const categories = ['news', 'business-spotlight', 'announcement', 'success-story', 'business-guide'];
+  return categories.map(category => ({
+    params: { category },
+    props: { category }
+  }));
+}
+
+const { category } = Astro.params;
+
+// Get all news items for this category
+const allNews = await getCollection('news');
+const categoryNews = allNews
+  .filter(item => item.data.category === category)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Category labels and colors
+const categoryLabels = {
+  'business-spotlight': 'Business Spotlight',
+  'announcement': 'Announcement',
+  'success-story': 'Success Story',
+  'business-guide': 'Business Guide',
+  'news': 'Community Updates'
+};
+
+const categoryColors = {
+  'business-spotlight': 'bg-blue-50 text-blue-700 border-blue-200',
+  'announcement': 'bg-amber-50 text-amber-700 border-amber-200',
+  'success-story': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  'business-guide': 'bg-purple-50 text-purple-700 border-purple-200',
+  'news': 'bg-yellow-50 text-yellow-700 border-yellow-200'
+};
+
+// Create SEO metadata
+const seo = {
+  title: `${categoryLabels[category]} | News & Updates`,
+  description: `Browse all ${categoryLabels[category].toLowerCase()} articles from Dzaleka Online Services.`,
+  type: "website",
+  canonical: `https://services.dzaleka.com/news/category/${category}`,
+  openGraph: {
+    title: `${categoryLabels[category]} | News & Updates`,
+    description: `Browse all ${categoryLabels[category].toLowerCase()} articles from Dzaleka Online Services.`,
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/news/category/${category}`,
+    image: {
+      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "Dzaleka Online Services News"
+    }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${categoryLabels[category]} | News & Updates`,
+    description: `Browse all ${categoryLabels[category].toLowerCase()} articles from Dzaleka Online Services.`,
+    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
+  }
+};
+
+// Create structured data for the category page
+const categoryStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `${categoryLabels[category]} | News & Updates`,
+  "description": `Browse all ${categoryLabels[category].toLowerCase()} articles from Dzaleka Online Services.`,
+  "url": `https://services.dzaleka.com/news/category/${category}`,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png"
+    }
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": categoryNews.map((news, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Article",
+        "headline": news.data.title,
+        "description": news.data.description,
+        "datePublished": news.data.date.toISOString(),
+        "url": `https://services.dzaleka.com/news/${news.slug}`
+      }
+    }))
+  }
+};
+---
+
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(categoryStructuredData)} />
+  
+  <!-- Hero Section with Animated Background -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <!-- Hero Content -->
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+          <span class="block">{categoryLabels[category]}</span>
+          <span class="block text-primary-200 mt-2">Latest Updates</span>
+        </h1>
+        <p class="mt-6 text-xl text-primary-100 max-w-2xl mx-auto">
+          Browse all {categoryLabels[category].toLowerCase()} articles from our community.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-8">
+      <a 
+        href="/news" 
+        class="inline-flex items-center text-gray-600 hover:text-primary-600 mb-8 group"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          class="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" 
+          viewBox="0 0 20 20" 
+          fill="currentColor"
+        >
+          <path 
+            fill-rule="evenodd" 
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" 
+            clip-rule="evenodd" 
+          />
+        </svg>
+        Back to News
+      </a>
+    </div>
+
+    {categoryNews.length > 0 ? (
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {categoryNews.map(news => (
+          <NewsCard news={news} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <h2 class="text-2xl font-bold text-gray-900">No articles found</h2>
+        <p class="mt-2 text-gray-600">There are no articles in this category yet.</p>
+      </div>
+    )}
+  </div>
+</MainLayout>
+
+<style>
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+</style>

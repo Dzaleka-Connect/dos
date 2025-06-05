@@ -33,7 +33,7 @@ function formatDate(date: string | Date) {
   });
 }
 
-// Popular search terms
+// Popular search terms - initial defaults
 const popularSearches = [
   'Dzaleka Watch',
   'Community Services',
@@ -42,27 +42,57 @@ const popularSearches = [
   'Local Events',
   'Cultural Resources'
 ];
+
+// Quick access sections
+const quickAccess = [
+  {
+    title: 'Community Voice',
+    description: 'Share your story and experiences',
+    icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
+    href: '/community-voice'
+  },
+  {
+    title: 'E-Learning',
+    description: 'Access educational resources',
+    icon: 'M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z',
+    href: '/e-learning'
+  },
+  {
+    title: 'Help Desk',
+    description: 'Get support and assistance',
+    icon: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z',
+    href: '/help-desk'
+  },
+  {
+    title: 'Weather',
+    description: 'Check local weather conditions',
+    icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
+    href: '/weather'
+  }
+];
 ---
 
 <MainLayout title="Search">
-  <main class="container mx-auto px-4 py-8">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Dzaleka Online Service</h1>
-        <p class="text-gray-600 mb-6">
-          Find services, events, resources, and more from Dzaleka Refugee Camp
+  <main class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+      {/* Hero Section */}
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Search Dzaleka Online Services</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Find services, events, resources, and more from the Dzaleka Refugee Camp community
         </p>
       </div>
       
-      <div class="mb-6">
+      {/* Search Section */}
+      <div class="mb-12">
         <form 
           onsubmit="window.location.href='/search/results?q=' + encodeURIComponent(document.getElementById('search-input').value); return false;"
           class="w-full"
         >
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div class="relative max-w-2xl mx-auto">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
               <svg
-                class="w-4 h-4 text-gray-500"
+                class="w-5 h-5 text-gray-400"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -80,27 +110,27 @@ const popularSearches = [
             <input
               type="text"
               id="search-input"
-              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-primary-500 focus:border-primary-500"
-              placeholder="Find services, resources, events, and more..."
+              class="block w-full p-4 pl-12 text-base text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 shadow-sm"
+              placeholder="Search for services, resources, events..."
               required
             />
             <button
               type="submit"
-              class="absolute right-2.5 bottom-2.5 top-2.5 px-4 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300"
+              class="absolute right-2 bottom-2 top-2 px-6 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 transition-colors"
             >
               Search
             </button>
           </div>
         </form>
 
-        {/* Popular Searches - Moved below search input */}
-        <div class="mt-4">
-          <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">Popular Searches</h3>
-          <div class="flex flex-wrap justify-center gap-2">
+        {/* Popular Searches */}
+        <div class="mt-6">
+          <h3 class="text-sm font-medium text-gray-600 mb-3 text-center">Popular Searches</h3>
+          <div id="popular-searches" class="flex flex-wrap justify-center gap-2">
             {popularSearches.map(search => (
               <a
                 href={`/search/results?q=${encodeURIComponent(search)}`}
-                class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full hover:bg-primary-100 hover:text-primary-700 transition-colors"
+                class="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors border border-gray-200"
               >
                 {search}
               </a>
@@ -109,34 +139,62 @@ const popularSearches = [
         </div>
       </div>
 
-      <div class="space-y-12">
+      {/* Quick Access Section */}
+      <div class="mb-16">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Quick Access</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickAccess.map(item => (
+            <a href={item.href} class="block group">
+              <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors">
+                <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
+                  <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={item.icon} />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                  {item.title}
+                </h3>
+                <p class="text-sm text-gray-600">{item.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Content Sections */}
+      <div class="space-y-16">
         {/* Latest Resources */}
         <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Latest Resources</h2>
-          <div class="space-y-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-semibold text-gray-900">Latest Resources</h2>
+            <a href="/resources" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+              View all resources →
+            </a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {latestResources.map(resource => (
-              <article class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+              <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
                 <div class="flex flex-col gap-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="text-lg font-semibold text-gray-900 mb-2">{resource.data.title}</h3>
-                      <p class="text-sm text-gray-600 mb-2">{resource.data.description}</p>
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{resource.data.title}</h3>
+                    <p class="text-sm text-gray-600 mb-3">{resource.data.description}</p>
+                    <div class="flex items-center gap-3">
                       {resource.data.category && (
-                        <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
+                        <span class="inline-block px-3 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
                           {resource.data.category}
                         </span>
                       )}
+                      <time class="text-sm text-gray-500" datetime={resource.data.date}>
+                        {formatDate(resource.data.date || resource.data.publishDate)}
+                      </time>
                     </div>
-                    <time class="text-sm text-gray-500" datetime={resource.data.date}>
-                      {formatDate(resource.data.date || resource.data.publishDate)}
-                    </time>
                   </div>
                   
-                  <div class="flex gap-4">
+                  <div class="flex gap-3">
                     {resource.data.downloadUrl && (
                       <a
                         href={resource.data.downloadUrl.startsWith('http') ? resource.data.downloadUrl : `/resources/pdf/${resource.data.downloadUrl}`}
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition-colors"
                         download
                         target="_blank"
                         rel="noopener noreferrer"
@@ -151,7 +209,7 @@ const popularSearches = [
                     {resource.data.resourceUrl && (
                       <a
                         href={resource.data.resourceUrl}
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -171,21 +229,26 @@ const popularSearches = [
         {/* Upcoming Events */}
         {upcomingEvents.length > 0 && (
           <section>
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">Upcoming Events</h2>
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-semibold text-gray-900">Upcoming Events</h2>
+              <a href="/events" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                View all events →
+              </a>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               {upcomingEvents.map(event => (
-                <a href={`/events/${event.slug}`} class="block">
-                  <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <a href={`/events/${event.slug}`} class="block group">
+                  <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-gray-100">
                     <div class="h-48 bg-gray-100">
                       <img
                         src={event.data.image || '/images/placeholder-image.jpg'}
                         alt={event.data.title}
-                        class="w-full h-full object-cover"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <div class="p-4">
-                      <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded-full">
+                    <div class="p-6">
+                      <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium px-3 py-1 bg-green-100 text-green-800 rounded-full">
                           Upcoming
                         </span>
                         <time 
@@ -195,9 +258,13 @@ const popularSearches = [
                           {formatDate(event.data.date)}
                         </time>
                       </div>
-                      <h3 class="text-lg font-semibold text-gray-900 mb-2">{event.data.title}</h3>
-                      <p class="text-sm text-gray-600 mb-2">{event.data.description}</p>
+                      <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">{event.data.title}</h3>
+                      <p class="text-sm text-gray-600 mb-3 line-clamp-2">{event.data.description}</p>
                       <div class="flex items-center text-sm text-gray-500">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
                         <span>{event.data.location.venue}</span>
                       </div>
                     </div>
@@ -210,11 +277,16 @@ const popularSearches = [
 
         {/* Latest Services */}
         <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Latest Services</h2>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-semibold text-gray-900">Latest Services</h2>
+            <a href="/services" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+              View all services →
+            </a>
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {latestServices.map(service => (
-              <a href={`/services/${service.slug}`} class="block">
-                <article class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+              <a href={`/services/${service.slug}`} class="block group">
+                <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
                   <div class="flex items-center mb-4">
                     <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                       <img
@@ -224,11 +296,11 @@ const popularSearches = [
                       />
                     </div>
                     <div class="ml-4">
-                      <h3 class="text-lg font-semibold text-gray-900">{service.data.title}</h3>
+                      <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">{service.data.title}</h3>
                       <p class="text-sm text-gray-500 capitalize">{service.data.category}</p>
                     </div>
                   </div>
-                  <p class="text-sm text-gray-600">{service.data.description}</p>
+                  <p class="text-sm text-gray-600 line-clamp-2">{service.data.description}</p>
                 </article>
               </a>
             ))}
@@ -238,3 +310,65 @@ const popularSearches = [
     </div>
   </main>
 </MainLayout>
+
+<script>
+  // Function to update popular searches
+  function updatePopularSearches() {
+    // Get search history from localStorage
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+    
+    // Count search frequency
+    const searchCounts = searchHistory.reduce((acc, term) => {
+      acc[term] = (acc[term] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Sort by frequency and get top 6
+    const popularTerms = Object.entries(searchCounts)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 6)
+      .map(([term]) => term);
+
+    // If we have popular terms, update the display
+    if (popularTerms.length > 0) {
+      const container = document.getElementById('popular-searches');
+      container.innerHTML = popularTerms.map(term => `
+        <a
+          href="/search/results?q=${encodeURIComponent(term)}"
+          class="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors border border-gray-200"
+        >
+          ${term}
+        </a>
+      `).join('');
+    }
+  }
+
+  // Function to track search
+  function trackSearch(query) {
+    // Get existing history
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+    
+    // Add new search to history (limit to last 50 searches)
+    searchHistory.unshift(query);
+    if (searchHistory.length > 50) {
+      searchHistory.pop();
+    }
+    
+    // Save updated history
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    
+    // Update popular searches display
+    updatePopularSearches();
+  }
+
+  // Add event listener to search form
+  document.querySelector('form').addEventListener('submit', (e) => {
+    const query = document.getElementById('search-input').value.trim();
+    if (query) {
+      trackSearch(query);
+    }
+  });
+
+  // Initialize popular searches on page load
+  document.addEventListener('DOMContentLoaded', updatePopularSearches);
+</script>

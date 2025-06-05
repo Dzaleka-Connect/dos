@@ -27,6 +27,7 @@ const categoryLabels = {
   'announcement': 'Announcement',
   'success-story': 'Success Story',
   'business-guide': 'Business Guide',
+  'news': 'Community Updates'
 };
 
 // Get category color
@@ -35,11 +36,12 @@ const categoryColors = {
   'announcement': 'bg-amber-50 text-amber-700 border-amber-200',
   'success-story': 'bg-emerald-50 text-emerald-700 border-emerald-200',
   'business-guide': 'bg-purple-50 text-purple-700 border-purple-200',
+  'news': 'bg-yellow-50 text-yellow-700 border-yellow-200'
 };
 
 // Create SEO metadata
 const seo = {
-  title: `${entry.data.title}`,
+  title: `${entry.data.title} | Dzaleka Online Services`,
   description: entry.data.description,
   type: "article",
   canonical: `https://services.dzaleka.com/news/${entry.slug}`,
@@ -90,7 +92,9 @@ const articleStructuredData = {
   "description": entry.data.description,
   "image": {
     "@type": "ImageObject",
-    "url": entry.data.image,
+    "url": entry.data.image ? (
+      entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
+    ) : "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
     "width": 1200,
     "height": 630,
     "acquireLicensePage": "https://services.dzaleka.com/contact",
@@ -101,7 +105,8 @@ const articleStructuredData = {
   "dateModified": entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
   "author": {
     "@type": "Person",
-    "name": entry.data.author || "Dzaleka Online Services"
+    "name": entry.data.author || "Dzaleka Online Services",
+    "url": "https://services.dzaleka.com"
   },
   "publisher": {
     "@type": "Organization",
@@ -111,14 +116,37 @@ const articleStructuredData = {
       "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
       "width": "200",
       "height": "200"
-    }
+    },
+    "url": "https://services.dzaleka.com",
+    "sameAs": [
+      "https://twitter.com/DzalekaConnect",
+      "https://facebook.com/DzalekaOnline",
+      "https://instagram.com/DzalekaOnline"
+    ]
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": `https://services.dzaleka.com/news/${entry.slug}`
   },
   "articleSection": categoryLabels[entry.data.category] || "News",
-  "keywords": entry.data.tags ? entry.data.tags.join(", ") : undefined
+  "keywords": entry.data.tags ? entry.data.tags.join(", ") : undefined,
+  "wordCount": entry.data.wordCount || 0,
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true,
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Dzaleka Online Services",
+    "url": "https://services.dzaleka.com"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "Dzaleka Refugee Camp",
+    "description": "A refugee camp in Malawi providing services and support to refugees"
+  },
+  "mentions": entry.data.tags ? entry.data.tags.map(tag => ({
+    "@type": "Thing",
+    "name": tag
+  })) : undefined
 };
 ---
 
