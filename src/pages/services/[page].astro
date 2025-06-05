@@ -61,9 +61,44 @@ if (verifiedOnly) searchParams.set('verified', 'true');
 const queryString = searchParams.toString();
 const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
 
+// Generate Organization schema for the current page's services
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": paginatedServices.map((service, index) => ({
+    "@type": "ListItem",
+    "position": start + index + 1,
+    "item": {
+      "@type": "Organization",
+      "name": service.data.title,
+      "description": service.data.description,
+      "url": `${Astro.site}services/${service.slug}`,
+      "logo": service.data.logo ? `${Astro.site}${service.data.logo}` : undefined,
+      "address": service.data.location?.address ? {
+        "@type": "PostalAddress",
+        "streetAddress": service.data.location.address
+      } : undefined,
+      "contactPoint": service.data.contact ? {
+        "@type": "ContactPoint",
+        "telephone": service.data.contact.phone,
+        "email": service.data.contact.email
+      } : undefined,
+      "sameAs": service.data.socialMedia ? [
+        service.data.socialMedia.facebook,
+        service.data.socialMedia.twitter,
+        service.data.socialMedia.instagram,
+        service.data.socialMedia.linkedin,
+        service.data.socialMedia.website
+      ].filter(Boolean) : undefined
+    }
+  }))
+};
 ---
 
 <MainLayout title="Service Directory">
+  <head>
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  </head>
   <main>
     <!-- Hero Section -->
     <div class="bg-gradient-to-r from-primary-600 to-primary-800 px-4 py-16">
