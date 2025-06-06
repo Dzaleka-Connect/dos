@@ -1,0 +1,273 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Developer Onboarding - Staff Portal">
+  <main class="min-h-screen bg-gray-50">
+    <div class="bg-primary-600 text-white">
+      <div class="container mx-auto px-4 py-12">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">Developer Onboarding</h1>
+        <p class="text-lg text-primary-100">Get started with Dzaleka Online Services development</p>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Prerequisites -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Prerequisites</h2>
+          <div class="prose prose-lg">
+            <h3>Required Tools</h3>
+            <ul>
+              <li>Node.js (v18 or later)</li>
+              <li>Git</li>
+              <li>VS Code (recommended) or your preferred IDE</li>
+              <li>GitHub account</li>
+            </ul>
+
+            <h3>Development Environment</h3>
+            <ol>
+              <li>Install Node.js from <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">nodejs.org</a></li>
+              <li>Install Git from <a href="https://git-scm.com" target="_blank" rel="noopener noreferrer">git-scm.com</a></li>
+              <li>Install VS Code from <a href="https://code.visualstudio.com" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Project Setup -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Project Setup</h2>
+          <div class="prose prose-lg">
+            <h3>Clone and Install</h3>
+            <div class="example-block">
+# Clone the repository<br>
+git clone https://github.com/dzaleka-online/dzaleka-online-services.git<br><br># Navigate to project directory<br>
+cd dzaleka-online-services<br><br># Install dependencies<br>
+npm install<br><br># Start development server<br>
+npm run dev
+            </div>
+
+            <h3>Environment Configuration</h3>
+            <p>Create a <code>.env</code> file in the root directory with the following variables:</p>
+            <div class="example-block">
+# Site Configuration<br>
+SITE_URL=http://localhost:4321<br>
+SITE_NAME="Dzaleka Online Services"<br><br># Content Management<br>
+CONTENT_DIR=src/content<br>
+PUBLIC_DIR=public<br><br># Media Configuration<br>
+MEDIA_DIR=public/images<br>
+ALLOWED_IMAGE_TYPES=jpg,jpeg,png,gif,webp<br><br># API Configuration (if needed)<br>
+PUBLIC_API_URL=your_api_url<br>
+PUBLIC_API_KEY=your_api_key<br><br># Authentication (if needed)<br>
+AUTH_SECRET=your_auth_secret<br>
+AUTH_TRUST_HOST=true
+            </div>
+          </div>
+        </section>
+
+        <!-- Project Structure -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Project Structure</h2>
+          <div class="prose prose-lg">
+            <h3>Key Directories</h3>
+            <ul>
+              <li><code>src/pages/</code> - Main application pages and routes</li>
+              <li><code>src/components/</code> - Reusable UI components</li>
+              <li><code>src/layouts/</code> - Page layouts and templates</li>
+              <li><code>src/content/</code> - Content collections:
+                <ul>
+                  <li><code>news/</code> - News articles and announcements</li>
+                  <li><code>services/</code> - Organization and service listings</li>
+                  <li><code>events/</code> - Community events and activities</li>
+                  <li><code>resources/</code> - Educational and support resources</li>
+                  <li><code>docs/</code> - Documentation and guides</li>
+                  <li><code>stories/</code> - Community stories and experiences</li>
+                  <li><code>photos/</code> - Photo gallery and visual content</li>
+                  <li><code>jobs/</code> - Job listings and opportunities</li>
+                  <li><code>profiles/</code> - Community member profiles</li>
+                  <li><code>community-voices/</code> - Community perspectives</li>
+                  <li><code>talents/</code> - Showcase of community talents</li>
+                  <li><code>gallery/</code> - Visual content and media</li>
+                </ul>
+              </li>
+              <li><code>src/utils/</code> - Utility functions and helpers</li>
+              <li><code>src/data/</code> - Data management and storage</li>
+              <li><code>src/lib/</code> - Shared libraries and configurations</li>
+              <li><code>src/scripts/</code> - Build and utility scripts</li>
+              <li><code>src/services/</code> - Service integrations and APIs</li>
+              <li><code>src/stores/</code> - State management stores</li>
+              <li><code>src/types/</code> - TypeScript type definitions</li>
+              <li><code>public/</code> - Static assets and images</li>
+            </ul>
+
+            <h3>Content Management</h3>
+            <p>The project uses Astro's content collections for managing different types of content. Each collection has its own schema defined in <code>src/content/config.ts</code>:</p>
+            <ul>
+              <li>News articles with categories like business-spotlight, announcement, success-story</li>
+              <li>Services with detailed organization information, contact details, and business hours</li>
+              <li>Events with registration and contact information</li>
+              <li>Resources with download links and file information</li>
+              <li>Photos with photographer credits and location data</li>
+              <li>Jobs with detailed requirements and application information</li>
+              <li>Community voices and stories</li>
+            </ul>
+
+            <h3>Important Files</h3>
+            <ul>
+              <li><code>astro.config.mjs</code> - Astro configuration</li>
+              <li><code>tailwind.config.cjs</code> - Tailwind CSS configuration</li>
+              <li><code>tsconfig.json</code> - TypeScript configuration</li>
+              <li><code>package.json</code> - Project dependencies and scripts</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Development Workflow -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Development Workflow</h2>
+          <div class="prose prose-lg">
+            <h3>Git Workflow</h3>
+            <ol>
+              <li>Create a new branch for your feature:
+                <div class="example-block">
+git checkout -b feature/your-feature-name
+                </div>
+              </li>
+              <li>Make your changes and commit them:
+                <div class="example-block">
+git add .<br>
+git commit -m "feat: your feature description"
+                </div>
+              </li>
+              <li>Push your branch and create a pull request:
+                <div class="example-block">
+git push origin feature/your-feature-name
+                </div>
+              </li>
+            </ol>
+
+            <h3>Commit Message Format</h3>
+            <p>Follow the conventional commits format:</p>
+            <ul>
+              <li><code>feat:</code> for new features</li>
+              <li><code>fix:</code> for bug fixes</li>
+              <li><code>docs:</code> for documentation changes</li>
+              <li><code>style:</code> for formatting changes</li>
+              <li><code>refactor:</code> for code refactoring</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Testing -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Testing</h2>
+          <div class="prose prose-lg">
+            <h3>Running Tests</h3>
+            <div class="example-block">
+# Start development server<br>
+npm run dev<br><br># Build for production<br>
+npm run build<br><br># Preview production build<br>
+npm run preview
+            </div>
+
+            <h3>Writing Tests</h3>
+            <ul>
+              <li>Create test files with <code>.test.ts</code> extension</li>
+              <li>Place tests in the same directory as the code being tested</li>
+              <li>Use descriptive test names that explain the expected behavior</li>
+              <li>Follow Astro's testing best practices</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Deployment -->
+        <section class="bg-white rounded-xl shadow-sm p-6">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Deployment</h2>
+          <div class="prose prose-lg">
+            <h3>Build Process</h3>
+            <div class="example-block">
+# Build for production<br>
+npm run build<br><br># Preview production build<br>
+npm run preview
+            </div>
+
+            <h3>Deployment Steps</h3>
+            <ol>
+              <li>Ensure all tests pass</li>
+              <li>Build the project</li>
+              <li>Deploy to staging environment</li>
+              <li>Run final tests on staging</li>
+              <li>Deploy to production</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Code of Conduct -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Code of Conduct</h2>
+          <div class="prose prose-lg">
+            <p>As a contributor to Dzaleka Online Services, you are expected to uphold our community values:</p>
+            <ul>
+              <li>Respect the cultural diversity and heritage of the Dzaleka community</li>
+              <li>Maintain confidentiality of sensitive information and personal data</li>
+              <li>Ensure content accuracy and cultural sensitivity in all contributions</li>
+              <li>Support community empowerment through your work</li>
+              <li>Follow ethical guidelines for content creation and sharing</li>
+              <li>Respect intellectual property rights and proper attribution</li>
+              <li>Maintain professional communication in all interactions</li>
+              <li>Contribute to a safe and inclusive environment for all community members</li>
+            </ul>
+            <p class="mt-4 text-sm text-gray-600">By participating in this project, you agree to uphold these values and contribute positively to the Dzaleka community.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  .prose h3 {
+    @apply text-lg font-medium text-gray-900 mb-2;
+  }
+  .prose p {
+    @apply text-gray-600;
+  }
+  .prose ul {
+    @apply list-disc pl-6 mb-4;
+  }
+  .prose ol {
+    @apply list-decimal pl-6 mb-4;
+  }
+  .prose code {
+    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800;
+  }
+  .prose pre {
+    @apply my-4;
+  }
+  .prose a {
+    @apply text-primary-600 hover:text-primary-700;
+  }
+  pre {
+    @apply whitespace-pre-wrap;
+  }
+  code {
+    @apply font-mono text-sm;
+  }
+  .bg-gray-800 pre {
+    @apply m-0;
+  }
+  .bg-gray-800 code {
+    @apply text-gray-100;
+  }
+  .example-block {
+    background: #1a202c;
+    color: #f3f4f6;
+    border: 1px solid #2d3748;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 1rem;
+    white-space: pre-line;
+  }
+</style> 
