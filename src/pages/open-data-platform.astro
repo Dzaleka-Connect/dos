@@ -1,0 +1,200 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const seo = {
+  title: "Open Data Platform",
+  description: "Explore Dzaleka's open data platform supporting community-led storytelling, research, and heritage preservation. Access cultural, social, and historical data that reflect life in Dzaleka Refugee Camp.",
+  canonicalURL: new URL(Astro.url.pathname, Astro.site),
+  openGraph: {
+    basic: {
+      title: "Open Data Platform - Dzaleka Online Services",
+      type: "article",
+      image: "/images/dzaleka-hero.jpeg",
+    },
+    optional: {
+      description: "Access Dzaleka's cultural heritage through our open data platform. Supporting community-led storytelling and research.",
+      siteName: "Dzaleka Online Services",
+    },
+    image: {
+      alt: "Dzaleka Open Data Platform - Preserving Cultural Heritage",
+    },
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@dzalekaconnect",
+    creator: "@dzalekaconnect",
+    title: "Open Data Platform - Dzaleka Online Services",
+    description: "Access Dzaleka's cultural heritage through our open data platform. Supporting community-led storytelling and research.",
+    image: "/images/dzaleka-hero.jpeg",
+    imageAlt: "Dzaleka Open Data Platform - Preserving Cultural Heritage",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+---
+
+<MainLayout title={seo.title} description={seo.description}>
+  <head>
+    <meta property="og:image" content="/images/dzaleka-hero.jpeg" />
+    <meta property="og:image:alt" content="Dzaleka Open Data Platform - Preserving Cultural Heritage" />
+    <meta name="twitter:image" content="/images/dzaleka-hero.jpeg" />
+    <meta name="keywords" content="Dzaleka, open data, cultural heritage, refugee camp, digital archive, community storytelling, research platform" />
+    <meta name="author" content="Dzaleka Online Services" />
+    <meta name="geo.region" content="MW" />
+    <meta name="geo.placename" content="Dzaleka Refugee Camp" />
+  </head>
+
+  <!-- Hero Section with Image -->
+  <div class="relative">
+    <!-- Hero Image -->
+    <div class="absolute inset-0">
+      <img 
+        src="/images/dzaleka-hero.jpeg" 
+        alt="Dzaleka Cultural Heritage" 
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative min-h-[50vh] flex items-center">
+      <div class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl">
+          <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            Open Data Platform
+          </h1>
+          <p class="text-lg md:text-xl text-white mb-6">
+            Supporting community-led storytelling, research, and heritage preservation in Dzaleka Refugee Camp
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a 
+              href="#platform-components" 
+              class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+            >
+              Explore Platform
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Introduction -->
+        <section class="bg-white rounded-xl shadow-sm p-8 mb-8">
+          <div class="prose prose-lg">
+            <p class="text-lg text-gray-700">
+              Our open data platform is designed to support community-led storytelling, research, and heritage preservation in Dzaleka Refugee Camp. Built with flexibility and transparency in mind, it allows us to collect, manage, and visualise cultural, social, and historical data that reflect life in Dzaleka.
+            </p>
+            <p class="text-lg text-gray-700">
+              This platform is central to our mission: to make Dzaleka's narratives accessible, secure, and community-owned — not hidden in private archives or scattered across the internet.
+            </p>
+          </div>
+        </section>
+
+        <!-- Platform Components -->
+        <section id="platform-components" class="bg-white rounded-xl shadow-sm p-8 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-8">Platform Components</h2>
+          
+          <!-- Collection -->
+          <div class="mb-12">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-primary-600 font-bold text-xl">1</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900">Collection</h3>
+            </div>
+            <p class="text-gray-700 mb-6">We collect data in two core ways:</p>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+                <h4 class="font-semibold text-gray-900 mb-3">Story-Based Inputs</h4>
+                <p class="text-gray-700">Oral histories, photos, documents, and reflections submitted by residents and researchers.</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+                <h4 class="font-semibold text-gray-900 mb-3">Event-Based Inputs</h4>
+                <p class="text-gray-700">Cultural events, community projects, and notable moments, documented consistently using shared formats for easy comparison.</p>
+              </div>
+            </div>
+            <div class="mt-6 bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <h4 class="font-semibold text-gray-900 mb-3">News Stories & Announcements</h4>
+              <p class="text-gray-700">Community-led journalism, camp updates, and local news written by contributors within or connected to Dzaleka. These stories capture the pulse of everyday life and offer timely insight into issues affecting the community.</p>
+            </div>
+          </div>
+
+          <!-- Aggregation -->
+          <div class="mb-12">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-primary-600 font-bold text-xl">2</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900">Aggregation</h3>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <p class="text-gray-700">All collected content is stored in a central, secure, and searchable database. This allows for structured archiving, reliable referencing, and long-term preservation of Dzaleka's cultural memory.</p>
+            </div>
+          </div>
+
+          <!-- Visualisation -->
+          <div>
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-primary-600 font-bold text-xl">3</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900">Visualisation</h3>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <p class="text-gray-700">Our platform presents data through maps, timelines, and thematic galleries — making it easier for researchers, community members, and the public to explore Dzaleka's past and present through visuals and insights.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Guiding Principles -->
+        <section class="bg-white rounded-xl shadow-sm p-8 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-8">Guiding Principles</h2>
+          
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Evidence-Informed Storytelling -->
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">Evidence-Informed Storytelling</h3>
+              <p class="text-gray-700">We believe data should support local narratives, not distort them. Our platform makes information accessible so that content creators, researchers, and educators can make informed, grounded decisions about how to tell Dzaleka's story.</p>
+            </div>
+
+            <!-- Ethical Data Stewardship -->
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">Ethical Data Stewardship</h3>
+              <p class="text-gray-700">We handle all data with care. Consent, privacy, and clarity are central to how we collect and publish stories. Contributors know how their information will be used — and we ensure it's done with dignity and respect.</p>
+            </div>
+
+            <!-- Trust and Accountability -->
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">Trust and Accountability</h3>
+              <p class="text-gray-700">We are building a platform where transparency is non-negotiable. Every dataset, story, or record we publish is part of a bigger commitment to accuracy, representation, and public trust in digital heritage.</p>
+            </div>
+
+            <!-- Community of Practice -->
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">Community of Practice</h3>
+              <p class="text-gray-700">Dzaleka Online Services is shaped by the people who contribute to it. We work hand-in-hand with writers, archivists, community leaders, and youth to ensure the platform reflects the lived experiences of Dzaleka. Active use and feedback help us improve the platform, identify gaps, and stay responsive to community needs.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  .prose a {
+    @apply text-primary-600 hover:text-primary-700;
+  }
+  .prose ul {
+    @apply list-disc pl-6 mb-4;
+  }
+  .prose li {
+    @apply text-gray-700;
+  }
+</style> 
