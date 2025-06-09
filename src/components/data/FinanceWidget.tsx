@@ -10,9 +10,9 @@ interface FinanceData {
 
 export function FinanceWidget() {
   const [data, setData] = useState<FinanceData>({
-    budget: 27900000, // $27.9M USD (2024 budget)
-    funded: 2790000,  // 10% funded
-    gap: 25110000,    // Remaining gap
+    budget: 26300000, // $26.3M USD (UNHCR's financial requirements 2025)
+    funded: 3807432,  // 13.6% funded
+    gap: 22492568,    // Remaining gap
     lastUpdated: new Date().toISOString(),
     source: 'https://reporting.unhcr.org/operational/operations/malawi'
   });

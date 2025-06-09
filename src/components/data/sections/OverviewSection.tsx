@@ -25,7 +25,7 @@ const chartData = {
   labels: ['Original Capacity', 'Current Population', 'Overcapacity'],
   datasets: [{
     label: 'Number of People',
-    data: [12000, 60000, 48000],
+    data: [12000, 57438, 45438],
     backgroundColor: [
       'rgba(75, 192, 192, 0.5)',
       'rgba(255, 99, 132, 0.5)',

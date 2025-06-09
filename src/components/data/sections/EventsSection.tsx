@@ -9,6 +9,7 @@ interface Event {
   type: string;
   location: string;
   link?: string;
+  impact: string;
 }
 
 const events: Event[] = [
@@ -16,37 +17,41 @@ const events: Event[] = [
     date: "November 22, 2022",
     title: "Aid Distribution Unrest",
     description: "Unrest at Dzaleka Camp over distribution of aid materials",
-    type: "Health",
-    location: "Dzaleka Camp"
+    type: "Security",
+    location: "Dzaleka Camp",
+    impact: "Disruption of aid distribution services"
   },
   {
     date: "December 14, 2022",
-    title: "Security Incident",
+    title: "Grenade Attack",
     description: "Grenade attack on Burundian community leader Butoyi Fideli",
-    type: "Cultural",
-    location: "Dzaleka Camp"
+    type: "Security",
+    location: "Dzaleka Camp",
+    impact: "Increased security concerns in Burundian community"
   },
   {
     date: "May 17, 2023",
     title: "Forced Relocation",
     description: "Forced relocation of urban refugees back to Dzaleka Camp",
-    type: "Educational",
-    location: "Dzaleka Camp"
+    type: "Policy",
+    location: "Dzaleka Camp",
+    impact: "Significant population increase in camp"
   },
   {
     date: "July 17, 2024",
     title: "Security Operation",
-    description: "Malawi Defence Force raid targeting suspected human traffickers",
-    type: "Health",
-    location: "Dzaleka Camp"
+    description: "Malawi Defence Force raid on Dzaleka Camp targeting suspected human traffickers",
+    type: "Security",
+    location: "Dzaleka Camp",
+    impact: "Disruption of camp operations"
   },
   {
     date: "October 12, 2024",
     title: "Security Operation",
-    description: "Second widespread raid resulting in arrests and injuries",
-    type: "Cultural",
+    description: "Second widespread raid on Dzaleka Camp, resulting in arrests and injuries",
+    type: "Security",
     location: "Dzaleka Camp",
-    link: "https://www.dzaleka.com/"
+    impact: "Further security concerns and community tensions"
   }
 ];
 

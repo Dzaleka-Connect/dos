@@ -14,98 +14,92 @@ interface NationalityGroup {
 const demographics: NationalityGroup[] = [
   {
     nationality: "Congolese",
-    percentage: 62,
-    population: 37200,
+    percentage: 39.3,
+    population: 37245,
     background: "Majority fled conflicts in Eastern DRC",
     challenges: [
-      "Ongoing conflict in home region",
-      "Family separation",
-      "Documentation issues"
+      "Overcrowding in Dzaleka Camp",
+      "Limited access to healthcare services",
+      "Insufficient educational facilities",
+      "Restricted movement outside camp"
     ],
     support: [
-      "Community leadership programs",
-      "Family reunification support",
-      "Skills development initiatives"
+      "UNHCR Core Protection Services",
+      "WFP Food Assistance (Monthly)",
+      "UNHCR Shelter Support",
+      "UNHCR Education Grants"
     ]
   },
   {
     nationality: "Burundians",
-    percentage: 19,
-    population: 11400,
+    percentage: 13.3,
+    population: 12604,
     background: "Displaced by political instability",
     challenges: [
-      "Political uncertainty",
-      "Integration challenges",
-      "Language barriers"
+      "Limited livelihood opportunities in camp",
+      "Language barriers with local community",
+      "Access to secondary education",
+      "Integration with host community"
     ],
     support: [
-      "Language training programs",
-      "Cultural integration support",
-      "Education access"
+      "UNHCR Core Protection Services",
+      "WFP Food Assistance (Monthly)",
+      "UNHCR Livelihood Programs",
+      "UNHCR Education Support"
     ]
   },
   {
     nationality: "Rwandans",
-    percentage: 7,
-    population: 4200,
+    percentage: 7.5,
+    population: 7135,
     background: "Long-term residents since 1994",
     challenges: [
-      "Protracted displacement",
-      "Second generation issues",
-      "Return concerns"
+      "Limited employment opportunities",
+      "Housing maintenance in camp",
+      "Access to higher education",
+      "Social services capacity"
     ],
     support: [
-      "Youth programs",
-      "Education support",
-      "Livelihood projects"
+      "UNHCR Core Protection Services",
+      "WFP Food Assistance (Monthly)",
+      "UNHCR Self-Reliance Programs",
+      "UNHCR Community Support"
     ]
   },
   {
-    nationality: "Somalis",
-    percentage: 5,
-    population: 3000,
+    nationality: "Mozambique",
+    percentage: 0.0,
+    population: 35,
     background: "Fled ongoing civil conflict",
     challenges: [
-      "Cultural adaptation",
-      "Limited community size",
-      "Specific dietary needs"
+      "Small community representation",
+      "Access to specialized services",
+      "Cultural preservation",
+      "Integration with larger communities"
     ],
     support: [
-      "Cultural support groups",
-      "Religious facilities",
-      "Community integration"
-    ]
-  },
-  {
-    nationality: "Ethiopians",
-    percentage: 4,
-    population: 2400,
-    background: "Recent arrivals from regional conflicts",
-    challenges: [
-      "New arrival integration",
-      "Language barriers",
-      "Community establishment"
-    ],
-    support: [
-      "New arrival support",
-      "Language classes",
-      "Community building"
+      "UNHCR Core Protection Services",
+      "WFP Food Assistance (Monthly)",
+      "UNHCR Community-Based Protection",
+      "UNHCR Integration Support"
     ]
   },
   {
     nationality: "Others",
-    percentage: 3,
-    population: 1800,
+    percentage: 39.8,
+    population: 37664,
     background: "Various African nations",
     challenges: [
-      "Diverse needs",
-      "Small community sizes",
-      "Integration support"
+      "Diverse cultural needs in camp",
+      "Access to specialized services",
+      "Community representation",
+      "Integration challenges"
     ],
     support: [
-      "Targeted assistance",
-      "Integration programs",
-      "Cultural preservation"
+      "UNHCR Core Protection Services",
+      "WFP Food Assistance (Monthly)",
+      "UNHCR Community Support",
+      "UNHCR Integration Programs"
     ]
   }
 ];
@@ -196,7 +190,7 @@ export function DemographicsSection() {
           </div>
         ))}
         <p className="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-100 italic">
-          Source: UNHCR Registration Data 2024
+          Source: Government, UNHCR 
         </p>
       </div>
     </div>

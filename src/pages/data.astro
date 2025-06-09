@@ -6,6 +6,7 @@ import { StakeholdersSection } from '../components/data/sections/StakeholdersSec
 import { EconomicSection } from '../components/data/sections/EconomicSection';
 import { HealthcareSection } from '../components/data/sections/HealthcareSection';
 import { DemographicsSection } from '../components/data/sections/DemographicsSection';
+import { TimelineSection } from '../components/data/sections/TimelineSection';
 import { NewsWidget } from '../components/data/NewsWidget';
 import { EmergencyAlerts } from '../components/data/EmergencyAlerts';
 import { ResourcesWidget } from '../components/data/ResourcesWidget';
@@ -38,8 +39,8 @@ const seo = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@DzalekaServices",
-    creator: "@DzalekaServices",
+    site: "@dzalekaconnect",
+    creator: "@dzalekaconnect",
     title: pageTitle,
     description: "Access comprehensive data insights into Dzaleka Refugee Camp: population statistics, demographics, economic impact, healthcare services, and real-time updates.",
     image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
@@ -66,7 +67,7 @@ const structuredData = [
       {
         "@type": "PropertyValue",
         "name": "Total Population",
-        "value": "56,760",
+        "value": "57,438",
         "unitText": "Refugees"
       },
       {
@@ -87,7 +88,7 @@ const structuredData = [
       "encodingFormat": "HTML",
       "contentUrl": "https://services.dzaleka.com/data"
     },
-    "temporalCoverage": "2024",
+    "temporalCoverage": "2025",
     "spatialCoverage": {
       "@type": "Place",
       "name": "Dzaleka Refugee Camp",
@@ -203,7 +204,7 @@ const languages = [
         <dl class="rounded-lg bg-white/10 backdrop-blur-lg shadow-lg sm:grid sm:grid-cols-3">
           <div class="flex flex-col border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-r">
             <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Total Refugees</dt>
-            <dd class="order-1 text-5xl font-bold text-white">56,760</dd>
+            <dd class="order-1 text-5xl font-bold text-white">57,438</dd>
           </div>
           <div class="flex flex-col border-t border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-l sm:border-r">
             <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Women & Girls</dt>
@@ -229,13 +230,19 @@ const languages = [
   <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
     {/* Quick Navigation */}
     <nav class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 mb-8 sticky top-4 z-10">
-      <div class="flex flex-wrap gap-2">
-        <a href="#overview" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Overview</a>
-        <a href="#demographics" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Demographics</a>
-        <a href="#events" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Events</a>
-        <a href="#stakeholders" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Stakeholders</a>
-        <a href="#economic" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Economic</a>
-        <a href="#healthcare" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">Healthcare</a>
+      <div class="flex overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+        <div class="flex gap-2 min-w-max">
+          <a href="#overview" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Overview</a>
+          <a href="#timeline" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Timeline</a>
+          <a href="#historical" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">History</a>
+          <a href="#legal" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Legal</a>
+          <a href="#demographics" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Demographics</a>
+          <a href="#events" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Events</a>
+          <a href="#stakeholders" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Stakeholders</a>
+          <a href="#economic" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Economic</a>
+          <a href="#healthcare" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Healthcare</a>
+          <a href="#additional-demographics" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">More Demographics</a>
+        </div>
       </div>
     </nav>
 
@@ -243,40 +250,127 @@ const languages = [
       {/* Main Content Column */}
       <div class="lg:col-span-2">
         {/* First Section: Overview & Demographics */}
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+        <div id="overview" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Camp Overview</h2>
           <OverviewSection client:load />
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        {/* Timeline Section */}
+        <div id="timeline" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Camp History</h2>
+          <TimelineSection client:load />
+        </div>
+
+        {/* Historical Background Section */}
+        <div id="historical" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Historical Background</h2>
+          <div class="prose max-w-none">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Malawi's History of Hosting Refugees</h3>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                <span>Luwani Camp opened in 1977 for Mozambican refugees, closed in 2007</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                <span>Dzaleka Camp, originally a political prison, repurposed in 1994 for refugees from Rwanda and Burundi</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                <span>Malawi hosted over one million Mozambican refugees during the 1980s and early 1990s</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                <span>Malawi ratified the UN Refugee Convention and enacted the Refugee Act in 1989</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                <span>Dzaleka's population has grown from 10,000-12,000 to over 60,000 by 2024</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                <span>Malawi has also experienced refugee outflows in the 1960s and 1970s due to political persecution</span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-gray-100">
+              <p class="text-sm text-gray-500 italic">
+                Source: <a href="https://inuaadvocacy.org/2024/12/malawi-refugee-guide/" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700">Inua Advocacy</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Legal Framework Section */}
+        <div id="legal" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Legal Framework</h2>
+          <div class="prose max-w-none">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Understanding the Laws Governing Refugees in Malawi</h3>
+            
+            <div class="mb-6">
+              <h4 class="text-md font-medium text-gray-900 mb-3">Refugee Act of 1989</h4>
+              <p class="text-gray-600">
+                The Refugee Act of 1989 establishes the legal framework for the reception, admission, and treatment of refugees in Malawi. While it aligns with key international refugee laws, it has faced criticism for being outdated and insufficient in addressing current refugee needs.
+              </p>
+            </div>
+
+            <div>
+              <h4 class="text-md font-medium text-gray-900 mb-3">Reservations to the 1951 UN Refugee Convention</h4>
+              <p class="text-gray-600 mb-4">Malawi's reservations limit certain rights of refugees, including:</p>
+              <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                  <span><strong>Freedom of Movement:</strong> Refugees must reside in designated camps</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                  <span><strong>Employment:</strong> Restrictions on work outside camps</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+                  <span><strong>Public Relief and Assistance:</strong> Limited access to social services</span>
+                </li>
+              </ul>
+              <p class="text-gray-600 mt-4">
+                These reservations significantly impact refugees' ability to achieve self-sufficiency and integrate into Malawian society.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-gray-100">
+              <p class="text-sm text-gray-500 italic">
+                Source: <a href="https://inuaadvocacy.org/2024/12/malawi-refugee-guide/" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700">Inua Advocacy</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="demographics" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Demographics</h2>
           <PopulationChart client:load />
         </div>
 
         {/* Second Section: Events & Stakeholders */}
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <div id="events" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Events</h2>
           <EventsSection client:load />
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <div id="stakeholders" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Key Stakeholders</h2>
           <StakeholdersSection client:load />
         </div>
 
         {/* Third Section: Economic & Healthcare */}
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <div id="economic" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Economic Impact</h2>
           <EconomicSection client:load />
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <div id="healthcare" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Healthcare Services</h2>
           <HealthcareSection client:load />
         </div>
 
         {/* Fourth Section: Additional Demographics */}
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <div id="additional-demographics" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Additional Demographics</h2>
           <DemographicsSection client:load />
         </div>
@@ -337,6 +431,15 @@ const languages = [
     50% {
       opacity: 0.5;
     }
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 </style>
 
