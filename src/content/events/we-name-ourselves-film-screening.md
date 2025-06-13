@@ -15,7 +15,7 @@ contact:
 registration:
   required: true
   url: "https://www.eventbrite.com/e/sneak-peek-we-name-ourselves-tickets-1407338309769"
-  deadline: 2025-06-18
+  deadline: 2025-06-19
 tags: ["Refugee Stories", "Women Empowerment", "Documentary", "Human Rights", "Storytelling", "Dzaleka", "Poetry", "Youth"]
 ---
 
@@ -32,5 +32,16 @@ The event will include:
 The screening will be followed by a live discussion with the filmmaking team and community members featured in the documentary.
 
 Registration is required through Eventbrite. This is a unique opportunity to witness the powerful stories of young refugees finding their voice through art and poetry.
+
+**Time Zones:**
+- Sydney, Australia: Thursday, June 19, 2:00 AM - 3:30 AM AEST
+- Lilongwe, Malawi: Wednesday, June 18, 6:00 PM - 7:30 PM CAT
+- Vancouver, Canada: Wednesday, June 18, 9:00 AM - 10:30 AM PDT
+- Toronto, Canada: Wednesday, June 18, 12:00 PM - 1:30 PM EDT
+- Halifax, Canada: Wednesday, June 18, 1:00 PM - 2:30 PM ADT
+- New York, USA: Wednesday, June 18, 12:00 PM - 1:30 PM EDT
+- London, UK: Wednesday, June 18, 5:00 PM - 6:30 PM BST
+- Johannesburg, South Africa: Wednesday, June 18, 6:00 PM - 7:30 PM SAST
+- Nairobi, Kenya: Wednesday, June 18, 7:00 PM - 8:30 PM EAT
 
 Learn more at [wenameourselves.com](https://www.wenameourselves.com)
