@@ -8,7 +8,7 @@ category: "Film Screening"
 image: "https://static.wixstatic.com/media/0b9838_6926c83b21e24f088e77e0bc07999c46~mv2.jpg/v1/fill/w_1618,h_1184,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/_DSF3567%20(1).jpg"
 featured: true
 organizer: "HOME Storytellers"
-status: "upcoming"
+status: "past"
 contact:
   email: "jonas@homestorytellers.org"
   website: "https://www.homestorytellers.org"
