@@ -1,8 +1,8 @@
 ---
-title: "Tumaini Festival 2025 (Dates TBA)"
+title: "Tumaini Festival 2025"
 description: "Malawi's Premier Refugee-Led Arts & Cultural Festival celebrating a decade of cultural exchange and community impact."
-date: 2025-10-31T10:00:00Z
-endDate: 2025-11-02T22:00:00Z
+date: 2025-10-30T09:00:00Z
+endDate: 2025-11-01T22:00:00Z
 location: "Dzaleka Refugee Camp Main Ground, Dowa"
 category: "Festival"
 featured: true
@@ -19,80 +19,35 @@ registration:
 tags: ["music", "dance", "arts", "culture", "community"]
 ---
 
-> **Note:** This is a placeholder event. The official dates and details for Tumaini Festival 2025 will be announced soon. Please check back for updates or visit [tumainiletu.org](https://tumainiletu.org) for the latest information.
-
 ## About The Festival
 
-Founded in 2014 by Menes La Plume, Tumaini Festival has grown from a small cultural gathering into Malawi's largest multicultural event. It is the world's only festival held within a refugee camp. Through music, dance, poetry, theater, and other art forms, Tumaini Festival promotes peaceful coexistence between refugees and host communities.
+Tumaini Festival is Tumaini Letu's flagship program, it is a unique cultural event which uses entertainment and artistic expression to promote intercultural harmony, mutual understanding, and peaceful coexistence between refugees and their host community. It is the only festival of its kind in the world that is held within a refugee camp.Tumaini Festival was founded in 2014. It is an extraordinary example of a large-scale cultural event within a refugee camp, created and run by refugees in collaboration with the surrounding host community, for the benefit of both. It also serves as a platform for advocacy on refugee rights.
 
-## Festival Impact
+This is the 11th edition of the festival, marking over a decade of cultural celebration and community impact.
 
-### Community Growth
-- 179,000+ festival attendees since inception
-- Bringing together refugees and locals in celebration
+Tumaini Festival 2025 will be a vibrant, three-day immersion into arts and culture, featuring:
 
-### Economic Impact
-- Created 1,500+ jobs for refugees
-- Supported 2,335 entrepreneurs within the refugee community
-- Significant boost to Dzaleka Refugee Camp economy
-
-### Global Reach
-- Reached 61 million people through media coverage
-- Amplifying refugee voices and raising awareness globally
-
-### Cultural Exchange
-- Hosted hundreds of artists from over 20 countries
-- Fostering international collaboration and understanding
-
-## Event Highlights
-
-Join us for a celebration of arts, culture, and unity at Dzaleka Refugee Camp. The festival features:
-
-### Main Stage Performances
-
-1. **Music**
-   - International Artists
-   - Local Bands
-   - Traditional Musicians
-   - Youth Performers
-
-2. **Dance**
-   - Traditional Dance Groups
-   - Contemporary Dance
-   - Cultural Fusion Shows
-   - Interactive Dance Sessions
-
-3. **Theater & Poetry**
-   - Drama Performances
-   - Spoken Word
-   - Poetry Recitals
-   - Storytelling Sessions
-
-### Art & Culture
-
-- Art Exhibitions
-- Cultural Displays
-- Food Stalls
-- Craft Market
-- Interactive Workshops
-
-### Community Activities
-
-- Children's Activities
-- Community Dialogues
-- Cultural Exchange Programs
-- Youth Workshops
-
-## Venue Information
-
-The festival takes place at the Main Ground in Dzaleka Refugee Camp. The venue will be transformed into multiple performance areas, exhibition spaces, and community gathering spots.
+- Five Performance Areas: Two stages (main stage, youth stage), a Poetry Corner, a Theatre Corner, and a Cultural Ground (traditional dance)
+- Diverse Offerings: Music, poetry, comedy, films, theatre, acrobatics, traditional and contemporary dance, fashion, and workshops
+- Community Engagement: An art exhibition space and a dedicated children's playground
+- Economic Opportunity: A variety of food stalls and ample opportunities for Dzaleka's vendors to sell their goods and handcrafted arts.
 
 ## How to Get There
 
-Dzaleka Refugee Camp is located in Dowa District, approximately 45km from Lilongwe. Transportation options will be available from major cities.
+Dzaleka Refugee Camp is located in Dowa District, approximately 45km from Lilongwe.
 
 ## Free Admission
 
 Everyone is welcome! The festival is free to attend, promoting inclusivity and community participation.
 
-> Tumaini Festival brings exceptional hope into the lives of people. It's about more than music. It's about instilling hope in the hopeless." — Skeffa Chimoto, Musician 
+> Tumaini Festival brings exceptional hope into the lives of people. There are times when you perform at Tumaini and observe from people's reactions that the event is about more than music. It's about instilling hope in the hopeless.
+
+— Skeffa Chimoto, Musician 
+
+For more details about Tumaini Festival, visit www.tumainiletu.org or follow us on social media:
+
+- https://www.facebook.com/tumainifestival
+- https://www.instagram.com/tumainifestival/
+- https://x.com/tumainifestival
+- https://www.tiktok.com/@tumaini.letu
+- https://www.youtube.com/channel/UCiUc7kz3Pmw7__8_o41lkew
