@@ -1,8 +1,33 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+
+// SEO metadata
+const seo = {
+  description: "Read the terms and conditions for using Dzaleka Online Services. Learn about content guidelines, user submissions, privacy protection, intellectual property rights, and service usage policies for our refugee community platform.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/terms",
+  openGraph: {
+    description: "Read the terms and conditions for using Dzaleka Online Services. Learn about content guidelines, user submissions, privacy protection, intellectual property rights, and service usage policies for our refugee community platform.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/terms"
+  },
+  twitter: {
+    card: "summary",
+    description: "Read the terms and conditions for using Dzaleka Online Services. Learn about content guidelines, user submissions, privacy protection, intellectual property rights, and service usage policies for our refugee community platform."
+  }
+};
 ---
 
-<MainLayout title="Terms and Conditions">
+<MainLayout 
+  title="Terms and Conditions"
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
   <main class="min-h-screen bg-gray-50">
     {/* Hero Section */}
     <div class="bg-gradient-to-br from-primary-600 to-primary-800 py-16">

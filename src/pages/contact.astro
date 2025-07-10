@@ -11,9 +11,34 @@ const contactInfo = {
     { name: 'Instagram', url: 'https://instagram.com/dzalekaonline', icon: 'instagram' }
   ]
 };
+
+// SEO metadata
+const seo = {
+  description: "Contact Dzaleka Online Services for support, questions, or collaboration. Reach our team via email, social media, or contact form. Get assistance with services, resources, and community programs in Malawi's largest refugee camp.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/contact",
+  openGraph: {
+    description: "Contact Dzaleka Online Services for support, questions, or collaboration. Reach our team via email, social media, or contact form. Get assistance with services, resources, and community programs in Malawi's largest refugee camp.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/contact"
+  },
+  twitter: {
+    card: "summary",
+    description: "Contact Dzaleka Online Services for support, questions, or collaboration. Reach our team via email, social media, or contact form. Get assistance with services, resources, and community programs in Malawi's largest refugee camp."
+  }
+};
 ---
 
-<MainLayout title="Contact Us">
+<MainLayout 
+  title="Contact Us"
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-5xl mx-auto">
       <!-- Contact Header -->

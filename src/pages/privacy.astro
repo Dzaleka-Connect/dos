@@ -3,6 +3,24 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 const lastUpdated = new Date('2023-12-27');
 
+// SEO metadata
+const seo = {
+  description: "Learn about Dzaleka Online Services privacy policy and data protection measures. Understand how we collect, use, and safeguard your personal information while serving 57,000+ refugees in Malawi's largest settlement.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/privacy",
+  openGraph: {
+    description: "Learn about Dzaleka Online Services privacy policy and data protection measures. Understand how we collect, use, and safeguard your personal information while serving 57,000+ refugees in Malawi's largest settlement.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/privacy"
+  },
+  twitter: {
+    card: "summary",
+    description: "Learn about Dzaleka Online Services privacy policy and data protection measures. Understand how we collect, use, and safeguard your personal information while serving 57,000+ refugees in Malawi's largest settlement."
+  }
+};
+
 const sections = [
   {
     id: 'information-collection',
@@ -17,7 +35,14 @@ const sections = [
 ];
 ---
 
-<MainLayout title="Privacy Policy">
+<MainLayout 
+  title="Privacy Policy"
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
   <main class="min-h-screen bg-gray-50">
     {/* Hero Section */}
     <div class="bg-gradient-to-br from-primary-600 to-primary-800 py-16">
