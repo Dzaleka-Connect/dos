@@ -79,58 +79,98 @@ const seo = {
 // Create structured data for events
 const eventsStructuredData = {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
+  "@type": "ItemList",
   "name": "Cultural Events at Dzaleka",
   "description": "Discover events and activities in Dzaleka Refugee Camp — cultural festivals, education programs, and more happening this week and beyond.",
   "url": "https://services.dzaleka.com/events",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://services.dzaleka.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Events",
-        "item": "https://services.dzaleka.com/events"
+  "itemListElement": [
+    ...upcomingEvents.map((event, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Event",
+        "name": event.data.title,
+        "description": event.data.description,
+        "image": event.data.image.startsWith('http') ? event.data.image : `https://services.dzaleka.com${event.data.image}`,
+        "startDate": event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date,
+        "endDate": event.data.endDate ? (event.data.endDate instanceof Date ? event.data.endDate.toISOString() : event.data.endDate) : (event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date),
+        "eventStatus": event.data.isTBA ? "https://schema.org/EventPostponed" : "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Dzaleka Refugee Camp",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Dowa District",
+            "addressLocality": "Dzaleka",
+            "addressRegion": "Central Region",
+            "postalCode": "",
+            "addressCountry": "MW"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": event.data.organizer || "Dzaleka Online Services",
+          "url": event.data.organizerUrl || "https://services.dzaleka.com"
+        },
+        "performer": {
+          "@type": "Organization",
+          "name": event.data.organizer || "Dzaleka Online Services"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": event.data.registration?.url || `https://services.dzaleka.com/events/${event.slug}`,
+          "price": "0",
+          "priceCurrency": "MWK",
+          "availability": "https://schema.org/InStock"
+        },
+        "url": `https://services.dzaleka.com/events/${event.slug}`
       }
-    ]
-  },
-  "mainEntity": {
-    "@type": "ItemList",
-    "itemListElement": [
-      ...upcomingEvents.map((event, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "Event",
-          "name": event.data.title,
-          "description": event.data.description,
-          "image": event.data.image,
-          "startDate": event.data.date.toISOString(),
-          "eventStatus": event.data.isTBA ? "https://schema.org/EventPostponed" : "https://schema.org/EventScheduled",
-          "url": `https://services.dzaleka.com/events/${event.slug}`
-        }
-      })),
-      ...pastEvents.map((event, index) => ({
-        "@type": "ListItem",
-        "position": upcomingEvents.length + index + 1,
-        "item": {
-          "@type": "Event",
-          "name": event.data.title,
-          "description": event.data.description,
-          "image": event.data.image,
-          "startDate": event.data.date.toISOString(),
-          "eventStatus": "https://schema.org/EventCompleted",
-          "url": `https://services.dzaleka.com/events/${event.slug}`
-        }
-      }))
-    ]
-  }
+    })),
+    ...pastEvents.map((event, index) => ({
+      "@type": "ListItem",
+      "position": upcomingEvents.length + index + 1,
+      "item": {
+        "@type": "Event",
+        "name": event.data.title,
+        "description": event.data.description,
+        "image": event.data.image.startsWith('http') ? event.data.image : `https://services.dzaleka.com${event.data.image}`,
+        "startDate": event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date,
+        "endDate": event.data.endDate ? (event.data.endDate instanceof Date ? event.data.endDate.toISOString() : event.data.endDate) : (event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date),
+        "eventStatus": "https://schema.org/EventCompleted",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Dzaleka Refugee Camp",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Dowa District",
+            "addressLocality": "Dzaleka",
+            "addressRegion": "Central Region",
+            "postalCode": "",
+            "addressCountry": "MW"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": event.data.organizer || "Dzaleka Online Services",
+          "url": event.data.organizerUrl || "https://services.dzaleka.com"
+        },
+        "performer": {
+          "@type": "Organization",
+          "name": event.data.organizer || "Dzaleka Online Services"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": event.data.registration?.url || `https://services.dzaleka.com/events/${event.slug}`,
+          "price": "0",
+          "priceCurrency": "MWK",
+          "availability": "https://schema.org/InStock"
+        },
+        "url": `https://services.dzaleka.com/events/${event.slug}`
+      }
+    }))
+  ]
 };
 ---
 

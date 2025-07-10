@@ -1,0 +1,85 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const pageTitle = 'Photo Gallery License | Dzaleka Online Services';
+const description = 'Learn about the copyright, licensing, and permitted uses of images in the Dzaleka Photo Gallery. Find out how to request permission and provide proper attribution.';
+const canonical = 'https://services.dzaleka.com/photos/license';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": ["WebPage", "CreativeWork"],
+  "name": pageTitle,
+  "description": description,
+  "url": canonical,
+  "license": canonical,
+  "creator": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services",
+    "url": "https://services.dzaleka.com"
+  },
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services"
+  },
+  "acquireLicensePage": "https://services.dzaleka.com/contact"
+};
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData, null, 2)} />
+  <main class="container mx-auto px-4 py-16 max-w-3xl">
+    <h1 class="text-3xl md:text-4xl font-bold mb-6 text-primary-700">Photo Gallery License & Usage Policy</h1>
+    <p class="mb-8 text-gray-700 text-lg">This page explains the copyright, licensing, and permitted uses of images featured in the Dzaleka Photo Gallery. Please read carefully before downloading, sharing, or reusing any images.</p>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-3 text-primary-600">Copyright & Ownership</h2>
+      <p class="text-gray-700 mb-2">All images in the Dzaleka Photo Gallery are protected by copyright and are the property of their respective creators or Dzaleka Online Services. Unauthorized commercial use, reproduction, or distribution is strictly prohibited.</p>
+      <ul class="list-disc ml-6 text-gray-700">
+        <li>Images may be used for non-commercial, educational, or editorial purposes with proper attribution.</li>
+        <li>For commercial use, written permission is required.</li>
+        <li>Do not remove watermarks or alter images without consent.</li>
+      </ul>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-3 text-primary-600">Attribution Requirements</h2>
+      <p class="text-gray-700 mb-2">When using an image, you must provide clear credit to the photographer and Dzaleka Online Services. Example attribution:</p>
+      <div class="bg-gray-100 rounded p-4 text-sm font-mono mb-2">Photo by [Photographer Name] / Dzaleka Online Services</div>
+      <p class="text-gray-600 text-sm">If the photographer is not listed, use "Dzaleka Community Photographers" as the credit.</p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-3 text-primary-600">Requesting Permission</h2>
+      <p class="text-gray-700 mb-2">To request permission for commercial use, high-resolution downloads, or special projects, please contact us:</p>
+      <ul class="list-disc ml-6 text-gray-700">
+        <li>Email: <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:underline">dzalekaconnect@gmail.com</a></li>
+        <li>Contact form: <a href="/contact" class="text-primary-600 hover:underline">services.dzaleka.com/contact</a></li>
+      </ul>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-3 text-primary-600">Permitted Uses</h2>
+      <ul class="list-disc ml-6 text-gray-700">
+        <li>All images can be <strong>downloaded</strong> and used for <strong>free</strong>.</li>
+        <li>Use is allowed for <strong>commercial</strong> and <strong>non-commercial</strong> purposes.</li>
+        <li><strong>No permission needed</strong> (though attribution is appreciated!).</li>
+      </ul>
+      <p class="text-gray-600 text-sm mt-2">Attribution example: <span class="bg-gray-100 rounded p-1 font-mono">Photo by [Photographer Name] / Dzaleka Online Services</span></p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-3 text-primary-600">What is Not Permitted</h2>
+      <ul class="list-disc ml-6 text-gray-700">
+        <li>Images cannot be <strong>sold</strong> without significant modification.</li>
+        <li>Do not compile images to create a similar or competing photo service.</li>
+        <li>No use in hate speech, discrimination, or misleading contexts.</li>
+        <li>No use in AI training datasets without written consent.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-3 text-primary-600">Questions?</h2>
+      <p class="text-gray-700">If you have questions about image use, licensing, or attribution, please <a href="/contact" class="text-primary-600 hover:underline">contact us</a>.</p>
+    </section>
+  </main>
+</MainLayout> 

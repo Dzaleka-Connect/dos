@@ -31,16 +31,9 @@ const eventStructuredData = {
   "@type": "Event",
   "name": entry.data.title,
   "description": entry.data.description,
-  "image": {
-    "@type": "ImageObject",
-    "url": entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
-    "width": 1200,
-    "height": 630,
-    "creditText": entry.data.organizer ? `Photo by ${entry.data.organizer}` : "Dzaleka Online Services",
-    "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
-  },
-  "startDate": `${formattedDate}T${formattedTime}`,
-  "endDate": `${formattedDate}T${formattedTime}`,
+  "image": entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
+  "startDate": entry.data.date instanceof Date ? entry.data.date.toISOString() : entry.data.date,
+  "endDate": entry.data.endDate ? (entry.data.endDate instanceof Date ? entry.data.endDate.toISOString() : entry.data.endDate) : (entry.data.date instanceof Date ? entry.data.date.toISOString() : entry.data.date),
   "eventStatus": entry.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
@@ -53,19 +46,22 @@ const eventStructuredData = {
       "addressCountry": "Malawi"
     }
   },
-  "organizer": entry.data.organizer ? {
+  "organizer": {
     "@type": "Organization",
-    "name": entry.data.organizer
-  } : {
-    "@type": "Organization",
-    "name": "Dzaleka Online Services"
+    "name": entry.data.organizer || "Dzaleka Online Services",
+    "url": entry.data.organizerUrl || "https://services.dzaleka.com"
   },
-  "offers": entry.data.registration?.url ? {
+  "performer": {
+    "@type": "Organization",
+    "name": entry.data.organizer || "Dzaleka Online Services"
+  },
+  "offers": {
     "@type": "Offer",
-    "url": entry.data.registration.url,
-    "availability": "https://schema.org/InStock",
-    "validFrom": formattedDate
-  } : undefined
+    "url": entry.data.registration?.url || `https://services.dzaleka.com/events/${entry.slug}`,
+    "price": "0",
+    "priceCurrency": "MWK",
+    "availability": "https://schema.org/InStock"
+  }
 };
 
 // Create SEO metadata

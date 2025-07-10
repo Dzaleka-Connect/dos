@@ -82,6 +82,21 @@ const seo = {
 
 ---
 
+<script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Dzaleka Services Directory",
+    "description": "A carousel of verified services and organizations in Dzaleka Refugee Camp.",
+    "itemListElement": paginatedServices.map((service, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "url": `https://services.dzaleka.com/services/${service.slug}`,
+      "name": service.data.title
+    }))
+  })}
+</script>
+
 <MainLayout 
   title={seo.title}
   description={seo.description}

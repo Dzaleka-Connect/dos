@@ -118,6 +118,19 @@ const galleryStructuredData = {
         "url": `https://services.dzaleka.com/photos/${year}`,
         "numberOfItems": photosByYear[year].length
       }
+    })),
+    "image": photos.map(photo => ({
+      "@type": "ImageObject",
+      "url": photo.data.image,
+      "caption": photo.data.title,
+      "creator": {
+        "@type": "Person",
+        "name": photo.data.photographer || "Dzaleka Community Photographers"
+      },
+      "license": "https://services.dzaleka.com/photos/license",
+      "acquireLicensePage": "https://services.dzaleka.com/contact",
+      "creditText": undefined,
+      "copyrightNotice": undefined
     }))
   }
 };

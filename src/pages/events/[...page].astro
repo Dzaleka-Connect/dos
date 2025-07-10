@@ -74,9 +74,39 @@ const eventsStructuredData = {
       "@type": "Event",
       "name": event.data.title,
       "description": event.data.description,
-      "image": event.data.image,
-      "startDate": event.data.date.toISOString(),
+      "image": event.data.image.startsWith('http') ? event.data.image : `https://services.dzaleka.com${event.data.image}`,
+      "startDate": event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date,
+      "endDate": event.data.endDate ? (event.data.endDate instanceof Date ? event.data.endDate.toISOString() : event.data.endDate) : (event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date),
       "eventStatus": event.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "Dzaleka Refugee Camp",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Dowa District",
+          "addressLocality": "Dzaleka",
+          "addressRegion": "Central Region",
+          "postalCode": "",
+          "addressCountry": "MW"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": event.data.organizer || "Dzaleka Online Services",
+        "url": event.data.organizerUrl || "https://services.dzaleka.com"
+      },
+      "performer": {
+        "@type": "Organization",
+        "name": event.data.organizer || "Dzaleka Online Services"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": event.data.registration?.url || `https://services.dzaleka.com/events/${event.slug}`,
+        "price": "0",
+        "priceCurrency": "MWK",
+        "availability": "https://schema.org/InStock"
+      },
       "url": `https://services.dzaleka.com/events/${event.slug}`
     }
   }))
