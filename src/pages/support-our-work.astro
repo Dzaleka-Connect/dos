@@ -2,29 +2,31 @@
 import MainLayout from '../layouts/MainLayout.astro';
 
 const seo = {
-  title: "Support Our Work",
-  description: "Support Dzaleka Online Services in preserving and promoting cultural heritage through digital technologies. Your contribution helps document history and amplify voices within Dzaleka Refugee Camp.",
+  title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
+  description: "Support Dzaleka Online Services to preserve and promote Dzaleka's cultural heritage. Donate now to help digitize history, empower refugees, and amplify community voices.",
+  keywords: "support Dzaleka, donate Dzaleka, cultural heritage, refugee stories, digital archive, Malawi, empower refugees, preserve history, Dzaleka Online Services, charity, nonprofit, African heritage, community support, fundraising, digital storytelling, oral history, youth empowerment, creative economy, donate now, help refugees",
   canonicalURL: new URL(Astro.url.pathname, Astro.site),
   openGraph: {
     basic: {
-      title: "Support Our Work - Dzaleka Online Services",
+      title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
       type: "article",
       image: "https://images.pexels.com/photos/2678468/pexels-photo-2678468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     },
     optional: {
-      description: "Help preserve Dzaleka's cultural heritage through digital technologies. Support our mission to document history and amplify refugee voices.",
+      description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
       siteName: "Dzaleka Online Services",
     },
     image: {
       alt: "Support Dzaleka Online Services - Preserving Cultural Heritage",
     },
+    url: "https://dzaleka.com/support-our-work"
   },
   twitter: {
     card: "summary_large_image",
     site: "@dzalekaconnect",
     creator: "@dzalekaconnect",
-    title: "Support Our Work - Dzaleka Online Services",
-    description: "Help preserve Dzaleka's cultural heritage through digital technologies. Support our mission to document history and amplify refugee voices.",
+    title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
+    description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
     image: "https://images.pexels.com/photos/2678468/pexels-photo-2678468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     imageAlt: "Support Dzaleka Online Services - Preserving Cultural Heritage",
   },
@@ -37,9 +39,25 @@ const seo = {
 
 <MainLayout title={seo.title} description={seo.description}>
   <head>
-    <meta property="og:image" content="https://images.pexels.com/photos/2678468/pexels-photo-2678468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-    <meta property="og:image:alt" content="Support Dzaleka Online Services - Preserving Cultural Heritage" />
-    <meta name="twitter:image" content="https://images.pexels.com/photos/2678468/pexels-photo-2678468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <meta name="keywords" content={seo.keywords} />
+    <link rel="canonical" href={seo.canonicalURL} />
+    <meta property="og:title" content={seo.openGraph.basic.title} />
+    <meta property="og:description" content={seo.openGraph.optional.description} />
+    <meta property="og:type" content={seo.openGraph.basic.type} />
+    <meta property="og:image" content={seo.openGraph.basic.image} />
+    <meta property="og:image:alt" content={seo.openGraph.image.alt} />
+    <meta property="og:url" content={seo.openGraph.url} />
+    <meta property="og:site_name" content={seo.openGraph.optional.siteName} />
+    <meta name="twitter:card" content={seo.twitter.card} />
+    <meta name="twitter:site" content={seo.twitter.site} />
+    <meta name="twitter:creator" content={seo.twitter.creator} />
+    <meta name="twitter:title" content={seo.twitter.title} />
+    <meta name="twitter:description" content={seo.twitter.description} />
+    <meta name="twitter:image" content={seo.twitter.image} />
+    <meta name="twitter:image:alt" content={seo.twitter.imageAlt} />
+    <meta name="robots" content="index, follow" />
   </head>
 
   <!-- Hero Section with Image -->
