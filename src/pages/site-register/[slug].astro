@@ -1,0 +1,498 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Generate static paths for all sites
+export async function getStaticPaths() {
+  let sites = [];
+  try {
+    sites = await Astro.glob('../../content/sites/*.md');
+  } catch (error) {
+    console.error('Error loading sites:', error);
+    sites = [];
+  }
+  
+  return sites.map((site) => {
+    const slug = site.file.split('/').pop().replace('.md', '');
+    return {
+      params: { slug },
+      props: { site }
+    };
+  });
+}
+
+const { site } = Astro.props;
+const { frontmatter, Content } = site;
+
+// Get related sites based on category and location
+const allSites = await Astro.glob('../../content/sites/*.md');
+const relatedSites = allSites
+  .filter(s => 
+    s.file !== site.file && // Exclude current site
+    (
+      // Match by category
+      (s.frontmatter.category === frontmatter.category) ||
+      // Match by location
+      (s.frontmatter.campZone === frontmatter.campZone)
+    )
+  )
+  .slice(0, 3); // Limit to 3 related sites
+
+// Create SEO metadata
+const seo = {
+  title: `${frontmatter.title} | Dzaleka Digital Site Register`,
+  description: frontmatter.description || `Learn about ${frontmatter.title} in Dzaleka Refugee Camp`,
+  image: frontmatter.image,
+  type: "article",
+  canonical: `https://services.dzaleka.com/site-register/${site.file.split('/').pop().replace('.md', '')}`,
+  openGraph: {
+    title: `${frontmatter.title} | Dzaleka Digital Site Register`,
+    description: frontmatter.description || `Learn about ${frontmatter.title} in Dzaleka Refugee Camp`,
+    type: "article",
+    site_name: "Dzaleka Digital Site Register",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/site-register/${site.file.split('/').pop().replace('.md', '')}`,
+    image: {
+      url: frontmatter.image,
+      width: 1200,
+      height: 630,
+      alt: frontmatter.title,
+      type: "image/jpeg"
+    }
+  }
+};
+
+// Prepare images array (main image + additional images)
+const images = [
+  frontmatter.image,
+  ...(frontmatter.additionalImages || []),
+  ...(frontmatter.beforeImages || []),
+  ...(frontmatter.afterImages || [])
+].filter(Boolean);
+
+// Generate QR code URL
+const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`https://services.dzaleka.com/site-register/${site.file.split('/').pop().replace('.md', '')}`)}`;
+---
+
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  image={seo.image} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Back Button -->
+      <div class="mb-6">
+        <a 
+          href="/site-register" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Back to Site Register</span>
+        </a>
+      </div>
+
+      <!-- Site Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Image Gallery -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            {images.length > 0 ? (
+              <div class="relative">
+                <!-- Main Image -->
+                <div class="relative h-[500px] bg-gray-100">
+                  <img 
+                    src={images[0]} 
+                    alt={frontmatter.title}
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                
+
+              </div>
+            ) : (
+              <div class="w-full h-64 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+            )}
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Take Action</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Report Issues -->
+              <a 
+                href="/site-register/report-issue"
+                class="flex items-center justify-center gap-2 px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                Report Issue
+              </a>
+
+              <!-- Submit Updates -->
+              <a 
+                href="/site-register/submit-update"
+                class="flex items-center justify-center gap-2 px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Submit Update
+              </a>
+
+              <!-- Volunteer Opportunities -->
+              <a 
+                href="/contact"
+                class="flex items-center justify-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Volunteer
+              </a>
+
+              <!-- Donation Link -->
+              <a 
+                href="/support-our-work"
+                class="flex items-center justify-center gap-2 px-4 py-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                Donate
+              </a>
+
+              <!-- Download Image -->
+              <a 
+                href={frontmatter.image}
+                download
+                class="flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download Image
+              </a>
+
+              <!-- QR Code -->
+              <button 
+                onclick="showQRCode()"
+                class="flex items-center justify-center gap-2 px-4 py-3 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                </svg>
+                QR Code
+              </button>
+            </div>
+          </div>
+
+          <!-- Site Description -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">{frontmatter.title}</h1>
+            {frontmatter.alternativeNames && (
+              <p class="text-lg text-gray-600 mb-6">Also known as: {frontmatter.alternativeNames}</p>
+            )}
+            
+            <div class="prose prose-lg max-w-none">
+              <Content />
+            </div>
+          </div>
+
+          <!-- Before/After Images (if available) -->
+          {frontmatter.beforeImages && frontmatter.afterImages && (
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Restoration Progress</h2>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="text-lg font-medium text-gray-700 mb-2">Before</h3>
+                  <div class="space-y-2">
+                    {frontmatter.beforeImages.map((image, index) => (
+                      <img 
+                        src={image} 
+                        alt={`${frontmatter.title} - Before ${index + 1}`}
+                        class="w-full rounded-lg cursor-pointer"
+                        onclick="openLightbox('before-${index}')"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-700 mb-2">After</h3>
+                  <div class="space-y-2">
+                    {frontmatter.afterImages.map((image, index) => (
+                      <img 
+                        src={image} 
+                        alt={`${frontmatter.title} - After ${index + 1}`}
+                        class="w-full rounded-lg cursor-pointer"
+                        onclick="openLightbox('after-${index}')"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <!-- Educational Resources (if available) -->
+          {frontmatter.educationalResources && (
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Educational Resources</h2>
+              <div class="space-y-3">
+                {frontmatter.educationalResources.map((resource, index) => (
+                  <a 
+                    href={resource.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                  >
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <div>
+                      <p class="font-medium text-blue-900">{resource.title}</p>
+                      <p class="text-sm text-blue-700">{resource.description}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Download/Share Options -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Share & Download</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <a 
+                href={`/site-register/${site.file.split('/').pop().replace('.md', '')}/print`}
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print Version
+              </a>
+              <button 
+                onclick="navigator.share({title: '${frontmatter.title}', text: '${frontmatter.description || `Learn about ${frontmatter.title} in Dzaleka Refugee Camp`}', url: window.location.href})"
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                </svg>
+                Share Site
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Site Info -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Site Information</h2>
+            
+            <div class="space-y-4">
+              {frontmatter.category && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Category</h3>
+                  <p class="text-gray-900 font-medium">{frontmatter.category}</p>
+                </div>
+              )}
+
+              {frontmatter.campZone && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Location</h3>
+                  <p class="text-gray-900">{frontmatter.campZone}</p>
+                </div>
+              )}
+
+              {frontmatter.yearEstablished && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Established</h3>
+                  <p class="text-gray-900">{frontmatter.yearEstablished}</p>
+                </div>
+              )}
+
+              {frontmatter.legalStatus && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Legal Status</h3>
+                  <p class="text-gray-900">{frontmatter.legalStatus}</p>
+                </div>
+              )}
+
+              {frontmatter.associatedEvents && (
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Associated Events</h3>
+                  <p class="text-gray-900">{frontmatter.associatedEvents}</p>
+                </div>
+              )}
+            </div>
+
+            <div class="mt-6 pt-6 border-t">
+              <a 
+                href="/site-register/license" 
+                class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+                aria-label="View Site Register License and Usage Policy"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" />
+                </svg>
+                View License & Usage Policy
+              </a>
+            </div>
+          </div>
+
+          <!-- Related Sites -->
+          {relatedSites.length > 0 && (
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-lg font-semibold text-gray-900 mb-4">Related Sites</h2>
+              <div class="space-y-4">
+                {relatedSites.map(relatedSite => (
+                  <a 
+                    href={`/site-register/${relatedSite.file.split('/').pop().replace('.md', '')}`}
+                    class="block group"
+                  >
+                    <div class="flex gap-4">
+                      <div class="w-24 h-24 flex-shrink-0">
+                        {relatedSite.frontmatter.image ? (
+                          <img 
+                            src={relatedSite.frontmatter.image} 
+                            alt={relatedSite.frontmatter.title}
+                            class="w-full h-full object-cover rounded-lg"
+                          />
+                        ) : (
+                          <div class="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <h3 class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                          {relatedSite.frontmatter.title}
+                        </h3>
+                        <p class="text-xs text-gray-500 mt-1">
+                          {relatedSite.frontmatter.category}
+                        </p>
+                        {relatedSite.frontmatter.campZone && (
+                          <p class="text-xs text-gray-500 mt-1">
+                            {relatedSite.frontmatter.campZone}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Submit Site -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Contribute</h2>
+            <p class="text-sm text-gray-600 mb-4">
+              Know of another important site in Dzaleka? Help us document it.
+            </p>
+            <a 
+              href="/site-register/submit" 
+              class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Submit a Site
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- QR Code Modal -->
+  <div id="qr-modal" class="fixed inset-0 bg-black/50 z-40 hidden flex items-center justify-center">
+    <div class="bg-white rounded-xl p-6 max-w-sm mx-4">
+      <div class="text-center">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">QR Code</h3>
+        <p class="text-sm text-gray-600 mb-4">Scan to access this page on your mobile device</p>
+        <img src={qrCodeUrl} alt="QR Code" class="mx-auto mb-4 w-48 h-48" />
+        <button 
+          onclick="closeQRModal()"
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  // Make functions globally available
+  window.showQRCode = function() {
+    const modal = document.getElementById('qr-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeQRModal = function() {
+    const modal = document.getElementById('qr-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  };
+
+
+
+  // Close QR modal on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.closeQRModal();
+    }
+  });
+
+  // Close QR modal on background click
+  const qrModal = document.getElementById('qr-modal');
+  if (qrModal) {
+    qrModal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        window.closeQRModal();
+      }
+    });
+  }
+</script>
+
+<style>
+  /* Print-friendly styles */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    body {
+      background: white !important;
+      color: black !important;
+    }
+    
+    .bg-white {
+      background: white !important;
+      box-shadow: none !important;
+    }
+  }
+</style>

@@ -8,7 +8,7 @@ category: "Bootcamp / Workshop"
 featured: true
 image: "https://www.futureisfemalemw.com/assets/img/services/service-details-1-1a.jpg"
 organizer: "Tumaini Letu & Zomba Arts Platform"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@futureisfemalemw.com"
   phone: "+265 996 080 799"

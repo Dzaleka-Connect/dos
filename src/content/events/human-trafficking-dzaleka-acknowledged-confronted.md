@@ -8,7 +8,7 @@ category: "Zoom Meeting"
 featured: true
 image: "https://lescij.org/wp-content/uploads/2025/03/Picture-10A.jpg"
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   phone: "+265 882 717 995"

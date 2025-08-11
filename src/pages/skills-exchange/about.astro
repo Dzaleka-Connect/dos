@@ -1,0 +1,302 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+const pageTitle = "About Skills Exchange";
+const pageDescription = "Learn about our community-driven skills sharing initiative in Dzaleka Refugee Camp";
+
+// Get some featured profiles for testimonials
+const allProfiles = await getCollection('profiles');
+const featuredProfiles = allProfiles
+  .filter(profile => profile.data.status === 'Available')
+  .slice(0, 6);
+
+// Community statistics
+const totalProfiles = allProfiles.length;
+const availableSkills = allProfiles.filter(profile => profile.data.status === 'Available').length;
+const requestedSkills = allProfiles.filter(profile => profile.data.status === 'Requested').length;
+const categories = [...new Set(allProfiles.map(profile => profile.data.category))].length;
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">
+        About Our Skills Exchange
+      </h1>
+      <p class="mt-6 text-xl text-primary-100 max-w-3xl mx-auto">
+        A community-driven platform where resilience meets opportunity, and every skill has the power to transform lives.
+      </p>
+    </div>
+  </section>
+
+  <!-- Our Story Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+          <div class="prose prose-lg text-gray-600 space-y-6">
+            <p>
+              The Skills Exchange was born from the incredible resilience and talent within the Dzaleka Refugee Camp community. 
+              When people arrive here, they bring with them not just their stories of survival, but also their skills, 
+              knowledge, and determination to rebuild their lives.
+            </p>
+            <p>
+              We discovered that within our community, we have photographers like Philemon Kasaro who runs Kasa Pro studio, 
+              earning 300,000 Malawi Kwacha monthly while teaching others. We have filmmakers like Muenyemali Mutewa Tresort 
+              who saved 300,000 Kwacha to buy his first camera and now teaches photography and filmmaking to help others 
+              improve their lives.
+            </p>
+            <p>
+              We have young entrepreneurs like Baraka Venus who started photography in 2020 and now earns money to support 
+              himself, no longer depending on his parents. And experienced professionals like Simeon Blaise Kijege who has 
+              been doing photography since the nineties and continues to be a source of income for his family of 7 children.
+            </p>
+          </div>
+        </div>
+        <div class="mt-10 lg:mt-0">
+          <div class="bg-gray-50 rounded-lg p-8">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Community Impact</h3>
+            <div class="grid grid-cols-2 gap-6">
+              <div class="text-center">
+                <div class="text-3xl font-bold text-primary-600">{totalProfiles}</div>
+                <div class="text-sm text-gray-600">Community Members</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-primary-600">{availableSkills}</div>
+                <div class="text-sm text-gray-600">Skills Offered</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-primary-600">{requestedSkills}</div>
+                <div class="text-sm text-gray-600">Learning Requests</div>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-primary-600">{categories}</div>
+                <div class="text-sm text-gray-600">Skill Categories</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Mission & Vision</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          We believe that every person has valuable skills to share and the right to learn. 
+          Our platform connects these two fundamental human needs.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-lg p-8 shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="p-3 bg-primary-100 rounded-lg">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 ml-4">Our Mission</h3>
+          </div>
+          <p class="text-gray-600">
+            To create a sustainable ecosystem where community members can share their expertise, 
+            earn income, and help others develop new skills. We aim to break the cycle of dependency 
+            by empowering individuals to become self-reliant through their talents and knowledge.
+          </p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-8 shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="p-3 bg-primary-100 rounded-lg">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 ml-4">Our Vision</h3>
+          </div>
+          <p class="text-gray-600">
+            A thriving community where skills are valued as currency, where learning is accessible to all, 
+            and where every individual has the opportunity to contribute to and benefit from the collective 
+            knowledge of our diverse community.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Stories Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Community Stories</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Real stories from our community members who have transformed their lives through skills sharing.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredProfiles.map(profile => (
+          <div class="bg-gray-50 rounded-lg p-6">
+            <div class="flex items-center mb-4">
+              <img src={profile.data.profileImage} alt={profile.data.name} class="w-12 h-12 rounded-lg object-cover" />
+              <div class="ml-4">
+                <h3 class="font-semibold text-gray-900">{profile.data.name}</h3>
+                <p class="text-sm text-gray-600">{profile.data.skill}</p>
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm line-clamp-3">{profile.data.shortDescription}</p>
+            <div class="mt-4">
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                Available
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Our platform makes it simple to share your skills or find someone to learn from.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <span class="text-2xl font-bold text-primary-600">1</span>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Create Your Profile</h3>
+          <p class="text-gray-600">
+            List your skills, set your rates, and share your story. Whether you're teaching photography, 
+            music, languages, or any other skill, your expertise is valuable.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <span class="text-2xl font-bold text-primary-600">2</span>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Connect & Learn</h3>
+          <p class="text-gray-600">
+            Browse available skills or post learning requests. Connect with community members 
+            who can teach you what you want to learn or learn from your expertise.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <span class="text-2xl font-bold text-primary-600">3</span>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Grow Together</h3>
+          <p class="text-gray-600">
+            Share knowledge, earn income, and build lasting connections. Every interaction 
+            strengthens our community and creates opportunities for everyone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          The principles that guide our community and drive our mission forward.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="bg-primary-100 rounded-lg p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Community</h3>
+          <p class="text-sm text-gray-600">We believe in the power of collective knowledge and mutual support.</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="bg-primary-100 rounded-lg p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Trust</h3>
+          <p class="text-sm text-gray-600">Building relationships based on honesty, reliability, and mutual respect.</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="bg-primary-100 rounded-lg p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Empowerment</h3>
+          <p class="text-sm text-gray-600">Enabling individuals to take control of their economic future.</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="bg-primary-100 rounded-lg p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Education</h3>
+          <p class="text-sm text-gray-600">Lifelong learning as a pathway to personal and community growth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-16 bg-primary-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Join Our Community</h2>
+      <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
+        Whether you have skills to share or want to learn something new, 
+        you're welcome to be part of our growing community.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/skills-exchange/list-profile" 
+           class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-primary-900 bg-white hover:bg-gray-50 transition-colors font-medium">
+          Share Your Skills
+          <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="/skills-exchange/skills-offered" 
+           class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-white border border-white hover:bg-white/10 transition-colors font-medium">
+          Discover Skills
+          <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

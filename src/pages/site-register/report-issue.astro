@@ -1,0 +1,316 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const seo = {
+  title: "Report Issue - Dzaleka Digital Site Register",
+  description: "Report damage, maintenance needs, or other issues with heritage sites in Dzaleka Refugee Camp. Help us preserve and maintain important cultural and historical locations.",
+  type: "website",
+  canonical: "https://services.dzaleka.com/site-register/report-issue",
+  openGraph: {
+    title: "Report Issue - Dzaleka Digital Site Register",
+    description: "Report damage, maintenance needs, or other issues with heritage sites in Dzaleka Refugee Camp.",
+    type: "website",
+    site_name: "Dzaleka Digital Site Register",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/site-register/report-issue"
+  }
+};
+---
+
+<MainLayout 
+  title={seo.title} 
+  description={seo.description} 
+  type={seo.type} 
+  canonical={seo.canonical} 
+  openGraph={seo.openGraph}
+>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Back Button -->
+      <div class="mb-6">
+        <a 
+          href="/site-register" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Back to Site Register</span>
+        </a>
+      </div>
+
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Report an Issue</h1>
+        <p class="text-lg text-gray-600">
+          Help us maintain and preserve heritage sites in Dzaleka Refugee Camp by reporting any issues you've observed.
+        </p>
+      </div>
+
+      <!-- Report Form -->
+      <div class="bg-white rounded-xl shadow-sm p-8">
+        <form id="reportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
+          <!-- Site Information -->
+          <div>
+            <label for="site-name" class="block text-sm font-medium text-gray-700 mb-2">
+              Site Name *
+            </label>
+            <input
+              type="text"
+              id="site-name"
+              name="siteName"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter the name of the site"
+            />
+          </div>
+
+          <!-- Issue Type -->
+          <div>
+            <label for="issue-type" class="block text-sm font-medium text-gray-700 mb-2">
+              Type of Issue *
+            </label>
+            <select
+              id="issue-type"
+              name="issueType"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">Select an issue type</option>
+              <option value="damage">Structural Damage</option>
+              <option value="vandalism">Vandalism or Graffiti</option>
+              <option value="maintenance">Maintenance Needed</option>
+              <option value="safety">Safety Hazard</option>
+              <option value="access">Access Issues</option>
+              <option value="environmental">Environmental Damage</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Issue Description -->
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+              Detailed Description *
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Please provide a detailed description of the issue, including location, severity, and any relevant details..."
+            ></textarea>
+          </div>
+
+          <!-- Location Details -->
+          <div>
+            <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
+              Specific Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Camp zone, block number, or specific location details"
+            />
+          </div>
+
+          <!-- Urgency Level -->
+          <div>
+            <label for="urgency" class="block text-sm font-medium text-gray-700 mb-2">
+              Urgency Level *
+            </label>
+            <select
+              id="urgency"
+              name="urgency"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">Select urgency level</option>
+              <option value="low">Low - Minor issue, no immediate action needed</option>
+              <option value="medium">Medium - Should be addressed soon</option>
+              <option value="high">High - Requires immediate attention</option>
+              <option value="critical">Critical - Safety hazard or severe damage</option>
+            </select>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your full name"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="your.email@example.com"
+              />
+            </div>
+          </div>
+
+          <!-- Phone Number -->
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="+265 XXX XXX XXX"
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              id="submitButton"
+              class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
+            >
+              <span id="submitText">Submit Report</span>
+              <span id="submitSpinner" class="hidden">
+                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <!-- Success Message -->
+          <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">Report submitted successfully! We'll review it within 24-48 hours.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">Error submitting report. Please try again.</p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="mt-8 bg-blue-50 rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-blue-900 mb-3">What happens next?</h3>
+        <ul class="space-y-2 text-blue-800">
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>We'll review your report within 24-48 hours</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>For urgent issues, we'll respond immediately</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>We'll coordinate with relevant authorities and community members</span>
+          </li>
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>You'll receive updates on the status of your report</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('reportForm') as HTMLFormElement;
+    const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+    const submitText = document.getElementById('submitText') as HTMLElement;
+    const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
+    const successMessage = document.getElementById('successMessage') as HTMLElement;
+    const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Show loading state
+        submitButton.disabled = true;
+        submitText.classList.add('hidden');
+        submitSpinner.classList.remove('hidden');
+        successMessage.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Show success message
+            form.reset();
+            successMessage.classList.remove('hidden');
+            setTimeout(() => {
+              successMessage.classList.add('hidden');
+            }, 5000);
+          } else {
+            throw new Error(data.error || 'Error submitting report');
+          }
+        } catch (error) {
+          // Show error message
+          console.error('Submission error:', error);
+          errorMessage.classList.remove('hidden');
+          setTimeout(() => {
+            errorMessage.classList.add('hidden');
+          }, 5000);
+        } finally {
+          // Reset button state
+          submitButton.disabled = false;
+          submitText.classList.remove('hidden');
+          submitSpinner.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+</MainLayout>

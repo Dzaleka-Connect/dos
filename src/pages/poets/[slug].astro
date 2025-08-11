@@ -1,0 +1,208 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const poets = await getCollection('poets');
+  return poets.map(poet => ({
+    params: { slug: poet.slug },
+    props: { poet }
+  }));
+}
+
+const { poet } = Astro.props;
+const { Content } = await poet.render();
+
+// Enhanced SEO metadata for individual poet pages
+const pageTitle = `${poet.data.title} - Poet from Dzaleka Refugee Camp`;
+const pageDescription = `${poet.data.description} ${poet.data.age ? `Age: ${poet.data.age} years.` : ''} ${poet.data.nationality ? `Nationality: ${poet.data.nationality}.` : ''} Read poetry and learn more about this talented poet from Dzaleka Refugee Camp.`;
+const pageKeywords = `${poet.data.title}, Dzaleka poet, refugee poetry, ${poet.data.nationality || 'African'} poet, spoken word artist, poetry readings, literary talent, Dzaleka literary community`;
+const canonicalURL = `https://services.dzaleka.com/poets/${poet.slug}`;
+
+// Generate structured data for individual poet
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": poet.data.title,
+  "description": poet.data.description,
+  "url": canonicalURL,
+  "nationality": poet.data.nationality,
+  "age": poet.data.age,
+  "jobTitle": "Poet",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services"
+  },
+  "image": poet.data.image ? `https://services.dzaleka.com${poet.data.image}` : undefined,
+  "sameAs": [
+    canonicalURL
+  ]
+};
+---
+
+<MainLayout 
+  title={pageTitle} 
+  description={pageDescription}
+  keywords={pageKeywords}
+  canonical={canonicalURL}
+  ogType="profile"
+  ogImage={poet.data.image || "/images/poets/hassan-c-honore.jpg"}
+  twitterCard="summary_large_image"
+>
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center mb-6">
+        <a href="/poets" class="text-indigo-200 hover:text-white transition-colors">
+          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Poets
+        </a>
+      </div>
+      
+      <!-- Hero Image Section -->
+      {poet.data.image && (
+        <div class="mb-8">
+          <div class="relative h-96 overflow-hidden rounded-2xl shadow-2xl">
+            <img src={poet.data.image} alt={poet.data.title} 
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-transparent to-transparent"></div>
+          </div>
+        </div>
+      )}
+      
+      <!-- Content Section -->
+      <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center mb-6">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 mr-4">
+              Poet
+            </span>
+            {poet.data.featured && (
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                Featured
+              </span>
+            )}
+          </div>
+          
+          <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-4">
+            {poet.data.title}
+          </h1>
+          
+          <p class="text-xl text-indigo-100 mb-8">
+            {poet.data.description}
+          </p>
+          
+          <!-- Quick Stats -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {poet.data.age && (
+              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div class="text-2xl font-bold text-white">{poet.data.age}</div>
+                <div class="text-sm text-indigo-200">Years Old</div>
+              </div>
+            )}
+            {poet.data.nationality && (
+              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div class="text-2xl font-bold text-white">{poet.data.nationality}</div>
+                <div class="text-sm text-indigo-200">Nationality</div>
+              </div>
+            )}
+            {poet.data.startedWriting && (
+              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div class="text-2xl font-bold text-white">{poet.data.startedWriting}</div>
+                <div class="text-sm text-indigo-200">Started Writing</div>
+              </div>
+            )}
+            {poet.data.firstPerformance && (
+              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                <div class="text-2xl font-bold text-white">{poet.data.firstPerformance}</div>
+                <div class="text-sm text-indigo-200">First Performance</div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 sticky top-8">
+            <h3 class="text-xl font-semibold text-white mb-4">Poet Information</h3>
+            
+            {poet.data.birthplace && (
+              <div class="mb-4">
+                <h4 class="text-sm font-medium text-indigo-200 mb-1">Birthplace</h4>
+                <p class="text-white">{poet.data.birthplace}</p>
+              </div>
+            )}
+            
+            {poet.data.arrivedInMalawi && (
+              <div class="mb-4">
+                <h4 class="text-sm font-medium text-indigo-200 mb-1">Arrived in Malawi</h4>
+                <p class="text-white">{poet.data.arrivedInMalawi}</p>
+              </div>
+            )}
+            
+            {poet.data.volunteerWork && (
+              <div class="mb-4">
+                <h4 class="text-sm font-medium text-indigo-200 mb-1">Volunteer Work</h4>
+                <p class="text-white text-sm">{poet.data.volunteerWork}</p>
+              </div>
+            )}
+            
+            {poet.data.biographyAuthor && (
+              <div class="mb-4">
+                <h4 class="text-sm font-medium text-indigo-200 mb-1">Biography by</h4>
+                <p class="text-white">{poet.data.biographyAuthor}</p>
+              </div>
+            )}
+            
+            {poet.data.photographer && (
+              <div class="mb-4">
+                <h4 class="text-sm font-medium text-indigo-200 mb-1">Photo by</h4>
+                <p class="text-white">{poet.data.photographer}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="prose prose-lg prose-indigo mx-auto">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Book This Poet</h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        Interested in booking {poet.data.title} for your event? Get in touch to discuss poetry reading opportunities.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" 
+           class="inline-flex items-center justify-center px-8 py-4 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors font-semibold text-lg">
+          Book Poetry Reading
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="/poets" 
+           class="inline-flex items-center justify-center px-8 py-4 rounded-lg text-indigo-600 border-2 border-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors font-semibold text-lg">
+          Browse All Poets
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>

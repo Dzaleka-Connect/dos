@@ -8,7 +8,7 @@ category: "Zoom Meeting"
 image: "https://www.hrw.org/sites/default/files/styles/embed_xxl/public/media_2023/06/202306africa_malawi_camp.jpg?itok=rg1nwvsJ"
 featured: true
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   phone: "+265 882 717 995"

@@ -1,0 +1,453 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const title = "Submit Update - Dzaleka Public Art Catalogue";
+const description = "Submit updates, corrections, or additional information for public artworks in the Dzaleka Public Art Catalogue.";
+---
+
+<MainLayout title={title} description={description}>
+  <Layout>
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 text-white">
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <h1 class="text-4xl font-bold sm:text-5xl mb-6">
+          Submit an Update
+        </h1>
+        <p class="text-xl text-gray-200 max-w-2xl mx-auto">
+          Help us keep the Public Art Catalogue accurate and up-to-date
+        </p>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+          <button 
+            onclick="history.back()"
+            class="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-lg p-8">
+          <form id="updateForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+            <!-- Artwork Information -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Artwork Information</h2>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="artworkTitle" class="block text-sm font-medium text-gray-700 mb-2">
+                    Artwork Title *
+                  </label>
+                  <input
+                    type="text"
+                    id="artworkTitle"
+                    name="artworkTitle"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter the artwork title"
+                  />
+                </div>
+
+                <div>
+                  <label for="artistName" class="block text-sm font-medium text-gray-700 mb-2">
+                    Artist Name
+                  </label>
+                  <input
+                    type="text"
+                    id="artistName"
+                    name="artistName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter the artist's name if known"
+                  />
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <label for="artworkLocation" class="block text-sm font-medium text-gray-700 mb-2">
+                  Artwork Location *
+                </label>
+                <input
+                  type="text"
+                  id="artworkLocation"
+                  name="artworkLocation"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="Describe the specific location of the artwork"
+                />
+              </div>
+            </div>
+
+            <!-- Update Type -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Type of Update</h2>
+              
+              <div class="space-y-4">
+                <div>
+                  <label for="updateType" class="block text-sm font-medium text-gray-700 mb-2">
+                    What type of update are you submitting? *
+                  </label>
+                  <select
+                    id="updateType"
+                    name="updateType"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  >
+                    <option value="">Select update type</option>
+                    <option value="correction">Correction to existing information</option>
+                    <option value="additional">Additional information</option>
+                    <option value="status">Status change (removed, relocated, etc.)</option>
+                    <option value="restoration">Restoration or conservation work</option>
+                    <option value="new_photos">New or better photos</option>
+                    <option value="artist_info">Artist information update</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="updateDescription" class="block text-sm font-medium text-gray-700 mb-2">
+                    Detailed Description of Update *
+                  </label>
+                  <textarea
+                    id="updateDescription"
+                    name="updateDescription"
+                    required
+                    rows="6"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Please provide a detailed description of the update, correction, or additional information you're submitting..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Specific Updates -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Specific Information to Update</h2>
+              
+              <div class="space-y-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-3">
+                    Which information needs to be updated? (Check all that apply)
+                  </label>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updateTitle" name="updateFields" value="title" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updateTitle" class="ml-2 text-sm text-gray-700">Artwork Title</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updateArtist" name="updateFields" value="artist" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updateArtist" class="ml-2 text-sm text-gray-700">Artist Information</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updateLocation" name="updateFields" value="location" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updateLocation" class="ml-2 text-sm text-gray-700">Location</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updateDescription" name="updateFields" value="description" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updateDescription" class="ml-2 text-sm text-gray-700">Description</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updateHistory" name="updateFields" value="history" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updateHistory" class="ml-2 text-sm text-gray-700">History</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updatePhotos" name="updateFields" value="photos" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updatePhotos" class="ml-2 text-sm text-gray-700">Photos</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="updateStatus" name="updateFields" value="status" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                      <label for="updateStatus" class="ml-2 text-sm text-gray-700">Current Status</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="correctedInfo" class="block text-sm font-medium text-gray-700 mb-2">
+                    Corrected or Additional Information
+                  </label>
+                  <textarea
+                    id="correctedInfo"
+                    name="correctedInfo"
+                    rows="6"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Please provide the corrected information or additional details that should be added to the catalogue..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Photos -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">New Photos (if applicable)</h2>
+              
+              <div>
+                <label for="photos" class="block text-sm font-medium text-gray-700 mb-2">
+                  Upload New Photos
+                </label>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <div class="mt-4">
+                    <label for="photo-upload" class="cursor-pointer bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+                      Choose Files
+                    </label>
+                    <input id="photo-upload" name="photos" type="file" multiple accept="image/*" class="hidden" />
+                  </div>
+                  <p class="mt-2 text-sm text-gray-600">
+                    Upload new or better photos of the artwork (optional)
+                  </p>
+                  <p id="photoUploadStatus" class="text-sm mt-2"></p>
+                </div>
+              </div>
+              <!-- Hidden field for uploaded photo URLs -->
+              <input type="hidden" name="photoUrls" id="photoUrlsInput" />
+            </div>
+
+            <!-- Contact Information -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Contact Information</h2>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="contributorName" class="block text-sm font-medium text-gray-700 mb-2">
+                    Your Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="contributorName"
+                    name="contributorName"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div>
+                  <label for="contributorEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                    Your Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="contributorEmail"
+                    name="contributorEmail"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter your email address"
+                  />
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <label for="contributorPhone" class="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="contributorPhone"
+                  name="contributorPhone"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="Enter your phone number (optional)"
+                />
+              </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Additional Information</h2>
+              
+              <div class="space-y-6">
+                <div>
+                  <label for="sourceInfo" class="block text-sm font-medium text-gray-700 mb-2">
+                    Source of Information
+                  </label>
+                  <textarea
+                    id="sourceInfo"
+                    name="sourceInfo"
+                    rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="How did you obtain this information? (e.g., personal knowledge, documents, interviews, etc.)..."
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label for="additionalNotes" class="block text-sm font-medium text-gray-700 mb-2">
+                    Additional Notes
+                  </label>
+                  <textarea
+                    id="additionalNotes"
+                    name="additionalNotes"
+                    rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Any other relevant information or context..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+              <button
+                type="submit"
+                id="submitButton"
+                class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+              >
+                <span id="submitText">Submit Update</span>
+                <span id="submitSpinner" class="hidden">
+                  <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-green-800">Update submitted successfully! We'll review it and update the catalogue.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-red-800">Error submitting update. Please try again.</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </Layout>
+
+  <script>
+    const form = document.getElementById('updateForm') as HTMLFormElement;
+    const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+    const submitText = document.getElementById('submitText') as HTMLElement;
+    const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
+    const successMessage = document.getElementById('successMessage') as HTMLElement;
+    const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+    const photoInput = document.getElementById('photo-upload') as HTMLInputElement;
+    const photoUrlsInput = document.getElementById('photoUrlsInput') as HTMLInputElement;
+    const photoUploadStatus = document.getElementById('photoUploadStatus') as HTMLElement;
+
+    async function uploadToCloudinary(file: File, statusElement: HTMLElement) {
+      statusElement.textContent = 'Uploading...';
+      statusElement.classList.remove('text-red-500', 'text-green-500');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'dzaleka_events');
+
+        const response = await fetch(
+          'https://api.cloudinary.com/v1_1/dcvwslmow/upload',
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+
+        const data = await response.json();
+        
+        if (data.secure_url) {
+          statusElement.textContent = 'Upload successful!';
+          statusElement.classList.add('text-green-500');
+          return data.secure_url;
+        } else {
+          throw new Error('Upload failed');
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        statusElement.textContent = 'Upload failed. Please try again.';
+        statusElement.classList.add('text-red-500');
+        return null;
+      }
+    }
+
+    // Add file upload handler
+    photoInput.addEventListener('change', async () => {
+      const files = photoInput.files;
+      if (files) {
+        const urls = [];
+        for (let i = 0; i < files.length; i++) {
+          const url = await uploadToCloudinary(files[i], photoUploadStatus);
+          if (url) urls.push(url);
+        }
+        photoUrlsInput.value = JSON.stringify(urls);
+      }
+    });
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Show loading state
+        submitButton.disabled = true;
+        submitText.classList.add('hidden');
+        submitSpinner.classList.remove('hidden');
+        successMessage.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Show success message
+            form.reset();
+            successMessage.classList.remove('hidden');
+            setTimeout(() => {
+              successMessage.classList.add('hidden');
+            }, 5000);
+          } else {
+            throw new Error(data.error || 'Error submitting update');
+          }
+        } catch (error) {
+          // Show error message
+          console.error('Submission error:', error);
+          errorMessage.classList.remove('hidden');
+          setTimeout(() => {
+            errorMessage.classList.add('hidden');
+          }, 5000);
+        } finally {
+          // Reset button state
+          submitButton.disabled = false;
+          submitText.classList.remove('hidden');
+          submitSpinner.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+</MainLayout>

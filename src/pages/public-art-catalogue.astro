@@ -1,0 +1,392 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+
+const title = "Dzaleka Public Art & Visual Culture";
+const description = "Explore and celebrate public artworks, visual media, and cultural expressions in Dzaleka Refugee Camp. Discover the stories behind murals, sculptures, installations, and visual content created by talented artists who call Dzaleka home.";
+
+// Pagination settings
+const itemsPerPage = 9; // Show 9 items per page (3x3 grid)
+const currentPage = 1; // Default to first page
+
+// Dynamically import all artwork content
+let artworks = [];
+try {
+  artworks = await Astro.glob('../content/artworks/*.md');
+} catch (error) {
+  console.error('Error loading artworks:', error);
+  artworks = [];
+}
+
+// Load artist spotlight data
+let spotlightArtists = [];
+try {
+  const allArtists = await Astro.glob('../content/artists/*.md');
+  spotlightArtists = allArtists
+    .filter(artist => artist.frontmatter.spotlight)
+    .slice(0, 6); // Show up to 6 artists in spotlight
+} catch (error) {
+  console.error('Error loading artist spotlight:', error);
+  spotlightArtists = [];
+}
+
+// Sort artworks by featured status and title
+artworks.sort((a, b) => {
+  if (a.frontmatter.featured && !b.frontmatter.featured) return -1;
+  if (!a.frontmatter.featured && b.frontmatter.featured) return 1;
+  return a.frontmatter.title.localeCompare(b.frontmatter.title);
+});
+
+// Calculate pagination
+const totalItems = artworks.length;
+const totalPages = Math.ceil(totalItems / itemsPerPage);
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const currentArtworks = artworks.slice(startIndex, endIndex);
+
+// Generate pagination info
+const pagination = {
+  currentPage,
+  totalPages,
+  totalItems,
+  hasNextPage: currentPage < totalPages,
+  hasPrevPage: currentPage > 1,
+  nextPage: currentPage + 1,
+  prevPage: currentPage - 1,
+  startItem: startIndex + 1,
+  endItem: Math.min(endIndex, totalItems)
+};
+---
+
+<MainLayout title={title} description={description}>
+  <Layout>
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 text-white">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/dzaleka-hero.jpeg');"></div>
+      <div class="absolute inset-0 bg-black/60"></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <div class="mb-6">
+          <span class="inline-flex items-center px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/90">
+            Independent Creative Archive
+          </span>
+        </div>
+        
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+          Dzaleka Public Art<br/>
+          <span class="text-pink-300">& Visual Culture</span>
+        </h1>
+        
+        <p class="text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed">
+          Celebrating creativity, resilience, and cultural expression through public art and visual media in Dzaleka Refugee Camp
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#artworks" class="inline-flex items-center px-6 py-3 bg-white text-purple-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+            View Artworks
+          </a>
+          <a href="/public-art-catalogue/submit" class="inline-flex items-center px-6 py-3 border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
+            Submit Artwork
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Info Section -->
+    <section class="py-12 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-purple-50 rounded-xl p-8 text-center">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Independent Creative Archive</h2>
+          <p class="text-gray-700 mb-6 leading-relaxed max-w-2xl mx-auto">
+            The Dzaleka Public Art & Visual Culture Archive is an independent digital collection showcasing artworks, visual media, and cultural expressions around Dzaleka Refugee Camp. 
+            It is not connected to camp management, but exists to celebrate and preserve creative expression.
+          </p>
+          <a href="/public-art-catalogue/about" class="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+            Learn More About This Project
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Artworks Section -->
+    <section id="artworks" class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Artworks & Visual Content</h2>
+          <p class="text-lg text-gray-600">Discover the creativity and talent of Dzaleka's artists and visual creators</p>
+        </div>
+
+        <!-- Dynamic artwork listings -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {currentArtworks.length > 0 ? (
+            currentArtworks.map((artwork) => (
+              <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group border border-gray-100">
+                <div class="relative h-64 bg-gradient-to-br from-purple-50 to-pink-100">
+                  {artwork.frontmatter.image ? (
+                    <img src={artwork.frontmatter.image} alt={artwork.frontmatter.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center">
+                      <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                      </svg>
+                    </div>
+                  )}
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div class="absolute top-4 left-4">
+                    <span class="bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                      {artwork.frontmatter.category}
+                    </span>
+                  </div>
+                  {artwork.frontmatter.featured && (
+                    <div class="absolute top-4 right-4">
+                      <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                        ⭐ Featured
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div class="p-6">
+                  <div class="mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
+                      {artwork.frontmatter.title}
+                    </h3>
+                    <p class="text-purple-600 text-sm font-semibold mb-2">by {artwork.frontmatter.artistName}</p>
+                                      <div class="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span class="font-medium">{artwork.frontmatter.campZone}</span>
+                    </div>
+                  </div>
+                  <p class="text-gray-600 mb-6 line-clamp-3 leading-relaxed text-sm">
+                    {artwork.frontmatter.description || 'Experience the creativity and cultural expression of this remarkable artwork...'}
+                  </p>
+                  <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div class="flex items-center space-x-2">
+                      <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span class="text-xs text-gray-500 font-medium">Public Art</span>
+                    </div>
+                    <a href={`/public-art-catalogue/${artwork.file.split('/').pop().replace('.md', '')}`} class="inline-flex items-center bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors group-hover:scale-105 transform">
+                      View Details
+                      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div class="col-span-full text-center py-16">
+              <div class="max-w-md mx-auto">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No Artworks Yet</h3>
+                <p class="text-gray-600 mb-6">Be the first to submit a public artwork to our catalogue!</p>
+                <a href="/public-art-catalogue/submit" class="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                  Submit First Artwork
+                  <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div class="mt-12">
+            <div class="flex items-center justify-between">
+              {/* Results info */}
+              <div class="text-sm text-gray-600">
+                Showing {pagination.startItem} to {pagination.endItem} of {pagination.totalItems} artworks
+              </div>
+              
+              {/* Pagination buttons */}
+              <div class="flex items-center space-x-2">
+                {/* Previous button */}
+                {pagination.hasPrevPage ? (
+                  <a href={`/public-art-catalogue?page=${pagination.prevPage}`} class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                  </a>
+                ) : (
+                  <button disabled class="inline-flex items-center px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                  </button>
+                )}
+                
+                {/* Page numbers */}
+                <div class="flex items-center space-x-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    pageNum === currentPage ? (
+                      <span class="inline-flex items-center px-3 py-2 border border-purple-500 rounded-lg text-sm font-medium text-purple-600 bg-purple-50">
+                        {pageNum}
+                      </span>
+                    ) : (
+                      <a href={`/public-art-catalogue?page=${pageNum}`} class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                        {pageNum}
+                      </a>
+                    )
+                  ))}
+                </div>
+                
+                {/* Next button */}
+                {pagination.hasNextPage ? (
+                  <a href={`/public-art-catalogue?page=${pagination.nextPage}`} class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    Next
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                ) : (
+                  <button disabled class="inline-flex items-center px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                    Next
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div class="text-center mt-12">
+          <a href="/public-art-catalogue/submit" class="inline-flex items-center justify-center px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors">
+            Submit New Artwork & Visual Content
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Artist Spotlight Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Artist Spotlight</h2>
+          <p class="text-lg text-gray-600 mb-6">Meet the talented artists and visual creators behind Dzaleka's public art and visual culture</p>
+          <a href="/public-art-catalogue/visual-arts-community" class="inline-flex items-center text-purple-600 hover:text-purple-700 font-semibold text-sm">
+            View All Visual Artists
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {spotlightArtists.length > 0 ? (
+            spotlightArtists.map((artist) => (
+              <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200">
+                <div class="relative h-48 bg-gradient-to-br from-purple-50 to-pink-100">
+                  {artist.frontmatter.image ? (
+                    <img src={artist.frontmatter.image} alt={artist.frontmatter.artistName} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center">
+                      <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  )}
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div class="absolute top-3 left-3">
+                    <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">
+                      {artist.frontmatter.medium}
+                    </span>
+                  </div>
+                  <div class="absolute top-3 right-3">
+                    <span class="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-md">
+                      ⭐ Spotlight
+                    </span>
+                  </div>
+                </div>
+                <div class="p-4">
+                  <div class="mb-3">
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors mb-1">
+                      {artist.frontmatter.artistName}
+                    </h3>
+                    <div class="flex items-center space-x-2 text-xs text-gray-500 mb-2">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span class="font-medium">{artist.frontmatter.nationality}</span>
+                    </div>
+                  </div>
+                  <p class="text-gray-600 mb-4 line-clamp-2 leading-relaxed text-sm">
+                    {artist.frontmatter.bio}
+                  </p>
+                  <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div class="flex items-center space-x-2">
+                      <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span class="text-xs text-gray-500 font-medium">{artist.frontmatter.nationality}</span>
+                    </div>
+                    <a href={`/public-art-catalogue/artist/${artist.file.split('/').pop().replace('.md', '')}`} class="inline-flex items-center bg-purple-600 text-white px-3 py-1.5 rounded-md text-sm font-semibold hover:bg-purple-700 transition-colors group-hover:scale-105 transform">
+                      View Profile
+                      <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div class="col-span-full text-center py-16">
+              <div class="max-w-md mx-auto">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No Featured Artists Yet</h3>
+                <p class="text-gray-600 mb-6">Be the first artist to be featured in our spotlight!</p>
+                <a href="/public-art-catalogue/submit" class="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                  Submit Your Artwork
+                  <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- How to Contribute Section -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">How to Contribute</h2>
+          <p class="text-lg text-gray-600">Help us document and celebrate Dzaleka's public art and visual culture</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Submit Artwork & Visual Content</h3>
+            <p class="text-gray-600 mb-4">Share information about public artworks, visual media, and cultural expressions in Dzaleka, including details about the artist, location, and cultural significance.</p>
+            <a href="/public-art-catalogue/submit" class="text-purple-600 hover:text-purple-700 font-medium">Submit Now →</a>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Photo Guidelines</h3>
+            <p class="text-gray-600 mb-4">Tips for photographing artworks and visual content: good lighting, multiple angles, context shots, and detail views of important elements.</p>
+            <a href="/photo-guidelines" class="text-purple-600 hover:text-purple-700 font-medium">View Guidelines →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </Layout>
+</MainLayout>

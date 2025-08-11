@@ -8,7 +8,7 @@ category: "Zoom Meeting"
 image: "/images/Dzaleka_CDSS.jpeg"
 featured: true
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   phone: "+265 882 717 995"

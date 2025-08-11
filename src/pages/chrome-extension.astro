@@ -1,0 +1,460 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const seo = {
+  title: "Dzaleka Online Chrome Extension | Stay Connected to the Community",
+  description: "Get real-time updates from Dzaleka Refugee Camp directly in your Chrome browser. Access news, events, services, jobs, and community resources with our comprehensive browser extension.",
+  keywords: "Dzaleka Chrome extension, browser extension, refugee community, real-time news, community events, business directory, job opportunities, Dzaleka Online Services",
+  canonical: "https://services.dzaleka.com/chrome-extension",
+  openGraph: {
+    title: "Dzaleka Online Chrome Extension | Stay Connected to the Community",
+    description: "Get real-time updates from Dzaleka Refugee Camp directly in your Chrome browser. Access news, events, services, jobs, and community resources with our comprehensive browser extension.",
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/chrome-extension",
+    images: [
+      {
+        url: "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
+        width: 1200,
+        height: 630,
+        alt: "Dzaleka Online Chrome Extension"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@dzalekaconnect",
+    creator: "@dzalekaconnect",
+    title: "Dzaleka Online Chrome Extension | Stay Connected to the Community",
+    description: "Get real-time updates from Dzaleka Refugee Camp directly in your Chrome browser. Access news, events, services, jobs, and community resources with our comprehensive browser extension.",
+    image: "https://services.dzaleka.com/images/dzaleka-digital-heritage.png"
+  }
+};
+
+const features = [
+  {
+    icon: "newspaper",
+    title: "Latest News",
+    description: "Get real-time updates from the Dzaleka community with automatic notifications",
+    details: "Stay informed with breaking news, community updates, and important announcements delivered directly to your browser."
+  },
+  {
+    icon: "calendar",
+    title: "Community Events",
+    description: "Discover upcoming events, workshops, and cultural activities",
+    details: "Never miss important community gatherings, educational workshops, cultural celebrations, or skill-building sessions."
+  },
+  {
+    icon: "building",
+    title: "Business Directory",
+    description: "Find local businesses, services, and entrepreneurs",
+    details: "Connect with Dzaleka's vibrant entrepreneurial community. Find tailors, tech services, food vendors, and more."
+  },
+  {
+    icon: "book",
+    title: "Resources",
+    description: "Access educational materials, guides, and community resources",
+    details: "Quick access to educational content, health information, legal resources, and community guides."
+  },
+  {
+    icon: "briefcase",
+    title: "Job Opportunities",
+    description: "Browse available jobs and employment opportunities",
+    details: "Find employment opportunities within the camp and surrounding areas, with real-time job postings and updates."
+  },
+  {
+    icon: "users",
+    title: "Community Hub",
+    description: "Connect with community members through photos and skills exchange",
+    details: "View community photos, share skills, and connect with fellow residents through our integrated community platform."
+  },
+  {
+    icon: "heart",
+    title: "Fundraising",
+    description: "Support community projects and initiatives",
+    details: "Contribute to community development projects, emergency funds, and local initiatives directly through the extension."
+  },
+  {
+    icon: "search",
+    title: "Smart Search",
+    description: "Search across all community content with our advanced search feature",
+    details: "Powerful search functionality to find specific information across news, events, services, and community resources."
+  },
+  {
+    icon: "moon",
+    title: "Dark Mode",
+    description: "Comfortable viewing with light and dark theme options",
+    details: "Customize your viewing experience with light and dark themes for comfortable browsing at any time of day."
+  },
+  {
+    icon: "settings",
+    title: "Customizable",
+    description: "Adjust refresh intervals, font sizes, and display preferences",
+    details: "Personalize your experience with customizable settings for notifications, display options, and content preferences."
+  }
+];
+
+const installationSteps = [
+  {
+    step: 1,
+    title: "Visit Chrome Web Store",
+    description: "Click the 'Add to Chrome' button below to go to the Chrome Web Store",
+    icon: "shopping-cart"
+  },
+  {
+    step: 2,
+    title: "Install Extension",
+    description: "Click 'Add to Chrome' on the Chrome Web Store page",
+    icon: "plus"
+  },
+  {
+    step: 3,
+    title: "Confirm Installation",
+    description: "Confirm the installation when prompted by Chrome",
+    icon: "check"
+  },
+  {
+    step: 4,
+    title: "Start Using",
+    description: "The extension will appear in your toolbar. Click to access Dzaleka community content!",
+    icon: "play"
+  }
+];
+---
+
+<MainLayout title={seo.title} description={seo.description}>
+  <head>
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <meta name="keywords" content={seo.keywords} />
+    <link rel="canonical" href={seo.canonical} />
+    <meta property="og:title" content={seo.openGraph.title} />
+    <meta property="og:description" content={seo.openGraph.description} />
+    <meta property="og:type" content={seo.openGraph.type} />
+    <meta property="og:image" content={seo.openGraph.images[0].url} />
+    <meta property="og:image:alt" content={seo.openGraph.images[0].alt} />
+    <meta property="og:url" content={seo.openGraph.url} />
+    <meta property="og:site_name" content={seo.openGraph.site_name} />
+    <meta name="twitter:card" content={seo.twitter.card} />
+    <meta name="twitter:site" content={seo.twitter.site} />
+    <meta name="twitter:creator" content={seo.twitter.creator} />
+    <meta name="twitter:title" content={seo.twitter.title} />
+    <meta name="twitter:description" content={seo.twitter.description} />
+    <meta name="twitter:image" content={seo.twitter.image} />
+    <meta name="robots" content="index, follow" />
+  </head>
+
+    <!-- Hero Section -->
+  <div class="relative overflow-hidden py-16 sm:py-20 flex items-center">
+    <!-- Animated Gradient Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"></div>
+    
+    <!-- Floating Gradient Elements -->
+    <div class="absolute top-10 left-4 w-32 h-32 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-20 animate-float"></div>
+    <div class="absolute top-20 right-8 w-24 h-24 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-20 animate-float animation-delay-1000"></div>
+    <div class="absolute bottom-20 left-1/4 w-40 h-40 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-full opacity-15 animate-float animation-delay-2000"></div>
+    <div class="absolute bottom-10 right-1/3 w-28 h-28 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full opacity-20 animate-float animation-delay-3000"></div>
+    
+    <!-- Mobile-friendly gradient orbs -->
+    <div class="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/2 transform translate-x-1/2 w-48 h-48 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+              <div class="text-center">
+          <div class="flex justify-center mb-6 sm:mb-8">
+            <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-4 sm:p-6 border border-white/20 shadow-lg">
+              <img src="/images/dzaleka-digital-heritage.png" alt="Dzaleka Online Extension" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl" />
+            </div>
+          </div>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6">
+            Dzaleka Online
+            <span class="block text-blue-600">Chrome Extension</span>
+          </h1>
+          <p class="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
+            Stay updated with the latest news from the Dzaleka community directly in your Chrome browser!
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+            <a href="https://chromewebstore.google.com/detail/dzaleka-online/kkjdcpkllgckmklggmibeemoolnihdbc?authuser=0&hl=en" class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-lg text-sm sm:text-base">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              Add to Chrome
+            </a>
+            <a href="#features" class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border border-slate-300 text-slate-700 font-semibold rounded-xl hover:bg-slate-100 transition-colors text-sm sm:text-base">
+              Learn More
+            </a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section id="features" class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-slate-900 mb-4">Comprehensive Community Connection</h2>
+        <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+          Dzaleka Online is a comprehensive browser extension that connects you to the vibrant Dzaleka Refugee Camp community. 
+          This extension provides real-time access to community news, events, services, and resources, all from your browser toolbar.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {features.map((feature) => (
+          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 border border-slate-200 hover:border-blue-200">
+            <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-6">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {feature.icon === "newspaper" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>}
+                {feature.icon === "calendar" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>}
+                {feature.icon === "building" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>}
+                {feature.icon === "book" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>}
+                {feature.icon === "briefcase" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"/>}
+                {feature.icon === "users" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>}
+                {feature.icon === "heart" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>}
+                {feature.icon === "search" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>}
+                {feature.icon === "moon" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>}
+                {feature.icon === "settings" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>}
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-3">{feature.title}</h3>
+            <p class="text-slate-600 mb-4">{feature.description}</p>
+            <p class="text-sm text-slate-500">{feature.details}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Guide -->
+  <section id="install" class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-slate-900 mb-4">Installation Guide</h2>
+        <p class="text-lg text-slate-600">
+          Follow these simple steps to install the Dzaleka Online Chrome Extension
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        {installationSteps.map((step) => (
+          <div class="flex items-start space-x-6">
+            <div class="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {step.icon === "shopping-cart" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"/>}
+                {step.icon === "plus" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>}
+                {step.icon === "check" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>}
+                {step.icon === "play" && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>}
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold text-slate-900 mb-2">
+                Step {step.step}: {step.title}
+              </h3>
+              <p class="text-slate-600">{step.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 bg-blue-50 rounded-2xl p-8 border border-blue-200">
+        <h3 class="text-lg font-semibold text-blue-900 mb-3">Important Notes:</h3>
+        <ul class="text-blue-800 space-y-2">
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            The extension requires Chrome browser version 88 or higher
+          </li>
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            The extension will request permissions to access Dzaleka Online Services
+          </li>
+          <li class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            All data is processed securely and respects your privacy
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chrome Web Store Section -->
+  <section id="download" class="py-12 sm:py-16 relative overflow-hidden">
+    <!-- Animated Gradient Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50"></div>
+    
+    <!-- Mobile-friendly gradient elements -->
+    <div class="absolute top-4 left-4 w-32 h-32 sm:w-64 sm:h-64 bg-gradient-to-r from-blue-400/30 to-cyan-400/30 rounded-full blur-2xl animate-pulse"></div>
+    <div class="absolute bottom-4 right-4 w-24 h-24 sm:w-64 sm:h-64 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-full blur-2xl animate-pulse animation-delay-2000"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-96 sm:h-96 bg-gradient-to-r from-indigo-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse animation-delay-4000"></div>
+    
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Add to Chrome</h2>
+      <p class="text-lg sm:text-xl text-slate-600 mb-6 sm:mb-8 px-4">
+        Install the Dzaleka Online Chrome Extension and never miss important community updates
+      </p>
+      
+      <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8 border border-slate-200 shadow-lg mx-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center">
+                <svg class="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Chrome Web Store</h3>
+            <p class="text-slate-600 text-sm">Official Store</p>
+          </div>
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Secure Installation</h3>
+            <p class="text-slate-600 text-sm">Verified Extension</p>
+          </div>
+          <div class="text-center">
+            <div class="flex justify-center mb-4">
+              <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Community Trusted</h3>
+            <p class="text-slate-600 text-sm">50+ Users</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center px-4">
+        <a href="https://chromewebstore.google.com/detail/dzaleka-online/kkjdcpkllgckmklggmibeemoolnihdbc?authuser=0&hl=en" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-lg text-sm sm:text-base">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Add to Chrome
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- FAQ Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+        <p class="text-lg text-slate-600">
+          Common questions about the Dzaleka Online Chrome Extension
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+          <h3 class="text-lg font-semibold text-slate-900 mb-3">Is the extension free to use?</h3>
+          <p class="text-slate-600">Yes, the Dzaleka Online Chrome Extension is completely free to install and use. It's developed as a community service to help connect Dzaleka residents and supporters.</p>
+        </div>
+
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+          <h3 class="text-lg font-semibold text-slate-900 mb-3">What permissions does the extension need?</h3>
+          <p class="text-slate-600">The extension requires basic permissions to access Dzaleka Online Services website and display notifications. It doesn't collect personal data or track your browsing history.</p>
+        </div>
+
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+          <h3 class="text-lg font-semibold text-slate-900 mb-3">Can I customize the notification settings?</h3>
+          <p class="text-slate-600">Absolutely! You can customize which types of notifications you receive, set refresh intervals, and choose your preferred theme (light or dark mode) in the extension settings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support Section -->
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-slate-900 mb-4">Need Help?</h2>
+      <p class="text-lg text-slate-600 mb-8">
+        Our support team is here to help you get the most out of the Dzaleka Online extension
+      </p>
+
+      <div class="flex justify-center">
+        <div class="bg-white rounded-2xl shadow-sm p-8 border border-slate-200 max-w-md">
+          <div class="flex justify-center mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-900 mb-2">Email Support</h3>
+          <p class="text-slate-600 mb-4">Get help via email</p>
+          <a href="mailto:dzalekaconnect@gmail.com" class="text-blue-600 hover:text-blue-700 font-medium">
+            dzalekaconnect@gmail.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      33% {
+        transform: translateY(-20px) rotate(120deg);
+      }
+      66% {
+        transform: translateY(10px) rotate(240deg);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.2;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.4;
+        transform: scale(1.05);
+      }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animation-delay-1000 {
+      animation-delay: 1s;
+    }
+    
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+    
+    .animation-delay-3000 {
+      animation-delay: 3s;
+    }
+    
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 640px) {
+      .animate-float {
+        animation-duration: 8s;
+      }
+    }
+  </style>
+</MainLayout> 

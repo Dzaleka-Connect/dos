@@ -70,6 +70,24 @@ const partners = [
 
 const services = [
   {
+    title: 'Skills Exchange',
+    description: 'A community-driven platform where members share expertise, earn income, and help others develop new skills. From photography to music, languages to crafts - every skill has value.',
+    icon: '🤝',
+    url: '/skills-exchange'
+  },
+  {
+    title: 'Site Register',
+    description: 'Documenting and preserving important community sites, landmarks, and cultural spaces within Dzaleka. A digital archive of our community\'s physical heritage.',
+    icon: '🏛️',
+    url: '/site-register'
+  },
+  {
+    title: 'Public Art Catalogue',
+    description: 'Showcasing the vibrant visual arts community and public artworks that tell our stories. From murals to sculptures, celebrating creativity and cultural expression.',
+    icon: '🎨',
+    url: '/public-art-catalogue'
+  },
+  {
     title: 'Photo Gallery',
     description: 'Explore and contribute to our growing collection of photos, videos, and stories that document life in Dzaleka. Help preserve our cultural heritage for future generations.',
     icon: '📷',
@@ -86,28 +104,14 @@ const services = [
     description: 'Access essential services digitally - from permit applications to community program registrations. Making administrative tasks more accessible.',
     icon: '💻',
     url: '/applications'
-  },
-  {
-    title: 'Cultural Hub',
-    description: 'Share and celebrate our diverse cultures through art, music, and stories. A platform for cultural expression and community connection.',
-    icon: '🎨',
-    url: '/culture'
-  },
-  {
-    title: 'Resource Center',
-    description: 'Access educational materials, guides, and information about life in Dzaleka. Stay informed about community programs and opportunities.',
-    icon: '📋',
-    url: '/resources'
-  },
-  {
-    title: 'Community Voice',
-    description: 'Share your experiences and perspectives through our curated content platform. Your stories help build understanding and connection.',
-    icon: '🗣️',
-    url: '/community-voice'
   }
 ];
 
 const goals = [
+  {
+    title: 'Economic Empowerment',
+    description: 'Creating opportunities for community members to earn income through their skills and knowledge.'
+  },
   {
     title: 'Digital Inclusion',
     description: 'Making services accessible to all community members through digital platforms.'
@@ -119,6 +123,10 @@ const goals = [
   {
     title: 'Cultural Preservation',
     description: 'Documenting and preserving our rich cultural heritage for future generations.'
+  },
+  {
+    title: 'Skills Development',
+    description: 'Fostering a learning environment where knowledge flows freely and skills are valued.'
   },
   {
     title: 'Service Integration',
@@ -139,17 +147,6 @@ const serviceList = [
     ]
   },
   {
-    category: 'Government Permits',
-    items: [
-      'Temporary Residence Permit',
-      'Business Permit',
-      'Employment Permit',
-      'Student Permit',
-      'Permanent Residence',
-      'Diplomatic Permit'
-    ]
-  },
-  {
     category: 'Community Services',
     items: [
       'Legal Representation',
@@ -164,12 +161,13 @@ const serviceList = [
 ---
 
 <MainLayout 
-  title="About Us"
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
-  openGraph={seo.openGraph}
-  twitter={seo.twitter}
+  title="About Dzaleka Digital Heritage Archive - Our Mission & Community Impact"
+  description="Discover how Dzaleka Digital Heritage Archive empowers 57,000+ refugees through digital connectivity, cultural preservation, and community support. Learn about our mission to bridge digital divides and preserve heritage in Malawi's largest refugee camp."
+  keywords="Dzaleka refugee camp, Malawi refugees, digital heritage, cultural preservation, community support, refugee empowerment, humanitarian aid, refugee services, community development"
+  canonical="https://dzalekaheritage.org/about"
+  ogType="website"
+  ogImage="/images/about-hero.jpg"
+  twitterCard="summary_large_image"
 >
   <script type="application/ld+json" set:html={JSON.stringify(aboutStructuredData)} />
   
@@ -196,9 +194,20 @@ const serviceList = [
             by providing easy access to essential services, preserving our cultural heritage, and fostering 
             community connections through digital solutions.
           </p>
+          <p class="mb-6 text-gray-600 leading-relaxed">
+            Our platform includes the Skills Exchange initiative, where community members like Philemon Kasaro 
+            (photographer earning 300,000 Kwacha monthly), Muenyemali Mutewa Tresort (filmmaker and teacher), 
+            and many others share their expertise to help others while earning income.
+          </p>
+          <p class="mb-6 text-gray-600 leading-relaxed">
+            We also feature the Site Register documenting our community's important landmarks and cultural spaces, 
+            and the Public Art Catalogue showcasing our vibrant visual arts community with artists like Jacqueline 
+            Nyanduhuro, Paulin Engambee, and many others who express our stories through murals, sculptures, and paintings.
+          </p>
           <p class="text-gray-600 leading-relaxed">
             We strive to create a platform that empowers our community members to access resources, 
-            submit applications, share their stories, and participate in community events seamlessly.
+            submit applications, share their stories, participate in community events, and develop 
+            economic self-reliance through skills sharing.
           </p>
         </div>
       </section>
@@ -207,7 +216,8 @@ const serviceList = [
       <section class="mb-20">
         <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">What We Offer</h2>
         <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
-          Comprehensive digital solutions designed to serve, connect, and empower our community.
+          Comprehensive digital solutions designed to serve, connect, and empower our community through 
+          skills sharing, cultural preservation, heritage documentation, and service accessibility.
         </p>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map(service => (
@@ -235,11 +245,30 @@ const serviceList = [
         </div>
       </section>
 
+      <!-- Goals Section -->
+      <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Our Goals</h2>
+        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          Working towards a more connected, empowered, and self-sufficient community through 
+          economic opportunities, cultural preservation, and heritage documentation.
+        </p>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {goals.map(goal => (
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
+              <h3 class="text-xl font-semibold mb-4 text-primary-600">{goal.title}</h3>
+              <p class="text-gray-600 leading-relaxed">
+                {goal.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <!-- Service Listing Section -->
       <section class="mb-20 bg-gray-50 py-16 px-4">
         <div class="max-w-6xl mx-auto">
           <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Our Service Directory</h2>
-          <div class="grid gap-8 md:grid-cols-3">
+          <div class="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
             {serviceList.map(category => (
               <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
                 <h3 class="text-xl font-semibold mb-6 text-primary-600">{category.category}</h3>
@@ -277,18 +306,29 @@ const serviceList = [
       <section class="max-w-2xl mx-auto text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-6">Get Involved</h2>
         <p class="text-gray-600 mb-8 leading-relaxed">
-          We welcome community participation and feedback. Reach out to learn more about how 
-          you can contribute to our mission.
+          We welcome community participation and feedback. Whether you want to share your skills, 
+          learn from others, or contribute to our mission, there are many ways to get involved.
         </p>
-        <a
-          href="/contact"
-          class="inline-flex items-center px-8 py-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
-        >
-          Contact Us
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </a>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/skills-exchange"
+            class="inline-flex items-center px-8 py-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
+          >
+            Join Skills Exchange
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+          <a
+            href="/contact"
+            class="inline-flex items-center px-8 py-4 border border-primary-600 rounded-lg shadow-sm text-lg font-medium text-primary-600 bg-white hover:bg-gray-50 transition-colors duration-300"
+          >
+            Contact Us
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+        </div>
       </section>
     </div>
   </main>

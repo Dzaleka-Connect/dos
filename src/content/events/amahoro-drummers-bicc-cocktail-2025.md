@@ -8,7 +8,7 @@ category: "Live Performance"
 featured: true
 image: "https://mbc.mw/storage/2024/06/Tumaini-2019-Badre-Bahaji-LR-42-scaled-960x640.jpg?v=1717262482"
 organizer: "BICC Cocktail"
-status: "upcoming"
+status: "past"
 contact:
   email: "urukwavu@gmail.com"
   phone: "+265 995 649 642"

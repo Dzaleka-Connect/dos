@@ -1,0 +1,249 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const title = "Visual Arts Community | Dzaleka Public Art & Visual Culture";
+const description = "Meet the talented visual artists from Dzaleka Refugee Camp who are part of the Dzaleka Art Project, contributing to the vibrant artistic community.";
+
+// Artists from Dzaleka Art Project website
+const visualArtists = [
+  { name: "Kakozi Fariala", role: "Visual Artist", slug: "kakozi-fariala" },
+  { name: "Nyanduhuro Jacqueline", role: "Visual Artist", slug: "nyanduhuro-jacqueline" },
+  { name: "Paulin Engambee", role: "Visual Artist", slug: "paulin-engambee" },
+  { name: "Wabangwebangwe Francois", role: "Visual Artist", slug: "wabangwebangwe-francois" },
+  { name: "Richesse Kabamba", role: "Visual Artist", slug: "richesse-kabamba" },
+  { name: "Xavera Nyirazaninka", role: "Visual Artist", slug: "xavera-nyirazaninka" },
+  { name: "Serge Kasongo", role: "Team Leader for Visual Arts", slug: "serge-kasongo" },
+  { name: "Paul Kabobya", role: "Visual Artist", slug: "paul-kabobya" },
+  { name: "Niyitegeka Consilie", role: "Visual Artist", slug: "niyitegeka-consilie" },
+  { name: "Riziki Nyembo", role: "Visual Artist", slug: "riziki-nyembo" },
+  { name: "Kiputa Ninda", role: "Visual Artist", slug: "kiputa-ninda" },
+  { name: "Kabarinda Ernest", role: "Visual Artist", slug: "kabarinda-ernest" },
+  { name: "Imani Kiza", role: "Visual Artist", slug: "imani-kiza" },
+  { name: "Frank Liamba", role: "Visual Artist", slug: "frank-liamba" },
+  { name: "Boanerges Jean-Luc", role: "Visual Artist", slug: "boanerges-jean-luc" },
+  { name: "Annuarite Kat", role: "Visual Artist", slug: "annuarite-kat" },
+  { name: "Ibila Kililo Joseph", role: "Visual Artist", slug: "ibila-kililo-joseph" },
+  { name: "Jonathan Kizazi", role: "Visual Artist", slug: "jonathan-kizazi" },
+  { name: "Muniyo Shuti Clementine", role: "Visual Artist", slug: "muniyo-shuti-clementine" },
+  { name: "Mwanbyake Sanginga Musole", role: "Visual Artist", slug: "mwanbyake-sanginga-musole" },
+  { name: "Aksanti Murhebwa", role: "Visual Artist", slug: "aksanti-murhebwa" },
+  { name: "Nelly", role: "Visual Artist", slug: "nelly" },
+  { name: "Misago Merida", role: "Visual Artist", slug: "misago-merida" },
+  { name: "Philippe Mputu", role: "Visual Artist", slug: "philippe-mputu" }
+];
+---
+
+<MainLayout title={title} description={description}>
+  <Layout>
+    <!-- Back Button -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <a 
+        href="/public-art-catalogue" 
+        class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Public Art Catalogue</span>
+      </a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 text-white">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/dzaleka-hero.jpeg');"></div>
+      <div class="absolute inset-0 bg-black/60"></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <div class="mb-6">
+          <span class="inline-flex items-center px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/90">
+            Dzaleka Art Project
+          </span>
+        </div>
+        
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+          Visual Arts<br/>
+          <span class="text-pink-300">Community</span>
+        </h1>
+        
+        <p class="text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed">
+          Meet the talented visual artists from Dzaleka Refugee Camp who are part of the Dzaleka Art Project
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#artists" class="inline-flex items-center px-6 py-3 bg-white text-purple-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+            Meet the Artists
+          </a>
+          <a href="https://www.dzalekaartproject.com/visualarts.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
+            Visit Dzaleka Art Project
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl p-8 shadow-sm">
+          <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Authentic Stories of Resilience & Creativity</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="space-y-6">
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">War & Displacement Experiences</h3>
+                  <p class="text-gray-600 leading-relaxed">
+                    Artists like Serge Kasongo, who fled political violence in DRC, and Annuarite Kat, who survived kidnapping and trauma, 
+                    use their art to process and share their experiences of war and forced displacement.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Family Tragedies & Resilience</h3>
+                  <p class="text-gray-600 leading-relaxed">
+                    Stories of loss and survival, like Niyitegeka Consilie who lost her husband to war and cares for nine children, 
+                    or Paul Kabobya supporting his family of six through art, show incredible resilience in the face of tragedy.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="space-y-6">
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Artistic Development Paths</h3>
+                  <p class="text-gray-600 leading-relaxed">
+                    From Imani Kiza who started drawing at age 9 and learned through Children's Art Club, to François Bangwe who 
+                    taught himself at age 12 and now teaches others - each artist has a unique journey of artistic growth.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Community Contributions</h3>
+                  <p class="text-gray-600 leading-relaxed">
+                    Artists like Kiputa Ninda and Riziki Nyembo run businesses serving the community, while others like 
+                    Serge Kasongo mentor young artists and organize exhibitions that bring the community together.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4 text-center">Business Challenges & Successes</h3>
+            <div class="grid md:grid-cols-3 gap-4 text-center">
+              <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="text-2xl font-bold text-red-600 mb-2">Challenges</div>
+                <p class="text-sm text-gray-600">Limited materials, low market prices, and restricted mobility affect artists' ability to earn sustainable incomes</p>
+              </div>
+              <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="text-2xl font-bold text-green-600 mb-2">Successes</div>
+                <p class="text-sm text-gray-600">Artists like Serge Kasongo sell works for 30,000-250,000 MWK and participate in international exhibitions</p>
+              </div>
+              <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="text-2xl font-bold text-blue-600 mb-2">Innovation</div>
+                <p class="text-sm text-gray-600">Using found materials, teaching others, and creating community-based art initiatives</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Artists Grid -->
+    <section id="artists" class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Meet the Visual Artists</h2>
+          <p class="text-lg text-gray-600">Each artist has a unique story of survival, resilience, and creative expression. Click on any artist to learn their authentic story.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {visualArtists.map((artist) => {
+            const artistImagePath = `/images/artists/${artist.slug}.jpg`;
+            const hasImage = true; // This will be true when you add the images
+            
+            return (
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300 group">
+                <div class="text-center">
+                  <div class="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors overflow-hidden">
+                    {hasImage ? (
+                      <img 
+                        src={artistImagePath} 
+                        alt={`${artist.name} - ${artist.role}`}
+                        class="w-full h-full object-cover rounded-full"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    )}
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                    {artist.name}
+                  </h3>
+                  <p class="text-sm text-purple-600 font-medium mb-4">{artist.role}</p>
+                  <a href={`/public-art-catalogue/artist/${artist.slug}`} class="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium text-sm">
+                    View Profile
+                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        
+
+      </div>
+    </section>
+
+    <!-- Dzaleka Art Project Reference -->
+    <section class="py-16 bg-purple-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Dzaleka Art Project</h2>
+        <p class="text-gray-700 mb-8 leading-relaxed max-w-2xl mx-auto">
+          This visual arts community is part of the Dzaleka Art Project, an initiative that supports and promotes 
+          artistic expression within the refugee camp. For more information about the project and to see the artists' work, 
+          visit the official Dzaleka Art Project website.
+        </p>
+        <a 
+          href="https://www.dzalekaartproject.com/visualarts.html" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-8 py-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+        >
+          Visit Dzaleka Art Project
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </Layout>
+</MainLayout>

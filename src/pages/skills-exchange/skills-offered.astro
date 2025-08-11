@@ -14,12 +14,6 @@ const itemsPerPage = 6;
 const allProfiles = await getCollection('profiles');
 const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available');
 
-// Calculate pagination
-const totalItems = skillsOffered.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-
 // Get categories
 const categories = [...new Set(skillsOffered.map(profile => profile.data.category))].sort();
 const selectedCategory = Astro.url.searchParams.get('category');
@@ -28,6 +22,12 @@ const selectedCategory = Astro.url.searchParams.get('category');
 const filteredProfiles = selectedCategory
   ? skillsOffered.filter(profile => profile.data.category === selectedCategory)
   : skillsOffered;
+
+// Calculate pagination for filtered results
+const totalItems = filteredProfiles.length;
+const totalPages = Math.ceil(totalItems / itemsPerPage);
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
 
 const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
 ---
@@ -229,7 +229,10 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
         <div class="w-0 flex-1 flex">
           {currentPage > 1 && (
             <a
-              href={`/skills-exchange/skills-offered/${currentPage - 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              href={currentPage === 2 
+                ? `/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`
+                : `/skills-exchange/skills-offered/${currentPage - 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`
+              }
               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
             >
               <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,7 +245,10 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
         <div class="hidden md:flex">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(num => (
             <a
-              href={`/skills-exchange/skills-offered/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              href={num === 1 
+                ? `/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`
+                : `/skills-exchange/skills-offered/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`
+              }
               class={`inline-flex items-center px-4 py-2 text-sm font-medium ${
                 currentPage === num
                   ? 'text-primary-600 bg-primary-50'

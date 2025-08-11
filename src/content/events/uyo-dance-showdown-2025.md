@@ -8,7 +8,7 @@ category: "Dance Competition"
 image: "/images/Black Snake Dance Crew.png"
 featured: true
 organizer: "UYO Dance"
-status: "upcoming"
+status: "past"
 contact:
   phone: "+265 99 95 03 23"
 registration:

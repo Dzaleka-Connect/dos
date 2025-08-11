@@ -8,7 +8,7 @@ category: "Film Festival"
 featured: true
 image: "https://www.kwenda.co/_next/image?url=https%3A%2F%2Futfs.io%2Ff%2FpN6BM3fsVpnFuwJwGSFFpU8oMjrdWB1XGTyLRHx2a3gKZ5fC&w=3840&q=75"
 organizer: "European Union Delegation to Malawi"
-status: "upcoming"
+status: "past"
 contact:
   email: "delegation-malawi@eeas.europa.eu"
   website: "https://www.eeas.europa.eu/delegations/malawi"

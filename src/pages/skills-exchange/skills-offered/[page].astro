@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   // Get all categories for filtering
   const categories = [...new Set(skillsOffered.map(profile => profile.data.category))].sort();
   
-  // Generate paths for each category and page combination
+  // Generate paths for each page (no category filtering)
   const paths = [];
   
   // Add paths for no category (all profiles)
@@ -31,37 +31,26 @@ export async function getStaticPaths() {
     });
   }
   
-  // Add paths for each category
-  categories.forEach(category => {
-    const categoryProfiles = skillsOffered.filter(profile => profile.data.category === category);
-    const totalPagesCategory = Math.ceil(categoryProfiles.length / itemsPerPage);
-    
-    for (let page = 1; page <= totalPagesCategory; page++) {
-      paths.push({
-        params: { page: page.toString() },
-        props: { 
-          profiles: categoryProfiles,
-          currentPage: page,
-          totalPages: totalPagesCategory,
-          totalItems: categoryProfiles.length,
-          categories,
-          itemsPerPage,
-          selectedCategory: category
-        }
-      });
-    }
-  });
-  
   return paths;
 }
 
 const { page } = Astro.params;
-const { profiles, currentPage, totalPages, totalItems, categories, itemsPerPage, selectedCategory } = Astro.props;
+const { profiles, currentPage, totalPages, totalItems, categories, itemsPerPage } = Astro.props;
 
-// Calculate pagination
+// Get category from URL search params
+const selectedCategory = Astro.url.searchParams.get('category');
+
+// Filter profiles by category if selected
+const filteredProfiles = selectedCategory
+  ? profiles.filter(profile => profile.data.category === selectedCategory)
+  : profiles;
+
+// Recalculate pagination for filtered results
+const filteredTotalItems = filteredProfiles.length;
+const filteredTotalPages = Math.ceil(filteredTotalItems / itemsPerPage);
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
-const currentProfiles = profiles.slice(startIndex, endIndex);
+const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
 
 const pageTitle = "Skills Offered";
 const pageDescription = "Browse skills being shared by community members";
@@ -131,7 +120,7 @@ const pageDescription = "Browse skills being shared by community members";
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 mb-8">
       <div class="flex-1 min-w-0">
         <h2 class="text-2xl font-bold text-gray-900">
-          {profiles.length} Skills Available
+          {filteredTotalItems} Skills Available
           {selectedCategory && <span class="text-primary-600">in {selectedCategory}</span>}
         </h2>
       </div>
@@ -259,17 +248,55 @@ const pageDescription = "Browse skills being shared by community members";
     </div>
 
     <!-- Pagination -->
-    {totalPages > 1 && (
-      <div class="mt-12">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          baseUrl={selectedCategory 
-            ? `/skills-exchange/skills-offered/?category=${selectedCategory}`
-            : '/skills-exchange/skills-offered/'
-          }
-        />
-      </div>
+    {filteredTotalPages > 1 && (
+      <nav class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0 mt-12">
+        <div class="w-0 flex-1 flex">
+          {currentPage > 1 && (
+            <a
+              href={currentPage === 2 
+                ? `/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`
+                : `/skills-exchange/skills-offered/${currentPage - 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`
+              }
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
+            >
+              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Previous
+            </a>
+          )}
+        </div>
+        <div class="hidden md:flex">
+          {Array.from({ length: filteredTotalPages }, (_, i) => i + 1).map(num => (
+            <a
+              href={num === 1 
+                ? `/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`
+                : `/skills-exchange/skills-offered/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`
+              }
+              class={`inline-flex items-center px-4 py-2 text-sm font-medium ${
+                currentPage === num
+                  ? 'text-primary-600 bg-primary-50'
+                  : 'text-gray-700 hover:text-primary-600'
+              }`}
+            >
+              {num}
+            </a>
+          ))}
+        </div>
+        <div class="w-0 flex-1 flex justify-end">
+          {currentPage < filteredTotalPages && (
+            <a
+              href={`/skills-exchange/skills-offered/${currentPage + 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
+            >
+              Next
+              <svg class="ml-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          )}
+        </div>
+      </nav>
     )}
   </div>
 </MainLayout>

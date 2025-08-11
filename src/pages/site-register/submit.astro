@@ -1,0 +1,439 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const title = "Submit a Site - Dzaleka Digital Site Register";
+const description = "Submit information about a cultural, historical, or community site in Dzaleka Refugee Camp for inclusion in our digital register.";
+---
+
+<MainLayout title={title} description={description}>
+  <Layout>
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white">
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <h1 class="text-4xl font-bold sm:text-5xl mb-6">
+          Submit a Site
+        </h1>
+        <p class="text-xl text-gray-200 max-w-2xl mx-auto">
+          Help us document important cultural, historical, and community locations in Dzaleka Refugee Camp
+        </p>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+          <a href="/site-register" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Site Register
+          </a>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-lg p-8">
+          <form id="submitForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+            <!-- Basic Information -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Basic Information</h2>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="siteName" class="block text-sm font-medium text-gray-700 mb-2">
+                    Site/Location Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="siteName"
+                    name="siteName"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter the official name of the site"
+                  />
+                </div>
+
+                <div>
+                  <label for="alternativeNames" class="block text-sm font-medium text-gray-700 mb-2">
+                    Alternative/Local Names
+                  </label>
+                  <input
+                    type="text"
+                    id="alternativeNames"
+                    name="alternativeNames"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Any other names the site is known by"
+                  />
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <label for="yearEstablished" class="block text-sm font-medium text-gray-700 mb-2">
+                  Year Established
+                </label>
+                <input
+                  type="number"
+                  id="yearEstablished"
+                  name="yearEstablished"
+                  min="1900"
+                  max="2025"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="e.g., 1994"
+                />
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Description</h2>
+              
+              <div class="space-y-6">
+                <div>
+                  <label for="siteDescription" class="block text-sm font-medium text-gray-700 mb-2">
+                    Site Description *
+                  </label>
+                  <textarea
+                    id="siteDescription"
+                    name="siteDescription"
+                    required
+                    rows="6"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Provide a detailed description of the physical features, surroundings, and current use of the site..."
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label for="significance" class="block text-sm font-medium text-gray-700 mb-2">
+                    Statement of Significance *
+                  </label>
+                  <textarea
+                    id="significance"
+                    name="significance"
+                    required
+                    rows="6"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Explain why this site matters historically, culturally, or socially to the Dzaleka community..."
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label for="associatedEvents" class="block text-sm font-medium text-gray-700 mb-2">
+                    Associated Events
+                  </label>
+                  <textarea
+                    id="associatedEvents"
+                    name="associatedEvents"
+                    rows="4"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Describe any important events, ceremonies, or activities that have taken place at this site..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location & Status -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Location & Status</h2>
+              
+              <div>
+                <label for="campZone" class="block text-sm font-medium text-gray-700 mb-2">
+                  Camp Zone Location
+                </label>
+                <input
+                  type="text"
+                  id="campZone"
+                  name="campZone"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="e.g., Zone A, Block 3, near the market"
+                />
+              </div>
+
+              <div class="mt-6">
+                <label for="legalStatus" class="block text-sm font-medium text-gray-700 mb-2">
+                  Legal Status *
+                </label>
+                <select
+                  id="legalStatus"
+                  name="legalStatus"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select legal status</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                  <option value="protected">Protected</option>
+                  <option value="restricted">Restricted</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Condition & Resources -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Condition & Resources</h2>
+              
+              <div class="space-y-6">
+                <div>
+                  <label for="condition" class="block text-sm font-medium text-gray-700 mb-2">
+                    Condition & Preservation Needs
+                  </label>
+                  <textarea
+                    id="condition"
+                    name="condition"
+                    rows="4"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Describe the current condition of the site and any preservation or restoration needs..."
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label for="linkedResources" class="block text-sm font-medium text-gray-700 mb-2">
+                    Linked Resources
+                  </label>
+                  <input
+                    type="url"
+                    id="linkedResources"
+                    name="linkedResources"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="URL to articles, reports, videos, or other relevant resources"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Photos -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Photos</h2>
+              
+              <div>
+                <label for="photos" class="block text-sm font-medium text-gray-700 mb-2">
+                  Upload Photos *
+                </label>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <div class="mt-4">
+                    <label for="photo-upload" class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                      Choose Files
+                    </label>
+                    <input id="photo-upload" name="photos" type="file" multiple accept="image/*" class="hidden" required />
+                  </div>
+                  <p class="mt-2 text-sm text-gray-600">
+                    Upload multiple photos showing different angles and features of the site
+                  </p>
+                  <p id="photoUploadStatus" class="text-sm mt-2"></p>
+                </div>
+              </div>
+              <!-- Hidden field for uploaded photo URLs -->
+              <input type="hidden" name="photoUrls" id="photoUrlsInput" />
+            </div>
+
+            <!-- Contributor Information -->
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Contributor Information</h2>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="contributorName" class="block text-sm font-medium text-gray-700 mb-2">
+                    Your Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="contributorName"
+                    name="contributorName"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div>
+                  <label for="contributorEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                    Your Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="contributorEmail"
+                    name="contributorEmail"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your email address"
+                  />
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <div class="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="consent"
+                    name="consent"
+                    required
+                    class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label for="consent" class="ml-2 block text-sm text-gray-700">
+                    I confirm this information is accurate and I give permission for it to be published on the Dzaleka Digital Heritage platform. *
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+              <button
+                type="submit"
+                id="submitButton"
+                class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+              >
+                <span id="submitText">Submit Site</span>
+                <span id="submitSpinner" class="hidden">
+                  <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-green-800">Site submitted successfully! We'll review it and add it to the register.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-red-800">Error submitting site. Please try again.</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </Layout>
+
+  <script>
+    const form = document.getElementById('submitForm') as HTMLFormElement;
+    const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
+    const submitText = document.getElementById('submitText') as HTMLElement;
+    const submitSpinner = document.getElementById('submitSpinner') as HTMLElement;
+    const successMessage = document.getElementById('successMessage') as HTMLElement;
+    const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+    const photoInput = document.getElementById('photo-upload') as HTMLInputElement;
+    const photoUrlsInput = document.getElementById('photoUrlsInput') as HTMLInputElement;
+    const photoUploadStatus = document.getElementById('photoUploadStatus') as HTMLElement;
+
+    async function uploadToCloudinary(file: File, statusElement: HTMLElement) {
+      statusElement.textContent = 'Uploading...';
+      statusElement.classList.remove('text-red-500', 'text-green-500');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'dzaleka_events');
+
+        const response = await fetch(
+          'https://api.cloudinary.com/v1_1/dcvwslmow/upload',
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+
+        const data = await response.json();
+        
+        if (data.secure_url) {
+          statusElement.textContent = 'Upload successful!';
+          statusElement.classList.add('text-green-500');
+          return data.secure_url;
+        } else {
+          throw new Error('Upload failed');
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        statusElement.textContent = 'Upload failed. Please try again.';
+        statusElement.classList.add('text-red-500');
+        return null;
+      }
+    }
+
+    // Add file upload handler
+    photoInput.addEventListener('change', async () => {
+      const files = photoInput.files;
+      if (files) {
+        const urls = [];
+        for (let i = 0; i < files.length; i++) {
+          const url = await uploadToCloudinary(files[i], photoUploadStatus);
+          if (url) urls.push(url);
+        }
+        photoUrlsInput.value = JSON.stringify(urls);
+      }
+    });
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Show loading state
+        submitButton.disabled = true;
+        submitText.classList.add('hidden');
+        submitSpinner.classList.remove('hidden');
+        successMessage.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Show success message
+            form.reset();
+            successMessage.classList.remove('hidden');
+            setTimeout(() => {
+              successMessage.classList.add('hidden');
+            }, 5000);
+          } else {
+            throw new Error(data.error || 'Error submitting site');
+          }
+        } catch (error) {
+          // Show error message
+          console.error('Submission error:', error);
+          errorMessage.classList.remove('hidden');
+          setTimeout(() => {
+            errorMessage.classList.add('hidden');
+          }, 5000);
+        } finally {
+          // Reset button state
+          submitButton.disabled = false;
+          submitText.classList.remove('hidden');
+          submitSpinner.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+</MainLayout>
