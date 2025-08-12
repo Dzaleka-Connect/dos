@@ -67,20 +67,20 @@ const structuredData = [
       {
         "@type": "PropertyValue",
         "name": "Total Population",
-        "value": "57,438",
+        "value": "55,425",
         "unitText": "Refugees"
       },
       {
         "@type": "PropertyValue",
-        "name": "Women and Girls Percentage",
-        "value": "60",
-        "unitText": "Percent"
+        "name": "DRC Refugees",
+        "value": "35,952",
+        "unitText": "Refugees"
       },
       {
         "@type": "PropertyValue",
-        "name": "Nationalities",
-        "value": "5",
-        "unitText": "Countries"
+        "name": "Funding Gap",
+        "value": "79",
+        "unitText": "Percent"
       }
     ],
     "distribution": {
@@ -201,26 +201,29 @@ const languages = [
 
       {/* Stats */}
       <div class="mt-16">
-        <dl class="rounded-lg bg-white/10 backdrop-blur-lg shadow-lg sm:grid sm:grid-cols-3">
+        <dl class="rounded-lg bg-white/10 backdrop-blur-lg shadow-lg sm:grid sm:grid-cols-4">
           <div class="flex flex-col border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-r">
             <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Total Refugees</dt>
-            <dd class="order-1 text-5xl font-bold text-white">57,438</dd>
+            <dd class="order-1 text-5xl font-bold text-white">55,425</dd>
           </div>
           <div class="flex flex-col border-t border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-l sm:border-r">
-            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Women & Girls</dt>
-            <dd class="order-1 text-5xl font-bold text-white">60%</dd>
+            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">DRC Refugees</dt>
+            <dd class="order-1 text-5xl font-bold text-white">35,952</dd>
+          </div>
+          <div class="flex flex-col border-t border-b border-gray-100/10 p-6 text-center sm:border-0 sm:border-l sm:border-r">
+            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Funding Gap</dt>
+            <dd class="order-1 text-5xl font-bold text-white">79%</dd>
           </div>
           <div class="flex flex-col border-t border-gray-100/10 p-6 text-center sm:border-0 sm:border-l">
-            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">Main Nationalities</dt>
-            <dd class="order-1 text-5xl font-bold text-white">5</dd>
+            <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-100">UNHCR Staff</dt>
+            <dd class="order-1 text-5xl font-bold text-white">66</dd>
           </div>
         </dl>
         <div class="text-center mt-4 text-sm text-gray-300">
           <p>Sources: 
-            <a href="https://reliefweb.int/report/malawi/wfp-malawi-country-brief-december-2024" class="underline hover:text-white" target="_blank" rel="noopener noreferrer">WFP Malawi Country Brief (Dec 2024)</a>, 
-            <a href="https://www.unhcr.org/countries/malawi" class="underline hover:text-white" target="_blank" rel="noopener noreferrer">UNHCR Malawi</a>
+            <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" class="underline hover:text-white" target="_blank" rel="noopener noreferrer">UNHCR Malawi Fact Sheet (Aug 2024)</a>
           </p>
-          <p class="mt-2 text-xs">Primary origins: DRC (62%), Burundi (19%), Rwanda (7%), Others (2%)</p>
+          <p class="mt-2 text-xs">Latest data as of August 2024</p>
         </div>
       </div>
     </div>
@@ -237,11 +240,13 @@ const languages = [
           <a href="#historical" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">History</a>
           <a href="#legal" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Legal</a>
           <a href="#demographics" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Demographics</a>
+          <a href="#housing-infrastructure" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Housing</a>
           <a href="#events" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Events</a>
           <a href="#stakeholders" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Stakeholders</a>
           <a href="#economic" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Economic</a>
           <a href="#healthcare" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Healthcare</a>
           <a href="#additional-demographics" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">More Demographics</a>
+          <a href="#funding-unhcr" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap">Funding</a>
         </div>
       </div>
     </nav>
@@ -344,7 +349,167 @@ const languages = [
 
         <div id="demographics" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Demographics</h2>
+          
+          {/* Updated Population Statistics */}
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Current Population (August 2024)</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">Total Registered:</span>
+                  <span class="font-bold text-lg text-blue-600">55,425</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">New Arrivals:</span>
+                  <span class="font-bold text-blue-600">304</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">In Situ:</span>
+                  <span class="font-bold text-blue-600">12</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">New-born Babies:</span>
+                  <span class="font-bold text-blue-600">147</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Camp Capacity Issues</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">Original Design Capacity:</span>
+                  <span class="font-bold text-orange-600">10,000-12,000</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">Current Population:</span>
+                  <span class="font-bold text-red-600">55,425</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">Monthly New Arrivals:</span>
+                  <span class="font-bold text-orange-600">~200</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">Monthly New Births:</span>
+                  <span class="font-bold text-orange-600">~150</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Population by Country of Origin */}
+          <div class="bg-white rounded-xl p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Population by Country of Origin</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-gray-700">DRC</span>
+                <span class="font-bold text-blue-600">35,952</span>
+              </div>
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-gray-700">Burundi</span>
+                <span class="font-bold text-blue-600">12,113</span>
+              </div>
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-gray-700">Rwanda</span>
+                <span class="font-bold text-blue-600">6,960</span>
+              </div>
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-gray-700">Somalia</span>
+                <span class="font-bold text-blue-600">161</span>
+              </div>
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-gray-700">Ethiopia</span>
+                <span class="font-bold text-blue-600">164</span>
+              </div>
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span class="text-gray-700">Others</span>
+                <span class="font-bold text-blue-600">75</span>
+              </div>
+            </div>
+            <div class="mt-4 text-center">
+              <span class="text-lg font-bold text-gray-900">TOTAL: 55,425</span>
+            </div>
+          </div>
+
           <PopulationChart client:load />
+        </div>
+
+        {/* Housing & Infrastructure Section */}
+        <div id="housing-infrastructure" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Housing & Infrastructure Development</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Current Challenges -->
+            <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Current Challenges</h3>
+              </div>
+              <p class="text-gray-600 text-sm leading-relaxed">
+                Dzaleka refugee camp remains highly congested, resulting in poor living conditions and inadequate infrastructure due to limited space and resources.
+              </p>
+            </div>
+
+            <!-- 2023 Progress -->
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">2023 Achievements</h3>
+              </div>
+              <p class="text-gray-600 text-sm leading-relaxed">
+                To improve housing conditions, a total of <strong>8,047 housing units</strong> were constructed in 2023, significantly enhancing living standards for camp residents.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- 2024 Progress -->
+            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">2024 Developments</h3>
+              </div>
+              <p class="text-gray-600 text-sm leading-relaxed">
+                Significant progress in shelter and infrastructure establishment at camp extension areas: <strong>Katubza</strong>, <strong>Woodlot</strong>, and <strong>Dzaleka Hills</strong> to accommodate more refugees.
+              </p>
+            </div>
+
+            <!-- New Settlement Plan -->
+            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">New Settlement Plan</h3>
+              </div>
+              <p class="text-gray-600 text-sm leading-relaxed">
+                Government identified new site in <strong>Kayilizi area, Chitipa</strong>: <strong>439 hectares</strong> to accommodate <strong>10,240 households</strong> (approximately <strong>51,200 individuals</strong>).
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 text-center">
+            <p class="text-sm text-gray-500">
+              Two Joint Assessment Missions (JAM) conducted in July 2023 and March 2024 to evaluate the new settlement site.
+            </p>
+            <p class="text-sm text-gray-500 mt-2">
+              Source: <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">UNHCR Malawi Fact Sheet - August 2024</a>
+            </p>
+          </div>
         </div>
 
         {/* Second Section: Events & Stakeholders */}
@@ -373,6 +538,84 @@ const languages = [
         <div id="additional-demographics" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Additional Demographics</h2>
           <DemographicsSection client:load />
+        </div>
+
+        {/* Funding & UNHCR Presence Section */}
+        <div id="funding-unhcr" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Funding & UNHCR Presence</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            {/* Funding Overview */}
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Funding Overview (August 2024)</h3>
+              <div class="space-y-4">
+                <div class="text-center">
+                  <div class="text-3xl font-bold text-green-600 mb-2">USD 27.9M</div>
+                  <div class="text-gray-600">Total Requested</div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="text-center p-3 bg-white/50 rounded-lg">
+                    <div class="text-xl font-bold text-green-600">21%</div>
+                    <div class="text-sm text-gray-600">Funded</div>
+                    <div class="text-lg font-semibold text-green-700">USD 5.9M</div>
+                  </div>
+                  <div class="text-center p-3 bg-white/50 rounded-lg">
+                    <div class="text-xl font-bold text-red-600">79%</div>
+                    <div class="text-sm text-gray-600">Unfunded</div>
+                    <div class="text-lg font-semibold text-red-700">USD 22M</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* UNHCR Staff */}
+            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">UNHCR Staff Presence</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">National Staff:</span>
+                  <span class="font-bold text-purple-600">23</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">International Staff:</span>
+                  <span class="font-bold text-purple-600">9</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600">Others:</span>
+                  <span class="font-bold text-purple-600">34</span>
+                </div>
+                <div class="border-t pt-3 mt-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-semibold">TOTAL STAFF:</span>
+                    <span class="font-bold text-lg text-purple-600">66</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* UNHCR Offices */}
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">UNHCR Offices</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="text-center p-4 bg-white/50 rounded-lg">
+                <div class="text-2xl font-bold text-blue-600 mb-2">1</div>
+                <div class="text-gray-700 font-medium">Branch Office</div>
+                <div class="text-sm text-gray-600">Lilongwe</div>
+              </div>
+              <div class="text-center p-4 bg-white/50 rounded-lg">
+                <div class="text-2xl font-bold text-blue-600 mb-2">1</div>
+                <div class="text-gray-700 font-medium">Field Office</div>
+                <div class="text-sm text-gray-600">Karonga</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">
+              Source: <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">UNHCR Malawi Fact Sheet - August 2024</a>
+            </p>
+          </div>
         </div>
       </div>
 
