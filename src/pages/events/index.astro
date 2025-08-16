@@ -199,16 +199,19 @@ const eventsStructuredData = {
     </div>
 
     <!-- Upcoming Events -->
-    <section class="mb-12">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-900">Upcoming Events</h2>
+    <section class="mb-16">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-2">Upcoming Events</h2>
+          <p class="text-gray-600">Discover what's happening next in our community</p>
+        </div>
         <div class="flex items-center gap-4">
           <a
             href="/events/organize"
-            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 transition-colors"
+            class="group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Submit an Event
           </a>
@@ -219,14 +222,14 @@ const eventsStructuredData = {
         <div>
           <EventGrid events={upcomingEvents} />
           {allUpcomingEvents.length > 4 && (
-            <div class="mt-6 text-center">
+            <div class="mt-8 text-center">
               <a 
                 href="/events/upcoming/1" 
-                class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
+                class="group inline-flex items-center text-primary-600 hover:text-primary-700 font-medium px-6 py-3 bg-primary-50 rounded-lg hover:bg-primary-100 transition-all duration-200"
               >
                 View All Upcoming Events ({allUpcomingEvents.length})
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
             </div>
@@ -239,19 +242,22 @@ const eventsStructuredData = {
 
     <!-- Past Events -->
     <section>
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Past Events</h2>
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Past Events</h2>
+        <p class="text-gray-600">Relive the memories of our previous community gatherings</p>
+      </div>
       {allPastEvents.length > 0 ? (
         <div>
           <EventGrid events={pastEvents} />
           {allPastEvents.length > 4 && (
-            <div class="mt-6 text-center">
+            <div class="mt-8 text-center">
               <a 
                 href="/events/past/1" 
-                class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
+                class="group inline-flex items-center text-primary-600 hover:text-primary-700 font-medium px-6 py-3 bg-primary-50 rounded-lg hover:bg-primary-100 transition-all duration-200"
               >
                 View All Past Events ({allPastEvents.length})
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
             </div>

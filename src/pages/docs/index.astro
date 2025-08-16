@@ -1,5 +1,5 @@
 ---
-import MainLayout from '../../layouts/MainLayout.astro';
+import DocsLayout from '../../layouts/DocsLayout.astro';
 import { getCollection } from 'astro:content';
 
 const docs = await getCollection('docs');
@@ -66,7 +66,7 @@ const getRelatedDocs = (doc) => {
 const relatedDocs = getRelatedDocs(currentDoc);
 ---
 
-<MainLayout title={`${currentDoc.data.title} - Documentation`}>
+<DocsLayout title={`${currentDoc.data.title} - Documentation`}>
   <div class="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
     <!-- Documentation Header -->
     <div class="bg-gradient-to-r from-primary-600 to-primary-800 relative overflow-hidden">
@@ -212,7 +212,7 @@ const relatedDocs = getRelatedDocs(currentDoc);
       </div>
     </div>
   </div>
-</MainLayout>
+</DocsLayout>
 
 <style>
   /* Add smooth scrolling for anchor links */

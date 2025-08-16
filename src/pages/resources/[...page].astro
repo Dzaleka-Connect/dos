@@ -276,48 +276,34 @@ const paginationStructuredData = {
         {/* Search Form */}
         <div class="mt-8 max-w-2xl mx-auto">
           <form 
-            action="/search/results" 
-            method="get" 
+            action="/search/results/" 
+            method="GET" 
             class="flex flex-col sm:flex-row gap-4"
           >
             <div class="flex-1">
-              <div class="relative">
+              <div class="relative group">
                 <input 
                   type="text"
-                  id="searchInput"
                   name="q"
                   placeholder="Search resources..."
-                  value={search}
-                  class="w-full px-4 py-3 pl-11 bg-white/10 backdrop-blur-sm text-white placeholder-white/70 rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                  value={search || ''}
+                  class="w-full px-4 py-3 pl-11 bg-white/10 backdrop-blur-sm text-white placeholder-white/70 rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 group-hover:border-white/30 transition-all duration-200"
                 />
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/70" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/70 group-hover:text-white/90 transition-colors" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                   </svg>
                 </div>
               </div>
             </div>
 
-            <select 
-              name="category"
-              class="px-4 py-3 bg-white/10 backdrop-blur-sm text-white rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
-            >
-              <option value="">All Categories</option>
-              {categories.map(category => (
-                <option 
-                  value={category}
-                  selected={category === category}
-                  class="text-gray-900"
-                >
-                  {category}
-                </option>
-              ))}
-            </select>
-
             <button 
               type="submit"
-              class="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors flex items-center justify-center"
+              class="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center font-medium"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
               Search
             </button>
           </form>
@@ -385,48 +371,58 @@ const paginationStructuredData = {
             {sortedResources.map(resource => (
               <a 
                 href={`/resources/${resource.slug}`} 
-                class="group block transform hover:scale-[1.02] transition-all duration-200"
+                class="group block transform hover:scale-[1.02] transition-all duration-300"
               >
-                <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
-                  <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
-                      {resource.data.title}
-                    </h2>
-                    {resource.data.fileType === 'pdf' ? (
-                      <span class="text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                      </span>
-                    ) : (
-                      <span class="text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                      </span>
-                    )}
-                  </div>
+                <article class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-primary-200 relative overflow-hidden">
+                  {/* Gradient overlay on hover */}
+                  <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/20 group-hover:to-primary-50/10 transition-all duration-300"></div>
                   
-                  <p class="text-gray-600 mb-4 line-clamp-2">{resource.data.description}</p>
-                  
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2">
-                      <span class={`px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColors[resource.data.category] || 'bg-gray-100 text-gray-800'}`}>
-                        {resource.data.category}
-                      </span>
-                      {resource.data.featured && (
-                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                          Featured
-                        </span>
-                      )}
+                  <div class="relative">
+                    <div class="flex justify-between items-start mb-4">
+                      <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 flex-1">
+                        {resource.data.title}
+                      </h2>
+                      <div class="flex-shrink-0 ml-3 mt-1">
+                        {resource.data.fileType === 'pdf' ? (
+                          <span class="inline-flex items-center justify-center w-8 h-8 bg-red-100 text-red-600 rounded-full group-hover:bg-red-200 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                          </span>
+                        ) : (
+                          <span class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full group-hover:bg-blue-200 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <time class="text-sm text-gray-500" datetime={resource.data.lastUpdated || resource.data.date}>
-                      {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                    </time>
+                    
+                    <p class="text-gray-600 mb-6 line-clamp-3 leading-relaxed">{resource.data.description}</p>
+                    
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center space-x-2">
+                        <span class={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[resource.data.category] || 'bg-gray-100 text-gray-800'} transition-colors`}>
+                          {resource.data.category}
+                        </span>
+                        {resource.data.featured && (
+                          <span class="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-primary-100 to-primary-200 text-primary-800 border border-primary-300">
+                            ⭐ Featured
+                          </span>
+                        )}
+                      </div>
+                      <time class="text-sm text-gray-500 flex items-center" datetime={resource.data.lastUpdated || resource.data.date}>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                      </time>
+                    </div>
                   </div>
                 </article>
               </a>
@@ -444,9 +440,26 @@ const paginationStructuredData = {
           )}
         </>
       ) : (
-        <div class="text-center py-12 bg-white rounded-lg shadow-sm">
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No resources found</h3>
-          <p class="text-gray-600">Try adjusting your search or filter criteria</p>
+        <div class="text-center py-16 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-sm border border-gray-100">
+          <div class="max-w-md mx-auto">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">No resources found</h3>
+            <p class="text-gray-600 mb-6">Try adjusting your search terms or browse all categories</p>
+            <div class="flex flex-wrap justify-center gap-2">
+              {categories.slice(0, 5).map(cat => (
+                <a 
+                  href={`/resources?category=${encodeURIComponent(cat)}`}
+                  class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm hover:bg-primary-100 transition-colors"
+                >
+                  {cat}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </section>
@@ -455,60 +468,72 @@ const paginationStructuredData = {
     <section class="mt-16 mb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* History Card */}
-        <div class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors">
-          <div class="text-primary-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+          <div class="relative">
+            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">History</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Established to preserve and share the rich history and experiences of the Dzaleka refugee community, documenting our journey since 1994.
+            </p>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">History</h3>
-          <p class="text-gray-600 text-sm">
-            Established to preserve and share the rich history and experiences of the Dzaleka refugee community, documenting our journey since 1994.
-          </p>
         </div>
 
         {/* Mission & Scope Card */}
-        <div class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors">
-          <div class="text-primary-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+          <div class="relative">
+            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Mission & Scope</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Providing free, easy, and speedy access to comprehensive and high-quality resources about refugee rights, protection, and community development.
+            </p>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Mission & Scope</h3>
-          <p class="text-gray-600 text-sm">
-            Providing free, easy, and speedy access to comprehensive and high-quality resources about refugee rights, protection, and community development.
-          </p>
         </div>
 
         {/* Our audience Card */}
-        <div class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors">
-          <div class="text-primary-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+          <div class="relative">
+            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Our audience</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Our audience includes displaced individuals, decision-makers, legal experts, policymakers, scholars, UNHCR staff, and the public.
+            </p>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Our audience</h3>
-          <p class="text-gray-600 text-sm">
-            Our audience includes displaced individuals, decision-makers, legal experts, policymakers, scholars, UNHCR staff, and the public.
-          </p>
         </div>
 
         {/* Contact Us Card */}
-        <a href="/contact" class="bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-100 transition-colors block">
-          <div class="text-primary-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Contact Us</h3>
-          <p class="text-gray-600 text-sm mb-3">
-            Have questions or want to contribute? Reach out to our team for support, feedback, or collaboration opportunities. 
-          </p>
-          <div class="flex items-center text-sm text-primary-600">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-            </svg>
-            <span>dzalekaconnect@gmail.com</span>
+        <a href="/contact" class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 block relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+          <div class="relative">
+            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Contact Us</h3>
+            <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+              Have questions or want to contribute? Reach out to our team for support, feedback, or collaboration opportunities. 
+            </p>
+            <div class="flex items-center text-sm text-primary-600 group-hover:text-primary-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+              </svg>
+              <span>dzalekaconnect@gmail.com</span>
+            </div>
           </div>
         </a>
       </div>

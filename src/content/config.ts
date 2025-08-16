@@ -280,6 +280,28 @@ const storySchema = z.object({
   })).optional(),
 });
 
+// Define the inspirational story schema
+const inspirationalStorySchema = z.object({
+  title: z.string(),
+  name: z.string(),
+  age: z.number().optional(),
+  country: z.string(),
+  description: z.string(),
+  date: z.string(),
+  featured: z.boolean().optional(),
+  personImage: z.string().optional(),
+  content: z.string(),
+  tags: z.array(z.string()).optional(),
+  contact: z.object({
+    email: z.string().optional(),
+    whatsapp: z.string().optional(),
+    twitter: z.string().optional(),
+    instagram: z.string().optional(),
+    facebook: z.string().optional(),
+    website: z.string().optional(),
+  }).optional(),
+});
+
 // Define the collections
 const profilesCollection = defineCollection({
   type: 'content',
@@ -361,6 +383,11 @@ const stories = defineCollection({
   schema: storySchema,
 });
 
+const inspirationalStories = defineCollection({
+  type: 'content',
+  schema: inspirationalStorySchema,
+});
+
 // Export collections
 export const collections = {
   profiles: profilesCollection,
@@ -375,4 +402,5 @@ export const collections = {
   jobs: jobsCollection,
   photos: photos,
   stories: stories,
+  'inspirational-stories': inspirationalStories,
 } as const;

@@ -14,68 +14,94 @@ function formatLocation(location: any) {
   if (typeof location === 'string') return location;
   return location.venue && location.city ? `${location.venue}, ${location.city}` : location.venue || location.city || 'Location TBA';
 }
+
+// Function to format date in CAT timezone (UTC+2)
+function formatDateInCAT(date: Date, formatString: string) {
+  try {
+    // Create a new date object and add 2 hours for CAT timezone
+    const catDate = new Date(date.getTime() + (2 * 60 * 60 * 1000));
+    return format(catDate, formatString);
+  } catch (error) {
+    // Fallback to original date if conversion fails
+    return format(date, formatString);
+  }
+}
 ---
 
 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
   {events.map(event => (
-    <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+    <article class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 relative">
       <a href={`/events/${event.slug}`} class="block">
-        <div class="aspect-w-16 aspect-h-9">
+        <div class="aspect-w-16 aspect-h-9 relative overflow-hidden">
           <img 
             src={event.data.image} 
             alt={event.data.title}
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <div class="absolute bottom-4 right-4">
-            <Badge variant={event.data.status === 'upcoming' ? 'blue' : 'green'}>
-              {event.data.category}
-            </Badge>
-          </div>
-        </div>
-        <div class="p-4">
-          <div class="flex items-center justify-between mb-2">
-            <div>
-              <time datetime={event.data.date.toISOString()} class:list={[
-                'text-sm block',
-                event.data.isTBA ? 'text-yellow-600 font-medium' : 'text-gray-500'
-              ]}>
-                {event.data.isTBA ? '📅 Date TBA' : format(event.data.date, 'MMM d, yyyy')}
-              </time>
-            </div>
-            <span class="text-sm font-medium capitalize" class:list={{
-              'text-blue-600': event.data.status === 'upcoming',
-              'text-gray-500': event.data.status === 'past'
+          {/* Gradient overlay */}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          {/* Category badge */}
+          <div class="absolute bottom-3 right-3 z-10">
+            <span class="px-3 py-1 rounded-full text-xs font-medium shadow-sm bg-white/90 backdrop-blur-sm border border-white/20" class:list={{
+              'text-blue-700': event.data.status === 'upcoming',
+              'text-green-700': event.data.status === 'past'
             }}>
-              {event.data.status}
+              {event.data.category}
             </span>
           </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-2">{event.data.title}</h3>
-          <p class="text-gray-600 text-sm mb-4 line-clamp-2">{event.data.description}</p>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <time datetime={event.data.date.toISOString()} class:list={[
+                'text-sm block flex items-center',
+                event.data.isTBA ? 'text-yellow-600 font-medium' : 'text-gray-500'
+              ]}>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {event.data.isTBA ? '📅 Date TBA' : formatDateInCAT(event.data.date, 'MMM d, yyyy')}
+              </time>
+              {/* Status indicator */}
+              <span class="px-2 py-1 rounded-full text-xs font-medium capitalize" class:list={{
+                'bg-blue-100 text-blue-800 border border-blue-200': event.data.status === 'upcoming',
+                'bg-gray-100 text-gray-800 border border-gray-200': event.data.status === 'past'
+              }}>
+                {event.data.status}
+              </span>
+            </div>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">{event.data.title}</h3>
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">{event.data.description}</p>
           
           {/* Time and Location - Stack on mobile, side by side on desktop */}
-          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+          <div class="space-y-3 mb-4">
             <div class="flex items-center text-gray-500">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <time datetime={event.data.date.toISOString()} class:list={[
                 'text-sm',
                 event.data.isTBA ? 'text-yellow-600 font-medium' : ''
               ]}>
-                {event.data.isTBA ? '⏰ Time TBA' : format(event.data.date, 'h:mm a')}
+                {event.data.isTBA ? '⏰ Time TBA' : formatDateInCAT(event.data.date, 'h:mm a')}
               </time>
             </div>
             <div class="flex items-center text-gray-500">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <span class="text-sm">{formatLocation(event.data.location)}</span>
             </div>
           </div>
           
-          <div class="mt-4 flex justify-end">
-            <span class="text-sm font-medium text-primary-600 hover:text-primary-700">
-              Learn More →
+          <div class="flex justify-end">
+            <span class="text-sm font-medium text-primary-600 group-hover:text-primary-700 transition-colors flex items-center">
+              Learn More 
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
             </span>
           </div>
         </div>
