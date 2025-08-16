@@ -79,14 +79,31 @@ export function downloadFile(content, type, filename) {
 }
 
 export function convertToCSV(data) {
+  const locationStats = getLocationStats(data);
+  
   const rows = [
     ['Metric', 'Value'],
     ['Total Views', data.totalViews || 0],
     ['Total Visitors', Object.values(data.visitors || {}).reduce((acc, arr) => acc + arr.length, 0)],
     ['Bounce Rate', `${calculateBounceRate(data)}%`],
     ['Avg Session Duration', formatDuration(calculateAvgSessionDuration(data))],
-    ['Pages per Session', calculatePagesPerSession(data)]
+    ['Pages per Session', calculatePagesPerSession(data)],
+    ['Countries Reached', locationStats.totalCountries],
+    ['Top Country', locationStats.topCountry ? locationStats.topCountry.name : 'N/A'],
+    ['Top Country Visits', locationStats.topCountry ? locationStats.topCountry.visits : 0]
   ];
+  
+  // Add location breakdown
+  if (Object.keys(data.locations || {}).length > 0) {
+    rows.push(['', '']); // Empty row
+    rows.push(['Country', 'Visits']);
+    Object.entries(data.locations)
+      .sort(([, a], [, b]) => b.visits - a.visits)
+      .forEach(([country, locationData]) => {
+        rows.push([country, locationData.visits]);
+      });
+  }
+  
   return rows.map(row => row.join(',')).join('\n');
 }
 
@@ -171,10 +188,8 @@ export function cleanupOldData(data) {
       });
     }
     
-    // Limit error logs to last 25 (reduced from 50)
-    if (data.errors?.jsErrors) {
-      data.errors.jsErrors = data.errors.jsErrors.slice(-25);
-    }
+    // Clean up error data (now stored in interactions)
+    // Errors are now tracked via trackUserInteraction, so we don't need this cleanup
     
     // Clean up engagement data
     if (data.engagement) {
@@ -247,7 +262,6 @@ export async function backupAnalyticsData(data) {
       const aggressiveCleanup = (data) => {
         // Remove detailed data
         delete data.interactions;
-        delete data.errors;
         delete data.loadTimes;
         delete data.timeOnPage;
         delete data.performance;
@@ -565,52 +579,7 @@ export function trackInteraction(type, element) {
   }
 }
 
-// Track scroll depth
-export function trackScrollDepth() {
-  let maxScroll = 0;
-  
-  window.addEventListener('scroll', async () => {
-    try {
-      const percent = Math.round(
-        (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
-      );
-      
-      if (percent > maxScroll) {
-        maxScroll = percent;
-        const data = await getAnalyticsData();
-        const sessionId = getSessionId();
-        
-        if (!data || !data.sessions) {
-          console.warn('No analytics data or sessions available');
-          return;
-        }
-        
-        const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
-        const deviceSessionId = `${sessionId}_${deviceId}`;
-        
-        // Initialize session if it doesn't exist
-        if (!data.sessions[deviceSessionId]) {
-          data.sessions[deviceSessionId] = {
-            id: deviceSessionId,
-            startTime: new Date().toISOString(),
-            lastActive: new Date().toISOString(),
-            maxScroll: 0,
-            device: getDeviceType(),
-            browser: getBrowserName(),
-            screenSize: `${window.innerWidth}x${window.innerHeight}`,
-            pageViews: 0,
-            pages: []
-          };
-        }
-        
-        data.sessions[deviceSessionId].maxScroll = maxScroll;
-        await storeAnalyticsData(data);
-      }
-    } catch (error) {
-      console.error('Error tracking scroll depth:', error);
-    }
-  });
-}
+
 
 // Calculate average performance metrics
 export function calculateAverageLoadTime(data) {
@@ -723,36 +692,7 @@ export function trackEngagement(data, type) {
   return data;
 }
 
-// Track JavaScript errors
-export function trackErrors(data) {
-  data.errors = data.errors || {
-    jsErrors: [],
-    apiErrors: [],
-    networkErrors: [],
-    browserInfo: {}
-  };
-  
-  window.addEventListener('error', (event) => {
-    data.errors.jsErrors.push({
-      message: event.message,
-      source: event.filename,
-      line: event.lineno,
-      column: event.colno,
-      timestamp: new Date().toISOString(),
-      stack: event?.error?.stack
-    });
-    storeAnalyticsData(data);
-  });
-  
-  window.addEventListener('unhandledrejection', (event) => {
-    data.errors.jsErrors.push({
-      type: 'Promise',
-      message: event.reason,
-      timestamp: new Date().toISOString()
-    });
-    storeAnalyticsData(data);
-  });
-}
+
 
 // Track web vitals
 export function trackWebVitals(data) {
@@ -1058,6 +998,123 @@ export function trackContentInteraction(data) {
   }
 }
 
+// Get location data from IP address
+async function getLocationData() {
+  try {
+    // Use a free IP geolocation API
+    const response = await fetch('https://ipapi.co/json/');
+    if (!response.ok) {
+      throw new Error('Failed to fetch location data');
+    }
+    
+    const locationData = await response.json();
+    return {
+      country: locationData.country_name || 'Unknown',
+      countryCode: locationData.country_code || 'Unknown',
+      region: locationData.region || 'Unknown',
+      city: locationData.city || 'Unknown',
+      timezone: locationData.timezone || 'Unknown',
+      ip: locationData.ip || 'Unknown'
+    };
+  } catch (error) {
+    console.warn('Could not fetch location data:', error);
+    return {
+      country: 'Unknown',
+      countryCode: 'Unknown',
+      region: 'Unknown',
+      city: 'Unknown',
+      timezone: 'Unknown',
+      ip: 'Unknown'
+    };
+  }
+}
+
+// Enhanced device and browser detection
+function getEnhancedDeviceInfo() {
+  const userAgent = navigator.userAgent;
+  const platform = navigator.platform;
+  const vendor = navigator.vendor;
+  
+  // Operating System detection
+  let os = 'Unknown';
+  if (userAgent.includes('Windows')) os = 'Windows';
+  else if (userAgent.includes('Mac')) os = 'macOS';
+  else if (userAgent.includes('Linux')) os = 'Linux';
+  else if (userAgent.includes('Android')) os = 'Android';
+  else if (userAgent.includes('iOS')) os = 'iOS';
+  
+  // Browser detection
+  let browser = 'Unknown';
+  let browserVersion = 'Unknown';
+  if (userAgent.includes('Chrome')) {
+    browser = 'Chrome';
+    browserVersion = userAgent.match(/Chrome\/(\d+)/)?.[1] || 'Unknown';
+  } else if (userAgent.includes('Firefox')) {
+    browser = 'Firefox';
+    browserVersion = userAgent.match(/Firefox\/(\d+)/)?.[1] || 'Unknown';
+  } else if (userAgent.includes('Safari')) {
+    browser = 'Safari';
+    browserVersion = userAgent.match(/Version\/(\d+)/)?.[1] || 'Unknown';
+  } else if (userAgent.includes('Edge')) {
+    browser = 'Edge';
+    browserVersion = userAgent.match(/Edge\/(\d+)/)?.[1] || 'Unknown';
+  }
+  
+  // Connection information
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const connectionType = connection ? connection.effectiveType || connection.type || 'Unknown' : 'Unknown';
+  
+  return {
+    os,
+    browser,
+    browserVersion,
+    connectionType,
+    screenWidth: window.screen.width,
+    screenHeight: window.screen.height,
+    colorDepth: window.screen.colorDepth,
+    pixelRatio: window.devicePixelRatio,
+    touchSupport: 'ontouchstart' in window,
+    cookieEnabled: navigator.cookieEnabled,
+    doNotTrack: navigator.doNotTrack,
+    language: navigator.language,
+    languages: navigator.languages || [navigator.language]
+  };
+}
+
+// Get referrer information
+function getReferrerInfo() {
+  const referrer = document.referrer;
+  if (!referrer) return { type: 'direct', source: 'Direct' };
+  
+  try {
+    const url = new URL(referrer);
+    const hostname = url.hostname.toLowerCase();
+    
+    // Social media detection
+    if (hostname.includes('facebook.com')) return { type: 'social', source: 'Facebook' };
+    if (hostname.includes('twitter.com') || hostname.includes('x.com')) return { type: 'social', source: 'Twitter' };
+    if (hostname.includes('instagram.com')) return { type: 'social', source: 'Instagram' };
+    if (hostname.includes('linkedin.com')) return { type: 'social', source: 'LinkedIn' };
+    if (hostname.includes('youtube.com')) return { type: 'social', source: 'YouTube' };
+    if (hostname.includes('tiktok.com')) return { type: 'social', source: 'TikTok' };
+    
+    // Search engine detection
+    if (hostname.includes('google.com')) return { type: 'search', source: 'Google' };
+    if (hostname.includes('bing.com')) return { type: 'search', source: 'Bing' };
+    if (hostname.includes('yahoo.com')) return { type: 'search', source: 'Yahoo' };
+    if (hostname.includes('duckduckgo.com')) return { type: 'search', source: 'DuckDuckGo' };
+    
+    // Email detection
+    if (hostname.includes('mail.google.com') || hostname.includes('outlook.com') || hostname.includes('yahoo.com')) {
+      return { type: 'email', source: 'Email' };
+    }
+    
+    return { type: 'referral', source: hostname };
+  } catch (error) {
+    return { type: 'referral', source: 'Unknown' };
+  }
+}
+
 // Track page views with immediate total views update
 export async function trackPageView() {
   try {
@@ -1072,6 +1129,23 @@ export async function trackPageView() {
     data.sessions = data.sessions || {};
     data.pageViews = data.pageViews || {};
     data.visitors = data.visitors || {};
+    data.locations = data.locations || {};
+    data.referrers = data.referrers || {};
+    data.operatingSystems = data.operatingSystems || {};
+    data.browserVersions = data.browserVersions || {};
+    data.connectionTypes = data.connectionTypes || {};
+    data.screenSizes = data.screenSizes || {};
+    data.timeOnPage = data.timeOnPage || {};
+    
+    // Get enhanced device and referrer information
+    const deviceInfo = getEnhancedDeviceInfo();
+    const referrerInfo = getReferrerInfo();
+    
+    // Get location data (only for new sessions to avoid excessive API calls)
+    let locationData = null;
+    if (!data.sessions[deviceSessionId]) {
+      locationData = await getLocationData();
+    }
     
     // Update page views and total views
     data.pageViews[path] = (data.pageViews[path] || 0) + 1;
@@ -1090,8 +1164,57 @@ export async function trackPageView() {
         screenSize: `${window.innerWidth}x${window.innerHeight}`,
         language: navigator.language || 'unknown',
         deviceId: deviceId,
-        visitorId: getVisitorId()
+        visitorId: getVisitorId(),
+        location: locationData,
+        // Enhanced data
+        os: deviceInfo.os,
+        browserVersion: deviceInfo.browserVersion,
+        connectionType: deviceInfo.connectionType,
+        screenWidth: deviceInfo.screenWidth,
+        screenHeight: deviceInfo.screenHeight,
+        colorDepth: deviceInfo.colorDepth,
+        pixelRatio: deviceInfo.pixelRatio,
+        touchSupport: deviceInfo.touchSupport,
+        referrer: referrerInfo,
+        pageLoadTime: performance.now(),
+        userAgent: navigator.userAgent
       };
+      
+      // Update location statistics
+      if (locationData) {
+        const countryKey = locationData.country;
+        if (!data.locations[countryKey]) {
+          data.locations[countryKey] = {
+            country: locationData.country,
+            countryCode: locationData.countryCode,
+            visits: 0,
+            sessions: [],
+            lastVisit: null
+          };
+        }
+        data.locations[countryKey].visits += 1;
+        data.locations[countryKey].sessions.push(deviceSessionId);
+        data.locations[countryKey].lastVisit = timestamp;
+      }
+      
+      // Update enhanced statistics
+      // Operating Systems
+      data.operatingSystems[deviceInfo.os] = (data.operatingSystems[deviceInfo.os] || 0) + 1;
+      
+      // Browser Versions
+      const browserKey = `${deviceInfo.browser} ${deviceInfo.browserVersion}`;
+      data.browserVersions[browserKey] = (data.browserVersions[browserKey] || 0) + 1;
+      
+      // Connection Types
+      data.connectionTypes[deviceInfo.connectionType] = (data.connectionTypes[deviceInfo.connectionType] || 0) + 1;
+      
+      // Screen Sizes
+      const screenKey = `${deviceInfo.screenWidth}x${deviceInfo.screenHeight}`;
+      data.screenSizes[screenKey] = (data.screenSizes[screenKey] || 0) + 1;
+      
+      // Referrers
+      const referrerKey = referrerInfo.source;
+      data.referrers[referrerKey] = (data.referrers[referrerKey] || 0) + 1;
     } else {
       data.sessions[deviceSessionId].lastActive = timestamp;
       data.sessions[deviceSessionId].pageViews += 1;
@@ -1104,7 +1227,8 @@ export async function trackPageView() {
     const visitorEntry = {
       id: getVisitorId(),
       deviceId: deviceId,
-      timestamp: timestamp
+      timestamp: timestamp,
+      location: locationData
     };
     if (!data.visitors[today].some(v => v.id === visitorEntry.id && v.deviceId === visitorEntry.deviceId)) {
       data.visitors[today].push(visitorEntry);
@@ -1120,9 +1244,361 @@ export async function trackPageView() {
       sessions: {},
       pageViews: {},
       visitors: {},
+      locations: {},
       totalViews: getTotalViews() // Always return current total views
     };
   }
+}
+
+// Track user interactions
+export function trackUserInteraction(type, details = {}) {
+  try {
+    const timestamp = new Date().toISOString();
+    const sessionId = getSessionId();
+    
+    // Store interaction data
+    const interactionData = {
+      type,
+      details,
+      timestamp,
+      sessionId,
+      page: window.location.pathname,
+      userAgent: navigator.userAgent
+    };
+    
+    // Store in localStorage for now (could be sent to server)
+    const interactions = JSON.parse(localStorage.getItem('dzaleka_interactions') || '[]');
+    interactions.push(interactionData);
+    
+    // Keep only last 1000 interactions to prevent storage bloat
+    if (interactions.length > 1000) {
+      interactions.splice(0, interactions.length - 1000);
+    }
+    
+    localStorage.setItem('dzaleka_interactions', JSON.stringify(interactions));
+    
+    return true;
+  } catch (error) {
+    console.error('Error tracking user interaction:', error);
+    return false;
+  }
+}
+
+// Track scroll depth
+export function trackScrollDepth() {
+  let maxScroll = 0;
+  let scrollTracked = false;
+  
+  window.addEventListener('scroll', () => {
+    const scrollPercent = Math.round(
+      (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
+    );
+    
+    if (scrollPercent > maxScroll) {
+      maxScroll = scrollPercent;
+      
+      // Track significant scroll milestones
+      if (!scrollTracked && maxScroll >= 25) {
+        trackUserInteraction('scroll_25', { depth: maxScroll });
+        scrollTracked = true;
+      } else if (maxScroll >= 50 && !scrollTracked) {
+        trackUserInteraction('scroll_50', { depth: maxScroll });
+        scrollTracked = true;
+      } else if (maxScroll >= 75 && !scrollTracked) {
+        trackUserInteraction('scroll_75', { depth: maxScroll });
+        scrollTracked = true;
+      } else if (maxScroll >= 90 && !scrollTracked) {
+        trackUserInteraction('scroll_90', { depth: maxScroll });
+        scrollTracked = true;
+      }
+    }
+  });
+}
+
+// Track form interactions
+export function trackFormInteractions() {
+  document.addEventListener('submit', (e) => {
+    const form = e.target;
+    trackUserInteraction('form_submit', {
+      formId: form.id || 'unknown',
+      formAction: form.action,
+      formMethod: form.method,
+      formElements: form.elements.length
+    });
+  });
+  
+  document.addEventListener('input', (e) => {
+    const input = e.target;
+    if (input.form) {
+      trackUserInteraction('form_input', {
+        formId: input.form.id || 'unknown',
+        inputType: input.type,
+        inputName: input.name || 'unknown'
+      });
+    }
+  });
+}
+
+// Track link clicks
+export function trackLinkClicks() {
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (link) {
+      const isExternal = link.hostname !== window.location.hostname;
+      trackUserInteraction('link_click', {
+        href: link.href,
+        text: link.textContent?.trim().substring(0, 50) || 'unknown',
+        isExternal,
+        target: link.target || '_self'
+      });
+    }
+  });
+}
+
+// Track file downloads
+export function trackDownloads() {
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[download]');
+    if (link) {
+      trackUserInteraction('file_download', {
+        filename: link.download || 'unknown',
+        href: link.href,
+        fileType: link.href.split('.').pop() || 'unknown'
+      });
+    }
+  });
+}
+
+// Track video interactions
+export function trackVideoInteractions() {
+  document.querySelectorAll('video').forEach(video => {
+    video.addEventListener('play', () => {
+      trackUserInteraction('video_play', {
+        src: video.src,
+        duration: video.duration,
+        currentTime: video.currentTime
+      });
+    });
+    
+    video.addEventListener('pause', () => {
+      trackUserInteraction('video_pause', {
+        src: video.src,
+        currentTime: video.currentTime,
+        progress: Math.round((video.currentTime / video.duration) * 100)
+      });
+    });
+    
+    video.addEventListener('ended', () => {
+      trackUserInteraction('video_complete', {
+        src: video.src,
+        duration: video.duration
+      });
+    });
+  });
+}
+
+// Track search behavior
+export function trackSearchBehavior() {
+  const searchInputs = document.querySelectorAll('input[type="search"], input[name*="search"], input[placeholder*="search"]');
+  searchInputs.forEach(input => {
+    input.addEventListener('input', (e) => {
+      const query = e.target.value;
+      if (query.length >= 3) {
+        trackUserInteraction('search_input', {
+          query: query.substring(0, 50),
+          inputId: input.id || 'unknown',
+          queryLength: query.length
+        });
+      }
+    });
+    
+    input.addEventListener('search', (e) => {
+      const query = e.target.value;
+      if (query) {
+        trackUserInteraction('search_submit', {
+          query: query.substring(0, 50),
+          inputId: input.id || 'unknown'
+        });
+      }
+    });
+  });
+}
+
+// Track performance metrics
+export function trackPerformanceMetrics() {
+  if ('performance' in window) {
+    // Wait for page to fully load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const perfData = performance.getEntriesByType('navigation')[0];
+        const paintEntries = performance.getEntriesByType('paint');
+        
+        const metrics = {
+          // Navigation timing
+          domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+          loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
+          domInteractive: perfData.domInteractive,
+          domComplete: perfData.domComplete,
+          
+          // Paint timing
+          firstPaint: paintEntries.find(entry => entry.name === 'first-paint')?.startTime || 0,
+          firstContentfulPaint: paintEntries.find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
+          
+          // Resource timing
+          totalResources: performance.getEntriesByType('resource').length,
+          totalResourceSize: performance.getEntriesByType('resource').reduce((sum, resource) => sum + (resource.transferSize || 0), 0),
+          
+          // Memory usage (if available)
+          memoryUsed: performance.memory?.usedJSHeapSize || 0,
+          memoryTotal: performance.memory?.totalJSHeapSize || 0,
+          
+          // Connection info
+          connectionType: navigator.connection?.effectiveType || 'unknown',
+          connectionSpeed: navigator.connection?.downlink || 0
+        };
+        
+        trackUserInteraction('performance_metrics', metrics);
+      }, 1000); // Wait 1 second after load
+    });
+  }
+}
+
+// Track Core Web Vitals
+export function trackCoreWebVitals() {
+  // Largest Contentful Paint (LCP)
+  if ('PerformanceObserver' in window) {
+    const lcpObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      trackUserInteraction('lcp', { value: lastEntry.startTime });
+    });
+    lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+    
+    // First Input Delay (FID)
+    const fidObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        trackUserInteraction('fid', { value: entry.processingStart - entry.startTime });
+      });
+    });
+    fidObserver.observe({ entryTypes: ['first-input'] });
+    
+    // Cumulative Layout Shift (CLS)
+    let clsValue = 0;
+    const clsObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
+        }
+      });
+      trackUserInteraction('cls', { value: clsValue });
+    });
+    clsObserver.observe({ entryTypes: ['layout-shift'] });
+  }
+}
+
+// Track error events
+export function trackErrors() {
+  window.addEventListener('error', (e) => {
+    trackUserInteraction('javascript_error', {
+      message: e.message,
+      filename: e.filename,
+      lineno: e.lineno,
+      colno: e.colno,
+      error: e.error?.stack || 'unknown'
+    });
+  });
+  
+  window.addEventListener('unhandledrejection', (e) => {
+    trackUserInteraction('unhandled_promise_rejection', {
+      reason: e.reason?.toString() || 'unknown'
+    });
+  });
+}
+
+// Initialize all enhanced tracking
+export function initializeEnhancedTracking() {
+  console.log('Initializing enhanced analytics tracking...');
+  
+  // Initialize all tracking functions
+  trackScrollDepth();
+  trackFormInteractions();
+  trackLinkClicks();
+  trackDownloads();
+  trackVideoInteractions();
+  trackSearchBehavior();
+  trackPerformanceMetrics();
+  trackCoreWebVitals();
+  trackErrors();
+  
+  console.log('Enhanced analytics tracking initialized');
+}
+
+// Get comprehensive analytics data summary
+export function getAnalyticsDataSummary() {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const interactions = JSON.parse(localStorage.getItem('dzaleka_interactions') || '[]');
+  
+  return {
+    // Basic metrics
+    totalViews: data.totalViews || 0,
+    totalSessions: Object.keys(data.sessions || {}).length,
+    totalVisitors: Object.values(data.visitors || {}).reduce((acc, arr) => acc + arr.length, 0),
+    
+    // Location data
+    countries: Object.keys(data.locations || {}).length,
+    topCountries: Object.entries(data.locations || {})
+      .sort(([, a], [, b]) => b.visits - a.visits)
+      .slice(0, 5)
+      .map(([country, data]) => ({ country, visits: data.visits })),
+    
+    // Device data
+    operatingSystems: data.operatingSystems || {},
+    browserVersions: data.browserVersions || {},
+    connectionTypes: data.connectionTypes || {},
+    screenSizes: data.screenSizes || {},
+    
+    // Referrer data
+    referrers: data.referrers || {},
+    topReferrers: Object.entries(data.referrers || {})
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5)
+      .map(([source, count]) => ({ source, count })),
+    
+    // User interactions
+    totalInteractions: interactions.length,
+    interactionTypes: interactions.reduce((acc, interaction) => {
+      acc[interaction.type] = (acc[interaction.type] || 0) + 1;
+      return acc;
+    }, {}),
+    
+    // Performance data
+    performanceMetrics: interactions
+      .filter(i => i.type === 'performance_metrics')
+      .map(i => i.details),
+    
+    // Error data
+    errors: interactions.filter(i => i.type === 'javascript_error'),
+    
+    // Search data
+    searches: interactions.filter(i => i.type === 'search_submit'),
+    
+    // Form data
+    formSubmissions: interactions.filter(i => i.type === 'form_submit'),
+    
+    // Download data
+    downloads: interactions.filter(i => i.type === 'file_download'),
+    
+    // Video data
+    videoInteractions: interactions.filter(i => i.type.startsWith('video_')),
+    
+    // Scroll data
+    scrollDepth: interactions.filter(i => i.type.startsWith('scroll_')),
+    
+    // Link clicks
+    linkClicks: interactions.filter(i => i.type === 'link_click')
+  };
 }
 
 // Update visitor counting
@@ -1133,4 +1609,27 @@ export function getTotalVisitors(data, date) {
     data.visitors[date].map(v => `${v.id}_${v.deviceId}`)
   );
   return uniqueVisitors.size;
+}
+
+// Get location statistics
+export function getLocationStats(data) {
+  const locations = data.locations || {};
+  const validLocations = Object.entries(locations).filter(([, location]) => 
+    location && typeof location === 'object' && typeof location.visits === 'number'
+  );
+  
+  const totalCountries = validLocations.length;
+  const totalVisits = validLocations.reduce((sum, [, location]) => sum + (location.visits || 0), 0);
+  const topCountry = validLocations
+    .sort(([, a], [, b]) => (b.visits || 0) - (a.visits || 0))[0];
+  
+  return {
+    totalCountries,
+    totalVisits,
+    topCountry: topCountry ? {
+      name: topCountry[0],
+      visits: topCountry[1].visits || 0,
+      countryCode: topCountry[1].countryCode || 'Unknown'
+    } : null
+  };
 } 

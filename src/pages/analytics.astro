@@ -28,7 +28,8 @@ import {
   cleanupOldData,
   MAX_BACKUP_SIZE,
   getTotalVisitors,
-  getTotalViews
+  getTotalViews,
+  getLocationStats
 } from '../utils/analytics-utils';
 
 const title = "Analytics | Dzaleka Heritage Archive";
@@ -179,7 +180,10 @@ const title = "Analytics | Dzaleka Heritage Archive";
       cleanupOldData,
       MAX_BACKUP_SIZE,
       getTotalVisitors,
-      getTotalViews
+      getTotalViews,
+      getLocationStats,
+      initializeEnhancedTracking,
+      getAnalyticsDataSummary
     } from '../utils/analytics-utils';
     
     // Track if we're using fallback/session data
@@ -307,8 +311,13 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <div class="flex items-center justify-between py-2">
               <div class="flex items-center space-x-3">
                 <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span class="text-sm text-gray-600">${session.device}</span>
-                <span class="text-sm text-gray-400">${session.browser}</span>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-gray-600">${session.device}</span>
+                  <span class="text-sm text-gray-400">${session.browser}</span>
+                  ${session.location ? `
+                    <span class="text-xs text-gray-500">${getCountryFlag(session.location.countryCode)} ${session.location.country}</span>
+                  ` : ''}
+                </div>
               </div>
               <div class="text-sm text-gray-500">
                 <div class="flex items-center gap-2">
@@ -366,47 +375,104 @@ const title = "Analytics | Dzaleka Heritage Archive";
     }
 
     function renderLocationMetrics(data) {
-      // Get locations from sessions
-      const sessions = Object.values(data.sessions || {});
-      const locations = sessions.reduce((acc, session) => {
-        const device = session.device || 'Unknown Device';
-        const browser = session.browser || 'Unknown Browser';
-        const key = `${device} / ${browser}`;
-        
-        if (!acc[key]) {
-          acc[key] = { total: 0, sessions: [] };
-        }
-        
-        acc[key].total += 1;
-        acc[key].sessions.push({
-          lastActive: session.lastActive,
-          pageViews: session.pageViews || 0
-        });
-        
-        return acc;
-      }, {});
+      // Get locations from the locations data structure
+      const locations = data.locations || {};
+      
+      if (Object.keys(locations).length === 0) {
+        return '<div class="text-sm text-gray-500 text-center">No location data available</div>';
+      }
       
       return Object.entries(locations)
-        .sort(([, a], [, b]) => b.total - a.total)
-        .map(([location, data]) => `
-          <div class="flex flex-col gap-2 py-2">
-            <div class="flex items-center justify-between font-medium">
-              <span class="text-sm text-gray-800">${location}</span>
-              <span class="text-sm text-gray-900">${data.total} visits</span>
-            </div>
-            <div class="pl-4 space-y-1">
-              ${data.sessions
-                .sort((a, b) => new Date(b.lastActive) - new Date(a.lastActive))
-                .slice(0, 3)
-                .map(session => `
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-600">Last active: ${formatDate(session.lastActive)}</span>
-                    <span class="text-xs text-gray-500">${session.pageViews} page views</span>
+        .filter(([, locationData]) => locationData && typeof locationData === 'object')
+        .sort(([, a], [, b]) => (b.visits || 0) - (a.visits || 0))
+        .map(([country, locationData]) => {
+          const recentSessions = (locationData.sessions || [])
+            .map(sessionId => data.sessions?.[sessionId])
+            .filter(Boolean)
+            .sort((a, b) => new Date(b.lastActive || 0) - new Date(a.lastActive || 0))
+            .slice(0, 3);
+          
+          return `
+            <div class="flex flex-col gap-2 py-2 border-b border-gray-100 last:border-b-0">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">${getCountryFlag(locationData.countryCode)}</span>
+                  <div>
+                    <div class="font-medium text-sm text-gray-800">${locationData.country}</div>
+                    <div class="text-xs text-gray-500">${locationData.countryCode}</div>
                   </div>
-                `).join('')}
+                </div>
+                <div class="text-right">
+                  <div class="text-sm font-semibold text-gray-900">${locationData.visits}</div>
+                  <div class="text-xs text-gray-500">visits</div>
+                </div>
+              </div>
+              ${recentSessions.length > 0 ? `
+                <div class="pl-6 space-y-1">
+                  <div class="text-xs text-gray-500 font-medium">Recent activity:</div>
+                  ${recentSessions.map(session => `
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-gray-600">${session.device} • ${session.browser}</span>
+                      <span class="text-gray-500">${formatDate(session.lastActive)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+    }
+
+    // Helper function to get country flag emoji
+    function getCountryFlag(countryCode) {
+      if (!countryCode || countryCode === 'Unknown') return '🌍';
+      
+      // Convert country code to flag emoji
+      const codePoints = countryCode
+        .toUpperCase()
+        .split('')
+        .map(char => 127397 + char.charCodeAt());
+      return String.fromCodePoint(...codePoints);
+    }
+
+    function renderGlobalVisitorStats(data) {
+      const locationStats = getLocationStats(data);
+      
+      if (locationStats.totalCountries === 0) {
+        return `
+          <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Global Reach</h3>
+            <div class="text-center py-8">
+              <div class="text-4xl mb-2">🌍</div>
+              <p class="text-gray-500">No location data available yet</p>
+              <p class="text-sm text-gray-400 mt-1">Location tracking will appear as visitors browse the site</p>
             </div>
           </div>
-        `).join('') || '<div class="text-sm text-gray-500 text-center">No location data available</div>';
+        `;
+      }
+      
+      return `
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Global Reach</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <div class="text-3xl mb-2">🌍</div>
+              <div class="text-2xl font-bold text-blue-700">${locationStats.totalCountries}</div>
+              <div class="text-sm text-gray-600">Countries</div>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+              <div class="text-3xl mb-2">👥</div>
+              <div class="text-2xl font-bold text-green-700">${locationStats.totalVisits}</div>
+              <div class="text-sm text-gray-600">Total Visits</div>
+            </div>
+            <div class="text-center p-4 bg-purple-50 rounded-lg">
+              <div class="text-3xl mb-2">${locationStats.topCountry ? getCountryFlag(locationStats.topCountry.countryCode) : '🏆'}</div>
+              <div class="text-lg font-bold text-purple-700">${locationStats.topCountry ? locationStats.topCountry.name : 'N/A'}</div>
+              <div class="text-sm text-gray-600">Top Country</div>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     // Format session ID for display
@@ -421,6 +487,18 @@ const title = "Analytics | Dzaleka Heritage Archive";
     // Update the renderAnalytics function
     const renderAnalytics = (data) => {
       const errorsPerPage = 6;
+      
+      // Debug logging
+      console.log('Rendering analytics with data:', {
+        totalViews: data?.totalViews,
+        sessions: Object.keys(data?.sessions || {}).length,
+        locations: Object.keys(data?.locations || {}).length,
+        operatingSystems: Object.keys(data?.operatingSystems || {}).length,
+        browserVersions: Object.keys(data?.browserVersions || {}).length,
+        connectionTypes: Object.keys(data?.connectionTypes || {}).length,
+        screenSizes: Object.keys(data?.screenSizes || {}).length,
+        referrers: Object.keys(data?.referrers || {}).length
+      });
       
       const container = document.getElementById('analytics-content');
       if (!data) {
@@ -443,6 +521,12 @@ const title = "Analytics | Dzaleka Heritage Archive";
       data.errors = data.errors || { jsErrors: [] };
       data.timeOnPage = data.timeOnPage || {};
       data.locations = data.locations || {};
+      // Enhanced data structures
+      data.operatingSystems = data.operatingSystems || {};
+      data.browserVersions = data.browserVersions || {};
+      data.connectionTypes = data.connectionTypes || {};
+      data.screenSizes = data.screenSizes || {};
+      data.referrers = data.referrers || {};
 
       // Calculate real-time metrics
       const bounceRate = calculateBounceRate(data);
@@ -469,23 +553,41 @@ const title = "Analytics | Dzaleka Heritage Archive";
             <h3 class="text-sm font-medium text-gray-500">Total Page Views</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${data.totalViews || 0}</p>
             <p class="text-sm text-gray-500 mt-1">All time</p>
-              </div>
+          </div>
           <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500">Today's Visitors</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${todayVisitors}</p>
             <p class="text-sm text-gray-500 mt-1">Unique visitors today</p>
-              </div>
+          </div>
           <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500">Total Visitors</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${totalVisitors}</p>
             <p class="text-sm text-gray-500 mt-1">Since ${formatDate(data.firstVisit)}</p>
-              </div>
+          </div>
           <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500">Active Sessions</h3>
             <p class="text-2xl font-bold text-gray-900 mt-2">${activeSessions}</p>
             <p class="text-sm text-gray-500 mt-1">Last 5 minutes</p>
-            </div>
           </div>
+        </div>
+
+        <!-- Global Visitor Statistics -->
+        ${(() => {
+          try {
+            return renderGlobalVisitorStats(data);
+          } catch (error) {
+            console.error('Error rendering global visitor stats:', error);
+            return `
+              <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Global Reach</h3>
+                <div class="text-center py-8">
+                  <div class="text-4xl mb-2">🌍</div>
+                  <p class="text-gray-500">Error loading global statistics</p>
+                </div>
+              </div>
+            `;
+          }
+        })()}
           
         <!-- Real-time Activity -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
@@ -539,9 +641,16 @@ const title = "Analytics | Dzaleka Heritage Archive";
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <!-- Location Stats -->
           <div class="bg-white rounded-xl shadow-sm p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Visitor Locations</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Visitor Countries</h3>
             <div class="space-y-2">
-              ${renderLocationMetrics(data)}
+              ${(() => {
+                try {
+                  return renderLocationMetrics(data);
+                } catch (error) {
+                  console.error('Error rendering location metrics:', error);
+                  return '<div class="text-sm text-gray-500 text-center">Error loading location data</div>';
+                }
+              })()}
           </div>
         </div>
         
@@ -549,6 +658,101 @@ const title = "Analytics | Dzaleka Heritage Archive";
           <div class="bg-white rounded-xl shadow-sm p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Device Distribution</h3>
             ${renderDeviceDistribution(data)}
+          </div>
+        </div>
+
+        <!-- Enhanced Device & Browser Analytics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Operating Systems -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Operating Systems</h3>
+            ${(() => {
+              try {
+                return renderOperatingSystems(data);
+              } catch (error) {
+                console.error('Error rendering operating systems:', error);
+                return '<div class="text-sm text-gray-500 text-center">Error loading OS data</div>';
+              }
+            })()}
+          </div>
+          
+          <!-- Browser Versions -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Browser Versions</h3>
+            ${(() => {
+              try {
+                return renderBrowserVersions(data);
+              } catch (error) {
+                console.error('Error rendering browser versions:', error);
+                return '<div class="text-sm text-gray-500 text-center">Error loading browser data</div>';
+              }
+            })()}
+          </div>
+        </div>
+
+        <!-- Connection & Screen Analytics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Connection Types -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Connection Types</h3>
+            ${(() => {
+              try {
+                return renderConnectionTypes(data);
+              } catch (error) {
+                console.error('Error rendering connection types:', error);
+                return '<div class="text-sm text-gray-500 text-center">Error loading connection data</div>';
+              }
+            })()}
+          </div>
+          
+          <!-- Screen Sizes -->
+          <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Screen Sizes</h3>
+            ${(() => {
+              try {
+                return renderScreenSizes(data);
+              } catch (error) {
+                console.error('Error rendering screen sizes:', error);
+                return '<div class="text-sm text-gray-500 text-center">Error loading screen data</div>';
+              }
+            })()}
+          </div>
+        </div>
+
+        <!-- Traffic Sources -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Traffic Sources</h3>
+          ${(() => {
+            try {
+              return renderTrafficSources(data);
+            } catch (error) {
+              console.error('Error rendering traffic sources:', error);
+              return '<div class="text-sm text-gray-500 text-center">Error loading traffic data</div>';
+            }
+          })()}
+        </div>
+
+        <!-- Enhanced User Behavior (if enabled) -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">User Behavior Analytics</h3>
+          <div class="text-center py-8">
+            <div class="text-4xl mb-4">📊</div>
+            <p class="text-gray-600 mb-2">Enhanced tracking features available</p>
+            <p class="text-sm text-gray-500 mb-4">
+              Scroll depth, form interactions, link clicks, downloads, and more
+            </p>
+            <button 
+              onclick="enableEnhancedTracking()"
+              class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Enable Enhanced Tracking
+            </button>
+            <p class="text-xs text-gray-400 mt-2">
+              This will start collecting detailed user interaction data
+            </p>
           </div>
         </div>
         
@@ -679,6 +883,181 @@ const title = "Analytics | Dzaleka Heritage Archive";
           <h4 class="text-sm font-medium text-gray-500">Pages per Session</h4>
           <p class="text-2xl font-bold text-purple-700">${pagesPerSession}</p>
           <p class="text-sm text-gray-500 mt-1">Average pages viewed</p>
+        </div>
+      `;
+    }
+
+    function renderOperatingSystems(data) {
+      const osData = data.operatingSystems || {};
+      const total = Object.values(osData).reduce((sum, count) => sum + count, 0);
+      
+      if (total === 0) {
+        return '<div class="text-sm text-gray-500 text-center">No OS data available</div>';
+      }
+      
+      return Object.entries(osData)
+        .sort(([, a], [, b]) => b - a)
+        .map(([os, count]) => {
+          const percentage = Math.round((count / total) * 100);
+          return `
+            <div class="flex items-center justify-between py-2">
+              <div class="flex items-center">
+                <span class="text-sm text-gray-600">${os}</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                  <div class="bg-indigo-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                </div>
+                <span class="text-sm text-gray-600">${percentage}%</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+    }
+
+    function renderBrowserVersions(data) {
+      const browserData = data.browserVersions || {};
+      const total = Object.values(browserData).reduce((sum, count) => sum + count, 0);
+      
+      if (total === 0) {
+        return '<div class="text-sm text-gray-500 text-center">No browser data available</div>';
+      }
+      
+      return Object.entries(browserData)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 8) // Show top 8 browser versions
+        .map(([browser, count]) => {
+          const percentage = Math.round((count / total) * 100);
+          return `
+            <div class="flex items-center justify-between py-2">
+              <div class="flex items-center">
+                <span class="text-sm text-gray-600">${browser}</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                  <div class="bg-green-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                </div>
+                <span class="text-sm text-gray-600">${percentage}%</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+    }
+
+    function renderConnectionTypes(data) {
+      const connectionData = data.connectionTypes || {};
+      const total = Object.values(connectionData).reduce((sum, count) => sum + count, 0);
+      
+      if (total === 0) {
+        return '<div class="text-sm text-gray-500 text-center">No connection data available</div>';
+      }
+      
+      return Object.entries(connectionData)
+        .sort(([, a], [, b]) => b - a)
+        .map(([connection, count]) => {
+          const percentage = Math.round((count / total) * 100);
+          return `
+            <div class="flex items-center justify-between py-2">
+              <div class="flex items-center">
+                <span class="text-sm text-gray-600">${connection}</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                  <div class="bg-yellow-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                </div>
+                <span class="text-sm text-gray-600">${percentage}%</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+    }
+
+    function renderScreenSizes(data) {
+      const screenData = data.screenSizes || {};
+      const total = Object.values(screenData).reduce((sum, count) => sum + count, 0);
+      
+      if (total === 0) {
+        return '<div class="text-sm text-gray-500 text-center">No screen size data available</div>';
+      }
+      
+      return Object.entries(screenData)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 6) // Show top 6 screen sizes
+        .map(([screen, count]) => {
+          const percentage = Math.round((count / total) * 100);
+          return `
+            <div class="flex items-center justify-between py-2">
+              <div class="flex items-center">
+                <span class="text-sm text-gray-600">${screen}</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                  <div class="bg-red-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                </div>
+                <span class="text-sm text-gray-600">${percentage}%</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+    }
+
+    function renderTrafficSources(data) {
+      const referrerData = data.referrers || {};
+      const total = Object.values(referrerData).reduce((sum, count) => sum + count, 0);
+      
+      if (total === 0) {
+        return '<div class="text-sm text-gray-500 text-center">No traffic source data available</div>';
+      }
+      
+      const categorizedSources = Object.entries(referrerData).reduce((acc, [source, count]) => {
+        let category = 'Other';
+        if (source === 'Direct') category = 'Direct';
+        else if (source === 'Google' || source === 'Bing' || source === 'Yahoo' || source === 'DuckDuckGo') category = 'Search Engines';
+        else if (source === 'Facebook' || source === 'Twitter' || source === 'Instagram' || source === 'LinkedIn' || source === 'YouTube' || source === 'TikTok') category = 'Social Media';
+        else if (source === 'Email') category = 'Email';
+        else category = 'Referral';
+        
+        if (!acc[category]) acc[category] = 0;
+        acc[category] += count;
+        return acc;
+      }, {});
+      
+      return `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-medium text-gray-700 mb-3">By Category</h4>
+            ${Object.entries(categorizedSources)
+              .sort(([, a], [, b]) => b - a)
+              .map(([category, count]) => {
+                const percentage = Math.round((count / total) * 100);
+                return `
+                  <div class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-600">${category}</span>
+                    <div class="flex items-center">
+                      <div class="w-24 bg-gray-200 rounded-full h-2 mr-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                      </div>
+                      <span class="text-sm text-gray-600">${percentage}%</span>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-700 mb-3">Top Sources</h4>
+            ${Object.entries(referrerData)
+              .sort(([, a], [, b]) => b - a)
+              .slice(0, 8)
+              .map(([source, count]) => {
+                const percentage = Math.round((count / total) * 100);
+                return `
+                  <div class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-600">${source}</span>
+                    <span class="text-sm text-gray-600">${count} (${percentage}%)</span>
+                  </div>
+                `;
+              }).join('')}
+          </div>
         </div>
       `;
     }
@@ -836,6 +1215,15 @@ const title = "Analytics | Dzaleka Heritage Archive";
               </svg>
               ${journey.browser || 'Unknown Browser'}
             </span>
+            ${journey.location ? `
+              <span class="flex items-center">
+                <svg class="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                ${getCountryFlag(journey.location.countryCode)} ${journey.location.country}
+              </span>
+            ` : ''}
           </div>
         </div>
       `).join('');
@@ -1365,6 +1753,32 @@ const title = "Analytics | Dzaleka Heritage Archive";
         }
         
         analyticsData = await getAnalyticsData();
+        
+        // Ensure analytics data has proper structure
+        if (!analyticsData) {
+          analyticsData = {
+            sessions: {},
+            pageViews: {},
+            visitors: {},
+            locations: {},
+            totalViews: 0,
+            firstVisit: new Date().toISOString()
+          };
+        }
+        
+        // Ensure all required properties exist
+        analyticsData.sessions = analyticsData.sessions || {};
+        analyticsData.pageViews = analyticsData.pageViews || {};
+        analyticsData.visitors = analyticsData.visitors || {};
+        analyticsData.locations = analyticsData.locations || {};
+        analyticsData.totalViews = analyticsData.totalViews || 0;
+        // Enhanced data structures
+        analyticsData.operatingSystems = analyticsData.operatingSystems || {};
+        analyticsData.browserVersions = analyticsData.browserVersions || {};
+        analyticsData.connectionTypes = analyticsData.connectionTypes || {};
+        analyticsData.screenSizes = analyticsData.screenSizes || {};
+        analyticsData.referrers = analyticsData.referrers || {};
+        
         // Clean up data on initialization if needed
         if (JSON.stringify(analyticsData).length > MAX_BACKUP_SIZE * 0.9) {
           console.log("Cleaning up data due to size...");
@@ -1381,6 +1795,23 @@ const title = "Analytics | Dzaleka Heritage Archive";
         
         // Initialize client-side tracking
         initializeClientTracking();
+        
+        // Initialize enhanced tracking (optional - uncomment to enable)
+        // initializeEnhancedTracking();
+        
+        // Global function to enable enhanced tracking
+        window.enableEnhancedTracking = function() {
+          try {
+            initializeEnhancedTracking();
+            alert('Enhanced tracking enabled! The page will refresh to start collecting detailed analytics.');
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          } catch (error) {
+            console.error('Error enabling enhanced tracking:', error);
+            alert('Error enabling enhanced tracking. Please try again.');
+          }
+        };
         
         // Setup more frequent updates for real-time data
         setInterval(async () => {
