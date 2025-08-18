@@ -1,6 +1,6 @@
 ---
 title: HOME Storytellers
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: HOME Storytellers is a non-profit organization that uses visual storytelling to amplify solutions
 location:
   address: 1187 Coast Village Road, Suite 101

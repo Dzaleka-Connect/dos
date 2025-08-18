@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Football Academy
-category: Sports & Education
+category: "Education"
 description: Develops young athletes through structured football training and education programs.
 location:
   address: Dzaleka Refugee Camp

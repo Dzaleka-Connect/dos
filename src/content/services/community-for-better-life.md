@@ -1,6 +1,6 @@
 ---
 title: Community for Better Life
-category: "Community-Based Organization"
+category: "Non-profit Organizations"
 description: Community for Better Life is an organization in Dzaleka Refugee Camp, Malawi, focused on empowering youth and women through skill-building initiatives
 location:
   address: Dzaleka Refugee Camp

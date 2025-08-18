@@ -1,6 +1,6 @@
 ---
 title: Agape Love Charity
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Dedicated to empowering communities through various social initiatives.
 location:
   address: Dzaleka Refugee Camp

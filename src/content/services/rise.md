@@ -1,6 +1,6 @@
 ---
 title: Refugee Independent Schools Association (RISA)
-category: Non-Governmental Organization
+category: "Non-profit Organizations"
 description: RISA is non- governmental organization whose aim objective is to unify all private schools in Dzaleka refugee camp in order to promote high quality education by respecting the Malawi national syllabus as well as the law to promote cultural integration
 location:
   address: Dzaleka Refugee Camp

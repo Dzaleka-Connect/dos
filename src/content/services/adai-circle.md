@@ -1,6 +1,6 @@
 ---
 title: Adai Circle
-category: Education
+category: "Education"
 description: Empowering underserved communities with AI, ML, and Data Science skills to foster innovation, self-reliance, and success
 location:
   address: Dzaleka Refugee Camp

@@ -1,6 +1,6 @@
 ---
 title: ROCK Your World
-category: Youth
+category: "Youth & Children"
 description: Youth empowerment through arts and culture.
 location:
   address: Dzaleka Refugee Camp

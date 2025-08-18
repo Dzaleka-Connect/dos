@@ -1,6 +1,6 @@
 ---
 title: HOPDEV
-category: Education
+category: "Education"
 description: Hope of refugee women against poverty for the social wellbeing (HOPDEV)
 location:
   address: New Katubzya/In front of Sowing School, Dzaleka

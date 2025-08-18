@@ -1,6 +1,6 @@
 ---
 title: UMOJA Hand Craft Project
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: Handmade crafts and textiles by skilled refugee artisans.
 location:
   address: Dzaleka Refugee Camp

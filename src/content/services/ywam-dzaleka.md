@@ -1,6 +1,6 @@
 ---
 title: Youth With A Mission Dzaleka
-category: Religious Organization
+category: "Religious Organizations"
 description: Youth With A Mission is a global movement of Christians from many cultures, age groups and Christian traditions, dedicated to serving Jesus throughout the world. 
 location:
   address: PO Box 16, Dzaleka

@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Art Project
-category: Cultural
+category: "Cultural & Arts"
 description: Promoting refugee artists and cultural expression.
 location:
   address: Dzaleka Refugee Camp

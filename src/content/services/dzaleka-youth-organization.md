@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Youth Organization
-category: Youth
+category: "Youth & Children"
 description: Dzaleka Youth Org empowers young refugees through education, skills training & community projects.
 location:
   address: Dzaleka Refugee Camp

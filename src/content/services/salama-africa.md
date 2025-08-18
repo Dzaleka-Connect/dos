@@ -1,6 +1,6 @@
 ---
 title: Salama Africa Organization
-category: Youth
+category: "Youth & Children"
 description: >-
   Salama Africa is a grassroots, youth-run, charitable organization that aims at providing refugee youth a creative outlet.
 location:

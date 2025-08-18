@@ -1,6 +1,6 @@
 ---
 title: Women Action W4A
-category: Community Organization
+category: "Non-profit Organizations"
 description: >-
   Women Action W4A is a community-based organisation led by refugee women that work for the protection of women and girls in Dzaleka refugee camp, Malawi.
 location:

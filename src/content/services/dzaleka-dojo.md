@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Dojo
-category: Sports & Education
+category: "Education"
 description: Promotes arts, education, and health through martial arts training and community engagement.
 location:
   address: Dzaleka Refugee Camp, Kawale 1

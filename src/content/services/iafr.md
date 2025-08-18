@@ -1,6 +1,6 @@
 ---
 title: IAFR
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: International Association for Refugees (IAFR) is helping people survive and recover from forced displacement.
 location:
   address: Dzaleka Refugee Camp

@@ -1,6 +1,6 @@
 ---
 title: Ngoma Tujenge Africa Foundation
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Ngoma Tujenge Africa Foundation is a non-profit organization working for the well-being of the public.
 location:
   address: Dzaleka Refugee Camp

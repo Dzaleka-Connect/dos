@@ -1,6 +1,6 @@
 ---
 title: Wopadep
-category: Non-profit organization
+category: "Non-profit Organizations"
 description: Wopadep is a non-profit organization that promotes women's rights and equality in Malawi through education, health, and community development.
 location:
   address: Dzaleka Refugee Camp

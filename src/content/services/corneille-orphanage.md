@@ -1,6 +1,6 @@
 ---
 title: Corneille Orphanage
-category: Non-Governmental Organization (NGO)
+category: "Non-profit Organizations"
 description: A dedicated organization providing shelter, care, and support for orphaned refugee children in Dzaleka Refugee Camp, helping them rebuild their lives after traumatic experiences.
 location:
   address: Dzaleka Refugee Camp

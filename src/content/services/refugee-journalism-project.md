@@ -1,6 +1,6 @@
 ---
 title: Refugee Journalism Project
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: The Refugee Journalism Project is a UK-based organisation that supports displaced and exiled journalists and media workers to continue their careers in the UK.
 location:
   address: Refugee Journalism Project, University of the Arts London

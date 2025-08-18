@@ -1,6 +1,6 @@
 ---
 title: Psychological and Reflexology Reception Center
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Psychological and Reflexology Reception Center is a non-profit organization working for the massage and psychological reception of the well-being of the public.
 location:
   address: Dzaleka Refugee Camp

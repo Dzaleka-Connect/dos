@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Sport Association
-category: Sports & Education
+category: "Education"
 description: Supports sports and education, fostering youth engagement through athletic activities.
 location:
   address: Dzaleka Refugee Camp

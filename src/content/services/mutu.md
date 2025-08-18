@@ -1,6 +1,6 @@
 ---
 title: Me, You, Together for Union (MUTU)
-category: Education
+category: "Education"
 description: Engages in education, fostering unity and collaboration among refugees.
 location:
   address: Dzaleka Refugee Camp

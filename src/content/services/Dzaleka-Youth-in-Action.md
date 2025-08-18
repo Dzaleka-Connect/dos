@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Youth in Action
-category: Youth Organization
+category: "Youth & Children"
 description: Youth initiative which stands for the vulnerable children, youths and elders in Dzaleka Refugee Camp and the host community.
 location:
   address: Dzaleka Refugee Camp

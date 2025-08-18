@@ -1,6 +1,6 @@
 ---
 title: Faith in Children
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: A New York-based nonprofit 501(c)(3) organization dedicated to supporting individuals and families in need through mindfulness education, food security, and community outreach programs.
 location:
   address: Dzaleka Refugee Camp

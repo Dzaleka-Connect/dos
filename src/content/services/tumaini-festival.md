@@ -1,6 +1,6 @@
 ---
 title: Tumaini Festival
-category: Cultural
+category: "Cultural & Arts"
 description: >-
   A cultural event promoting intercultural harmony and understanding between
   refugees and host communities through arts and entertainment.

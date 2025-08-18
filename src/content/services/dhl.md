@@ -1,6 +1,6 @@
 ---
 title: DHL
-category: Courier
+category: "Entrepreneurship & Business"
 description: DHL operates a convenient office near Pastor William in Karonga, Dzaleka. This location serves as a vital point for the community's shipping needs.
 location:
   address: Karonga, Dzaleka

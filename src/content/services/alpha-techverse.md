@@ -1,6 +1,6 @@
 ---
 title: Alpha TechVerse
-category: "Digital Technology"
+category: "Technology & Digital"
 description: Alpha TechVerse is a Dzaleka-based organization that empowers refugee youth through technical education in IT, graphic design, and web development.
 location:
   address: Dzaleka Refugee Camp, Lisungwe

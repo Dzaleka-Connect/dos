@@ -1,6 +1,6 @@
 ---
 title: Refugee Youth for Self-Assistance
-category: Community Organization
+category: "Non-profit Organizations"
 description: Community-based organization providing support to refugees and host communities.
 location:
   address: Kawale 1 / Near Hunger Organization, Dzaleka

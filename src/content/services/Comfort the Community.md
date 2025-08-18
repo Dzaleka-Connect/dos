@@ -1,6 +1,6 @@
 ---
 title: Comfort the Community 
-category: Non-profit organisation
+category: "Non-profit Organizations"
 description: A local community organization that works with children that have disabilities, Albinism, are orphans
 location:
   address: Dzaleka Refugee Camp

@@ -1,6 +1,6 @@
 ---
 title: 'JRS Malawi'
-category: Humanitarian Aid
+category: "Community & Humanitarian"
 description: >-
   Emergency assistance, education, and psychosocial support for refugees in
   Dzaleka Camp.

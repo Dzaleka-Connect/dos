@@ -1,6 +1,6 @@
 ---
 title: Village Book Builders
-category: Education
+category: "Education"
 description: Village Book Builders is a 501(c)(3) non-profit organization that connects communities to access to learning through quality books, computers, mentoring, and online education.
 location:
   address: Dzaleka Refugee Camp

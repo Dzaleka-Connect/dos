@@ -1,6 +1,6 @@
 ---
 title: UNHCR Malawi
-category: Humanitarian Aid
+category: "Community & Humanitarian"
 description: UN Refugee Agency providing protection and humanitarian assistance in Malawi.
 location:
   address: 8th Floor, Kang'ombe House, Robert Mugabe Crescent, City Centre

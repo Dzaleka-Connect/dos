@@ -1,6 +1,6 @@
 ---
 title: Rising Care Alliance Inc.
-category: Nonprofit organization
+category: "Non-profit Organizations"
 description: We are a grassroots non-profit organization aiming to improve the well-being of refugees and marginalized people in rural communities
 location:
   address: Dzaleka Refugee Camp

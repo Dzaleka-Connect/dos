@@ -1,0 +1,367 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import ServiceCard from '../../../components/ServiceCard.astro';
+import ServicePagination from '../../../components/services/ServicePagination.astro';
+import { getCollection } from 'astro:content';
+import { sortServices } from '../../../utils/serviceHelpers';
+
+// Generate static paths for all categories
+export async function getStaticPaths() {
+  const allServices = await getCollection('services');
+  
+  // Get unique categories
+  const categories = [...new Set(allServices.map(service => service.data.category))];
+  
+  return categories.map(category => ({
+    params: { category: category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') },
+    props: { category }
+  }));
+}
+
+const { category } = Astro.params;
+const actualCategory = Astro.props.category;
+
+// Get all services
+const allServices = await getCollection('services');
+
+// Filter services by category
+const categoryServices = allServices.filter(service => 
+  service.data.category.toLowerCase() === actualCategory.toLowerCase()
+);
+
+// Get URL parameters
+const sortBy = Astro.url.searchParams.get('sort') || 'featured';
+const verifiedOnly = Astro.url.searchParams.get('verified') === 'true';
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+
+// Apply verified filter
+let filteredServices = categoryServices;
+if (verifiedOnly) {
+  filteredServices = filteredServices.filter(service => service.data.verified);
+}
+
+// Sort services
+const sortedServices = sortServices(filteredServices, sortBy);
+
+// Pagination
+const itemsPerPage = 6;
+const totalItems = sortedServices.length;
+const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+// Validate page number
+if (page < 1 || page > totalPages) {
+  return Astro.redirect(`/services/category/${category}`);
+}
+
+const startIndex = (page - 1) * itemsPerPage;
+const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+const paginatedServices = sortedServices.slice(startIndex, endIndex);
+
+// Preserve query parameters for pagination links
+const searchParams = new URLSearchParams();
+if (sortBy !== 'featured') searchParams.set('sort', sortBy);
+if (verifiedOnly) searchParams.set('verified', 'true');
+const queryString = searchParams.toString();
+const baseUrl = `/services/category/${category}${queryString ? `?${queryString}` : ''}`;
+
+// Get category stats
+const categoryStats = {
+  total: categoryServices.length,
+  verified: categoryServices.filter(s => s.data.verified).length,
+  featured: categoryServices.filter(s => s.data.featured).length
+};
+
+// SEO metadata
+const seo = {
+  title: `${actualCategory} Services - Dzaleka Online Services`,
+  description: `Discover ${categoryStats.total} ${actualCategory.toLowerCase()} services in Dzaleka Refugee Camp. Find verified organizations providing ${actualCategory.toLowerCase()} support and resources.`,
+  image: '/images/services-directory.jpg',
+  keywords: [
+    `${actualCategory} Services`,
+    'Dzaleka Services',
+    'Refugee Services',
+    'Malawi Refugee Services'
+  ].filter(Boolean).join(', '),
+  type: 'website'
+};
+---
+
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  type={seo.type}
+  keywords={seo.keywords}
+>
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden px-4 py-12 sm:py-16">
+    <!-- Hero Image Background -->
+    <div class="absolute inset-0">
+      <img 
+        src="/images/dzaleka-hero.jpeg" 
+        alt="Dzaleka Community" 
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-primary-600/80 to-primary-800/80"></div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+      <nav class="flex justify-center mb-4" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2 text-sm text-white/80">
+          <li><a href="/services" class="hover:text-white transition-colors">Services</a></li>
+          <li class="flex items-center">
+            <svg class="w-4 h-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-white font-medium">{actualCategory}</span>
+          </li>
+        </ol>
+      </nav>
+      
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">{actualCategory} Services</h1>
+      <p class="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+        Discover {categoryStats.total} {actualCategory.toLowerCase()} services in Dzaleka Refugee Camp
+      </p>
+      
+      <!-- Category Stats -->
+      <div class="flex flex-wrap justify-center gap-4 mb-6 sm:mb-8">
+        <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 text-white">
+          <span class="text-sm font-medium">{categoryStats.total} Services</span>
+        </div>
+        {categoryStats.verified > 0 && (
+          <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 text-white">
+            <span class="text-sm font-medium">{categoryStats.verified} Verified</span>
+          </div>
+        )}
+        {categoryStats.featured > 0 && (
+          <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 text-white">
+            <span class="text-sm font-medium">{categoryStats.featured} Featured</span>
+          </div>
+        )}
+      </div>
+      
+      <a 
+        href="/services" 
+        class="inline-flex items-center px-4 sm:px-6 py-3 border border-transparent rounded-lg shadow-lg text-sm sm:text-base font-medium text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 hover:scale-105"
+      >
+        <svg class="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to All Services
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+    <!-- Results Header -->
+    <div class="mb-6 sm:mb-8">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+            {totalItems} {actualCategory} Services
+          </h2>
+          <p class="text-sm sm:text-base text-gray-600">
+            Showing {startIndex + 1}-{endIndex} of {totalItems} services
+          </p>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full lg:w-auto">
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              id="verifiedFilter"
+              checked={verifiedOnly}
+              class="h-4 w-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+            />
+            <span class="ml-2 text-sm text-gray-700">Verified Only</span>
+          </label>
+          
+          <select 
+            id="sortFilter"
+            class="w-full sm:w-auto px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+          >
+            <option value="featured" selected={sortBy === 'featured'}>Featured First</option>
+            <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
+            <option value="newest" selected={sortBy === 'newest'}>Recently Updated</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3" id="services-grid">
+      {paginatedServices.map(service => {
+        // Extract all social media data
+        const socialMedia = service.data.socialMedia ? {
+          ...(service.data.socialMedia.facebook && { facebook: service.data.socialMedia.facebook }),
+          ...(service.data.socialMedia.twitter && { twitter: service.data.socialMedia.twitter }),
+          ...(service.data.socialMedia.instagram && { instagram: service.data.socialMedia.instagram }),
+          ...(service.data.socialMedia.linkedin && { linkedin: service.data.socialMedia.linkedin }),
+          ...(service.data.socialMedia.website && { website: service.data.socialMedia.website })
+        } : undefined;
+
+        return (
+          <div class="service-card" data-category={service.data.category} data-title={service.data.title.toLowerCase()}>
+            <ServiceCard 
+              title={service.data.title}
+              description={service.data.description}
+              category={service.data.category}
+              featured={service.data.featured}
+              verified={service.data.verified}
+              href={`/services/${service.slug}`}
+              email={service.data.contact?.email}
+              phone={service.data.contact?.phone}
+              address={service.data.location?.address}
+              logo={service.data.logo}
+              socialMedia={socialMedia}
+            />
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- No Results Message -->
+    {totalItems === 0 && (
+      <div class="text-center py-16">
+        <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+          <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No {actualCategory} services found</h3>
+        <p class="text-gray-600 mb-6">
+          No {actualCategory.toLowerCase()} services match your current filters.
+        </p>
+        <a href="/services" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+          Browse All Services
+        </a>
+      </div>
+    )}
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <div class="mt-8">
+        <ServicePagination
+          currentPage={page}
+          totalPages={totalPages}
+          baseUrl={baseUrl}
+        />
+      </div>
+    )}
+
+    <!-- Category Information -->
+    <div class="mt-16 bg-gray-50 rounded-xl p-8">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">About {actualCategory} Services</h2>
+        
+        <div class="prose prose-gray max-w-none">
+          <p class="text-lg text-gray-600 text-center mb-8">
+            {actualCategory} services in Dzaleka Refugee Camp provide essential support and resources to our community. 
+            These organizations work tirelessly to improve the lives of refugees and create opportunities for growth and development.
+          </p>
+          
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div class="text-center">
+              <div class="w-12 h-12 mx-auto mb-4 bg-primary-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Community Impact</h3>
+              <p class="text-sm text-gray-600">
+                These services directly support the Dzaleka community, providing essential resources and opportunities.
+              </p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-12 h-12 mx-auto mb-4 bg-primary-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Quality Assurance</h3>
+              <p class="text-sm text-gray-600">
+                All services undergo review to ensure they meet our quality standards and are actively serving the community.
+              </p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-12 h-12 mx-auto mb-4 bg-primary-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Stay Updated</h3>
+              <p class="text-sm text-gray-600">
+                New services are added regularly. Check back often to discover new opportunities and resources.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="mt-8 text-center">
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Need Help Finding a Service?</h3>
+            <p class="text-gray-600 mb-4">
+              Can't find what you're looking for? Contact us and we'll help you connect with the right service.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="/contact" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                Contact Us
+              </a>
+              <a href="/services" class="inline-flex items-center px-4 py-2 border border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Browse All Services
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const verifiedFilter = document.getElementById('verifiedFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    
+    function updateFilters() {
+      const url = new URL(window.location.href);
+      
+      // Update verified filter
+      if (verifiedFilter.checked) {
+        url.searchParams.set('verified', 'true');
+      } else {
+        url.searchParams.delete('verified');
+      }
+      
+      // Update sort filter
+      if (sortFilter.value !== 'featured') {
+        url.searchParams.set('sort', sortFilter.value);
+      } else {
+        url.searchParams.delete('sort');
+      }
+      
+      // Reset to page 1 when filters change
+      url.searchParams.delete('page');
+      
+      // Navigate to the new URL
+      window.location.href = url.toString();
+    }
+    
+    // Advanced filters
+    verifiedFilter?.addEventListener('change', updateFilters);
+    sortFilter?.addEventListener('change', updateFilters);
+  });
+</script>

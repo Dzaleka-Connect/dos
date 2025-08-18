@@ -1,6 +1,6 @@
 ---
 title: WHH Malawi - Welthungerhilfe
-category: Non-Governmental Organization (NGO)
+category: "Non-profit Organizations"
 description: A German non-profit organization working to eliminate hunger and poverty in Malawi, with a focus on sustainable development and emergency aid in Dzaleka Refugee Camp.
 location:
   address: Area 3, Young Street, off Beit Mtunthama Drive

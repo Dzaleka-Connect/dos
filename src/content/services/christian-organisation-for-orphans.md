@@ -1,6 +1,6 @@
 ---
 title: Christian Organisation for Orphans (COOM)
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Provides education services for orphaned children, ensuring access to learning opportunities.
 location:
   address: Dzaleka Refugee Camp

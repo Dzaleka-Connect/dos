@@ -1,6 +1,6 @@
 ---
 title: Zawadie Solutions
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: Business outsourcing and refugee employment services.
 location:
   address: Ubuntu Office

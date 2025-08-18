@@ -1,6 +1,6 @@
 ---
 title: Youth On Board Organization (YOBO)
-category: Non-profit Organization
+category: "Non-profit Organizations"
 description: Creating climate-resilient communities through permaculture, empowering youth, women, and marginalized groups at Dzaleka Refugee Camp and beyond.
 location:
   address: Dzaleka Refugee Camp

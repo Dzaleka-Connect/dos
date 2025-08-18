@@ -1,7 +1,7 @@
 ---
 title: "Dzaleka Rising"
 description: "Dzaleka Rising is community based organization, our aim is to create value for local products and services."
-category: "Youth"
+category: "Youth & Children"
 logo: "https://yt3.googleusercontent.com/ytc/AIdro_m1YT7tJnEg4gHWvDuVLDdTRXn3xs1aOHSI4W_Q5j1PQQ=s900-c-k-c0x00ffffff-no-rj"
 location:
   address: "Youth Center, Dzaleka Refugee Camp"

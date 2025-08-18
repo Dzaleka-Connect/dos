@@ -1,6 +1,6 @@
 ---
 title: Refugee-Led Organisation Network Malawi
-category: Advocacy
+category: "Advocacy"
 description: >-
   The network brings together refugee-led organisations together and form one
   voice in topics that matters

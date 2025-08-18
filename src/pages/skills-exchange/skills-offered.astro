@@ -93,9 +93,10 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Filters Section -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 mb-8">
-      <div class="flex-1 min-w-0">
-        <h2 class="text-2xl font-bold text-gray-900">
+    <div class="mb-8">
+      <!-- Title Section -->
+      <div class="mb-6">
+        <h2 class="text-xl lg:text-2xl font-bold text-gray-900">
           {filteredProfiles.length} Skills Available
           {selectedCategory && <span class="text-primary-600">in {selectedCategory}</span>}
         </h2>
@@ -104,7 +105,7 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
       <!-- Categories Filter -->
       <div class="flex flex-wrap gap-2">
         <a
-          href={`/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+          href="/skills-exchange/skills-offered"
           class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             !selectedCategory
               ? 'bg-primary-100 text-primary-800'
@@ -115,7 +116,7 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
         </a>
         {categories.map(category => (
           <a
-            href={`/skills-exchange/skills-offered${selectedCategory === category ? '' : `?category=${category}`}`}
+            href={`/skills-exchange/skills-offered?category=${category}`}
             class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === category
                 ? 'bg-primary-100 text-primary-800'
@@ -164,10 +165,10 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
               </span>
             </div>
             <div>
-              <div class="text-lg font-semibold text-gray-900 mb-2">
+              <div class="text-lg font-semibold text-gray-900 mb-2 break-words">
                 {profile.data.skill}
               </div>
-              <p class="text-gray-500 text-sm line-clamp-2">
+              <p class="text-gray-500 text-sm leading-relaxed">
                 {profile.data.shortDescription}
               </p>
             </div>
@@ -182,12 +183,17 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
                       {profile.data.rate}
                     </span>
                   </div>
-                  <div class="flex items-center space-x-2">
-                    {profile.data.paymentMethods?.map(method => (
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  <div class="flex items-center space-x-1 flex-wrap">
+                    {profile.data.paymentMethods?.slice(0, 2).map(method => (
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                         {method.type}
                       </span>
                     ))}
+                    {profile.data.paymentMethods && profile.data.paymentMethods.length > 2 && (
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        +{profile.data.paymentMethods.length - 2}
+                      </span>
+                    )}
                   </div>
                 </div>
               )}
@@ -203,17 +209,17 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
               )}
               
               <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                <div class="flex items-center space-x-1 flex-wrap">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 break-words">
                     {profile.data.category}
                   </span>
                   {profile.data.level && (
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 break-words">
                       {profile.data.level}
                     </span>
                   )}
                 </div>
-                <span class="text-primary-600 text-sm font-medium group-hover:text-primary-700">
+                <span class="text-primary-600 text-sm font-medium group-hover:text-primary-700 flex-shrink-0 ml-2">
                   View Profile →
                 </span>
               </div>
@@ -403,5 +409,55 @@ const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+/* Fix text alignment and overflow issues */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.break-words {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Ensure proper card layout */
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.group > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.group .p-6 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.group .mt-4 {
+  margin-top: auto;
+}
+
+/* Fix filter layout */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Ensure filter buttons wrap properly */
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+/* Prevent text overflow in filter section */
+.min-w-0 {
+  min-width: 0;
 }
 </style>

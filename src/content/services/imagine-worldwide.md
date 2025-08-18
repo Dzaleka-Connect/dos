@@ -1,6 +1,6 @@
 ---
 title: Imagine Worldwide
-category: Literacy
+category: "Education"
 description: Empowering children around the globe to build the literacy and numeracy skills needed to reach their full potential.
 location:
   address: Dzaleka Refugee Camp

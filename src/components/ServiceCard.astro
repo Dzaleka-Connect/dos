@@ -58,10 +58,10 @@ console.log('ServiceCard props for', title, ':', {
 ---
 
 <article class="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden h-full flex flex-col border border-gray-100">
-  <div class="p-6 flex flex-col h-full">
+  <div class="p-4 sm:p-6 flex flex-col h-full">
     <!-- Header -->
-    <div class="flex items-start gap-4 mb-4">
-      <div class="relative w-20 h-20 flex-shrink-0 bg-gray-50 rounded-lg p-3 flex items-center justify-center border border-gray-100 group-hover:border-gray-200 transition-colors">
+    <div class="flex items-start gap-3 sm:gap-4 mb-4">
+      <div class="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 bg-gray-50 rounded-lg p-2 sm:p-3 flex items-center justify-center border border-gray-100 group-hover:border-gray-200 transition-colors">
         <img 
           src={logo || '/logos/default.png'} 
           alt={`${title} logo`}
@@ -72,7 +72,7 @@ console.log('ServiceCard props for', title, ':', {
       </div>
       <div class="flex-grow min-w-0 relative">
         <div class="flex items-start justify-between">
-          <h3 class="text-xl font-bold text-gray-900 truncate mb-2 group-hover:text-primary-600 transition-colors pr-20">
+          <h3 class="text-base sm:text-lg lg:text-xl font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-primary-600 transition-colors pr-16 sm:pr-20">
             {title}
           </h3>
           {featured && (
@@ -83,29 +83,34 @@ console.log('ServiceCard props for', title, ':', {
             </div>
           )}
         </div>
-        <span class={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(category)}`}>
-          {category}
-        </span>
-        {verified && (
-          <span class="ml-2 inline-flex items-center text-sm font-medium text-primary-600">
-            <svg class="w-4 h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            Verified
+        <div class="flex flex-wrap gap-1 sm:gap-2">
+          <span class={`inline-flex items-center px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full ${getCategoryColor(category)}`}>
+            {category}
           </span>
-        )}
+          {verified && (
+            <span class="inline-flex items-center text-xs sm:text-sm font-medium text-primary-600">
+              <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Verified
+            </span>
+          )}
+        </div>
       </div>
     </div>
 
     <!-- Description -->
-    <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+    <p class="text-gray-600 text-sm sm:text-base mb-4 line-clamp-3">
       {description}
     </p>
 
+    <!-- Clickable overlay for main content -->
+    <a href={href} class="absolute inset-0 z-10" aria-label={`View details for ${title}`} style="pointer-events: auto; background: transparent;"></a>
+
     <!-- Contact Info -->
-    <div class="mt-auto space-y-3">
+    <div class="mt-auto space-y-2 sm:space-y-3 relative z-20">
       {(email || phone || address || socialMedia?.website) && (
-        <div class="flex flex-col gap-2 text-sm text-gray-600">
+        <div class="flex flex-col gap-1 sm:gap-2 text-sm sm:text-base text-gray-600">
           {socialMedia?.website && (
             <div class="flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +157,7 @@ console.log('ServiceCard props for', title, ':', {
 
       <!-- Social Links -->
       {socialMedia && Object.values(socialMedia).some(Boolean) && (
-        <div class="border-t border-gray-100 pt-3">
+        <div class="border-t border-gray-100 pt-2 sm:pt-3 relative z-20">
           <div class="flex items-center justify-between">
             <SocialLinks
               facebook={socialMedia.facebook}
@@ -167,11 +172,11 @@ console.log('ServiceCard props for', title, ':', {
                 href={socialMedia.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700 group/link z-20"
+                class="inline-flex items-center text-sm sm:text-base font-medium text-primary-600 hover:text-primary-700 group/link"
                 onclick="event.stopPropagation();"
               >
                 Visit Website
-                <svg class="w-4 h-4 ml-1 transform transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-1 transform transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                 </svg>
               </a>
@@ -182,7 +187,7 @@ console.log('ServiceCard props for', title, ':', {
     </div>
   </div>
 
-  <a href={href} class="absolute inset-0 z-10" aria-label={`View details for ${title}`}>
+  <a href={href} class="absolute inset-0 z-10" aria-label={`View details for ${title}`} style="pointer-events: none;">
     <span class="sr-only">View details</span>
   </a>
 </article>

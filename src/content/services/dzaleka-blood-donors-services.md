@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Blood Donors Services
-category: Health
+category: "Health"
 description: Free blood donation services for refugees and host community.
 location:
   address: Dzaleka Refugee Camp

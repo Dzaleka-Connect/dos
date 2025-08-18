@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Orphans Ministry
-category: Religious organization
+category: "Religious Organizations"
 description: We aim at reaching to Orphans and Kids by teaching them the Gospel and giving them faith and hope.
 location:
   address: Dzaleka Refugee Camp

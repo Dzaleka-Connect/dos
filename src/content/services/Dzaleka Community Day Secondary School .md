@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Community Day Secondary School (CDSS)
-category: Secondary School
+category: "Education"
 description: Dzaleka Community Day Secondary School (CDSS) is a Community Day Secondary School located within Malawi's Dzaleka Refugee Camp.
 location:
   address: Dzaleka CDSS, Dzaleka, M16

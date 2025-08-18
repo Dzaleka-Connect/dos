@@ -1,6 +1,6 @@
 ---
 title: The Burning Fire Scout Group
-category: Nonprofit organization
+category: "Non-profit Organizations"
 description: Empowering youth in the Dzaleka refugee camp through Scouting activities that foster leadership, resilience, and community spirit.
 location:
   address: Dzaleka Refugee Camp

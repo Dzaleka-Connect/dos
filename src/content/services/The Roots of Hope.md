@@ -1,6 +1,6 @@
 ---
 title: "The Roots of Hope - ROHO"
-category: Nonprofit organization
+category: "Non-profit Organizations"
 description: "Provide hope and support to marginalized communities, focusing
 on vulnerable populations"
 location:

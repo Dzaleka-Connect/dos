@@ -1,6 +1,6 @@
 ---
 title: Romeo Fitness Center 
-category: Gym/Physical Fitness Center
+category: "Sports & Fitness"
 description: Romeo GYM is a nonprofit fitness center in Dzaleka Refugee Camp, promoting health, empowerment, and community through fitness.
 location:
   address: Dzaleka Refugee Camp

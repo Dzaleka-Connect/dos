@@ -1,6 +1,6 @@
 ---
 title: Servants Factory International Bible School
-category: Community Organization
+category: "Non-profit Organizations"
 description: >-
   Servants Factory International Bible School is a Community Based Organization Which Was Founded Since 2019 by Amisi Bulambo.
 location:

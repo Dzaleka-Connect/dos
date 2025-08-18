@@ -1,6 +1,6 @@
 ---
 title: EFR Reflexology Community for Well-being
-category: "Community Health"
+category: "Health"
 description: EFR Reflexology Community for Well-being is a passionate and dedicated organization committed to promoting holistic health, relaxation, and well-being through the practice of reflexology.
 location:
   address: Dzaleka Refugee Camp

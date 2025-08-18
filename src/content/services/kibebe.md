@@ -1,6 +1,6 @@
 ---
 title: Kibebe Malawi 
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: Supporting refugee artisans and craftspeople.
 location:
   address: Dzaleka Refugee Camp

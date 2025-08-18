@@ -1,6 +1,6 @@
 ---
 title: Blessed to Bless Others Organization
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Works in livelihood and child protection, supporting vulnerable children and families.
 location:
   address: Dzaleka Refugee Camp

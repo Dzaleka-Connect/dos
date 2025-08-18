@@ -1,6 +1,6 @@
 ---
 title: Jesuit Worldwide Learning
-category: Education
+category: "Education"
 description: Higher education opportunities for refugees and marginalized communities.
 location:
   address: Dzaleka Refugee Camp

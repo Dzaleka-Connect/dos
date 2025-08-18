@@ -1,6 +1,6 @@
 ---
 title: Gracious Refugee Orphanage (GRO)
-category: Charity organisation
+category: "Non-profit Organizations"
 description: Gracious Refugee Orphanage (GRO) Is A Non-Profit Organization That Provides Education, Health, And Social Services To Dzaleka Refugees.
 location:
   address: Dzaleka Refugee Camp

@@ -1,6 +1,6 @@
 ---
 title: Fraternity Without Borders
-category: Nonprofit organization
+category: "Non-profit Organizations"
 description: Fraternity Without Borders (FWB) encourages the practice of fraternity, bringing people together to assist children in the most vulnerable places in the world.
 location:
   address: Dzaleka Refugee Camp

@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Life Gardens
-category: Farm
+category: "Entrepreneurship & Business"
 description: A sustainable agricultural project empowering refugees through organic farming, nutrition education, and natural medicine practices in Dzaleka Refugee Camp.
 location:
   address: Dzaleka Refugee Camp

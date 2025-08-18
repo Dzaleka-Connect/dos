@@ -1,6 +1,6 @@
 ---
 title: Arise International Foundation Organization
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Engages in entertainment and education, offering creative programs for youth development.
 location:
   address: Dzaleka Refugee Camp

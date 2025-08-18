@@ -1,6 +1,6 @@
 ---
 title: Children Relief Service (CRS)
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Children Relief Service (CRS) is a non-profit organization that protects children and youth from abuse, maltreatment, and neglect.
 location:
   address: Dzaleka Refugee Camp

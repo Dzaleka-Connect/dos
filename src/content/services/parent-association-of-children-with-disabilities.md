@@ -1,6 +1,6 @@
 ---
 title: Parent Association of Children with Disabilities
-category: Nonprofit organization
+category: "Non-profit Organizations"
 description: The Parents Association of Children with Disabilities (PACD), founded in 2015, supports children under 18 and their families through education, advocacy, and community inclusion, empowering them to lead independent, fulfilling lives.
 location:
   address: Dzaleka Refugee Camp

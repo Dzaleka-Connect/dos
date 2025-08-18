@@ -1,6 +1,6 @@
 ---
 title: Inside Dzaleka
-category: Youth
+category: "Youth & Children"
 description: >-
   Inside Dzaleka Is A Platform With The Aim To Educate, Entertain And Expose
   Dzaleka Refugee Camp To The World.

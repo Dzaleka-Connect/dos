@@ -1,0 +1,2088 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import { calculateServiceStats } from '../../utils/serviceStats';
+
+// Get all services
+const allServices = await getCollection('services');
+
+// Calculate comprehensive stats
+const serviceStats = calculateServiceStats(allServices);
+
+// Group services by category and handle similar categories
+const servicesByCategory = allServices.reduce((acc, service) => {
+  const category = service.data.category;
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(service);
+  return acc;
+}, {});
+
+// Category breakdown with similar categories separated
+const categoryBreakdown = Object.entries(servicesByCategory).map(([category, services]) => ({
+  category,
+  count: services.length,
+  verified: services.filter(s => s.data.verified).length,
+  featured: services.filter(s => s.data.featured).length,
+  percentage: Math.round((services.length / allServices.length) * 100)
+})).sort((a, b) => b.count - a.count);
+
+// Group similar categories for better organization
+const groupedCategories = categoryBreakdown.reduce((acc, item) => {
+  const category = item.category;
+  const categoryLower = category.toLowerCase();
+  
+  // Helper function to normalize category names
+  const normalizeCategory = (cat) => {
+    return cat.toLowerCase()
+      .replace(/organizations?/g, 'organization')
+      .replace(/organisations?/g, 'organization')
+      .replace(/services?/g, 'service')
+      .replace(/centers?/g, 'center')
+      .replace(/clinics?/g, 'clinic')
+      .replace(/schools?/g, 'school')
+      .replace(/programs?/g, 'program')
+      .replace(/non-profit/g, 'nonprofit')
+      .replace(/non-governmental/g, 'ngo')
+      .replace(/charity/g, 'nonprofit')
+      .trim();
+  };
+
+  // Helper function to get standardized category name
+  const getStandardCategoryName = (cat) => {
+    const normalized = normalizeCategory(cat);
+    
+    // Map normalized categories to standard names
+    if (normalized.includes('nonprofit') || normalized.includes('ngo')) {
+      return 'Non-profit Organizations';
+    } else if (normalized.includes('education') || normalized.includes('school') || normalized.includes('literacy')) {
+      return 'Education';
+    } else if (normalized.includes('health')) {
+      return 'Health';
+    } else if (normalized.includes('youth') || normalized.includes('children')) {
+      return 'Youth & Children';
+    } else if (normalized.includes('community') || normalized.includes('humanitarian')) {
+      return 'Community & Humanitarian';
+    } else if (normalized.includes('religious')) {
+      return 'Religious Organizations';
+    } else if (normalized.includes('entrepreneurship') || normalized.includes('business')) {
+      return 'Entrepreneurship & Business';
+    } else if (normalized.includes('technology') || normalized.includes('digital') || normalized.includes('internet')) {
+      return 'Technology & Digital';
+    } else if (normalized.includes('cultural') || normalized.includes('arts') || normalized.includes('heritage')) {
+      return 'Cultural & Arts';
+    } else if (normalized.includes('sports') || normalized.includes('gym') || normalized.includes('fitness')) {
+      return 'Sports & Fitness';
+    } else if (normalized.includes('advocacy')) {
+      return 'Advocacy';
+    } else {
+      return cat; // Keep original if no match
+    }
+  };
+  
+  const normalizedCategory = normalizeCategory(category);
+  
+  // Group categories using standardized names
+  const standardCategoryName = getStandardCategoryName(category);
+  
+  if (!acc[standardCategoryName]) {
+    acc[standardCategoryName] = { count: 0, verified: 0, featured: 0, subcategories: [] };
+  }
+  
+  acc[standardCategoryName].count += item.count;
+  acc[standardCategoryName].verified += item.verified;
+  acc[standardCategoryName].featured += item.featured;
+  acc[standardCategoryName].subcategories.push(item);
+  
+  return acc;
+}, {});
+
+// Convert grouped categories to array format for display
+const groupedCategoryBreakdown = Object.entries(groupedCategories).map(([category, data]) => ({
+  category,
+  count: data.count,
+  verified: data.verified,
+  featured: data.featured,
+  percentage: Math.round((data.count / allServices.length) * 100),
+  subcategories: data.subcategories
+})).sort((a, b) => b.count - a.count);
+
+// Recent activity (services updated in last 30 days)
+const thirtyDaysAgo = new Date();
+thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+const recentServices = allServices.filter(service => {
+  const serviceDate = service.data.lastUpdated || new Date();
+  return new Date(serviceDate) > thirtyDaysAgo;
+});
+
+// Contact information analysis
+const servicesWithEmail = allServices.filter(s => s.data.contact?.email).length;
+const servicesWithPhone = allServices.filter(s => s.data.contact?.phone).length;
+const servicesWithWebsite = allServices.filter(s => s.data.socialMedia?.website).length;
+
+// Additional comprehensive statistics
+const servicesWithLogo = allServices.filter(s => s.data.logo).length;
+const servicesWithImage = allServices.filter(s => s.data.image).length;
+const servicesWithTags = allServices.filter(s => s.data.tags && s.data.tags.length > 0).length;
+const servicesWithBusinessHours = allServices.filter(s => s.data.businessHours && s.data.businessHours.length > 0).length;
+const servicesWithCoordinates = allServices.filter(s => s.data.location?.coordinates).length;
+const servicesWithWhatsApp = allServices.filter(s => s.data.contact?.whatsapp).length;
+
+// Status analysis
+const activeServices = allServices.filter(s => s.data.status === 'active').length;
+const inactiveServices = allServices.filter(s => s.data.status === 'inactive').length;
+
+// Location analysis
+const servicesByCity = allServices.reduce((acc, service) => {
+  const city = service.data.location?.city || 'Unknown';
+  if (!acc[city]) acc[city] = 0;
+  acc[city]++;
+  return acc;
+}, {});
+
+// Tag analysis
+const allTags = allServices.flatMap(s => s.data.tags || []);
+const tagFrequency = allTags.reduce((acc, tag) => {
+  acc[tag] = (acc[tag] || 0) + 1;
+  return acc;
+}, {});
+const topTags = Object.entries(tagFrequency)
+  .sort(([,a], [,b]) => b - a)
+  .slice(0, 10);
+
+// Social media presence
+const socialMediaStats = {
+  facebook: allServices.filter(s => s.data.socialMedia?.facebook).length,
+  twitter: allServices.filter(s => s.data.socialMedia?.twitter).length,
+  instagram: allServices.filter(s => s.data.socialMedia?.instagram).length,
+  linkedin: allServices.filter(s => s.data.socialMedia?.linkedin).length
+};
+
+// Growth & Trends Analysis
+const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth() + 1;
+
+// Services by year (based on lastUpdated)
+const servicesByYear = allServices.reduce((acc, service) => {
+  const year = new Date(service.data.lastUpdated || new Date()).getFullYear();
+  if (!acc[year]) acc[year] = 0;
+  acc[year]++;
+  return acc;
+}, {});
+
+// Services by month this year
+const servicesByMonth = allServices.reduce((acc, service) => {
+  const serviceDate = new Date(service.data.lastUpdated || new Date());
+  if (serviceDate.getFullYear() === currentYear) {
+    const month = serviceDate.getMonth() + 1;
+    if (!acc[month]) acc[month] = 0;
+    acc[month]++;
+  }
+  return acc;
+}, {});
+
+// Growth rate calculation
+const lastYear = currentYear - 1;
+const thisYearCount = servicesByYear[currentYear] || 0;
+const lastYearCount = servicesByYear[lastYear] || 0;
+const growthRate = lastYearCount > 0 ? ((thisYearCount - lastYearCount) / lastYearCount * 100) : 0;
+
+// Recent growth (last 3 months)
+const threeMonthsAgo = new Date();
+threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+const recentGrowth = allServices.filter(service => {
+  const serviceDate = new Date(service.data.lastUpdated || new Date());
+  return serviceDate > threeMonthsAgo;
+}).length;
+
+// Service Quality Metrics
+const calculateQualityScore = (service) => {
+  let score = 0;
+  let maxScore = 0;
+  
+  // Basic information (30 points)
+  maxScore += 30;
+  if (service.data.title) score += 10;
+  if (service.data.description) score += 10;
+  if (service.data.category) score += 10;
+  
+  // Contact information (25 points)
+  maxScore += 25;
+  if (service.data.contact?.email) score += 8;
+  if (service.data.contact?.phone) score += 8;
+  if (service.data.contact?.whatsapp) score += 4;
+  if (service.data.contact?.hours) score += 5;
+  
+  // Location information (15 points)
+  maxScore += 15;
+  if (service.data.location?.address) score += 10;
+  if (service.data.location?.coordinates) score += 5;
+  
+  // Digital presence (20 points)
+  maxScore += 20;
+  if (service.data.socialMedia?.website) score += 8;
+  if (service.data.socialMedia?.facebook) score += 4;
+  if (service.data.socialMedia?.twitter) score += 4;
+  if (service.data.socialMedia?.instagram) score += 4;
+  
+  // Verification and features (10 points)
+  maxScore += 10;
+  if (service.data.verified) score += 5;
+  if (service.data.featured) score += 5;
+  
+  return Math.round((score / maxScore) * 100);
+};
+
+const qualityScores = allServices.map(service => calculateQualityScore(service));
+const averageQualityScore = Math.round(qualityScores.reduce((a, b) => a + b, 0) / qualityScores.length);
+
+// Quality distribution
+const qualityDistribution = {
+  excellent: qualityScores.filter(score => score >= 90).length,
+  good: qualityScores.filter(score => score >= 70 && score < 90).length,
+  fair: qualityScores.filter(score => score >= 50 && score < 70).length,
+  poor: qualityScores.filter(score => score < 50).length
+};
+
+// Complete vs incomplete services
+const completeServices = qualityScores.filter(score => score >= 80).length;
+const incompleteServices = serviceStats.total - completeServices;
+
+// Digital Presence Metrics
+const digitalPresenceScores = allServices.map(service => {
+  let score = 0;
+  let maxScore = 0;
+  
+  // Website presence (40 points)
+  maxScore += 40;
+  if (service.data.socialMedia?.website) score += 40;
+  
+  // Social media presence (30 points)
+  maxScore += 30;
+  if (service.data.socialMedia?.facebook) score += 10;
+  if (service.data.socialMedia?.twitter) score += 10;
+  if (service.data.socialMedia?.instagram) score += 10;
+  
+  // Digital contact methods (30 points)
+  maxScore += 30;
+  if (service.data.contact?.email) score += 15;
+  if (service.data.contact?.whatsapp) score += 15;
+  
+  return Math.round((score / maxScore) * 100);
+});
+
+const averageDigitalScore = Math.round(digitalPresenceScores.reduce((a, b) => a + b, 0) / digitalPresenceScores.length);
+
+// Digital maturity levels
+const digitalMaturity = {
+  advanced: digitalPresenceScores.filter(score => score >= 80).length,
+  intermediate: digitalPresenceScores.filter(score => score >= 50 && score < 80).length,
+  basic: digitalPresenceScores.filter(score => score >= 20 && score < 50).length,
+  minimal: digitalPresenceScores.filter(score => score < 20).length
+};
+
+// Technology adoption by category
+const techAdoptionByCategory = Object.entries(servicesByCategory).map(([category, services]) => {
+  const avgDigitalScore = Math.round(
+    services.reduce((sum, service) => {
+      const serviceIndex = allServices.findIndex(s => s.id === service.id);
+      return sum + digitalPresenceScores[serviceIndex];
+    }, 0) / services.length
+  );
+  
+  return {
+    category,
+    avgDigitalScore,
+    serviceCount: services.length
+  };
+}).sort((a, b) => b.avgDigitalScore - a.avgDigitalScore);
+
+// Geographic & Accessibility Analysis
+// Dzaleka Refugee Camp center coordinates (approximate)
+const campCenter = { lat: -13.7833, lng: 33.9833 };
+
+// Calculate distance from camp center
+const calculateDistance = (lat1, lng1, lat2, lng2) => {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+};
+
+// Services with coordinates and distance analysis
+const servicesWithDistance = allServices
+  .filter(service => service.data.location?.coordinates)
+  .map(service => {
+    const coords = service.data.location.coordinates;
+    const distance = calculateDistance(
+      campCenter.lat, campCenter.lng,
+      coords.lat, coords.lng
+    );
+    return {
+      ...service,
+      distance: Math.round(distance * 100) / 100 // Round to 2 decimal places
+    };
+  })
+  .sort((a, b) => a.distance - b.distance);
+
+// Distance distribution
+const distanceDistribution = {
+  withinCamp: servicesWithDistance.filter(s => s.distance <= 2).length, // Within 2km
+  nearby: servicesWithDistance.filter(s => s.distance > 2 && s.distance <= 5).length, // 2-5km
+  accessible: servicesWithDistance.filter(s => s.distance > 5 && s.distance <= 10).length, // 5-10km
+  distant: servicesWithDistance.filter(s => s.distance > 10).length // >10km
+};
+
+// Average distance
+const averageDistance = servicesWithDistance.length > 0 
+  ? Math.round(servicesWithDistance.reduce((sum, s) => sum + s.distance, 0) / servicesWithDistance.length * 100) / 100
+  : 0;
+
+// Services by region/area
+const servicesByRegion = allServices.reduce((acc, service) => {
+  const city = service.data.location?.city || 'Unknown';
+  const address = service.data.location?.address || '';
+  
+  // Determine region based on address keywords
+  let region = city;
+  if (address.toLowerCase().includes('kawale')) region = 'Kawale Area';
+  else if (address.toLowerCase().includes('zone')) region = 'Zone Areas';
+  else if (address.toLowerCase().includes('block')) region = 'Block Areas';
+  else if (address.toLowerCase().includes('section')) region = 'Section Areas';
+  else if (address.toLowerCase().includes('market')) region = 'Market Area';
+  else if (address.toLowerCase().includes('school')) region = 'School Area';
+  else if (address.toLowerCase().includes('health')) region = 'Health Center Area';
+  
+  if (!acc[region]) acc[region] = 0;
+  acc[region]++;
+  return acc;
+}, {});
+
+// Accessibility features analysis
+const accessibilityFeatures = {
+  hasCoordinates: allServices.filter(s => s.data.location?.coordinates).length,
+  hasAddress: allServices.filter(s => s.data.location?.address).length,
+  hasCity: allServices.filter(s => s.data.location?.city).length,
+  hasBusinessHours: allServices.filter(s => s.data.businessHours && s.data.businessHours.length > 0).length,
+  hasContactHours: allServices.filter(s => s.data.contact?.hours).length,
+  hasPhone: allServices.filter(s => s.data.contact?.phone).length,
+  hasEmail: allServices.filter(s => s.data.contact?.email).length,
+  hasWhatsApp: allServices.filter(s => s.data.contact?.whatsapp).length
+};
+
+// Operating hours analysis
+const operatingHoursAnalysis = allServices.reduce((acc, service) => {
+  if (service.data.businessHours && service.data.businessHours.length > 0) {
+    service.data.businessHours.forEach(hour => {
+      if (!hour.closed) {
+        const day = hour.day.toLowerCase();
+        if (!acc[day]) acc[day] = { total: 0, open: 0 };
+        acc[day].total++;
+        acc[day].open++;
+      } else {
+        const day = hour.day.toLowerCase();
+        if (!acc[day]) acc[day] = { total: 0, open: 0 };
+        acc[day].total++;
+      }
+    });
+  }
+  return acc;
+}, {});
+
+// Peak availability times
+const peakAvailability = Object.entries(operatingHoursAnalysis)
+  .map(([day, data]) => ({
+    day: day.charAt(0).toUpperCase() + day.slice(1),
+    availability: Math.round((data.open / data.total) * 100)
+  }))
+  .sort((a, b) => b.availability - a.availability);
+
+// Emergency services (24/7 or extended hours)
+const emergencyServices = allServices.filter(service => {
+  const hours = service.data.contact?.hours || '';
+  const businessHours = service.data.businessHours || [];
+  
+  // Check for 24/7 indicators
+  const is24_7 = hours.toLowerCase().includes('24/7') || 
+                 hours.toLowerCase().includes('24 hours') ||
+                 hours.toLowerCase().includes('always open');
+  
+  // Check for extended hours (open more than 12 hours)
+  const hasExtendedHours = businessHours.some(hour => {
+    if (hour.closed) return false;
+    const openTime = new Date(`2000-01-01 ${hour.open}`);
+    const closeTime = new Date(`2000-01-01 ${hour.close}`);
+    const hoursDiff = (closeTime - openTime) / (1000 * 60 * 60);
+    return hoursDiff >= 12;
+  });
+  
+  return is24_7 || hasExtendedHours;
+});
+
+// Services by accessibility level
+const accessibilityLevels = {
+  high: allServices.filter(s => 
+    s.data.location?.coordinates && 
+    s.data.location?.address && 
+    s.data.contact?.phone && 
+    s.data.contact?.hours
+  ).length,
+  medium: allServices.filter(s => 
+    (s.data.location?.coordinates || s.data.location?.address) && 
+    (s.data.contact?.phone || s.data.contact?.email)
+  ).length,
+  low: allServices.filter(s => 
+    !s.data.location?.coordinates && 
+    !s.data.location?.address && 
+    !s.data.contact?.phone
+  ).length
+};
+
+// Additional Analytics from Services Content
+// Logo and branding analysis
+const logoAnalysis = {
+  hasLogo: allServices.filter(s => s.data.logo && s.data.logo !== '').length,
+  hasLocalLogo: allServices.filter(s => s.data.logo && s.data.logo.startsWith('/images/')).length,
+  hasExternalLogo: allServices.filter(s => s.data.logo && s.data.logo.startsWith('http')).length,
+  noLogo: allServices.filter(s => !s.data.logo || s.data.logo === '').length
+};
+
+// Status analysis
+const statusAnalysis = {
+  active: allServices.filter(s => s.data.status === 'active' || s.data.status === 'Active').length,
+  inactive: allServices.filter(s => s.data.status === 'inactive' || s.data.status === 'Inactive').length,
+  noStatus: allServices.filter(s => !s.data.status).length
+};
+
+// Update frequency analysis
+const updateFrequency = allServices.reduce((acc, service) => {
+  const lastUpdated = service.data.lastUpdated;
+  if (lastUpdated) {
+    const updateDate = new Date(lastUpdated);
+    const now = new Date();
+    const daysSinceUpdate = Math.floor((now - updateDate) / (1000 * 60 * 60 * 24));
+    
+    if (daysSinceUpdate <= 30) {
+      acc.recent = (acc.recent || 0) + 1;
+    } else if (daysSinceUpdate <= 90) {
+      acc.recently = (acc.recently || 0) + 1;
+    } else if (daysSinceUpdate <= 365) {
+      acc.older = (acc.older || 0) + 1;
+    } else {
+      acc.veryOld = (acc.veryOld || 0) + 1;
+    }
+  } else {
+    acc.noDate = (acc.noDate || 0) + 1;
+  }
+  return acc;
+}, {});
+
+// Contact completeness analysis
+const contactCompleteness = {
+  fullContact: allServices.filter(s => 
+    s.data.contact?.email && 
+    s.data.contact?.phone && 
+    s.data.contact?.hours
+  ).length,
+  partialContact: allServices.filter(s => 
+    (s.data.contact?.email || s.data.contact?.phone) && 
+    !(s.data.contact?.email && s.data.contact?.phone && s.data.contact?.hours)
+  ).length,
+  minimalContact: allServices.filter(s => 
+    !s.data.contact?.email && 
+    !s.data.contact?.phone
+  ).length
+};
+
+// Social media presence detailed analysis
+const socialMediaDetailed = {
+  facebookOnly: allServices.filter(s => 
+    s.data.socialMedia?.facebook && 
+    !s.data.socialMedia?.twitter && 
+    !s.data.socialMedia?.instagram && 
+    !s.data.socialMedia?.linkedin
+  ).length,
+  multiplePlatforms: allServices.filter(s => {
+    const platforms = [
+      s.data.socialMedia?.facebook,
+      s.data.socialMedia?.twitter,
+      s.data.socialMedia?.instagram,
+      s.data.socialMedia?.linkedin
+    ].filter(Boolean);
+    return platforms.length >= 2;
+  }).length,
+  noSocialMedia: allServices.filter(s => 
+    !s.data.socialMedia?.facebook && 
+    !s.data.socialMedia?.twitter && 
+    !s.data.socialMedia?.instagram && 
+    !s.data.socialMedia?.linkedin
+  ).length
+};
+
+// Service maturity score (comprehensive scoring)
+const calculateMaturityScore = (service) => {
+  let score = 0;
+  let maxScore = 0;
+  
+  // Basic information (20 points)
+  maxScore += 20;
+  if (service.data.title) score += 5;
+  if (service.data.description) score += 10;
+  if (service.data.category) score += 5;
+  
+  // Contact information (25 points)
+  maxScore += 25;
+  if (service.data.contact?.email) score += 8;
+  if (service.data.contact?.phone) score += 8;
+  if (service.data.contact?.whatsapp) score += 4;
+  if (service.data.contact?.hours) score += 5;
+  
+  // Location information (15 points)
+  maxScore += 15;
+  if (service.data.location?.address) score += 10;
+  if (service.data.location?.coordinates) score += 5;
+  
+  // Digital presence (20 points)
+  maxScore += 20;
+  if (service.data.socialMedia?.website) score += 8;
+  if (service.data.socialMedia?.facebook) score += 4;
+  if (service.data.socialMedia?.twitter) score += 4;
+  if (service.data.socialMedia?.instagram) score += 4;
+  
+  // Branding and verification (20 points)
+  maxScore += 20;
+  if (service.data.logo) score += 5;
+  if (service.data.verified) score += 8;
+  if (service.data.featured) score += 7;
+  
+  return Math.round((score / maxScore) * 100);
+};
+
+const maturityScores = allServices.map(service => calculateMaturityScore(service));
+const averageMaturityScore = Math.round(maturityScores.reduce((a, b) => a + b, 0) / maturityScores.length);
+
+// Maturity distribution
+const maturityDistribution = {
+  excellent: maturityScores.filter(score => score >= 90).length,
+  good: maturityScores.filter(score => score >= 70 && score < 90).length,
+  fair: maturityScores.filter(score => score >= 50 && score < 70).length,
+  poor: maturityScores.filter(score => score < 50).length
+};
+
+// SEO metadata
+const seo = {
+  title: 'Services Directory Statistics - Dzaleka Online Services',
+  description: 'Comprehensive statistics and analytics about services available in Dzaleka Refugee Camp. View detailed breakdowns by category, verification status, and growth trends.',
+  image: '/images/services-directory.jpg',
+  keywords: 'Dzaleka Services Statistics, Service Analytics, Refugee Services Data, Service Directory Metrics',
+  type: 'website'
+};
+---
+
+<script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Dzaleka Services Directory Statistics",
+    "description": "Comprehensive statistics about services available in Dzaleka Refugee Camp",
+    "url": "https://services.dzaleka.com/services/stats",
+    "mainEntity": {
+      "@type": "StatisticalEntity",
+      "totalServices": serviceStats.total,
+      "verifiedServices": serviceStats.verified,
+      "featuredServices": serviceStats.featured,
+      "categories": serviceStats.categories
+    }
+  })}
+</script>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Charts Script -->
+<script define:vars={{
+  groupedCategoryBreakdown,
+  servicesByYear,
+  qualityDistribution,
+  servicesWithWebsite,
+  serviceStats,
+  socialMediaStats,
+  servicesWithEmail,
+  servicesWithWhatsApp,
+  distanceDistribution,
+  peakAvailability
+}}>
+  // Wait for DOM to load
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Category Distribution Chart
+    const categoryCtx = document.getElementById('categoryChart');
+    if (categoryCtx) {
+      new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+          labels: groupedCategoryBreakdown.map(item => item.category),
+          datasets: [{
+            data: groupedCategoryBreakdown.map(item => item.count),
+            backgroundColor: groupedCategoryBreakdown.map(item => {
+              // Match colors with definitions and table dots
+              switch(item.category) {
+                case 'Non-profit Organizations': return '#3B82F6'; // blue-500
+                case 'Education': return '#10B981'; // green-500
+                case 'Health': return '#EF4444'; // red-500
+                case 'Youth & Children': return '#8B5CF6'; // purple-500
+                case 'Community & Humanitarian': return '#F59E0B'; // orange-500
+                case 'Religious Organizations': return '#6366F1'; // indigo-500
+                case 'Entrepreneurship & Business': return '#14B8A6'; // teal-500
+                case 'Technology & Digital': return '#EC4899'; // pink-500
+                case 'Cultural & Arts': return '#EAB308'; // yellow-500
+                case 'Sports & Fitness': return '#6B7280'; // gray-500
+                case 'Advocacy': return '#06B6D4'; // cyan-500
+                default: return '#3B82F6'; // blue-500 as fallback
+              }
+            }),
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((context.parsed / total) * 100).toFixed(1);
+                  return `${context.label}: ${context.parsed} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Growth Trends Chart
+    const growthCtx = document.getElementById('growthChart');
+    if (growthCtx) {
+      const years = Object.keys(servicesByYear).sort();
+      const yearData = years.map(year => servicesByYear[year]);
+      
+      new Chart(growthCtx, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [{
+            label: 'Services Added',
+            data: yearData,
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Quality Distribution Chart
+    const qualityCtx = document.getElementById('qualityChart');
+    if (qualityCtx) {
+      new Chart(qualityCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Excellent (90%+)', 'Good (70-89%)', 'Fair (50-69%)', 'Poor (<50%)'],
+          datasets: [{
+            label: 'Number of Services',
+            data: [
+              qualityDistribution.excellent,
+              qualityDistribution.good,
+              qualityDistribution.fair,
+              qualityDistribution.poor
+            ],
+            backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444'],
+            borderWidth: 0,
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Digital Maturity Chart
+    const digitalCtx = document.getElementById('digitalChart');
+    if (digitalCtx) {
+      new Chart(digitalCtx, {
+        type: 'radar',
+        data: {
+          labels: ['Website', 'Facebook', 'Twitter', 'Instagram', 'Email', 'WhatsApp'],
+          datasets: [{
+            label: 'Digital Presence',
+            data: [
+              Math.round((servicesWithWebsite / serviceStats.total) * 100),
+              Math.round((socialMediaStats.facebook / serviceStats.total) * 100),
+              Math.round((socialMediaStats.twitter / serviceStats.total) * 100),
+              Math.round((socialMediaStats.instagram / serviceStats.total) * 100),
+              Math.round((servicesWithEmail / serviceStats.total) * 100),
+              Math.round((servicesWithWhatsApp / serviceStats.total) * 100)
+            ],
+            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+            borderColor: '#6366F1',
+            borderWidth: 2,
+            pointBackgroundColor: '#6366F1',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                stepSize: 20
+              },
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Distance Distribution Chart
+    const distanceCtx = document.getElementById('distanceChart');
+    if (distanceCtx) {
+      new Chart(distanceCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Within Camp (≤2km)', 'Nearby (2-5km)', 'Accessible (5-10km)', 'Distant (>10km)'],
+          datasets: [{
+            data: [
+              distanceDistribution.withinCamp,
+              distanceDistribution.nearby,
+              distanceDistribution.accessible,
+              distanceDistribution.distant
+            ],
+            backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((context.parsed / total) * 100).toFixed(1);
+                  return `${context.label}: ${context.parsed} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Peak Availability Chart
+    const availabilityCtx = document.getElementById('availabilityChart');
+    if (availabilityCtx) {
+      new Chart(availabilityCtx, {
+        type: 'bar',
+        data: {
+          labels: peakAvailability.map(item => item.day),
+          datasets: [{
+            label: 'Availability (%)',
+            data: peakAvailability.map(item => item.availability),
+            backgroundColor: '#06B6D4',
+            borderWidth: 0,
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  type={seo.type}
+  keywords={seo.keywords}
+>
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden px-4 py-12 sm:py-16">
+    <!-- Hero Image Background -->
+    <div class="absolute inset-0">
+      <img 
+        src="/images/dzaleka-hero.jpeg" 
+        alt="Dzaleka Community" 
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-primary-600/80 to-primary-800/80"></div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Services Directory Statistics</h1>
+      <p class="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+        Comprehensive analytics and insights about services available in Dzaleka Refugee Camp
+      </p>
+      
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold text-white">{serviceStats.total}</div>
+          <div class="text-sm text-white/80">Total Services</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold text-white">{serviceStats.verified}</div>
+          <div class="text-sm text-white/80">Verified</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold text-white">{serviceStats.categories}</div>
+          <div class="text-sm text-white/80">Categories</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold text-white">{recentServices.length}</div>
+          <div class="text-sm text-white/80">Updated (30d)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+    
+    <!-- Back Button -->
+    <div class="mb-6">
+      <a href="/services" class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Services Directory
+      </a>
+    </div>
+    
+    <!-- Overview Section -->
+    <div class="mb-12">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Directory Overview</h2>
+        <p class="text-gray-600">See the big picture of what's available in our community. These numbers show you how many services are registered, which ones are verified, and how many different types of help you can find in Dzaleka Refugee Camp.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+          </div>
+          <div class="text-3xl font-bold text-gray-900 mb-2">{serviceStats.total}</div>
+          <div class="text-sm text-gray-600">Total Services</div>
+          <div class="text-xs text-gray-500 mt-1">All registered services</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="text-3xl font-bold text-gray-900 mb-2">{serviceStats.verified}</div>
+          <div class="text-sm text-gray-600">Verified Services</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((serviceStats.verified / serviceStats.total) * 100)}% of total</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+            </div>
+          </div>
+          <div class="text-3xl font-bold text-gray-900 mb-2">{serviceStats.featured}</div>
+          <div class="text-sm text-gray-600">Featured Services</div>
+          <div class="text-xs text-gray-500 mt-1">Highlighted services</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+            </div>
+          </div>
+          <div class="text-3xl font-bold text-gray-900 mb-2">{serviceStats.categories}</div>
+          <div class="text-sm text-gray-600">Service Categories</div>
+          <div class="text-xs text-gray-500 mt-1">Different service types</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Statistics -->
+    <div class="mb-12">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Additional Statistics</h2>
+        <p class="text-gray-600">Find out which services have the most complete information and are easiest to contact. This helps you know which organizations are most prepared to help you and have up-to-date details.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="text-2xl font-bold text-gray-900 mb-2">{activeServices}</div>
+          <div class="text-sm text-gray-600">Active Services</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((activeServices / serviceStats.total) * 100)}% of total</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="text-2xl font-bold text-gray-900 mb-2">{servicesWithLogo}</div>
+          <div class="text-sm text-gray-600">With Logo</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((servicesWithLogo / serviceStats.total) * 100)}% of total</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="text-2xl font-bold text-gray-900 mb-2">{servicesWithTags}</div>
+          <div class="text-sm text-gray-600">With Tags</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((servicesWithTags / serviceStats.total) * 100)}% of total</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="text-2xl font-bold text-gray-900 mb-2">{servicesWithCoordinates}</div>
+          <div class="text-sm text-gray-600">With Location</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((servicesWithCoordinates / serviceStats.total) * 100)}% of total</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="text-2xl font-bold text-gray-900 mb-2">{servicesWithBusinessHours}</div>
+          <div class="text-sm text-gray-600">With Business Hours</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((servicesWithBusinessHours / serviceStats.total) * 100)}% of total</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="text-2xl font-bold text-gray-900 mb-2">{servicesWithWhatsApp}</div>
+          <div class="text-sm text-gray-600">With WhatsApp</div>
+          <div class="text-xs text-gray-500 mt-1">{Math.round((servicesWithWhatsApp / serviceStats.total) * 100)}% of total</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="mb-16">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Services by Category</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Detailed breakdown of services across different categories
+        </p>
+      </div>
+
+
+      
+      <!-- Category Chart Section -->
+      <div class="mb-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6 text-center">Category Distribution Chart</h3>
+          <div class="h-96 max-w-2xl mx-auto">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Table Section -->
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Category Details</h3>
+        </div>
+        
+        <!-- Category Definitions Subsection -->
+        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+          <h4 class="text-sm font-semibold text-gray-700 mb-3">Category Definitions</h4>
+          <div class="grid gap-3 text-xs md:grid-cols-2 lg:grid-cols-3">
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-blue-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-blue-900">Non-profit Organizations:</span>
+                <span class="text-gray-600">Charities, NGOs, and community organizations providing social services, humanitarian aid, and community support.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-green-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-green-900">Education:</span>
+                <span class="text-gray-600">Schools, training programs, literacy initiatives, and educational support services for all ages.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-red-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-red-900">Health:</span>
+                <span class="text-gray-600">Medical clinics, health centers, mental health services, and healthcare support programs.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-purple-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-purple-900">Youth & Children:</span>
+                <span class="text-gray-600">Programs specifically designed for children and young people, including youth centers and child protection services.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-orange-900">Community & Humanitarian:</span>
+                <span class="text-gray-600">Community development, humanitarian aid, emergency relief, and social welfare services.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-indigo-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-indigo-900">Religious Organizations:</span>
+                <span class="text-gray-600">Churches, mosques, religious schools, and faith-based community services and support.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-teal-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-teal-900">Entrepreneurship & Business:</span>
+                <span class="text-gray-600">Business training, microfinance, entrepreneurship support, and economic development programs.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-pink-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-pink-900">Technology & Digital:</span>
+                <span class="text-gray-600">Computer training, digital literacy, internet access, and technology education programs.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-yellow-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-yellow-900">Cultural & Arts:</span>
+                <span class="text-gray-600">Cultural preservation, arts programs, music, dance, and creative expression activities.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-gray-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-gray-900">Sports & Fitness:</span>
+                <span class="text-gray-600">Sports clubs, fitness programs, recreational activities, and physical education services.</span>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-cyan-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+              <div>
+                <span class="font-medium text-cyan-900">Advocacy:</span>
+                <span class="text-gray-600">Human rights advocacy, legal support, policy work, and community representation services.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider min-w-[200px]">Category</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">Total</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider min-w-[120px]">Verified</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider min-w-[120px]">Featured</th>
+                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider min-w-[120px]">Percentage</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {groupedCategoryBreakdown.map((item, index) => (
+                <>
+                  <tr class={`hover:bg-gray-50 transition-colors duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                                          <td class="px-6 py-4">
+                        <div class="flex items-center">
+                          <div class={`w-3 h-3 rounded-full mr-3 flex-shrink-0 ${
+                            item.category === 'Non-profit Organizations' ? 'bg-blue-500' :
+                            item.category === 'Education' ? 'bg-green-500' :
+                            item.category === 'Health' ? 'bg-red-500' :
+                            item.category === 'Youth & Children' ? 'bg-purple-500' :
+                            item.category === 'Community & Humanitarian' ? 'bg-orange-500' :
+                            item.category === 'Religious Organizations' ? 'bg-indigo-500' :
+                            item.category === 'Entrepreneurship & Business' ? 'bg-teal-500' :
+                            item.category === 'Technology & Digital' ? 'bg-pink-500' :
+                            item.category === 'Cultural & Arts' ? 'bg-yellow-500' :
+                            item.category === 'Sports & Fitness' ? 'bg-gray-500' :
+                            item.category === 'Advocacy' ? 'bg-cyan-500' :
+                            'bg-primary-500'
+                          }`}></div>
+                          <div class="text-sm font-semibold text-gray-900">{item.category}</div>
+                          {item.subcategories.length > 1 && (
+                            <span class="ml-2 inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full flex-shrink-0">
+                              {item.subcategories.length} subcategories
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                    <td class="px-6 py-4">
+                      <div class="text-lg font-bold text-gray-900">{item.count}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="text-sm font-semibold text-gray-900 mr-2">{item.verified}</div>
+                        {item.verified > 0 && (
+                          <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Verified
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="text-sm font-semibold text-gray-900 mr-2">{item.featured}</div>
+                        {item.featured > 0 && (
+                          <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            Featured
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center space-x-3">
+                        <div class="text-sm font-semibold text-gray-900 min-w-[3rem]">{item.percentage}%</div>
+                        <div class="flex-1 bg-gray-200 rounded-full h-3 max-w-32">
+                          <div class="bg-gradient-to-r from-primary-500 to-primary-600 h-3 rounded-full transition-all duration-500" style={`width: ${item.percentage}%`}></div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {/* Show subcategories if there are multiple */}
+                  {item.subcategories.length > 1 && item.subcategories.map((subItem, subIndex) => (
+                    <tr class="bg-gray-50/30 hover:bg-gray-100 transition-colors duration-200">
+                      <td class="px-6 py-3">
+                        <div class="flex items-center pl-8">
+                          <div class="w-2 h-2 rounded-full bg-gray-400 mr-3 flex-shrink-0"></div>
+                          <div class="text-sm text-gray-600">{subItem.category}</div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-3">
+                        <div class="text-sm text-gray-600">{subItem.count}</div>
+                      </td>
+                      <td class="px-6 py-3">
+                        <div class="text-sm text-gray-600">{subItem.verified}</div>
+                      </td>
+                      <td class="px-6 py-3">
+                        <div class="text-sm text-gray-600">{subItem.featured}</div>
+                      </td>
+                      <td class="px-6 py-3">
+                        <div class="flex items-center space-x-3">
+                          <div class="text-sm text-gray-600 min-w-[3rem]">{subItem.percentage}%</div>
+                          <div class="flex-1 bg-gray-200 rounded-full h-2 max-w-32">
+                            <div class="bg-gray-400 h-2 rounded-full" style={`width: ${subItem.percentage}%`}></div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information Analysis -->
+    <div class="mb-12">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Contact Information</h2>
+        <p class="text-gray-600">See which services you can reach by phone, email, or WhatsApp. This helps you know the best way to contact different organizations and which ones are most accessible to you.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-gray-900">{servicesWithEmail}</div>
+              <div class="text-sm text-gray-600">With Email</div>
+            </div>
+          </div>
+          <div class="text-xs text-gray-500">{Math.round((servicesWithEmail / serviceStats.total) * 100)}% of services</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-gray-900">{servicesWithPhone}</div>
+              <div class="text-sm text-gray-600">With Phone</div>
+            </div>
+          </div>
+          <div class="text-xs text-gray-500">{Math.round((servicesWithPhone / serviceStats.total) * 100)}% of services</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+              <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-gray-900">{servicesWithWebsite}</div>
+              <div class="text-sm text-gray-600">With Website</div>
+            </div>
+          </div>
+          <div class="text-xs text-gray-500">{Math.round((servicesWithWebsite / serviceStats.total) * 100)}% of services</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Breakdown -->
+    <div class="mb-12">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Services by Location</h2>
+        <p class="text-gray-600">Find services near where you live. This shows you which organizations are in your area and helps you discover services you might not know about in your neighborhood.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {Object.entries(servicesByCity).map(([city, count], index) => (
+                <tr class={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">{city}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{count}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="text-sm text-gray-900 mr-2">{Math.round((count / serviceStats.total) * 100)}%</div>
+                      <div class="w-16 bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary-600 h-2 rounded-full" style={`width: ${Math.round((count / serviceStats.total) * 100)}%`}></div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Tags -->
+    {topTags.length > 0 && (
+      <div class="mb-12">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">Most Popular Tags</h2>
+          <p class="text-gray-600">Discover what types of help are most common in our community. These tags show you the main areas where people are getting support and what services are most popular.</p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          {topTags.map(([tag, count]) => (
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
+              <div class="text-lg font-bold text-gray-900 mb-1">{tag}</div>
+              <div class="text-sm text-gray-600">{count} services</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Social Media Presence -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Social Media Presence</h2>
+      <div class="grid gap-4 md:grid-cols-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
+          <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-bold text-gray-900">{socialMediaStats.facebook}</div>
+          <div class="text-sm text-gray-600">Facebook</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
+          <div class="w-12 h-12 bg-blue-400 rounded-lg flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-bold text-gray-900">{socialMediaStats.twitter}</div>
+          <div class="text-sm text-gray-600">Twitter</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
+          <div class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.897 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.897-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-bold text-gray-900">{socialMediaStats.instagram}</div>
+          <div class="text-sm text-gray-600">Instagram</div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
+          <div class="w-12 h-12 bg-blue-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-bold text-gray-900">{socialMediaStats.linkedin}</div>
+          <div class="text-sm text-gray-600">LinkedIn</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Growth & Trends Analysis -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Growth & Trends Analysis</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          See how our community services have grown over time. This shows you when new services were added and helps you understand how the support available in Dzaleka has expanded to meet community needs.
+        </p>
+      </div>
+      
+      <div class="grid gap-8 lg:grid-cols-2">
+        <!-- Growth Chart -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Growth Trends</h3>
+          <div class="h-80">
+            <canvas id="growthChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Growth Overview -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Growth Overview</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">This Year ({currentYear})</div>
+                <div class="text-2xl font-bold text-green-600">{thisYearCount} services</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">Growth Rate</div>
+                <div class={`text-lg font-semibold ${growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {growthRate >= 0 ? '+' : ''}{Math.round(growthRate)}%
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">Last 3 Months</div>
+                <div class="text-2xl font-bold text-blue-600">{recentGrowth} services</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">Recent Activity</div>
+                <div class="text-lg font-semibold text-blue-600">
+                  {Math.round((recentGrowth / serviceStats.total) * 100)}%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Quality Metrics -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Service Quality Metrics</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Find the most reliable and well-organized services. This scoring system helps you identify which organizations have complete information and are most likely to be able to help you effectively.
+        </p>
+      </div>
+      
+      <div class="grid gap-8 lg:grid-cols-2">
+        <!-- Quality Chart -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Quality Distribution Chart</h3>
+          <div class="h-80">
+            <canvas id="qualityChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Quality Overview -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Quality Overview</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">Average Quality Score</div>
+                <div class="text-3xl font-bold text-purple-600">{averageQualityScore}%</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">Overall Rating</div>
+                <div class="text-lg font-semibold text-purple-600">
+                  {averageQualityScore >= 90 ? 'Excellent' : averageQualityScore >= 70 ? 'Good' : averageQualityScore >= 50 ? 'Fair' : 'Poor'}
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 bg-green-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-green-600">{completeServices}</div>
+                <div class="text-sm text-gray-600">Complete Profiles</div>
+              </div>
+              <div class="p-4 bg-orange-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-orange-600">{incompleteServices}</div>
+                <div class="text-sm text-gray-600">Incomplete Profiles</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Digital Presence Metrics -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Digital Presence Metrics</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          See which services are active online and easy to reach through social media or websites. This helps you find organizations that are digitally connected and can provide information and support through online platforms.
+        </p>
+      </div>
+      
+      <div class="grid gap-8 lg:grid-cols-2">
+        <!-- Digital Maturity Chart -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Digital Presence Radar</h3>
+          <div class="h-80">
+            <canvas id="digitalChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Digital Overview -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Digital Maturity</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-indigo-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">Average Digital Score</div>
+                <div class="text-3xl font-bold text-indigo-600">{averageDigitalScore}%</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">Technology Adoption</div>
+                <div class="text-lg font-semibold text-indigo-600">
+                  {averageDigitalScore >= 80 ? 'Advanced' : averageDigitalScore >= 50 ? 'Intermediate' : averageDigitalScore >= 20 ? 'Basic' : 'Minimal'}
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 bg-green-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-green-600">{digitalMaturity.advanced}</div>
+                <div class="text-sm text-gray-600">Advanced</div>
+              </div>
+              <div class="p-4 bg-blue-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-blue-600">{digitalMaturity.intermediate}</div>
+                <div class="text-sm text-gray-600">Intermediate</div>
+              </div>
+              <div class="p-4 bg-yellow-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-yellow-600">{digitalMaturity.basic}</div>
+                <div class="text-sm text-gray-600">Basic</div>
+              </div>
+              <div class="p-4 bg-red-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-red-600">{digitalMaturity.minimal}</div>
+                <div class="text-sm text-gray-600">Minimal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Geographic & Accessibility Analysis -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Geographic & Accessibility Analysis</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Find out which services are closest to you and easiest to reach. This helps you understand the accessibility of different types of support in your area and plan the best way to get the help you need.
+        </p>
+      </div>
+      
+      <div class="grid gap-8 lg:grid-cols-2">
+        <!-- Distance Distribution Chart -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Distance Distribution</h3>
+          <div class="h-80">
+            <canvas id="distanceChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Distance Analysis -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Proximity to Camp Center</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-teal-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">Average Distance</div>
+                <div class="text-3xl font-bold text-teal-600">{averageDistance} km</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">From Camp Center</div>
+                <div class="text-lg font-semibold text-teal-600">
+                  {servicesWithDistance.length} services mapped
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 bg-green-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-green-600">{distanceDistribution.withinCamp}</div>
+                <div class="text-sm text-gray-600">Within Camp (≤2km)</div>
+              </div>
+              <div class="p-4 bg-blue-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-blue-600">{distanceDistribution.nearby}</div>
+                <div class="text-sm text-gray-600">Nearby (2-5km)</div>
+              </div>
+              <div class="p-4 bg-yellow-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-yellow-600">{distanceDistribution.accessible}</div>
+                <div class="text-sm text-gray-600">Accessible (5-10km)</div>
+              </div>
+              <div class="p-4 bg-red-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-red-600">{distanceDistribution.distant}</div>
+                <div class="text-sm text-gray-600">Distant (>10km)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regional Distribution -->
+      <div class="mt-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Services by Region</h3>
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {Object.entries(servicesByRegion).sort(([,a], [,b]) => b - a).map(([region, count]) => (
+              <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div class="text-sm font-medium text-gray-900">{region}</div>
+                <div class="flex items-center space-x-3">
+                  <div class="text-lg font-bold text-gray-900">{count}</div>
+                  <div class="w-16 bg-gray-200 rounded-full h-2">
+                    <div class="bg-teal-600 h-2 rounded-full" style={`width: ${Math.round((count / serviceStats.total) * 100)}%`}></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Operating Hours & Emergency Services -->
+      <div class="grid gap-8 lg:grid-cols-2 mt-6">
+        <!-- Peak Availability Chart -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Peak Service Availability</h3>
+          <div class="h-80">
+            <canvas id="availabilityChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Peak Availability -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Weekly Breakdown</h3>
+          <div class="space-y-3">
+            {peakAvailability.slice(0, 7).map((item) => (
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="text-sm font-medium text-gray-900">{item.day}</div>
+                <div class="flex items-center space-x-3">
+                  <div class="text-sm font-bold text-gray-900">{item.availability}%</div>
+                  <div class="w-20 bg-gray-200 rounded-full h-2">
+                    <div class="bg-teal-600 h-2 rounded-full" style={`width: ${item.availability}%`}></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Emergency Services -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Emergency & Extended Hours</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">Emergency Services</div>
+                <div class="text-3xl font-bold text-red-600">{emergencyServices.length}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">24/7 or Extended Hours</div>
+                <div class="text-lg font-semibold text-red-600">
+                  {Math.round((emergencyServices.length / serviceStats.total) * 100)}% of total
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-4">
+              <div class="p-4 bg-green-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-green-600">{accessibilityLevels.high}</div>
+                <div class="text-sm text-gray-600">High Accessibility</div>
+              </div>
+              <div class="p-4 bg-yellow-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-yellow-600">{accessibilityLevels.medium}</div>
+                <div class="text-sm text-gray-600">Medium Accessibility</div>
+              </div>
+              <div class="p-4 bg-red-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-red-600">{accessibilityLevels.low}</div>
+                <div class="text-sm text-gray-600">Low Accessibility</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h2>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-2xl font-bold text-gray-900">{recentServices.length}</div>
+            <div class="text-sm text-gray-600">Services updated in last 30 days</div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm text-gray-500">Activity Rate</div>
+            <div class="text-lg font-semibold text-green-600">
+              {Math.round((recentServices.length / serviceStats.total) * 100)}%
+            </div>
+          </div>
+        </div>
+        
+        {recentServices.length > 0 && (
+          <div class="space-y-3">
+            <div class="text-sm font-medium text-gray-700 mb-3">Recently Updated Services:</div>
+            {recentServices.slice(0, 5).map(service => (
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <div class="font-medium text-gray-900">{service.data.title}</div>
+                  <div class="text-sm text-gray-600">{service.data.category}</div>
+                </div>
+                <div class="text-sm text-gray-500">
+                  {service.data.verified && (
+                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full mr-2">
+                      Verified
+                    </span>
+                  )}
+                  {service.data.featured && (
+                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                      Featured
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Service Maturity & Branding Analysis -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Service Maturity & Branding Analysis</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          See which services have the most professional and complete profiles. This helps you identify well-established organizations that are likely to provide reliable and consistent support.
+        </p>
+      </div>
+      
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Service Maturity Overview -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Service Maturity Score</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+              <div>
+                <div class="text-sm text-gray-600">Average Maturity Score</div>
+                <div class="text-3xl font-bold text-purple-600">{averageMaturityScore}%</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">Overall Rating</div>
+                <div class="text-lg font-semibold text-purple-600">
+                  {averageMaturityScore >= 90 ? 'Excellent' : averageMaturityScore >= 70 ? 'Good' : averageMaturityScore >= 50 ? 'Fair' : 'Poor'}
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 bg-green-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-green-600">{maturityDistribution.excellent + maturityDistribution.good}</div>
+                <div class="text-sm text-gray-600">Good+ Profiles</div>
+              </div>
+              <div class="p-4 bg-orange-50 rounded-lg text-center">
+                <div class="text-2xl font-bold text-orange-600">{maturityDistribution.fair + maturityDistribution.poor}</div>
+                <div class="text-sm text-gray-600">Needs Improvement</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Branding Analysis -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Branding & Logo Analysis</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">With Logo</div>
+              </div>
+              <div class="text-lg font-bold text-blue-600">{logoAnalysis.hasLogo}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Local Logos</div>
+              </div>
+              <div class="text-lg font-bold text-green-600">{logoAnalysis.hasLocalLogo}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">External Logos</div>
+              </div>
+              <div class="text-lg font-bold text-purple-600">{logoAnalysis.hasExternalLogo}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">No Logo</div>
+              </div>
+              <div class="text-lg font-bold text-red-600">{logoAnalysis.noLogo}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact & Social Media Analysis -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Contact & Social Media Analysis</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Find the best ways to reach different organizations. This shows you which services are most active on social media and have the most complete contact information, making it easier for you to get in touch.
+        </p>
+      </div>
+      
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Contact Completeness -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Contact Information Completeness</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Full Contact Info</div>
+              </div>
+              <div class="text-lg font-bold text-green-600">{contactCompleteness.fullContact}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-yellow-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Partial Contact Info</div>
+              </div>
+              <div class="text-lg font-bold text-yellow-600">{contactCompleteness.partialContact}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Minimal Contact Info</div>
+              </div>
+              <div class="text-lg font-bold text-red-600">{contactCompleteness.minimalContact}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media Analysis -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Social Media Presence</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Multiple Platforms</div>
+              </div>
+              <div class="text-lg font-bold text-blue-600">{socialMediaDetailed.multiplePlatforms}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Facebook Only</div>
+              </div>
+              <div class="text-lg font-bold text-green-600">{socialMediaDetailed.facebookOnly}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">No Social Media</div>
+              </div>
+              <div class="text-lg font-bold text-red-600">{socialMediaDetailed.noSocialMedia}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Status & Update Analysis -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Service Status & Update Analysis</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Find out which services are currently active and have the most up-to-date information. This helps you avoid contacting inactive services and ensures you're getting the most current details about available help.
+        </p>
+      </div>
+      
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Service Status -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Service Status</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Active Services</div>
+              </div>
+              <div class="text-lg font-bold text-green-600">{statusAnalysis.active}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Inactive Services</div>
+              </div>
+              <div class="text-lg font-bold text-red-600">{statusAnalysis.inactive}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">No Status Set</div>
+              </div>
+              <div class="text-lg font-bold text-gray-600">{statusAnalysis.noStatus}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Update Frequency -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Content Freshness</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Recently Updated (≤30 days)</div>
+              </div>
+              <div class="text-lg font-bold text-green-600">{updateFrequency.recent || 0}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-yellow-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Recently Updated (≤90 days)</div>
+              </div>
+              <div class="text-lg font-bold text-yellow-600">{updateFrequency.recently || 0}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Older Content (≤1 year)</div>
+              </div>
+              <div class="text-lg font-bold text-orange-600">{updateFrequency.older || 0}</div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="text-sm font-medium text-gray-900">Very Old Content (>1 year)</div>
+              </div>
+              <div class="text-lg font-bold text-red-600">{updateFrequency.veryOld || 0}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-gray-50 rounded-xl p-8 text-center">
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Explore Our Services Directory</h3>
+      <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+        Discover and connect with {serviceStats.total} services available in Dzaleka Refugee Camp. 
+        Find healthcare, education, legal support, and more.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/services" class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Browse Services
+        </a>
+        <a href="/services/register" class="inline-flex items-center px-6 py-3 border border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Register Your Service
+        </a>
+      </div>
+    </div>
+  </div>
+</MainLayout>

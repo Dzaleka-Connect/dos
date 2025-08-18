@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Police Station
-category: Police station
+category: "Government Services"
 description: Dzaleka Police Station is a police station in Dowa District, Central Malawi. Dzaleka Police Station is situated nearby to the college Tailoring UDET.
 location:
   address: Dzaleka Police station, Dzaleka, M16

@@ -1,6 +1,6 @@
 ---
 title: Art for Hope
-category: "Children Education"
+category: "Education"
 description: Art for Hope is a community organization in the Dzaleka Refugee Camp, Malawi, dedicated to supporting refugees as they rebuild their lives through education, wellness, and community empowerment.
 location:
   address: Dzaleka Refugee Camp

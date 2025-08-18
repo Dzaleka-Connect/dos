@@ -1,6 +1,6 @@
 ---
 title: Fountain of Hope Africa
-category: Health
+category: "Health"
 description: Health and wellbeing services for refugees and local communities.
 location:
   address: Dzaleka Refugee Camp

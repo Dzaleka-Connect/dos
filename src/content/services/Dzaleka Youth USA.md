@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Youth USA
-category: Youth Organization
+category: "Youth & Children"
 description: Dzaleka Youth USA goal is bring dzaleka youth togehter and give back to dzaleka community.
 location:
   address: Dzaleka Refugee Camp

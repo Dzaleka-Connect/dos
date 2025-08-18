@@ -1,6 +1,6 @@
 ---
 title: Grace of Light for Orphans GLO
-category: Children Education
+category: "Education"
 description: Grace of Light for Orphans GLO is a non-profit organization that provides education to orphan children, street children, and the most vulnerable in Malawi, especially in the Dzaleka camp. 
 location:
   address: Dzaleka Refugee Camp

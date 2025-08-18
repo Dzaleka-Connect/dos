@@ -1,6 +1,6 @@
 ---
 title: YOCODESOP
-category: Youth
+category: "Youth & Children"
 description: Advancing girls' rights and leadership, Provide services to children and youth to learn new skills through vocational training in tailoring, informatics and income generation activities.
 location:
   address: Dzaleka Refugee Camp, Kawale I/108

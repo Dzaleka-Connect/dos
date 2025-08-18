@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Connect
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: >-
   We support young creatives, celebrate diverse talent & recognise social impact
   leaders.

@@ -1,6 +1,6 @@
 ---
 title: Takenolab
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: Supporting refugee entrepreneurs and innovation initiatives.
 location:
   address: Opposite to Dzaleka Refugee Camp, L012, Mosque Street - Chimtengo

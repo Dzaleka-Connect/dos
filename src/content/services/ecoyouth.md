@@ -1,6 +1,6 @@
 ---
 title: EcoYouth
-category: "Community-Based Organizations"
+category: "Non-profit Organizations"
 description: EcoYouth, a non-profit community-based organization in Dzaleka Refugee Camp, was founded by George Matali and Raymond Makutubu with a mission to address environmental pollution in the camp.
 location:
   address: Dzaleka Refugee Camp

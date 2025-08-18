@@ -1,6 +1,6 @@
 ---
 title: VijanAfrica
-category: Youth
+category: "Youth & Children"
 description: Vijana Africa Is A 501(C)3 Nonprofit Organization that promotes Peace and Conflict Transformation through Entrepreneurship, Education, and Civic Engagement.
 location:
   address: Dzaleka Refugee Camp

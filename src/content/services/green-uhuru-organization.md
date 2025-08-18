@@ -1,6 +1,6 @@
 ---
 title: Green Uhuru Organization
-category: Community Organization
+category: "Non-profit Organizations"
 description: Community based organization in Dzaleka Refugee Camp, creating an environmental friendly community trough E-waste entrepreneurship.
 location:
   address: Dzaleka Refugee Camp

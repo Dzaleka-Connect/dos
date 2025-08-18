@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Arts Lab
-category: Cultural
+category: "Cultural & Arts"
 description: Dzaleka Arts Lab is a creative community based in Dzaleka Refugee Camp, Malawi.
 location:
   address: Dzaleka Refugee Camp

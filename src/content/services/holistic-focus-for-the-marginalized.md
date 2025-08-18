@@ -1,6 +1,6 @@
 ---
 title: Holistic Focus for the Marginalized
-category: Education & Health
+category: "Education"
 description: Provides education, health, and livelihood support for vulnerable groups.
 location:
   address: Dzaleka Refugee Camp

@@ -1,6 +1,6 @@
 ---
 title: Umoja ni Nguvu Organization
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: uplifting the living standards of refugee women in Dzaleka Camp through various strategies
 location:
   address: Dzaleka Refugee Camp, 111 Blantyre

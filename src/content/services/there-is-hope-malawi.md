@@ -1,6 +1,6 @@
 ---
 title: There is Hope Malawi
-category: Education
+category: "Education"
 description: Education and vocational training for refugees and host communities.
 location:
   address: Area 47, Sector 2, Linthipe Road, Plot Number 6

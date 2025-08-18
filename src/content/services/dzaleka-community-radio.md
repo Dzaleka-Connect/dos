@@ -1,7 +1,7 @@
 ---
 title: "Yetu Community Radio"
 description: "Yetu Radio, founded by UNHCR in 2018, airs from a refugee camp in 5 languages, promoting unity and rights on 107.6 MHz in Malawi."
-category: "Media"
+category: "Media & Communication"
 logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpCzdiMDwkM37gZhpBawttg9kFqUwvbudgzQ&s"
 location:
   address: "Dzaleka Refugee Camp"

@@ -423,34 +423,34 @@ const weatherAlerts = [
 <MainLayout {...seo}>
   <script type="application/ld+json" set:html={JSON.stringify(weatherStructuredData)} />
 
-  <main class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-    <!-- Hero Section with Weather Alerts -->
-    <div class="relative bg-gradient-to-r from-primary-700 to-primary-900 text-white py-16 md:py-24">
+  <main class="min-h-screen bg-gray-50">
+    <!-- Hero Section -->
+    <div class="relative bg-primary-700 text-white py-12 md:py-16">
       <div class="absolute inset-0 bg-[url('/images/dzaleka-hero.jpeg')] bg-cover bg-center opacity-10"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-primary-900/95 to-primary-800/95"></div>
+      <div class="absolute inset-0 bg-primary-900/90"></div>
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
-        <div class="text-center mb-8 md:mb-12">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+        <div class="text-center mb-8">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4 text-white">
             Dzaleka Weather & Climate
           </h1>
-          <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed">
+          <p class="text-lg text-white/90 max-w-2xl mx-auto">
             Real-time weather information and seasonal patterns for Dzaleka Refugee Camp, Malawi.
           </p>
         </div>
         
         {weatherData?.forecast && (
-          <div class="mt-8 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl border border-white/10" id="weather-update">
+          <div class="mt-8 bg-white/10 rounded-xl p-6 border border-white/20" id="weather-update">
             <!-- Location and Time -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div class="mb-4 md:mb-0">
                 <div class="flex items-center space-x-3">
-                  <i class="fas fa-location-dot text-white/80 text-xl"></i>
-                  <h3 class="text-xl md:text-2xl font-bold text-white">{weatherData.location}</h3>
+                  <i class="fas fa-location-dot text-white/80"></i>
+                  <h3 class="text-xl font-bold text-white">{weatherData.location}</h3>
                 </div>
                 <p class="text-sm text-white/80 mt-2">{weatherData.date} - {weatherData.forecast.current.time}</p>
               </div>
-              <div class="flex items-center space-x-2 bg-white/10 rounded-full px-4 py-2 backdrop-blur-sm">
+              <div class="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
                 <i class="fas fa-clock text-white/80"></i>
                 <span class="text-sm text-white/80" id="last-updated">
                   Updated: {new Date(weatherData.lastUpdated).toLocaleTimeString()}
@@ -459,87 +459,63 @@ const weatherAlerts = [
             </div>
 
             <!-- Weather Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <!-- Temperature Card -->
-              <div class="bg-white/10 rounded-xl p-4 md:p-6 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 border border-white/10">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="flex items-center space-x-2">
-                    <i class="fas fa-temperature-high text-xl text-white/80"></i>
-                    <h4 class="text-base md:text-lg font-semibold text-white">Temperature</h4>
-                  </div>
+              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div class="flex items-center space-x-2 mb-3">
+                  <i class="fas fa-temperature-high text-white/80"></i>
+                  <h4 class="font-semibold text-white">Temperature</h4>
                 </div>
                 <div class="flex items-baseline space-x-2">
-                  <p class="text-4xl md:text-5xl font-bold text-white">{weatherData.forecast.current.temperature}°C</p>
+                  <p class="text-3xl font-bold text-white">{weatherData.forecast.current.temperature}°C</p>
                 </div>
-                <div class="flex justify-between text-sm text-white/80 mt-3">
-                  <span class="flex items-center">
-                    <i class="fas fa-arrow-up text-red-400 mr-1"></i>
-                    Max: {weatherData.forecast.current.maxTemp}°C
-                  </span>
-                  <span class="flex items-center">
-                    <i class="fas fa-arrow-down text-blue-400 mr-1"></i>
-                    Min: {weatherData.forecast.current.minTemperature}°C
-                  </span>
+                <div class="flex justify-between text-sm text-white/80 mt-2">
+                  <span>Max: {weatherData.forecast.current.maxTemp}°C</span>
+                  <span>Min: {weatherData.forecast.current.minTemperature}°C</span>
                 </div>
               </div>
 
               <!-- Wind Card -->
-              <div class="bg-white/10 rounded-xl p-4 md:p-6 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 border border-white/10">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="flex items-center space-x-2">
-                    <i class="fas fa-wind text-xl text-white/80"></i>
-                    <h4 class="text-base md:text-lg font-semibold text-white">Wind</h4>
-                  </div>
+              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div class="flex items-center space-x-2 mb-3">
+                  <i class="fas fa-wind text-white/80"></i>
+                  <h4 class="font-semibold text-white">Wind</h4>
                 </div>
                 <div class="flex items-baseline space-x-2">
-                  <p class="text-4xl md:text-5xl font-bold text-white">{weatherData.forecast.current.windSpeed}</p>
-                  <span class="text-2xl md:text-3xl text-white/80">km/h</span>
+                  <p class="text-3xl font-bold text-white">{weatherData.forecast.current.windSpeed}</p>
+                  <span class="text-lg text-white/80">km/h</span>
                 </div>
-                <div class="flex items-center justify-between text-sm text-white/80 mt-3">
-                  <span class="flex items-center">
-                    <i class="fas fa-compass text-lg mr-2" style={`transform: rotate(${weatherData.forecast.current.windDirection}deg)`}></i>
-                    Direction: {weatherData.forecast.current.windDirection}°
-                  </span>
+                <div class="text-sm text-white/80 mt-2">
+                  Direction: {weatherData.forecast.current.windDirection}°
                 </div>
               </div>
 
               <!-- Rainfall Card -->
-              <div class="bg-white/10 rounded-xl p-4 md:p-6 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 border border-white/10">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="flex items-center space-x-2">
-                    <i class="fas fa-cloud-rain text-xl text-white/80"></i>
-                    <h4 class="text-base md:text-lg font-semibold text-white">Rainfall</h4>
-                  </div>
+              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div class="flex items-center space-x-2 mb-3">
+                  <i class="fas fa-cloud-rain text-white/80"></i>
+                  <h4 class="font-semibold text-white">Rainfall</h4>
                 </div>
                 <div class="flex items-baseline space-x-2">
-                  <p class="text-4xl md:text-5xl font-bold text-white">{weatherData.forecast.current.rainfall}</p>
-                  <span class="text-2xl md:text-3xl text-white/80">mm</span>
+                  <p class="text-3xl font-bold text-white">{weatherData.forecast.current.rainfall}</p>
+                  <span class="text-lg text-white/80">mm</span>
                 </div>
-                <div class="flex flex-col text-sm text-white/80 mt-3 space-y-2">
-                  <span class="flex items-center">
-                    <i class="fas fa-clock text-blue-400 mr-2"></i>
-                    Last 24h: {weatherData.forecast.current.rainfall} mm
-                  </span>
-                  <span class="flex items-center">
-                    <i class="fas fa-chart-line text-green-400 mr-2"></i>
-                    Probability: {parseFloat(weatherData.forecast.current.rainfall) > 0 ? 'High' : 'Low'}
-                  </span>
+                <div class="text-sm text-white/80 mt-2">
+                  Last 24h: {weatherData.forecast.current.rainfall} mm
                 </div>
               </div>
 
               <!-- Weather Condition Card -->
-              <div class="bg-white/10 rounded-xl p-4 md:p-6 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 border border-white/10">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="flex items-center space-x-2">
-                    <i class="fas fa-cloud-sun text-xl text-white/80"></i>
-                    <h4 class="text-base md:text-lg font-semibold text-white">Condition</h4>
-                  </div>
+              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div class="flex items-center space-x-2 mb-3">
+                  <i class="fas fa-cloud-sun text-white/80"></i>
+                  <h4 class="font-semibold text-white">Condition</h4>
                 </div>
-                <div class="flex flex-col items-center">
-                  <p class="text-3xl md:text-4xl font-bold text-white mb-2">
+                <div class="text-center">
+                  <p class="text-2xl font-bold text-white mb-1">
                     {weatherData.forecast.current.condition || 'Unknown'}
                   </p>
-                  <p class="text-base md:text-lg text-white/80">
+                  <p class="text-sm text-white/80">
                     {weatherData.forecast.current.time}
                   </p>
                 </div>
@@ -549,7 +525,7 @@ const weatherAlerts = [
             <!-- Update Button -->
             <div class="mt-6 flex justify-end">
               <button onclick="updateWeather()" 
-                      class="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-300 backdrop-blur-sm border border-white/10">
+                      class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20">
                 <i class="fas fa-sync-alt mr-2"></i>
                 Update Now
               </button>
@@ -558,12 +534,12 @@ const weatherAlerts = [
         )}
 
         <!-- Weather Alerts -->
-        <div class="mt-6 space-y-4 weather-alerts">
+        <div class="mt-6 space-y-3 weather-alerts">
           {activeWeatherAlerts.length > 0 ? (
             <>
-              {activeWeatherAlerts.slice(0, 3).map((alert, index) => (
+              {activeWeatherAlerts.slice(0, 2).map((alert, index) => (
                 <div key={index} 
-                     class={`p-4 rounded-xl backdrop-blur-sm border transition-all duration-300 alert-item ${
+                     class={`p-3 rounded-lg border alert-item ${
                        alert.type === 'severe' ? 'bg-red-500/20 border-red-500' :
                        alert.type === 'warning' ? 'bg-yellow-500/20 border-yellow-500' :
                        'bg-blue-500/20 border-blue-500'
@@ -571,47 +547,26 @@ const weatherAlerts = [
                   <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
                       {alert.type === 'severe' ? (
-                        <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+                        <i class="fas fa-exclamation-triangle text-red-400"></i>
                       ) : alert.type === 'warning' ? (
-                        <i class="fas fa-exclamation-circle text-yellow-400 text-xl"></i>
+                        <i class="fas fa-exclamation-circle text-yellow-400"></i>
                       ) : (
-                        <i class="fas fa-info-circle text-blue-400 text-xl"></i>
+                        <i class="fas fa-info-circle text-blue-400"></i>
                       )}
                     </div>
                     <div class="flex-1">
-                      <h4 class="text-white text-base font-semibold mb-1">{alert.title}</h4>
-                      <p class="text-white/80 text-sm">{alert.description}</p>
-                      <div class="flex items-center justify-between mt-2">
-                        <p class="text-white/60 text-xs">
-                          Issued: {new Date(alert.timestamp).toLocaleString()}
-                        </p>
-                        <a href={alert.link} 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="text-white/80 hover:text-white text-xs flex items-center">
-                          View Details
-                          <i class="fas fa-external-link-alt ml-1"></i>
-                        </a>
-                      </div>
+                      <h4 class="text-white text-sm font-semibold mb-1">{alert.title}</h4>
+                      <p class="text-white/80 text-xs">{alert.description}</p>
                     </div>
                   </div>
                 </div>
               ))}
-              
-              {activeWeatherAlerts.length > 3 && (
-                <button 
-                  onclick="toggleAlerts()"
-                  class="w-full py-2 px-4 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-300 backdrop-blur-sm border border-white/10 flex items-center justify-center space-x-2">
-                  <span>Show {activeWeatherAlerts.length - 3} More Alerts</span>
-                  <i class="fas fa-chevron-down text-sm"></i>
-                </button>
-              )}
             </>
           ) : (
-            <div class="p-4 rounded-xl backdrop-blur-sm border border-blue-500/20 bg-blue-500/10">
+            <div class="p-3 rounded-lg border border-blue-500/20 bg-blue-500/10">
               <div class="flex items-center space-x-3">
-                <i class="fas fa-check-circle text-blue-400 text-xl"></i>
-                <p class="text-white text-sm font-medium">No active weather alerts at this time.</p>
+                <i class="fas fa-check-circle text-blue-400"></i>
+                <p class="text-white text-sm">No active weather alerts at this time.</p>
               </div>
             </div>
           )}
@@ -620,51 +575,51 @@ const weatherAlerts = [
     </div>
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="prose prose-lg max-w-none">
-        <p class="lead text-xl text-gray-600 font-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-600 mb-8">
           Dzaleka Refugee Camp, located in Malawi's Dowa District, experiences a subtropical highland climate, characterized by distinct wet and dry seasons.
         </p>
 
         <!-- Seasonal Overview -->
-        <section class="mt-16">
-          <h2 class="text-4xl font-bold text-gray-900 mb-10 tracking-tight">🌦️ Seasonal Overview</h2>
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Seasonal Overview</h2>
           
-          <div class="grid md:grid-cols-2 gap-8">
+          <div class="grid md:grid-cols-2 gap-6">
             <!-- Wet Season -->
-            <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-8">
-              <h3 class="text-2xl font-bold text-gray-900 mb-6">Wet Season (November–April)</h3>
-              <ul class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Wet Season (November–April)</h3>
+              <ul class="space-y-3 text-gray-600">
                 <li class="flex items-start">
-                  <span class="text-primary-600 mr-3 text-xl">•</span>
-                  <span class="text-gray-600"><strong class="text-gray-900">Temperature:</strong> Daytime highs range from 25–30°C (77–86°F); nights are cooler.</span>
+                  <span class="text-primary-600 mr-2">•</span>
+                  <span><strong class="text-gray-900">Temperature:</strong> Daytime highs range from 25–30°C (77–86°F); nights are cooler.</span>
                 </li>
                 <li class="flex items-start">
-                  <span class="text-primary-600 mr-3 text-xl">•</span>
-                  <span class="text-gray-600"><strong class="text-gray-900">Rainfall:</strong> This period accounts for the majority of the annual precipitation, with heavy rains and thunderstorms being common.</span>
+                  <span class="text-primary-600 mr-2">•</span>
+                  <span><strong class="text-gray-900">Rainfall:</strong> This period accounts for the majority of the annual precipitation, with heavy rains and thunderstorms being common.</span>
                 </li>
                 <li class="flex items-start">
-                  <span class="text-primary-600 mr-3 text-xl">•</span>
-                  <span class="text-gray-600"><strong class="text-gray-900">Humidity:</strong> High humidity levels prevail, contributing to a muggy atmosphere.</span>
+                  <span class="text-primary-600 mr-2">•</span>
+                  <span><strong class="text-gray-900">Humidity:</strong> High humidity levels prevail, contributing to a muggy atmosphere.</span>
                 </li>
               </ul>
             </div>
 
             <!-- Dry Season -->
-            <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-8">
-              <h3 class="text-2xl font-bold text-gray-900 mb-6">Dry Season (May–October)</h3>
-              <ul class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Dry Season (May–October)</h3>
+              <ul class="space-y-3 text-gray-600">
                 <li class="flex items-start">
-                  <span class="text-primary-600 mr-3 text-xl">•</span>
-                  <span class="text-gray-600"><strong class="text-gray-900">Temperature:</strong> Daytime temperatures are mild, ranging from 20–25°C (68–77°F), while nights can be quite cool, occasionally dropping to 8°C (46°F) during June and July.</span>
+                  <span class="text-primary-600 mr-2">•</span>
+                  <span><strong class="text-gray-900">Temperature:</strong> Daytime temperatures are mild, ranging from 20–25°C (68–77°F), while nights can be quite cool, occasionally dropping to 8°C (46°F) during June and July.</span>
                 </li>
                 <li class="flex items-start">
-                  <span class="text-primary-600 mr-3 text-xl">•</span>
-                  <span class="text-gray-600"><strong class="text-gray-900">Rainfall:</strong> Minimal to no rainfall occurs during these months.</span>
+                  <span class="text-primary-600 mr-2">•</span>
+                  <span><strong class="text-gray-900">Rainfall:</strong> Minimal to no rainfall occurs during these months.</span>
                 </li>
                 <li class="flex items-start">
-                  <span class="text-primary-600 mr-3 text-xl">•</span>
-                  <span class="text-gray-600"><strong class="text-gray-900">Conditions:</strong> Clear skies and lower humidity levels make for pleasant days, but the cool nights can be challenging, especially for those without adequate shelter or blankets.</span>
+                  <span class="text-primary-600 mr-2">•</span>
+                  <span><strong class="text-gray-900">Conditions:</strong> Clear skies and lower humidity levels make for pleasant days, but the cool nights can be challenging, especially for those without adequate shelter or blankets.</span>
                 </li>
               </ul>
             </div>
@@ -672,35 +627,35 @@ const weatherAlerts = [
         </section>
 
         <!-- Monthly Climate Snapshot -->
-        <section class="mt-16">
-          <h2 class="text-4xl font-bold text-gray-900 mb-10 tracking-tight">📊 Monthly Climate Snapshot</h2>
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Monthly Climate Snapshot</h2>
           
-          <div class="overflow-x-auto rounded-2xl bg-white/50 backdrop-blur-sm">
+          <div class="overflow-x-auto rounded-lg bg-white shadow-sm">
             <table class="w-full">
               <thead>
                 <tr class="border-b border-gray-200">
-                  <th class="px-4 py-5 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider w-1/6">Month</th>
-                  <th class="px-4 py-5 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider w-1/6">High (°C)</th>
-                  <th class="px-4 py-5 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider w-1/6">Low (°C)</th>
-                  <th class="px-4 py-5 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider w-1/6">Rain (mm)</th>
-                  <th class="px-4 py-5 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider w-1/6">Humidity</th>
-                  <th class="px-4 py-5 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider w-1/6">Notes</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Month</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">High (°C)</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Low (°C)</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Rain (mm)</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Humidity</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Notes</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200">
                 {monthlyData.map((data) => (
-                  <tr class="hover:bg-white/50 transition-colors duration-200">
-                    <td class="px-4 py-6">
+                  <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-4 py-4">
                       <div class="flex items-center">
-                        <span class="mr-2 text-2xl">{data.icon}</span>
-                        <span class="text-base font-medium text-gray-900">{data.month}</span>
+                        <span class="mr-2 text-lg">{data.icon}</span>
+                        <span class="font-medium text-gray-900">{data.month}</span>
                       </div>
                     </td>
-                    <td class="px-4 py-6 text-base text-gray-600">{data.high}</td>
-                    <td class="px-4 py-6 text-base text-gray-600">{data.low}</td>
-                    <td class="px-4 py-6 text-base text-gray-600">{data.rainfall}</td>
-                    <td class="px-4 py-6 text-base text-gray-600">{data.humidity}</td>
-                    <td class="px-4 py-6 text-base text-gray-600 max-w-[200px]">{data.notes}</td>
+                    <td class="px-4 py-4 text-gray-600">{data.high}</td>
+                    <td class="px-4 py-4 text-gray-600">{data.low}</td>
+                    <td class="px-4 py-4 text-gray-600">{data.rainfall}</td>
+                    <td class="px-4 py-4 text-gray-600">{data.humidity}</td>
+                    <td class="px-4 py-4 text-gray-600 max-w-[200px]">{data.notes}</td>
                   </tr>
                 ))}
               </tbody>
@@ -708,118 +663,116 @@ const weatherAlerts = [
           </div>
 
           <!-- Table Legend -->
-          <div class="mt-6 flex flex-wrap gap-4 text-sm text-gray-600">
+          <div class="mt-4 flex flex-wrap gap-4 text-sm text-gray-600">
             <div class="flex items-center">
-              <span class="mr-2 text-2xl">🌧️</span>
+              <span class="mr-2 text-lg">🌧️</span>
               <span>Heavy Rainfall</span>
             </div>
             <div class="flex items-center">
-              <span class="mr-2 text-2xl">🌦️</span>
+              <span class="mr-2 text-lg">🌦️</span>
               <span>Moderate Rainfall</span>
             </div>
             <div class="flex items-center">
-              <span class="mr-2 text-2xl">☀️</span>
+              <span class="mr-2 text-lg">☀️</span>
               <span>Dry Season</span>
             </div>
             <div class="flex items-center">
-              <span class="mr-2 text-2xl">❄️</span>
+              <span class="mr-2 text-lg">❄️</span>
               <span>Coldest Months</span>
             </div>
           </div>
         </section>
 
         <!-- Considerations for Camp Residents -->
-        <section class="mt-16">
-          <h2 class="text-4xl font-bold text-gray-900 mb-10 tracking-tight">⚠️ Considerations for Camp Residents</h2>
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Considerations for Camp Residents</h2>
           
-          <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-8">
-            <div class="space-y-6">
-              <p class="text-gray-600 text-lg">
-                The climate poses several challenges for residents of Dzaleka Refugee Camp. During the wet season, heavy rains can lead to flooding and deteriorate living conditions, especially in overcrowded areas. Conversely, the dry season brings cooler temperatures at night, which can be particularly harsh for those lacking adequate shelter and warm clothing.
-              </p>
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <p class="text-gray-600 mb-6">
+              The climate poses several challenges for residents of Dzaleka Refugee Camp. During the wet season, heavy rains can lead to flooding and deteriorate living conditions, especially in overcrowded areas. Conversely, the dry season brings cooler temperatures at night, which can be particularly harsh for those lacking adequate shelter and warm clothing.
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">Wet Season Precautions</h4>
+                <ul class="space-y-2 text-gray-600">
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Ensure proper drainage around shelters
+                  </li>
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Keep emergency supplies ready
+                  </li>
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Monitor weather alerts
+                  </li>
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Maintain waterproofing of structures
+                  </li>
+                </ul>
+              </div>
               
-              <div class="grid md:grid-cols-2 gap-8 mt-8">
-                <div>
-                  <h4 class="text-xl font-semibold text-gray-900 mb-4">Wet Season Precautions</h4>
-                  <ul class="space-y-3 text-gray-600">
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Ensure proper drainage around shelters
-                    </li>
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Keep emergency supplies ready
-                    </li>
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Monitor weather alerts
-                    </li>
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Maintain waterproofing of structures
-                    </li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 class="text-xl font-semibold text-gray-900 mb-4">Dry Season Precautions</h4>
-                  <ul class="space-y-3 text-gray-600">
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Prepare for cold nights
-                    </li>
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Store water efficiently
-                    </li>
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Protect against dust
-                    </li>
-                    <li class="flex items-center">
-                      <span class="text-primary-600 mr-3">•</span>
-                      Maintain shade structures
-                    </li>
-                  </ul>
-                </div>
+              <div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">Dry Season Precautions</h4>
+                <ul class="space-y-2 text-gray-600">
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Prepare for cold nights
+                  </li>
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Store water efficiently
+                  </li>
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Protect against dust
+                  </li>
+                  <li class="flex items-center">
+                    <span class="text-primary-600 mr-2">•</span>
+                    Maintain shade structures
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Resources and Attribution -->
-        <section class="mt-16">
-          <h2 class="text-4xl font-bold text-gray-900 mb-10 tracking-tight">📚 Resources & Attribution</h2>
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Resources & Attribution</h2>
           
-          <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm">
             <div class="space-y-6">
               <div>
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Weather Data Source</h3>
-                <p class="text-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Weather Data Source</h3>
+                <p class="text-gray-600 mb-4">
                   All weather data is provided by the Malawi Meteorological Department (MET Malawi). 
                   This information is updated every 5 minutes from their official website.
                 </p>
-                <div class="mt-4 flex flex-wrap gap-4">
+                <div class="flex flex-wrap gap-3">
                   <a href="https://www.metmalawi.gov.mw" 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                     class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
                     Visit MET Malawi Website
                   </a>
                   <a href="https://www.metmalawi.gov.mw/weather/daily-table/dowa/" 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200">
+                     class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200">
                     View Dowa Weather Data
                   </a>
                 </div>
               </div>
 
-              <div class="border-t border-gray-200 pt-6">
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Additional Resources</h3>
-                <ul class="space-y-4">
+              <div class="border-t border-gray-200 pt-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Additional Resources</h3>
+                <ul class="space-y-3">
                   <li class="flex items-start">
-                    <span class="text-primary-600 mr-3">•</span>
+                    <span class="text-primary-600 mr-2">•</span>
                     <div>
                       <a href="https://www.metmalawi.gov.mw/weather/forecast/" 
                          target="_blank" 
@@ -833,7 +786,7 @@ const weatherAlerts = [
                     </div>
                   </li>
                   <li class="flex items-start">
-                    <span class="text-primary-600 mr-3">•</span>
+                    <span class="text-primary-600 mr-2">•</span>
                     <div>
                       <a href="https://www.metmalawi.gov.mw/weather/climate/" 
                          target="_blank" 
@@ -841,13 +794,13 @@ const weatherAlerts = [
                          class="text-primary-600 hover:text-primary-700 font-medium">
                         Climate Information
                       </a>
-                      <p class="text-gray-600 text-sm mt-1">
+                      <p class="text-sm text-gray-600 mt-1">
                         Access historical climate data and seasonal patterns
                       </p>
                     </div>
                   </li>
                   <li class="flex items-start">
-                    <span class="text-primary-600 mr-3">•</span>
+                    <span class="text-primary-600 mr-2">•</span>
                     <div>
                       <a href="https://www.metmalawi.gov.mw/weather/warnings/" 
                          target="_blank" 
@@ -855,7 +808,7 @@ const weatherAlerts = [
                          class="text-primary-600 hover:text-primary-700 font-medium">
                         Weather Warnings
                       </a>
-                      <p class="text-gray-600 text-sm mt-1">
+                      <p class="text-sm text-gray-600 mt-1">
                         Stay informed about severe weather alerts and warnings
                       </p>
                     </div>
@@ -863,8 +816,8 @@ const weatherAlerts = [
                 </ul>
               </div>
 
-              <div class="border-t border-gray-200 pt-6">
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Disclaimer</h3>
+              <div class="border-t border-gray-200 pt-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Disclaimer</h3>
                 <p class="text-gray-600">
                   This weather information is provided for general guidance only. For official weather forecasts and warnings, 
                   please refer to the Malawi Meteorological Department's website. The data is updated every 5 minutes, 
@@ -908,122 +861,13 @@ const weatherAlerts = [
     margin: 0 auto;
   }
 
-  /* Weather card styles */
-  .weather-card {
-    @apply bg-white/50 backdrop-blur-sm rounded-2xl p-8 transition-all duration-300;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-
-  .weather-card:hover {
-    @apply bg-white/60;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
-  }
-
   /* Weather update styles */
-  .weather-update {
-    @apply bg-white/10 backdrop-blur-sm rounded-xl p-6 transition-all duration-300;
-    animation: fadeIn 0.5s ease-in-out;
+  #weather-update {
+    @apply transition-all duration-300;
   }
 
-  .weather-update:hover {
-    @apply bg-white/20;
-  }
-
-  /* Weather stat styles */
-  .weather-stat {
-    @apply text-center p-4 rounded-lg transition-all duration-300;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .weather-stat:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-  }
-
-  /* Alert styles */
-  .weather-alert {
-    @apply p-4 rounded-xl backdrop-blur-sm transition-all duration-300;
-    animation: slideIn 0.5s ease-in-out;
-  }
-
-  .weather-alert:hover {
-    transform: translateX(4px);
-  }
-
-  /* Table styles */
-  .weather-table {
-    @apply w-full rounded-lg overflow-hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-
-  .weather-table th {
-    @apply bg-gray-50 text-gray-500 font-semibold px-4 py-3 text-left text-sm uppercase tracking-wider;
-  }
-
-  .weather-table td {
-    @apply px-4 py-3 text-base text-gray-600 border-t border-gray-200;
-  }
-
-  .weather-table tr {
-    @apply transition-colors duration-200;
-  }
-
-  .weather-table tr:hover {
-    @apply bg-white/50;
-  }
-
-  /* Resource link styles */
-  .resource-link {
-    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md transition-all duration-300;
-  }
-
-  .resource-link-primary {
-    @apply text-white bg-primary-600 hover:bg-primary-700;
-  }
-
-  .resource-link-secondary {
-    @apply text-primary-700 bg-primary-100 hover:bg-primary-200;
-  }
-
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.7;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  /* Loading animation */
-  .loading-pulse {
-    animation: pulse 2s infinite;
+  #weather-update.loading {
+    @apply opacity-75;
   }
 
   /* Responsive improvements */
@@ -1039,292 +883,6 @@ const weatherAlerts = [
     .weather-table th,
     .weather-table td {
       @apply px-2 py-2;
-    }
-  }
-
-  /* Expandable section styles */
-  .expandable-section {
-    @apply overflow-hidden transition-all duration-300;
-  }
-
-  .expandable-section.collapsed {
-    max-height: 0;
-    opacity: 0;
-  }
-
-  .expandable-section.expanded {
-    max-height: 2000px;
-    opacity: 1;
-  }
-
-  .expandable-header {
-    @apply flex items-center justify-between cursor-pointer p-4 rounded-lg transition-all duration-300;
-  }
-
-  .expandable-header:hover {
-    @apply bg-white/20;
-  }
-
-  .expandable-icon {
-    @apply transition-transform duration-300;
-  }
-
-  .expandable-icon.expanded {
-    transform: rotate(180deg);
-  }
-
-  /* Mobile enhancements */
-  .mobile-nav {
-    @apply fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-2 z-50;
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    .mobile-nav {
-      display: flex;
-    }
-
-    .main-content {
-      padding-bottom: 80px;
-    }
-
-    .weather-card {
-      @apply p-4;
-    }
-
-    .weather-grid {
-      @apply grid-cols-1 gap-2;
-    }
-  }
-
-  /* Visual feedback */
-  .interactive-element {
-    @apply transition-all duration-200;
-  }
-
-  .interactive-element:active {
-    transform: scale(0.98);
-  }
-
-  .ripple {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .ripple::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    transform: scale(10, 10);
-    opacity: 0;
-    transition: transform 0.5s, opacity 1s;
-  }
-
-  .ripple:active::after {
-    transform: scale(0, 0);
-    opacity: 0.3;
-    transition: 0s;
-  }
-
-  /* Toast notifications */
-  .toast {
-    @apply fixed bottom-4 right-4 p-4 rounded-lg shadow-lg transition-all duration-300 transform;
-    z-index: 1000;
-  }
-
-  .toast.success {
-    @apply bg-green-500 text-white;
-  }
-
-  .toast.error {
-    @apply bg-red-500 text-white;
-  }
-
-  .toast.info {
-    @apply bg-blue-500 text-white;
-  }
-
-  .toast.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  .toast.hide {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-
-  /* Forecast Widget Styles */
-  .forecast-widget {
-    @apply relative;
-  }
-
-  .loader-wrapper {
-    @apply absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50;
-    display: none;
-  }
-
-  .loader.is-loading {
-    @apply w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin;
-  }
-
-  .forecast-item {
-    @apply transition-all duration-200 hover:shadow-lg hover:bg-white/70;
-  }
-
-  .forecast-param {
-    @apply flex items-center justify-center;
-  }
-
-  .forecast-parameter-icon {
-    @apply w-6 h-6 text-gray-600;
-  }
-
-  /* Tab styles */
-  .tab-content {
-    @apply transition-opacity duration-200;
-  }
-
-  .tab-content.hidden {
-    @apply opacity-0 pointer-events-none;
-  }
-
-  /* Weather Update Styles */
-  #weather-update {
-    @apply transition-all duration-300;
-  }
-
-  #weather-update.loading {
-    @apply opacity-75;
-  }
-
-  #weather-update .card {
-    @apply transform transition-all duration-300;
-  }
-
-  #weather-update .card:hover {
-    @apply -translate-y-1;
-  }
-
-  /* Enhanced Weather Icon Styles */
-  .weather-icon-wrapper {
-    position: relative;
-    padding: 1rem;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-  }
-
-  .weather-icon-wrapper:hover {
-    transform: scale(1.1);
-  }
-
-  .weather-icon-wrapper:hover .weather-icon-glow {
-    opacity: 1;
-  }
-
-  /* Weather-specific animations */
-  .fa-sun {
-    animation: pulse 3s infinite;
-  }
-
-  .fa-cloud-sun {
-    animation: float 6s infinite;
-  }
-
-  .fa-cloud {
-    animation: float 8s infinite;
-  }
-
-  .fa-cloud-rain,
-  .fa-cloud-showers-heavy {
-    animation: rain 2s infinite;
-  }
-
-  .fa-bolt {
-    animation: lightning 4s infinite;
-  }
-
-  .fa-snowflake {
-    animation: snow 3s infinite;
-  }
-
-  .fa-wind {
-    animation: wind 2s infinite;
-  }
-
-  .fa-smog {
-    animation: fog 4s infinite;
-  }
-
-  /* Animation keyframes */
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  @keyframes rain {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(5px); }
-    100% { transform: translateY(0); }
-  }
-
-  @keyframes lightning {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  @keyframes snow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  @keyframes wind {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(10deg); }
-    75% { transform: rotate(-10deg); }
-    100% { transform: rotate(0deg); }
-  }
-
-  @keyframes fog {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-  }
-
-  /* Card hover effects */
-  .weather-card {
-    transition: all 0.3s ease;
-  }
-
-  .weather-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Loading animation */
-  .loading .weather-icon-wrapper {
-    animation: pulse 1s infinite;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 640px) {
-    .weather-icon-wrapper {
-      padding: 0.5rem;
-    }
-
-    #weather-icon {
-      font-size: 3rem;
     }
   }
 </style>
@@ -1344,19 +902,15 @@ const weatherAlerts = [
       const weatherData = await weatherResponse.json();
       const alertsData = await alertsResponse.json();
       
-      // Update values with animation
+      // Update values
       const updateValue = (id, value) => {
         const element = document.getElementById(id);
         if (element) {
-          element.style.opacity = '0';
-          setTimeout(() => {
-            element.textContent = value || 'Unknown';
-            element.style.opacity = '1';
-          }, 200);
+          element.textContent = value || 'Unknown';
         }
       };
 
-      // Update other values
+      // Update weather values
       updateValue('current-temp', weatherData.forecast.current.temperature);
       updateValue('max-temp', weatherData.forecast.current.maxTemp);
       updateValue('min-temp', weatherData.forecast.current.minTemperature);
@@ -1372,8 +926,8 @@ const weatherAlerts = [
       const alertsContainer = document.querySelector('.weather-alerts');
       if (alertsContainer) {
         if (alertsData.length > 0) {
-          const alertsHTML = alertsData.map(alert => `
-            <div class="p-4 rounded-xl backdrop-blur-sm border transition-all duration-300 alert-item ${
+          const alertsHTML = alertsData.slice(0, 2).map(alert => `
+            <div class="p-3 rounded-lg border alert-item ${
               alert.type === 'severe' ? 'bg-red-500/20 border-red-500' :
               alert.type === 'warning' ? 'bg-yellow-500/20 border-yellow-500' :
               'bg-blue-500/20 border-blue-500'
@@ -1381,58 +935,34 @@ const weatherAlerts = [
               <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0">
                   ${alert.type === 'severe' ? 
-                    '<i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>' :
+                    '<i class="fas fa-exclamation-triangle text-red-400"></i>' :
                     alert.type === 'warning' ? 
-                    '<i class="fas fa-exclamation-circle text-yellow-400 text-xl"></i>' :
-                    '<i class="fas fa-info-circle text-blue-400 text-xl"></i>'
+                    '<i class="fas fa-exclamation-circle text-yellow-400"></i>' :
+                    '<i class="fas fa-info-circle text-blue-400"></i>'
                   }
                 </div>
                 <div class="flex-1">
-                  <h4 class="text-white text-base font-semibold mb-1">${alert.title}</h4>
-                  <p class="text-white/80 text-sm">${alert.description}</p>
-                  <div class="flex items-center justify-between mt-2">
-                    <p class="text-white/60 text-xs">
-                      Issued: ${new Date(alert.timestamp).toLocaleString()}
-                    </p>
-                    <a href="${alert.link}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="text-white/80 hover:text-white text-xs flex items-center">
-                      View Details
-                      <i class="fas fa-external-link-alt ml-1"></i>
-                    </a>
-                  </div>
+                  <h4 class="text-white text-sm font-semibold mb-1">${alert.title}</h4>
+                  <p class="text-white/80 text-xs">${alert.description}</p>
                 </div>
               </div>
             </div>
           `).join('');
           
           alertsContainer.innerHTML = alertsHTML;
-          
-          // Add show more button if needed
-          if (alertsData.length > 3) {
-            const showMoreButton = document.createElement('button');
-            showMoreButton.onclick = toggleAlerts;
-            showMoreButton.className = 'w-full py-2 px-4 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-300 backdrop-blur-sm border border-white/10 flex items-center justify-center space-x-2';
-            showMoreButton.innerHTML = `Show ${alertsData.length - 3} More Alerts <i class="fas fa-chevron-down text-sm"></i>`;
-            alertsContainer.appendChild(showMoreButton);
-          }
         } else {
           alertsContainer.innerHTML = `
-            <div class="p-4 rounded-xl backdrop-blur-sm border border-blue-500/20 bg-blue-500/10">
+            <div class="p-3 rounded-lg border border-blue-500/20 bg-blue-500/10">
               <div class="flex items-center space-x-3">
-                <i class="fas fa-check-circle text-blue-400 text-xl"></i>
-                <p class="text-white text-sm font-medium">No active weather alerts at this time.</p>
+                <i class="fas fa-check-circle text-blue-400"></i>
+                <p class="text-white text-sm">No active weather alerts at this time.</p>
               </div>
             </div>
           `;
         }
       }
-      
-      showToast('Weather data and alerts updated successfully', 'success');
     } catch (error) {
       console.error('Error updating weather:', error);
-      showToast('Failed to update weather data', 'error');
     } finally {
       weatherUpdate.classList.remove('loading');
     }
@@ -1443,144 +973,4 @@ const weatherAlerts = [
 
   // Initial update after 5 minutes
   setTimeout(updateWeather, 5 * 60 * 1000);
-
-  // Add smooth scroll behavior
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      document.querySelector(this.getAttribute('href')).scrollIntoView({
-        behavior: 'smooth'
-      });
-    });
-  });
-
-  // Expandable sections
-  function initExpandableSections() {
-    document.querySelectorAll('.expandable-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const section = header.nextElementSibling;
-        const icon = header.querySelector('.expandable-icon');
-        
-        section.classList.toggle('collapsed');
-        section.classList.toggle('expanded');
-        icon.classList.toggle('expanded');
-        
-        // Save state
-        const isExpanded = section.classList.contains('expanded');
-        localStorage.setItem(`section-${header.id}`, isExpanded);
-      });
-    });
-
-    // Restore saved states
-    document.querySelectorAll('.expandable-header').forEach(header => {
-      const savedState = localStorage.getItem(`section-${header.id}`);
-      if (savedState === 'true') {
-        const section = header.nextElementSibling;
-        const icon = header.querySelector('.expandable-icon');
-        section.classList.add('expanded');
-        icon.classList.add('expanded');
-      }
-    });
-  }
-
-  // Toast notifications
-  function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    // Show toast
-    setTimeout(() => toast.classList.add('show'), 100);
-
-    // Hide and remove toast
-    setTimeout(() => {
-      toast.classList.remove('show');
-      toast.classList.add('hide');
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
-  }
-
-  // Mobile navigation
-  function initMobileNav() {
-    const nav = document.createElement('nav');
-    nav.className = 'mobile-nav';
-    nav.innerHTML = `
-      <div class="flex justify-around w-full">
-        <button class="mobile-nav-item" data-section="current-weather">
-          <span class="text-2xl">🌤️</span>
-          <span class="text-xs">Current</span>
-        </button>
-        <button class="mobile-nav-item" data-section="hourly-forecast">
-          <span class="text-2xl">📅</span>
-          <span class="text-xs">Forecast</span>
-        </button>
-        <button class="mobile-nav-item" data-section="resources">
-          <span class="text-2xl">📚</span>
-          <span class="text-xs">Resources</span>
-        </button>
-      </div>
-    `;
-    document.body.appendChild(nav);
-
-    // Handle navigation
-    nav.querySelectorAll('.mobile-nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const section = document.getElementById(item.dataset.section);
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth' });
-          showToast(`Navigating to ${item.querySelector('span:last-child').textContent}`, 'info');
-        }
-      });
-    });
-  }
-
-  // Initialize all features
-  document.addEventListener('DOMContentLoaded', () => {
-    initExpandableSections();
-    initMobileNav();
-  });
-
-  // Add ripple effect to buttons
-  document.querySelectorAll('button, .interactive-element').forEach(element => {
-    element.classList.add('ripple');
-  });
-
-  // Function to toggle visibility of additional alerts
-  function toggleAlerts() {
-    const alertsContainer = document.querySelector('.weather-alerts');
-    const showMoreButton = alertsContainer.querySelector('button');
-    const allAlerts = alertsContainer.querySelectorAll('.alert-item');
-    const isExpanded = showMoreButton.textContent.includes('Less');
-    
-    if (isExpanded) {
-      // Collapse: Hide alerts after the first 3
-      allAlerts.forEach((alert, index) => {
-        if (index >= 3) {
-          alert.style.display = 'none';
-        }
-      });
-      showMoreButton.innerHTML = `Show ${allAlerts.length - 3} More Alerts <i class="fas fa-chevron-down text-sm"></i>`;
-    } else {
-      // Expand: Show all alerts
-      allAlerts.forEach(alert => {
-        alert.style.display = 'block';
-      });
-      showMoreButton.innerHTML = 'Show Less <i class="fas fa-chevron-up text-sm"></i>';
-    }
-  }
-
-  // Initialize alerts visibility on page load
-  document.addEventListener('DOMContentLoaded', () => {
-    const alertsContainer = document.querySelector('.weather-alerts');
-    if (alertsContainer) {
-      const allAlerts = alertsContainer.querySelectorAll('.alert-item');
-      // Hide alerts after the first 3 initially
-      allAlerts.forEach((alert, index) => {
-        if (index >= 3) {
-          alert.style.display = 'none';
-        }
-      });
-    }
-  });
 </script> 

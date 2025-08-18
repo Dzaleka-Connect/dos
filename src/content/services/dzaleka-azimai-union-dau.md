@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Azimai Union (DAU)
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Dzaleka Azimai Union (DAU) is a women-led, non-profit organization in Dzaleka Refugee Camp, established to empower refugee women and girls facing war, gender-based violence, and cultural discrimination.
 location:
   address: Dzaleka Refugee Camp

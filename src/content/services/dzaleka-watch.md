@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Watch
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: >-
   Dzaleka Watch is the central hub for videos created within Dzaleka Refugee Camp. Our platform showcases documentaries, short films, news reports, and cultural content.
 location:

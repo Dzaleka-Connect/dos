@@ -1,6 +1,6 @@
 ---
 title: Girls Empowerment
-category: Education & Health
+category: "Education"
 description: Focuses on education, livelihood, and health, advocating for young women's rights.
 location:
   address: Dzaleka Refugee Camp

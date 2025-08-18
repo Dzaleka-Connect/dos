@@ -1,6 +1,6 @@
 ---
 title: ATE-Hub
-category: Entrepreneurship
+category: "Entrepreneurship & Business"
 description: ATE-Hub empowers refugees through flexible learning, employment pathways, and advocacy.
 location:
   address: Dzaleka Refugee Camp, Hillside behind CARD poultry project

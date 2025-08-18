@@ -1,6 +1,6 @@
 ---
 title: Star Café
-category: "Internet Cafe"
+category: "Technology & Digital"
 description: Star Café is a community-run internet hub in Dzaleka offering fast, reliable, and affordable internet powered by Starlink Mini.
 location:
   address: Kawale 2, Opposite the Borehole, Dzaleka Refugee Camp

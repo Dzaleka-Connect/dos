@@ -1,6 +1,6 @@
 ---
 title: Inua Advocacy
-category: Non-profit Organizations
+category: "Advocacy"
 description: Promoting refugee rights and dignity in Malawi through legal aid, advocacy, and lasting solutions.
 location:
   address: Dzaleka Refugee Camp
@@ -23,7 +23,7 @@ logo: >-
   https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRshOC3XuIA-V7GVurjsZ0GIqKn_LJfdP1nQg&s
 featured: true
 verified: true
-lastUpdated: 2025-05-19
+lastUpdated: 2025-08-18
 ---
 
 ## About Inua Advocacy

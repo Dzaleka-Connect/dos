@@ -1,6 +1,6 @@
 ---
 title: Amani Foundation
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Focuses on livelihood and food security, helping refugees access sustainable resources for daily living.
 location:
   address: Dzaleka Refugee Camp

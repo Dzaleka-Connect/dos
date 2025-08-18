@@ -1,6 +1,6 @@
 ---
 title: Agapao Foundation
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Our mission is to create a community free from gender-based violence (GBV) by providing comprehensive support to survivors and combating the stigma and discrimination faced by people, including children, living with HIV.
 location:
   address: Dzaleka Refugee Camp

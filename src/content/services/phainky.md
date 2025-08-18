@@ -1,6 +1,6 @@
 ---
 title: Phainky
-category: Technology
+category: "Technology & Digital"
 description: Phainky is a pioneering tech startup and social enterprise founded in 2019 in Malawi. Our mission is to use technology to address societal challenges, empower individuals, and foster sustainable development.
 location:
   address: Dzaleka Refugee Camp, Kawale 2

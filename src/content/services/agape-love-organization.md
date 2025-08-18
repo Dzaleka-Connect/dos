@@ -1,6 +1,6 @@
 ---
 title: Agape Love Organization
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Provides education and health services, supporting vulnerable communities through schooling and medical assistance.
 location:
   address: Dzaleka Refugee Camp

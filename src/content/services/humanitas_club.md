@@ -1,6 +1,6 @@
 ---
 title: Humanitas CLUB 
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Humanitas CLUB supports pregnant women, widows, and orphans through health care, nutrition, and compassionate care.
 location:
   address: Dzaleka Refugee Camp

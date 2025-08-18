@@ -1,6 +1,6 @@
 ---
 title: Umoja People With Disabilities Organization (UPD)
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Umoja is a non-profit organization that assists the mobility challenged individuals to build better lives through social integration, skill development, and useful representation in all aspects of life.
 location:
   address: Dzaleka Refugee Camp

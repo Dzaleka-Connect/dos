@@ -1,6 +1,6 @@
 ---
 title: BloomBox Design Labs
-category: Education Infrastructure
+category: "Education"
 description: BloomBox Design Labs is dedicated to the application of sustainable design strategies, materials, and energy to advancing access to high quality education.
 location:
   address: BloomBox, Dzaleka, M16

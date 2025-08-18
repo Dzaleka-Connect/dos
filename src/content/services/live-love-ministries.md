@@ -1,6 +1,6 @@
 ---
 title: Live Love Ministries
-category: Religious Organizations
+category: "Religious Organizations"
 description: A 501c3 non-profit organization dedicated to spreading the good news of Jesus in communities through US-based missionaries.
 location:
   address: Dzaleka Refugee Camp

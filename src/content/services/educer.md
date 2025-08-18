@@ -1,6 +1,6 @@
 ---
 title: Educer
-category: Education & Technology
+category: "Education"
 description: Specializes in education and technology, offering digital learning opportunities.
 location:
   address: Dzaleka Refugee Camp

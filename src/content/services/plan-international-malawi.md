@@ -1,6 +1,6 @@
 ---
 title: Plan International Malawi
-category: Humanitarian Aid
+category: "Community & Humanitarian"
 description: Supporting children's rights and equality for girls.
 location:
   address: Dzaleka Refugee Camp

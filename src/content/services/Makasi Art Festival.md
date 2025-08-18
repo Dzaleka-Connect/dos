@@ -1,6 +1,6 @@
 ---
 title: Makasi Art Festival
-category: Arts & entertainment
+category: "Cultural & Arts"
 description: Makasi Art Festival is a platform that brings together refugees and host communities to celebrate culture and diversity through music, poetry, dance, acting, painting, and sculpturing.
 location:
   address: Dzaleka Refugee Camp

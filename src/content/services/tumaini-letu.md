@@ -1,6 +1,6 @@
 ---
 title: Tumaini Letu
-category: Cultural
+category: "Cultural & Arts"
 description: Cultural events and festivals promoting refugee talents and cultural exchange.
 location:
   address: Tumaini Letu P.O.Box 1459

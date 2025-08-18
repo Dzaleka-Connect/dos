@@ -1,6 +1,6 @@
 ---
 title: Refugee Ladies' Foundation
-category: Non-profit Organizations
+category: "Non-profit Organizations"
 description: Refugee Ladies' Foundation is a self-led organization of ordinary refugee young ladies and girls from diverse qualifications with ladies' and girls living with infirmities, widows and ladies without any income.
 location:
   address: Karonga, No. 250 / Dzaleka

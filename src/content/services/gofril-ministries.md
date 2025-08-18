@@ -1,6 +1,6 @@
 ---
 title: GOFRIL Ministries
-category: "Nonprofit organization"
+category: "Non-profit Organizations"
 description: A faith-based and Non-profit organization founded in 2011 to give hope2hopeless by assisting the needy with shelter, food, clothing and prayer and counseling
 location:
   address: 316 Karonga, Dzaleka Refugee Camp

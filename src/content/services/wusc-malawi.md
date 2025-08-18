@@ -1,6 +1,6 @@
 ---
 title: WUSC Malawi
-category: Education
+category: "Education"
 description: Educational opportunities and scholarships for refugees.
 location:
   address: Building 51, Lizuzu street Area 47

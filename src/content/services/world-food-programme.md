@@ -1,6 +1,6 @@
 ---
 title: World Food Programme
-category: Humanitarian Aid
+category: "Community & Humanitarian"
 description: Leading humanitarian organization providing food assistance and improving food security.
 location:
   address: United Nations World Food Programme Family Dental Clinic, Area 14 Compound City Centre, P.O. Box 30571
