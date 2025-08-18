@@ -17,6 +17,25 @@ registration:
   required: true
   url: "https://us06web.zoom.us/meeting/register/k4cwI78mSTKDk1Rti7Rc6Q#/registration"
   deadline: 2025-07-23
+panelists:
+  - name: "Kaajal Ramjathan-Keogh"
+    role: "Director of the Africa Programme"
+    organization: "International Commission of Jurists"
+    bio: "Kaajal has spent over 20 years advancing refugee protection, judicial independence, and freedom of expression. Her expertise in human rights law and refugee protection makes her a leading voice in addressing systemic human rights violations."
+    socialMedia:
+      website: "https://www.icj.org"
+  - name: "Peter Chisi"
+    role: "Director of Civil and Political Rights"
+    organization: "Malawi Human Rights Commission"
+    bio: "Peter brings decades of experience in promoting access to justice, election monitoring, and human rights for vulnerable communities. His work focuses on strengthening human rights protections and accountability mechanisms in Malawi."
+    socialMedia:
+      website: "https://www.mhrc.mw"
+  - name: "Golden Matonga"
+    role: "Chairperson of MISA Malawi and Investigative Journalist"
+    organization: "MISA Malawi"
+    bio: "Golden is a renowned investigative journalist who has exposed high-level corruption through global investigations like the Pandora Papers, strengthening transparency and press freedom. He was also part of the team that produced the groundbreaking human trafficking documentary that is the basis of our discussion."
+    socialMedia:
+      website: "https://malawi.misa.org/"
 tags: ["human trafficking", "refugee protection", "human rights", "malawi", "dzaleka", "investigative journalism", "justice", "Inua Advocacy"]
 ---
 
@@ -28,24 +47,7 @@ These activities have been sustained through deeply rooted collusion with certai
 
 This session will examine local and regional responses to this crisis: what has been done, what has failed, and what must happen next. We will explore concrete strategies to prevent trafficking, prosecute offenders, and dismantle the systems of complicity that allow such exploitation to continue unchecked.
 
-## Featured Speakers
 
-### Kaajal Ramjathan-Keogh
-**Director of the Africa Programme at the International Commission of Jurists**
-
-Kaajal has spent over 20 years advancing refugee protection, judicial independence, and freedom of expression. Her expertise in human rights law and refugee protection makes her a leading voice in addressing systemic human rights violations.
-
-### Peter Chisi
-**Director of Civil and Political Rights at the Malawi Human Rights Commission**
-
-Peter brings decades of experience in promoting access to justice, election monitoring, and human rights for vulnerable communities. His work focuses on strengthening human rights protections and accountability mechanisms in Malawi.
-
-### Golden Matonga
-**Chairperson of MISA Malawi and Investigative Journalist**
-
-Golden is a renowned investigative journalist who has exposed high-level corruption through global investigations like the Pandora Papers, strengthening transparency and press freedom. He was also part of the team that produced the groundbreaking human trafficking documentary that is the basis of our discussion.
-
-**Watch the documentary:** [Human Trafficking Documentary](https://www.youtube.com/watch?v=RLTEot3kKz0&t=28s)
 
 ## Discussion Topics
 

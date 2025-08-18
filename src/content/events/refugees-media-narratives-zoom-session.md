@@ -14,7 +14,28 @@ contact:
   website: "https://www.facebook.com/share/16yiHxcXhc/?mibextid=wwXIfr"
 registration:
   required: true
-  url: "https://www.facebook.com/share/16yiHxcXhc/?mibextid=wwXIfr"
+  url: "https://us06web.zoom.us/meeting/register/6Yk_rxnoTb6zTUctpf4X9g"
+panelists:
+  - name: "James Chavula"
+    role: "Features Editor and Head of Solutions Journalism"
+    organization: "Nation Publications Limited"
+    bio: "Award-winning journalist with deep personal interest in refugee affairs. Previously worked with Times Group, Malawi's oldest newspaper. His reporting focuses on underreported human development issues, including human rights, gender equality, and the struggles of marginalized minorities. His connection to refugee issues traces back to 1987-1993 when he was raised in the care of a Mozambican domestic worker who had fled the civil war in her country."
+    socialMedia:
+      instagram: "https://instagram.com/chavula_james"
+  
+  - name: "Arsene Boji Lumière"
+    role: "Reporter and News Anchor"
+    organization: "Yetu Community Radio"
+    bio: "Congolese journalist who has been a reporter and news anchor with Yetu Community Radio since 2018, working in the French department. He also hosts Community Development, a radio program dedicated to exploring and promoting development issues within the community. Arsene brings unique insights into the untold realities of refugee voices and the role of radio within the camp."
+    socialMedia:
+      instagram: "https://instagram.com/arseneboji"
+  
+  - name: "Moses Kaufa"
+    role: "Executive Director"
+    organization: "Media Council of Malawi"
+    bio: "Seasoned media professional with a Bachelor of Science in Mass Communications and a Master's Degree in Strategic Management. Brings over a decade of experience in audio-visual production, publishing, and managing community and rural development projects. His expertise spans message development and translation, community mobilization and civic education, institutional and community capacity building, advocacy, and social media communication."
+    socialMedia:
+      instagram: "https://instagram.com/kaufamoses"
 tags: ["refugees", "media", "human-rights", "malawi", "advocacy", "zoom", "journalism"]
 ---
 

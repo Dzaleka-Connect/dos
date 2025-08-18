@@ -277,6 +277,129 @@ const seo = {
             {entry.data.description}
           </p>
 
+          <!-- Panelists Section -->
+          {entry.data.panelists && entry.data.panelists.length > 0 && (
+            <div class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Meet Our Panelists</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {entry.data.panelists.map((panelist, index) => (
+                  <div 
+                    class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer panelist-card"
+                    data-panelist-index={index}
+                  >
+                    <div class="flex items-start space-x-4">
+                      {panelist.image && (
+                        <div class="flex-shrink-0">
+                          <img 
+                            src={panelist.image.startsWith('http') ? panelist.image : `/images/${panelist.image}`}
+                            alt={panelist.name}
+                            class="w-16 h-16 rounded-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
+                      <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">{panelist.name}</h3>
+                        {panelist.role && (
+                          <p class="text-sm text-primary-600 font-medium mb-2">{panelist.role}</p>
+                        )}
+                        {panelist.organization && (
+                          <p class="text-sm text-gray-600 mb-2">{panelist.organization}</p>
+                        )}
+                        {panelist.bio && (
+                          <div class="mb-3">
+                            <p class="text-sm text-gray-600 line-clamp-3">{panelist.bio}</p>
+                            {panelist.bio.length > 150 && (
+                              <button class="text-primary-600 text-xs font-medium mt-2 hover:text-primary-700 transition-colors">
+                                Read more...
+                              </button>
+                            )}
+                          </div>
+                        )}
+                        {panelist.socialMedia && (
+                          <div class="flex space-x-2" onclick="event.stopPropagation();">
+                            {panelist.socialMedia.twitter && (
+                              <a 
+                                href={panelist.socialMedia.twitter}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-blue-500 transition-colors"
+                                aria-label={`${panelist.name}'s Twitter`}
+                              >
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                </svg>
+                              </a>
+                            )}
+                            {panelist.socialMedia.instagram && (
+                              <a 
+                                href={panelist.socialMedia.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-pink-500 transition-colors"
+                                aria-label={`${panelist.name}'s Instagram`}
+                              >
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                              </a>
+                            )}
+                            {panelist.socialMedia.linkedin && (
+                              <a 
+                                href={panelist.socialMedia.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-blue-700 transition-colors"
+                                aria-label={`${panelist.name}'s LinkedIn`}
+                              >
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                              </a>
+                            )}
+                            {panelist.socialMedia.website && (
+                              <a 
+                                href={panelist.socialMedia.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-primary-600 transition-colors"
+                                aria-label={`${panelist.name}'s Website`}
+                              >
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                                </svg>
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Panelist Modal -->
+          <div id="panelistModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                  <h3 class="text-xl font-bold text-gray-900" id="modalPanelistName"></h3>
+                  <button 
+                    id="closePanelistModal"
+                    class="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div id="modalPanelistContent"></div>
+              </div>
+            </div>
+          </div>
+
           <!-- Event Content -->
           <div class="prose prose-lg max-w-none mb-12 prose-headings:text-gray-900 prose-a:text-primary-600 hover:prose-a:text-primary-700">
             <Content />
@@ -450,4 +573,151 @@ const seo = {
       </section>
     )}
   </main>
+
+  <script define:vars={{ panelists: entry.data.panelists }}>
+    // Panelist modal functionality
+    function openPanelistModal(index) {
+      const panelist = panelists[index];
+      const modal = document.getElementById('panelistModal');
+      const modalName = document.getElementById('modalPanelistName');
+      const modalContent = document.getElementById('modalPanelistContent');
+      
+      modalName.textContent = panelist.name;
+      
+      let contentHTML = `
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4">
+            ${panelist.image ? `
+              <div class="flex-shrink-0">
+                <img 
+                  src="${panelist.image.startsWith('http') ? panelist.image : '/images/' + panelist.image}"
+                  alt="${panelist.name}"
+                  class="w-20 h-20 rounded-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ` : ''}
+            <div class="flex-1">
+              ${panelist.role ? `<p class="text-lg text-primary-600 font-medium mb-1">${panelist.role}</p>` : ''}
+              ${panelist.organization ? `<p class="text-gray-600 mb-2">${panelist.organization}</p>` : ''}
+            </div>
+          </div>
+          
+          ${panelist.bio ? `
+            <div>
+              <h4 class="text-lg font-semibold text-gray-900 mb-2">Biography</h4>
+              <p class="text-gray-600 leading-relaxed">${panelist.bio}</p>
+            </div>
+          ` : ''}
+          
+          ${panelist.socialMedia ? `
+            <div>
+              <h4 class="text-lg font-semibold text-gray-900 mb-2">Connect</h4>
+              <div class="flex space-x-3">
+                ${panelist.socialMedia.twitter ? `
+                  <a 
+                    href="${panelist.socialMedia.twitter}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                    Twitter
+                  </a>
+                ` : ''}
+                ${panelist.socialMedia.instagram ? `
+                  <a 
+                    href="${panelist.socialMedia.instagram}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-3 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram
+                  </a>
+                ` : ''}
+                ${panelist.socialMedia.linkedin ? `
+                  <a 
+                    href="${panelist.socialMedia.linkedin}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-3 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                  </a>
+                ` : ''}
+                ${panelist.socialMedia.website ? `
+                  <a 
+                    href="${panelist.socialMedia.website}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center px-3 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                    </svg>
+                    Website
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      
+      modalContent.innerHTML = contentHTML;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePanelistModal() {
+      const modal = document.getElementById('panelistModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Add event listeners when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click handlers to panelist cards
+      document.querySelectorAll('.panelist-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const index = parseInt(this.getAttribute('data-panelist-index'));
+          openPanelistModal(index);
+        });
+      });
+
+      // Close modal when clicking outside
+      const modal = document.getElementById('panelistModal');
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            closePanelistModal();
+          }
+        });
+      }
+
+      // Close modal with close button
+      const closeButton = document.getElementById('closePanelistModal');
+      if (closeButton) {
+        closeButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          closePanelistModal();
+        });
+      }
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closePanelistModal();
+        }
+      });
+    });
+  </script>
 </MainLayout>

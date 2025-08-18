@@ -114,6 +114,19 @@ const eventSchema = z.object({
     url: z.string().optional(),
     deadline: z.date().optional(),
   }).optional(),
+  panelists: z.array(z.object({
+    name: z.string(),
+    role: z.string().optional(),
+    bio: z.string().optional(),
+    image: z.string().optional(),
+    organization: z.string().optional(),
+    socialMedia: z.object({
+      twitter: z.string().optional(),
+      instagram: z.string().optional(),
+      linkedin: z.string().optional(),
+      website: z.string().optional(),
+    }).optional(),
+  })).optional(),
   tags: z.array(z.string()).optional(),
 });
 
