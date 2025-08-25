@@ -12,12 +12,12 @@ const infoData: Record<string, InfoItem> = {
     content: [
       "Established in 1994 in response to the Rwandan genocide and conflicts in Burundi and DRC",
       "Located in Dowa District, about 45km north of Lilongwe, Malawi's capital",
-      "Originally designed for 10,000-12,000 refugees, now hosts over 60,000 people",
+      "Originally designed for 10,000-12,000 refugees, now hosts over 55,000 people",
       "Faces significant challenges with overcrowding and limited resources",
       "Home to diverse entrepreneurial activities and small businesses",
       "Supported by UNHCR, WFP, and various NGOs providing essential services"
     ],
-    source: "Dzaleka Refugee Information Hub, 2024"
+    source: "UNHCR Malawi Fact Sheet - August 2024"
   },
   incidents: {
     title: "Recent Major Events (2022-2024)",
@@ -56,23 +56,23 @@ const infoData: Record<string, InfoItem> = {
   healthcare: {
     title: "Healthcare Challenges and Services",
     content: [
-      "One main clinic serving over 70,000 people, operated by Ministry of Health",
+      "One main clinic serving over 86,000 people (54,000 refugees + 32,000 locals), operated by Ministry of Health",
       "Severe shortage of medical staff and resources",
       "Limited access to specialized care and treatment for chronic conditions",
       "Presence of refugee-owned private pharmacies and medical services",
       "Ongoing challenges with medicine supply and emergency care"
     ],
-    source: "Dzaleka Health Services Report 2024"
+    source: "Dzaleka Health Centre Assessment 2024"
   },
   malawi: {
     title: "Refugee Context in Malawi",
     content: [
       "Malawi has been hosting refugees since the 1970s, with Dzaleka camp established in 1994 in response to the influx of refugees from Rwanda, Burundi, and the Democratic Republic of Congo (DRC).",
-      "The camp was originally designed to accommodate 10,000-12,000 people but now hosts over 52,000 refugees and asylum seekers.",
+      "The camp was originally designed to accommodate 10,000-12,000 people but now hosts over 55,000 refugees and asylum seekers.",
       "Malawi maintains an encampment policy, requiring refugees to live in designated camps, primarily Dzaleka.",
       "The government provides land for the camp while UNHCR and partners provide protection and assistance."
     ],
-    source: "UNHCR Malawi Operations Report 2024"
+    source: "UNHCR Malawi Fact Sheet - August 2024"
   },
   regional: {
     title: "Regional Refugee Situation",
@@ -88,14 +88,14 @@ const infoData: Record<string, InfoItem> = {
   demographics: {
     title: "Camp Demographics & Community",
     content: [
-      "The DRC community (62%) faces ongoing displacement due to conflict in Eastern DRC.",
-      "Burundian refugees (19%) have seen both new arrivals and returns since 2015.",
-      "The Rwandan community (7%) includes long-term residents since 1994.",
-      "Growing Somali (5%) and Ethiopian (4%) communities reflect newer displacement trends.",
+      "The DRC community (64.9%) faces ongoing displacement due to conflict in Eastern DRC.",
+      "Burundian refugees (21.9%) have seen both new arrivals and returns since 2015.",
+      "The Rwandan community (12.6%) includes long-term residents since 1994.",
+      "Somali (0.3%) and Ethiopian (0.3%) communities reflect newer displacement trends.",
       "The camp has a young population, with over 60% under the age of 25.",
       "Women and children make up approximately 70% of the camp population."
     ],
-    source: "Dzaleka Camp Demographics Report 2024"
+    source: "UNHCR Malawi Fact Sheet - August 2024"
   },
   education: {
     title: "Education & Skills Development",

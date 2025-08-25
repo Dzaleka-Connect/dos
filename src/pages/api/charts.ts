@@ -9,8 +9,8 @@ export const GET: APIRoute = async () => {
         title: 'Camp Population Growth'
       },
       demographics: {
-        labels: ['Congolese', 'Burundians', 'Rwandans', 'Somalis', 'Ethiopians', 'Others'],
-        values: [45, 25, 15, 8, 4, 3],
+        labels: ['Democratic Republic of Congo', 'Burundi', 'Rwanda', 'Somalia', 'Ethiopia', 'Other Nationalities'],
+        values: [64.9, 21.9, 12.6, 0.3, 0.3, 0.1],
         title: 'Population by Nationality (%)'
       },
       incidents: {

@@ -36,6 +36,13 @@ panelists:
     bio: "Seasoned media professional with a Bachelor of Science in Mass Communications and a Master's Degree in Strategic Management. Brings over a decade of experience in audio-visual production, publishing, and managing community and rural development projects. His expertise spans message development and translation, community mobilization and civic education, institutional and community capacity building, advocacy, and social media communication."
     socialMedia:
       instagram: "https://instagram.com/kaufamoses"
+  
+  - name: "Chisomo Kachapila Ngulube"
+    role: "Head of Broadcasting"
+    organization: "Parliament of Malawi Radio Station"
+    bio: "Currently the Head of Broadcasting at the radio station of the Parliament of Malawi. Passionate about defending freedom of expression and promoting access to information in Malawi, she also serves as Vice Chairperson of the MISAMalawi. With over 20 years of experience as a journalist and editor across multiple media platforms, Chisomo covers a wide range of topics, including development, business, and political issues, with a particular focus on women and girls. Notably, she has reported on the experiences of pregnant women with disabilities navigating the Malawian healthcare system."
+    socialMedia:
+      twitter: "https://x.com/@chisomongulube"
 tags: ["refugees", "media", "human-rights", "malawi", "advocacy", "zoom", "journalism"]
 ---
 
@@ -52,9 +59,9 @@ Join Inua Advocacy for an engaging live Zoom session that explores the crucial i
 
 ## About This Session
 
-Refugees in Malawi face daily challenges, many linked to outdated policies. The media has the power to shift perceptions, influence policy, and make sure refugee voices are heard.
+Refugees in Malawi face daily struggles, many rooted in outdated and limiting policies. The media has the power to change public perception, influence policy, and amplify voices that often go unheard.
 
-This Zoom discussion will reflect on how Malawi's media has shaped refugee narratives—celebrating impactful reporting and exploring what more can be done to protect rights and dignity.
+This conversation will reflect on how Malawi's media has shaped the national narrative around refugees—celebrating impactful reporting while exploring what more can be done. We'll discuss how journalism can continue to spotlight refugee experiences, drive accountability, and help shape a future where refugee rights and human dignity are respected.
 
 ## Discussion Topics
 
@@ -77,11 +84,7 @@ Let's talk about how journalism can inspire change and shape a better future for
 
 This is a free online event, but registration is required. Join us to be part of this important conversation about refugees, media, and human rights in Malawi.
 
-**Register here:** [Facebook Event Page](https://www.facebook.com/share/16yiHxcXhc/?mibextid=wwXIfr)
-
-## Hashtags
-
-#Refugees #Media #HumanRights #Malawi #InuaAdvocacy
+**Register here:** [Zoom Meeting](https://us06web.zoom.us/meeting/register/6Yk_rxnoTb6zTUctpf4X9g)
 
 ---
 

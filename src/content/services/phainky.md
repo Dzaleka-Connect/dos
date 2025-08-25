@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/phainkydesign5/'
   linkedin: 'https://www.linkedin.com/in/phainky-organization-a0534022a/'
   website: 'https://phainky.com/'
-logo: 'https://phainky.com/wp-content/uploads/2024/07/phainkylogo.jpg'
+logo: '/images/Phainky.jpeg'
 featured: true
 verified: true
 status: "active"

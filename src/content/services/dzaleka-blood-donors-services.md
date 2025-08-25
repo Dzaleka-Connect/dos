@@ -19,7 +19,7 @@ socialMedia:
   linkedin: 'https://www.linkedin.com/company/dzaleka-blood-donors-services/'
   website: 'https://dzalekablooddonors.wixsite.com/savelives'
 logo: >-
-  https://media.licdn.com/dms/image/v2/C4D0BAQFnxhVBLwYfeA/company-logo_200_200/company-logo_200_200/0/1655977946891?e=1743638400&v=beta&t=Dc0aaHSkIStNR1h-DBa7JWpIAc8U7sLTHnYFSn8Aqww
+  /images/Dzaleka Blood Donors Services.jpeg
 featured: false
 lastUpdated: 2025-01-03
 ---

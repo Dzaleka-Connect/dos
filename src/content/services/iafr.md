@@ -1,7 +1,7 @@
 ---
-title: IAFR
-category: "Non-profit Organizations"
-description: International Association for Refugees (IAFR) is helping people survive and recover from forced displacement.
+title: International Association for Refugees (IAFR)
+category: "Religious Organizations"
+description: An international Christian nonprofit agency devoted to the mission of helping people survive and recover from forced displacement.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -16,12 +16,12 @@ socialMedia:
   facebook: ''
   twitter: ''
   instagram: 'https://www.instagram.com/iafrefugees/'
-  linkedin: ''
+  linkedin: 'https://www.linkedin.com/company/international-association-for-refugees-iafr-/'
   website: 'https://iafr.org/locations/dzaleka'
-logo: 'https://worldea.org/wp-content/uploads/2022/12/Untitled-design-21-300x300.png'
-featured: false
+logo: '/images/7l839mW2ASOdMYt73xtyuvmxKpY.webp'
+featured: true
 verified: true
-lastUpdated: 2024-12-24
+lastUpdated: 2025-08-25
 ---
 
 ## About IAFR
@@ -33,5 +33,17 @@ The refugee churches in Dzaleka offer supportive, live-giving community to the r
 We break the isolation of our displaced brothers and sisters through regular visits to the camp, and we work to connect them with the church-at-large in ways that help them accomplish their mission.
 
 Refugee church activities in Dzaleka include counseling and trauma care, reconciliation and peace-building initiatives, pre-school and primary school initiatives, income generation projects, language and other skill-building courses, as well as caring for orphans, widows, single mothers, and the disabled in the camp and surrounding host community.
+
+## Our Ministries
+
+- **Pastoral Care**
+- **Refugee Church Construction**
+- **Bibles for Refugees**
+- **Trauma Care Training**
+- **Elementary Education Support**
+- **Medical Assistance**
+- **University Scholarships**
+- **Vocational Training**
+- **Small Business Startups**
 
 
