@@ -5,10 +5,10 @@ date: 2025-08-28T15:00:00+02:00
 endDate: 2025-08-28T16:00:00+02:00
 location: "Online (Zoom)"
 category: "Advocacy"
-featured: false
+featured: true
 image: "/images/dzaleka-hero.jpeg"
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   website: "https://www.facebook.com/share/16yiHxcXhc/?mibextid=wwXIfr"
