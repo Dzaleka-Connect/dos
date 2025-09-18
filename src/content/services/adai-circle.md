@@ -17,11 +17,11 @@ socialMedia:
   twitter: ''
   instagram: 'https://www.instagram.com/adai.circle/'
   linkedin: 'https://www.linkedin.com/company/adaicircle/'
-  website: 'https://adaicircle.com/'
+  website: 'https://www.facebook.com/adaicircle/'
 logo: '/images/1733081763222.jpeg'
 featured: true
 verified: true
-lastUpdated: 2024-12-24
+lastUpdated: 2025-09-19
 ---
 
 ## About ADAI Circle
