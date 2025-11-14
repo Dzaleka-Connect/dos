@@ -1,12 +1,12 @@
 ---
 title: How to Contribute
-description: Learn how you can contribute to the Dzaleka Heritage Archive
+description: Learn how you can contribute to the Dzaleka Online Services
 section: guides
 ---
 
 # How to Contribute
 
-Your contributions help preserve and share our community's rich cultural heritage. Here's how you can participate in building the Dzaleka Heritage Archive.
+Your contributions help preserve and share our community's rich cultural heritage. Here's how you can participate in building the Dzaleka Online Services.
 
 ## Types of Contributions
 

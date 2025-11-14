@@ -1,12 +1,12 @@
 ---
 title: Privacy Guidelines
-description: Understanding privacy and data protection in the Dzaleka Heritage Archive
+description: Understanding privacy and data protection in the Dzaleka Online Services
 section: policies
 ---
 
 # Privacy Guidelines
 
-The Dzaleka Heritage Archive is committed to protecting the privacy and security of our community members. These guidelines outline how we handle personal information and cultural content.
+The Dzaleka Online Services is committed to protecting the privacy and security of our community members. These guidelines outline how we handle personal information and cultural content.
 
 ## Data Protection
 

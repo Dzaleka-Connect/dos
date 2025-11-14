@@ -1,65 +1,88 @@
 ---
 title: Getting Started
-description: Quick guide to using the Dzaleka Heritage Archive
+description: Quick guide to using Dzaleka Online Services
 section: guides
 ---
 
 # Getting Started
 
-Welcome to the Dzaleka Heritage Archive! This guide will help you get started with our platform.
+Welcome to **Dzaleka Online Services**! Your digital gateway to Dzaleka Refugee Camp services, resources, and community connections. This guide will help you navigate our platform and access the support you need.
 
 ## Core Features
 
-### [Community Voice](/community-voice)
-Share and discover stories from our community:
-- Browse featured stories
-- Filter by categories: Stories, Culture, Community
-- Share your own experiences
-- Engage with community voices
+### [Service Directory](/services)
+Access 100+ verified organizations and services:
+- Search by category (Education, Health, Legal, Cultural, etc.)
+- View service details and contact information
+- Find verified and featured services
+- Connect with service providers
+
+### [Resources Library](/resources)
+Access 500+ educational and policy documents:
+- Legal documents and policies
+- Educational materials and guides
+- Research reports and studies
+- Community resources and templates
+
+### [Events Calendar](/events)
+Stay connected with community activities:
+- Upcoming events and workshops
+- Cultural celebrations and festivals
+- Educational programs and training
+- Community gatherings and conferences
+
+### [Job Board](/jobs)
+Find employment and volunteer opportunities:
+- Full-time and part-time positions
+- Contract and volunteer opportunities
+- Browse by category and organization
+- Apply directly to organizations
 
 ### [Photo Gallery](/photos)
-Explore our visual heritage:
-- Browse photos by year
-- View featured collections
+Explore visual documentation of community life:
+- Browse photos by year and category
+- View photographer profiles
 - Submit your photographs
-- Document community life
+- Document community stories
 
-### [Events](/events)
-Stay connected with community activities:
-- Cultural celebrations
-- Educational programs
-- Community gatherings
-- Special events
-
-### [Resources](/resources)
-Access community services and support:
-- Educational resources
-- Cultural programs
-- Support services
-- Community initiatives
+### [Community Voice](/community-voice)
+Share and discover community stories:
+- Personal narratives and experiences
+- Cultural stories and traditions
+- Success stories and achievements
+- Connect with community members
 
 ## Quick Actions
 
-### Share Your Story
-1. Visit [Submit Voice](/submit-voice)
-2. Fill in story details:
-   - Title and author
-   - Category
-   - Summary
-   - Full story
-   - Cover image (optional)
-3. Submit for review
+### Find Services
+1. Visit [Service Directory](/services)
+2. Browse by category or search
+3. View service details
+4. Contact service providers
 
-### Submit Photos
-1. Go to [Photos](/photos)
-2. Click "Submit Your Photo"
-3. Add photo details
-4. Upload your image
+### Register Your Service/Organization
+1. Go to [Service Registration](/services/register)
+2. Fill in organization details
+3. Add contact information and social media
+4. Submit for verification
 
-### Contact Us
-- [Visit Information](/visit)
-- [Support](/support)
+### Access Resources
+1. Browse [Resources Library](/resources)
+2. Filter by category or language
+3. Download documents and guides
+4. Submit your own resources
+
+### Submit Content
+- [Submit Photos](/photos/submit) - Share community photos
+- [Submit Voice](/submit-voice) - Share your story
+- [Organize Event](/events/organize) - List your event
+- [Post Job](/jobs/post) - List job opportunities
+
+### Get Support
 - [Contact Form](/contact)
+- [Help Desk](/help-desk)
+- [Support Page](/support)
+- [Visit Information](/visit)
 
 ## Additional Resources
 

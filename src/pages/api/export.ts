@@ -39,7 +39,7 @@ export const all: APIRoute = async ({ request }) => {
   if (method === 'get') {
     return new Response(
       JSON.stringify({
-        api: 'Dzaleka Heritage Archive API',
+        api: 'Dzaleka Online Services API',
         version: '1.0.0',
         collections: VALID_COLLECTIONS,
         endpoints: {

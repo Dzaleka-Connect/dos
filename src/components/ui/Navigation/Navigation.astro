@@ -72,7 +72,8 @@ import MobileNavLink from './MobileNavLink.astro';
 
   if (menuButton && mobileMenu) {
     menuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+      const isExpanded = mobileMenu.classList.toggle('hidden');
+      menuButton.setAttribute('aria-expanded', (!isExpanded).toString());
     });
   }
 </script>

@@ -6,7 +6,7 @@ section: search
 
 # Search Guide
 
-Learn how to find content across the Dzaleka Heritage Archive.
+Learn how to find content across the Dzaleka Online Services.
 
 ## Search Features
 

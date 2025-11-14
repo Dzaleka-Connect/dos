@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import { format } from 'date-fns';
+import Button from '../components/ui/Button.astro';
 
 // Get all services and filter featured ones
 const services = await getCollection('services');
@@ -180,14 +181,14 @@ const seo = {
 
       <div class="relative">
         {/* Navigation Arrows */}
-        <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button id="prevBtn" aria-label="Previous slide" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        
-        <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+        <button id="nextBtn" aria-label="Next slide" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -408,17 +409,17 @@ const seo = {
         </div>
 
         {/* Dots Indicator */}
-        <div class="flex justify-center mt-6 space-x-2">
-          <button class="w-3 h-3 bg-primary-600 rounded-full" data-slide="0"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="1"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="2"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="3"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="4"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="5"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="6"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="7"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="8"></button>
-          <button class="w-3 h-3 bg-gray-300 rounded-full" data-slide="9"></button>
+        <div class="flex justify-center mt-6 space-x-2" role="group" aria-label="Carousel navigation">
+          <button aria-label="Go to slide 1" class="w-3 h-3 bg-primary-600 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="0"></button>
+          <button aria-label="Go to slide 2" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="1"></button>
+          <button aria-label="Go to slide 3" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="2"></button>
+          <button aria-label="Go to slide 4" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="3"></button>
+          <button aria-label="Go to slide 5" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="4"></button>
+          <button aria-label="Go to slide 6" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="5"></button>
+          <button aria-label="Go to slide 7" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="6"></button>
+          <button aria-label="Go to slide 8" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="7"></button>
+          <button aria-label="Go to slide 9" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="8"></button>
+          <button aria-label="Go to slide 10" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="9"></button>
         </div>
       </div>
     </div>
@@ -612,10 +613,7 @@ const seo = {
           
           {/* View All Events Button */}
           <div class="text-center mt-12">
-            <a 
-              href="/events" 
-              class="inline-flex items-center px-8 py-4 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
+            <Button href="/events" size="lg">
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
@@ -623,7 +621,7 @@ const seo = {
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -761,7 +759,7 @@ const seo = {
 
         {/* View All Resources Button */}
         <div class="text-center mt-12">
-          <a href="/resources" class="inline-flex items-center px-8 py-4 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+          <Button href="/resources" size="lg">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
@@ -769,7 +767,7 @@ const seo = {
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </a>
+          </Button>
         </div>
       </div>
     </section>
@@ -917,18 +915,18 @@ const seo = {
             <h3 class="text-xl font-bold text-gray-900 mb-3">Need Immediate Assistance?</h3>
             <p class="text-gray-600 mb-4">For urgent emergencies, contact the appropriate service directly or visit the nearest facility.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="tel:+2651772155" class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+              <Button href="tel:+2651772155" className="bg-red-600 hover:bg-red-700 focus:ring-red-500">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 Emergency Hotline
-              </a>
-              <a href="/contact" class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+              </Button>
+              <Button href="/contact" variant="outline">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 Contact Support
-              </a>
+              </Button>
             </div>
           </div>
         </div>
@@ -952,7 +950,7 @@ const seo = {
           <!-- There is Hope Story -->
           <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="relative">
-              <img src="https://scd.infomigrants.net/media/resize/my_image_big/0d95d4ebde63adb1109a368f653d8a8d39b3aa10.png" alt="Innocent Magambi" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" />
+              <img src="https://scd.infomigrants.net/media/resize/my_image_big/0d95d4ebde63adb1109a368f653d8a8d39b3aa10.png" alt="Innocent Magambi, founder of There is Hope, a community healthcare and education organization" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="text-2xl font-bold text-white mb-2">Innocent Magambi</h3>
@@ -974,7 +972,7 @@ const seo = {
           <!-- Tumaini Festival Story -->
           <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="relative">
-              <img src="https://reifoundation.com/media/pages/partners/36d33e8d4a-1716269840/menes-la-plume-1-logo.jpg" alt="Menes la Plume" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" />
+              <img src="https://reifoundation.com/media/pages/partners/36d33e8d4a-1716269840/menes-la-plume-1-logo.jpg" alt="Menes la Plume, visionary artist and founder of Tumaini Festival, the world's first refugee camp festival" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="text-2xl font-bold text-white mb-2">Menes la Plume</h3>
@@ -996,7 +994,7 @@ const seo = {
           <!-- TakenoLAB Story -->
           <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
             <div class="relative">
-              <img src="https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg" alt="Remy Gakwaya" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" />
+              <img src="https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg" alt="Remy Gakwaya, self-taught programmer and founder of TakenoLAB, empowering refugees through digital skills" class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="text-2xl font-bold text-white mb-2">Remy Gakwaya</h3>
@@ -1085,15 +1083,12 @@ const seo = {
 
         <!-- View More Button -->
         <div class="text-center">
-          <a 
-            href="/community-voice" 
-            class="inline-flex items-center px-8 py-4 border-2 border-primary-600 text-lg font-semibold rounded-full text-primary-600 hover:bg-primary-600 hover:text-white transition-all duration-300"
-          >
+          <Button href="/community-voice" variant="secondary" size="lg" className="rounded-full">
             Explore More Stories
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </a>
+          </Button>
         </div>
       </div>
     </section>

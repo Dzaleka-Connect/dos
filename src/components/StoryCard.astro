@@ -1,5 +1,6 @@
 ---
 import { format } from 'date-fns';
+import { CloudinaryPresets, getPlaceholderUrl } from '../utils/cloudinary';
 
 interface Props {
   story: {
@@ -20,15 +21,24 @@ interface Props {
 
 const { story } = Astro.props;
 const { title, description, date, coverImage, author, tags } = story.data;
+
+// Optimize cover image using Cloudinary (only if it's a Cloudinary URL)
+const originalImage = coverImage;
+const optimizedImage = originalImage ? CloudinaryPresets.card(originalImage) : originalImage;
+const placeholderImage = (originalImage && optimizedImage !== originalImage)
+  ? getPlaceholderUrl(originalImage)
+  : null;
 ---
 
 <article class="group relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
   <a href={`/stories/${story.slug}`} class="block">
     <div class="aspect-w-16 aspect-h-9 overflow-hidden">
       <img
-        src={coverImage}
+        src={placeholderImage || optimizedImage}
+        data-src={placeholderImage ? optimizedImage : undefined}
         alt={title}
-        class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+        class={`${placeholderImage ? 'lazy-load' : ''} w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105`}
+        loading="lazy"
       />
     </div>
     

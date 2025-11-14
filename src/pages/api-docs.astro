@@ -1,0 +1,355 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const siteUrl = 'https://services.dzaleka.com';
+
+// API Endpoints documentation
+const endpoints = [
+  {
+    name: 'Search',
+    method: 'GET',
+    path: '/api/search',
+    description: 'Server-side search across multiple collections with caching',
+    parameters: [
+      { name: 'q', type: 'string', required: true, description: 'Search query (min 2 characters)' },
+      { name: 'collections', type: 'string', required: false, description: 'Comma-separated list of collections (services,events,resources,news,photos,jobs,docs)' },
+      { name: 'limit', type: 'number', required: false, description: 'Max results per collection (default: 10)' }
+    ],
+    response: {
+      status: 'success',
+      query: 'refugee services',
+      totalResults: 25,
+      results: {
+        services: [{ slug: 'example', title: 'Example Service', description: '...', category: 'Education' }],
+        events: []
+      },
+      cached: false
+    },
+    rateLimit: '60 requests per minute',
+    cache: '5 minutes TTL, 100 queries max',
+    example: `${siteUrl}/api/search?q=education&collections=services,events&limit=5`
+  },
+  {
+    name: 'Services',
+    method: 'GET',
+    path: '/api/services',
+    description: 'Retrieve all service organizations',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 100,
+      data: {
+        services: [{ id: '...', title: 'Service Name', category: 'Education', verified: true }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/services`
+  },
+  {
+    name: 'Events',
+    method: 'GET',
+    path: '/api/events',
+    description: 'Retrieve all events',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 30,
+      data: {
+        events: [{ id: '...', title: 'Event Name', date: '2025-01-15', location: 'Dzaleka' }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/events`
+  },
+  {
+    name: 'Resources',
+    method: 'GET',
+    path: '/api/resources',
+    description: 'Retrieve all resources and documents',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 300,
+      data: {
+        resources: [{ id: '...', title: 'Resource Name', category: 'Policy', fileType: 'pdf' }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/resources`
+  },
+  {
+    name: 'News',
+    method: 'GET',
+    path: '/api/news',
+    description: 'Retrieve all news articles',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 50,
+      data: {
+        news: [{ id: '...', title: 'News Title', category: 'announcement', date: '2025-01-10' }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/news`
+  },
+  {
+    name: 'Photos',
+    method: 'GET',
+    path: '/api/photos',
+    description: 'Retrieve photo gallery items',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 35,
+      data: {
+        photos: [{ id: '...', title: 'Photo Title', date: '2024-12-01', image: 'url' }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/photos`
+  },
+  {
+    name: 'Jobs',
+    method: 'GET',
+    path: '/api/jobs',
+    description: 'Retrieve job listings',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 20,
+      data: {
+        jobs: [{ id: '...', title: 'Job Title', type: 'full-time', category: 'education', status: 'open' }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/jobs`
+  },
+  {
+    name: 'Docs',
+    method: 'GET',
+    path: '/api/docs',
+    description: 'Retrieve documentation pages',
+    parameters: [],
+    response: {
+      status: 'success',
+      count: 20,
+      data: {
+        docs: [{ id: '...', title: 'Getting Started', description: '...' }]
+      }
+    },
+    rateLimit: '60 requests per minute',
+    example: `${siteUrl}/api/docs`
+  }
+];
+---
+
+<MainLayout
+  title="API Documentation - Dzaleka Online Services"
+  description="Complete API documentation for Dzaleka Online Services. Access services, events, resources, news, photos, and more through our RESTful API endpoints."
+  keywords="API documentation, REST API, Dzaleka API, developer docs, API reference"
+>
+  <div class="container mx-auto px-4 py-12 max-w-6xl">
+    <!-- Header -->
+    <div class="mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">API Documentation</h1>
+      <p class="text-xl text-gray-600 mb-6">
+        Access Dzaleka Online Services data through our RESTful API endpoints.
+        All endpoints support CORS and return JSON responses.
+      </p>
+
+      <!-- Quick Start -->
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+        <h2 class="text-lg font-semibold text-blue-900 mb-2">Quick Start</h2>
+        <p class="text-blue-800 mb-4">All API endpoints are publicly accessible and require no authentication.</p>
+        <div class="bg-white p-4 rounded-lg font-mono text-sm">
+          <code class="text-blue-600">
+            curl {siteUrl}/api/services
+          </code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rate Limiting -->
+    <div class="mb-12 bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-lg">
+      <h2 class="text-lg font-semibold text-amber-900 mb-2">Rate Limiting</h2>
+      <p class="text-amber-800 mb-2">All endpoints are rate-limited to prevent abuse:</p>
+      <ul class="list-disc list-inside text-amber-800 space-y-1">
+        <li><strong>Limit:</strong> 60 requests per minute per IP address</li>
+        <li><strong>Headers:</strong> X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset</li>
+        <li><strong>429 Response:</strong> Includes Retry-After header (in seconds)</li>
+      </ul>
+    </div>
+
+    <!-- Caching -->
+    <div class="mb-12 bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
+      <h2 class="text-lg font-semibold text-green-900 mb-2">Caching</h2>
+      <p class="text-green-800 mb-2">Search API includes intelligent caching:</p>
+      <ul class="list-disc list-inside text-green-800 space-y-1">
+        <li><strong>TTL:</strong> 5 minutes for search results</li>
+        <li><strong>Cache-Control:</strong> public, max-age=300</li>
+        <li><strong>X-Cache Header:</strong> HIT (cached) or MISS (fresh query)</li>
+        <li><strong>Max Size:</strong> 100 unique queries cached</li>
+      </ul>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="space-y-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-6">API Endpoints</h2>
+
+      {endpoints.map((endpoint) => (
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+          <!-- Endpoint Header -->
+          <div class="bg-gradient-to-r from-primary-50 to-primary-100 px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+              <div class="flex items-center gap-3">
+                <span class={`px-3 py-1 rounded-full text-sm font-semibold ${
+                  endpoint.method === 'GET' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
+                }`}>
+                  {endpoint.method}
+                </span>
+                <code class="text-lg font-mono text-gray-900">{endpoint.path}</code>
+              </div>
+              <span class="text-sm text-gray-600">Rate Limit: {endpoint.rateLimit}</span>
+            </div>
+            <p class="mt-2 text-gray-700">{endpoint.description}</p>
+            {endpoint.cache && (
+              <p class="mt-1 text-sm text-gray-600">Cache: {endpoint.cache}</p>
+            )}
+          </div>
+
+          <div class="p-6 space-y-6">
+            <!-- Parameters -->
+            {endpoint.parameters.length > 0 && (
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Parameters</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="border-b border-gray-200">
+                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Name</th>
+                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Type</th>
+                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Required</th>
+                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {endpoint.parameters.map((param) => (
+                        <tr class="border-b border-gray-100">
+                          <td class="py-2 px-3">
+                            <code class="text-blue-600 bg-blue-50 px-2 py-1 rounded">{param.name}</code>
+                          </td>
+                          <td class="py-2 px-3 text-gray-600">{param.type}</td>
+                          <td class="py-2 px-3">
+                            {param.required ? (
+                              <span class="text-red-600 font-semibold">Yes</span>
+                            ) : (
+                              <span class="text-gray-500">No</span>
+                            )}
+                          </td>
+                          <td class="py-2 px-3 text-gray-600">{param.description}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            <!-- Example Request -->
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-3">Example Request</h3>
+              <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                <code class="text-green-400 text-sm font-mono break-all">
+                  {endpoint.example}
+                </code>
+              </div>
+            </div>
+
+            <!-- Example Response -->
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-3">Example Response</h3>
+              <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                <pre class="text-green-400 text-sm font-mono">{JSON.stringify(endpoint.response, null, 2)}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Additional Information -->
+    <div class="mt-12 space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900 mb-6">Additional Information</h2>
+
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Error Responses</h3>
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-2">400 Bad Request</h4>
+            <pre class="bg-gray-900 text-red-400 p-4 rounded-lg text-sm overflow-x-auto">{JSON.stringify({
+  status: 'error',
+  message: 'Search query must be at least 2 characters long'
+}, null, 2)}</pre>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-2">429 Too Many Requests</h4>
+            <pre class="bg-gray-900 text-red-400 p-4 rounded-lg text-sm overflow-x-auto">{JSON.stringify({
+  status: 'error',
+  message: 'Rate limit exceeded. Please try again later.',
+  retryAfter: 45
+}, null, 2)}</pre>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-2">500 Internal Server Error</h4>
+            <pre class="bg-gray-900 text-red-400 p-4 rounded-lg text-sm overflow-x-auto">{JSON.stringify({
+  status: 'error',
+  message: 'Failed to fetch services',
+  error: 'Error details...'
+}, null, 2)}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">CORS Support</h3>
+        <p class="text-gray-700 mb-4">All API endpoints support Cross-Origin Resource Sharing (CORS) with the following headers:</p>
+        <ul class="list-disc list-inside text-gray-700 space-y-2">
+          <li><code class="bg-gray-100 px-2 py-1 rounded">Access-Control-Allow-Origin: *</code></li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">Access-Control-Allow-Methods: GET, POST, OPTIONS</code></li>
+          <li><code class="bg-gray-100 px-2 py-1 rounded">Access-Control-Allow-Headers: Content-Type</code></li>
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Support</h3>
+        <p class="text-gray-700 mb-4">
+          For questions, bug reports, or feature requests, please visit:
+        </p>
+        <a
+          href="/contact"
+          class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
+        >
+          Contact Support
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  /* Syntax highlighting for code blocks */
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  code {
+    font-family: 'Courier New', Courier, monospace;
+  }
+</style>

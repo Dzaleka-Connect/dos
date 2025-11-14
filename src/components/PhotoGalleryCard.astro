@@ -2,20 +2,30 @@
 import { format } from 'date-fns';
 import type { PhotoGallery } from '../types';
 import Badge from './ui/Badge.astro';
+import { CloudinaryPresets, getPlaceholderUrl } from '../utils/cloudinary';
 
 interface Props {
   photo: PhotoGallery;
 }
 
 const { photo } = Astro.props;
+
+// Optimize image using Cloudinary (only if it's a Cloudinary URL)
+const originalImage = photo.imageUrl;
+const optimizedImage = originalImage ? CloudinaryPresets.gallery(originalImage) : originalImage;
+const placeholderImage = (originalImage && optimizedImage !== originalImage)
+  ? getPlaceholderUrl(originalImage)
+  : null;
 ---
 
 <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
   <div class="relative">
-    <img 
-      src={photo.imageUrl} 
+    <img
+      src={placeholderImage || optimizedImage}
+      data-src={placeholderImage ? optimizedImage : undefined}
       alt={photo.title}
-      class="w-full h-48 object-cover"
+      class={`${placeholderImage ? 'lazy-load' : ''} w-full h-48 object-cover transition-opacity duration-300`}
+      loading="lazy"
     />
     <time 
       class="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm"

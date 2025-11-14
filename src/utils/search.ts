@@ -3,15 +3,18 @@ import type { CollectionEntry } from 'astro:content';
 
 export type Service = CollectionEntry<'services'>;
 
-// Configure MiniSearch options
+/**
+ * MiniSearch configuration options
+ * Defines how the search index is created and how queries are processed
+ */
 const searchOptions = {
   idField: 'slug',
   fields: ['title', 'description', 'category'], // fields to index for full-text search
   storeFields: ['title', 'description', 'category', 'featured', 'slug'], // fields to return with search results
   searchOptions: {
     boost: { title: 2, description: 1.5 }, // boost title and description matches
-    fuzzy: 0.2, // fuzzy matching
-    prefix: true, // prefix matching
+    fuzzy: 0.2, // fuzzy matching tolerance
+    prefix: true, // enable prefix matching
     combineWith: 'OR', // match any field
   }
 };
@@ -19,9 +22,14 @@ const searchOptions = {
 // Create and populate search index
 let searchIndex: MiniSearch<any>;
 
-export async function initializeSearch(services: Service[]) {
+/**
+ * Initialize the search index with service data
+ * @param services - Array of service entries to index
+ * @returns Initialized MiniSearch instance
+ */
+export async function initializeSearch(services: Service[]): Promise<MiniSearch<any>> {
   searchIndex = new MiniSearch(searchOptions);
-  
+
   // Transform services to flatten data structure
   const documents = services.map(service => ({
     slug: service.slug,
@@ -36,7 +44,13 @@ export async function initializeSearch(services: Service[]) {
   return searchIndex;
 }
 
-export function searchServices(query: string, services: Service[]) {
+/**
+ * Search services using the initialized search index
+ * @param query - Search query string
+ * @param services - Array of all service entries
+ * @returns Array of services matching the search query
+ */
+export function searchServices(query: string, services: Service[]): Service[] {
   if (!query.trim()) {
     return services;
   }

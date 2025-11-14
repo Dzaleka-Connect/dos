@@ -1,0 +1,136 @@
+---
+/**
+ * Lazy Loading Script Component
+ * Automatically loads images with .lazy-load class when they enter the viewport
+ * Uses Intersection Observer API for optimal performance
+ */
+---
+
+<script>
+  /**
+   * Lazy load images when they enter the viewport
+   * Uses Intersection Observer API for better performance
+   */
+  function initLazyLoading() {
+    // Check if IntersectionObserver is supported
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: load all images immediately
+      loadAllImages();
+      return;
+    }
+
+    const imageObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            loadImage(img);
+            observer.unobserve(img);
+          }
+        });
+      },
+      {
+        // Start loading when image is 50px from entering viewport
+        rootMargin: '50px 0px',
+        threshold: 0.01,
+      }
+    );
+
+    // Observe all lazy-load images
+    const lazyImages = document.querySelectorAll('img.lazy-load');
+    lazyImages.forEach((img) => imageObserver.observe(img));
+  }
+
+  /**
+   * Load a single image
+   * @param img - Image element to load
+   */
+  function loadImage(img: HTMLImageElement) {
+    const src = img.dataset.src;
+    const srcset = img.dataset.srcset;
+
+    // If no data-src, image doesn't need lazy loading, just mark as loaded
+    if (!src && !srcset) {
+      img.classList.add('lazy-loaded');
+      img.classList.remove('lazy-load');
+      return;
+    }
+
+    // Create new image to preload
+    const tempImg = new Image();
+
+    tempImg.onload = () => {
+      // Apply the actual image source
+      if (src) img.src = src;
+      if (srcset) img.srcset = srcset;
+
+      // Add loaded class for fade-in animation
+      img.classList.add('lazy-loaded');
+
+      // Remove lazy-load class
+      img.classList.remove('lazy-load');
+
+      // Clean up dataset attributes
+      delete img.dataset.src;
+      delete img.dataset.srcset;
+    };
+
+    tempImg.onerror = () => {
+      console.error(`Failed to load image: ${src || srcset}`);
+      // Remove lazy-load class even on error
+      img.classList.remove('lazy-load');
+    };
+
+    // Start loading
+    if (src) tempImg.src = src;
+  }
+
+  /**
+   * Fallback: Load all images immediately
+   * Used when IntersectionObserver is not supported
+   */
+  function loadAllImages() {
+    const lazyImages = document.querySelectorAll<HTMLImageElement>('img.lazy-load');
+    lazyImages.forEach((img) => loadImage(img));
+  }
+
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLazyLoading);
+  } else {
+    initLazyLoading();
+  }
+
+  // Re-initialize for dynamically added images
+  // This is useful for SPA-like navigation or dynamic content
+  document.addEventListener('astro:page-load', initLazyLoading);
+</script>
+
+<style is:global>
+  /* Lazy load image styles */
+  img.lazy-load {
+    opacity: 0.5;
+    filter: blur(10px);
+    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out;
+  }
+
+  img.lazy-loaded {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  /* Fallback for browsers without blur support */
+  @supports not (filter: blur(10px)) {
+    img.lazy-load {
+      opacity: 0.5;
+    }
+  }
+
+  /* Prevent layout shift */
+  img.lazy-load,
+  img.lazy-loaded {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

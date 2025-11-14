@@ -2,7 +2,7 @@
 title: "Empowering Refugee Communities: The Success Stories of TakenoLAB and ADAI Circle"
 description: "Celebrating the achievements of a promising tech startup from our community"
 image: "https://openlearning.mit.edu/sites/default/files/styles/event_news_detail/public/news-events/2024-02/ADAI-Circle-MIT-Emerging-Talent-00_0.JPG?itok=2H1_RlIh"
-author: "Dzaleka Heritage Archive"
+author: "Dzaleka Online Services"
 date: 2023-12-24
 category: "success-story"
 ---

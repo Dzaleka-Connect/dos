@@ -6,12 +6,12 @@ section: help
 
 # Frequently Asked Questions
 
-Find answers to common questions about using the Dzaleka Heritage Archive.
+Find answers to common questions about using the Dzaleka Online Services.
 
 ## General Questions
 
-### What is the Dzaleka Heritage Archive?
-The Dzaleka Heritage Archive is a digital platform dedicated to preserving and sharing the cultural heritage of Dzaleka Refugee Camp through stories, photos, events, and community services.
+### What is the Dzaleka Online Services?
+The Dzaleka Online Services is a digital platform dedicated to preserving and sharing the cultural heritage of Dzaleka Refugee Camp through stories, photos, events, and community services.
 
 ### How do I get started?
 1. Visit our [Getting Started](/docs/getting-started) guide

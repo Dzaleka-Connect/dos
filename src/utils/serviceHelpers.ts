@@ -1,9 +1,16 @@
 import type { CollectionEntry } from 'astro:content';
 
+/**
+ * Filter services based on a search query
+ * Searches across title, description, category, tags, location, and slug
+ * @param services - Array of service entries to filter
+ * @param searchQuery - Search query string
+ * @returns Filtered array of services matching the query
+ */
 export function filterServices(
   services: CollectionEntry<'services'>[],
   searchQuery: string
-) {
+): CollectionEntry<'services'>[] {
   // If no search query, return all services
   if (!searchQuery) {
     return services;
@@ -24,13 +31,22 @@ export function filterServices(
       service.slug
     ].filter(Boolean); // Remove undefined/null values
 
-    return searchableFields.some(field => 
+    return searchableFields.some(field =>
       field.toString().toLowerCase().includes(query)
     );
   });
 }
 
-export function sortServices(services: CollectionEntry<'services'>[], sortBy: string = 'featured') {
+/**
+ * Sort services by specified criteria
+ * @param services - Array of service entries to sort
+ * @param sortBy - Sort criteria: 'featured', 'name', or 'newest'
+ * @returns Sorted array of services
+ */
+export function sortServices(
+  services: CollectionEntry<'services'>[],
+  sortBy: string = 'featured'
+): CollectionEntry<'services'>[] {
   if (!services || !Array.isArray(services)) {
     return [];
   }
@@ -64,6 +80,11 @@ export function sortServices(services: CollectionEntry<'services'>[], sortBy: st
   });
 }
 
+/**
+ * Calculate statistics for service collection
+ * @param services - Array of service entries to analyze
+ * @returns Object containing service statistics (total, featured, verified, active, categories)
+ */
 export function calculateServiceStats(services: CollectionEntry<'services'>[]) {
   const totalServices = services.length;
   const featuredServices = services.filter(s => s.data.featured).length;

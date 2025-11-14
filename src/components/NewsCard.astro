@@ -1,4 +1,6 @@
 ---
+import { getCloudinaryUrl, getPlaceholderUrl } from '../utils/cloudinary';
+
 interface Props {
   news: any;
   featured?: boolean;
@@ -32,6 +34,23 @@ const categoryColors = {
   'news': 'bg-red-50 text-red-700 border-red-200',
   'business-guide': 'bg-purple-50 text-purple-700 border-purple-200'
 };
+
+// Optimize image using Cloudinary (only if it's a Cloudinary URL)
+const optimizedImage = data.image
+  ? getCloudinaryUrl(data.image, {
+      width: large ? 1200 : 800,
+      height: large ? 675 : 450,
+      crop: 'fill',
+      gravity: 'auto',
+      quality: 'auto:good',
+      dpr: 'auto'
+    })
+  : null;
+
+// Only use placeholder for Cloudinary images
+const placeholderImage = (data.image && optimizedImage !== data.image)
+  ? getPlaceholderUrl(data.image)
+  : null;
 ---
 
 <a 
@@ -39,11 +58,13 @@ const categoryColors = {
   class={`group relative flex ${large ? 'flex-col lg:flex-row' : 'flex-col'} bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden ${featured ? 'ring-1 ring-primary-200' : ''}`}
 >
   <div class={`relative ${large ? 'lg:w-2/3' : 'w-full'}`}>
-    {data.image ? (
+    {optimizedImage ? (
       <img
-        src={data.image}
+        src={placeholderImage || optimizedImage}
+        data-src={placeholderImage ? optimizedImage : undefined}
         alt={data.title}
-        class={`w-full object-cover ${large ? 'h-72 lg:h-full' : 'h-48'}`}
+        class={`${placeholderImage ? 'lazy-load' : ''} w-full object-cover ${large ? 'h-72 lg:h-full' : 'h-48'} transition-opacity duration-300`}
+        loading="lazy"
       />
     ) : (
       <div class={`w-full flex items-center justify-center bg-gray-100 ${large ? 'h-72 lg:h-full' : 'h-48'}`}>

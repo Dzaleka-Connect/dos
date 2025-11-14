@@ -4,10 +4,81 @@
  * for display on the analytics page
  */
 
-// Initialize the analytics data structure if it doesn't exist
-const initializeAnalytics = () => {
+const STORAGE_KEY = 'dzaleka_analytics';
+const VISITOR_ID_KEY = 'dzaleka_visitor_id';
+const CLEANUP_KEY = 'dzaleka_analytics_last_cleanup';
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY = 100; // ms
+
+/**
+ * Sleep utility for retry logic
+ * @param {number} ms - Milliseconds to sleep
+ * @returns {Promise<void>}
+ */
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Safely access localStorage with retry logic
+ * @param {string} key - Storage key
+ * @param {string} defaultValue - Default value if retrieval fails
+ * @param {number} retryCount - Current retry attempt
+ * @returns {string|null}
+ */
+const safeGetItem = async (key, defaultValue = null, retryCount = 0) => {
   try {
-    const existingData = localStorage.getItem('dzaleka_analytics');
+    return localStorage.getItem(key) || defaultValue;
+  } catch (error) {
+    if (retryCount < MAX_RETRY_ATTEMPTS) {
+      await sleep(RETRY_DELAY * (retryCount + 1));
+      return safeGetItem(key, defaultValue, retryCount + 1);
+    }
+    console.error(`Failed to get localStorage item ${key} after ${MAX_RETRY_ATTEMPTS} attempts:`, error);
+    return defaultValue;
+  }
+};
+
+/**
+ * Safely set localStorage with retry logic
+ * @param {string} key - Storage key
+ * @param {string} value - Value to store
+ * @param {number} retryCount - Current retry attempt
+ * @returns {boolean} Success status
+ */
+const safeSetItem = async (key, value, retryCount = 0) => {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (error) {
+    // Handle QuotaExceededError
+    if (error.name === 'QuotaExceededError') {
+      console.warn('localStorage quota exceeded, cleaning old data');
+      try {
+        // Try to free up space by removing old cleanup key
+        localStorage.removeItem(CLEANUP_KEY);
+        localStorage.setItem(key, value);
+        return true;
+      } catch (retryError) {
+        console.error('Failed to set item even after cleanup:', retryError);
+        return false;
+      }
+    }
+
+    if (retryCount < MAX_RETRY_ATTEMPTS) {
+      await sleep(RETRY_DELAY * (retryCount + 1));
+      return safeSetItem(key, value, retryCount + 1);
+    }
+    console.error(`Failed to set localStorage item ${key} after ${MAX_RETRY_ATTEMPTS} attempts:`, error);
+    return false;
+  }
+};
+
+/**
+ * Initialize the analytics data structure if it doesn't exist
+ * @returns {Object} Analytics data object
+ */
+const initializeAnalytics = async () => {
+  try {
+    const existingData = await safeGetItem(STORAGE_KEY);
     if (!existingData) {
       const initialData = {
         pageViews: {},
@@ -15,24 +86,39 @@ const initializeAnalytics = () => {
         firstVisit: new Date().toISOString(),
         lastVisit: new Date().toISOString(),
         visitors: {},
-        referrers: {}
+        referrers: {},
+        version: '1.0' // Track data structure version
       };
-      localStorage.setItem('dzaleka_analytics', JSON.stringify(initialData));
+      await safeSetItem(STORAGE_KEY, JSON.stringify(initialData));
       return initialData;
     }
-    return JSON.parse(existingData);
+
+    // Validate and parse existing data
+    const parsed = JSON.parse(existingData);
+
+    // Ensure all required fields exist
+    if (!parsed.pageViews || !parsed.visitors || !parsed.referrers) {
+      throw new Error('Invalid analytics data structure');
+    }
+
+    return parsed;
   } catch (error) {
     console.error('Error initializing analytics:', error);
-    // If there's an error parsing existing data, create fresh data
+    // Create fresh data on error
     const initialData = {
       pageViews: {},
       totalViews: 0,
       firstVisit: new Date().toISOString(),
       lastVisit: new Date().toISOString(),
       visitors: {},
-      referrers: {}
+      referrers: {},
+      version: '1.0',
+      errors: (error && error.message) ? [{
+        timestamp: new Date().toISOString(),
+        message: error.message
+      }] : []
     };
-    localStorage.setItem('dzaleka_analytics', JSON.stringify(initialData));
+    await safeSetItem(STORAGE_KEY, JSON.stringify(initialData));
     return initialData;
   }
 };
@@ -42,33 +128,36 @@ const isAnalyticsPage = () => {
   return window.location.pathname.includes('/analytics');
 };
 
-// Record a page view
-export const recordPageView = () => {
+/**
+ * Record a page view with robust error handling
+ * @returns {Promise<void>}
+ */
+export const recordPageView = async () => {
   try {
     // Don't record views on the analytics page itself to prevent feedback loop
     if (isAnalyticsPage()) {
       return;
     }
-    
-    const analytics = initializeAnalytics();
+
+    const analytics = await initializeAnalytics();
     const currentPath = window.location.pathname;
     const currentDate = new Date().toISOString().split('T')[0]; // Get YYYY-MM-DD
-    const visitorId = getVisitorId();
-    
+    const visitorId = await getVisitorId();
+
     // Clean old data periodically (once per day)
-    const lastCleanup = localStorage.getItem('dzaleka_analytics_last_cleanup');
+    const lastCleanup = await safeGetItem(CLEANUP_KEY);
     if (!lastCleanup || lastCleanup !== currentDate) {
-      cleanOldData(analytics);
-      localStorage.setItem('dzaleka_analytics_last_cleanup', currentDate);
+      await cleanOldData(analytics);
+      await safeSetItem(CLEANUP_KEY, currentDate);
     }
-    
+
     // Update page views
     if (!analytics.pageViews[currentPath]) {
       analytics.pageViews[currentPath] = 0;
     }
     analytics.pageViews[currentPath]++;
     analytics.totalViews++;
-    
+
     // Update visitor data
     if (!analytics.visitors[currentDate]) {
       analytics.visitors[currentDate] = [];
@@ -76,7 +165,7 @@ export const recordPageView = () => {
     if (!analytics.visitors[currentDate].includes(visitorId)) {
       analytics.visitors[currentDate].push(visitorId);
     }
-    
+
     // Update referrer data if available
     const referrer = document.referrer;
     if (referrer && !referrer.includes(window.location.hostname)) {
@@ -85,13 +174,18 @@ export const recordPageView = () => {
       }
       analytics.referrers[referrer]++;
     }
-    
+
     // Update last visit time
     analytics.lastVisit = new Date().toISOString();
-    
-    localStorage.setItem('dzaleka_analytics', JSON.stringify(analytics));
+
+    // Save with retry logic
+    const success = await safeSetItem(STORAGE_KEY, JSON.stringify(analytics));
+    if (!success) {
+      console.warn('Failed to save analytics data after retries');
+    }
   } catch (error) {
     console.error('Error recording analytics:', error);
+    // Don't throw - fail silently for analytics
   }
 };
 
@@ -138,29 +232,50 @@ const cleanOldData = (analytics) => {
   }
 };
 
-// Generate a simple visitor ID (not for tracking individuals, just for counting unique visitors)
-const getVisitorId = () => {
-  let id = localStorage.getItem('dzaleka_visitor_id');
-  if (!id) {
-    id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    localStorage.setItem('dzaleka_visitor_id', id);
+/**
+ * Generate a simple visitor ID (not for tracking individuals, just for counting unique visitors)
+ * @returns {Promise<string>} Visitor ID
+ */
+const getVisitorId = async () => {
+  try {
+    let id = await safeGetItem(VISITOR_ID_KEY);
+    if (!id) {
+      id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      await safeSetItem(VISITOR_ID_KEY, id);
+    }
+    return id;
+  } catch (error) {
+    console.error('Error getting visitor ID:', error);
+    // Return a session-only ID as fallback
+    return 'session-' + Math.random().toString(36).substring(2, 15);
   }
-  return id;
 };
 
-// Get the analytics data for display
-export const getAnalyticsData = () => {
+/**
+ * Get the analytics data for display
+ * @returns {Promise<Object>} Analytics data
+ */
+export const getAnalyticsData = async () => {
   try {
-    return JSON.parse(localStorage.getItem('dzaleka_analytics')) || initializeAnalytics();
+    const data = await safeGetItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : await initializeAnalytics();
   } catch (error) {
     console.error('Error getting analytics data:', error);
-    return initializeAnalytics();
+    return await initializeAnalytics();
   }
 };
 
-// Clear analytics data (for testing or resetting)
-export const clearAnalyticsData = () => {
-  localStorage.removeItem('dzaleka_analytics');
-  localStorage.removeItem('dzaleka_analytics_last_cleanup');
-  initializeAnalytics();
+/**
+ * Clear analytics data (for testing or resetting)
+ * @returns {Promise<void>}
+ */
+export const clearAnalyticsData = async () => {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(CLEANUP_KEY);
+    localStorage.removeItem(VISITOR_ID_KEY);
+    await initializeAnalytics();
+  } catch (error) {
+    console.error('Error clearing analytics data:', error);
+  }
 };
