@@ -1,0 +1,442 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const cloudName = import.meta.env.CLOUDINARY_CLOUD_NAME || 'dcvwslmow';
+const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'dzaleka_unsigned';
+
+const pageTitle = "Sell Your Products | List on Dzaleka Marketplace";
+const description = "Sell your handmade crafts, clothing, electronics and more on Dzaleka Marketplace. Reach customers in Dzaleka Refugee Camp and beyond.";
+const keywords = "sell products Dzaleka, list items for sale, Dzaleka marketplace vendor, sell online Malawi, refugee entrepreneur";
+const image = "/images/Dzaleka_Marketplace.jpeg";
+
+const categories = [
+  { value: 'food-beverages', label: 'Food & Beverages' },
+  { value: 'clothing-fashion', label: 'Clothing & Fashion' },
+  { value: 'electronics', label: 'Electronics' },
+  { value: 'home-garden', label: 'Home & Garden' },
+  { value: 'health-beauty', label: 'Health & Beauty' },
+  { value: 'arts-crafts', label: 'Arts & Crafts' },
+  { value: 'books-media', label: 'Books & Media' },
+  { value: 'education-tutoring', label: 'Education & Tutoring' },
+  { value: 'repair-maintenance', label: 'Repair & Maintenance' },
+  { value: 'transportation', label: 'Transportation' },
+  { value: 'professional-services', label: 'Professional Services' },
+  { value: 'events-entertainment', label: 'Events & Entertainment' },
+  { value: 'agriculture', label: 'Agriculture' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<MainLayout title={pageTitle} description={description} image={image}>
+  <main class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-gray-900 mb-3">List on Dzaleka Marketplace</h1>
+        <p class="text-gray-600 max-w-xl mx-auto">
+          Sell your products or offer your services to the Dzaleka community and beyond.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form id="marketplaceForm" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8 space-y-6">
+
+        <!-- Listing Type -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-3">What are you listing? *</label>
+          <div class="grid grid-cols-2 gap-4">
+            <label class="relative flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+              <input type="radio" name="type" value="product" class="sr-only peer" required>
+              <div class="text-center peer-checked:text-blue-600">
+                <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <span class="font-medium">Product</span>
+              </div>
+              <div class="absolute inset-0 border-2 border-transparent peer-checked:border-blue-500 rounded-lg pointer-events-none"></div>
+            </label>
+            <label class="relative flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+              <input type="radio" name="type" value="service" class="sr-only peer">
+              <div class="text-center peer-checked:text-blue-600">
+                <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                <span class="font-medium">Service</span>
+              </div>
+              <div class="absolute inset-0 border-2 border-transparent peer-checked:border-blue-500 rounded-lg pointer-events-none"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            placeholder="e.g., Fresh Chapati Daily or Phone Repair Services"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+          <select
+            id="category"
+            name="category"
+            required
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Select a category</option>
+            {categories.map(cat => (
+              <option value={cat.value}>{cat.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            required
+            placeholder="Describe your product or service in detail..."
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          ></textarea>
+        </div>
+
+        <!-- Price Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price (MWK)</label>
+            <input
+              type="text"
+              id="price"
+              name="price"
+              placeholder="e.g., 5,000"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+          </div>
+          <div>
+            <label for="priceType" class="block text-sm font-medium text-gray-700 mb-1">Price Type</label>
+            <select
+              id="priceType"
+              name="priceType"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="fixed">Fixed Price</option>
+              <option value="negotiable">Negotiable</option>
+              <option value="free">Free</option>
+              <option value="contact">Contact for Price</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Condition (for products) -->
+        <div id="conditionField">
+          <label for="condition" class="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+          <select
+            id="condition"
+            name="condition"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Select condition</option>
+            <option value="new">New</option>
+            <option value="used">Used</option>
+            <option value="refurbished">Refurbished</option>
+          </select>
+        </div>
+
+        <!-- Image Upload -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+          <div class="space-y-3">
+            <div id="imagePreview" class="hidden">
+              <img id="previewImg" src="" alt="Preview" class="w-32 h-32 object-cover rounded-lg border" />
+            </div>
+            <button
+              type="button"
+              id="uploadBtn"
+              class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            >
+              <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              Upload Image
+            </button>
+            <input type="hidden" id="imageUrl" name="imageUrl" />
+            <p class="text-xs text-gray-500">Upload a photo of your product or service</p>
+          </div>
+        </div>
+
+        <!-- Vendor Information -->
+        <div class="border-t pt-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Your Contact Information</h3>
+
+          <div class="space-y-4">
+            <div>
+              <label for="vendorName" class="block text-sm font-medium text-gray-700 mb-1">Your Name / Business Name *</label>
+              <input
+                type="text"
+                id="vendorName"
+                name="vendorName"
+                required
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="vendorPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                <input
+                  type="tel"
+                  id="vendorPhone"
+                  name="vendorPhone"
+                  required
+                  placeholder="+265..."
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+              </div>
+              <div>
+                <label for="vendorWhatsapp" class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
+                <input
+                  type="tel"
+                  id="vendorWhatsapp"
+                  name="vendorWhatsapp"
+                  placeholder="+265..."
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="vendorEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                id="vendorEmail"
+                name="vendorEmail"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+
+            <div>
+              <label for="vendorLocation" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+              <input
+                type="text"
+                id="vendorLocation"
+                name="vendorLocation"
+                required
+                placeholder="e.g., Dzaleka Camp, Kawale Zone"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery & Payment -->
+        <div class="border-t pt-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Delivery & Payment</h3>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Options</label>
+              <div class="flex flex-wrap gap-3">
+                <label class="flex items-center">
+                  <input type="checkbox" name="delivery" value="pickup" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">Pickup</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" name="delivery" value="delivery" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">Delivery Available</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" name="delivery" value="mobile" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">Mobile Service</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Payment Methods Accepted</label>
+              <div class="flex flex-wrap gap-3">
+                <label class="flex items-center">
+                  <input type="checkbox" name="payment" value="cash" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">Cash</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" name="payment" value="airtel-money" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">Airtel Money</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" name="payment" value="tnm-mpamba" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">TNM Mpamba</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="checkbox" name="payment" value="bank" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="ml-2 text-sm text-gray-600">Bank Transfer</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div>
+          <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            placeholder="e.g., handmade, organic, fast-delivery (comma separated)"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Submit Listing
+          </button>
+          <p class="mt-3 text-xs text-gray-500 text-center">
+            Your listing will be reviewed before being published.
+          </p>
+        </div>
+      </form>
+    </div>
+  </main>
+</MainLayout>
+
+<script define:vars={{ cloudName, uploadPreset }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('marketplaceForm');
+    const typeRadios = document.querySelectorAll('input[name="type"]');
+    const conditionField = document.getElementById('conditionField');
+
+    // Toggle condition field based on type
+    typeRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        if (e.target.value === 'service') {
+          conditionField.style.display = 'none';
+        } else {
+          conditionField.style.display = 'block';
+        }
+      });
+    });
+
+    // Cloudinary upload via API
+    const uploadBtn = document.getElementById('uploadBtn');
+    const imageUrlInput = document.getElementById('imageUrl');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+
+    // Create hidden file input
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+
+    uploadBtn?.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', async () => {
+      if (!fileInput.files?.[0]) return;
+
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<span class="animate-pulse">Uploading...</span>';
+
+      try {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        formData.append('upload_preset', uploadPreset);
+        formData.append('folder', 'marketplace');
+
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        if (data.secure_url) {
+          imageUrlInput.value = data.secure_url;
+          previewImg.src = data.secure_url;
+          imagePreview.classList.remove('hidden');
+          uploadBtn.innerHTML = `<svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Change Image`;
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        alert('Failed to upload image. Please try again.');
+        uploadBtn.innerHTML = `<svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> Upload Image`;
+      }
+      uploadBtn.disabled = false;
+    });
+
+    // Handle form submission
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+
+        try {
+          const formData = new FormData(form);
+          const data = {
+            type: formData.get('type'),
+            title: formData.get('title'),
+            category: formData.get('category'),
+            description: formData.get('description'),
+            price: formData.get('price'),
+            priceType: formData.get('priceType'),
+            condition: formData.get('condition'),
+            imageUrl: formData.get('imageUrl'),
+            vendor: {
+              name: formData.get('vendorName'),
+              phone: formData.get('vendorPhone'),
+              whatsapp: formData.get('vendorWhatsapp'),
+              email: formData.get('vendorEmail'),
+              location: formData.get('vendorLocation'),
+            },
+            deliveryOptions: formData.getAll('delivery'),
+            paymentMethods: formData.getAll('payment'),
+            tags: formData.get('tags')?.split(',').map(t => t.trim()).filter(Boolean) || [],
+          };
+
+          // Submit to Formspree first (backup storage)
+          const formspreeResponse = await fetch('https://formspree.io/f/xqaaajae', {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (!formspreeResponse.ok) {
+            console.error('Formspree error');
+          }
+
+          // Send email notification via Netlify function
+          fetch('/.netlify/functions/submit-marketplace', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          }).catch(err => console.error('Netlify function error:', err));
+
+          window.location.href = '/marketplace/success';
+        } catch (error) {
+          console.error('Error:', error);
+          alert('There was an error submitting your listing. Please try again.');
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }
+      });
+    }
+  });
+</script>

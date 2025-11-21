@@ -401,6 +401,97 @@ const inspirationalStories = defineCollection({
   schema: inspirationalStorySchema,
 });
 
+// Define the store schema
+const storeSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  type: z.enum(['restaurant', 'cafe', 'bakery', 'grocery', 'retail', 'salon', 'workshop', 'other']),
+  logo: z.string().optional(),
+  coverImage: z.string().optional(),
+  owner: z.object({
+    name: z.string(),
+    phone: z.string(),
+    email: z.string().optional(),
+    whatsapp: z.string().optional(),
+  }),
+  location: z.object({
+    address: z.string(),
+    zone: z.string().optional(),
+    landmark: z.string().optional(),
+  }),
+  hours: z.array(z.object({
+    day: z.string(),
+    open: z.string(),
+    close: z.string(),
+    closed: z.boolean().optional(),
+  })).optional(),
+  menu: z.array(z.object({
+    category: z.string(),
+    items: z.array(z.object({
+      name: z.string(),
+      description: z.string().optional(),
+      price: z.string(),
+      image: z.string().optional(),
+      popular: z.boolean().optional(),
+      available: z.boolean().optional().default(true),
+    })),
+  })).optional(),
+  services: z.array(z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    price: z.string(),
+    duration: z.string().optional(),
+  })).optional(),
+  paymentMethods: z.array(z.string()).optional(),
+  deliveryOptions: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
+  status: z.enum(['active', 'pending', 'inactive']).default('pending'),
+  dateJoined: z.coerce.date(),
+  tags: z.array(z.string()).optional(),
+  socialMedia: z.object({
+    facebook: z.string().optional(),
+    instagram: z.string().optional(),
+    tiktok: z.string().optional(),
+  }).optional(),
+});
+
+const storesCollection = defineCollection({
+  type: 'content',
+  schema: storeSchema,
+});
+
+// Define the marketplace listing schema
+const marketplaceSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  type: z.enum(['product', 'service']),
+  category: z.string(),
+  price: z.string().optional(),
+  priceType: z.enum(['fixed', 'negotiable', 'free', 'contact']).default('contact'),
+  images: z.array(z.string()).optional(),
+  vendor: z.object({
+    name: z.string(),
+    phone: z.string().optional(),
+    email: z.string().optional(),
+    whatsapp: z.string().optional(),
+    location: z.string().optional(),
+  }),
+  status: z.enum(['active', 'sold', 'pending', 'inactive']).default('pending'),
+  featured: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
+  datePosted: z.coerce.date(),
+  condition: z.enum(['new', 'used', 'refurbished']).optional(),
+  quantity: z.number().optional(),
+  deliveryOptions: z.array(z.string()).optional(),
+  paymentMethods: z.array(z.string()).optional(),
+  externalLink: z.string().url().optional(),
+});
+
+const marketplaceCollection = defineCollection({
+  type: 'content',
+  schema: marketplaceSchema,
+});
+
 // Export collections
 export const collections = {
   profiles: profilesCollection,
@@ -416,4 +507,6 @@ export const collections = {
   photos: photos,
   stories: stories,
   'inspirational-stories': inspirationalStories,
+  marketplace: marketplaceCollection,
+  stores: storesCollection,
 } as const;
