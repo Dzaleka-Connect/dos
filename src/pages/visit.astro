@@ -1601,9 +1601,10 @@ const structuredData = {
   });
   
   // Handle form submission
-  const visitForm = document.getElementById('visitForm');
-  if (visitForm) {
-    visitForm.addEventListener('submit', async (e) => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const visitForm = document.getElementById('visitForm');
+    if (visitForm) {
+      visitForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const submitButton = visitForm.querySelector('button[type="submit"]');
@@ -1689,21 +1690,24 @@ const structuredData = {
           submitButton.innerHTML = originalButtonText;
         }
       }
-    });
-  }
-  
+      });
+    }
+  });
+
   // Handle referral source "Other" field visibility
-  const referralSource = document.getElementById('referralSource');
-  const referralOther = document.getElementById('referralOther');
-  
-  if (referralSource && referralOther) {
-    referralSource.addEventListener('change', (e) => {
-      if (e.target.value === 'other') {
-        referralOther.classList.remove('hidden');
-      } else {
-        referralOther.classList.add('hidden');
-      }
-    });
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const referralSource = document.getElementById('referralSource');
+    const referralOther = document.getElementById('referralOther');
+
+    if (referralSource && referralOther) {
+      referralSource.addEventListener('change', (e) => {
+        if (e.target.value === 'other') {
+          referralOther.classList.remove('hidden');
+        } else {
+          referralOther.classList.add('hidden');
+        }
+      });
+    }
+  });
 
 </script>
