@@ -13,40 +13,71 @@ import MainLayout from '../../layouts/MainLayout.astro';
 
     <div class="container mx-auto px-4 py-8">
       <div class="max-w-4xl mx-auto">
+        <!-- Getting Started -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Getting Started</h2>
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What is Dzaleka Online Services?</h3>
+              <p class="text-gray-600">Dzaleka Online Services is a comprehensive digital platform serving the Dzaleka Refugee Camp community in Malawi. We provide a service directory (100+ organizations), resource library (140+ resources), event management, news & stories, photo archive, job board, and skills exchange marketplace.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Where do I start as a new staff member?</h3>
+              <p class="text-gray-600">Start with the <a href="/staff/onboarding" class="text-primary-600 hover:text-primary-700 underline">Staff Onboarding</a> page, then read the <a href="/staff/contributing" class="text-primary-600 hover:text-primary-700 underline">Contributing Guidelines</a> and review the <a href="/staff/training" class="text-primary-600 hover:text-primary-700 underline">Training Materials</a>. Ask your supervisor for your login credentials and first assignment.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Do I need coding knowledge to contribute?</h3>
+              <p class="text-gray-600">No! Most content can be submitted through user-friendly web forms. We have forms for events, services, photos, and community voices. Only technical staff working with the codebase need development skills.</p>
+            </div>
+          </div>
+        </section>
+
         <!-- Content Management -->
         <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Content Management</h2>
           <div class="space-y-6">
             <div>
               <h3 class="text-lg font-medium text-gray-900 mb-2">How do I publish news articles?</h3>
-              <p class="text-gray-600">Use Blogger.com to create and publish news articles. Make sure to follow our content guidelines, include proper metadata, and respect cultural sensitivities. All articles should be reviewed before publishing.</p>
+              <p class="text-gray-600">News articles are published through <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" target="_blank" class="text-primary-600 hover:text-primary-700 underline">Blogger.com</a>. Log in with your credentials, create your article following our guidelines, add categories and tags, then publish. Articles appear on dzaleka.com automatically.</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">What are the image requirements for the archive?</h3>
-              <p class="text-gray-600">Images should be in JPG or PNG format, optimized for web (compressed), and have a minimum resolution of 1200x800 pixels. Always include descriptive alt text and proper attribution for cultural content.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What are the image requirements?</h3>
+              <p class="text-gray-600">Images should be JPG, PNG, or WebP format, minimum 800x600 pixels (1200x800 recommended for hero images), and maximum 2MB file size. Always include descriptive alt text and photographer attribution. Upload to Cloudinary for automatic optimization or store in <code>public/images/</code>.</p>
             </div>
             <div>
               <h3 class="text-lg font-medium text-gray-900 mb-2">How do I add new services to the directory?</h3>
-              <p class="text-gray-600">Use the staff portal to add new services. Include complete information about the service, contact details, operating hours, and any relevant documentation. All services must be verified before being published.</p>
+              <p class="text-gray-600">Use the <a href="/services/register" class="text-primary-600 hover:text-primary-700 underline">Service Registration Form</a> to submit new services. Include organization name, description, category, contact details, location, and operating hours. Services are reviewed within 24-48 hours.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I create an event?</h3>
+              <p class="text-gray-600">Use the <a href="/events/organize" class="text-primary-600 hover:text-primary-700 underline">Event Submission Form</a>. Required fields include title, description, date, location, category, and organizer. Optional fields include registration URL, panelists, and contact information. Events are reviewed before being published.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What content collections are available?</h3>
+              <p class="text-gray-600">We have 13 content collections: news (6 categories), events, services, resources, docs, photos, stories, inspirational-stories, community-voices, profiles, jobs, talents, and more. Each has specific frontmatter requirements detailed in the <a href="/staff/contributing" class="text-primary-600 hover:text-primary-700 underline">Contributing Guidelines</a>.</p>
             </div>
           </div>
         </section>
 
-        <!-- Community Engagement -->
+        <!-- Photos & Media -->
         <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Community Engagement</h2>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Photos & Media</h2>
           <div class="space-y-6">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I submit community events?</h3>
-              <p class="text-gray-600">Events can be submitted through the staff portal. Include event details, date, location, and any special requirements. Cultural events should be properly categorized and include relevant cultural context.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I submit photos?</h3>
+              <p class="text-gray-600">Use the <a href="/photos/submit" class="text-primary-600 hover:text-primary-700 underline">Photo Submission Form</a>. Include the photo title, description, photographer name and bio, date, location, and tags. All photos must have proper attribution and photographer consent.</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">What are the guidelines for cultural content?</h3>
-              <p class="text-gray-600">All cultural content must be respectful and accurate. Include proper context, translations when needed, and respect cultural sensitivities. Consult with community representatives when in doubt.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Should I use Cloudinary or local storage for images?</h3>
+              <p class="text-gray-600">Cloudinary is recommended for automatic optimization, faster loading, and WebP conversion. Upload to Cloudinary and use the provided URL in your content. For local storage, place images in <code>public/images/</code> and optimize them before uploading (max 2MB).</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I handle multilingual content?</h3>
-              <p class="text-gray-600">Content should be provided in English and relevant community languages when possible. Use the translation tools provided in the portal and ensure accuracy of translations.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Do I need permission to photograph people?</h3>
+              <p class="text-gray-600">Yes! Always obtain consent before photographing individuals, especially children. Ensure people understand how their photos will be used. For sensitive content, consider anonymizing subjects or obtaining written consent.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I add alt text to images?</h3>
+              <p class="text-gray-600">Alt text describes the image for accessibility. Be descriptive and specific (e.g., "Children playing soccer in Dzaleka refugee camp" not just "children playing"). Include in the image frontmatter or form field when submitting content.</p>
             </div>
           </div>
         </section>
@@ -56,45 +87,98 @@ import MainLayout from '../../layouts/MainLayout.astro';
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Resource Management</h2>
           <div class="space-y-6">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I add resources to the archive?</h3>
-              <p class="text-gray-600">Use the resource upload form in the staff portal. Include proper categorization, metadata, and ensure the resource is properly formatted and accessible. All resources must be reviewed before being published.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I add resources to the library?</h3>
+              <p class="text-gray-600">Create a markdown file in <code>src/content/resources/</code> with frontmatter including title, description, category, author, date, and either a <code>pdfUrl</code> (for downloadable PDFs in <code>public/resources/pdf/</code>) or <code>resourceUrl</code> (for external links). We have 140+ resources including reports, guides, legal documents, and educational materials.</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">What types of resources can be archived?</h3>
-              <p class="text-gray-600">We archive cultural artifacts, historical documents, educational materials, community resources, and digital content. All resources must be relevant to the Dzaleka community and follow our archiving guidelines.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What types of resources should I include?</h3>
+              <p class="text-gray-600">Include research reports, policy documents, educational guides, legal resources, health information, business templates, and community studies. Resources must be relevant to Dzaleka community, refugees, or humanitarian work. Common categories include education, legal, health, business, advocacy, and culture.</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I manage resource permissions?</h3>
-              <p class="text-gray-600">Use the permission settings in the staff portal to control access to sensitive resources. Some resources may require special access or community approval before being made public.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I upload PDF files?</h3>
+              <p class="text-gray-600">Place PDF files in <code>public/resources/pdf/</code> directory using descriptive filenames (e.g., <code>unhcr-malawi-factsheet-2025.pdf</code>). Reference them in your resource frontmatter as <code>pdfUrl: "/resources/pdf/filename.pdf"</code>. Include file size in the description (e.g., "PDF, 2.5 MB"). For external resources, use <code>resourceUrl</code> instead.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What metadata should I include with resources?</h3>
+              <p class="text-gray-600">Include title, description (2-3 sentences), author/organization, publication date, category, tags, file type and size, and download URL or external link. Optional: ISBN, language, related resources. Good metadata helps community members find relevant resources through search.</p>
             </div>
           </div>
         </section>
 
         <!-- Technical Support -->
-        <section class="bg-white rounded-xl shadow-sm p-6">
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Technical Support</h2>
           <div class="space-y-6">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I report technical issues?</h3>
-              <p class="text-gray-600">Use the help desk portal to submit a support ticket. Include details about the issue, screenshots if applicable, and your contact information. Our technical team will respond within 24 hours.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I report bugs or technical issues?</h3>
+              <p class="text-gray-600">Use the <a href="/help-desk" class="text-primary-600 hover:text-primary-700 underline">Help Desk</a> to submit a support ticket. Include: what you were doing, what happened, what you expected, browser/device info, and screenshots if relevant. For urgent issues, contact the technical team directly. Most issues are resolved within 24-48 hours.</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">What are the system requirements?</h3>
-              <p class="text-gray-600">The staff portal works best on modern browsers (Chrome, Firefox, Safari). Ensure you have a stable internet connection and sufficient storage space for uploading content.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What browsers and devices are supported?</h3>
+              <p class="text-gray-600">The platform works best on modern browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+. Mobile browsers are fully supported. For development work, you'll need Node.js 18+ installed. Ensure stable internet connection for uploading images and PDFs.</p>
             </div>
             <div>
-              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I backup my content?</h3>
-              <p class="text-gray-600">Regular backups are automatically performed. For manual backups, use the export function in the staff portal. Always keep local copies of important content.</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How does deployment work?</h3>
+              <p class="text-gray-600">The site is hosted on Netlify with automatic deployment. When changes are pushed to the <code>main</code> branch on GitHub, Netlify automatically builds and deploys the site (typically 2-3 minutes). You can view build status and logs in the Netlify dashboard. No manual deployment needed!</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What development commands should I know?</h3>
+              <p class="text-gray-600">For technical staff: <code>npm run dev</code> starts local development server (http://localhost:4321), <code>npm run build</code> builds for production, <code>npm run preview</code> previews production build. Always test locally before pushing to GitHub. See <a href="/staff/onboarding" class="text-primary-600 hover:text-primary-700 underline">Staff Onboarding</a> for setup details.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Where is content stored and backed up?</h3>
+              <p class="text-gray-600">All content is stored in the GitHub repository (<a href="https://github.com/Dzaleka-Connect/dos" target="_blank" class="text-primary-600 hover:text-primary-700 underline">Dzaleka-Connect/dos</a>) with full version history. GitHub provides automatic backups. Images are stored on Cloudinary (with backups) or in <code>public/images/</code>. PDFs are in <code>public/resources/pdf/</code>. Always keep local copies of important files before uploading.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Workflow & Best Practices -->
+        <section class="bg-white rounded-xl shadow-sm p-6">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Workflow & Best Practices</h2>
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">What's the typical content creation workflow?</h3>
+              <p class="text-gray-600">1) Draft content in your preferred editor, 2) Prepare images/files (optimize and upload to Cloudinary if needed), 3) Submit via web form or create markdown file with frontmatter, 4) Review for accuracy and completeness, 5) Submit for review (24-48 hours), 6) Address feedback if needed, 7) Content is published and appears on the site.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How do I ensure my content is accessible?</h3>
+              <p class="text-gray-600">Always include descriptive alt text for images, use proper heading hierarchy (h2, h3, h4), write clear link text (not "click here"), ensure color contrast meets WCAG standards, keep paragraphs short and scannable, and use bullet points for lists. See <a href="/staff/contributing" class="text-primary-600 hover:text-primary-700 underline">Contributing Guidelines</a> for details.</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">How can I improve SEO for my content?</h3>
+              <p class="text-gray-600">Write descriptive titles (50-60 characters), include compelling meta descriptions (150-160 characters), use relevant tags and categories, optimize images with descriptive filenames and alt text, link to related content within the site, and keep URLs short and descriptive. Good content naturally attracts search traffic!</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Who do I contact for different types of help?</h3>
+              <p class="text-gray-600">Content questions → <a href="/staff/training" class="text-primary-600 hover:text-primary-700 underline">Training Materials</a> & <a href="/staff/contributing" class="text-primary-600 hover:text-primary-700 underline">Contributing Guidelines</a>. Technical issues → <a href="/help-desk" class="text-primary-600 hover:text-primary-700 underline">Help Desk</a>. Urgent matters → Email supervisor. General questions → This FAQ page. First time → <a href="/staff/onboarding" class="text-primary-600 hover:text-primary-700 underline">Staff Onboarding</a>.</p>
             </div>
           </div>
         </section>
 
         <!-- Contact Support -->
-        <div class="mt-8 text-center">
-          <p class="text-gray-600 mb-4">Need additional help?</p>
-          <a href="/staff/help-desk" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
-            Contact Support
-          </a>
+        <div class="mt-8 text-center bg-gray-50 rounded-xl p-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Still have questions?</h3>
+          <p class="text-gray-600 mb-6">Our team is here to help you succeed. Choose the best support option for your needs.</p>
+          <div class="flex flex-wrap gap-4 justify-center">
+            <a href="/help-desk" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              Help Desk
+            </a>
+            <a href="/staff/training" class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+              Training Materials
+            </a>
+            <a href="/staff/contributing" class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              Contributing Guidelines
+            </a>
+          </div>
         </div>
       </div>
     </div>

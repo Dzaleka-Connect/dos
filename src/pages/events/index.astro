@@ -3,6 +3,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import Badge from '../../components/ui/Badge.astro';
 import EventGrid from '../../components/events/EventGrid.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 const events = await getCollection('events');
 
@@ -183,52 +184,69 @@ const eventsStructuredData = {
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(eventsStructuredData)} />
-  
-  <main class="container mx-auto px-4 py-8">
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl overflow-hidden mb-12">
-      <div class="absolute inset-0 bg-black/20"></div>
-      <div class="relative px-6 py-12 md:py-16 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          What’s On
-        </h1>
-        <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-          Explore the current and upcoming events in Dzaleka Refugee Camp — from cultural festivals and performances to webinars, workshops, and community gatherings.
-        </p>
-      </div>
-    </div>
 
-    <!-- Upcoming Events -->
-    <section class="mb-16">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <h2 class="text-3xl font-bold text-gray-900 mb-2">Upcoming Events</h2>
-          <p class="text-gray-600">Discover what's happening next in our community</p>
+  <main class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
+      <!-- Subtle African Pattern Background -->
+      <div class="absolute inset-0 opacity-[0.03]">
+        <div class="absolute inset-0 pattern-mudcloth"></div>
+      </div>
+
+      <div class="relative container mx-auto px-4 pt-8 pb-16">
+        <!-- Breadcrumb Navigation -->
+        <div class="mb-8">
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Events' }
+          ]} />
         </div>
-        <div class="flex items-center gap-4">
+
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="inline-block mb-6">
+            <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
+              Community Events
+            </span>
+          </div>
+
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            What's On in Dzaleka
+          </h1>
+          <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Cultural festivals, performances, webinars, workshops, and community gatherings — discover the vibrant spirit of our community
+          </p>
           <a
             href="/events/organize"
-            class="group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-md"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
             </svg>
-            Submit an Event
+            Submit Your Event
           </a>
         </div>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-12">
+      <!-- Upcoming Events -->
+    <section class="mb-20">
+      <div class="mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">Upcoming Events</h2>
+        <p class="text-lg text-gray-600 text-center">Discover what's happening next in our community</p>
       </div>
 
       {allUpcomingEvents.length > 0 ? (
         <div>
           <EventGrid events={upcomingEvents} />
           {allUpcomingEvents.length > 4 && (
-            <div class="mt-8 text-center">
-              <a 
-                href="/events/upcoming/1" 
-                class="group inline-flex items-center text-primary-600 hover:text-primary-700 font-medium px-6 py-3 bg-primary-50 rounded-lg hover:bg-primary-100 transition-all duration-200"
+            <div class="mt-12 text-center">
+              <a
+                href="/events/upcoming/1"
+                class="group inline-flex items-center text-white bg-primary-600 hover:bg-primary-700 font-semibold px-8 py-4 rounded-lg shadow-md transition-colors"
               >
-                View All Upcoming Events ({allUpcomingEvents.length})
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                Explore All Upcoming Events ({allUpcomingEvents.length})
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
@@ -236,36 +254,45 @@ const eventsStructuredData = {
           )}
         </div>
       ) : (
-        <p class="text-gray-600 text-center">There’s always something on in Dzaleka Refugee Camp. If you’re a local business or community group and would like to post your event or story on our website, click a button, fill out the details, and once approved, it will appear in our event listing.</p>
+        <div class="text-center bg-white p-12 rounded-xl border border-gray-200">
+          <p class="text-gray-700 text-lg leading-relaxed max-w-2xl mx-auto">
+            There's always something happening in Dzaleka Refugee Camp. If you're organizing an event, workshop, or community gathering, share it with us and we'll help spread the word.
+          </p>
+        </div>
       )}
     </section>
 
     <!-- Past Events -->
-    <section>
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">Past Events</h2>
-        <p class="text-gray-600">Relive the memories of our previous community gatherings</p>
-      </div>
-      {allPastEvents.length > 0 ? (
-        <div>
-          <EventGrid events={pastEvents} />
-          {allPastEvents.length > 4 && (
-            <div class="mt-8 text-center">
-              <a 
-                href="/events/past/1" 
-                class="group inline-flex items-center text-primary-600 hover:text-primary-700 font-medium px-6 py-3 bg-primary-50 rounded-lg hover:bg-primary-100 transition-all duration-200"
-              >
-                View All Past Events ({allPastEvents.length})
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            </div>
-          )}
+    <section class="bg-gray-50 py-16 -mx-4 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">Past Events</h2>
+          <p class="text-lg text-gray-600 text-center">Relive the memories of our previous community gatherings</p>
         </div>
-      ) : (
-        <p class="text-gray-600 text-center">No past events to display.</p>
-      )}
+        {allPastEvents.length > 0 ? (
+          <div>
+            <EventGrid events={pastEvents} />
+            {allPastEvents.length > 4 && (
+              <div class="mt-12 text-center">
+                <a
+                  href="/events/past/1"
+                  class="group inline-flex items-center text-primary-600 border-2 border-primary-600 hover:bg-primary-600 hover:text-white font-semibold px-8 py-4 rounded-lg shadow-md bg-white transition-colors"
+                >
+                  View All Past Events ({allPastEvents.length})
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div class="text-center bg-white p-12 rounded-xl border border-gray-200">
+            <p class="text-gray-700 text-lg">No past events to display yet.</p>
+          </div>
+        )}
+      </div>
     </section>
+    </div>
   </main>
 </MainLayout>

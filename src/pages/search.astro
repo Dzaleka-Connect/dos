@@ -1,79 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 
-// Get all content from collections
-const services = await getCollection('services');
-const events = await getCollection('events');
-const resources = await getCollection('resources');
-
-// Sort content by date (most recent first)
-const sortByDate = (a: any, b: any) => {
-  const dateA = new Date(a.data.date || a.data.publishDate || 0);
-  const dateB = new Date(b.data.date || b.data.publishDate || 0);
-  return dateB.getTime() - dateA.getTime();
-};
-
-// Filter and get upcoming events
-const upcomingEvents = events
-  .filter(event => new Date(event.data.date) >= new Date())
-  .sort(sortByDate)
-  .slice(0, 3);
-
-// Get latest items (automatically updates when new content is added)
-const latestServices = [...services].sort(sortByDate).slice(0, 3);
-const latestResources = [...resources].sort(sortByDate).slice(0, 3);
-
-// Format date for display
-function formatDate(date: string | Date) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
-
-// Popular search terms - initial defaults
-const popularSearches = [
-  'Dzaleka Watch',
-  'Community Services',
-  'Refugee Support',
-  'Education Programs',
-  'Local Events',
-  'Cultural Resources'
-];
-
-// Quick access sections
-const quickAccess = [
-  {
-    title: 'Community Voice',
-    description: 'Share your story and experiences',
-    icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
-    href: '/community-voice'
-  },
-  {
-    title: 'E-Learning',
-    description: 'Access educational resources',
-    icon: 'M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z',
-    href: '/e-learning'
-  },
-  {
-    title: 'Help Desk',
-    description: 'Get support and assistance',
-    icon: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z',
-    href: '/help-desk'
-  },
-  {
-    title: 'Weather',
-    description: 'Check local weather conditions',
-    icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
-    href: '/weather'
-  }
-];
+const pageTitle = "Search | Dzaleka Online Services";
+const pageDescription = "Search for services, events, resources, and community stories in Dzaleka.";
 ---
 
-<MainLayout title="Search">
-  <main class="container mx-auto px-4 py-12">
+<MainLayout title={pageTitle} description={pageDescription}>
+  <main class="container mx-auto px-4 py-12 min-h-screen">
     <div class="max-w-4xl mx-auto">
       {/* Hero Section */}
       <div class="text-center mb-12">
@@ -84,291 +17,240 @@ const quickAccess = [
       </div>
       
       {/* Search Section */}
-      <div class="mb-12">
-        <form 
-          onsubmit="window.location.href='/search/results?q=' + encodeURIComponent(document.getElementById('search-input').value); return false;"
-          class="w-full"
-        >
-          <div class="relative max-w-2xl mx-auto">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-              <svg
-                class="w-5 h-5 text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="text"
-              id="search-input"
-              class="block w-full p-4 pl-12 text-base text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 shadow-sm"
-              placeholder="Search for services, resources, events..."
-              required
-            />
-            <button
-              type="submit"
-              class="absolute right-2 bottom-2 top-2 px-6 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 transition-colors"
-            >
-              Search
-            </button>
+      <div class="mb-12 relative z-20">
+        <div class="relative max-w-2xl mx-auto">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
           </div>
-        </form>
+          <input
+            type="text"
+            id="search-input"
+            class="block w-full p-4 pl-12 text-base text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 shadow-sm transition-shadow"
+            placeholder="Search for services, resources, events..."
+            autocomplete="off"
+          />
+          <div id="loading-indicator" class="absolute right-4 top-4 hidden">
+            <svg class="animate-spin h-5 w-5 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        </div>
 
         {/* Popular Searches */}
-        <div class="mt-6">
-          <h3 class="text-sm font-medium text-gray-600 mb-3 text-center">Popular Searches</h3>
-          <div id="popular-searches" class="flex flex-wrap justify-center gap-2">
-            {popularSearches.map(search => (
-              <a
-                href={`/search/results?q=${encodeURIComponent(search)}`}
-                class="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors border border-gray-200"
+        <div id="popular-searches-container" class="mt-6 text-center">
+          <h3 class="text-sm font-medium text-gray-600 mb-3">Popular Searches</h3>
+          <div class="flex flex-wrap justify-center gap-2">
+            {['Community Services', 'Education', 'Health', 'Events', 'Jobs'].map(term => (
+              <button
+                class="popular-term-btn px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors border border-gray-200"
+                data-term={term}
               >
-                {search}
-              </a>
+                {term}
+              </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Quick Access Section */}
-      <div class="mb-16">
+      {/* Results Section */}
+      <div id="search-results" class="space-y-8 hidden">
+        <!-- Results will be injected here -->
+      </div>
+
+      {/* No Results State */}
+      <div id="no-results" class="hidden text-center py-12">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No results found</h3>
+        <p class="text-gray-600">Try adjusting your search terms or browse our categories below.</p>
+      </div>
+
+      {/* Default Content (Quick Access) - Hidden when searching */}
+      <div id="default-content">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6">Quick Access</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {quickAccess.map(item => (
-            <a href={item.href} class="block group">
-              <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors">
-                <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
-                  <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={item.icon} />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
-                  {item.title}
-                </h3>
-                <p class="text-sm text-gray-600">{item.description}</p>
+          <a href="/community-voice" class="block group">
+            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
+              <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
+                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
               </div>
-            </a>
-          ))}
+              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600">Community Voice</h3>
+              <p class="text-sm text-gray-600">Share your story and experiences</p>
+            </div>
+          </a>
+          <a href="/services" class="block group">
+            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
+              <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600">Services</h3>
+              <p class="text-sm text-gray-600">Find local businesses and services</p>
+            </div>
+          </a>
+          <a href="/events" class="block group">
+            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
+              <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-100 transition-colors">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-600">Events</h3>
+              <p class="text-sm text-gray-600">Discover upcoming community events</p>
+            </div>
+          </a>
+          <a href="/resources" class="block group">
+            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
+              <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors">
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-600">Resources</h3>
+              <p class="text-sm text-gray-600">Access guides and documents</p>
+            </div>
+          </a>
         </div>
-      </div>
-
-      {/* Content Sections */}
-      <div class="space-y-16">
-        {/* Latest Resources */}
-        <section>
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-semibold text-gray-900">Latest Resources</h2>
-            <a href="/resources" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
-              View all resources →
-            </a>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {latestResources.map(resource => (
-              <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-                <div class="flex flex-col gap-4">
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{resource.data.title}</h3>
-                    <p class="text-sm text-gray-600 mb-3">{resource.data.description}</p>
-                    <div class="flex items-center gap-3">
-                      {resource.data.category && (
-                        <span class="inline-block px-3 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
-                          {resource.data.category}
-                        </span>
-                      )}
-                      <time class="text-sm text-gray-500" datetime={resource.data.date}>
-                        {formatDate(resource.data.date || resource.data.publishDate)}
-                      </time>
-                    </div>
-                  </div>
-                  
-                  <div class="flex gap-3">
-                    {resource.data.downloadUrl && (
-                      <a
-                        href={resource.data.downloadUrl.startsWith('http') ? resource.data.downloadUrl : `/resources/pdf/${resource.data.downloadUrl}`}
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition-colors"
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Download
-                      </a>
-                    )}
-                    
-                    {resource.data.resourceUrl && (
-                      <a
-                        href={resource.data.resourceUrl}
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 transition-colors"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        Visit Resource
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* Upcoming Events */}
-        {upcomingEvents.length > 0 && (
-          <section>
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-2xl font-semibold text-gray-900">Upcoming Events</h2>
-              <a href="/events" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                View all events →
-              </a>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {upcomingEvents.map(event => (
-                <a href={`/events/${event.slug}`} class="block group">
-                  <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-gray-100">
-                    <div class="h-48 bg-gray-100">
-                      <img
-                        src={event.data.image || '/images/placeholder-image.jpg'}
-                        alt={event.data.title}
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <div class="p-6">
-                      <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-medium px-3 py-1 bg-green-100 text-green-800 rounded-full">
-                          Upcoming
-                        </span>
-                        <time 
-                          datetime={event.data.date} 
-                          class="text-sm text-gray-500"
-                        >
-                          {formatDate(event.data.date)}
-                        </time>
-                      </div>
-                      <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">{event.data.title}</h3>
-                      <p class="text-sm text-gray-600 mb-3 line-clamp-2">{event.data.description}</p>
-                      <div class="flex items-center text-sm text-gray-500">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>{event.data.location.venue}</span>
-                      </div>
-                    </div>
-                  </article>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Latest Services */}
-        <section>
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-semibold text-gray-900">Latest Services</h2>
-            <a href="/services" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
-              View all services →
-            </a>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {latestServices.map(service => (
-              <a href={`/services/${service.slug}`} class="block group">
-                <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-                  <div class="flex items-center mb-4">
-                    <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={service.data.logo || '/images/dzaleka-digital-heritage.png'}
-                        alt={`${service.data.title} logo`}
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div class="ml-4">
-                      <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">{service.data.title}</h3>
-                      <p class="text-sm text-gray-500 capitalize">{service.data.category}</p>
-                    </div>
-                  </div>
-                  <p class="text-sm text-gray-600 line-clamp-2">{service.data.description}</p>
-                </article>
-              </a>
-            ))}
-          </div>
-        </section>
       </div>
     </div>
   </main>
 </MainLayout>
 
 <script>
-  // Function to update popular searches
-  function updatePopularSearches() {
-    // Get search history from localStorage
-    const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+  let searchIndex = [];
+  let isLoading = false;
+
+  // Fetch search index on load
+  async function loadSearchIndex() {
+    try {
+      const response = await fetch('/api/search-index.json');
+      searchIndex = await response.json();
+    } catch (error) {
+      console.error('Failed to load search index:', error);
+    }
+  }
+
+  // Initialize
+  loadSearchIndex();
+
+  const searchInput = document.getElementById('search-input');
+  const resultsContainer = document.getElementById('search-results');
+  const noResults = document.getElementById('no-results');
+  const defaultContent = document.getElementById('default-content');
+  const loadingIndicator = document.getElementById('loading-indicator');
+  const popularSearchesContainer = document.getElementById('popular-searches-container');
+
+  // Debounce function
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // Search logic
+  function performSearch(query) {
+    if (!query.trim()) {
+      resultsContainer.classList.add('hidden');
+      noResults.classList.add('hidden');
+      defaultContent.classList.remove('hidden');
+      popularSearchesContainer.classList.remove('hidden');
+      return;
+    }
+
+    loadingIndicator.classList.remove('hidden');
+    defaultContent.classList.add('hidden');
+    popularSearchesContainer.classList.add('hidden');
+
+    const normalizedQuery = query.toLowerCase();
     
-    // Count search frequency
-    const searchCounts = searchHistory.reduce((acc, term) => {
-      acc[term] = (acc[term] || 0) + 1;
-      return acc;
-    }, {});
+    // Simple fuzzy search
+    const results = searchIndex.filter(item => {
+      const titleMatch = item.title?.toLowerCase().includes(normalizedQuery);
+      const descMatch = item.description?.toLowerCase().includes(normalizedQuery);
+      const tagMatch = item.tags?.some(tag => tag.toLowerCase().includes(normalizedQuery));
+      const typeMatch = item.type?.toLowerCase().includes(normalizedQuery);
+      
+      return titleMatch || descMatch || tagMatch || typeMatch;
+    });
 
-    // Sort by frequency and get top 6
-    const popularTerms = Object.entries(searchCounts)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 6)
-      .map(([term]) => term);
+    // Render results
+    if (results.length > 0) {
+      const groupedResults = results.reduce((acc, item) => {
+        if (!acc[item.type]) acc[item.type] = [];
+        acc[item.type].push(item);
+        return acc;
+      }, {});
 
-    // If we have popular terms, update the display
-    if (popularTerms.length > 0) {
-      const container = document.getElementById('popular-searches');
-      container.innerHTML = popularTerms.map(term => `
-        <a
-          href="/search/results?q=${encodeURIComponent(term)}"
-          class="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors border border-gray-200"
-        >
-          ${term}
-        </a>
+      resultsContainer.innerHTML = Object.entries(groupedResults).map(([type, items]) => `
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="w-2 h-8 bg-primary-500 rounded-full mr-3"></span>
+            ${type.endsWith('s') ? type : type + 's'} <span class="ml-2 text-sm font-normal text-gray-500">(${items.length})</span>
+          </h2>
+          <div class="grid gap-4">
+            ${items.map(item => `
+              <a href="${item.url}" class="block p-4 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200 group">
+                <div class="flex items-start gap-4">
+                  ${item.image ? `
+                    <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                      <img 
+                        src="${item.image}" 
+                        alt="${item.title}" 
+                        class="w-full h-full object-cover"
+                        onerror="this.style.display='none'"
+                      />
+                    </div>
+                  ` : ''}
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h3 class="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">${item.title}</h3>
+                        <p class="text-sm text-gray-600 line-clamp-2">${item.description || 'No description available.'}</p>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                          ${item.category ? `<span class="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-md">${item.category}</span>` : ''}
+                          ${item.tags?.slice(0, 3).map(tag => `<span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md">#${tag}</span>`).join('')}
+                        </div>
+                      </div>
+                      <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mt-1 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            `).join('')}
+          </div>
+        </div>
       `).join('');
+      
+      resultsContainer.classList.remove('hidden');
+      noResults.classList.add('hidden');
+    } else {
+      resultsContainer.classList.add('hidden');
+      noResults.classList.remove('hidden');
     }
+
+    loadingIndicator.classList.add('hidden');
   }
 
-  // Function to track search
-  function trackSearch(query) {
-    // Get existing history
-    const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-    
-    // Add new search to history (limit to last 50 searches)
-    searchHistory.unshift(query);
-    if (searchHistory.length > 50) {
-      searchHistory.pop();
-    }
-    
-    // Save updated history
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-    
-    // Update popular searches display
-    updatePopularSearches();
-  }
+  // Event listeners
+  searchInput.addEventListener('input', debounce((e) => {
+    performSearch(e.target.value);
+  }, 300));
 
-  // Add event listener to search form
-  document.querySelector('form').addEventListener('submit', (e) => {
-    const query = document.getElementById('search-input').value.trim();
-    if (query) {
-      trackSearch(query);
-    }
+  // Popular search buttons
+  document.querySelectorAll('.popular-term-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const term = btn.dataset.term;
+      searchInput.value = term;
+      performSearch(term);
+    });
   });
-
-  // Initialize popular searches on page load
-  document.addEventListener('DOMContentLoaded', updatePopularSearches);
 </script>

@@ -1,26 +1,23 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import Faq from '../components/Faq.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
 
 const supportCategories = [
   {
     title: 'Application Support',
-    icon: '📝',
     description: 'Help with submitting and tracking applications'
   },
   {
     title: 'Technical Support',
-    icon: '🔧',
     description: 'Help with platform access and technical issues'
   },
   {
     title: 'Content Support',
-    icon: '📚',
     description: 'Help with submitting resources and photos'
   },
   {
     title: 'Community Support',
-    icon: '👥',
     description: 'Help with events and community engagement'
   }
 ];
@@ -29,25 +26,21 @@ const quickLinks = [
   {
     title: 'Resources',
     description: 'Access community resources and guides',
-    icon: '📚',
     href: '/resources'
   },
   {
     title: 'Applications',
     description: 'Submit and track your applications',
-    icon: '📝',
     href: '/applications'
   },
   {
     title: 'Photo Gallery',
     description: 'Browse community photos and memories',
-    icon: '📸',
     href: '/photos'
   },
   {
     title: 'Contact Us',
     description: 'Get in touch with our team',
-    icon: '📧',
     href: '/contact'
   }
 ];
@@ -57,10 +50,21 @@ const quickLinks = [
   <main>
     <!-- Hero Section -->
     <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
-      <div class="container mx-auto px-4 py-16">
+      <div class="container mx-auto px-4 pt-8 pb-16">
+        <!-- Breadcrumb -->
+        <div class="mb-8">
+          <Breadcrumb
+            light={true}
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Support' }
+            ]}
+          />
+        </div>
+
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl font-bold mb-4">How Can We Help You?</h1>
-          <p class="text-xl text-white/90">
+          <p class="text-xl text-white">
             Find answers, submit requests, and get the support you need
           </p>
         </div>
@@ -72,8 +76,7 @@ const quickLinks = [
         <!-- Support Categories -->
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
           {supportCategories.map(category => (
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100">
-              <div class="text-3xl mb-4">{category.icon}</div>
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
               <h2 class="text-xl font-bold text-gray-900 mb-2">{category.title}</h2>
               <p class="text-gray-600">{category.description}</p>
             </div>
@@ -87,15 +90,12 @@ const quickLinks = [
             {quickLinks.map(link => (
               <a
                 href={link.href}
-                class="flex items-start p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+                class="block p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
               >
-                <div class="text-2xl mr-4">{link.icon}</div>
-                <div>
-                  <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 mb-1">
-                    {link.title}
-                  </h3>
-                  <p class="text-sm text-gray-600">{link.description}</p>
-                </div>
+                <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 mb-1">
+                  {link.title}
+                </h3>
+                <p class="text-sm text-gray-600">{link.description}</p>
               </a>
             ))}
           </div>
@@ -253,21 +253,24 @@ const quickLinks = [
         if (response.ok) {
           // Show success message
           form.reset();
-          submitText.textContent = 'Message Sent!';
-          setTimeout(() => {
-            submitText.textContent = 'Send Message';
-          }, 3000);
+          if (window.showToast) {
+            window.showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
+          }
+          submitText.textContent = 'Send Message';
         } else {
           throw new Error('Network response was not ok.');
         }
       } catch (error) {
         // Show error message
-        submitText.textContent = 'Error! Try Again';
+        if (window.showToast) {
+          window.showToast('Failed to send message. Please try again.', 'error');
+        }
         console.error('Error:', error);
       } finally {
         // Re-enable button and hide spinner
         submitButton.disabled = false;
         submitSpinner.classList.add('hidden');
+        submitText.textContent = 'Send Message';
       }
     });
   }

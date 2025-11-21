@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 import Badge from '../../components/ui/Badge.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -133,29 +134,31 @@ const seo = {
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(eventStructuredData)} />
-  
+
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
-      {/* Back Button */}
+      {/* Breadcrumb Navigation */}
       <div class="mb-6">
-        <a 
-          href="/events" 
-          class="group inline-flex items-center text-gray-600 hover:text-primary-600 transition-all duration-200 font-medium"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        <div class="flex items-center text-sm overflow-x-auto whitespace-nowrap">
+          <a href="/" class="text-gray-500 hover:text-primary-600 transition-colors">Home</a>
+          <svg class="w-4 h-4 mx-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
-          Back to Events
-        </a>
+          <a href="/events" class="text-gray-500 hover:text-primary-600 transition-colors">Events</a>
+          <svg class="w-4 h-4 mx-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+          <span class="text-gray-900 font-medium truncate">{entry.data.title}</span>
+        </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
         <!-- Hero Image -->
         <div class="relative">
-          <img 
-            src={entry.data.image} 
+          <img
+            src={entry.data.image}
             alt={entry.data.title}
-            class="w-full h-[60vh] object-cover transition-transform duration-700 hover:scale-105"
+            class="w-full h-[60vh] object-cover"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
             <div class="absolute bottom-0 p-8">
@@ -418,7 +421,7 @@ const seo = {
                     href={entry.data.registration.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all hover:scale-105"
+                    class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
                   >
                     Register Now
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -442,7 +445,7 @@ const seo = {
               </p>
               <a
                 href="/events"
-                class="inline-flex items-center px-6 py-3 mt-6 text-base font-medium rounded-md text-primary-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all hover:scale-105 shadow-sm"
+                class="inline-flex items-center px-6 py-3 mt-6 text-base font-medium rounded-md text-primary-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-sm"
               >
                 View Upcoming Events
               </a>
@@ -454,7 +457,7 @@ const seo = {
             {entry.data.registrationLink && entry.data.status === 'upcoming' && (
               <a
                 href={entry.data.registrationLink}
-                class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all hover:scale-105"
+                class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
               >
                 Register Now
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -465,7 +468,7 @@ const seo = {
             {entry.data.gallery && entry.data.status === 'past' && (
               <a
                 href={entry.data.gallery}
-                class="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 rounded-xl hover:bg-primary-200 transition-all hover:scale-105"
+                class="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 rounded-xl hover:bg-primary-200 transition-colors"
               >
                 View Photo Gallery
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -506,19 +509,16 @@ const seo = {
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedEvents.map(related => (
-                <a 
+                <a
                   href={`/events/${related.slug}`}
-                  class="group block transform hover:scale-[1.02] transition-all duration-300"
+                  class="group block"
                 >
-                  <article class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full border border-gray-100 relative">
-                    {/* Gradient overlay on hover */}
-                    <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/20 group-hover:to-primary-50/10 transition-all duration-300"></div>
-                    
+                  <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden flex flex-col h-full border border-gray-100">
                     <div class="aspect-w-16 aspect-h-9 relative overflow-hidden">
-                      <img 
-                        src={related.data.image} 
+                      <img
+                        src={related.data.image}
                         alt={related.data.title}
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        class="w-full h-full object-cover"
                       />
                       {/* Category badge */}
                       <div class="absolute bottom-3 right-3 z-10">
@@ -541,7 +541,7 @@ const seo = {
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            {related.data.isTBA ? '📅 Date TBA' : formatDateInCAT(related.data.date, 'MMM d, yyyy')}
+                            {related.data.isTBA ? 'Date TBA' : formatDateInCAT(related.data.date, 'MMM d, yyyy')}
                           </time>
                           {/* Status indicator */}
                           <span class="px-2 py-1 rounded-full text-xs font-medium capitalize" class:list={{

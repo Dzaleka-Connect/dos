@@ -937,9 +937,7 @@ export {
   SimpleChart,
   calculateBounceRate,
   calculateAvgSessionDuration,
-  calculatePagesPerSession,
-  getTotalViews,
-  updateTotalViews
+  calculatePagesPerSession
 };
 
 export function trackCustomEvent(eventName, eventData) {

@@ -51,30 +51,87 @@ const formAction = section === 'search' ? '/search/results' : `/${section || ''}
       id="search-input"
       name="q"
       value={initialValue}
-      class="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-primary-500 focus:border-primary-500"
+      class="block w-full p-3 pl-10 pr-24 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-primary-500 focus:border-primary-500"
       placeholder={placeholder}
       required
       minlength="2"
     />
     <button
-      type="submit"
-      class="absolute right-2 bottom-2 top-2 px-4 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300"
+      type="button"
+      id="clear-search"
+      class="hidden absolute right-20 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded transition-colors"
+      aria-label="Clear search"
     >
-      Search
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <button
+      type="submit"
+      id="search-button"
+      class="absolute right-2 bottom-2 top-2 px-4 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+    >
+      <span id="search-button-text">Search</span>
+      <svg id="search-button-spinner" class="hidden animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
     </button>
   </div>
 </form>
 
 <script>
+// Get elements
+const input = document.getElementById('search-input') as HTMLInputElement;
+const clearButton = document.getElementById('clear-search');
+const searchButton = document.getElementById('search-button') as HTMLButtonElement;
+const buttonText = document.getElementById('search-button-text');
+const spinner = document.getElementById('search-button-spinner');
+
+// Function to update clear button visibility
+function updateClearButton() {
+  if (input && clearButton) {
+    if (input.value.length > 0) {
+      clearButton.classList.remove('hidden');
+    } else {
+      clearButton.classList.add('hidden');
+    }
+  }
+}
+
+// Show/hide clear button on input
+input?.addEventListener('input', updateClearButton);
+
+// Clear input when clear button is clicked
+clearButton?.addEventListener('click', () => {
+  if (input) {
+    input.value = '';
+    updateClearButton();
+    input.focus();
+  }
+});
+
+// Initialize clear button visibility on page load
+updateClearButton();
+
 // Ensure form is not submitted empty and trim input
 document.querySelector('form')?.addEventListener('submit', (e) => {
-  const input = document.getElementById('search-input') as HTMLInputElement;
-  const value = input.value.trim();
+  const value = input?.value.trim() || '';
   if (!value) {
     e.preventDefault();
-    input.focus();
+    input?.focus();
     return;
   }
-  input.value = value;
+
+  if (input) {
+    input.value = value;
+  }
+
+  // Show loading state
+  if (searchButton && buttonText && spinner) {
+    searchButton.disabled = true;
+    buttonText.classList.add('hidden');
+    spinner.classList.remove('hidden');
+  }
 });
 </script>

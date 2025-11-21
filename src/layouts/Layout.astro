@@ -1,5 +1,7 @@
 ---
 import LazyLoadScript from '../components/LazyLoadScript.astro';
+import '../styles/typography.css';
+import '../styles/patterns.css';
 
 interface Props {
 	title: string;
@@ -136,6 +138,11 @@ const canonicalUrl = canonical && canonical.startsWith('http')
 		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | Dzaleka Online Services</title>
+
+		<!-- Google Fonts - Distinctive Typography -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
 		<!-- Slot for additional head content -->
 		<slot name="head" />
@@ -394,12 +401,81 @@ const canonicalUrl = canonical && canonical.startsWith('http')
 		--accent-light: 224, 204, 250;
 		--accent-dark: 49, 10, 101;
 		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
+
+		/* Cultural color palette */
+		--terracotta: #CC5500;
+		--ochre: #CC8800;
+		--earth: #B85C2E;
 	}
+
 	html {
-		font-family: system-ui, sans-serif;
-		background: #F6F6F6;
+		font-family: 'Manrope', system-ui, sans-serif;
+		background: #FFFFFF;
 		background-size: 224px;
+		font-size: 16px;
+		line-height: 1.6;
 	}
+
+	body {
+		font-family: 'Manrope', system-ui, sans-serif;
+		color: #1f2937;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Manrope', system-ui, sans-serif !important;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	h3 {
+		font-weight: 500;
+		letter-spacing: -0.01em;
+	}
+
+	/* Better visual hierarchy for headings - only when no Tailwind classes */
+	h1:not([class*="text-"]) {
+		font-size: 2.5rem;
+		line-height: 1.2;
+	}
+
+	h2:not([class*="text-"]) {
+		font-size: 2rem;
+		line-height: 1.3;
+	}
+
+	h3:not([class*="text-"]) {
+		font-size: 1.5rem;
+		line-height: 1.4;
+	}
+
+	h4:not([class*="text-"]) {
+		font-size: 1.25rem;
+		line-height: 1.4;
+	}
+
+	h5:not([class*="text-"]) {
+		font-size: 1.125rem;
+		line-height: 1.5;
+	}
+
+	h6:not([class*="text-"]) {
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	/* Ensure h3 uses Manrope even with Tailwind utilities and font classes */
+	.font-semibold h3,
+	.font-medium h3,
+	.font-bold h3,
+	.font-heading h3,
+	h3.font-semibold,
+	h3.font-medium,
+	h3.font-bold,
+	h3.font-heading {
+		font-family: 'Manrope', system-ui, sans-serif !important;
+		font-weight: 500 !important;
+	}
+
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
 			Bitstream Vera Sans Mono, Courier New, monospace;

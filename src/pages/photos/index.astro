@@ -146,56 +146,69 @@ const galleryStructuredData = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(galleryStructuredData)} />
   
-  <main class="container mx-auto px-4 py-12">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Photo Gallery</h1>
-      <p class="text-xl text-gray-600 text-center mb-8 max-w-2xl mx-auto">
-        Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp
-      </p>
-      
-      {/* Submit Photo Button */}
-      <div class="text-center mb-12">
-        <a
-          href="/photos/submit"
-          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-          Submit Your Photo
-        </a>
+  <main class="min-h-screen">
+    <!-- Hero Section with Pattern -->
+    <div class="pattern-kitenge pattern-earth relative overflow-hidden">
+      <div class="container mx-auto px-4 pt-8 pb-20">
+        {/* Breadcrumb - would be added here if needed */}
+
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-6 border-accent">
+            Photo Gallery
+          </h1>
+          <p class="font-body text-xl md:text-2xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Visual stories from Dzaleka — moments of joy, resilience, and everyday life captured by our community
+          </p>
+
+          {/* Submit Photo Button */}
+          <a
+            href="/photos/submit"
+            class="inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl shadow-md text-white bg-primary-600 hover:bg-primary-700 transition-all duration-300 transform hover:scale-105"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Share Your Story
+          </a>
+        </div>
       </div>
     </div>
+
+    <div class="container mx-auto px-4 py-16">
     
     {years.map(year => {
       const { photos, totalPhotos } = previewPhotosByYear[year];
       return (
-        <div class="mb-16" id={year.toString()}>
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold text-gray-800 flex items-center gap-4">
-              <span>{year}</span>
-              <span class="text-lg text-gray-500 font-normal">({totalPhotos} photos)</span>
-            </h2>
+        <div class="mb-20 scroll-reveal" id={year.toString()}>
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="font-heading text-4xl font-bold text-gray-900 flex items-center gap-4">
+                {year}
+              </h2>
+              <p class="font-body text-lg text-gray-600 mt-2">{totalPhotos} photographs preserving our heritage</p>
+            </div>
           </div>
-          
+
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            {photos.map(photo => (
-              <a 
+            {photos.map((photo, index) => (
+              <a
                 href={`/photos/${photo.slug}`}
-                class="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+                class={`group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 border-2 border-gray-100 hover:border-primary-200 animate-fade-in-up stagger-${(index % 9) + 1}`}
               >
-                <div class="aspect-w-4 aspect-h-3 bg-gray-100">
+                <div class="aspect-w-4 aspect-h-3 bg-gradient-to-br from-gray-100 to-gray-50 relative overflow-hidden">
                   <img
                     src={photo.data.image}
                     alt={photo.data.title}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
+                  <!-- Overlay on hover -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                <div class="p-4">
-                  <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                <div class="p-5 bg-white">
+                  <h3 class="font-heading text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors duration-300 mb-2">
                     {photo.data.title}
                   </h3>
-                  <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                  <div class="mt-2 flex flex-wrap items-center gap-3 text-sm text-gray-600 font-body">
                     <span>{format(new Date(photo.data.date), 'MMMM d, yyyy')}</span>
                     {photo.data.photographer && (
                       <span class="flex items-center gap-1">
@@ -209,13 +222,13 @@ const galleryStructuredData = {
                       </span>
                     )}
                   </div>
-                  <p class="mt-2 text-sm text-gray-600 line-clamp-2">
+                  <p class="mt-3 text-sm text-gray-700 line-clamp-2 leading-relaxed">
                     {photo.data.description}
                   </p>
                   {photo.data.tags && (
-                    <div class="mt-3 flex flex-wrap gap-2">
+                    <div class="mt-4 flex flex-wrap gap-2">
                       {photo.data.tags.slice(0, 3).map(tag => (
-                        <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
+                        <span class="px-3 py-1 bg-primary-50 text-primary-700 border border-primary-100 rounded-full text-xs font-medium">
                           {tag}
                         </span>
                       ))}
@@ -228,12 +241,12 @@ const galleryStructuredData = {
 
           {totalPhotos > 3 && (
             <div class="text-center">
-              <a 
+              <a
                 href={`/photos/${year}`}
-                class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors group"
+                class="inline-flex items-center px-8 py-4 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all duration-300 transform hover:scale-105 shadow-md font-body font-medium group"
               >
-                View All {year} Photos
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                Explore All {year} Photos
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
               </a>
@@ -242,5 +255,6 @@ const galleryStructuredData = {
         </div>
       );
     })}
+    </div>
   </main>
 </MainLayout>

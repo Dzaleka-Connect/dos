@@ -33,34 +33,105 @@ import MainLayout from '../../layouts/MainLayout.astro';
               <div class="flex items-center mb-4">
                 <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mr-4">
                   <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900">Event Management</h3>
+                <h3 class="text-lg font-medium text-gray-900">Contributing Guidelines</h3>
               </div>
-              <p class="text-gray-600">Create and manage community events and activities</p>
+              <p class="text-gray-600">Learn best practices for creating and submitting content</p>
             </a>
+          </div>
+        </section>
+
+        <!-- How to Add Content -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">How to Add Content</h2>
+          <div class="prose prose-lg">
+            <p class="text-gray-600 mb-4">All content is managed through markdown (.md) files in the <code>src/content/</code> directory. Each content type has specific frontmatter requirements.</p>
+
+            <h3>Adding News Articles</h3>
+            <ol>
+              <li>Create a new file in <code>src/content/news/</code></li>
+              <li>Add frontmatter with: title, description, date, category, featured, image, author, tags</li>
+              <li>Choose a category: business-spotlight, announcement, success-story, business-guide, news, or education</li>
+              <li>Write your content in markdown format</li>
+            </ol>
+
+            <h3>Adding Events</h3>
+            <ol>
+              <li>Create a new file in <code>src/content/events/</code> or use the <a href="/events/organize">Event Submission Form</a></li>
+              <li>Required fields: title, description, date, location, category, organizer</li>
+              <li>Optional: endDate, image, registration details, panelists, contact info</li>
+              <li>Set status to "upcoming" or "past"</li>
+            </ol>
+
+            <h3>Adding Services</h3>
+            <ol>
+              <li>Create a new file in <code>src/content/services/</code> or use the <a href="/services/register">Service Registration Form</a></li>
+              <li>Required: title, description, category, location address</li>
+              <li>Optional: logo, contact info (email, phone, whatsapp), business hours, social media, coordinates</li>
+              <li>Add tags for better searchability</li>
+            </ol>
+
+            <h3>Adding Resources</h3>
+            <ol>
+              <li>Upload PDF/document to <code>public/resources/pdf/</code></li>
+              <li>Create markdown file in <code>src/content/resources/</code></li>
+              <li>Add: title, description, category, date, downloadUrl, fileType, fileSize</li>
+              <li>Optional: author, thumbnail, languages, tags</li>
+            </ol>
+
+            <h3>Adding Photos</h3>
+            <ol>
+              <li>Upload image to <code>public/images/</code> or use Cloudinary</li>
+              <li>Create file in <code>src/content/photos/</code> or use <a href="/photos/submit">Photo Submission Form</a></li>
+              <li>Required: title, description, image URL, photographer name, date</li>
+              <li>Optional: photographer bio/social media, location, tags, featured flag</li>
+            </ol>
+
+            <h3>Adding Jobs</h3>
+            <ol>
+              <li>Create file in <code>src/content/jobs/</code></li>
+              <li>Required: title, organization, location, type, category, skills, deadline, posted date, contact email</li>
+              <li>Choose type: full-time, part-time, contract, volunteer, or internship</li>
+              <li>Choose category: education, healthcare, technology, community, business, arts, services, or other</li>
+            </ol>
+
+            <h3>Adding Community Voices</h3>
+            <ol>
+              <li>Create file in <code>src/content/community-voices/</code> or use <a href="/submit-voice">Submission Form</a></li>
+              <li>Required: title, author, date, category, excerpt</li>
+              <li>Optional: image, featured flag, tags</li>
+            </ol>
+
+            <h3>Adding Talent Profiles</h3>
+            <ol>
+              <li>For skills exchange: Create file in <code>src/content/profiles/</code></li>
+              <li>For artists/dancers/poets: Use respective directories in <code>src/content/</code></li>
+              <li>Include: name, bio, profile image, contact info, skills/services offered</li>
+              <li>For paid services: Add rate and payment methods</li>
+            </ol>
           </div>
         </section>
 
         <!-- Forms and Features -->
         <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Forms and Features</h2>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Available Forms and Tools</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="p-6 bg-gray-50 rounded-lg">
               <div class="flex items-center mb-4">
                 <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                   <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900">Service Directory</h3>
+                <h3 class="text-lg font-medium text-gray-900">News Publishing</h3>
               </div>
               <ul class="space-y-2 text-gray-600">
-                <li>• Add new services to the directory</li>
-                <li>• Update service information</li>
-                <li>• Manage service categories</li>
-                <li>• Handle service verification</li>
+                <li>• Access via <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" target="_blank" class="text-primary-600">Blogger Dashboard</a></li>
+                <li>• Published articles appear on dzaleka.com</li>
+                <li>• Support for business spotlights and success stories</li>
+                <li>• Automatic categorization and tagging</li>
               </ul>
             </div>
 
@@ -68,33 +139,33 @@ import MainLayout from '../../layouts/MainLayout.astro';
               <div class="flex items-center mb-4">
                 <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                   <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900">Job Listings</h3>
+                <h3 class="text-lg font-medium text-gray-900">Event Management</h3>
               </div>
               <ul class="space-y-2 text-gray-600">
-                <li>• Post new job opportunities</li>
-                <li>• Manage job applications</li>
-                <li>• Update job status</li>
-                <li>• Track application responses</li>
+                <li>• Submit events via <a href="/events/organize" class="text-primary-600">Event Form</a></li>
+                <li>• Add panelists and registration links</li>
+                <li>• Automatic upcoming/past categorization</li>
+                <li>• Calendar integration ready</li>
               </ul>
-          </div>
+            </div>
 
             <div class="p-6 bg-gray-50 rounded-lg">
               <div class="flex items-center mb-4">
                 <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
                   <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900">Photo Gallery</h3>
+                <h3 class="text-lg font-medium text-gray-900">Service Directory</h3>
               </div>
               <ul class="space-y-2 text-gray-600">
-                <li>• Upload and organize photos</li>
-                <li>• Add photo descriptions</li>
-                <li>• Manage photo categories</li>
-                <li>• Handle photo permissions</li>
+                <li>• Register services via <a href="/services/register" class="text-primary-600">Service Form</a></li>
+                <li>• 100+ active organizations listed</li>
+                <li>• Search and category filtering</li>
+                <li>• Contact details and business hours</li>
               </ul>
             </div>
 
@@ -102,16 +173,50 @@ import MainLayout from '../../layouts/MainLayout.astro';
               <div class="flex items-center mb-4">
                 <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
                   <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Photo Archive</h3>
+              </div>
+              <ul class="space-y-2 text-gray-600">
+                <li>• Submit photos via <a href="/photos/submit" class="text-primary-600">Photo Form</a></li>
+                <li>• Photographer credits and attribution</li>
+                <li>• Year-based and tag-based organization</li>
+                <li>• Cloudinary integration for optimization</li>
+              </ul>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-lg">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                  <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900">Resource Library</h3>
               </div>
               <ul class="space-y-2 text-gray-600">
-                <li>• Add educational resources</li>
-                <li>• Organize resource categories</li>
-                <li>• Manage resource access</li>
-                <li>• Update resource information</li>
+                <li>• 140+ resources available</li>
+                <li>• PDF uploads and downloads</li>
+                <li>• Legal documents and guides</li>
+                <li>• Educational materials</li>
+              </ul>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-lg">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                  <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Community Voices</h3>
+              </div>
+              <ul class="space-y-2 text-gray-600">
+                <li>• Submit via <a href="/submit-voice" class="text-primary-600">Voice Form</a></li>
+                <li>• Share community perspectives</li>
+                <li>• Stories and experiences</li>
+                <li>• Featured voice highlighting</li>
               </ul>
             </div>
           </div>
@@ -122,23 +227,68 @@ import MainLayout from '../../layouts/MainLayout.astro';
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Project Structure</h2>
           <div class="prose prose-lg">
             <h3>Content Collections</h3>
+            <p>The platform uses 13 different content collections to organize community content:</p>
+
+            <h4>Core Collections</h4>
             <ul>
-              <li><code>src/content/news/</code> - News articles and announcements</li>
-              <li><code>src/content/events/</code> - Community events and activities</li>
-              <li><code>src/content/services/</code> - Service directory listings</li>
-              <li><code>src/content/jobs/</code> - Job opportunities</li>
-              <li><code>src/content/photos/</code> - Photo gallery images</li>
-              <li><code>src/content/resources/</code> - Educational resources</li>
+              <li><code>src/content/news/</code> - News articles with categories: business-spotlight, announcement, success-story, business-guide, news, education</li>
+              <li><code>src/content/events/</code> - Community events with registration, panelists, and calendar integration</li>
+              <li><code>src/content/services/</code> - Organization and service directory with contact details, business hours, and location</li>
+              <li><code>src/content/resources/</code> - Educational resources, PDFs, documents, and guides</li>
+              <li><code>src/content/docs/</code> - Platform documentation and help guides</li>
+            </ul>
+
+            <h4>Community Content</h4>
+            <ul>
+              <li><code>src/content/photos/</code> - Photo gallery with photographer credits and location data</li>
+              <li><code>src/content/stories/</code> - Community stories and photo essays</li>
+              <li><code>src/content/inspirational-stories/</code> - Personal success stories from community members</li>
+              <li><code>src/content/community-voices/</code> - Community perspectives and opinions</li>
+            </ul>
+
+            <h4>Talent & Skills</h4>
+            <ul>
+              <li><code>src/content/profiles/</code> - Skills exchange profiles with service offerings and payment methods</li>
+              <li><code>src/content/talents/</code> - Showcase of community talents (artists, dancers, poets)</li>
+              <li><code>src/content/jobs/</code> - Job opportunities with categories: education, healthcare, technology, community, business, arts</li>
+            </ul>
+
+            <h4>Additional Directories</h4>
+            <ul>
+              <li><code>src/content/artists/</code> - Individual artist profiles and portfolios</li>
+              <li><code>src/content/dancers/</code> - Dance performers and groups</li>
+              <li><code>src/content/poets/</code> - Poets and spoken word artists</li>
+              <li><code>src/content/projects/</code> - Community projects and initiatives</li>
+              <li><code>src/content/sites/</code> - Site register and location information</li>
+              <li><code>src/content/gallery/</code> - Visual content organization</li>
             </ul>
 
             <h3>Key Features</h3>
             <ul>
-              <li>News publishing via Blogger.com integration</li>
-              <li>Event management and calendar</li>
-              <li>Service directory with search and filtering</li>
-              <li>Job board with application tracking</li>
-              <li>Photo gallery with categories</li>
-              <li>Resource library with access control</li>
+              <li><strong>News Publishing:</strong> Multi-category news system with business spotlights, announcements, and success stories</li>
+              <li><strong>Event Management:</strong> Full event lifecycle with registration, panelist management, and upcoming/past event filtering</li>
+              <li><strong>Service Directory:</strong> Comprehensive organization directory with 100+ services, search, filtering by category, and detailed contact information</li>
+              <li><strong>Job Board:</strong> Employment opportunities with categories, deadlines, and application tracking</li>
+              <li><strong>Photo Gallery:</strong> Professional photo archive with photographer credits, location tagging, and year-based organization</li>
+              <li><strong>Resource Library:</strong> 140+ educational resources, legal documents, reports, and guides with PDF downloads</li>
+              <li><strong>Skills Exchange:</strong> Community talent marketplace with profiles, service offerings, and payment integration</li>
+              <li><strong>Community Voices:</strong> Platform for community members to share perspectives and stories</li>
+              <li><strong>Cultural Showcase:</strong> Dedicated sections for artists, dancers, and poets</li>
+              <li><strong>Documentation System:</strong> Comprehensive help guides and platform documentation</li>
+            </ul>
+
+            <h3>Technical Features</h3>
+            <ul>
+              <li>Search functionality across all content types</li>
+              <li>Pagination for large content collections</li>
+              <li>Category and tag-based filtering</li>
+              <li>Responsive design with mobile-first approach</li>
+              <li>SEO optimization with metadata for all pages</li>
+              <li>Social media integration</li>
+              <li>Contact forms with email notifications</li>
+              <li>Event registration and tracking</li>
+              <li>Google Maps integration for services</li>
+              <li>Cloudinary image optimization</li>
             </ul>
           </div>
         </section>
@@ -168,14 +318,117 @@ import MainLayout from '../../layouts/MainLayout.astro';
           </div>
         </section>
 
+        <!-- Technical Stack -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Technical Stack</h2>
+          <div class="prose prose-lg">
+            <h3>Core Technologies</h3>
+            <ul>
+              <li><strong>Astro 4.x</strong> - Static site generator with content collections</li>
+              <li><strong>Tailwind CSS</strong> - Utility-first CSS framework</li>
+              <li><strong>TypeScript</strong> - Type-safe JavaScript</li>
+              <li><strong>Markdown</strong> - Content authoring format</li>
+            </ul>
+
+            <h3>Integrations</h3>
+            <ul>
+              <li><strong>Cloudinary</strong> - Image hosting and optimization</li>
+              <li><strong>Blogger API</strong> - News publishing integration</li>
+              <li><strong>Google Forms</strong> - Form submissions and data collection</li>
+              <li><strong>Netlify</strong> - Hosting and deployment platform</li>
+            </ul>
+
+            <h3>Content Schema Validation</h3>
+            <p>All content is validated using Zod schemas defined in <code>src/content/config.ts</code>. This ensures data consistency across the platform.</p>
+          </div>
+        </section>
+
+        <!-- Best Practices -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Best Practices</h2>
+          <div class="prose prose-lg">
+            <h3>Content Guidelines</h3>
+            <ul>
+              <li>Always verify information accuracy before publishing</li>
+              <li>Use high-quality images (minimum 800x600px)</li>
+              <li>Include proper attribution for photos and quotes</li>
+              <li>Write descriptive titles and meta descriptions for SEO</li>
+              <li>Add relevant tags to improve searchability</li>
+              <li>Use inclusive and respectful language</li>
+              <li>Proofread content before submission</li>
+            </ul>
+
+            <h3>Image Optimization</h3>
+            <ul>
+              <li>Upload images to Cloudinary for automatic optimization</li>
+              <li>Use descriptive filenames (e.g., dzaleka-art-festival-2024.jpg)</li>
+              <li>Always include alt text for accessibility</li>
+              <li>Prefer WebP format when possible</li>
+              <li>Maximum file size: 2MB per image</li>
+            </ul>
+
+            <h3>SEO Best Practices</h3>
+            <ul>
+              <li>Write unique meta descriptions (150-160 characters)</li>
+              <li>Use descriptive headings (H1, H2, H3)</li>
+              <li>Include keywords naturally in content</li>
+              <li>Add internal links to related content</li>
+              <li>Optimize images with descriptive alt text</li>
+            </ul>
+
+            <h3>Accessibility</h3>
+            <ul>
+              <li>Use semantic HTML elements</li>
+              <li>Ensure sufficient color contrast</li>
+              <li>Provide alternative text for all images</li>
+              <li>Use ARIA labels where appropriate</li>
+              <li>Test with screen readers when possible</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Deployment Process -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Deployment Process</h2>
+          <div class="prose prose-lg">
+            <h3>Automatic Deployment</h3>
+            <p>The site is automatically deployed to Netlify when changes are pushed to the main branch on GitHub.</p>
+
+            <h3>Deployment Steps</h3>
+            <ol>
+              <li>Make your changes locally or via GitHub</li>
+              <li>Test changes using <code>npm run dev</code></li>
+              <li>Commit changes with descriptive message</li>
+              <li>Push to GitHub repository</li>
+              <li>Netlify automatically builds and deploys (5-10 minutes)</li>
+              <li>Check live site to verify changes</li>
+            </ol>
+
+            <h3>Build Commands</h3>
+            <ul>
+              <li><code>npm run dev</code> - Start local development server</li>
+              <li><code>npm run build</code> - Build for production</li>
+              <li><code>npm run preview</code> - Preview production build locally</li>
+            </ul>
+          </div>
+        </section>
+
         <!-- Support -->
         <section class="bg-white rounded-xl shadow-sm p-6">
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Need Help?</h2>
           <div class="text-center">
             <p class="text-gray-600 mb-4">Can't find what you're looking for? Our support team is here to help.</p>
-            <a href="/staff/help-desk" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
-              Contact Support
-            </a>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/help-desk" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                Contact Support
+              </a>
+              <a href="/staff/faq" class="inline-flex items-center justify-center px-6 py-3 border border-primary-600 text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50">
+                View FAQ
+              </a>
+              <a href="https://drive.google.com/drive/u/1/folders/1n1DCddBHQbNeNthMAUIBVd7eJYVxcdOG" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 border border-primary-600 text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50">
+                Knowledge Base
+              </a>
+            </div>
           </div>
         </section>
       </div>
@@ -185,18 +438,30 @@ import MainLayout from '../../layouts/MainLayout.astro';
 
 <style>
   .prose h3 {
-    @apply text-lg font-medium text-gray-900 mb-2;
+    @apply text-xl font-semibold text-gray-900 mb-3 mt-6;
+  }
+  .prose h4 {
+    @apply text-lg font-medium text-gray-900 mb-2 mt-4;
   }
   .prose p {
-    @apply text-gray-600;
+    @apply text-gray-600 mb-3;
   }
   .prose ul {
-    @apply list-disc pl-6 mb-4;
+    @apply list-disc pl-6 mb-4 space-y-1;
   }
   .prose ol {
-    @apply list-decimal pl-6 mb-4;
+    @apply list-decimal pl-6 mb-4 space-y-2;
+  }
+  .prose li {
+    @apply text-gray-600;
   }
   .prose code {
-    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800;
+  }
+  .prose a {
+    @apply text-primary-600 hover:text-primary-700 underline;
+  }
+  .prose strong {
+    @apply font-semibold text-gray-900;
   }
 </style> 

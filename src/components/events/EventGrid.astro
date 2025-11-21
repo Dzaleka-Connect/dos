@@ -30,7 +30,7 @@ function formatDateInCAT(date: Date, formatString: string) {
 
 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
   {events.map(event => (
-    <article class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 relative">
+    <article class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-500 border-2 border-ochre/20 hover:border-terracotta/40 relative">
       <a href={`/events/${event.slug}`} class="block">
         <div class="aspect-w-16 aspect-h-9 relative overflow-hidden">
           <img 
@@ -42,9 +42,9 @@ function formatDateInCAT(date: Date, formatString: string) {
           <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           {/* Category badge */}
           <div class="absolute bottom-3 right-3 z-10">
-            <span class="px-3 py-1 rounded-full text-xs font-medium shadow-sm bg-white/90 backdrop-blur-sm border border-white/20" class:list={{
-              'text-blue-700': event.data.status === 'upcoming',
-              'text-green-700': event.data.status === 'past'
+            <span class="px-3 py-1 rounded-full text-xs font-medium shadow-sm bg-white/95 backdrop-blur-sm border" class:list={{
+              'text-terracotta border-terracotta/30': event.data.status === 'upcoming',
+              'text-ochre border-ochre/30': event.data.status === 'past'
             }}>
               {event.data.category}
             </span>
@@ -56,8 +56,8 @@ function formatDateInCAT(date: Date, formatString: string) {
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-3">
               <time datetime={event.data.date.toISOString()} class:list={[
-                'text-sm block flex items-center',
-                event.data.isTBA ? 'text-yellow-600 font-medium' : 'text-gray-500'
+                'text-sm block flex items-center font-body',
+                event.data.isTBA ? 'text-ochre font-medium' : 'text-gray-500'
               ]}>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -67,14 +67,14 @@ function formatDateInCAT(date: Date, formatString: string) {
               <div class="flex items-center gap-2">
                 {/* Status indicator */}
                 <span class="px-2 py-1 rounded-full text-xs font-medium capitalize" class:list={{
-                  'bg-blue-100 text-blue-800 border border-blue-200': event.data.status === 'upcoming',
-                  'bg-gray-100 text-gray-800 border border-gray-200': event.data.status === 'past'
+                  'bg-terracotta/10 text-terracotta border border-terracotta/30': event.data.status === 'upcoming',
+                  'bg-ochre/10 text-ochre border border-ochre/30': event.data.status === 'past'
                 }}>
                   {event.data.status}
                 </span>
                 {/* Panelist indicator */}
                 {event.data.panelists && event.data.panelists.length > 0 && (
-                  <span class="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 border border-purple-200 flex items-center gap-1">
+                  <span class="px-2 py-1 rounded-full text-xs font-medium bg-earth/10 text-earth border border-earth/30 flex items-center gap-1">
                     <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
@@ -85,8 +85,8 @@ function formatDateInCAT(date: Date, formatString: string) {
               </div>
             </div>
           </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">{event.data.title}</h3>
-          <p class="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">{event.data.description}</p>
+          <h3 class="font-heading text-lg font-bold text-gray-900 mb-3 group-hover:text-terracotta transition-colors duration-300 line-clamp-2">{event.data.title}</h3>
+          <p class="font-body text-gray-700 text-sm mb-4 line-clamp-2 leading-relaxed">{event.data.description}</p>
           
           {/* Time and Location - Stack on mobile, side by side on desktop */}
           <div class="space-y-3 mb-4">
@@ -95,8 +95,8 @@ function formatDateInCAT(date: Date, formatString: string) {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <time datetime={event.data.date.toISOString()} class:list={[
-                'text-sm',
-                event.data.isTBA ? 'text-yellow-600 font-medium' : ''
+                'text-sm font-body',
+                event.data.isTBA ? 'text-ochre font-medium' : ''
               ]}>
                 {event.data.isTBA ? '⏰ Time TBA' : formatDateInCAT(event.data.date, 'h:mm a')}
               </time>
@@ -111,9 +111,9 @@ function formatDateInCAT(date: Date, formatString: string) {
           </div>
           
           <div class="flex justify-end">
-            <span class="text-sm font-medium text-primary-600 group-hover:text-primary-700 transition-colors flex items-center">
-              Learn More 
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span class="text-sm font-medium font-body text-terracotta group-hover:text-earth transition-colors duration-300 flex items-center">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </span>

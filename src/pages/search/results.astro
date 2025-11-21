@@ -1,118 +1,41 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import SearchBar from '../../components/ui/SearchBar.astro';
 
 // Static mode for Netlify
 export const prerender = true;
 
-// Define internal applications
-const internalApplications = [
-  {
-    slug: 'advocacy',
-    title: 'Advocacy Application',
-    description: 'Submit and track advocacy requests for refugee rights and support.',
-    category: 'Legal Support'
-  },
-  {
-    slug: 'legal',
-    title: 'Legal Support Application',
-    description: 'Access legal assistance and documentation services.',
-    category: 'Legal Support'
-  },
-  {
-    slug: 'emergency',
-    title: 'Emergency Response',
-    description: 'Request emergency assistance and support services.',
-    category: 'Emergency'
-  },
-  {
-    slug: 'leadership',
-    title: 'Leadership Programs',
-    description: 'Apply for community leadership and development programs.',
-    category: 'Community'
-  }
-];
-
-// Get all collections at build time
-let services = [];
-let events = [];
-let resources = [];
-let photos = [];
-let talents = [];
-let news = [];
-
-try {
-  services = await getCollection('services') || [];
-  events = await getCollection('events') || [];
-  resources = await getCollection('resources') || [];
-  photos = await getCollection('photos') || [];
-  news = await getCollection('news') || [];
-  const talentsData = await getEntry('talents', 'data/talents');
-  if (talentsData && talentsData.data) {
-    talents = talentsData.data.talents.map((talent, index) => ({
-      slug: `talent-${index + 1}`,
-      data: {
-        title: talent.name,
-        description: talent.bio || `${talent.name} - ${talent.category}`,
-        category: talent.category,
-        image: talent.profilePic
-      }
-    })) || [];
-  }
-} catch (error) {
-  console.error('Error fetching collections:', error);
-}
-
-// Pass collections to client-side script
-const collections = {
-  services: services.map(item => ({
-    slug: item.slug,
-    data: item.data,
-    collection: 'services'
-  })),
-  events: events.map(item => ({
-    slug: item.slug,
-    data: item.data,
-    collection: 'events'
-  })),
-  resources: resources.map(item => ({
-    slug: item.slug,
-    data: item.data,
-    collection: 'resources'
-  })),
-  photos: photos.map(item => ({
-    slug: item.slug,
-    data: item.data,
-    collection: 'photos'
-  })),
-  talents: talents.map(item => ({
-    ...item,
-    collection: 'talents'
-  })),
-  news: news.map(item => ({
-    slug: item.slug,
-    data: item.data,
-    collection: 'news'
-  })),
-  applications: internalApplications.map(item => ({
-    slug: item.slug,
-    data: {
-      title: item.title,
-      description: item.description,
-      category: item.category
-    },
-    collection: 'applications'
-  }))
-};
+const pageTitle = "Search Results | Dzaleka Online Services";
+const pageDescription = "Search results for services, events, resources, and community stories in Dzaleka.";
 ---
 
-<MainLayout title="Search Results">
-  <main class="container mx-auto px-4 py-12">
+<MainLayout title={pageTitle} description={pageDescription}>
+  <main class="container mx-auto px-4 py-12 min-h-screen">
     <div class="max-w-4xl mx-auto">
       <!-- Search Bar -->
-      <div class="mb-12">
-        <SearchBar section="search" />
+      <div class="mb-8">
+        <form id="results-search-form" class="relative">
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="results-search-input"
+              class="block w-full p-4 pl-12 text-base text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 shadow-sm transition-shadow"
+              placeholder="Search for services, resources, events..."
+              required
+            />
+            <button
+              type="submit"
+              class="absolute right-2 bottom-2 top-2 px-6 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 transition-colors"
+            >
+              Search
+            </button>
+          </div>
+        </form>
       </div>
 
       <!-- Search Results -->
@@ -126,464 +49,158 @@ const collections = {
   </main>
 </MainLayout>
 
-<script define:vars={{ collections }}>
-// Helper function to safely get nested object properties
-function getNestedValue(obj, path) {
-  try {
-    return path.split('.').reduce((acc, part) => acc?.[part], obj);
-  } catch {
-    return undefined;
-  }
-}
+<script>
+  let searchIndex = [];
+  let isLoading = true;
 
-// Search function
-function searchContent(items, searchQuery) {
-  if (!searchQuery || !Array.isArray(items)) return [];
-  
-  const normalizedQuery = searchQuery.toLowerCase().trim();
-  
-  return items.filter(item => {
+  const resultsContainer = document.getElementById('searchResults');
+  const searchInput = document.getElementById('results-search-input');
+  const searchForm = document.getElementById('results-search-form');
+
+  // Get query from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQuery = urlParams.get('q') || '';
+
+  if (searchInput) {
+    searchInput.value = initialQuery;
+  }
+
+  // Fetch search index
+  async function loadSearchIndex() {
     try {
-      // Safely get searchable fields
-      const searchableFields = [
-        getNestedValue(item, 'data.title'),
-        getNestedValue(item, 'data.description'),
-        getNestedValue(item, 'data.category'),
-        item.slug?.replace(/-/g, ' '),
-        getNestedValue(item, 'data.location.address'),
-        getNestedValue(item, 'data.location.city'),
-        getNestedValue(item, 'data.location.venue'),
-        ...(getNestedValue(item, 'data.tags') || [])
-      ];
-      
-      // Create searchable text from valid fields
-      const searchableText = searchableFields
-        .filter(field => typeof field === 'string' && field.length > 0)
-        .join(' ')
-        .toLowerCase();
-
-      // Split query into words and remove empty strings
-      const queryWords = normalizedQuery
-        .split(/\s+/)
-        .filter(word => word.length > 0);
-      
-      // Check if any query word matches
-      return queryWords.some(word => {
-        // Handle common variations
-        const variations = [
-          word,
-          word.replace(/[aeiou]/g, ''), // Remove vowels
-          word.replace(/[^a-z0-9]/g, ''), // Remove special characters
-        ];
-        
-        return variations.some(variation => 
-          searchableText.includes(variation)
-        );
-      });
+      const response = await fetch('/api/search-index.json');
+      searchIndex = await response.json();
+      isLoading = false;
+      performSearch(searchInput.value);
     } catch (error) {
-      console.error('Error searching item:', error);
-      return false;
-    }
-  });
-}
-
-// Function to render a news card
-function renderNewsCard(news) {
-  // Handle image path
-  let imagePath = '/images/placeholder-news.png';
-  
-  if (news.data.image) {
-    if (news.data.image.startsWith('http')) {
-      imagePath = news.data.image;
-    } else if (news.data.image.startsWith('/')) {
-      imagePath = news.data.image;
-    } else {
-      imagePath = `/images/news/${news.data.image}`;
-    }
-  } else if (news.data.heroImage) {
-    if (news.data.heroImage.startsWith('http')) {
-      imagePath = news.data.heroImage;
-    } else if (news.data.heroImage.startsWith('/')) {
-      imagePath = news.data.heroImage;
-    } else {
-      imagePath = `/images/news/${news.data.heroImage}`;
+      console.error('Failed to load search index:', error);
+      resultsContainer.innerHTML = `
+        <div class="text-center py-12">
+          <p class="text-red-600">Failed to load search results. Please try again later.</p>
+        </div>
+      `;
     }
   }
 
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex flex-col sm:flex-row items-start gap-4">
-        <div class="w-full sm:w-16 h-32 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-          <img
-            src="${imagePath}"
-            alt="${news.data.title}"
-            class="w-full h-full object-cover"
-            onerror="this.src='/images/placeholder-news.png'"
-          />
-        </div>
-        <div class="flex-grow w-full">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">
-              <a href="/news/${news.slug}" class="hover:text-primary-600 transition-colors">
-                ${news.data.title}
-              </a>
-            </h3>
-            ${news.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 self-start sm:self-center">
-                ${news.data.category}
-              </span>
-            ` : ''}
-          </div>
-          <p class="text-gray-600 line-clamp-2">${news.data.description}</p>
-          <div class="flex flex-wrap items-center gap-3 mt-3">
-            ${news.data.date ? `
-              <div class="flex items-center text-sm text-gray-500">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                ${new Date(news.data.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-            ` : ''}
-            ${news.data.author ? `
-              <div class="flex items-center text-sm text-gray-500">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                ${news.data.author}
-              </div>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    </article>
-  `;
-}
+  // Perform search
+  function performSearch(query) {
+    if (isLoading) return;
 
-// Function to render a service card
-function renderServiceCard(service) {
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex flex-col sm:flex-row items-start gap-4">
-        <div class="w-full sm:w-16 h-32 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-          <img
-            src="${service.data.logo || '/images/placeholder-logo.png'}"
-            alt="${service.data.title} logo"
-            class="w-full h-full object-cover"
-            onerror="this.src='/images/placeholder-logo.png'"
-          />
-        </div>
-        <div class="flex-grow w-full">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">
-              <a href="/services/${service.slug}" class="hover:text-primary-600 transition-colors">
-                ${service.data.title}
-              </a>
-            </h3>
-            ${service.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 self-start sm:self-center">
-                ${service.data.category}
-              </span>
-            ` : ''}
-          </div>
-          <p class="text-gray-600 line-clamp-2">${service.data.description}</p>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-// Function to render an event card
-function renderEventCard(event) {
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex flex-col sm:flex-row items-start gap-4">
-        <div class="w-full sm:w-16 h-32 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-          <img
-            src="${event.data.image || '/images/placeholder-event.png'}"
-            alt="${event.data.title} image"
-            class="w-full h-full object-cover"
-            onerror="this.src='/images/placeholder-event.png'"
-          />
-        </div>
-        <div class="flex-grow w-full">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">
-              <a href="/events/${event.slug}" class="hover:text-primary-600 transition-colors">
-                ${event.data.title}
-              </a>
-            </h3>
-            ${event.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 self-start sm:self-center">
-                ${event.data.category}
-              </span>
-            ` : ''}
-          </div>
-          <p class="text-gray-600 line-clamp-2">${event.data.description}</p>
-          <div class="flex flex-wrap items-center gap-3 mt-3">
-            ${event.data.date ? `
-              <div class="flex items-center text-sm text-gray-500">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                ${new Date(event.data.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-            ` : ''}
-            ${event.data.location?.venue ? `
-              <div class="flex items-center text-sm text-gray-500">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                ${event.data.location.venue}
-              </div>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-// Function to render a photo card
-function renderPhotoCard(photo) {
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-          <img
-            src="${photo.data.image || '/images/placeholder-photo.png'}"
-            alt="${photo.data.title}"
-            class="w-full h-full object-cover"
-            onerror="this.src='/images/placeholder-photo.png'"
-          />
-        </div>
-        <div class="flex-grow">
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">
-            <a href="/photos/${photo.slug}" class="hover:text-primary-600 transition-colors">
-              ${photo.data.title}
-            </a>
-          </h3>
-          <p class="text-gray-600 line-clamp-2">${photo.data.description || ''}</p>
-          ${photo.data.tags?.length ? `
-            <div class="flex flex-wrap gap-2 mt-3">
-              ${photo.data.tags.map(tag => `
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                  ${tag}
-                </span>
-              `).join('')}
-            </div>
-          ` : ''}
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-// Function to render a resource card
-function renderResourceCard(resource) {
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex-grow">
-        <div class="flex items-center justify-between mb-2">
-          <h3 class="text-lg font-semibold text-gray-900">
-            <a href="/resources/${resource.slug}" class="hover:text-primary-600 transition-colors">
-              ${resource.data.title}
-            </a>
-          </h3>
-          ${resource.data.category ? `
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-              ${resource.data.category}
-            </span>
-          ` : ''}
-        </div>
-        <p class="text-gray-600 line-clamp-2">${resource.data.description}</p>
-        ${resource.data.date ? `
-          <div class="flex items-center text-sm text-gray-500 mt-3">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            ${new Date(resource.data.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </div>
-        ` : ''}
-      </div>
-    </article>
-  `;
-}
-
-// Function to render an application card
-function renderApplicationCard(application) {
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex-grow">
-        <div class="flex items-center justify-between mb-2">
-          <h3 class="text-lg font-semibold text-gray-900">
-            <a href="/applications/internal/${application.slug}" class="hover:text-primary-600 transition-colors">
-              ${application.data.title}
-            </a>
-          </h3>
-          ${application.data.category ? `
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-              ${application.data.category}
-            </span>
-          ` : ''}
-        </div>
-        <p class="text-gray-600 line-clamp-2">${application.data.description}</p>
-      </div>
-    </article>
-  `;
-}
-
-// Function to render a talent card
-function renderTalentCard(talent) {
-  return `
-    <article class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-gray-100">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-gray-100 rounded-full overflow-hidden flex-shrink-0">
-          <img
-            src="${talent.data.image || '/images/placeholder-profile.png'}"
-            alt="${talent.data.title} profile"
-            class="w-full h-full object-cover"
-            onerror="this.src='/images/placeholder-profile.png'"
-          />
-        </div>
-        <div class="flex-grow">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">
-              <a href="/talents" class="hover:text-primary-600 transition-colors">
-                ${talent.data.title}
-              </a>
-            </h3>
-            ${talent.data.category ? `
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                ${talent.data.category}
-              </span>
-            ` : ''}
-          </div>
-          <p class="text-gray-600 line-clamp-2">${talent.data.description}</p>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-// Get search query from URL
-const urlParams = new URLSearchParams(window.location.search);
-const query = urlParams.get('q') || '';
-const resultsContainer = document.getElementById('searchResults');
-
-// Search all collections
-if (resultsContainer) {
-  if (!query) {
-    resultsContainer.innerHTML = `
-      <div class="text-center py-8 sm:py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-        <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-          Enter a search term to begin
-        </h2>
-        <p class="text-gray-600 max-w-md mx-auto px-4">
-          Search for news, services, events, resources, photos, talents, and applications
-        </p>
-      </div>
-    `;
-  } else {
-    // Combine all search results
-    const allResults = [
-      ...searchContent(collections.news, query).map(item => ({ ...item, type: 'news' })),
-      ...searchContent(collections.services, query).map(item => ({ ...item, type: 'service' })),
-      ...searchContent(collections.events, query).map(item => ({ ...item, type: 'event' })),
-      ...searchContent(collections.resources, query).map(item => ({ ...item, type: 'resource' })),
-      ...searchContent(collections.photos, query).map(item => ({ ...item, type: 'photo' })),
-      ...searchContent(collections.talents, query).map(item => ({ ...item, type: 'talent' })),
-      ...searchContent(collections.applications, query).map(item => ({ ...item, type: 'application' }))
-    ];
-
-    if (allResults.length === 0) {
+    if (!query.trim()) {
       resultsContainer.innerHTML = `
-        <div class="text-center py-8 sm:py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-          <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Enter a search term</h2>
+          <p class="text-gray-600">Search for services, events, resources, and more.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const normalizedQuery = query.toLowerCase();
+    
+    // Simple fuzzy search
+    const results = searchIndex.filter(item => {
+      const titleMatch = item.title?.toLowerCase().includes(normalizedQuery);
+      const descMatch = item.description?.toLowerCase().includes(normalizedQuery);
+      const tagMatch = item.tags?.some(tag => tag.toLowerCase().includes(normalizedQuery));
+      const typeMatch = item.type?.toLowerCase().includes(normalizedQuery);
+      
+      return titleMatch || descMatch || tagMatch || typeMatch;
+    });
+
+    renderResults(results, query);
+  }
+
+  // Render results
+  function renderResults(results, query) {
+    if (results.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-            No matching results found
-          </h2>
-          <p class="text-gray-600 max-w-md mx-auto px-4">
-            Try adjusting your search terms or browse our categories
-          </p>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">No results found</h2>
+          <p class="text-gray-600">We couldn't find anything matching "${query}". Try different keywords.</p>
         </div>
       `;
-    } else {
-      // Group results by type
-      const groupedResults = allResults.reduce((acc, result) => {
-        if (!acc[result.type]) {
-          acc[result.type] = [];
-        }
-        acc[result.type].push(result);
-        return acc;
-      }, {});
+      return;
+    }
 
-      // Render results
-      resultsContainer.innerHTML = `
-        <div class="space-y-8 sm:space-y-12">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
-              Found ${allResults.length} result${allResults.length === 1 ? '' : 's'} for "${query}"
-            </h2>
-            <div class="flex flex-wrap items-center gap-2">
-              ${Object.keys(groupedResults).map(type => `
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                  ${groupedResults[type].length} ${type === 'news' ? 'news' : type + 's'}
-                </span>
+    // Group results by type
+    const groupedResults = results.reduce((acc, item) => {
+      if (!acc[item.type]) acc[item.type] = [];
+      acc[item.type].push(item);
+      return acc;
+    }, {});
+
+    resultsContainer.innerHTML = `
+      <div class="space-y-8">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold text-gray-900">
+            Found ${results.length} result${results.length === 1 ? '' : 's'} for "${query}"
+          </h2>
+        </div>
+        
+        ${Object.entries(groupedResults).map(([type, items]) => `
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center capitalize">
+              <span class="w-1.5 h-6 bg-primary-500 rounded-full mr-3"></span>
+              ${type.endsWith('s') ? type : type + 's'} <span class="ml-2 text-sm font-normal text-gray-500">(${items.length})</span>
+            </h3>
+            <div class="space-y-4">
+              ${items.map(item => `
+                <a href="${item.url}" class="block p-4 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200 group">
+                  <div class="flex items-start gap-4">
+                    ${item.image ? `
+                      <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                        <img 
+                          src="${item.image}" 
+                          alt="${item.title}" 
+                          class="w-full h-full object-cover"
+                          onerror="this.style.display='none'"
+                        />
+                      </div>
+                    ` : ''}
+                    <div class="flex-grow">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">${item.title}</h4>
+                          <p class="text-sm text-gray-600 line-clamp-2">${item.description || 'No description available.'}</p>
+                          <div class="flex flex-wrap gap-2 mt-2">
+                            ${item.category ? `<span class="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-md">${item.category}</span>` : ''}
+                            ${item.tags?.slice(0, 3).map(tag => `<span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md">#${tag}</span>`).join('')}
+                          </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mt-1 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </a>
               `).join('')}
             </div>
           </div>
-          
-          ${Object.entries(groupedResults).map(([type, results]) => `
-            <div class="space-y-4">
-              <h3 class="text-lg font-medium text-gray-900 capitalize">${type === 'news' ? 'News' : type + 's'}</h3>
-              <div class="space-y-4">
-                ${results.map(result => {
-                  switch (result.type) {
-                    case 'news':
-                      return renderNewsCard(result);
-                    case 'service':
-                      return renderServiceCard(result);
-                    case 'event':
-                      return renderEventCard(result);
-                    case 'resource':
-                      return renderResourceCard(result);
-                    case 'photo':
-                      return renderPhotoCard(result);
-                    case 'talent':
-                      return renderTalentCard(result);
-                    case 'application':
-                      return renderApplicationCard(result);
-                    default:
-                      return '';
-                  }
-                }).join('')}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
+        `).join('')}
+      </div>
+    `;
   }
-}
 
-// Update page title
-document.title = `Search Results ${query ? `for "${query}"` : ''}`;
+  // Initialize
+  loadSearchIndex();
+
+  // Handle form submission
+  searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newQuery = searchInput.value;
+    // Update URL without reloading
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('q', newQuery);
+    window.history.pushState({}, '', newUrl);
+    
+    performSearch(newQuery);
+  });
 </script>

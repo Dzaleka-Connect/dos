@@ -3,6 +3,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
 import ServicePagination from '../../components/services/ServicePagination.astro';
 import Button from '../../components/ui/Button.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
 import { sortServices } from '../../utils/serviceHelpers';
 import { calculateServiceStats } from '../../utils/serviceStats';
@@ -105,67 +106,89 @@ const seo = {
   keywords={seo.keywords}
 >
   <!-- Hero Section -->
-  <div class="relative overflow-hidden px-4 py-12 sm:py-16">
-    <!-- Hero Image Background -->
-    <div class="absolute inset-0">
+  <div class="relative overflow-hidden bg-primary-50">
+    <!-- Background Image with Fade In -->
+    <div class="absolute inset-0 z-0">
       <img 
         src="/images/dzaleka-hero.jpeg" 
-        alt="Dzaleka Community" 
-        class="w-full h-full object-cover"
-        loading="eager"
+        alt="Dzaleka Services" 
+        class="w-full h-full object-cover opacity-0 animate-fade-in"
       />
-      <div class="absolute inset-0 bg-gradient-to-r from-primary-600/80 to-primary-800/80"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/90 to-primary-50/80"></div>
     </div>
-    
-    <!-- Hero Content -->
-    <div class="relative z-10 max-w-4xl mx-auto text-center">
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Discover Local Services</h1>
-      <p class="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-        Find and connect with 100+ verified organizations providing healthcare, education, legal support, and business services in Dzaleka Refugee Camp
-      </p>
-      
-      <!-- Search and Filter Row -->
-      <div class="max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
-        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <!-- Search Bar -->
-          <div class="flex-1">
-            <div class="relative">
-              <input
-                type="text"
-                id="serviceSearch"
-                placeholder="Search services..."
-                class="w-full px-4 py-3 pl-12 rounded-lg border-0 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-white/50 focus:outline-none text-base shadow-lg"
-              />
-              <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 pt-12 pb-20 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="mb-8 flex justify-center">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Services' }
+          ]}
+        />
+      </div>
+
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+          Services Directory
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Find and connect with 100+ verified organizations providing healthcare, education, legal support, and business services in Dzaleka Refugee Camp
+        </p>
+
+        <!-- Search and Filter Row -->
+        <div class="max-w-2xl mx-auto mb-8 bg-white p-2 rounded-xl shadow-lg border border-gray-100">
+          <div class="flex flex-col sm:flex-row gap-2">
+            <!-- Search Bar -->
+            <div class="flex-1">
+              <div class="relative">
+                <input
+                  type="text"
+                  id="serviceSearch"
+                  placeholder="Search services..."
+                  class="w-full px-4 py-3 pl-11 rounded-lg border-0 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:outline-none text-base bg-gray-50 focus:bg-white transition-colors"
+                />
+                <svg class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <button
+                  type="button"
+                  id="clearSearch"
+                  class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 rounded transition-colors"
+                  aria-label="Clear search"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="w-full sm:w-48">
+              <select
+                id="categoryFilter"
+                class="w-full px-4 py-3 rounded-lg border-0 text-gray-900 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary-500 focus:outline-none text-base transition-colors cursor-pointer"
+              >
+                <option value="all">All Categories</option>
+                {sortedCategories.map(category => (
+                  <option value={category}>{category}</option>
+                ))}
+              </select>
             </div>
           </div>
-          
-          <!-- Category Filter -->
-          <div class="w-full sm:w-48">
-            <select
-              id="categoryFilter"
-              class="w-full px-4 py-3 rounded-lg border-0 text-gray-900 bg-white/95 backdrop-blur-sm focus:ring-2 focus:ring-white/50 focus:outline-none text-base shadow-lg"
-            >
-              <option value="all">All Categories</option>
-              {sortedCategories.map(category => (
-                <option value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
         </div>
+
+        <a
+          href="/services/register"
+          class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Register Your Service
+        </a>
       </div>
-      
-      <a 
-        href="/services/register" 
-        class="inline-flex items-center px-4 sm:px-6 py-3 border border-transparent rounded-lg shadow-lg text-sm sm:text-base font-medium text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 hover:scale-105"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-        </svg>
-        Register Your Service
-      </a>
     </div>
   </div>
 
@@ -395,31 +418,42 @@ const seo = {
     const sortFilter = document.getElementById('sortFilter');
     const serviceSearch = document.getElementById('serviceSearch');
     const categoryFilter = document.getElementById('categoryFilter');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
     const serviceCards = document.querySelectorAll('.service-card');
     const noResults = document.getElementById('no-results');
     const servicesGrid = document.getElementById('services-grid');
-    
-    let activeCategory = 'all';
+
     let searchTerm = '';
-    
+
+    // Function to check if filters are active
+    function updateClearButtonVisibility() {
+      if (clearFiltersBtn) {
+        const hasActiveFilters = searchTerm !== '';
+        if (hasActiveFilters) {
+          clearFiltersBtn.classList.remove('hidden');
+          clearFiltersBtn.classList.add('sm:flex');
+        } else {
+          clearFiltersBtn.classList.add('hidden');
+          clearFiltersBtn.classList.remove('sm:flex');
+        }
+      }
+    }
+
     function filterServices() {
       let visibleCount = 0;
-      
+
       serviceCards.forEach(card => {
-        const category = card.dataset.category;
         const title = card.dataset.title;
-        
-        const matchesCategory = activeCategory === 'all' || category === activeCategory;
         const matchesSearch = !searchTerm || title.includes(searchTerm.toLowerCase());
-        
-        if (matchesCategory && matchesSearch) {
+
+        if (matchesSearch) {
           card.style.display = 'block';
           visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
-      
+
       // Show/hide no results message
       if (noResults && servicesGrid) {
         if (visibleCount === 0) {
@@ -430,6 +464,9 @@ const seo = {
           servicesGrid.classList.remove('hidden');
         }
       }
+
+      // Update clear button visibility
+      updateClearButtonVisibility();
     }
     
     function updateFilters() {
@@ -453,21 +490,70 @@ const seo = {
       window.location.href = url.toString();
     }
     
+    // Clear filters functionality
+    clearFiltersBtn?.addEventListener('click', () => {
+      // Reset search input
+      if (serviceSearch) {
+        serviceSearch.value = '';
+        searchTerm = '';
+      }
+
+      // Refilter services
+      filterServices();
+    });
+
+    // Function to update clear search button visibility
+    function updateClearSearchButton() {
+      const clearSearchBtn = document.getElementById('clearSearch');
+      if (clearSearchBtn && serviceSearch) {
+        if (serviceSearch.value.length > 0) {
+          clearSearchBtn.classList.remove('hidden');
+        } else {
+          clearSearchBtn.classList.add('hidden');
+        }
+      }
+    }
+
     // Search functionality
     serviceSearch?.addEventListener('input', (e) => {
       searchTerm = e.target.value;
       filterServices();
+      updateClearSearchButton();
     });
-    
-    // Category filter functionality
+
+    // Clear search button
+    const clearSearchBtn = document.getElementById('clearSearch');
+    clearSearchBtn?.addEventListener('click', () => {
+      if (serviceSearch) {
+        serviceSearch.value = '';
+        searchTerm = '';
+        filterServices();
+        updateClearSearchButton();
+        serviceSearch.focus();
+      }
+    });
+
+    // Initialize clear button visibility
+    updateClearSearchButton();
+
+    // Category filter functionality - Navigate to category page
     categoryFilter?.addEventListener('change', (e) => {
-      activeCategory = e.target.value;
-      filterServices();
+      const category = e.target.value;
+      if (category === 'all') {
+        window.location.href = '/services';
+      } else {
+        // Convert category name to slug
+        const slug = category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        window.location.href = `/services/category/${slug}`;
+      }
     });
-    
+
     // Advanced filters
     verifiedFilter?.addEventListener('change', updateFilters);
     sortFilter?.addEventListener('change', updateFilters);
+
+    // Initialize button visibility on page load
+    updateClearButtonVisibility();
   });
 </script>
 
@@ -477,5 +563,14 @@ const seo = {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.05); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 2s ease-out forwards;
   }
 </style>

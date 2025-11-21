@@ -1,0 +1,139 @@
+---
+/**
+ * Input Component with built-in validation UI
+ *
+ * @param name - Input name attribute
+ * @param label - Label text
+ * @param type - Input type (text, email, tel, etc.)
+ * @param placeholder - Placeholder text
+ * @param required - Whether the field is required
+ * @param pattern - Regex pattern for validation
+ * @param minlength - Minimum length
+ * @param maxlength - Maximum length
+ * @param helpText - Helper text shown below input
+ * @param value - Default value
+ */
+
+export interface Props {
+  name: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  pattern?: string;
+  minlength?: number;
+  maxlength?: number;
+  helpText?: string;
+  value?: string;
+  class?: string;
+}
+
+const {
+  name,
+  label,
+  type = 'text',
+  placeholder = '',
+  required = false,
+  pattern,
+  minlength,
+  maxlength,
+  helpText,
+  value = '',
+  class: className = ''
+} = Astro.props;
+
+const inputId = `input-${name}`;
+---
+
+<div class={`mb-4 ${className}`}>
+  <label for={inputId} class="block text-sm font-medium text-gray-700 mb-1">
+    {label}
+    {required && <span class="text-red-500">*</span>}
+  </label>
+
+  <div class="relative">
+    <input
+      type={type}
+      id={inputId}
+      name={name}
+      value={value}
+      placeholder={placeholder}
+      required={required}
+      pattern={pattern}
+      minlength={minlength}
+      maxlength={maxlength}
+      class="peer w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors invalid:border-red-300 focus:invalid:ring-red-500 focus:invalid:border-red-500"
+    />
+
+    <!-- Success Icon (shown when valid) -->
+    <svg
+      class="hidden peer-valid:[&:not(:placeholder-shown)]:block absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500 pointer-events-none"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+
+    <!-- Error Icon (shown when invalid and touched) -->
+    <svg
+      class="hidden peer-invalid:[&:not(:placeholder-shown)]:block absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-red-500 pointer-events-none"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  </div>
+
+  {helpText && (
+    <p class="mt-1 text-sm text-gray-500">{helpText}</p>
+  )}
+
+  <!-- Error message (shown via JavaScript) -->
+  <p id={`${inputId}-error`} class="hidden mt-1 text-sm text-red-600"></p>
+</div>
+
+<script define:vars={{ inputId, label }}>
+  // Add custom validation messages
+  const input = document.getElementById(inputId);
+
+  if (input) {
+    input.addEventListener('invalid', (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById(`${inputId}-error`);
+
+      if (errorEl) {
+        errorEl.classList.remove('hidden');
+
+        if (input.validity.valueMissing) {
+          errorEl.textContent = `${label} is required`;
+        } else if (input.validity.typeMismatch) {
+          errorEl.textContent = `Please enter a valid ${input.type}`;
+        } else if (input.validity.patternMismatch) {
+          errorEl.textContent = `Please match the required format`;
+        } else if (input.validity.tooShort) {
+          errorEl.textContent = `Minimum ${input.minLength} characters required`;
+        } else if (input.validity.tooLong) {
+          errorEl.textContent = `Maximum ${input.maxLength} characters allowed`;
+        } else {
+          errorEl.textContent = `Please check your input`;
+        }
+      }
+    });
+
+    input.addEventListener('input', () => {
+      const errorEl = document.getElementById(`${inputId}-error`);
+      if (errorEl && input.validity.valid) {
+        errorEl.classList.add('hidden');
+      }
+    });
+  }
+</script>
+
+<style>
+  /* Ensure icons don't show until user has interacted */
+  input:placeholder-shown ~ svg {
+    display: none !important;
+  }
+</style>

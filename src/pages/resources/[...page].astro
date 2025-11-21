@@ -7,6 +7,9 @@ import { getCollection } from 'astro:content';
 import ResourcePagination from '../../components/resources/ResourcePagination.astro';
 import { formatDate } from '../../utils/dateHelpers';
 import Pagination from '../../components/Pagination.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import Button from '../../components/ui/Button.astro';
+import EmptyState from '../../components/ui/EmptyState.astro';
 
 export async function getStaticPaths({ paginate }) {
   const allResources = await getCollection('resources');
@@ -116,6 +119,21 @@ const sortedResources = filteredResources.sort((a, b) => {
   return dateB.getTime() - dateA.getTime();
 });
 
+// Compute page title for search results
+let pageHeading = 'All Resources';
+let pageDescription = 'Browse our complete collection of resources, reports, and documents';
+
+if (search && category) {
+  pageHeading = `Results for "${search}" in ${category}`;
+  pageDescription = `${sortedResources.length} ${sortedResources.length === 1 ? 'resource' : 'resources'} found`;
+} else if (search) {
+  pageHeading = `Search Results for "${search}"`;
+  pageDescription = `${sortedResources.length} ${sortedResources.length === 1 ? 'resource' : 'resources'} found`;
+} else if (category) {
+  pageHeading = `${category} Resources`;
+  pageDescription = `${sortedResources.length} ${sortedResources.length === 1 ? 'resource' : 'resources'} found`;
+}
+
 // Build pagination URL with search params
 function buildPaginationUrl(pageNum: number) {
   const searchParams = new URLSearchParams();
@@ -125,30 +143,78 @@ function buildPaginationUrl(pageNum: number) {
   return `/resources${pageNum > 1 ? `/${pageNum}` : ''}${queryString ? `?${queryString}` : ''}`;
 }
 
-// Category color mapping
+// Category color mapping - matching detail page style
 const categoryColors = {
-  'Legal': 'bg-blue-100 text-blue-800',
-  'Policy': 'bg-green-100 text-green-800',
-  'Guidelines': 'bg-yellow-100 text-yellow-800',
-  'Report': 'bg-red-100 text-red-800',
-  'Research': 'bg-indigo-100 text-indigo-800'
+  'Legal': 'bg-blue-100 text-blue-800 border-blue-200',
+  'Policy': 'bg-green-100 text-green-800 border-green-200',
+  'Guidelines': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+  'Report': 'bg-purple-100 text-purple-800 border-purple-200',
+  'Research': 'bg-indigo-100 text-indigo-800 border-indigo-200',
+  'Brief': 'bg-cyan-100 text-cyan-800 border-cyan-200',
+  'Story': 'bg-pink-100 text-pink-800 border-pink-200',
+  'Research article': 'bg-indigo-100 text-indigo-800 border-indigo-200',
+  'Research & Report': 'bg-purple-100 text-purple-800 border-purple-200',
+  'Situation Reports / Updates': 'bg-orange-100 text-orange-800 border-orange-200',
+  'Insight & Analysis': 'bg-teal-100 text-teal-800 border-teal-200',
+  'default': 'bg-gray-100 text-gray-800 border-gray-200'
 };
 
-// Create SEO metadata
+// Create enhanced SEO metadata
+const pageTitle = page.currentPage > 1
+  ? `Resources for Refugees - Page ${page.currentPage}`
+  : category
+    ? `${category} Resources - Dzaleka Refugee Camp`
+    : search
+      ? `Search Results for "${search}" - Resources`
+      : "Resource Hub - Dzaleka Refugee Camp";
+
 const seo = {
-  description: "Browse 200+ educational resources, legal documents, and community support materials for refugees in Dzaleka. Access academic research, policy documents, cultural guides, and practical information to support refugee rights and community development.",
+  title: pageTitle,
+  description: category
+    ? `Explore ${category.toLowerCase()} resources about Dzaleka Refugee Camp. Access verified documents, reports, and research materials supporting refugee rights and community development in Malawi.`
+    : search
+      ? `Search results for "${search}" in Dzaleka refugee resources. Find relevant documents, reports, and materials about refugee life, rights, and services in Malawi.`
+      : "Browse 200+ educational resources, legal documents, and research materials about Dzaleka Refugee Camp. Access UNHCR reports, academic studies, policy documents, and community stories supporting refugee rights and empowerment in Malawi.",
+  keywords: [
+    "Dzaleka resources",
+    "refugee resources Malawi",
+    "refugee camp documents",
+    "UNHCR Malawi",
+    "refugee rights",
+    "academic research refugees",
+    "refugee policy documents",
+    "Dzaleka reports",
+    "refugee camp research",
+    "humanitarian resources",
+    category,
+    search
+  ].filter(Boolean).join(", "),
   type: "website",
-  canonical: `https://services.dzaleka.com/resources${page.currentPage > 1 ? `/${page.currentPage}` : ''}`,
+  canonical: `https://services.dzaleka.com/resources${page.currentPage > 1 ? `/${page.currentPage}` : ''}${category ? `?category=${encodeURIComponent(category)}` : ''}${search ? `?search=${encodeURIComponent(search)}` : ''}`,
   openGraph: {
-    description: "Browse 200+ educational resources, legal documents, and community support materials for refugees in Dzaleka. Access academic research, policy documents, cultural guides, and practical information to support refugee rights and community development.",
+    title: pageTitle,
+    description: category
+      ? `Explore ${category.toLowerCase()} resources about Dzaleka Refugee Camp in Malawi.`
+      : "Access 200+ verified resources, reports, and research materials about Dzaleka Refugee Camp.",
     type: "website",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/resources${page.currentPage > 1 ? `/${page.currentPage}` : ''}`
+    url: `https://services.dzaleka.com/resources${page.currentPage > 1 ? `/${page.currentPage}` : ''}`,
+    image: {
+      url: "https://services.dzaleka.com/images/resources-og.jpg",
+      width: 1200,
+      height: 630,
+      alt: "Dzaleka Refugee Camp Resources - Documents, Reports & Research",
+      type: "image/jpeg"
+    }
   },
   twitter: {
-    card: "summary",
-    description: "Browse 200+ educational resources, legal documents, and community support materials for refugees in Dzaleka. Access academic research, policy documents, cultural guides, and practical information to support refugee rights and community development."
+    card: "summary_large_image",
+    title: pageTitle,
+    description: category
+      ? `${category} resources from Dzaleka Refugee Camp`
+      : "200+ resources supporting refugee rights and community development",
+    image: "https://services.dzaleka.com/images/resources-og.jpg"
   }
 };
 
@@ -230,96 +296,213 @@ const paginationStructuredData = {
 
 ---
 
-<MainLayout 
-  title="Resource Hub"
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(resourcesStructuredData)} />
   <script type="application/ld+json" set:html={JSON.stringify(paginationStructuredData)} />
-  
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What types of resources are available about Dzaleka Refugee Camp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our resource hub includes policy documents, legal frameworks, UNHCR reports, academic research, situation updates, factsheets, and personal stories about life in Dzaleka Refugee Camp. All resources are verified and regularly updated to ensure accuracy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I access refugee policy documents for Malawi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Browse our Legal and Policy categories to access official refugee policies, legal frameworks, and protection guidelines from UNHCR and the Malawian government. All documents are freely accessible and downloadable."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are these resources suitable for academic research?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, our collection includes peer-reviewed academic studies, research articles, case studies, and in-depth analysis suitable for academic research on refugee issues, rights, and community development."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often are resources updated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Resources are continuously updated as new documents, reports, and research become available. Each resource displays its publication and last updated dates for transparency."
+          }
+        }
+      ]
+    })}
+  </script>
+
   <main class="container mx-auto px-4 py-8">
+    <Breadcrumb items={[
+      { label: 'Home', href: '/' },
+      { label: 'Resources', href: '/resources' },
+      ...(page.currentPage > 1 ? [{ label: `Page ${page.currentPage}` }] : [])
+    ]} />
+
     {/* Hero Section */}
-    <section class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-600 rounded-2xl mb-12 overflow-hidden">
-      {/* Background Pattern */}
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2H6zM6 34v-4H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
-        </div>
+    <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
+      {/* Subtle African Pattern Background */}
+      <div class="absolute inset-0 opacity-[0.03]">
+        <div class="absolute inset-0 pattern-mudcloth"></div>
       </div>
-      
-      <div class="relative max-w-4xl mx-auto px-6 py-16 text-center">
-        <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-4">
-          Explore Our Resources
-        </span>
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
-          Dzaleka Online Resources
-        </h1>
-        <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
-          Access a curated collection of documents, reports, and media about Dzaleka Refugee Camp
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="/resources/submit" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors group"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transition-transform group-hover:scale-110" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-            </svg>
-            Submit a Resource
-          </a>
-        </div>
 
-        {/* Search Form */}
-        <div class="mt-8 max-w-2xl mx-auto">
-          <form 
-            action="/search/results/" 
-            method="GET" 
-            class="flex flex-col sm:flex-row gap-4"
-          >
-            <div class="flex-1">
-              <div class="relative group">
-                <input 
-                  type="text"
-                  name="q"
-                  placeholder="Search resources..."
-                  value={search || ''}
-                  class="w-full px-4 py-3 pl-11 bg-white/10 backdrop-blur-sm text-white placeholder-white/70 rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 group-hover:border-white/30 transition-all duration-200"
-                />
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/70 group-hover:text-white/90 transition-colors" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-              </div>
-            </div>
+      <div class="relative container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto text-center">
+          {/* Small cultural accent */}
+          <div class="inline-block mb-6">
+            <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
+              Knowledge Archive
+            </span>
+          </div>
 
-            <button 
-              type="submit"
-              class="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center font-medium"
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Dzaleka Resource Hub
+          </h1>
+          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Access 200+ curated documents, reports, and research preserving our community's story and supporting refugee rights
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <a
+              href="/resources/submit"
+              class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium shadow-sm"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
               </svg>
-              Search
-            </button>
-          </form>
+              Share a Resource
+            </a>
+            <a
+              href="/resources/about"
+              class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-600 text-primary-600 bg-white rounded-lg hover:bg-primary-50 transition-colors font-medium"
+            >
+              Learn More
+            </a>
+          </div>
+
+          {/* Advanced Search & Filter */}
+          <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+            <form
+              action="/resources"
+              method="GET"
+              class="space-y-4"
+              id="resourceFilterForm"
+            >
+              <div class="flex flex-col md:flex-row gap-3">
+                {/* Search Input */}
+                <div class="flex-1">
+                  <div class="relative group">
+                    <input
+                      type="text"
+                      name="search"
+                      id="resourceSearch"
+                      placeholder="Search resources by title, author, or keyword..."
+                      value={search || ''}
+                      class="w-full px-4 py-3 pl-11 pr-10 bg-white text-gray-900 placeholder-gray-500 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                    />
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <button
+                      type="button"
+                      id="clearResourceSearch"
+                      class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 focus:outline-none"
+                      aria-label="Clear search"
+                    >
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Category Filter */}
+                <div class="w-full md:w-64">
+                  <select
+                    name="category"
+                    id="categoryFilter"
+                    class="w-full px-4 py-3 bg-white text-gray-900 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 appearance-none cursor-pointer"
+                    style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%234B5563\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E'); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem;"
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map(cat => (
+                      <option value={cat} selected={category === cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Search Button */}
+                <button
+                  type="submit"
+                  class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center font-medium whitespace-nowrap"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  Search
+                </button>
+              </div>
+
+              {/* Active Filters Display */}
+              {(search || category) && (
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-gray-600 text-sm">Active filters:</span>
+                  {search && (
+                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm border border-primary-200">
+                      Search: "{search}"
+                      <button type="button" onclick="document.getElementById('resourceSearch').value=''; document.getElementById('resourceFilterForm').submit();" class="hover:text-primary-900">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </span>
+                  )}
+                  {category && (
+                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm border border-primary-200">
+                      Category: {category}
+                      <button type="button" onclick="document.getElementById('categoryFilter').value=''; document.getElementById('resourceFilterForm').submit();" class="hover:text-primary-900">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </span>
+                  )}
+                  <a href="/resources" class="text-primary-600 hover:text-primary-700 text-sm underline">Clear all</a>
+                </div>
+              )}
+            </form>
+          </div>
         </div>
       </div>
-
-      {/* Decorative Elements */}
-      <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-      <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2"></div>
     </section>
 
-    {/* Resource Types Overview */}
-    <section class="mb-12 bg-gradient-to-br from-gray-50 to-white rounded-xl overflow-hidden">
-      <div class="px-6 py-8 md:px-10">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">What resources can you find here?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    {/* Resource Types Overview - Only show when not searching/filtering */}
+    {!search && !category && (
+      <section class="mb-12 bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+        <div class="px-6 py-8 md:px-10">
+          <div class="mb-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">What resources can you find here?</h2>
+            <p class="text-gray-600">Explore our collection of documents, reports, and research materials</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {resourceTypes.map(type => (
             <div class="group relative">
               {/* Background Pattern */}
@@ -354,78 +537,101 @@ const paginationStructuredData = {
               </div>
             </div>
           ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    )}
 
     {/* Resources Grid */}
-    <section>
+    <section id="results">
       <div class="mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">All Resources</h2>
-        <p class="text-gray-600">Browse our complete collection of resources, reports, and documents</p>
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">{pageHeading}</h2>
+        <p class="text-gray-600">{pageDescription}</p>
       </div>
 
       {filteredResources.length > 0 ? (
         <>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {sortedResources.map(resource => (
-              <a 
-                href={`/resources/${resource.slug}`} 
-                class="group block transform hover:scale-[1.02] transition-all duration-300"
-              >
-                <article class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-primary-200 relative overflow-hidden">
-                  {/* Gradient overlay on hover */}
-                  <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/20 group-hover:to-primary-50/10 transition-all duration-300"></div>
-                  
-                  <div class="relative">
-                    <div class="flex justify-between items-start mb-4">
-                      <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 flex-1">
-                        {resource.data.title}
-                      </h2>
-                      <div class="flex-shrink-0 ml-3 mt-1">
-                        {resource.data.fileType === 'pdf' ? (
-                          <span class="inline-flex items-center justify-center w-8 h-8 bg-red-100 text-red-600 rounded-full group-hover:bg-red-200 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                            </svg>
-                          </span>
-                        ) : (
-                          <span class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full group-hover:bg-blue-200 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <p class="text-gray-600 mb-6 line-clamp-3 leading-relaxed">{resource.data.description}</p>
-                    
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center space-x-2">
-                        <span class={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[resource.data.category] || 'bg-gray-100 text-gray-800'} transition-colors`}>
-                          {resource.data.category}
-                        </span>
-                        {resource.data.featured && (
-                          <span class="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-primary-100 to-primary-200 text-primary-800 border border-primary-300">
-                            ⭐ Featured
-                          </span>
-                        )}
-                      </div>
-                      <time class="text-sm text-gray-500 flex items-center" datetime={resource.data.lastUpdated || resource.data.date}>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <article class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-primary-200 overflow-hidden h-full flex flex-col">
+                {/* Card Header with File Type Badge */}
+                <div class="relative bg-gradient-to-br from-primary-50 to-primary-100 p-6 pb-8">
+                  <div class="absolute top-4 right-4">
+                    {resource.data.fileType === 'pdf' ? (
+                      <span class="inline-flex items-center px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium border border-red-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
+                        PDF
+                      </span>
+                    ) : (
+                      <span class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        Link
+                      </span>
+                    )}
+                  </div>
+
+                  <div class="flex items-center space-x-2 mb-3">
+                    <span class={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[resource.data.category] || categoryColors.default}`}>
+                      {resource.data.category}
+                    </span>
+                    {resource.data.featured && (
+                      <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-300">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 class="text-lg font-bold text-gray-900 line-clamp-2 pr-20">
+                    {resource.data.title}
+                  </h2>
+                </div>
+
+                {/* Card Body */}
+                <div class="p-6 flex-grow flex flex-col">
+                  <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed flex-grow">
+                    {resource.data.description}
+                  </p>
+
+                  {/* Metadata */}
+                  <div class="space-y-2 mb-4 text-xs text-gray-500">
+                    {resource.data.author && (
+                      <div class="flex items-center">
+                        <svg class="h-3.5 w-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span class="truncate">{resource.data.author}</span>
+                      </div>
+                    )}
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <time datetime={resource.data.lastUpdated || resource.data.date}>
                         {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
                       </time>
                     </div>
                   </div>
-                </article>
-              </a>
+
+                  {/* View Button */}
+                  <a
+                    href={`/resources/${resource.slug}`}
+                    class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium group-hover:shadow-md"
+                  >
+                    View Resource
+                    <svg class="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
             ))}
           </div>
 
@@ -440,27 +646,43 @@ const paginationStructuredData = {
           )}
         </>
       ) : (
-        <div class="text-center py-16 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-sm border border-gray-100">
-          <div class="max-w-md mx-auto">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" />
+        <EmptyState
+          title="No resources found"
+          description={search || category
+            ? "Try adjusting your search terms or filters to find what you're looking for."
+            : "No resources available at this time. Check back soon for updates."
+          }
+          iconType="search"
+        >
+          <div slot="action" class="flex flex-col sm:flex-row gap-3 justify-center">
+            {(search || category) && (
+              <Button href="/resources" variant="primary">
+                View All Resources
+              </Button>
+            )}
+            <Button href="/resources/submit" variant="outline">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">No resources found</h3>
-            <p class="text-gray-600 mb-6">Try adjusting your search terms or browse all categories</p>
-            <div class="flex flex-wrap justify-center gap-2">
-              {categories.slice(0, 5).map(cat => (
-                <a 
-                  href={`/resources?category=${encodeURIComponent(cat)}`}
-                  class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm hover:bg-primary-100 transition-colors"
-                >
-                  {cat}
-                </a>
-              ))}
-            </div>
+              Submit a Resource
+            </Button>
           </div>
-        </div>
+          {categories.length > 0 && (
+            <div class="mt-6">
+              <p class="text-sm text-gray-600 mb-3">Browse by category:</p>
+              <div class="flex flex-wrap justify-center gap-2">
+                {categories.slice(0, 6).map(cat => (
+                  <a
+                    href={`/resources?category=${encodeURIComponent(cat)}`}
+                    class="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm hover:bg-primary-100 transition-colors"
+                  >
+                    {cat}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </EmptyState>
       )}
     </section>
 
@@ -541,11 +763,67 @@ const paginationStructuredData = {
   </main>
 </MainLayout>
 
+<script>
+  // Clear search button functionality and auto-scroll to results
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('resourceSearch');
+    const clearButton = document.getElementById('clearResourceSearch');
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasSearchOrFilter = urlParams.get('search') || urlParams.get('category');
+
+    function updateClearButton() {
+      if (searchInput && clearButton) {
+        if (searchInput.value.length > 0) {
+          clearButton.classList.remove('hidden');
+        } else {
+          clearButton.classList.add('hidden');
+        }
+      }
+    }
+
+    searchInput?.addEventListener('input', updateClearButton);
+
+    clearButton?.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+        updateClearButton();
+        searchInput.focus();
+      }
+    });
+
+    // Initialize on page load
+    updateClearButton();
+
+    // Auto-scroll to results if user just searched/filtered
+    if (hasSearchOrFilter) {
+      const resultsSection = document.getElementById('results');
+      if (resultsSection) {
+        setTimeout(() => {
+          resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  });
+</script>
+
 <style is:global>
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Custom select dropdown styling for better visibility on gradient background */
+  select option {
+    background-color: white;
+    color: #1f2937;
   }
 </style>

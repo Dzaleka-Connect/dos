@@ -1,0 +1,107 @@
+---
+/**
+ * FormButton Component
+ *
+ * A reusable form button component with built-in loading state
+ *
+ * @param variant - Button style variant: 'primary' | 'secondary' | 'outline' | 'ghost'
+ * @param size - Button size: 'sm' | 'md' | 'lg'
+ * @param type - Button type: 'submit' | 'button' | 'reset'
+ * @param disabled - Whether the button is disabled
+ * @param fullWidth - Whether the button should span full width
+ * @param loadingText - Text to display during loading state (default: 'Loading...')
+ * @param className - Additional CSS classes
+ */
+
+export interface Props {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'submit' | 'button' | 'reset';
+  disabled?: boolean;
+  fullWidth?: boolean;
+  loadingText?: string;
+  className?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  type = 'submit',
+  disabled = false,
+  fullWidth = false,
+  loadingText = 'Loading...',
+  className = ''
+} = Astro.props;
+
+// Base styles
+const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+
+// Variant styles
+const variants = {
+  primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
+  secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
+  outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
+  ghost: 'text-primary-600 hover:bg-primary-50 focus:ring-primary-500'
+};
+
+// Size styles
+const sizes = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg'
+};
+
+// Combine classes
+const buttonClasses = [
+  baseStyles,
+  variants[variant],
+  sizes[size],
+  fullWidth ? 'w-full' : '',
+  className
+].join(' ');
+---
+
+<button
+  type={type}
+  disabled={disabled}
+  class={buttonClasses}
+  data-form-button
+>
+  <span class="button-text">
+    <slot />
+  </span>
+  <span class="button-loading hidden">
+    <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    {loadingText}
+  </span>
+</button>
+
+<script>
+// Auto-attach loading state to form submissions
+document.addEventListener('DOMContentLoaded', () => {
+  const formButtons = document.querySelectorAll('[data-form-button]');
+
+  formButtons.forEach(button => {
+    const form = button.closest('form');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        // Only show loading if form is valid
+        if (form.checkValidity()) {
+          const buttonText = button.querySelector('.button-text');
+          const loadingText = button.querySelector('.button-loading');
+
+          if (buttonText && loadingText) {
+            button.disabled = true;
+            buttonText.classList.add('hidden');
+            loadingText.classList.remove('hidden');
+          }
+        }
+      });
+    }
+  });
+});
+</script>

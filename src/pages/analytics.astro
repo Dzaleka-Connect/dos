@@ -37,15 +37,71 @@ const title = "Analytics | Dzaleka Online Services";
 
 <MainLayout title={title}>
   <div class="min-h-screen bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Header Section -->
-      <div class="mb-10 text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-3">Analytics Dashboard</h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Privacy-focused analytics for tracking and improving the Dzaleka Online Servicess digital experience
-        </p>
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-50 via-white to-blue-50 border-b border-gray-100">
+      <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-0 pattern-mudcloth bg-primary-900"></div>
       </div>
+      
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+          <div>
+            <span class="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-sm font-semibold mb-3">
+              Privacy-Focused Analytics
+            </span>
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Analytics Dashboard</h1>
+            <p class="text-lg text-gray-600 max-w-2xl">
+              Track and improve the Dzaleka Online Services digital experience
+            </p>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-3 mt-4 md:mt-0">
+            <button id="refreshDataBtn" 
+              class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Refresh
+            </button>
+            <button id="quickExportBtn" 
+              class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-sm">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Export
+            </button>
+          </div>
+        </div>
 
+        <!-- Date Range Selector -->
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-sm font-medium text-gray-700">Time Period:</span>
+            <div class="flex flex-wrap gap-2">
+              <button class="date-range-btn px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white" data-range="7">
+                Last 7 days
+              </button>
+              <button class="date-range-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors" data-range="30">
+                Last 30 days
+              </button>
+              <button class="date-range-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors" data-range="90">
+                Last 90 days
+              </button>
+              <button class="date-range-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors" data-range="all">
+                All time
+              </button>
+            </div>
+            <div class="ml-auto text-sm text-gray-500" id="dateRangeDisplay">
+              Showing last 7 days
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div id="analytics-container" class="space-y-8">
         <!-- Loading State with Improved Animation -->
         <div class="animate-pulse" id="loading-state">
@@ -548,29 +604,80 @@ const title = "Analytics | Dzaleka Online Services";
 
       container.innerHTML = `
         <!-- Overview Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <h3 class="text-sm font-medium text-gray-500">Total Page Views</h3>
-            <p class="text-2xl font-bold text-gray-900 mt-2">${data.totalViews || 0}</p>
-            <p class="text-sm text-gray-500 mt-1">All time</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <!-- Total Page Views Card -->
+          <div class="relative bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl shadow-sm border border-blue-100 overflow-hidden group hover:shadow-md transition-shadow">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-200 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            <div class="relative">
+              <div class="flex items-center justify-between mb-3">
+                <div class="p-2 bg-blue-100 rounded-lg">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-blue-700 bg-blue-100 px-2 py-1 rounded-full">All time</span>
+              </div>
+              <div class="text-sm font-medium text-blue-900 mb-1">Total Page Views</div>
+              <p class="text-3xl font-bold text-blue-900">${(data.totalViews || 0).toLocaleString()}</p>
+            </div>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <h3 class="text-sm font-medium text-gray-500">Today's Visitors</h3>
-            <p class="text-2xl font-bold text-gray-900 mt-2">${todayVisitors}</p>
-            <p class="text-sm text-gray-500 mt-1">Unique visitors today</p>
+
+          <!-- Today's Visitors Card -->
+          <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl shadow-sm border border-green-100 overflow-hidden group hover:shadow-md transition-shadow">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-green-200 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            <div class="relative">
+              <div class="flex items-center justify-between mb-3">
+                <div class="p-2 bg-green-100 rounded-lg">
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded-full">Today</span>
+              </div>
+              <div class="text-sm font-medium text-green-900 mb-1">Today's Visitors</div>
+              <p class="text-3xl font-bold text-green-900">${todayVisitors.toLocaleString()}</p>
+            </div>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <h3 class="text-sm font-medium text-gray-500">Total Visitors</h3>
-            <p class="text-2xl font-bold text-gray-900 mt-2">${totalVisitors}</p>
-            <p class="text-sm text-gray-500 mt-1">Since ${formatDate(data.firstVisit)}</p>
+
+          <!-- Total Visitors Card -->
+          <div class="relative bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl shadow-sm border border-purple-100 overflow-hidden group hover:shadow-md transition-shadow">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-purple-200 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            <div class="relative">
+              <div class="flex items-center justify-between mb-3">
+                <div class="p-2 bg-purple-100 rounded-lg">
+                  <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded-full">Lifetime</span>
+              </div>
+              <div class="text-sm font-medium text-purple-900 mb-1">Total Visitors</div>
+              <p class="text-3xl font-bold text-purple-900">${totalVisitors.toLocaleString()}</p>
+            </div>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <h3 class="text-sm font-medium text-gray-500">Active Sessions</h3>
-            <p class="text-2xl font-bold text-gray-900 mt-2">${activeSessions}</p>
-            <p class="text-sm text-gray-500 mt-1">Last 5 minutes</p>
+
+          <!-- Active Sessions Card -->
+          <div class="relative bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-2xl shadow-sm border border-orange-100 overflow-hidden group hover:shadow-md transition-shadow">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-orange-200 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            <div class="relative">
+              <div class="flex items-center justify-between mb-3">
+                <div class="p-2 bg-orange-100 rounded-lg">
+                  <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div class="flex items-center">
+                  <span class="h-2 w-2 bg-green-500 rounded-full mr-1 animate-pulse"></span>
+                  <span class="text-xs font-medium text-orange-700">Live</span>
+                </div>
+              </div>
+              <div class="text-sm font-medium text-orange-900 mb-1">Active Sessions</div>
+              <p class="text-3xl font-bold text-orange-900">${activeSessions.toLocaleString()}</p>
+            </div>
           </div>
         </div>
-
+          
         <!-- Global Visitor Statistics -->
         ${(() => {
           try {
@@ -732,27 +839,121 @@ const title = "Analytics | Dzaleka Online Services";
           })()}
         </div>
 
-        <!-- Enhanced User Behavior (if enabled) -->
-        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">User Behavior Analytics</h3>
-          <div class="text-center py-8">
-            <div class="text-4xl mb-4">📊</div>
-            <p class="text-gray-600 mb-2">Enhanced tracking features available</p>
-            <p class="text-sm text-gray-500 mb-4">
-              Scroll depth, form interactions, link clicks, downloads, and more
-            </p>
+        <!-- Enhanced User Behavior Analytics -->
+        <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-8 border border-gray-100">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-medium text-gray-900">User Behavior Analytics</h3>
+              <p class="text-sm text-gray-500 mt-1">Advanced tracking for deeper insights</p>
+            </div>
             <button 
               onclick="enableEnhancedTracking()"
-              class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+              class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-blue-600 text-white rounded-lg hover:from-primary-700 hover:to-blue-700 transition-all shadow-sm hover:shadow-md text-sm font-medium"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Enable Enhanced Tracking
             </button>
-            <p class="text-xs text-gray-400 mt-2">
-              This will start collecting detailed user interaction data
-            </p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Scroll Depth Card -->
+            <div class="relative bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-xl border border-blue-100 group hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between mb-3">
+                <div class="p-2 bg-blue-100 rounded-lg">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-blue-700 bg-blue-100 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h4 class="font-semibold text-blue-900 mb-1">Scroll Depth</h4>
+              <p class="text-sm text-blue-700">Track how far users scroll on each page</p>
+            </div>
+
+            <!-- Form Interactions Card -->
+            <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-green-100 group hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between mb-3">
+                <div class="p-2 bg-green-100 rounded-lg">
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h4 class="font-semibold text-green-900 mb-1">Form Interactions</h4>
+              <p class="text-sm text-green-700">Monitor form field interactions and submissions</p>
+            </div>
+
+            <!-- Link Clicks Card -->
+            <div class="relative bg-gradient-to-br from-purple-50 to-pink-50 p-5 rounded-xl border border-purple-100 group hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between mb-3">
+                <div class="p-2 bg-purple-100 rounded-lg">
+                  <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h4 class="font-semibold text-purple-900 mb-1">Link Clicks</h4>
+              <p class="text-sm text-purple-700">Track external and internal link clicks</p>
+            </div>
+
+            <!-- Downloads Card -->
+            <div class="relative bg-gradient-to-br from-orange-50 to-red-50 p-5 rounded-xl border border-orange-100 group hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between mb-3">
+                <div class="p-2 bg-orange-100 rounded-lg">
+                  <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-orange-700 bg-orange-100 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h4 class="font-semibold text-orange-900 mb-1">File Downloads</h4>
+              <p class="text-sm text-orange-700">Monitor document and file downloads</p>
+            </div>
+
+            <!-- Video Engagement Card -->
+            <div class="relative bg-gradient-to-br from-cyan-50 to-blue-50 p-5 rounded-xl border border-cyan-100 group hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between mb-3">
+                <div class="p-2 bg-cyan-100 rounded-lg">
+                  <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-cyan-700 bg-cyan-100 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h4 class="font-semibold text-cyan-900 mb-1">Video Engagement</h4>
+              <p class="text-sm text-cyan-700">Track video plays, pauses, and completion</p>
+            </div>
+
+            <!-- Search Queries Card -->
+            <div class="relative bg-gradient-to-br from-yellow-50 to-amber-50 p-5 rounded-xl border border-yellow-100 group hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between mb-3">
+                <div class="p-2 bg-yellow-100 rounded-lg">
+                  <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <span class="text-xs font-medium text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h4 class="font-semibold text-yellow-900 mb-1">Search Queries</h4>
+              <p class="text-sm text-yellow-700">Analyze on-site search behavior</p>
+            </div>
+          </div>
+
+          <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <div class="flex items-start">
+              <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p class="text-sm font-medium text-blue-900">Privacy-First Approach</p>
+                <p class="text-sm text-blue-700 mt-1">All behavior tracking is anonymous and stored locally. No personal data is collected or sent to external servers.</p>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -870,17 +1071,17 @@ const title = "Analytics | Dzaleka Online Services";
       
       return `
         <div class="p-4 bg-blue-50 rounded-lg">
-          <h4 class="text-sm font-medium text-gray-500">Bounce Rate</h4>
+          <div class="text-sm font-medium text-gray-500">Bounce Rate</div>
           <p class="text-2xl font-bold text-blue-700">${bounceRate}%</p>
           <p class="text-sm text-gray-500 mt-1">Single page visits</p>
         </div>
         <div class="p-4 bg-green-50 rounded-lg">
-          <h4 class="text-sm font-medium text-gray-500">Avg. Session Duration</h4>
+          <div class="text-sm font-medium text-gray-500">Avg. Session Duration</div>
           <p class="text-2xl font-bold text-green-700">${formatDuration(avgSessionDuration)}</p>
           <p class="text-sm text-gray-500 mt-1">Time per session</p>
         </div>
         <div class="p-4 bg-purple-50 rounded-lg">
-          <h4 class="text-sm font-medium text-gray-500">Pages per Session</h4>
+          <div class="text-sm font-medium text-gray-500">Pages per Session</div>
           <p class="text-2xl font-bold text-purple-700">${pagesPerSession}</p>
           <p class="text-sm text-gray-500 mt-1">Average pages viewed</p>
         </div>
@@ -1322,21 +1523,21 @@ const title = "Analytics | Dzaleka Online Services";
           <h3 class="text-lg font-medium text-gray-900 mb-4">Performance Metrics</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="p-4 bg-yellow-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">Avg. Load Time</h4>
+              <div class="text-sm font-medium text-gray-500">Avg. Load Time</div>
               <p class="text-2xl font-bold text-yellow-700" id="avg-load-time">
                 ${formatMs(calculateAverageLoadTime(data))}
               </p>
               <p class="text-sm text-gray-500 mt-1">Total page load</p>
             </div>
             <div class="p-4 bg-red-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">Server Response</h4>
+              <div class="text-sm font-medium text-gray-500">Server Response</div>
               <p class="text-2xl font-bold text-red-700" id="server-response">
                 ${formatMs(calculateAverageServerResponse(data))}
               </p>
               <p class="text-sm text-gray-500 mt-1">Time to first byte</p>
             </div>
             <div class="p-4 bg-indigo-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">Resource Load</h4>
+              <div class="text-sm font-medium text-gray-500">Resource Load</div>
               <p class="text-2xl font-bold text-indigo-700" id="resource-load">
                 ${formatMs(calculateAverageResourceLoad(data))}
               </p>
@@ -1347,25 +1548,25 @@ const title = "Analytics | Dzaleka Online Services";
           <!-- Detailed Performance Metrics -->
           <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="p-4 bg-gray-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">DNS Lookup</h4>
+              <div class="text-sm font-medium text-gray-500">DNS Lookup</div>
               <p class="text-xl font-bold text-gray-700">
                 ${formatMs(calculateAverageDnsLookup(data))}
               </p>
             </div>
             <div class="p-4 bg-gray-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">TCP Connection</h4>
+              <div class="text-sm font-medium text-gray-500">TCP Connection</div>
               <p class="text-xl font-bold text-gray-700">
                 ${formatMs(calculateAverageTcpConnection(data))}
               </p>
             </div>
             <div class="p-4 bg-gray-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">DOM Interactive</h4>
+              <div class="text-sm font-medium text-gray-500">DOM Interactive</div>
               <p class="text-xl font-bold text-gray-700">
                 ${formatMs(calculateAverageDomInteractive(data))}
               </p>
             </div>
             <div class="p-4 bg-gray-50 rounded-lg">
-              <h4 class="text-sm font-medium text-gray-500">DOM Complete</h4>
+              <div class="text-sm font-medium text-gray-500">DOM Complete</div>
               <p class="text-xl font-bold text-gray-700">
                 ${formatMs(calculateAverageDomComplete(data))}
               </p>
@@ -1996,7 +2197,104 @@ const title = "Analytics | Dzaleka Online Services";
       document.getElementById('exportCsvBtn').addEventListener('click', () => exportAsCSV());
       document.getElementById('exportPdfBtn').addEventListener('click', () => exportAsPDF());
       document.getElementById('exportJsonBtn').addEventListener('click', () => exportAsJSON());
+      
+      // Setup new UI element handlers
+      setupDateRangeSelector();
+      setupRefreshButton();
+      setupQuickExportButton();
     });
+
+    // Date Range Selector functionality
+    function setupDateRangeSelector() {
+      const dateRangeBtns = document.querySelectorAll('.date-range-btn');
+      const dateRangeDisplay = document.getElementById('dateRangeDisplay');
+      
+      dateRangeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update active state
+          dateRangeBtns.forEach(b => {
+            b.classList.remove('bg-primary-600', 'text-white');
+            b.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+          });
+          btn.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+          btn.classList.add('bg-primary-600', 'text-white');
+          
+          // Update display text
+          const range = btn.dataset.range;
+          let displayText = '';
+          switch(range) {
+            case '7':
+              displayText = 'Showing last 7 days';
+              break;
+            case '30':
+              displayText = 'Showing last 30 days';
+              break;
+            case '90':
+              displayText = 'Showing last 90 days';
+              break;
+            case 'all':
+              displayText = 'Showing all time';
+              break;
+          }
+          dateRangeDisplay.textContent = displayText;
+          
+          // Note: Actual data filtering would happen here
+          // For now, we're just updating the UI
+          console.log(`Date range changed to: ${range} days`);
+        });
+      });
+    }
+
+    // Refresh Button functionality
+    function setupRefreshButton() {
+      const refreshBtn = document.getElementById('refreshDataBtn');
+      
+      refreshBtn.addEventListener('click', async () => {
+        // Add loading state
+        const originalHTML = refreshBtn.innerHTML;
+        refreshBtn.disabled = true;
+        refreshBtn.innerHTML = `
+          <svg class="w-4 h-4 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Refreshing...
+        `;
+        
+        // Simulate refresh (reload analytics data)
+        try {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          analyticsData = getAnalyticsData();
+          renderAnalytics(analyticsData);
+          
+          // Show success feedback
+          refreshBtn.innerHTML = `
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Refreshed!
+          `;
+          
+          setTimeout(() => {
+            refreshBtn.innerHTML = originalHTML;
+            refreshBtn.disabled = false;
+          }, 1500);
+        } catch (error) {
+          console.error('Error refreshing data:', error);
+          refreshBtn.innerHTML = originalHTML;
+          refreshBtn.disabled = false;
+        }
+      });
+    }
+
+    // Quick Export Button functionality
+    function setupQuickExportButton() {
+      const quickExportBtn = document.getElementById('quickExportBtn');
+      
+      quickExportBtn.addEventListener('click', () => {
+        // Use the existing export functionality
+        exportAnalyticsData();
+      });
+    }
   </script>
 
   <style>

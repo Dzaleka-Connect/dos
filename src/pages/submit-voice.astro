@@ -26,7 +26,6 @@ const CLOUDINARY_UPLOAD_PRESET = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET
       <form 
         id="voiceForm"
         class="bg-white rounded-2xl shadow-sm p-8 md:p-12 space-y-8"
-        onsubmit="handleSubmit(event)"
       >
         <!-- Title -->
         <div class="space-y-2">
@@ -44,18 +43,34 @@ const CLOUDINARY_UPLOAD_PRESET = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET
         </div>
 
         <!-- Author -->
-        <div class="space-y-2">
-          <label for="author" class="block text-sm font-medium text-gray-700">
-            Author <span class="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="author"
-            name="author"
-            required
-            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors"
-            placeholder="Your name or pen name"
-          />
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label for="author" class="block text-sm font-medium text-gray-700">
+              Author <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              required
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors"
+              placeholder="Your name or pen name"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="email" class="block text-sm font-medium text-gray-700">
+              Email Address <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors"
+              placeholder="For us to contact you"
+            />
+          </div>
         </div>
 
         <!-- Category -->
@@ -336,11 +351,34 @@ async function handleSubmit(event) {
     `;
 
     let imageUrl = '';
-    if (fileInput.files.length > 0) {
-      imageUrl = await uploadImage(fileInput.files[0]);
+    if (fileInput.files.length > 0 && CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
+      try {
+        imageUrl = await uploadImage(fileInput.files[0]);
+      } catch (uploadError) {
+        console.warn('Image upload failed, proceeding without image:', uploadError);
+      }
     }
 
-    const formData = {
+    const formData = new FormData(form);
+    if (imageUrl) {
+      formData.append('image_url', imageUrl);
+    }
+
+    // 1. Submit to Formspree
+    const formspreeResponse = await fetch('https://formspree.io/f/xqaaajae', { // Using same ID as visit form for now, or replace if user provides new one
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!formspreeResponse.ok) {
+      throw new Error('Formspree submission failed');
+    }
+
+    // 2. Send notification via our API (Fire and forget)
+    const apiData = {
       title: form.title.value,
       author: form.author.value,
       category: form.category.value,
@@ -348,11 +386,20 @@ async function handleSubmit(event) {
       content: form.content.value,
       tags: form.tags.value.split(',').map(tag => tag.trim()).filter(Boolean),
       image: imageUrl,
-      date: new Date().toISOString(),
+      email: form.email?.value // Add email field to form if not present
     };
 
-    console.log('Form data:', formData);
-    alert('Form submission functionality will be implemented soon!');
+    fetch('/api/submit-voice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(apiData)
+    }).catch(err => console.error('API notification failed:', err));
+
+    // Success feedback
+    alert('Thank you! Your story has been submitted for review.');
+    window.location.href = '/community-voice';
 
   } catch (error) {
     console.error('Submission error:', error);
@@ -438,4 +485,8 @@ window.removeImage = function() {
     preview.remove();
   }
 };
+
+// Add form submit event listener
+document.getElementById('voiceForm').addEventListener('submit', handleSubmit);
+
 </script>

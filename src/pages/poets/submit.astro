@@ -1,248 +1,254 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Layout from '../../layouts/Layout.astro';
 
 const pageTitle = "Add Your Poet Profile";
 const pageDescription = "Submit your poet or spoken word artist profile to be featured on our platform";
 ---
 
 <MainLayout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div class="flex items-center justify-center mb-6">
-        <a href="/poets" class="text-indigo-200 hover:text-white transition-colors">
-          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Poets
-        </a>
+  <Layout>
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 py-16 overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03]">
+        <div class="absolute inset-0 pattern-mudcloth"></div>
       </div>
-      
-      <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-6">
-        Add Your Poet Profile
-      </h1>
-      <p class="text-xl text-indigo-100 max-w-3xl mx-auto">
-        Share your poetry and spoken word talent with the community. Whether you're a published poet, 
-        spoken word artist, or emerging writer, we want to showcase your voice and help connect you with opportunities.
-      </p>
-    </div>
-  </section>
-
-  <!-- Form Section -->
-  <section class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <form id="poetForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
-        <!-- Profile Type -->
-        <div>
-          <label class="block text-lg font-semibold text-gray-900 mb-4">Profile Type</label>
-          <div class="grid md:grid-cols-2 gap-4">
-            <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-colors">
-              <input type="radio" name="profileType" value="individual" class="sr-only" required>
-              <div class="flex items-center">
-                <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex-shrink-0"></div>
-                <div>
-                  <div class="font-medium text-gray-900">Individual Poet</div>
-                  <div class="text-sm text-gray-600">For solo poets and spoken word artists</div>
-                </div>
-              </div>
-            </label>
-            <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-colors">
-              <input type="radio" name="profileType" value="group" class="sr-only" required>
-              <div class="flex items-center">
-                <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex-shrink-0"></div>
-                <div>
-                  <div class="font-medium text-gray-900">Poetry Group</div>
-                  <div class="text-sm text-gray-600">For poetry collectives and groups</div>
-                </div>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Basic Information -->
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name/Group Name *</label>
-            <input type="text" id="name" name="name" required 
-                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-          </div>
-          
-          <div>
-            <label for="nationality" class="block text-sm font-medium text-gray-700 mb-2">Nationality *</label>
-            <input type="text" id="nationality" name="nationality" required 
-                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-          </div>
-        </div>
-
-        <!-- Individual-specific fields -->
-        <div id="individualFields" class="hidden space-y-6">
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label for="age" class="block text-sm font-medium text-gray-700 mb-2">Age</label>
-              <input type="number" id="age" name="age" min="1" max="120" 
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </div>
-            
-            <div>
-              <label for="birthplace" class="block text-sm font-medium text-gray-700 mb-2">Birthplace</label>
-              <input type="text" id="birthplace" name="birthplace" 
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </div>
-          </div>
-        </div>
-
-        <!-- Group-specific fields -->
-        <div id="groupFields" class="hidden space-y-6">
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label for="memberCount" class="block text-sm font-medium text-gray-700 mb-2">Number of Members</label>
-              <input type="number" id="memberCount" name="memberCount" min="2" 
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </div>
-            
-            <div>
-              <label for="founded" class="block text-sm font-medium text-gray-700 mb-2">Year Founded</label>
-              <input type="text" id="founded" name="founded" 
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </div>
-          </div>
-          
-          <div>
-            <label for="members" class="block text-sm font-medium text-gray-700 mb-2">Member Names & Ages</label>
-            <textarea id="members" name="members" rows="4" 
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="List each member with their name, age, and nationality (e.g., John Doe - 25yrs, DRC)"></textarea>
-          </div>
-        </div>
-
-        <!-- Poetry Information -->
-        <div class="space-y-6">
-          <div>
-            <label for="poetryStyles" class="block text-sm font-medium text-gray-700 mb-2">Poetry Styles *</label>
-            <textarea id="poetryStyles" name="poetryStyles" rows="3" required 
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="e.g., Spoken Word, Traditional Poetry, Free Verse, Haiku, Sonnets, Performance Poetry"></textarea>
-          </div>
-          
-          <div>
-            <label for="languages" class="block text-sm font-medium text-gray-700 mb-2">Languages You Write In</label>
-            <textarea id="languages" name="languages" rows="2" 
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="e.g., English, French, Swahili, Kinyarwanda, Lingala"></textarea>
-          </div>
-          
-          <div>
-            <label for="performances" class="block text-sm font-medium text-gray-700 mb-2">Performances & Events</label>
-            <textarea id="performances" name="performances" rows="3" 
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="List poetry readings, festivals, and events where you've performed"></textarea>
-          </div>
-          
-          <div>
-            <label for="publications" class="block text-sm font-medium text-gray-700 mb-2">Publications</label>
-            <textarea id="publications" name="publications" rows="3" 
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="Books, anthologies, magazines, online publications, etc."></textarea>
-          </div>
-        </div>
-
-        <!-- Biography -->
-        <div>
-          <label for="biography" class="block text-sm font-medium text-gray-700 mb-2">Biography/Story *</label>
-          <textarea id="biography" name="biography" rows="8" required 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="Tell us your story - how you started writing poetry, your journey, influences, challenges, achievements, and what poetry means to you..."></textarea>
-        </div>
-
-        <!-- Sample Poetry -->
-        <div>
-          <label for="samplePoetry" class="block text-sm font-medium text-gray-700 mb-2">Sample Poetry (Optional)</label>
-          <textarea id="samplePoetry" name="samplePoetry" rows="6" 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="Share a short poem or excerpt of your work (max 200 words)"></textarea>
-          <p class="text-sm text-gray-500 mt-1">This will help showcase your style and voice to potential readers and event organizers.</p>
-        </div>
-
-        <!-- Contact Information -->
-        <div class="space-y-6">
-          <h3 class="text-lg font-semibold text-gray-900">Contact Information</h3>
-          
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-              <input type="email" id="email" name="email" 
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </div>
-            
-            <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-              <input type="tel" id="phone" name="phone" 
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </div>
-          </div>
-          
-          <div>
-            <label for="socialMedia" class="block text-sm font-medium text-gray-700 mb-2">Social Media Links</label>
-            <textarea id="socialMedia" name="socialMedia" rows="3" 
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="YouTube, Instagram, Facebook, TikTok, personal website, etc."></textarea>
-          </div>
-        </div>
-
-        <!-- Photo Upload -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Profile Photo</label>
-          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors">
-            <div class="space-y-1 text-center">
-              <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <div class="flex text-sm text-gray-600">
-                <label for="photo" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                  <span>Upload a photo</span>
-                  <input id="photo" name="photo" type="file" class="sr-only" accept="image/*">
-                </label>
-                <p class="pl-1">or drag and drop</p>
-              </div>
-              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-            </div>
-          </div>
-          <p id="photoUploadStatus" class="text-sm mt-2"></p>
-          <input type="hidden" name="photoUrl" id="photoUrlInput" />
-        </div>
-
-        <!-- Submit Button -->
-        <div class="text-center">
-          <button type="submit" 
-                  class="inline-flex items-center px-8 py-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="flex items-center justify-center mb-6">
+          <a href="/poets" class="inline-flex items-center text-primary-600 hover:text-primary-700 transition-colors font-medium">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-            Submit Profile
-          </button>
+            Back to Poets
+          </a>
         </div>
+        
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight mb-6">
+          Add Your Poet Profile
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Share your poetry and spoken word talent with the community. Whether you're a published poet, 
+          spoken word artist, or emerging writer, we want to showcase your voice and help connect you with opportunities.
+        </p>
+      </div>
+    </section>
 
-        <!-- Success/Error Messages -->
-        <div id="successMessage" class="hidden bg-green-50 border border-green-200 rounded-lg p-4">
-          <div class="flex">
-            <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p class="text-green-800">Thank you! Your profile has been submitted successfully. We'll review it and get back to you soon.</p>
+    <!-- Form Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form id="poetForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+          <!-- Profile Type -->
+          <div>
+            <label class="block text-lg font-semibold text-gray-900 mb-4">Profile Type</label>
+            <div class="grid md:grid-cols-2 gap-4">
+              <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary-300 hover:bg-primary-50 transition-all duration-200 group">
+                <input type="radio" name="profileType" value="individual" class="sr-only" required>
+                <div class="flex items-center">
+                  <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex-shrink-0 group-hover:border-primary-400 peer-checked:border-primary-600 peer-checked:bg-primary-600"></div>
+                  <div>
+                    <div class="font-medium text-gray-900 group-hover:text-primary-900">Individual Poet</div>
+                    <div class="text-sm text-gray-600 group-hover:text-primary-700">For solo poets and spoken word artists</div>
+                  </div>
+                </div>
+              </label>
+              <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary-300 hover:bg-primary-50 transition-all duration-200 group">
+                <input type="radio" name="profileType" value="group" class="sr-only" required>
+                <div class="flex items-center">
+                  <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex-shrink-0 group-hover:border-primary-400 peer-checked:border-primary-600 peer-checked:bg-primary-600"></div>
+                  <div>
+                    <div class="font-medium text-gray-900 group-hover:text-primary-900">Poetry Group</div>
+                    <div class="text-sm text-gray-600 group-hover:text-primary-700">For poetry collectives and groups</div>
+                  </div>
+                </div>
+              </label>
+            </div>
           </div>
-        </div>
 
-        <div id="errorMessage" class="hidden bg-red-50 border border-red-200 rounded-lg p-4">
-          <div class="flex">
-            <svg class="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p class="text-red-800">There was an error submitting your profile. Please try again.</p>
+          <!-- Basic Information -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name/Group Name *</label>
+              <input type="text" id="name" name="name" required 
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+            </div>
+            
+            <div>
+              <label for="nationality" class="block text-sm font-medium text-gray-700 mb-2">Nationality *</label>
+              <input type="text" id="nationality" name="nationality" required 
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
-  </section>
+
+          <!-- Individual-specific fields -->
+          <div id="individualFields" class="hidden space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label for="age" class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                <input type="number" id="age" name="age" min="1" max="120" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              </div>
+              
+              <div>
+                <label for="birthplace" class="block text-sm font-medium text-gray-700 mb-2">Birthplace</label>
+                <input type="text" id="birthplace" name="birthplace" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              </div>
+            </div>
+          </div>
+
+          <!-- Group-specific fields -->
+          <div id="groupFields" class="hidden space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label for="memberCount" class="block text-sm font-medium text-gray-700 mb-2">Number of Members</label>
+                <input type="number" id="memberCount" name="memberCount" min="2" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              </div>
+              
+              <div>
+                <label for="founded" class="block text-sm font-medium text-gray-700 mb-2">Year Founded</label>
+                <input type="text" id="founded" name="founded" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              </div>
+            </div>
+            
+            <div>
+              <label for="members" class="block text-sm font-medium text-gray-700 mb-2">Member Names & Ages</label>
+              <textarea id="members" name="members" rows="4" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        placeholder="List each member with their name, age, and nationality (e.g., John Doe - 25yrs, DRC)"></textarea>
+            </div>
+          </div>
+
+          <!-- Poetry Information -->
+          <div class="space-y-6">
+            <div>
+              <label for="poetryStyles" class="block text-sm font-medium text-gray-700 mb-2">Poetry Styles *</label>
+              <textarea id="poetryStyles" name="poetryStyles" rows="3" required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        placeholder="e.g., Spoken Word, Traditional Poetry, Free Verse, Haiku, Sonnets, Performance Poetry"></textarea>
+            </div>
+            
+            <div>
+              <label for="languages" class="block text-sm font-medium text-gray-700 mb-2">Languages You Write In</label>
+              <textarea id="languages" name="languages" rows="2" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        placeholder="e.g., English, French, Swahili, Kinyarwanda, Lingala"></textarea>
+            </div>
+            
+            <div>
+              <label for="performances" class="block text-sm font-medium text-gray-700 mb-2">Performances & Events</label>
+              <textarea id="performances" name="performances" rows="3" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        placeholder="List poetry readings, festivals, and events where you've performed"></textarea>
+            </div>
+            
+            <div>
+              <label for="publications" class="block text-sm font-medium text-gray-700 mb-2">Publications</label>
+              <textarea id="publications" name="publications" rows="3" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        placeholder="Books, anthologies, magazines, online publications, etc."></textarea>
+            </div>
+          </div>
+
+          <!-- Biography -->
+          <div>
+            <label for="biography" class="block text-sm font-medium text-gray-700 mb-2">Biography/Story *</label>
+            <textarea id="biography" name="biography" rows="8" required 
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                      placeholder="Tell us your story - how you started writing poetry, your journey, influences, challenges, achievements, and what poetry means to you..."></textarea>
+          </div>
+
+          <!-- Sample Poetry -->
+          <div>
+            <label for="samplePoetry" class="block text-sm font-medium text-gray-700 mb-2">Sample Poetry (Optional)</label>
+            <textarea id="samplePoetry" name="samplePoetry" rows="6" 
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                      placeholder="Share a short poem or excerpt of your work (max 200 words)"></textarea>
+            <p class="text-sm text-gray-500 mt-1">This will help showcase your style and voice to potential readers and event organizers.</p>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-semibold text-gray-900">Contact Information</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input type="email" id="email" name="email" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              </div>
+              
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                <input type="tel" id="phone" name="phone" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              </div>
+            </div>
+            
+            <div>
+              <label for="socialMedia" class="block text-sm font-medium text-gray-700 mb-2">Social Media Links</label>
+              <textarea id="socialMedia" name="socialMedia" rows="3" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        placeholder="YouTube, Instagram, Facebook, TikTok, personal website, etc."></textarea>
+            </div>
+          </div>
+
+          <!-- Photo Upload -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Profile Photo</label>
+            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 hover:bg-primary-50 transition-all duration-200">
+              <div class="space-y-1 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <div class="flex text-sm text-gray-600 justify-center">
+                  <label for="photo" class="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500">
+                    <span>Upload a photo</span>
+                    <input id="photo" name="photo" type="file" class="sr-only" accept="image/*">
+                  </label>
+                  <p class="pl-1">or drag and drop</p>
+                </div>
+                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              </div>
+            </div>
+            <p id="photoUploadStatus" class="text-sm mt-2 text-primary-600 font-medium"></p>
+            <input type="hidden" name="photoUrl" id="photoUrlInput" />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center">
+            <button type="submit" 
+                    class="inline-flex items-center px-8 py-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:-translate-y-0.5">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Submit Profile
+            </button>
+          </div>
+
+          <!-- Success/Error Messages -->
+          <div id="successMessage" class="hidden bg-green-50 border border-green-200 rounded-lg p-4">
+            <div class="flex">
+              <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p class="text-green-800">Thank you! Your profile has been submitted successfully. We'll review it and get back to you soon.</p>
+            </div>
+          </div>
+
+          <div id="errorMessage" class="hidden bg-red-50 border border-red-200 rounded-lg p-4">
+            <div class="flex">
+              <svg class="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p class="text-red-800">There was an error submitting your profile. Please try again.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </Layout>
 </MainLayout>
 
 <script>
@@ -292,8 +298,12 @@ const pageDescription = "Submit your poet or spoken word artist profile to be fe
         const data = await response.json();
         photoUrlInput.value = data.secure_url;
         photoUploadStatus.textContent = 'Photo uploaded successfully!';
+        photoUploadStatus.classList.remove('text-primary-600');
+        photoUploadStatus.classList.add('text-green-600');
       } catch (error) {
         photoUploadStatus.textContent = 'Photo upload failed. Please try again.';
+        photoUploadStatus.classList.remove('text-primary-600');
+        photoUploadStatus.classList.add('text-red-600');
         return;
       }
     }
@@ -312,6 +322,7 @@ const pageDescription = "Submit your poet or spoken word artist profile to be fe
         form.reset();
         groupFields.classList.add('hidden');
         individualFields.classList.add('hidden');
+        if (photoUploadStatus) photoUploadStatus.textContent = '';
       } else {
         throw new Error('Form submission failed');
       }

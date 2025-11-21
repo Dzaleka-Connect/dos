@@ -51,120 +51,129 @@ const structuredData = {
 >
   <!-- Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  
   <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center mb-6">
-        <a href="/poets" class="text-indigo-200 hover:text-white transition-colors">
-          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 py-12">
+    <div class="absolute inset-0 opacity-[0.03]">
+      <div class="absolute inset-0 pattern-mudcloth"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center mb-8">
+        <a href="/poets" class="inline-flex items-center text-primary-600 hover:text-primary-700 transition-colors font-medium">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
           Back to Poets
         </a>
       </div>
       
-      <!-- Hero Image Section -->
-      {poet.data.image && (
-        <div class="mb-8">
-          <div class="relative h-96 overflow-hidden rounded-2xl shadow-2xl">
-            <img src={poet.data.image} alt={poet.data.title} 
-                 class="w-full h-full object-cover" />
-            <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-transparent to-transparent"></div>
-          </div>
+      <div class="lg:grid lg:grid-cols-3 lg:gap-12 items-start">
+        <!-- Hero Image Section -->
+        <div class="lg:col-span-1 mb-8 lg:mb-0">
+          {poet.data.image ? (
+            <div class="relative aspect-[3/4] overflow-hidden rounded-lg shadow-md border border-gray-100">
+              <img src={poet.data.image} alt={poet.data.title} 
+                   class="w-full h-full object-cover" />
+            </div>
+          ) : (
+            <div class="relative aspect-[3/4] overflow-hidden rounded-lg shadow-md border border-gray-100 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+              <svg class="w-24 h-24 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+          )}
         </div>
-      )}
-      
-      <!-- Content Section -->
-      <div class="lg:grid lg:grid-cols-3 lg:gap-12">
-        <!-- Main Content -->
+        
+        <!-- Content Section -->
         <div class="lg:col-span-2">
-          <div class="flex items-center mb-6">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 mr-4">
+          <div class="flex items-center mb-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 mr-3 border border-primary-200">
               Poet
             </span>
             {poet.data.featured && (
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
                 Featured
               </span>
             )}
           </div>
           
-          <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-4">
+          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight mb-6">
             {poet.data.title}
           </h1>
           
-          <p class="text-xl text-indigo-100 mb-8">
+          <p class="text-xl text-gray-600 mb-8 leading-relaxed">
             {poet.data.description}
           </p>
           
           <!-- Quick Stats -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
             {poet.data.age && (
-              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div class="text-2xl font-bold text-white">{poet.data.age}</div>
-                <div class="text-sm text-indigo-200">Years Old</div>
+              <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                <div class="text-lg font-bold text-primary-600 leading-tight">{poet.data.age}</div>
+                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Age</div>
               </div>
             )}
             {poet.data.nationality && (
-              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div class="text-2xl font-bold text-white">{poet.data.nationality}</div>
-                <div class="text-sm text-indigo-200">Nationality</div>
+              <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                <div class="text-lg font-bold text-primary-600 leading-tight truncate" title={poet.data.nationality}>{poet.data.nationality}</div>
+                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Nationality</div>
               </div>
             )}
             {poet.data.startedWriting && (
-              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div class="text-2xl font-bold text-white">{poet.data.startedWriting}</div>
-                <div class="text-sm text-indigo-200">Started Writing</div>
+              <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                <div class="text-lg font-bold text-primary-600 leading-tight truncate" title={poet.data.startedWriting}>{poet.data.startedWriting}</div>
+                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Started</div>
               </div>
             )}
             {poet.data.firstPerformance && (
-              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div class="text-2xl font-bold text-white">{poet.data.firstPerformance}</div>
-                <div class="text-sm text-indigo-200">First Performance</div>
+              <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                <div class="text-lg font-bold text-primary-600 leading-tight truncate" title={poet.data.firstPerformance}>{poet.data.firstPerformance}</div>
+                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Debut</div>
               </div>
             )}
           </div>
-        </div>
-        
-        <!-- Sidebar -->
-        <div class="lg:col-span-1">
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 sticky top-8">
-            <h3 class="text-xl font-semibold text-white mb-4">Poet Information</h3>
+          
+          <!-- Sidebar Info (Moved inline for better flow) -->
+          <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Poet Information</h3>
             
-            {poet.data.birthplace && (
-              <div class="mb-4">
-                <h4 class="text-sm font-medium text-indigo-200 mb-1">Birthplace</h4>
-                <p class="text-white">{poet.data.birthplace}</p>
-              </div>
-            )}
-            
-            {poet.data.arrivedInMalawi && (
-              <div class="mb-4">
-                <h4 class="text-sm font-medium text-indigo-200 mb-1">Arrived in Malawi</h4>
-                <p class="text-white">{poet.data.arrivedInMalawi}</p>
-              </div>
-            )}
-            
-            {poet.data.volunteerWork && (
-              <div class="mb-4">
-                <h4 class="text-sm font-medium text-indigo-200 mb-1">Volunteer Work</h4>
-                <p class="text-white text-sm">{poet.data.volunteerWork}</p>
-              </div>
-            )}
-            
-            {poet.data.biographyAuthor && (
-              <div class="mb-4">
-                <h4 class="text-sm font-medium text-indigo-200 mb-1">Biography by</h4>
-                <p class="text-white">{poet.data.biographyAuthor}</p>
-              </div>
-            )}
-            
-            {poet.data.photographer && (
-              <div class="mb-4">
-                <h4 class="text-sm font-medium text-indigo-200 mb-1">Photo by</h4>
-                <p class="text-white">{poet.data.photographer}</p>
-              </div>
-            )}
+            <div class="grid sm:grid-cols-2 gap-6">
+              {poet.data.birthplace && (
+                <div>
+                  <h4 class="text-sm font-medium text-gray-500 mb-1">Birthplace</h4>
+                  <p class="text-gray-900">{poet.data.birthplace}</p>
+                </div>
+              )}
+              
+              {poet.data.arrivedInMalawi && (
+                <div>
+                  <h4 class="text-sm font-medium text-gray-500 mb-1">Arrived in Malawi</h4>
+                  <p class="text-gray-900">{poet.data.arrivedInMalawi}</p>
+                </div>
+              )}
+              
+              {poet.data.volunteerWork && (
+                <div>
+                  <h4 class="text-sm font-medium text-gray-500 mb-1">Volunteer Work</h4>
+                  <p class="text-gray-900 text-sm">{poet.data.volunteerWork}</p>
+                </div>
+              )}
+              
+              {poet.data.biographyAuthor && (
+                <div>
+                  <h4 class="text-sm font-medium text-gray-500 mb-1">Biography by</h4>
+                  <p class="text-gray-900">{poet.data.biographyAuthor}</p>
+                </div>
+              )}
+              
+              {poet.data.photographer && (
+                <div>
+                  <h4 class="text-sm font-medium text-gray-500 mb-1">Photo by</h4>
+                  <p class="text-gray-900">{poet.data.photographer}</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -172,31 +181,31 @@ const structuredData = {
   </section>
 
   <!-- Content Section -->
-  <section class="py-16 bg-white">
+  <section class="py-12 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="prose prose-lg prose-indigo mx-auto">
+      <div class="prose prose-lg prose-primary mx-auto">
         <Content />
       </div>
     </div>
   </section>
 
   <!-- Call to Action Section -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">Book This Poet</h2>
-      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">Book This Poet</h2>
+      <p class="text-gray-600 mb-6">
         Interested in booking {poet.data.title} for your event? Get in touch to discuss poetry reading opportunities.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/contact" 
-           class="inline-flex items-center justify-center px-8 py-4 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors font-semibold text-lg">
+           class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors font-medium">
           Book Poetry Reading
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
         <a href="/poets" 
-           class="inline-flex items-center justify-center px-8 py-4 rounded-lg text-indigo-600 border-2 border-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors font-semibold text-lg">
+           class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-primary-600 border-2 border-primary-600 hover:bg-primary-50 transition-colors font-medium">
           Browse All Poets
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

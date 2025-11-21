@@ -35,16 +35,14 @@ const latestResources = allResources
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 6); // Get latest 6 resources
 
+// Fetch announcements for Notice Board
+const news = await getCollection('news');
+const announcements = news
+  .filter(item => item.data.category === 'announcement')
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
 
 
-const stats = [
-  { number: '55,425', label: 'Current Camp Population' },
-  { number: '35,952', label: 'DRC Refugees' },
-  { number: '79%', label: 'Funding Gap' },
-  { number: '66', label: 'UNHCR Staff' }
-];
-
-const nationalities = ['Congolese', 'Burundians', 'Rwandans', 'Somalis', 'Ethiopians'];
 
 // SEO metadata
 const seo = {
@@ -94,21 +92,21 @@ const seo = {
 
       {/* Content */}
       <div class="relative container mx-auto px-4 py-20 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl mx-auto leading-tight">
-          Welcome to Dzaleka Online Services
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl mx-auto leading-tight text-white">
+          Dzaleka Online Services
         </h1>
-        <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto">
-          Your digital gateway to community services, cultural events, resources, and connections in Dzaleka Refugee Camp
+        <p class="text-xl md:text-2xl text-white mb-12 max-w-2xl mx-auto">
+          Find information, access services and have your say
         </p>
 
         {/* Search Bar */}
-        <div class="max-w-2xl mx-auto">
+        <div class="max-w-2xl mx-auto mb-8">
           <form action="/search/results/" method="GET" class="relative">
             <input
               type="text"
               name="q"
               placeholder="Search organizations and resources..."
-              class="w-full px-6 py-4 text-lg rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+              class="w-full px-6 py-4 text-lg rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg"
             />
             <button
               type="submit"
@@ -122,62 +120,185 @@ const seo = {
           </form>
         </div>
 
-        {/* Quick Links */}
-        <div class="mt-12 flex flex-wrap justify-center gap-4">
-          <a href="/photos" class="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200">
-            Browse Photos
-          </a>
-          <a href="/services" class="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200">
-            Find Services
-          </a>
-          <a href="/about" class="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200">
-            About Us
-          </a>
+        {/* Popular Pages */}
+        <div class="flex flex-col items-center gap-3">
+          <span class="text-white/80 text-sm font-medium uppercase tracking-wider">Popular pages</span>
+          <div class="flex flex-wrap justify-center gap-3">
+            <a href="/visit" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              Visit Dzaleka
+            </a>
+            <a href="/dzaleka-time-capsule" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              Time Capsule
+            </a>
+            <a href="/jobs" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              Job Board
+            </a>
+            <a href="/events" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              Community Events
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Stats Section -->
-    <div class="bg-white py-8 -mt-8 relative z-10">
+    <!-- What are you looking for? Section -->
+    <section class="py-16 bg-white relative z-20 -mt-8 rounded-t-3xl">
       <div class="container mx-auto px-4">
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-            {stats.map(stat => (
-              <div class="text-center">
-                <div class="text-2xl md:text-3xl font-bold text-primary-600 mb-1">{stat.number}</div>
-                <div class="text-sm text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-          <div class="border-t pt-4">
-            <p class="text-center text-sm text-gray-600 mb-3">Main Nationalities in Dzaleka:</p>
-            <div class="flex flex-wrap justify-center gap-3">
-              {nationalities.map(nationality => (
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
-                  {nationality}
-                </span>
-              ))}
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">What are you looking for?</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <a href="/services" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-200 group text-center h-full">
+            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
             </div>
-            <div class="text-center mt-4 text-xs text-gray-500">
-              Source: <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">UNHCR Malawi Fact Sheet - August 2024</a>
+            <span class="font-semibold text-gray-900 group-hover:text-primary-700">Find Services</span>
+          </a>
+
+          <a href="/visit" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-200 group text-center h-full">
+            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <span class="font-semibold text-gray-900 group-hover:text-primary-700">Visit Dzaleka</span>
+          </a>
+
+          <a href="/skills-exchange" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-200 group text-center h-full">
+            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            </div>
+            <span class="font-semibold text-gray-900 group-hover:text-primary-700">Education & Skills</span>
+          </a>
+
+          <a href="/jobs" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-200 group text-center h-full">
+            <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <span class="font-semibold text-gray-900 group-hover:text-primary-700">Jobs & Opportunity</span>
+          </a>
+
+          <a href="/events" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-200 group text-center h-full">
+            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <span class="font-semibold text-gray-900 group-hover:text-primary-700">Events & Culture</span>
+          </a>
+
+          <a href="/resources" class="flex flex-col items-center p-6 bg-gray-50 rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-200 group text-center h-full">
+            <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <span class="font-semibold text-gray-900 group-hover:text-primary-700">Resources</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Updates Section (Notice Board & Have Your Say) -->
+    <section class="py-12 bg-white border-b border-gray-100">
+      <div class="container mx-auto px-4">
+        <div class="grid lg:grid-cols-3 gap-8">
+          
+          {/* Notice Board (2/3 width) */}
+          <div class="lg:col-span-2">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+                <span class="w-2 h-8 bg-primary-600 rounded-full mr-3"></span>
+                Notice Board
+              </h2>
+              <a href="/news" class="text-primary-600 text-sm font-medium hover:underline">View all notices &rarr;</a>
+            </div>
+            
+            <div class="bg-gray-50 rounded-xl border border-gray-200 divide-y divide-gray-200">
+              {announcements.length > 0 ? (
+                announcements.map(item => (
+                  <div class="p-4 md:p-6 hover:bg-white transition-colors">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 mt-1">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                          <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wide">Announcement</span>
+                          <span class="text-xs text-gray-500">{new Date(item.data.date).toLocaleDateString()}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-1">
+                          <a href={`/news/${item.slug}`} class="hover:text-primary-600 transition-colors">
+                            {item.data.title}
+                          </a>
+                        </h3>
+                        <p class="text-gray-600 text-sm line-clamp-2">{item.data.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div class="p-8 text-center text-gray-500">
+                  No active announcements at this time.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Have Your Say (1/3 width) */}
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+                <span class="w-2 h-8 bg-green-500 rounded-full mr-3"></span>
+                Have Your Say
+              </h2>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl border border-green-100 p-6">
+              <p class="text-gray-700 mb-6">
+                Your voice matters. Help us improve Dzaleka services and share your community stories.
+              </p>
+              
+              <div class="space-y-3">
+                <a href="/contact" class="flex items-center p-3 bg-white rounded-lg border border-green-100 shadow-sm hover:shadow-md hover:border-green-300 transition-all group">
+                  <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                  </div>
+                  <span class="font-medium text-gray-900">Suggest a Service</span>
+                </a>
+
+                <a href="/submit-voice" class="flex items-center p-3 bg-white rounded-lg border border-green-100 shadow-sm hover:shadow-md hover:border-green-300 transition-all group">
+                  <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                  </div>
+                  <span class="font-medium text-gray-900">Submit a Story</span>
+                </a>
+
+                <a href="/contact" class="flex items-center p-3 bg-white rounded-lg border border-green-100 shadow-sm hover:shadow-md hover:border-green-300 transition-all group">
+                  <div class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+                  </div>
+                  <span class="font-medium text-gray-900">Report an Issue</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </section>
+
     </div>
 
 
 
-    <!-- Explore Our Community Carousel -->
-    <div class="container mx-auto px-4 py-12">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">
-          Explore Our Community
-        </h2>
-        <p class="text-gray-600">
-          Discover different aspects of life in Dzaleka Refugee Camp
-        </p>
-      </div>
+    <!-- Discover Dzaleka's Culture Carousel -->
+    <div class="bg-white py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Discover Dzaleka's Culture
+          </h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Immerse yourself in the vibrant art, history, and creative expression of our community
+          </p>
+        </div>
 
       <div class="relative">
         {/* Navigation Arrows */}
@@ -196,69 +317,7 @@ const seo = {
         {/* Carousel Container */}
         <div class="overflow-hidden">
           <div id="carousel" class="flex transition-transform duration-300 ease-in-out gap-6">
-            {/* Services */}
-            <div class="flex-shrink-0 w-80">
-              <a href="/services" class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 p-6 group h-full">
-                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Community Directory</h3>
-                <p class="text-gray-600 mb-4">
-                  Connect with essential services and refugee-led organizations within the Dzaleka community
-                </p>
-                <span class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
-                  Find Support
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-
-            {/* Resources */}
-            <div class="flex-shrink-0 w-80">
-              <a href="/resources" class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 p-6 group h-full">
-                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Resources Library</h3>
-                <p class="text-gray-600 mb-4">
-                  Access and contribute to our growing collection of documents and resources
-                </p>
-                <span class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
-                  Browse Resources
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-
-            {/* Events */}
-            <div class="flex-shrink-0 w-80">
-              <a href="/events" class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 p-6 group h-full">
-                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Community Events</h3>
-                <p class="text-gray-600 mb-4">
-                  Discover and participate in local events, workshops, and celebrations
-                </p>
-                <span class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
-                  View Events
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-
+            
             {/* Photos */}
             <div class="flex-shrink-0 w-80">
               <a href="/photos" class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 p-6 group h-full">
@@ -273,48 +332,6 @@ const seo = {
                 </p>
                 <span class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
                   View Gallery
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-
-            {/* Jobs */}
-            <div class="flex-shrink-0 w-80">
-              <a href="/jobs" class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 p-6 group h-full">
-                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Community Jobs</h3>
-                <p class="text-gray-600 mb-4">
-                  Find opportunities and connect with organizations in Dzaleka
-                </p>
-                <span class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
-                  Explore Jobs
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-
-            {/* Skills Exchange */}
-            <div class="flex-shrink-0 w-80">
-              <a href="/skills-exchange" class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 p-6 group h-full">
-                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Skills Exchange</h3>
-                <p class="text-gray-600 mb-4">
-                  Connect with community members to share skills, learn new abilities, and build meaningful relationships
-                </p>
-                <span class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
-                  Find Skills
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
@@ -407,20 +424,6 @@ const seo = {
             </div>
           </div>
         </div>
-
-        {/* Dots Indicator */}
-        <div class="flex justify-center mt-6 space-x-2" role="group" aria-label="Carousel navigation">
-          <button aria-label="Go to slide 1" class="w-3 h-3 bg-primary-600 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="0"></button>
-          <button aria-label="Go to slide 2" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="1"></button>
-          <button aria-label="Go to slide 3" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="2"></button>
-          <button aria-label="Go to slide 4" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="3"></button>
-          <button aria-label="Go to slide 5" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="4"></button>
-          <button aria-label="Go to slide 6" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="5"></button>
-          <button aria-label="Go to slide 7" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="6"></button>
-          <button aria-label="Go to slide 8" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="7"></button>
-          <button aria-label="Go to slide 9" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="8"></button>
-          <button aria-label="Go to slide 10" class="w-3 h-3 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-slide="9"></button>
-        </div>
       </div>
     </div>
 
@@ -453,47 +456,41 @@ const seo = {
         const carousel = document.getElementById('carousel');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const dots = document.querySelectorAll('[data-slide]');
-        
+
         let currentCarouselSlide = 0;
         const slideWidth = 320; // w-80 = 320px
-        const maxSlides = 10; // Total number of slides
-        
+        const maxSlides = 5; // Total number of slides
+
         function updateCarousel() {
           carousel.style.transform = `translateX(-${currentCarouselSlide * slideWidth}px)`;
-          
-          // Update dots
-          dots.forEach((dot, index) => {
-            dot.classList.toggle('bg-primary-600', index === currentCarouselSlide);
-            dot.classList.toggle('bg-gray-300', index !== currentCarouselSlide);
-          });
-          
+
           // Update arrow visibility
           prevBtn.style.display = currentCarouselSlide === 0 ? 'none' : 'block';
-          nextBtn.style.display = currentCarouselSlide === maxSlides - 1 ? 'none' : 'block';
+          // Adjust logic for end of carousel (show fewer items at once on mobile vs desktop?)
+          // For simplicity, let's just limit it so we don't scroll past the end
+          // Assuming 3 items visible on desktop, we stop earlier
+          const visibleSlides = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+          nextBtn.style.display = currentCarouselSlide >= maxSlides - visibleSlides ? 'none' : 'block';
         }
-        
+
         prevBtn.addEventListener('click', () => {
           if (currentCarouselSlide > 0) {
             currentCarouselSlide--;
             updateCarousel();
           }
         });
-        
+
         nextBtn.addEventListener('click', () => {
-          if (currentCarouselSlide < maxSlides - 1) {
+          const visibleSlides = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+          if (currentCarouselSlide < maxSlides - visibleSlides) {
             currentCarouselSlide++;
             updateCarousel();
           }
         });
         
-        dots.forEach((dot, index) => {
-          dot.addEventListener('click', () => {
-            currentCarouselSlide = index;
-            updateCarousel();
-          });
-        });
-        
+        // Update on resize
+        window.addEventListener('resize', updateCarousel);
+
         // Initialize carousel
         updateCarousel();
       });
@@ -501,27 +498,27 @@ const seo = {
 
     <!-- Upcoming Events Section -->
     {upcomingEvents.length > 0 && (
-      <div class="bg-gradient-to-br from-primary-50 to-blue-50 py-16">
+      <div class="bg-gray-50 py-12">
         <div class="container mx-auto px-4">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover and join the vibrant community events, cultural celebrations, and activities happening in Dzaleka Refugee Camp
-          </p>
+          <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Upcoming Events</h2>
+            <p class="text-base text-gray-600 max-w-2xl mx-auto">
+              Join vibrant community celebrations, cultural gatherings, and transformative activities
+            </p>
           </div>
-          
-          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {upcomingEvents.map(event => {
               const isTBA = event.data.isTBA || event.data.title.toLowerCase().includes('tba');
               const eventDate = isTBA ? null : new Date(event.data.date);
               const isUpcoming = isTBA || (eventDate && eventDate >= new Date());
               
               return (
-                <a href={`/events/${event.slug}`} 
-                   class="group bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-200">
-                  
+                <a href={`/events/${event.slug}`}
+                   class="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200">
+
                   {/* Event Image */}
-                  <div class="relative h-48 overflow-hidden">
+                  <div class="relative h-40 overflow-hidden">
                     <img 
                       src={event.data.image} 
                       alt={event.data.title}
@@ -562,10 +559,10 @@ const seo = {
                     
 
                   </div>
-                  
+
                   {/* Event Content */}
-                  <div class="p-6">
-                    <div class="flex items-center gap-2 mb-3">
+                  <div class="p-4">
+                    <div class="flex items-center gap-2 mb-2">
                       <div class="w-2 h-2 bg-primary-500 rounded-full"></div>
                       <span class="text-sm text-gray-500 font-medium">
                         {isTBA ? 'Date to be announced' : format(eventDate, 'EEEE, MMMM d, yyyy')}
@@ -580,12 +577,12 @@ const seo = {
                         </span>
                       )}
                     </div>
-                    
-                    <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+
+                    <h3 class="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                       {event.data.title}
                     </h3>
-                    
-                    <p class="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+
+                    <p class="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
                       {event.data.description}
                     </p>
                     
@@ -610,9 +607,10 @@ const seo = {
               );
             })}
           </div>
-          
+
+
           {/* View All Events Button */}
-          <div class="text-center mt-12">
+          <div class="text-center mt-8">
             <Button href="/events" size="lg">
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -632,12 +630,12 @@ const seo = {
 
 
     <!-- Latest Resources Section -->
-    <section class="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section class="py-12 bg-white">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Latest Resources</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our most recent additions to the archive - guides, reports, and essential documents for the Dzaleka community
+        <div class="text-center mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Latest Resources</h2>
+          <p class="text-base text-gray-600 max-w-2xl mx-auto">
+            Essential guides, research, and documents preserving knowledge and empowering our community
           </p>
           </div>
 
@@ -647,10 +645,10 @@ const seo = {
             const isRecent = (new Date().getTime() - resourceDate.getTime()) < (7 * 24 * 60 * 60 * 1000); // 7 days
             
             return (
-                             <article class="group bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-200">
-                
+                             <article class="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200">
+
                 {/* Resource Header */}
-                <div class="relative h-32 bg-gradient-to-br from-primary-100 to-blue-100 flex items-center justify-center">
+                <div class="relative h-24 bg-gradient-to-br from-primary-100 to-blue-100 flex items-center justify-center">
                   {/* Category Icon */}
                   <div class="w-16 h-16 bg-white/80 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-sm">
                     {resource.data.category === 'Report' ? (
@@ -684,11 +682,11 @@ const seo = {
                      </div>
                    )}
                 </div>
-                
+
                 {/* Resource Content */}
-              <div class="p-6">
+              <div class="p-4">
                   {/* Category and Date */}
-                  <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center justify-between mb-3">
                     <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                     resource.data.category === 'Report' ? 'bg-blue-100 text-blue-800' :
                     resource.data.category === 'Guide' ? 'bg-green-100 text-green-800' :
@@ -707,14 +705,14 @@ const seo = {
                 </div>
 
                   {/* Title */}
-                  <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary-600 transition-colors">
+                  <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
                     <a href={`/resources/${resource.slug}`}>
                     {resource.data.title}
                   </a>
                 </h3>
 
                   {/* Description */}
-                  <p class="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                  <p class="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
                   {resource.data.description}
                 </p>
 
@@ -758,7 +756,7 @@ const seo = {
         </div>
 
         {/* View All Resources Button */}
-        <div class="text-center mt-12">
+        <div class="text-center mt-8">
           <Button href="/resources" size="lg">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -934,13 +932,13 @@ const seo = {
     </section>
 
     <!-- Success Stories Section -->
-    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section class="py-24 pattern-kitenge pattern-earth">
       <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        <div class="max-w-4xl mx-auto text-center mb-20">
+          <h2 class="font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-8 border-accent">
             Success Stories
           </h2>
-          <p class="text-xl text-gray-600 leading-relaxed">
+          <p class="font-body text-2xl text-gray-800 leading-relaxed">
             Inspiring journeys of innovation, resilience, and achievement from our community
           </p>
         </div>
@@ -954,7 +952,7 @@ const seo = {
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="text-2xl font-bold text-white mb-2">Innocent Magambi</h3>
-                <p class="text-white/90 text-sm">Founder, There is Hope</p>
+                <p class="text-white text-sm">Founder, There is Hope</p>
               </div>
             </div>
             <div class="p-6">
@@ -976,7 +974,7 @@ const seo = {
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="text-2xl font-bold text-white mb-2">Menes la Plume</h3>
-                <p class="text-white/90 text-sm">Founder, Tumaini Festival</p>
+                <p class="text-white text-sm">Founder, Tumaini Festival</p>
               </div>
             </div>
             <div class="p-6">
@@ -998,7 +996,7 @@ const seo = {
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="text-2xl font-bold text-white mb-2">Remy Gakwaya</h3>
-                <p class="text-white/90 text-sm">Founder, TakenoLAB & RELON</p>
+                <p class="text-white text-sm">Founder, TakenoLAB & RELON</p>
               </div>
             </div>
             <div class="p-6">

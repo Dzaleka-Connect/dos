@@ -38,26 +38,46 @@ import MainLayout from '../../layouts/MainLayout.astro';
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Content Structure</h2>
           <div class="prose prose-lg">
             <h3>Content Collections</h3>
-            <p>All content is organized in the <code>src/content</code> directory with the following collections:</p>
+            <p>All content is organized in the <code>src/content</code> directory with 13 different collections:</p>
+
+            <h4>Core Collections</h4>
             <ul>
-              <li><code>news/</code> - News articles and announcements</li>
-              <li><code>events/</code> - Community events and activities</li>
-              <li><code>services/</code> - Service directory listings</li>
-              <li><code>resources/</code> - Educational and community resources</li>
-              <li><code>stories/</code> - Community stories and experiences</li>
-              <li><code>photos/</code> - Photo gallery and visual content</li>
-              <li><code>jobs/</code> - Job opportunities and listings</li>
-              <li><code>community-voices/</code> - Community perspectives and opinions</li>
-              <li><code>talents/</code> - Showcase of community talents</li>
-              <li><code>gallery/</code> - Visual content and media</li>
+              <li><code>news/</code> - News articles with categories: business-spotlight, announcement, success-story, business-guide, news, education</li>
+              <li><code>events/</code> - Community events with registration and panelists</li>
+              <li><code>services/</code> - Organization directory with 100+ active services</li>
+              <li><code>resources/</code> - 140+ educational resources, PDFs, and guides</li>
+              <li><code>docs/</code> - Platform documentation and help content</li>
+            </ul>
+
+            <h4>Community Content</h4>
+            <ul>
+              <li><code>photos/</code> - Photo gallery with photographer credits</li>
+              <li><code>stories/</code> - Community stories and photo essays</li>
+              <li><code>inspirational-stories/</code> - Personal success stories</li>
+              <li><code>community-voices/</code> - Community perspectives</li>
+            </ul>
+
+            <h4>Talent & Skills</h4>
+            <ul>
+              <li><code>profiles/</code> - Skills exchange and service provider profiles</li>
+              <li><code>jobs/</code> - Employment opportunities and job listings</li>
+              <li><code>talents/</code> - Showcase of artists, dancers, and poets</li>
+            </ul>
+
+            <h4>Additional Content</h4>
+            <ul>
+              <li><code>artists/</code>, <code>dancers/</code>, <code>poets/</code> - Individual talent profiles</li>
+              <li><code>projects/</code> - Community projects and initiatives</li>
+              <li><code>sites/</code> - Site register and location data</li>
             </ul>
 
             <h3>File Organization</h3>
             <ul>
-              <li>Use kebab-case for filenames (e.g., <code>my-article.md</code>)</li>
+              <li>Use kebab-case for filenames (e.g., <code>refugee-self-advocacy-november-2025.md</code>)</li>
               <li>Place files in their appropriate collection directory</li>
               <li>Use descriptive filenames that reflect the content</li>
               <li>Include proper frontmatter for all content files</li>
+              <li>Validate content using the schema defined in <code>src/content/config.ts</code></li>
             </ul>
           </div>
         </section>
@@ -66,62 +86,139 @@ import MainLayout from '../../layouts/MainLayout.astro';
         <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Content Guidelines</h2>
           <div class="prose prose-lg">
-            <h3>Markdown Format</h3>
-            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto">
+            <h3>Frontmatter Templates</h3>
+            <p>Each content type requires specific frontmatter. Here are the most common templates:</p>
+
+            <h4>News Articles</h4>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
               <pre class="text-sm font-mono">---
-title: Your Title
-description: Brief description of the content
-date: YYYY-MM-DD
-author: Author Name
-category: Category Name
-tags: [tag1, tag2, tag3]
-image: /path/to/image.jpg
+title: "Your Article Title"
+description: "Brief summary for SEO and previews"
+date: 2025-11-17
+category: news # or business-spotlight, announcement, success-story, business-guide, education
+featured: true # optional
+image: "/images/article-cover.jpg" # optional
+author: "Author Name" # optional
+tags: ["tag1", "tag2"] # optional
 ---
 
-Your content here...</pre>
+Your article content here...</pre>
             </div>
 
-            <h3>Required Frontmatter</h3>
+            <h4>Events</h4>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <pre class="text-sm font-mono">---
+title: "Event Title"
+description: "Event description"
+date: 2025-11-27T15:00:00+02:00
+endDate: 2025-11-27T16:00:00+02:00 # optional
+location: "Dzaleka Refugee Camp" # or "Online (Zoom)"
+category: "Advocacy" # or Education, Arts, Sports, etc.
+organizer: "Organization Name"
+status: "upcoming" # or "past"
+featured: true # optional
+image: "/images/event-cover.jpg" # optional
+registration:
+  required: true
+  url: "https://registration-link.com"
+contact:
+  email: "contact@email.com"
+  phone: "+265..."
+panelists: # optional
+  - name: "Panelist Name"
+    role: "Role"
+    organization: "Organization"
+    bio: "Brief bio"
+tags: ["refugees", "advocacy"]
+---
+
+Event details...</pre>
+            </div>
+
+            <h4>Services</h4>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <pre class="text-sm font-mono">---
+title: "Organization Name"
+description: "What the organization does"
+category: "Education" # or Healthcare, Business, Arts, etc.
+featured: false # optional
+verified: true # optional
+logo: "/images/logos/org-logo.png" # optional
+contact:
+  email: "info@org.com"
+  phone: "+265..."
+  whatsapp: "+265..."
+location:
+  address: "Dzaleka Refugee Camp"
+  city: "Dowa"
+socialMedia:
+  website: "https://website.com"
+  facebook: "https://facebook.com/page"
+  instagram: "@handle"
+tags: ["education", "youth"]
+---
+
+Organization details...</pre>
+            </div>
+
+            <h4>Photos</h4>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <pre class="text-sm font-mono">---
+title: "Photo Title"
+description: "Photo description or story"
+date: "2024-03-15"
+image: "/images/photo.jpg" # or Cloudinary URL
+photographer:
+  name: "Photographer Name"
+  bio: "Brief bio"
+  instagram: "@handle"
+  website: "https://website.com"
+location: "Dzaleka Refugee Camp" # optional
+featured: true # optional
+tags: ["community", "daily-life"]
+---
+
+Photo story or context...</pre>
+            </div>
+
+            <h4>Resources</h4>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <pre class="text-sm font-mono">---
+title: "Resource Title"
+description: "What this resource provides"
+category: "Legal" # or Education, Health, etc.
+date: 2024-01-15
+downloadUrl: "/resources/pdf/document.pdf"
+resourceUrl: "https://external-link.com" # optional alternative
+fileType: "PDF"
+fileSize: "2.5 MB"
+author: "Author/Organization" # optional
+languages: ["English", "French"] # optional
+tags: ["legal", "rights"]
+---
+
+Resource description...</pre>
+            </div>
+
+            <h3>Writing Guidelines</h3>
             <ul>
-              <li><code>title</code> - Clear and descriptive title</li>
-              <li><code>description</code> - Brief summary of the content</li>
-              <li><code>date</code> - Publication date in YYYY-MM-DD format</li>
-              <li><code>author</code> - Content creator's name</li>
-              <li><code>category</code> - Main category of the content</li>
-              <li><code>tags</code> - Array of relevant tags</li>
-              <li><code>image</code> - Featured image path (when applicable)</li>
+              <li><strong>Accuracy:</strong> Verify all facts, dates, and information before publishing</li>
+              <li><strong>Clarity:</strong> Use clear, concise language accessible to all readers</li>
+              <li><strong>Cultural Sensitivity:</strong> Be respectful of diverse backgrounds and perspectives</li>
+              <li><strong>Attribution:</strong> Always credit sources, photographers, and quoted individuals</li>
+              <li><strong>SEO:</strong> Write descriptive titles and meta descriptions (150-160 characters)</li>
+              <li><strong>Accessibility:</strong> Use descriptive headings, alt text for images, and semantic HTML</li>
             </ul>
 
-            <h3>Content Types</h3>
-            <div class="space-y-4">
-              <div>
-                <h4 class="font-medium">News Articles</h4>
-                <ul>
-                  <li>Use clear, concise language</li>
-                  <li>Include relevant quotes and sources</li>
-                  <li>Add proper attribution for images</li>
-                  <li>Follow journalistic standards</li>
-                </ul>
-              </div>
-              <div>
-                <h4 class="font-medium">Events</h4>
-                <ul>
-                  <li>Include date, time, and location</li>
-                  <li>Add registration requirements</li>
-                  <li>Specify contact information</li>
-                  <li>Include event categories</li>
-                </ul>
-              </div>
-              <div>
-                <h4 class="font-medium">Services</h4>
-                <ul>
-                  <li>Complete business information</li>
-                  <li>Operating hours and location</li>
-                  <li>Contact details and social media</li>
-                  <li>Service categories and tags</li>
-                </ul>
-              </div>
-            </div>
+            <h3>Content Quality Standards</h3>
+            <ul>
+              <li>Proofread for grammar, spelling, and punctuation errors</li>
+              <li>Use active voice and present tense where appropriate</li>
+              <li>Break long paragraphs into shorter, readable sections</li>
+              <li>Include relevant internal and external links</li>
+              <li>Add visual elements to enhance understanding</li>
+              <li>Ensure mobile-friendly formatting</li>
+            </ul>
           </div>
         </section>
 
@@ -131,47 +228,175 @@ Your content here...</pre>
           <div class="prose prose-lg">
             <h3>Image Requirements</h3>
             <ul>
-              <li>Format: JPG, PNG, or WebP</li>
-              <li>Resolution: Minimum 1200x800 pixels</li>
-              <li>File size: Optimize for web (max 500KB)</li>
-              <li>Alt text: Descriptive and meaningful</li>
-              <li>Attribution: Include when required</li>
+              <li><strong>Format:</strong> JPG, PNG, or WebP (WebP preferred for better compression)</li>
+              <li><strong>Resolution:</strong> Minimum 800x600 pixels (1200x800 recommended for hero images)</li>
+              <li><strong>File size:</strong> Maximum 2MB before upload (will be optimized automatically)</li>
+              <li><strong>Aspect ratio:</strong> 16:9 or 4:3 for consistency</li>
+              <li><strong>Alt text:</strong> Required for all images - describe what's in the image</li>
+              <li><strong>Attribution:</strong> Always credit photographers and sources</li>
             </ul>
 
-            <h3>File Organization</h3>
+            <h3>Image Hosting Options</h3>
+            <h4>Option 1: Cloudinary (Recommended)</h4>
             <ul>
-              <li>Store images in <code>public/images/</code></li>
+              <li>Upload images to Cloudinary for automatic optimization</li>
+              <li>Images are automatically resized and converted to WebP</li>
+              <li>Use the Cloudinary URL in your content frontmatter</li>
+              <li>Faster loading times and better performance</li>
+              <li>Example: <code>https://res.cloudinary.com/account/image/...</code></li>
+            </ul>
+
+            <h4>Option 2: Local Storage</h4>
+            <ul>
+              <li>Store images in <code>public/images/</code> directory</li>
+              <li>Use descriptive filenames (e.g., <code>dzaleka-art-festival-2024.jpg</code>)</li>
+              <li>Organize by content type: <code>public/images/events/</code>, <code>public/images/services/</code></li>
+              <li>Optimize images before uploading (compress to reduce file size)</li>
+              <li>Reference as: <code>/images/events/your-image.jpg</code></li>
+            </ul>
+
+            <h3>Image Best Practices</h3>
+            <ul>
+              <li>Use high-quality, well-lit photographs</li>
+              <li>Ensure images are culturally appropriate and respectful</li>
+              <li>Obtain permission before photographing individuals</li>
+              <li>Avoid images with sensitive or personal information</li>
+              <li>Use landscape orientation for hero images</li>
+              <li>Include diverse representation in visual content</li>
+            </ul>
+
+            <h3>Video Content</h3>
+            <ul>
+              <li>Embed videos from YouTube, Vimeo, or other platforms</li>
+              <li>Do not upload large video files directly to the site</li>
+              <li>Include video transcripts for accessibility</li>
+              <li>Add descriptive captions and titles</li>
+            </ul>
+
+            <h3>PDF and Document Files</h3>
+            <ul>
+              <li>Store PDFs in <code>public/resources/pdf/</code></li>
+              <li>Maximum file size: 10MB</li>
               <li>Use descriptive filenames</li>
-              <li>Organize by content type and date</li>
-              <li>Maintain proper directory structure</li>
+              <li>Ensure PDFs are accessible (searchable text, not scanned images)</li>
+              <li>Include file size in resource frontmatter</li>
             </ul>
           </div>
         </section>
 
         <!-- Review Process -->
-        <section class="bg-white rounded-xl shadow-sm p-6">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Review Process</h2>
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Review & Publication Process</h2>
           <div class="prose prose-lg">
-            <h3>Content Review Checklist</h3>
+            <h3>Before Submission Checklist</h3>
             <ul>
-              <li>Content follows guidelines and standards</li>
-              <li>Frontmatter is complete and correct</li>
-              <li>Images are properly optimized and attributed</li>
-              <li>Links are working and relevant</li>
-              <li>Cultural sensitivity is maintained</li>
-              <li>Grammar and spelling are correct</li>
+              <li>✓ Content follows community values and guidelines</li>
+              <li>✓ Frontmatter is complete with all required fields</li>
+              <li>✓ Images are optimized, attributed, and have alt text</li>
+              <li>✓ All links are working and relevant</li>
+              <li>✓ Cultural sensitivity and respect are maintained</li>
+              <li>✓ Grammar, spelling, and punctuation are correct</li>
+              <li>✓ Content is accurate and fact-checked</li>
+              <li>✓ Proper permissions obtained for photos/quotes</li>
+              <li>✓ Mobile-friendly formatting verified</li>
             </ul>
 
-            <h3>Submission Process</h3>
+            <h3>Submission Methods</h3>
+            <h4>Method 1: Direct File Creation (For Technical Staff)</h4>
             <ol>
-              <li>Create content in appropriate collection</li>
-              <li>Follow naming conventions</li>
-              <li>Include all required frontmatter</li>
-              <li>Add proper media and attributions</li>
-              <li>Submit for review</li>
-              <li>Address any feedback</li>
-              <li>Get approval before publishing</li>
+              <li>Create markdown file in appropriate <code>src/content/</code> directory</li>
+              <li>Add complete frontmatter using the templates above</li>
+              <li>Write content in markdown format</li>
+              <li>Test locally using <code>npm run dev</code></li>
+              <li>Commit to GitHub with descriptive message</li>
+              <li>Create pull request for review (if applicable)</li>
             </ol>
+
+            <h4>Method 2: Web Forms (For All Staff)</h4>
+            <ul>
+              <li><strong>Events:</strong> Use <a href="/events/organize" class="text-primary-600">Event Submission Form</a></li>
+              <li><strong>Services:</strong> Use <a href="/services/register" class="text-primary-600">Service Registration Form</a></li>
+              <li><strong>Photos:</strong> Use <a href="/photos/submit" class="text-primary-600">Photo Submission Form</a></li>
+              <li><strong>Community Voices:</strong> Use <a href="/submit-voice" class="text-primary-600">Voice Submission Form</a></li>
+              <li><strong>News:</strong> Use <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" target="_blank" class="text-primary-600">Blogger Dashboard</a></li>
+            </ul>
+
+            <h3>Review Timeline</h3>
+            <ul>
+              <li><strong>Web Form Submissions:</strong> Reviewed within 24-48 hours</li>
+              <li><strong>Direct File Submissions:</strong> Reviewed upon pull request creation</li>
+              <li><strong>Urgent Content:</strong> Contact staff for expedited review</li>
+            </ul>
+
+            <h3>Publication Workflow</h3>
+            <ol>
+              <li><strong>Draft:</strong> Content created and submitted</li>
+              <li><strong>Review:</strong> Staff reviews for quality and compliance</li>
+              <li><strong>Feedback:</strong> Revisions requested if needed</li>
+              <li><strong>Approval:</strong> Content approved for publication</li>
+              <li><strong>Published:</strong> Content goes live on the platform</li>
+              <li><strong>Promotion:</strong> Content shared on social media (if featured)</li>
+            </ol>
+
+            <h3>Common Rejection Reasons</h3>
+            <ul>
+              <li>Incomplete or missing frontmatter</li>
+              <li>Poor image quality or missing attribution</li>
+              <li>Factual errors or unverified information</li>
+              <li>Grammar and spelling issues</li>
+              <li>Cultural insensitivity or inappropriate content</li>
+              <li>Missing required permissions or consents</li>
+              <li>Duplicate or outdated content</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Tools and Resources -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Helpful Tools & Resources</h2>
+          <div class="prose prose-lg">
+            <h3>Image Optimization Tools</h3>
+            <ul>
+              <li><a href="https://tinypng.com/" target="_blank">TinyPNG</a> - Compress images without quality loss</li>
+              <li><a href="https://squoosh.app/" target="_blank">Squoosh</a> - Browser-based image compression</li>
+              <li><a href="https://www.remove.bg/" target="_blank">Remove.bg</a> - Remove image backgrounds</li>
+            </ul>
+
+            <h3>Writing Tools</h3>
+            <ul>
+              <li><a href="https://hemingwayapp.com/" target="_blank">Hemingway Editor</a> - Improve readability</li>
+              <li><a href="https://grammarly.com/" target="_blank">Grammarly</a> - Grammar and spell checking</li>
+              <li><a href="https://www.wordcounter.net/" target="_blank">Word Counter</a> - Count words and characters</li>
+            </ul>
+
+            <h3>Markdown Resources</h3>
+            <ul>
+              <li><a href="https://www.markdownguide.org/" target="_blank">Markdown Guide</a> - Complete markdown reference</li>
+              <li><a href="https://stackedit.io/" target="_blank">StackEdit</a> - Online markdown editor</li>
+              <li><a href="https://dillinger.io/" target="_blank">Dillinger</a> - Another markdown editor</li>
+            </ul>
+
+            <h3>Internal Resources</h3>
+            <ul>
+              <li><a href="/staff/training">Training Materials</a> - Comprehensive platform guides</li>
+              <li><a href="/staff/faq">FAQ</a> - Common questions and answers</li>
+              <li><a href="/docs">Documentation</a> - Platform documentation</li>
+              <li><a href="https://drive.google.com/drive/u/1/folders/1n1DCddBHQbNeNthMAUIBVd7eJYVxcdOG" target="_blank">Knowledge Base</a> - Additional resources</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Get Help -->
+        <section class="bg-white rounded-xl shadow-sm p-6">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Need Help?</h2>
+          <div class="prose prose-lg">
+            <p>If you have questions about contributing or need assistance:</p>
+            <ul>
+              <li>Contact the team via <a href="/help-desk" class="text-primary-600">Help Desk</a></li>
+              <li>Check the <a href="/staff/faq" class="text-primary-600">FAQ</a> for common questions</li>
+              <li>Review <a href="/staff/training" class="text-primary-600">Training Materials</a> for detailed guides</li>
+              <li>Email us at <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600">dzalekaconnect@gmail.com</a></li>
+            </ul>
           </div>
         </section>
       </div>
@@ -181,22 +406,31 @@ Your content here...</pre>
 
 <style>
   .prose h3 {
-    @apply text-lg font-medium text-gray-900 mb-2;
+    @apply text-xl font-semibold text-gray-900 mb-3 mt-6;
   }
   .prose h4 {
-    @apply text-base font-medium text-gray-900 mb-2;
+    @apply text-lg font-medium text-gray-900 mb-2 mt-4;
   }
   .prose p {
-    @apply text-gray-600;
+    @apply text-gray-600 mb-3;
   }
   .prose ul {
-    @apply list-disc pl-6 mb-4;
+    @apply list-disc pl-6 mb-4 space-y-1;
   }
   .prose ol {
-    @apply list-decimal pl-6 mb-4;
+    @apply list-decimal pl-6 mb-4 space-y-2;
+  }
+  .prose li {
+    @apply text-gray-600;
   }
   .prose code {
-    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800;
+  }
+  .prose a {
+    @apply text-primary-600 hover:text-primary-700 underline;
+  }
+  .prose strong {
+    @apply font-semibold text-gray-900;
   }
   pre {
     white-space: pre-wrap;

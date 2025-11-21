@@ -425,97 +425,114 @@ const weatherAlerts = [
 
   <main class="min-h-screen bg-gray-50">
     <!-- Hero Section -->
-    <div class="relative bg-primary-700 text-white py-12 md:py-16">
-      <div class="absolute inset-0 bg-[url('/images/dzaleka-hero.jpeg')] bg-cover bg-center opacity-10"></div>
-      <div class="absolute inset-0 bg-primary-900/90"></div>
+    <div class="relative bg-gradient-to-br from-primary-50 via-white to-blue-50 py-16 md:py-20">
+      <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-0 pattern-mudcloth bg-primary-900"></div>
+      </div>
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl md:text-4xl font-bold mb-4 text-white">
+        <div class="text-center mb-12">
+          <span class="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-sm font-semibold mb-4">
+            Live Weather Data
+          </span>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
             Dzaleka Weather & Climate
           </h1>
-          <p class="text-lg text-white/90 max-w-2xl mx-auto">
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
             Real-time weather information and seasonal patterns for Dzaleka Refugee Camp, Malawi.
           </p>
         </div>
         
         {weatherData?.forecast && (
-          <div class="mt-8 bg-white/10 rounded-xl p-6 border border-white/20" id="weather-update">
+          <div class="mt-8 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100" id="weather-update">
             <!-- Location and Time -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-6 border-b border-gray-100">
               <div class="mb-4 md:mb-0">
                 <div class="flex items-center space-x-3">
-                  <i class="fas fa-location-dot text-white/80"></i>
-                  <h3 class="text-xl font-bold text-white">{weatherData.location}</h3>
+                  <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <h3 class="text-xl font-bold text-gray-900">{weatherData.location}</h3>
                 </div>
-                <p class="text-sm text-white/80 mt-2">{weatherData.date} - {weatherData.forecast.current.time}</p>
+                <p class="text-sm text-gray-500 mt-2">{weatherData.date} - {weatherData.forecast.current.time}</p>
               </div>
-              <div class="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
-                <i class="fas fa-clock text-white/80"></i>
-                <span class="text-sm text-white/80" id="last-updated">
+              <div class="flex items-center space-x-2 bg-gray-50 rounded-lg px-3 py-2">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm text-gray-600" id="last-updated">
                   Updated: {new Date(weatherData.lastUpdated).toLocaleTimeString()}
                 </span>
               </div>
             </div>
 
             <!-- Weather Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <!-- Temperature Card -->
-              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
-                <div class="flex items-center space-x-2 mb-3">
-                  <i class="fas fa-temperature-high text-white/80"></i>
-                  <h4 class="font-semibold text-white">Temperature</h4>
+              <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-100">
+                <div class="flex items-center space-x-2 mb-4">
+                  <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  <h4 class="font-semibold text-gray-900">Temperature</h4>
                 </div>
                 <div class="flex items-baseline space-x-2">
-                  <p class="text-3xl font-bold text-white">{weatherData.forecast.current.temperature}°C</p>
+                  <p class="text-4xl font-bold text-gray-900">{weatherData.forecast.current.temperature}°C</p>
                 </div>
-                <div class="flex justify-between text-sm text-white/80 mt-2">
+                <div class="flex justify-between text-sm text-gray-600 mt-3">
                   <span>Max: {weatherData.forecast.current.maxTemp}°C</span>
                   <span>Min: {weatherData.forecast.current.minTemperature}°C</span>
                 </div>
               </div>
 
               <!-- Wind Card -->
-              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
-                <div class="flex items-center space-x-2 mb-3">
-                  <i class="fas fa-wind text-white/80"></i>
-                  <h4 class="font-semibold text-white">Wind</h4>
+              <div class="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl p-6 border border-cyan-100">
+                <div class="flex items-center space-x-2 mb-4">
+                  <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                  <h4 class="font-semibold text-gray-900">Wind</h4>
                 </div>
                 <div class="flex items-baseline space-x-2">
-                  <p class="text-3xl font-bold text-white">{weatherData.forecast.current.windSpeed}</p>
-                  <span class="text-lg text-white/80">km/h</span>
+                  <p class="text-4xl font-bold text-gray-900">{weatherData.forecast.current.windSpeed}</p>
+                  <span class="text-lg text-gray-600">km/h</span>
                 </div>
-                <div class="text-sm text-white/80 mt-2">
+                <div class="text-sm text-gray-600 mt-3">
                   Direction: {weatherData.forecast.current.windDirection}°
                 </div>
               </div>
 
               <!-- Rainfall Card -->
-              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
-                <div class="flex items-center space-x-2 mb-3">
-                  <i class="fas fa-cloud-rain text-white/80"></i>
-                  <h4 class="font-semibold text-white">Rainfall</h4>
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                <div class="flex items-center space-x-2 mb-4">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                  </svg>
+                  <h4 class="font-semibold text-gray-900">Rainfall</h4>
                 </div>
                 <div class="flex items-baseline space-x-2">
-                  <p class="text-3xl font-bold text-white">{weatherData.forecast.current.rainfall}</p>
-                  <span class="text-lg text-white/80">mm</span>
+                  <p class="text-4xl font-bold text-gray-900">{weatherData.forecast.current.rainfall}</p>
+                  <span class="text-lg text-gray-600">mm</span>
                 </div>
-                <div class="text-sm text-white/80 mt-2">
+                <div class="text-sm text-gray-600 mt-3">
                   Last 24h: {weatherData.forecast.current.rainfall} mm
                 </div>
               </div>
 
               <!-- Weather Condition Card -->
-              <div class="bg-white/10 rounded-lg p-4 border border-white/20">
-                <div class="flex items-center space-x-2 mb-3">
-                  <i class="fas fa-cloud-sun text-white/80"></i>
-                  <h4 class="font-semibold text-white">Condition</h4>
+              <div class="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl p-6 border border-yellow-100">
+                <div class="flex items-center space-x-2 mb-4">
+                  <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                  <h4 class="font-semibold text-gray-900">Condition</h4>
                 </div>
                 <div class="text-center">
-                  <p class="text-2xl font-bold text-white mb-1">
+                  <p class="text-2xl font-bold text-gray-900 mb-1">
                     {weatherData.forecast.current.condition || 'Unknown'}
                   </p>
-                  <p class="text-sm text-white/80">
+                  <p class="text-sm text-gray-600">
                     {weatherData.forecast.current.time}
                   </p>
                 </div>
@@ -523,10 +540,12 @@ const weatherAlerts = [
             </div>
 
             <!-- Update Button -->
-            <div class="mt-6 flex justify-end">
+            <div class="mt-8 flex justify-end">
               <button onclick="updateWeather()" 
-                      class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20">
-                <i class="fas fa-sync-alt mr-2"></i>
+                      class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-medium shadow-sm transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
                 Update Now
               </button>
             </div>
@@ -539,34 +558,50 @@ const weatherAlerts = [
             <>
               {activeWeatherAlerts.slice(0, 2).map((alert, index) => (
                 <div key={index} 
-                     class={`p-3 rounded-lg border alert-item ${
-                       alert.type === 'severe' ? 'bg-red-500/20 border-red-500' :
-                       alert.type === 'warning' ? 'bg-yellow-500/20 border-yellow-500' :
-                       'bg-blue-500/20 border-blue-500'
+                     class={`p-4 rounded-xl border alert-item ${
+                       alert.type === 'severe' ? 'bg-red-50 border-red-200' :
+                       alert.type === 'warning' ? 'bg-yellow-50 border-yellow-200' :
+                       'bg-blue-50 border-blue-200'
                      }`}>
                   <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
                       {alert.type === 'severe' ? (
-                        <i class="fas fa-exclamation-triangle text-red-400"></i>
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
                       ) : alert.type === 'warning' ? (
-                        <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                       ) : (
-                        <i class="fas fa-info-circle text-blue-400"></i>
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                       )}
                     </div>
                     <div class="flex-1">
-                      <h4 class="text-white text-sm font-semibold mb-1">{alert.title}</h4>
-                      <p class="text-white/80 text-xs">{alert.description}</p>
+                      <h4 class={`text-sm font-semibold mb-1 ${
+                        alert.type === 'severe' ? 'text-red-900' :
+                        alert.type === 'warning' ? 'text-yellow-900' :
+                        'text-blue-900'
+                      }`}>{alert.title}</h4>
+                      <p class={`text-xs ${
+                        alert.type === 'severe' ? 'text-red-700' :
+                        alert.type === 'warning' ? 'text-yellow-700' :
+                        'text-blue-700'
+                      }`}>{alert.description}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </>
           ) : (
-            <div class="p-3 rounded-lg border border-blue-500/20 bg-blue-500/10">
+            <div class="p-4 rounded-xl border border-green-200 bg-green-50">
               <div class="flex items-center space-x-3">
-                <i class="fas fa-check-circle text-blue-400"></i>
-                <p class="text-white text-sm">No active weather alerts at this time.</p>
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-green-900 text-sm font-medium">No active weather alerts at this time.</p>
               </div>
             </div>
           )}
@@ -740,41 +775,49 @@ const weatherAlerts = [
           </div>
         </section>
 
-        <!-- Resources and Attribution -->
+        <!-- Resources & Attribution -->
         <section class="mb-12">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Resources & Attribution</h2>
           
-          <div class="bg-white rounded-lg p-6 shadow-sm">
+          <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
             <div class="space-y-6">
               <div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-3">Weather Data Source</h3>
                 <p class="text-gray-600 mb-4">
                   All weather data is provided by the Malawi Meteorological Department (MET Malawi). 
-                  This information is updated every 5 minutes from their official website.
+                  This information is updated regularly from their official website.
                 </p>
                 <div class="flex flex-wrap gap-3">
                   <a href="https://www.metmalawi.gov.mw" 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                     class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
                     Visit MET Malawi Website
                   </a>
                   <a href="https://www.metmalawi.gov.mw/weather/daily-table/dowa/" 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200">
+                     class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-primary-700 bg-primary-50 hover:bg-primary-100 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
                     View Dowa Weather Data
                   </a>
                 </div>
               </div>
 
-              <div class="border-t border-gray-200 pt-4">
-                <h3 class="text-lg font-semibold text-gray-900 mb-3">Additional Resources</h3>
-                <ul class="space-y-3">
+              <div class="border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Additional Resources</h3>
+                <ul class="space-y-4">
                   <li class="flex items-start">
-                    <span class="text-primary-600 mr-2">•</span>
+                    <svg class="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <div>
-                      <a href="https://www.metmalawi.gov.mw/weather/forecast/" 
+                      <a href="https://www.metmalawi.gov.mw" 
                          target="_blank" 
                          rel="noopener noreferrer"
                          class="text-primary-600 hover:text-primary-700 font-medium">
@@ -786,9 +829,11 @@ const weatherAlerts = [
                     </div>
                   </li>
                   <li class="flex items-start">
-                    <span class="text-primary-600 mr-2">•</span>
+                    <svg class="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <div>
-                      <a href="https://www.metmalawi.gov.mw/weather/climate/" 
+                      <a href="https://www.metmalawi.gov.mw" 
                          target="_blank" 
                          rel="noopener noreferrer"
                          class="text-primary-600 hover:text-primary-700 font-medium">
@@ -800,9 +845,11 @@ const weatherAlerts = [
                     </div>
                   </li>
                   <li class="flex items-start">
-                    <span class="text-primary-600 mr-2">•</span>
+                    <svg class="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <div>
-                      <a href="https://www.metmalawi.gov.mw/weather/warnings/" 
+                      <a href="https://www.metmalawi.gov.mw" 
                          target="_blank" 
                          rel="noopener noreferrer"
                          class="text-primary-600 hover:text-primary-700 font-medium">
@@ -816,11 +863,11 @@ const weatherAlerts = [
                 </ul>
               </div>
 
-              <div class="border-t border-gray-200 pt-4">
+              <div class="border-t border-gray-200 pt-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-3">Disclaimer</h3>
                 <p class="text-gray-600">
                   This weather information is provided for general guidance only. For official weather forecasts and warnings, 
-                  please refer to the Malawi Meteorological Department's website. The data is updated every 5 minutes, 
+                  please refer to the Malawi Meteorological Department's website. The data is updated regularly, 
                   but may not reflect real-time conditions in all areas.
                 </p>
               </div>

@@ -175,7 +175,10 @@ function getRelativeTime(dateString) {
                   <span class="text-sm text-gray-600 mr-4">
                     {Math.min(data.offers.length, data.requests.length)} potential matches
                   </span>
-                  <button class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  <button 
+                    data-category={category}
+                    class="match-all-btn inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  >
                     Match All
                   </button>
                 </div>
@@ -236,9 +239,9 @@ function getRelativeTime(dateString) {
               </div>
               
               <div class="mt-6 flex justify-center">
-                <button class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <a href={`/skills-exchange/matches/${category}`} class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                   View All Matches in {category}
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -288,22 +291,44 @@ function getRelativeTime(dateString) {
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Match All buttons
-      document.querySelectorAll('button:contains("Match All")').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const categoryName = this.closest('.bg-white.rounded-xl').querySelector('h3').textContent;
-          
-          // Show notification
-          showNotification(`Matching initiated for all profiles in ${categoryName} category.`, 'success');
-        });
-      });
+      const matchBtns = document.querySelectorAll('.match-all-btn');
       
-      // View All Matches buttons
-      document.querySelectorAll('button:contains("View All Matches in")').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const categoryName = this.textContent.replace('View All Matches in ', '');
+      matchBtns.forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const button = this as HTMLButtonElement;
+          const category = button.dataset.category;
+          const originalText = button.textContent;
           
-          // Redirect to filtered view (this would be implemented in a real app)
-          showNotification(`This feature is coming soon: View all matches in ${categoryName}`, 'info');
+          // Set loading state
+          button.disabled = true;
+          button.textContent = 'Processing...';
+          button.classList.add('opacity-75', 'cursor-not-allowed');
+          
+          try {
+            const response = await fetch('/api/match-category', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ category })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+              showNotification(data.message, 'success');
+            } else {
+              showNotification(data.message || 'Failed to process matches', 'error');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            showNotification('An unexpected error occurred', 'error');
+          } finally {
+            // Reset button state
+            button.disabled = false;
+            button.textContent = originalText;
+            button.classList.remove('opacity-75', 'cursor-not-allowed');
+          }
         });
       });
       
@@ -379,36 +404,6 @@ function getRelativeTime(dateString) {
           }
         }, 5000);
       }
-      
-      // Polyfill for :contains selector
-      if (!Element.prototype.matches) {
-        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-      }
-      
-      if (!Element.prototype.closest) {
-        Element.prototype.closest = function(s) {
-          var el = this;
-          do {
-            if (el.matches(s)) return el;
-            el = el.parentElement || el.parentNode;
-          } while (el !== null && el.nodeType === 1);
-          return null;
-        };
-      }
-      
-      // Custom :contains selector
-      document.querySelectorAll = function(selector) {
-        if (selector.includes(':contains(')) {
-          const parts = selector.split(':contains(');
-          const baseSelector = parts[0];
-          const textToMatch = parts[1].slice(0, -1); // Remove closing parenthesis
-          
-          const elements = Array.from(document.querySelectorAll(baseSelector));
-          return elements.filter(el => el.textContent.includes(textToMatch));
-        } else {
-          return document.querySelectorAll(selector);
-        }
-      }.bind(document);
     });
   </script>
 </MainLayout> 

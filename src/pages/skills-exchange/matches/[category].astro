@@ -1,0 +1,240 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import PageHeader from '../../../components/ui/PageHeader.astro';
+
+export async function getStaticPaths() {
+  const allProfiles = await getCollection('profiles');
+  
+  // Get unique categories
+  const categories = new Set();
+  allProfiles.forEach(profile => {
+    if (profile.data.category) {
+      categories.add(profile.data.category);
+    }
+  });
+
+  return Array.from(categories).map(category => ({
+    params: { category },
+    props: { category }
+  }));
+}
+
+const { category } = Astro.props;
+const pageTitle = `${category} Matches | Skills Exchange`;
+const pageDescription = `View all skills offered and requested in the ${category} category`;
+
+// Get all profiles
+const allProfiles = await getCollection('profiles');
+
+// Filter for this category
+const categoryProfiles = allProfiles.filter(profile => profile.data.category === category);
+
+// Separate into offers and requests
+const offers = categoryProfiles.filter(profile => profile.data.status === 'Available');
+const requests = categoryProfiles.filter(profile => 
+  profile.data.status === 'Requested' && 
+  (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+);
+
+const potentialMatches = Math.min(offers.length, requests.length);
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <PageHeader 
+    title={`${category} Matches`}
+    description={`Found ${offers.length} offers and ${requests.length} requests in this category`}
+    backgroundImage="/images/hero-bg.jpg"
+  />
+
+  <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <a href="/skills-exchange/matches" class="inline-flex items-center text-sm text-gray-500 hover:text-primary-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Back to All Categories
+      </a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+      <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-gray-900">Potential Matches: {potentialMatches}</h2>
+        <button 
+          id="match-all-btn"
+          data-category={category}
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        >
+          Match All in {category}
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Skills Offered -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+              <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">OFFERS</span>
+              Skills Offered ({offers.length})
+            </h3>
+            <div class="space-y-4">
+              {offers.length > 0 ? (
+                offers.map(profile => (
+                  <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-start">
+                      <div class="flex-shrink-0">
+                        <img 
+                          class="h-12 w-12 rounded-full object-cover" 
+                          src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
+                          alt={profile.data.name} 
+                        />
+                      </div>
+                      <div class="ml-4 flex-1">
+                        <h4 class="text-sm font-bold text-gray-900">{profile.data.name}</h4>
+                        <p class="text-sm text-primary-600 font-medium">{profile.data.skill}</p>
+                        <p class="text-sm text-gray-500 mt-1 line-clamp-2">{profile.data.bio}</p>
+                        <div class="mt-3 flex justify-between items-center">
+                          <span class="text-xs text-gray-400">Posted {new Date(profile.data.dateJoined).toLocaleDateString()}</span>
+                          <a href={`/skills-exchange/profile/${profile.slug}`} class="text-sm font-medium text-primary-600 hover:text-primary-800">
+                            View Profile
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div class="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                  <p class="text-gray-500">No skills offered in this category yet.</p>
+                  <a href="/skills-exchange/list-profile" class="mt-2 inline-block text-sm font-medium text-primary-600 hover:text-primary-500">
+                    Be the first to offer a skill
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <!-- Skills Requested -->
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+              <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">REQUESTS</span>
+              Skills Requested ({requests.length})
+            </h3>
+            <div class="space-y-4">
+              {requests.length > 0 ? (
+                requests.map(profile => (
+                  <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-start">
+                      <div class="flex-shrink-0">
+                        <img 
+                          class="h-12 w-12 rounded-full object-cover" 
+                          src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
+                          alt={profile.data.name} 
+                        />
+                      </div>
+                      <div class="ml-4 flex-1">
+                        <h4 class="text-sm font-bold text-gray-900">{profile.data.name}</h4>
+                        <p class="text-sm text-primary-600 font-medium">{profile.data.skill}</p>
+                        <p class="text-sm text-gray-500 mt-1 line-clamp-2">{profile.data.bio}</p>
+                        <div class="mt-3 flex justify-between items-center">
+                          <span class="text-xs text-gray-400">Posted {new Date(profile.data.dateJoined).toLocaleDateString()}</span>
+                          <a href={`/skills-exchange/profile/${profile.slug}`} class="text-sm font-medium text-primary-600 hover:text-primary-800">
+                            View Profile
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div class="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                  <p class="text-gray-500">No skills requested in this category yet.</p>
+                  <a href="/skills-exchange/request" class="mt-2 inline-block text-sm font-medium text-primary-600 hover:text-primary-500">
+                    Be the first to request a skill
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2"></div>
+
+  <script>
+    const matchBtn = document.getElementById('match-all-btn');
+    
+    if (matchBtn) {
+      matchBtn.addEventListener('click', async () => {
+        const category = matchBtn.dataset.category;
+        const originalText = matchBtn.textContent;
+        
+        // Set loading state
+        matchBtn.disabled = true;
+        matchBtn.textContent = 'Processing...';
+        matchBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        
+        try {
+          const response = await fetch('/api/match-category', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ category })
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok) {
+            showNotification(data.message, 'success');
+          } else {
+            showNotification(data.message || 'Failed to process matches', 'error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showNotification('An unexpected error occurred', 'error');
+        } finally {
+          // Reset button state
+          matchBtn.disabled = false;
+          matchBtn.textContent = originalText;
+          matchBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+      });
+    }
+
+    function showNotification(message, type = 'info') {
+      const container = document.getElementById('notification-container');
+      const notification = document.createElement('div');
+      
+      let bgColor, textColor;
+      switch (type) {
+        case 'success': bgColor = 'bg-green-500'; textColor = 'text-white'; break;
+        case 'error': bgColor = 'bg-red-500'; textColor = 'text-white'; break;
+        default: bgColor = 'bg-blue-500'; textColor = 'text-white';
+      }
+      
+      notification.className = `${bgColor} ${textColor} px-4 py-3 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ease-in-out translate-x-0 mb-2`;
+      notification.innerHTML = `
+        <div class="flex items-center">
+          <div class="flex-1"><p class="text-sm font-medium">${message}</p></div>
+          <button class="ml-4 text-white opacity-75 hover:opacity-100 focus:outline-none" onclick="this.parentElement.parentElement.remove()">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      `;
+      
+      container.appendChild(notification);
+      
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.classList.add('opacity-0', 'translate-x-full');
+          setTimeout(() => notification.remove(), 300);
+        }
+      }, 5000);
+    }
+  </script>
+</MainLayout>

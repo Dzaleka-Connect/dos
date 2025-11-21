@@ -2,26 +2,26 @@
 import WhatsNewWidget from '../WhatsNewWidget.astro';
 const currentPath = Astro.url.pathname;
 
-const navigationLinks = [
+// Primary navigation - most important/frequent pages
+const primaryLinks = [
   { href: '/', label: 'Home', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>' },
-  // { href: '/applications', label: 'Applications', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>' },
   { href: '/services', label: 'Services', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>' },
-  { href: '/skills-exchange', label: 'Skills Exchange', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>' },
+  { href: '/news', label: 'News', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" /><path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" /></svg>' },
+  { href: '/events', label: 'Events', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>' }
+];
+
+// Secondary navigation - dropdown "More" menu
+const moreDropdownLinks = [
+  { href: '/photos', label: 'Photos', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>' },
   { href: '/resources', label: 'Resources', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>' },
-  { href: '/events', label: 'Events', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>' },
+  { href: '/jobs', label: 'Jobs', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" /><path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" /></svg>' },
+  { href: '/docs', label: 'Docs', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" /></svg>' },
   { href: '/about', label: 'About', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
   { href: '/contact', label: 'Contact', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>' }
 ];
 
-const dropdownLinks = [
-  // { href: '/applications', label: 'Applications' },
-  { href: '/services', label: 'Services' },
-  { href: '/skills-exchange', label: 'Skills Exchange' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/events', label: 'Events' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' }
-];
+// All links for mobile menu
+const allMobileLinks = [...primaryLinks, ...moreDropdownLinks];
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
@@ -34,10 +34,10 @@ const dropdownLinks = [
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center justify-between flex-1 ml-12">
-        <div class="flex items-center space-x-3">
-          {navigationLinks.map(({ href, label, icon }) => (
-          <div class="relative">
+      <div class="hidden md:flex items-center ml-12 gap-6">
+        <div class="flex items-center space-x-2">
+          {/* Primary nav links */}
+          {primaryLinks.map(({ href, label, icon }) => (
             <a
               href={href}
               class:list={[
@@ -49,22 +49,41 @@ const dropdownLinks = [
               <Fragment set:html={icon} />
               <span>{label}</span>
             </a>
-            {label === 'More' && (
-              <div class="absolute top-full left-0 w-48 bg-white border border-gray-200 shadow-md">
-                {dropdownLinks.map(({ href, label }) => (
+          ))}
+
+          {/* More dropdown */}
+          <div class="relative group">
+            <button
+              class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors opacity-70 hover:opacity-100"
+              aria-haspopup="true"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+              </svg>
+              <span>More</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Dropdown menu */}
+            <div class="absolute top-full right-0 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-2">
+                {moreDropdownLinks.map(({ href, label, icon }) => (
                   <a
                     href={href}
                     class:list={[
-                      'block px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-primary-600 transition-colors'
+                      'flex items-center space-x-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors',
+                      currentPath === href && 'bg-primary-50 text-primary-600'
                     ]}
                   >
+                    <Fragment set:html={icon} />
                     <span>{label}</span>
                   </a>
                 ))}
               </div>
-            )}
+            </div>
           </div>
-        ))}
         </div>
         <WhatsNewWidget />
       </div>
@@ -100,11 +119,11 @@ const dropdownLinks = [
   <!-- Mobile Menu -->
   <div class="hidden md:hidden" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-      {navigationLinks.map(({ href, label, icon }) => (
+      {allMobileLinks.map(({ href, label, icon }) => (
         <a
           href={href}
           class:list={[
-            'flex items-center space-x-2 px-3 py-4 rounded-md text-base font-medium transition-colors',
+            'flex items-center space-x-2 px-3 py-3 rounded-md text-base font-medium transition-colors',
             currentPath === href
               ? 'text-primary-600 bg-primary-50'
               : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600'
@@ -119,26 +138,21 @@ const dropdownLinks = [
 </nav>
 
 <script>
+  // Mobile menu toggle
   const menuButton = document.getElementById('menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
 
   if (menuButton && mobileMenu) {
     menuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      menuButton.setAttribute('aria-expanded', (!isHidden).toString());
     });
   }
 </script>
 
 <style>
-  .nav-link {
-    @apply flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors opacity-70 hover:opacity-100;
-  }
-
-  .nav-link.active {
-    @apply opacity-100 border-b-2 border-primary-600;
-  }
-
-  .mobile-nav-link {
-    @apply flex items-center space-x-2 px-3 py-4 rounded-md text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors;
+  /* Ensure dropdown stays visible on hover */
+  .group:hover .group-hover\:opacity-100 {
+    pointer-events: auto;
   }
 </style>

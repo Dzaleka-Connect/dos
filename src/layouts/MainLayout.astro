@@ -2,7 +2,8 @@
 import Layout from './Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import PageViewCounter from '../components/analytics/PageViewCounter.astro';
+
+import Toast from '../components/ui/Toast.astro';
 
 interface Props {
 	title: string;
@@ -75,12 +76,23 @@ const ogImage = openGraph?.images?.[0]?.url
 	twitter={twitter}
 >
 	<slot name="head" slot="head" />
+
+  <!-- Skip to content link for accessibility -->
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+  >
+    Skip to main content
+  </a>
+
   <div class="flex flex-col min-h-screen">
     <Header />
-    <main class="flex-grow">
+    <main id="main-content" class="flex-grow">
       <slot />
     </main>
     <Footer />
   </div>
-  <PageViewCounter />
+
+
+  <Toast />
 </Layout>
