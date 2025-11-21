@@ -1,0 +1,286 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+
+const pageTitle = "Submit a Course | Dzaleka E-Learning";
+const description = "Share your knowledge with the community. Submit a course on technology, business, languages, and more.";
+
+const categories = [
+  { value: 'technology', label: 'Technology' },
+  { value: 'business', label: 'Business' },
+  { value: 'languages', label: 'Languages' },
+  { value: 'arts', label: 'Arts & Creative' },
+  { value: 'health', label: 'Health' },
+  { value: 'science', label: 'Science' },
+  { value: 'professional-skills', label: 'Professional Skills' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<MainLayout title={pageTitle} description={description}>
+  <main class="min-h-screen bg-gray-50 py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-10">
+        <div class="text-center mb-10">
+          <h1 class="text-3xl font-bold text-gray-900 mb-3">Submit a Course</h1>
+          <p class="text-gray-600 max-w-lg mx-auto">Share your knowledge and help others learn. Your course will be reviewed by our team before publishing.</p>
+        </div>
+
+        <form id="courseForm" class="space-y-8">
+          <!-- Course Title -->
+          <div>
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Course Title *</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="e.g., Introduction to Python Programming"
+            />
+          </div>
+
+          <!-- Author Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="author" class="block text-sm font-medium text-gray-700 mb-2">Author Name *</label>
+              <input
+                type="text"
+                id="author"
+                name="author"
+                required
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                placeholder="Your name"
+              />
+            </div>
+            <div>
+              <label for="authorEmail" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+              <input
+                type="email"
+                id="authorEmail"
+                name="authorEmail"
+                required
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                placeholder="your@email.com"
+              />
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Course Description *</label>
+            <textarea
+              id="description"
+              name="description"
+              rows="3"
+              required
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="A brief summary of what students will learn..."
+            ></textarea>
+          </div>
+
+          <!-- Category and Level -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <div class="relative">
+                <select
+                  id="category"
+                  name="category"
+                  required
+                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none transition-all"
+                >
+                  <option value="">Select a category</option>
+                  {categories.map(cat => (
+                    <option value={cat.value}>{cat.label}</option>
+                  ))}
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label for="level" class="block text-sm font-medium text-gray-700 mb-2">Difficulty Level *</label>
+              <div class="relative">
+                <select
+                  id="level"
+                  name="level"
+                  required
+                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none transition-all"
+                >
+                  <option value="">Select level</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div>
+            <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">Estimated Duration *</label>
+            <input
+              type="text"
+              id="duration"
+              name="duration"
+              required
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="e.g., 4 weeks, 10 hours, 2 days"
+            />
+          </div>
+
+          <!-- Course Content -->
+          <div>
+            <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Course Content *</label>
+            <p class="text-xs text-gray-500 mb-3">Write your course content using Markdown. Include modules, lessons, resources, and any relevant information.</p>
+            <textarea
+              id="content"
+              name="content"
+              rows="12"
+              required
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent font-mono text-sm transition-all"
+              placeholder="## Course Overview
+
+Write an introduction to your course here...
+
+## What You'll Learn
+
+- Skill 1
+- Skill 2
+- Skill 3
+
+## Module 1: Getting Started
+
+Content for module 1...
+
+## Module 2: Advanced Topics
+
+Content for module 2...
+
+## Resources
+
+- [Resource 1](https://example.com)
+- [Resource 2](https://example.com)"
+            ></textarea>
+          </div>
+
+          <!-- Video URL -->
+          <div>
+            <label for="videoUrl" class="block text-sm font-medium text-gray-700 mb-2">Video URL (optional)</label>
+            <input
+              type="url"
+              id="videoUrl"
+              name="videoUrl"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="https://www.youtube.com/embed/..."
+            />
+            <p class="text-xs text-gray-500 mt-1.5">YouTube embed URL for course intro video</p>
+          </div>
+
+          <!-- External Link -->
+          <div>
+            <label for="externalLink" class="block text-sm font-medium text-gray-700 mb-2">External Course Link (optional)</label>
+            <input
+              type="url"
+              id="externalLink"
+              name="externalLink"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="https://..."
+            />
+            <p class="text-xs text-gray-500 mt-1.5">Link to your course on an external platform</p>
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags / Keywords</label>
+            <input
+              type="text"
+              id="tags"
+              name="tags"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              placeholder="python, programming, beginner, coding (comma separated)"
+            />
+          </div>
+
+          <!-- Submit -->
+          <div class="pt-4">
+            <button
+              type="submit"
+              class="w-full bg-primary-600 text-white py-4 px-6 rounded-xl font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            >
+              Submit Course for Review
+            </button>
+            <p class="text-center text-sm text-gray-500 mt-4">
+              Your course will be reviewed before publishing. You'll receive an email confirmation.
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="/e-learning/courses" class="text-gray-500 hover:text-primary-600 font-medium transition-colors inline-flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Courses
+        </a>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<script>
+  document.getElementById('courseForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target as HTMLFormElement;
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalText = submitBtn.textContent;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    const formData = new FormData(form);
+    const data: Record<string, any> = {};
+
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    // Convert tags string to array
+    if (data.tags) {
+      data.tags = data.tags.split(',').map((tag: string) => tag.trim()).filter(Boolean);
+    }
+
+    try {
+      const isDev = window.location.hostname === 'localhost';
+      const apiUrl = isDev
+        ? 'http://localhost:9999/.netlify/functions/submit-course'
+        : '/.netlify/functions/submit-course';
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        window.location.href = '/e-learning/courses/submit-success';
+      } else {
+        throw new Error('Failed to submit');
+      }
+    } catch (error) {
+      alert('There was an error submitting your course. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+</script>

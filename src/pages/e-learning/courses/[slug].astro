@@ -1,0 +1,358 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+  return courses.map(course => ({
+    params: { slug: course.slug },
+    props: { course },
+  }));
+}
+
+const { course } = Astro.props;
+const { Content, headings } = await course.render();
+
+// Filter for top-level modules (H2)
+const moduleHeadings = headings.filter(h => h.depth === 2);
+
+const levelColors = {
+  beginner: 'bg-green-100 text-green-700',
+  intermediate: 'bg-yellow-100 text-yellow-700',
+  advanced: 'bg-red-100 text-red-700',
+};
+
+const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<MainLayout
+  title={`${course.data.title} | Dzaleka E-Learning`}
+  description={course.data.description}
+  image={course.data.thumbnail}
+>
+  <main class="min-h-screen bg-white">
+    <!-- Header -->
+    <header class="relative bg-gradient-to-br from-primary-50 to-white border-b border-gray-100 pt-12 pb-16">
+      <div class="absolute inset-0 bg-grid-slate-900/[0.04] -z-10"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="mb-8">
+          <ol class="flex items-center space-x-2 text-sm text-gray-500">
+            <li><a href="/e-learning" class="hover:text-primary-600 transition-colors">E-Learning</a></li>
+            <li><span class="text-gray-300">/</span></li>
+            <li><a href="/e-learning/courses" class="hover:text-primary-600 transition-colors">Courses</a></li>
+            <li><span class="text-gray-300">/</span></li>
+            <li class="text-gray-900 font-medium truncate max-w-[200px]">{course.data.title}</li>
+          </ol>
+        </nav>
+
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <span class={`text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide ${levelColors[course.data.level || 'beginner']}`}>
+            {course.data.level || 'Beginner'}
+          </span>
+          <span class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-full capitalize shadow-sm">
+            {course.data.category.replace('-', ' ')}
+          </span>
+          <span class="flex items-center text-xs font-medium text-gray-500 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
+            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            {course.data.duration}
+          </span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
+          {course.data.title}
+        </h1>
+        
+        <div class="flex items-center gap-4 text-gray-600">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm">
+              {course.data.author.charAt(0)}
+            </div>
+            <span class="font-medium text-gray-900">{course.data.author}</span>
+          </div>
+          <span class="text-gray-300">•</span>
+          <span class="text-sm">{formattedDate}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="lg:grid lg:grid-cols-12 lg:gap-12">
+        
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="hidden lg:block lg:col-span-3">
+          <div class="sticky top-24">
+            <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Course Modules</h3>
+            <nav class="space-y-1" id="course-nav">
+              {moduleHeadings.map((heading) => (
+                <a 
+                  href={`#${heading.slug}`}
+                  class="group flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-primary-600 transition-colors border-l-2 border-transparent"
+                  data-target={heading.slug}
+                >
+                  <span class="truncate">{heading.text}</span>
+                </a>
+              ))}
+            </nav>
+
+            <div class="mt-8 pt-8 border-t border-gray-100">
+              <a href="/e-learning/courses" class="text-sm text-gray-500 hover:text-primary-600 flex items-center transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Courses
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <article class="lg:col-span-9">
+          <!-- Mobile Table of Contents -->
+          <div class="lg:hidden mb-8 bg-gray-50 rounded-xl p-4 border border-gray-100">
+            <details class="group">
+              <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
+                <span>Table of Contents</span>
+                <span class="transition group-open:rotate-180">
+                  <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                </span>
+              </summary>
+              <div class="text-gray-600 mt-3 group-open:animate-fadeIn">
+                <nav class="flex flex-col space-y-2">
+                  {moduleHeadings.map((heading) => (
+                    <a href={`#${heading.slug}`} class="text-sm py-1 hover:text-primary-600 truncate">
+                      {heading.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </details>
+          </div>
+
+          {course.data.videoUrl && (
+            <div class="aspect-video mb-12 rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-900/5">
+              <iframe
+                src={course.data.videoUrl}
+                class="w-full h-full"
+                allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              ></iframe>
+            </div>
+          )}
+
+          <div class="course-content prose prose-lg prose-primary max-w-none">
+            <Content />
+          </div>
+
+          <!-- Bottom CTA -->
+          <div class="mt-20 pt-10 border-t border-gray-100">
+            <div class="flex flex-col sm:flex-row gap-6 justify-between items-center">
+              <div class="hidden lg:block">
+                <!-- Spacer for layout balance if needed, or additional info -->
+              </div>
+              {course.data.externalLink && (
+                <a
+                  href={course.data.externalLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 w-full sm:w-auto justify-center"
+                >
+                  Access External Course
+                  <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<script>
+  // Active Section Highlighting
+  document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px', // Highlight when section is near top
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (id) {
+            // Remove active class from all links
+            document.querySelectorAll('#course-nav a').forEach(link => {
+              link.classList.remove('bg-primary-50', 'text-primary-700', 'border-primary-600');
+              link.classList.add('text-gray-600', 'border-transparent');
+            });
+
+            // Add active class to current link
+            const activeLink = document.querySelector(`#course-nav a[href="#${id}"]`);
+            if (activeLink) {
+              activeLink.classList.remove('text-gray-600', 'border-transparent');
+              activeLink.classList.add('bg-primary-50', 'text-primary-700', 'border-primary-600');
+            }
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe all H2s in the content
+    document.querySelectorAll('.course-content h2').forEach(section => {
+      observer.observe(section);
+    });
+  });
+</script>
+
+<style is:global>
+  /* Course Content Styling */
+  .course-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #374151;
+  }
+
+  .course-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f3f4f6;
+    scroll-margin-top: 100px; /* For sticky header offset */
+  }
+
+  .course-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 2rem 0 1rem;
+    scroll-margin-top: 100px;
+  }
+
+  .course-content p {
+    margin: 1rem 0;
+  }
+
+  .course-content ul, .course-content ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+  }
+  
+  .course-content ol {
+    list-style-type: decimal;
+  }
+
+  .course-content li {
+    margin: 0.5rem 0;
+  }
+
+  .course-content a {
+    color: #2563eb;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .course-content a:hover {
+    color: #1d4ed8;
+  }
+
+  .course-content code {
+    background: #f3f4f6;
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-family: 'Fira Code', 'Monaco', monospace;
+    color: #db2777;
+  }
+
+  .course-content pre {
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 1.25rem;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .course-content pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  .course-content strong {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .course-content hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 3rem 0;
+  }
+
+  /* Table Styling within content */
+  .course-content table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .course-content th {
+    background: #f9fafb;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .course-content td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .course-content tr:hover {
+    background: #f9fafb;
+  }
+
+  /* Blockquote */
+  .course-content blockquote {
+    border-left: 4px solid #2563eb;
+    background: #eff6ff;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #1e40af;
+  }
+
+  /* Images */
+  .course-content img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Legacy Module Nav Support (Optional, can be hidden if desired) */
+  .module-nav {
+    display: none; /* Hiding the manual nav since we have the sidebar now */
+  }
+</style>

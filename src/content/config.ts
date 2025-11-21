@@ -492,8 +492,33 @@ const marketplaceCollection = defineCollection({
   schema: marketplaceSchema,
 });
 
+// Define the course schema
+const courseSchema = z.object({
+  title: z.string(),
+  author: z.string(),
+  authorEmail: z.string().optional(),
+  description: z.string(),
+  category: z.enum(['technology', 'business', 'languages', 'arts', 'health', 'science', 'professional-skills', 'other']),
+  duration: z.string(),
+  level: z.enum(['beginner', 'intermediate', 'advanced']).optional().default('beginner'),
+  tags: z.array(z.string()).optional(),
+  thumbnail: z.string().optional(),
+  videoUrl: z.string().optional(),
+  externalLink: z.string().url().optional(),
+  featured: z.boolean().optional(),
+  status: z.enum(['published', 'draft', 'pending']).default('pending'),
+  datePublished: z.coerce.date(),
+  lastUpdated: z.coerce.date().optional(),
+});
+
+const coursesCollection = defineCollection({
+  type: 'content',
+  schema: courseSchema,
+});
+
 // Export collections
 export const collections = {
+  courses: coursesCollection,
   profiles: profilesCollection,
   services: servicesCollection,
   resources: resourcesCollection,
