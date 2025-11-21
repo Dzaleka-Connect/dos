@@ -27,15 +27,5 @@ export default defineConfig({
       wrap: true
     },
     rehypePlugins: []
-  },
-  vite: {
-    optimizeDeps: {
-      exclude: ['googleapis', 'googleapis-common']
-    },
-    build: {
-      commonjsOptions: {
-        include: [/googleapis/, /node_modules/]
-      }
-    }
   }
 });
