@@ -24,7 +24,7 @@ export const POST: APIRoute = async ({ request }) => {
         // Send email notification
         try {
             await resend.emails.send({
-                from: 'Dzaleka Online Services <onboarding@dzaleka.com>', // verified domain in production
+                from: 'Dzaleka Online Services <onboarding@dzaleka.com>',
                 to: 'dzalekaconnect@gmail.com', // admin email
                 subject: `New Community Voice Submission: ${title}`,
                 html: `

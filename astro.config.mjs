@@ -6,15 +6,17 @@ import remarkSlug from 'remark-slug';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 
+import netlify from '@astrojs/netlify';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://services.dzaleka.com',
-  output: process.env.NETLIFY ? 'static' : 'hybrid',
-  ...(process.env.NETLIFY ? {} : {
-    adapter: node({
+  output: 'hybrid',
+  adapter: process.env.NETLIFY
+    ? netlify()
+    : node({
       mode: 'standalone'
-    })
-  }),
+    }),
   integrations: [
     tailwind(),
     mdx(),

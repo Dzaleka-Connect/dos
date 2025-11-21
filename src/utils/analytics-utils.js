@@ -51,14 +51,14 @@ export function exportAnalyticsData(data) {
   try {
     const dataStr = JSON.stringify(data, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    
+
     const exportFileDefaultName = 'dzaleka_analytics_' + new Date().toISOString().split('T')[0] + '.json';
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
-    
+
     return true;
   } catch (error) {
     console.error('Error exporting analytics data:', error);
@@ -80,7 +80,7 @@ export function downloadFile(content, type, filename) {
 
 export function convertToCSV(data) {
   const locationStats = getLocationStats(data);
-  
+
   const rows = [
     ['Metric', 'Value'],
     ['Total Views', data.totalViews || 0],
@@ -92,7 +92,7 @@ export function convertToCSV(data) {
     ['Top Country', locationStats.topCountry ? locationStats.topCountry.name : 'N/A'],
     ['Top Country Visits', locationStats.topCountry ? locationStats.topCountry.visits : 0]
   ];
-  
+
   // Add location breakdown
   if (Object.keys(data.locations || {}).length > 0) {
     rows.push(['', '']); // Empty row
@@ -103,7 +103,7 @@ export function convertToCSV(data) {
         rows.push([country, locationData.visits]);
       });
   }
-  
+
   return rows.map(row => row.join(',')).join('\n');
 }
 
@@ -142,7 +142,7 @@ export function cleanupOldData(data) {
     // Keep only last 3 days of visitor data (reduced from 7)
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-    
+
     if (data.visitors) {
       Object.keys(data.visitors).forEach(date => {
         if (new Date(date) < threeDaysAgo) {
@@ -150,7 +150,7 @@ export function cleanupOldData(data) {
         }
       });
     }
-    
+
     // Keep only last 25 sessions (reduced from 50)
     if (data.sessions) {
       const sessionIds = Object.keys(data.sessions);
@@ -158,13 +158,13 @@ export function cleanupOldData(data) {
         const oldestSessions = sessionIds
           .sort((a, b) => new Date(data.sessions[a].startTime) - new Date(data.sessions[b].startTime))
           .slice(0, sessionIds.length - 25);
-        
+
         oldestSessions.forEach(id => {
           delete data.sessions[id];
           if (data.locations?.[id]) delete data.locations[id];
         });
       }
-      
+
       // Clean up session data to keep only essential information
       Object.values(data.sessions).forEach(session => {
         // Keep only last 5 pages visited
@@ -187,10 +187,10 @@ export function cleanupOldData(data) {
         Object.assign(session, essentialData);
       });
     }
-    
+
     // Clean up error data (now stored in interactions)
     // Errors are now tracked via trackUserInteraction, so we don't need this cleanup
-    
+
     // Clean up engagement data
     if (data.engagement) {
       // Keep only last 3 days of engagement data
@@ -199,15 +199,15 @@ export function cleanupOldData(data) {
           data.engagement[key] = data.engagement[key].slice(-3);
         }
       });
-      
+
       // Remove detailed interaction data
       delete data.engagement.interactions;
       delete data.engagement.timeOnElements;
     }
-    
+
     // Remove detailed interaction logs
     delete data.interactions;
-    
+
     // Clean up performance data
     if (data.performance) {
       // Keep only last 3 days of performance data
@@ -217,7 +217,7 @@ export function cleanupOldData(data) {
         }
       });
     }
-    
+
     return data;
   } catch (error) {
     console.error('Error cleaning up old data:', error);
@@ -232,11 +232,11 @@ export function compressData(data) {
     const jsonString = JSON.stringify(data);
     // Remove null and undefined values
     const cleanedString = jsonString.replace(/"[^"]+":null/g, '')
-                                   .replace(/"[^"]+":undefined/g, '')
-                                   .replace(/,{2,}/g, ',')
-                                   .replace(/\[{2,}/g, '[')
-                                   .replace(/\]{2,}/g, ']')
-                                   .replace(/\s+/g, '');
+      .replace(/"[^"]+":undefined/g, '')
+      .replace(/,{2,}/g, ',')
+      .replace(/\[{2,}/g, '[')
+      .replace(/\]{2,}/g, ']')
+      .replace(/\s+/g, '');
     return cleanedString;
   } catch (error) {
     console.error('Error compressing data:', error);
@@ -249,15 +249,15 @@ export async function backupAnalyticsData(data) {
   try {
     // Clean up old data first
     const cleanedData = cleanupOldData(data);
-    
+
     // Compress the data
     const compressedData = compressData(cleanedData);
     if (!compressedData) return false;
-    
+
     // Check if we're within storage limits
     if (compressedData.length > MAX_BACKUP_SIZE) {
       console.warn('Backup data exceeds size limit, performing additional cleanup');
-      
+
       // Additional aggressive cleanup
       const aggressiveCleanup = (data) => {
         // Remove detailed data
@@ -268,7 +268,7 @@ export async function backupAnalyticsData(data) {
         delete data.vitals;
         delete data.journeys;
         delete data.content;
-        
+
         // Keep only last 24 hours of visitor data
         if (data.visitors) {
           const oneDayAgo = new Date();
@@ -279,7 +279,7 @@ export async function backupAnalyticsData(data) {
             }
           });
         }
-        
+
         // Keep only last 10 sessions
         if (data.sessions) {
           const sessionIds = Object.keys(data.sessions);
@@ -287,13 +287,13 @@ export async function backupAnalyticsData(data) {
             const oldestSessions = sessionIds
               .sort((a, b) => new Date(data.sessions[a].startTime) - new Date(data.sessions[b].startTime))
               .slice(0, sessionIds.length - 10);
-            
+
             oldestSessions.forEach(id => {
               delete data.sessions[id];
               if (data.locations?.[id]) delete data.locations[id];
             });
           }
-          
+
           // Further clean up session data
           Object.values(data.sessions).forEach(session => {
             // Keep only last 3 pages visited
@@ -312,7 +312,7 @@ export async function backupAnalyticsData(data) {
             Object.assign(session, essentialData);
           });
         }
-        
+
         // Clean up engagement data
         if (data.engagement) {
           Object.keys(data.engagement).forEach(key => {
@@ -321,13 +321,13 @@ export async function backupAnalyticsData(data) {
             }
           });
         }
-        
+
         return data;
       };
-      
+
       const aggressivelyCleanedData = aggressiveCleanup(cleanedData);
       const recompressedData = compressData(aggressivelyCleanedData);
-      
+
       if (!recompressedData || recompressedData.length > MAX_BACKUP_SIZE) {
         // If still too large, keep only essential data
         const essentialData = {
@@ -336,7 +336,7 @@ export async function backupAnalyticsData(data) {
           lastVisit: new Date().toISOString(),
           pageViews: cleanedData.pageViews || {}
         };
-        
+
         const finalData = compressData(essentialData);
         if (!finalData || finalData.length > MAX_BACKUP_SIZE) {
           throw new Error('Data too large even after cleanup');
@@ -348,7 +348,7 @@ export async function backupAnalyticsData(data) {
     } else {
       localStorage.setItem('dzaleka_analytics_backup', compressedData);
     }
-    
+
     return true;
   } catch (error) {
     console.error('Error backing up analytics data:', error);
@@ -361,10 +361,10 @@ export async function restoreFromBackup() {
   try {
     const backup = localStorage.getItem('dzaleka_analytics_backup');
     if (!backup) return null;
-    
+
     const backups = JSON.parse(backup);
     if (backups.length === 0) return null;
-    
+
     // Get most recent backup
     const latestBackup = backups[backups.length - 1];
     return latestBackup.data;
@@ -389,7 +389,7 @@ export async function getAnalyticsData() {
       parsedData.totalViews = getTotalViews();
       return parsedData;
     }
-    
+
     // Try to restore from backup
     const backupData = await restoreFromBackup();
     if (backupData) {
@@ -398,7 +398,7 @@ export async function getAnalyticsData() {
       await storeAnalyticsData(backupData);
       return backupData;
     }
-    
+
     // If no data exists, initialize with empty structure
     const emptyData = {
       pageViews: {},
@@ -492,10 +492,10 @@ export function getBrowserName() {
 // Track page load performance
 export function trackPagePerformance() {
   if (!window.performance || !window.performance.timing) return null;
-  
+
   const timing = window.performance.timing;
   const now = Date.now();
-  
+
   // Calculate metrics in milliseconds
   const metrics = {
     loadTime: now - timing.navigationStart,
@@ -508,12 +508,12 @@ export function trackPagePerformance() {
     domInteractive: timing.domInteractive - timing.navigationStart,
     domComplete: timing.domComplete - timing.navigationStart
   };
-  
+
   // Ensure all values are positive and valid
   Object.keys(metrics).forEach(key => {
     metrics[key] = Math.max(0, metrics[key]);
   });
-  
+
   return metrics;
 }
 
@@ -535,12 +535,12 @@ export function trackInteraction(type, element) {
 
     const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
     const deviceSessionId = `${sessionId}_${deviceId}`;
-    
+
     // Initialize sessions if it doesn't exist
     if (!data.sessions) {
       data.sessions = {};
     }
-    
+
     // Initialize or update session data
     if (!data.sessions[deviceSessionId]) {
       data.sessions[deviceSessionId] = {
@@ -555,25 +555,25 @@ export function trackInteraction(type, element) {
         pages: []
       };
     }
-    
+
     // Ensure interactions array exists
     if (!data.sessions[deviceSessionId].interactions) {
       data.sessions[deviceSessionId].interactions = [];
     }
-    
+
     // Add the interaction
     data.sessions[deviceSessionId].interactions.push({
       type,
       element,
       timestamp: new Date().toISOString()
     });
-    
+
     // Update last active time
     data.sessions[deviceSessionId].lastActive = new Date().toISOString();
-    
+
     // Store the updated data
     storeAnalyticsData(data);
-    
+
   } catch (error) {
     console.error('Error tracking interaction:', error);
   }
@@ -587,8 +587,8 @@ export function calculateAverageLoadTime(data) {
   const loadTimes = sessions
     .filter(session => session.performance?.loadTime)
     .map(session => session.performance.loadTime);
-  
-  return loadTimes.length > 0 
+
+  return loadTimes.length > 0
     ? Math.round(loadTimes.reduce((a, b) => a + b, 0) / loadTimes.length)
     : 0;
 }
@@ -598,7 +598,7 @@ export function calculateAverageServerResponse(data) {
   const responseTimes = sessions
     .filter(session => session.performance?.serverResponse)
     .map(session => session.performance.serverResponse);
-  
+
   return responseTimes.length > 0
     ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
     : 0;
@@ -609,7 +609,7 @@ export function calculateAverageResourceLoad(data) {
   const loadTimes = sessions
     .filter(session => session.performance?.resourceLoad)
     .map(session => session.performance.resourceLoad);
-  
+
   return loadTimes.length > 0
     ? Math.round(loadTimes.reduce((a, b) => a + b, 0) / loadTimes.length)
     : 0;
@@ -620,7 +620,7 @@ export function calculateAverageDnsLookup(data) {
   const times = sessions
     .filter(session => session.performance?.dnsLookup)
     .map(session => session.performance.dnsLookup);
-  
+
   return times.length > 0
     ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
     : 0;
@@ -631,7 +631,7 @@ export function calculateAverageTcpConnection(data) {
   const times = sessions
     .filter(session => session.performance?.tcpConnection)
     .map(session => session.performance.tcpConnection);
-  
+
   return times.length > 0
     ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
     : 0;
@@ -642,7 +642,7 @@ export function calculateAverageDomInteractive(data) {
   const times = sessions
     .filter(session => session.performance?.domInteractive)
     .map(session => session.performance.domInteractive);
-  
+
   return times.length > 0
     ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
     : 0;
@@ -653,7 +653,7 @@ export function calculateAverageDomComplete(data) {
   const times = sessions
     .filter(session => session.performance?.domComplete)
     .map(session => session.performance.domComplete);
-  
+
   return times.length > 0
     ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
     : 0;
@@ -673,8 +673,8 @@ export function trackEngagement(data, type) {
     linkClicks: {},
     timeOnElements: {}
   };
-  
-  switch(type) {
+
+  switch (type) {
     case 'click':
       data.engagement.clicks++;
       break;
@@ -688,7 +688,7 @@ export function trackEngagement(data, type) {
       data.engagement.videoPlays++;
       break;
   }
-  
+
   return data;
 }
 
@@ -703,7 +703,7 @@ export function trackWebVitals(data) {
     cls: [], // Cumulative Layout Shift
     ttfb: [] // Time to First Byte
   };
-  
+
   if ('PerformanceObserver' in window) {
     // Track FCP
     new PerformanceObserver((list) => {
@@ -716,7 +716,7 @@ export function trackWebVitals(data) {
         storeAnalyticsData(data);
       });
     }).observe({ entryTypes: ['paint'] });
-    
+
     // Track LCP
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
@@ -749,7 +749,7 @@ export function trackUserJourney(data) {
     if (!data.journeys) {
       data.journeys = {};
     }
-    
+
     // Initialize session journey if it doesn't exist
     if (!data.journeys[sessionId]) {
       data.journeys[sessionId] = {
@@ -761,14 +761,14 @@ export function trackUserJourney(data) {
         searchBehavior: []
       };
     }
-    
+
     // Track page navigation
     data.journeys[sessionId].path.push({
       page: window.location.pathname,
       timestamp: new Date().toISOString(),
       referrer: document.referrer
     });
-    
+
     return data;
   } catch (error) {
     console.error('Error tracking user journey:', error);
@@ -786,13 +786,13 @@ function escapeSelector(str) {
 function getElementPath(element) {
   try {
     if (!element || !element.tagName) return '';
-    
+
     const path = [];
     let currentElement = element;
-    
+
     while (currentElement) {
       let selector = currentElement.tagName.toLowerCase();
-      
+
       // Add id if exists
       if (currentElement.id) {
         // Escape special characters in ID
@@ -802,11 +802,11 @@ function getElementPath(element) {
         const classes = Array.from(currentElement.classList)
           .map(className => escapeSelector(className))
           .join('.');
-        
+
         if (classes) {
           selector += `.${classes}`;
         }
-        
+
         // Add position among siblings if no unique identifier
         try {
           if (!currentElement.id && (!classes || document.querySelectorAll(selector).length > 1)) {
@@ -821,14 +821,14 @@ function getElementPath(element) {
           selector += `:nth-child(${index})`;
         }
       }
-      
+
       path.unshift(selector);
       currentElement = currentElement.parentElement;
-      
+
       // Limit path length to prevent extremely long selectors
       if (path.length >= 5) break;
     }
-    
+
     // Validate the final selector before returning
     const finalPath = path.join(' > ');
     try {
@@ -889,7 +889,7 @@ export function trackContentInteraction(data) {
           console.error('Error tracking reading depth:', error);
         }
       });
-    }, { 
+    }, {
       threshold: [0, 0.25, 0.5, 0.75, 1],
       rootMargin: '0px'
     });
@@ -897,13 +897,13 @@ export function trackContentInteraction(data) {
     // Track content changes with throttling
     let lastContentUpdate = 0;
     const THROTTLE_DELAY = 2000; // 2 seconds
-    
+
     const contentObserver = new MutationObserver((mutations) => {
       const now = Date.now();
       if (now - lastContentUpdate < THROTTLE_DELAY) return;
-      
+
       lastContentUpdate = now;
-      
+
       mutations.forEach(mutation => {
         try {
           if (mutation.type === 'childList' || mutation.type === 'characterData') {
@@ -1006,7 +1006,7 @@ async function getLocationData() {
     if (!response.ok) {
       throw new Error('Failed to fetch location data');
     }
-    
+
     const locationData = await response.json();
     return {
       country: locationData.country_name || 'Unknown',
@@ -1034,7 +1034,7 @@ function getEnhancedDeviceInfo() {
   const userAgent = navigator.userAgent;
   const platform = navigator.platform;
   const vendor = navigator.vendor;
-  
+
   // Operating System detection
   let os = 'Unknown';
   if (userAgent.includes('Windows')) os = 'Windows';
@@ -1042,7 +1042,7 @@ function getEnhancedDeviceInfo() {
   else if (userAgent.includes('Linux')) os = 'Linux';
   else if (userAgent.includes('Android')) os = 'Android';
   else if (userAgent.includes('iOS')) os = 'iOS';
-  
+
   // Browser detection
   let browser = 'Unknown';
   let browserVersion = 'Unknown';
@@ -1059,11 +1059,11 @@ function getEnhancedDeviceInfo() {
     browser = 'Edge';
     browserVersion = userAgent.match(/Edge\/(\d+)/)?.[1] || 'Unknown';
   }
-  
+
   // Connection information
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const connectionType = connection ? connection.effectiveType || connection.type || 'Unknown' : 'Unknown';
-  
+
   return {
     os,
     browser,
@@ -1085,11 +1085,11 @@ function getEnhancedDeviceInfo() {
 function getReferrerInfo() {
   const referrer = document.referrer;
   if (!referrer) return { type: 'direct', source: 'Direct' };
-  
+
   try {
     const url = new URL(referrer);
     const hostname = url.hostname.toLowerCase();
-    
+
     // Social media detection
     if (hostname.includes('facebook.com')) return { type: 'social', source: 'Facebook' };
     if (hostname.includes('twitter.com') || hostname.includes('x.com')) return { type: 'social', source: 'Twitter' };
@@ -1097,18 +1097,18 @@ function getReferrerInfo() {
     if (hostname.includes('linkedin.com')) return { type: 'social', source: 'LinkedIn' };
     if (hostname.includes('youtube.com')) return { type: 'social', source: 'YouTube' };
     if (hostname.includes('tiktok.com')) return { type: 'social', source: 'TikTok' };
-    
+
     // Search engine detection
     if (hostname.includes('google.com')) return { type: 'search', source: 'Google' };
     if (hostname.includes('bing.com')) return { type: 'search', source: 'Bing' };
     if (hostname.includes('yahoo.com')) return { type: 'search', source: 'Yahoo' };
     if (hostname.includes('duckduckgo.com')) return { type: 'search', source: 'DuckDuckGo' };
-    
+
     // Email detection
     if (hostname.includes('mail.google.com') || hostname.includes('outlook.com') || hostname.includes('yahoo.com')) {
       return { type: 'email', source: 'Email' };
     }
-    
+
     return { type: 'referral', source: hostname };
   } catch (error) {
     return { type: 'referral', source: 'Unknown' };
@@ -1124,7 +1124,7 @@ export async function trackPageView() {
     const sessionId = getSessionId();
     const deviceId = `${getDeviceType()}_${getBrowserName()}_${window.innerWidth}x${window.innerHeight}`;
     const deviceSessionId = `${sessionId}_${deviceId}`;
-    
+
     // Ensure data structures exist
     data.sessions = data.sessions || {};
     data.pageViews = data.pageViews || {};
@@ -1136,21 +1136,21 @@ export async function trackPageView() {
     data.connectionTypes = data.connectionTypes || {};
     data.screenSizes = data.screenSizes || {};
     data.timeOnPage = data.timeOnPage || {};
-    
+
     // Get enhanced device and referrer information
     const deviceInfo = getEnhancedDeviceInfo();
     const referrerInfo = getReferrerInfo();
-    
+
     // Get location data (only for new sessions to avoid excessive API calls)
     let locationData = null;
     if (!data.sessions[deviceSessionId]) {
       locationData = await getLocationData();
     }
-    
+
     // Update page views and total views
     data.pageViews[path] = (data.pageViews[path] || 0) + 1;
     data.totalViews = updateTotalViews(); // Update total views immediately
-    
+
     // Update session data
     if (!data.sessions[deviceSessionId]) {
       data.sessions[deviceSessionId] = {
@@ -1179,7 +1179,7 @@ export async function trackPageView() {
         pageLoadTime: performance.now(),
         userAgent: navigator.userAgent
       };
-      
+
       // Update location statistics
       if (locationData) {
         const countryKey = locationData.country;
@@ -1196,22 +1196,22 @@ export async function trackPageView() {
         data.locations[countryKey].sessions.push(deviceSessionId);
         data.locations[countryKey].lastVisit = timestamp;
       }
-      
+
       // Update enhanced statistics
       // Operating Systems
       data.operatingSystems[deviceInfo.os] = (data.operatingSystems[deviceInfo.os] || 0) + 1;
-      
+
       // Browser Versions
       const browserKey = `${deviceInfo.browser} ${deviceInfo.browserVersion}`;
       data.browserVersions[browserKey] = (data.browserVersions[browserKey] || 0) + 1;
-      
+
       // Connection Types
       data.connectionTypes[deviceInfo.connectionType] = (data.connectionTypes[deviceInfo.connectionType] || 0) + 1;
-      
+
       // Screen Sizes
       const screenKey = `${deviceInfo.screenWidth}x${deviceInfo.screenHeight}`;
       data.screenSizes[screenKey] = (data.screenSizes[screenKey] || 0) + 1;
-      
+
       // Referrers
       const referrerKey = referrerInfo.source;
       data.referrers[referrerKey] = (data.referrers[referrerKey] || 0) + 1;
@@ -1220,7 +1220,7 @@ export async function trackPageView() {
       data.sessions[deviceSessionId].pageViews += 1;
       data.sessions[deviceSessionId].pages.push(path);
     }
-    
+
     // Update visitor data
     const today = timestamp.split('T')[0];
     data.visitors[today] = data.visitors[today] || [];
@@ -1233,10 +1233,10 @@ export async function trackPageView() {
     if (!data.visitors[today].some(v => v.id === visitorEntry.id && v.deviceId === visitorEntry.deviceId)) {
       data.visitors[today].push(visitorEntry);
     }
-    
+
     // Store updated data
     await storeAnalyticsData(data);
-    
+
     return data;
   } catch (error) {
     console.error('Error tracking page view:', error);
@@ -1255,7 +1255,7 @@ export function trackUserInteraction(type, details = {}) {
   try {
     const timestamp = new Date().toISOString();
     const sessionId = getSessionId();
-    
+
     // Store interaction data
     const interactionData = {
       type,
@@ -1265,18 +1265,18 @@ export function trackUserInteraction(type, details = {}) {
       page: window.location.pathname,
       userAgent: navigator.userAgent
     };
-    
+
     // Store in localStorage for now (could be sent to server)
     const interactions = JSON.parse(localStorage.getItem('dzaleka_interactions') || '[]');
     interactions.push(interactionData);
-    
+
     // Keep only last 1000 interactions to prevent storage bloat
     if (interactions.length > 1000) {
       interactions.splice(0, interactions.length - 1000);
     }
-    
+
     localStorage.setItem('dzaleka_interactions', JSON.stringify(interactions));
-    
+
     return true;
   } catch (error) {
     console.error('Error tracking user interaction:', error);
@@ -1288,15 +1288,15 @@ export function trackUserInteraction(type, details = {}) {
 export function trackScrollDepth() {
   let maxScroll = 0;
   let scrollTracked = false;
-  
+
   window.addEventListener('scroll', () => {
     const scrollPercent = Math.round(
       (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
     );
-    
+
     if (scrollPercent > maxScroll) {
       maxScroll = scrollPercent;
-      
+
       // Track significant scroll milestones
       if (!scrollTracked && maxScroll >= 25) {
         trackUserInteraction('scroll_25', { depth: maxScroll });
@@ -1326,7 +1326,7 @@ export function trackFormInteractions() {
       formElements: form.elements.length
     });
   });
-  
+
   document.addEventListener('input', (e) => {
     const input = e.target;
     if (input.form) {
@@ -1379,7 +1379,7 @@ export function trackVideoInteractions() {
         currentTime: video.currentTime
       });
     });
-    
+
     video.addEventListener('pause', () => {
       trackUserInteraction('video_pause', {
         src: video.src,
@@ -1387,7 +1387,7 @@ export function trackVideoInteractions() {
         progress: Math.round((video.currentTime / video.duration) * 100)
       });
     });
-    
+
     video.addEventListener('ended', () => {
       trackUserInteraction('video_complete', {
         src: video.src,
@@ -1411,7 +1411,7 @@ export function trackSearchBehavior() {
         });
       }
     });
-    
+
     input.addEventListener('search', (e) => {
       const query = e.target.value;
       if (query) {
@@ -1432,31 +1432,31 @@ export function trackPerformanceMetrics() {
       setTimeout(() => {
         const perfData = performance.getEntriesByType('navigation')[0];
         const paintEntries = performance.getEntriesByType('paint');
-        
+
         const metrics = {
           // Navigation timing
           domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
           loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
           domInteractive: perfData.domInteractive,
           domComplete: perfData.domComplete,
-          
+
           // Paint timing
           firstPaint: paintEntries.find(entry => entry.name === 'first-paint')?.startTime || 0,
           firstContentfulPaint: paintEntries.find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
-          
+
           // Resource timing
           totalResources: performance.getEntriesByType('resource').length,
           totalResourceSize: performance.getEntriesByType('resource').reduce((sum, resource) => sum + (resource.transferSize || 0), 0),
-          
+
           // Memory usage (if available)
           memoryUsed: performance.memory?.usedJSHeapSize || 0,
           memoryTotal: performance.memory?.totalJSHeapSize || 0,
-          
+
           // Connection info
           connectionType: navigator.connection?.effectiveType || 'unknown',
           connectionSpeed: navigator.connection?.downlink || 0
         };
-        
+
         trackUserInteraction('performance_metrics', metrics);
       }, 1000); // Wait 1 second after load
     });
@@ -1473,7 +1473,7 @@ export function trackCoreWebVitals() {
       trackUserInteraction('lcp', { value: lastEntry.startTime });
     });
     lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-    
+
     // First Input Delay (FID)
     const fidObserver = new PerformanceObserver((list) => {
       const entries = list.getEntries();
@@ -1482,7 +1482,7 @@ export function trackCoreWebVitals() {
       });
     });
     fidObserver.observe({ entryTypes: ['first-input'] });
-    
+
     // Cumulative Layout Shift (CLS)
     let clsValue = 0;
     const clsObserver = new PerformanceObserver((list) => {
@@ -1509,7 +1509,7 @@ export function trackErrors() {
       error: e.error?.stack || 'unknown'
     });
   });
-  
+
   window.addEventListener('unhandledrejection', (e) => {
     trackUserInteraction('unhandled_promise_rejection', {
       reason: e.reason?.toString() || 'unknown'
@@ -1520,7 +1520,7 @@ export function trackErrors() {
 // Initialize all enhanced tracking
 export function initializeEnhancedTracking() {
   console.log('Initializing enhanced analytics tracking...');
-  
+
   // Initialize all tracking functions
   trackScrollDepth();
   trackFormInteractions();
@@ -1531,7 +1531,7 @@ export function initializeEnhancedTracking() {
   trackPerformanceMetrics();
   trackCoreWebVitals();
   trackErrors();
-  
+
   console.log('Enhanced analytics tracking initialized');
 }
 
@@ -1539,63 +1539,63 @@ export function initializeEnhancedTracking() {
 export function getAnalyticsDataSummary() {
   const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
   const interactions = JSON.parse(localStorage.getItem('dzaleka_interactions') || '[]');
-  
+
   return {
     // Basic metrics
     totalViews: data.totalViews || 0,
     totalSessions: Object.keys(data.sessions || {}).length,
     totalVisitors: Object.values(data.visitors || {}).reduce((acc, arr) => acc + arr.length, 0),
-    
+
     // Location data
     countries: Object.keys(data.locations || {}).length,
     topCountries: Object.entries(data.locations || {})
       .sort(([, a], [, b]) => b.visits - a.visits)
       .slice(0, 5)
       .map(([country, data]) => ({ country, visits: data.visits })),
-    
+
     // Device data
     operatingSystems: data.operatingSystems || {},
     browserVersions: data.browserVersions || {},
     connectionTypes: data.connectionTypes || {},
     screenSizes: data.screenSizes || {},
-    
+
     // Referrer data
     referrers: data.referrers || {},
     topReferrers: Object.entries(data.referrers || {})
       .sort(([, a], [, b]) => b - a)
       .slice(0, 5)
       .map(([source, count]) => ({ source, count })),
-    
+
     // User interactions
     totalInteractions: interactions.length,
     interactionTypes: interactions.reduce((acc, interaction) => {
       acc[interaction.type] = (acc[interaction.type] || 0) + 1;
       return acc;
     }, {}),
-    
+
     // Performance data
     performanceMetrics: interactions
       .filter(i => i.type === 'performance_metrics')
       .map(i => i.details),
-    
+
     // Error data
     errors: interactions.filter(i => i.type === 'javascript_error'),
-    
+
     // Search data
     searches: interactions.filter(i => i.type === 'search_submit'),
-    
+
     // Form data
     formSubmissions: interactions.filter(i => i.type === 'form_submit'),
-    
+
     // Download data
     downloads: interactions.filter(i => i.type === 'file_download'),
-    
+
     // Video data
     videoInteractions: interactions.filter(i => i.type.startsWith('video_')),
-    
+
     // Scroll data
     scrollDepth: interactions.filter(i => i.type.startsWith('scroll_')),
-    
+
     // Link clicks
     linkClicks: interactions.filter(i => i.type === 'link_click')
   };
@@ -1614,15 +1614,15 @@ export function getTotalVisitors(data, date) {
 // Get location statistics
 export function getLocationStats(data) {
   const locations = data.locations || {};
-  const validLocations = Object.entries(locations).filter(([, location]) => 
+  const validLocations = Object.entries(locations).filter(([, location]) =>
     location && typeof location === 'object' && typeof location.visits === 'number'
   );
-  
+
   const totalCountries = validLocations.length;
   const totalVisits = validLocations.reduce((sum, [, location]) => sum + (location.visits || 0), 0);
   const topCountry = validLocations
     .sort(([, a], [, b]) => (b.visits || 0) - (a.visits || 0))[0];
-  
+
   return {
     totalCountries,
     totalVisits,
@@ -1632,4 +1632,65 @@ export function getLocationStats(data) {
       countryCode: topCountry[1].countryCode || 'Unknown'
     } : null
   };
+}
+
+// Filter analytics data by date range
+export function filterAnalyticsData(data, days) {
+  if (!data || days === 'all') return data;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - parseInt(days));
+  const cutoffTime = cutoffDate.getTime();
+
+  // Create a deep copy to avoid mutating original data
+  const filtered = JSON.parse(JSON.stringify(data));
+
+  // Filter sessions
+  if (filtered.sessions) {
+    filtered.sessions = Object.fromEntries(
+      Object.entries(filtered.sessions).filter(([, session]) => {
+        return new Date(session.startTime).getTime() >= cutoffTime;
+      })
+    );
+  }
+
+  // Filter visitors
+  if (filtered.visitors) {
+    filtered.visitors = Object.fromEntries(
+      Object.entries(filtered.visitors).filter(([date]) => {
+        return new Date(date).getTime() >= cutoffTime;
+      })
+    );
+  }
+
+  // Filter page views (estimate from sessions)
+  if (filtered.sessions) {
+    const newPageViews = {};
+    Object.values(filtered.sessions).forEach(session => {
+      if (session.pages) {
+        session.pages.forEach(page => {
+          newPageViews[page] = (newPageViews[page] || 0) + 1;
+        });
+      }
+    });
+    filtered.pageViews = newPageViews;
+    filtered.totalViews = Object.values(newPageViews).reduce((a, b) => a + b, 0);
+  }
+
+  return filtered;
+}
+
+// Reset analytics data
+export async function resetAnalyticsData() {
+  try {
+    localStorage.removeItem('dzaleka_analytics');
+    localStorage.removeItem('dzaleka_analytics_backup');
+    localStorage.removeItem('dzaleka_interactions');
+    localStorage.removeItem('dzaleka_total_views');
+    sessionStorage.clear();
+    return true;
+  } catch (error) {
+    console.error('Error resetting analytics data:', error);
+    return false;
+  }
 } 

@@ -7,125 +7,125 @@ export const prerender = false;
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
+  try {
+    // Get the raw text first to check if body exists
+    const rawBody = await request.text();
+    console.log('Raw body length:', rawBody.length);
+    console.log('Raw body preview:', rawBody.substring(0, 100));
+
+    if (!rawBody || rawBody.trim() === '') {
+      console.error('Empty request body received');
+      return new Response(JSON.stringify({ error: 'Empty request body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Parse JSON
+    let body;
     try {
-        // Get the raw text first to check if body exists
-        const rawBody = await request.text();
-        console.log('Raw body length:', rawBody.length);
-        console.log('Raw body preview:', rawBody.substring(0, 100));
+      body = JSON.parse(rawBody);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.log('Failed to parse body:', rawBody);
+      return new Response(JSON.stringify({ error: 'Invalid JSON in request body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
-        if (!rawBody || rawBody.trim() === '') {
-            console.error('Empty request body received');
-            return new Response(JSON.stringify({ error: 'Empty request body' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+    console.log('Received booking request for:', body.email);
 
-        // Parse JSON
-        let body;
-        try {
-            body = JSON.parse(rawBody);
-        } catch (parseError) {
-            console.error('JSON parse error:', parseError);
-            console.log('Failed to parse body:', rawBody);
-            return new Response(JSON.stringify({ error: 'Invalid JSON in request body' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+    // Extract form data from JSON
+    const name = body.name as string;
+    const email = body.email as string;
+    const phone = body.phone as string;
+    const visitDate = body.visitDate as string;
+    const visitTime = body.visitTime as string;
+    const groupSize = body.groupSize as string;
+    const tourType = body.tourType as string;
+    const meetingPoint = body.meetingPoint as string;
+    const paymentMethod = body.paymentMethod as string;
+    const accessibilityNeeds = body.accessibilityNeeds as string;
+    const message = body.message as string;
+    const referralSource = body.referralSource as string;
 
-        console.log('Received booking request for:', body.email);
+    // Validate required fields
+    if (!name || !email || !visitDate || !visitTime || !groupSize || !tourType || !meetingPoint || !paymentMethod) {
+      console.error('Missing required fields:', { name, email, visitDate, visitTime, groupSize, tourType, meetingPoint, paymentMethod });
+      return new Response(JSON.stringify({ error: 'Missing required fields', received: body }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
-        // Extract form data from JSON
-        const name = body.name as string;
-        const email = body.email as string;
-        const phone = body.phone as string;
-        const visitDate = body.visitDate as string;
-        const visitTime = body.visitTime as string;
-        const groupSize = body.groupSize as string;
-        const tourType = body.tourType as string;
-        const meetingPoint = body.meetingPoint as string;
-        const paymentMethod = body.paymentMethod as string;
-        const accessibilityNeeds = body.accessibilityNeeds as string;
-        const message = body.message as string;
-        const referralSource = body.referralSource as string;
+    console.log('Processing booking for:', email);
 
-        // Validate required fields
-        if (!name || !email || !visitDate || !visitTime || !groupSize || !tourType || !meetingPoint || !paymentMethod) {
-            console.error('Missing required fields:', { name, email, visitDate, visitTime, groupSize, tourType, meetingPoint, paymentMethod });
-            return new Response(JSON.stringify({ error: 'Missing required fields', received: body }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+    // Get zones and interests (handle both array and single values)
+    const zones = Array.isArray(body.zones) ? body.zones : (body.zones ? [body.zones] : []);
+    const interests = Array.isArray(body.interests) ? body.interests : (body.interests ? [body.interests] : []);
 
-        console.log('Processing booking for:', email);
+    // Format date
+    const date = new Date(visitDate);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
 
-        // Get zones and interests (handle both array and single values)
-        const zones = Array.isArray(body.zones) ? body.zones : (body.zones ? [body.zones] : []);
-        const interests = Array.isArray(body.interests) ? body.interests : (body.interests ? [body.interests] : []);
+    // Format time
+    const formattedTime = new Date(`2000-01-01T${visitTime}`).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
 
-        // Format date
-        const date = new Date(visitDate);
-        const formattedDate = date.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+    // Format meeting point
+    const meetingPointMap: Record<string, string> = {
+      'unhcr-office': 'UNHCR Office',
+      'appfactory': 'Appfactory',
+      'jrs': 'JRS (Jesuit Refugee Service)'
+    };
 
-        // Format time
-        const formattedTime = new Date(`2000-01-01T${visitTime}`).toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
+    // Format payment method
+    const paymentMethodMap: Record<string, string> = {
+      'airtel-money': 'Airtel Money',
+      'tnm-mpamba': 'TNM Mpamba',
+      'cash': 'Cash'
+    };
 
-        // Format meeting point
-        const meetingPointMap: Record<string, string> = {
-            'unhcr-office': 'UNHCR Office',
-            'appfactory': 'Appfactory',
-            'jrs': 'JRS (Jesuit Refugee Service)'
-        };
+    // Format tour type
+    const tourTypeMap: Record<string, string> = {
+      'standard': 'Standard',
+      'extended': 'Extended',
+      'custom': 'Custom'
+    };
 
-        // Format payment method
-        const paymentMethodMap: Record<string, string> = {
-            'airtel-money': 'Airtel Money',
-            'tnm-mpamba': 'TNM Mpamba',
-            'cash': 'Cash'
-        };
+    // Format interests
+    const formattedInterests = interests.map((interest: any) =>
+      String(interest).split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    );
 
-        // Format tour type
-        const tourTypeMap: Record<string, string> = {
-            'standard': 'Standard',
-            'extended': 'Extended',
-            'custom': 'Custom'
-        };
+    // Format zones
+    const formattedZones = zones.map((zone: any) =>
+      String(zone).split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    );
 
-        // Format interests
-        const formattedInterests = interests.map((interest: any) =>
-            String(interest).split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-        );
+    // Determine pricing
+    let pricing = '';
+    if (groupSize === '1') {
+      pricing = 'MWK 15,000';
+    } else if (groupSize === '2-5') {
+      pricing = 'MWK 50,000';
+    } else if (groupSize === '6-10') {
+      pricing = 'MWK 80,000';
+    } else {
+      pricing = 'Contact us for pricing';
+    }
 
-        // Format zones
-        const formattedZones = zones.map((zone: any) =>
-            String(zone).split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-        );
-
-        // Determine pricing
-        let pricing = '';
-        if (groupSize === '1') {
-            pricing = 'MWK 15,000';
-        } else if (groupSize === '2-5') {
-            pricing = 'MWK 50,000';
-        } else if (groupSize === '6-10') {
-            pricing = 'MWK 80,000';
-        } else {
-            pricing = 'Contact us for pricing';
-        }
-
-        // Build email HTML
-        const emailHtml = `
+    // Build email HTML
+    const emailHtml = `
       <!DOCTYPE html>
       <html>
       <head>
@@ -315,33 +315,33 @@ export const POST: APIRoute = async ({ request }) => {
     `;
 
 
-        // Send email using Resend
-        const { data, error } = await resend.emails.send({
-            from: 'Dzaleka Online Services <booking@dzaleka.com>',
-            to: email,
-            bcc: ['dzalekaconnect@gmail.com', 'info@mail.dzaleka.com'],
-            subject: `Visit Dzaleka - Booking Confirmation for ${formattedDate}`,
-            html: emailHtml,
-        });
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: 'Dzaleka Online Services <booking@dzaleka.com>',
+      to: email,
+      bcc: ['dzalekaconnect@gmail.com', 'info@mail.dzaleka.com'],
+      subject: `Visit Dzaleka - Booking Confirmation for ${formattedDate}`,
+      html: emailHtml,
+    });
 
-        if (error) {
-            console.error('Resend error:', error);
-            return new Response(JSON.stringify({ error: 'Failed to send confirmation email' }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
-
-        return new Response(JSON.stringify({ success: true, data }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-    } catch (error) {
-        console.error('Error processing booking:', error);
-        return new Response(JSON.stringify({ error: 'Internal server error' }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        });
+    if (error) {
+      console.error('Resend error:', error);
+      return new Response(JSON.stringify({ error: 'Failed to send confirmation email' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
+
+    return new Response(JSON.stringify({ success: true, data }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+  } catch (error) {
+    console.error('Error processing booking:', error);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 };

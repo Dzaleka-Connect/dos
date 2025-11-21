@@ -14,7 +14,7 @@ export const GET = async () => {
     const inspirationalStories = await getCollection('inspirational-stories');
 
     // Fetch talents (data collection)
-    let talents = [];
+    let talents: any[] = [];
     try {
         const talentsData = await getEntry('talents', 'data/talents');
         if (talentsData && talentsData.data) {
@@ -26,15 +26,18 @@ export const GET = async () => {
 
     // Map to search index format
     const searchIndex = [
-        ...profiles.map(item => ({
-            title: item.data.name,
-            description: item.data.shortDescription || item.data.description,
-            type: 'Profile',
-            category: item.data.category || item.data.role || 'Member',
-            url: `/skills-exchange/profile/${item.slug}`,
-            image: item.data.profileImage,
-            tags: item.data.tags || []
-        })),
+        ...profiles.map(item => {
+            const data = item.data as any;
+            return {
+                title: data.name,
+                description: data.shortDescription || data.description,
+                type: 'Profile',
+                category: data.category || data.role || 'Member',
+                url: `/skills-exchange/profile/${item.slug}`,
+                image: data.profileImage,
+                tags: data.tags || []
+            };
+        }),
         ...services.map(item => ({
             title: item.data.title,
             description: item.data.description,
@@ -116,7 +119,7 @@ export const GET = async () => {
             image: item.data.personImage,
             tags: item.data.tags || []
         })),
-        ...talents.map((item, index) => ({
+        ...talents.map((item: any, index: number) => ({
             title: item.name,
             description: item.bio || `${item.name} - ${item.category}`,
             type: 'Talent',

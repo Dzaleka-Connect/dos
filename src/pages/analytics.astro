@@ -121,78 +121,113 @@ const title = "Analytics | Dzaleka Online Services";
         </div>
 
         <!-- Data Management Section -->
-        <div class="bg-white rounded-xl shadow-sm p-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Data Management</h2>
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Data Management</h2>
+              <p class="text-gray-500 mt-1">Manage your local analytics data</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                Local Storage Active
+              </span>
+            </div>
+          </div>
           
-          <div class="flex flex-col gap-6">
-            <!-- Primary Actions -->
-            <div class="flex flex-wrap gap-4 justify-center">
-              <button id="exportBtn" 
-                class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
-                transition duration-150 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                </svg>
-                Export Data
-              </button>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Export/Import Actions -->
+            <div class="space-y-6">
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Data Portability</h3>
               
-              <button id="backupBtn"
-                class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 
-                transition duration-150 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
-                </svg>
-                Create Backup
-              </button>
-              
-              <button id="importBtn" 
-                class="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 
-                transition duration-150 font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                </svg>
-                Import Data
-              </button>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button id="exportBtn" 
+                  class="flex flex-col items-center justify-center p-6 bg-blue-50 border-2 border-blue-100 rounded-xl hover:bg-blue-100 hover:border-blue-200 transition-all group">
+                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform text-blue-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                  </div>
+                  <span class="font-semibold text-blue-900">Export Data</span>
+                  <span class="text-xs text-blue-600 mt-1">Save as JSON backup</span>
+                </button>
+                
+                <button id="importBtn" 
+                  class="flex flex-col items-center justify-center p-6 bg-purple-50 border-2 border-purple-100 rounded-xl hover:bg-purple-100 hover:border-purple-200 transition-all group">
+                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform text-purple-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                  </div>
+                  <span class="font-semibold text-purple-900">Import Data</span>
+                  <span class="text-xs text-purple-600 mt-1">Restore from backup</span>
+                </button>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <button id="exportCsvBtn" class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm">
+                  <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Export CSV
+                </button>
+                <button id="exportJsonBtn" class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm">
+                  <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                  </svg>
+                  Export JSON
+                </button>
+              </div>
             </div>
 
-            <!-- Warning Message -->
-            <div class="flex items-center justify-center p-4 bg-amber-50 rounded-lg border border-amber-200">
-              <svg class="w-5 h-5 text-amber-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-              </svg>
-              <p class="text-sm text-amber-700">
-                Analytics data is stored locally. Export or backup regularly to prevent data loss.
-              </p>
-            </div>
+            <!-- Storage & Maintenance -->
+            <div class="space-y-6">
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Storage & Maintenance</h3>
+              
+              <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-sm font-medium text-gray-700">Storage Usage</span>
+                  <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full">Local Storage</span>
+                </div>
+                
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex justify-between text-sm mb-1">
+                      <span class="text-gray-600">Analytics Data</span>
+                      <span class="font-medium text-gray-900" id="dataSizeDisplay">Calculating...</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                      <div id="dataSizeBar" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div class="flex justify-between text-sm mb-1">
+                      <span class="text-gray-600">Backup Size</span>
+                      <span class="font-medium text-gray-900" id="backupSizeDisplay">Calculating...</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                      <div id="backupSizeBar" class="bg-green-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                  </div>
+                </div>
 
-            <!-- Export Options -->
-            <div class="flex flex-wrap gap-3 justify-center">
-              <button id="exportCsvBtn" 
-                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 
-                transition duration-150 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-                Export CSV
-              </button>
-              
-              <button id="exportPdfBtn"
-                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 
-                transition duration-150 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                </svg>
-                Export PDF
-              </button>
-              
-              <button id="exportJsonBtn"
-                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 
-                transition duration-150 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/>
-                </svg>
-                Export JSON
-              </button>
+                <div class="mt-6 flex flex-wrap gap-3">
+                  <button id="cleanupBtn" class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm">
+                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Clean Old Data
+                  </button>
+                  
+                  <button id="resetDataBtn" class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-red-50 border border-red-200 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium shadow-sm">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Reset All Data
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -239,7 +274,9 @@ const title = "Analytics | Dzaleka Online Services";
       getTotalViews,
       getLocationStats,
       initializeEnhancedTracking,
-      getAnalyticsDataSummary
+      getAnalyticsDataSummary,
+      filterAnalyticsData,
+      resetAnalyticsData
     } from '../utils/analytics-utils';
     
     // Track if we're using fallback/session data
@@ -358,58 +395,81 @@ const title = "Analytics | Dzaleka Online Services";
       );
 
       if (recentSessions.length === 0) {
-        return `<div class="text-center text-gray-500 py-4">No active sessions</div>`;
+        return `
+          <div class="flex flex-col items-center justify-center py-12 text-gray-500">
+            <svg class="w-12 h-12 mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p>No active sessions right now</p>
+            <p class="text-sm text-gray-400 mt-1">Waiting for visitors...</p>
+          </div>
+        `;
       }
 
       return `
-        <div class="space-y-4">
+        <div class="space-y-3">
           ${paginatedSessions.map(([, session]) => `
-            <div class="flex items-center justify-between py-2">
-              <div class="flex items-center space-x-3">
-                <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
-                <div class="flex items-center gap-2">
-                  <span class="text-sm text-gray-600">${session.device}</span>
-                  <span class="text-sm text-gray-400">${session.browser}</span>
-                  ${session.location ? `
-                    <span class="text-xs text-gray-500">${getCountryFlag(session.location.countryCode)} ${session.location.country}</span>
-                  ` : ''}
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-gray-200 shadow-sm text-lg">
+                    ${session.device === 'mobile' ? '📱' : session.device === 'tablet' ? 'tablet' : '💻'}
+                  </div>
+                  <span class="absolute -bottom-1 -right-1 h-3 w-3 bg-green-500 rounded-full border-2 border-white animate-pulse"></span>
+                </div>
+                
+                <div>
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="font-medium text-gray-900 text-sm">
+                      ${session.location ? `${getCountryFlag(session.location.countryCode)} ${session.location.country}` : 'Unknown Location'}
+                    </span>
+                    <span class="text-xs text-gray-400">•</span>
+                    <span class="text-xs text-gray-500">${session.browser}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <span class="truncate max-w-[200px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">
+                      ${formatPagePath(session.pages[session.pages.length - 1])}
+                    </span>
+                    <span>${formatMs(Date.now() - new Date(session.lastActive).getTime())} ago</span>
+                  </div>
                 </div>
               </div>
-              <div class="text-sm text-gray-500">
-                <div class="flex items-center gap-2">
-                  <span>${formatPagePath(session.pages[session.pages.length - 1])}</span>
-                  ${session.pages.length > 1 ? `
-                    <button class="text-blue-600 hover:text-blue-800 text-xs view-history" data-session-id="${session.id}">
-                      View History
-                    </button>
-                  ` : ''}
-                </div>
-              </div>
+              
+              ${session.pages.length > 1 ? `
+                <button class="text-gray-400 hover:text-blue-600 transition-colors view-history p-2 hover:bg-blue-50 rounded-full" 
+                  data-session-id="${session.id}" 
+                  title="View History">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
+              ` : ''}
             </div>
           `).join('')}
         </div>
+        
         ${totalPages > 1 ? `
           <div class="mt-4 flex items-center justify-between border-t pt-4">
-            <div class="text-sm text-gray-500">
-              Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, recentSessions.length)} 
-              of ${recentSessions.length} active sessions
+            <div class="text-xs text-gray-500">
+              Showing ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(currentPage * itemsPerPage, recentSessions.length)} of ${recentSessions.length} active
             </div>
             <div class="flex gap-1">
               <button 
-                class="realtime-page-btn px-2 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 
-                  ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}"
+                class="realtime-page-btn px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                 data-page="${currentPage - 1}"
                 ${currentPage === 1 ? 'disabled' : ''}
               >
-                ←
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
               ${Array.from({ length: totalPages }, (_, i) => i + 1)
                 .map(page => `
                   <button 
-                    class="realtime-page-btn px-3 py-1 rounded-md ${
+                    class="realtime-page-btn w-8 h-8 rounded-md flex items-center justify-center text-sm font-medium transition-colors shadow-sm ${
                       page === currentPage 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-blue-600 text-white border border-blue-600' 
+                        : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
                     }"
                     data-page="${page}"
                   >
@@ -417,12 +477,13 @@ const title = "Analytics | Dzaleka Online Services";
                   </button>
                 `).join('')}
               <button 
-                class="realtime-page-btn px-2 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200
-                  ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}"
+                class="realtime-page-btn px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                 data-page="${currentPage + 1}"
                 ${currentPage === totalPages ? 'disabled' : ''}
               >
-                →
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
           </div>
@@ -1266,67 +1327,147 @@ const title = "Analytics | Dzaleka Online Services";
     function renderPopularPagesTable(data) {
       const itemsPerPage = 8;
       const currentPage = window.popularPagesPage || 1;
+      const searchQuery = window.popularPagesSearch || '';
+      const sortColumn = window.popularPagesSort?.column || 'views';
+      const sortDirection = window.popularPagesSort?.direction || 'desc';
       
-      // Sort and paginate pages
-      const sortedPages = Object.entries(data.pageViews || {})
-        .sort(([, a], [, b]) => b - a);
+      // Filter pages based on search
+      let filteredPages = Object.entries(data.pageViews || {})
+        .filter(([page]) => page.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      const totalPages = Math.ceil(sortedPages.length / itemsPerPage);
-      const paginatedPages = sortedPages.slice(
+      // Sort pages
+      filteredPages.sort((a, b) => {
+        let valA, valB;
+        
+        switch (sortColumn) {
+          case 'page':
+            valA = a[0];
+            valB = b[0];
+            break;
+          case 'views':
+            valA = a[1];
+            valB = b[1];
+            break;
+          case 'percentage':
+            valA = (a[1] / (data.totalViews || 1));
+            valB = (b[1] / (data.totalViews || 1));
+            break;
+          case 'time':
+            valA = data.timeOnPage?.[a[0]] ? (data.timeOnPage[a[0]].total / data.timeOnPage[a[0]].count) : 0;
+            valB = data.timeOnPage?.[b[0]] ? (data.timeOnPage[b[0]].total / data.timeOnPage[b[0]].count) : 0;
+            break;
+          default:
+            valA = a[1];
+            valB = b[1];
+        }
+        
+        if (sortDirection === 'asc') {
+          return valA > valB ? 1 : -1;
+        } else {
+          return valA < valB ? 1 : -1;
+        }
+      });
+      
+      const totalPages = Math.ceil(filteredPages.length / itemsPerPage);
+      const paginatedPages = filteredPages.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
       );
 
+      const getSortIcon = (col) => {
+        if (sortColumn !== col) return '<svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>';
+        return sortDirection === 'asc' 
+          ? '<svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>'
+          : '<svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>';
+      };
+
       return `
-        <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
-                <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Page</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% of Total</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg. Time</th>
-                </tr>
-              </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            ${paginatedPages
-              .map(([page, views]) => {
+        <div class="mb-4 flex items-center justify-between">
+          <div class="relative">
+            <input type="text" 
+              id="popularPagesSearch" 
+              placeholder="Search pages..." 
+              value="${searchQuery}"
+              class="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500 w-64"
+            >
+            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto border border-gray-200 rounded-lg">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group" onclick="window.handleSort('page')">
+                  <div class="flex items-center gap-1">Page ${getSortIcon('page')}</div>
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group" onclick="window.handleSort('views')">
+                  <div class="flex items-center gap-1">Views ${getSortIcon('views')}</div>
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group" onclick="window.handleSort('percentage')">
+                  <div class="flex items-center gap-1">% of Total ${getSortIcon('percentage')}</div>
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group" onclick="window.handleSort('time')">
+                  <div class="flex items-center gap-1">Avg. Time ${getSortIcon('time')}</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              ${paginatedPages.length > 0 ? paginatedPages.map(([page, views], index) => {
                 const percentage = ((views / (data.totalViews || 1)) * 100).toFixed(1);
                 const avgTime = data.timeOnPage?.[page] 
                   ? formatDuration(Math.round(data.timeOnPage[page].total / data.timeOnPage[page].count / 1000))
                   : '-';
                 return `
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatPagePath(page)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${views}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${percentage}%</td>
+                  <tr class="hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">${formatPagePath(page)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${views.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <div class="flex items-center">
+                        <span class="w-12">${percentage}%</span>
+                        <div class="w-24 bg-gray-100 rounded-full h-1.5 ml-2">
+                          <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                      </div>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${avgTime}</td>
                   </tr>
                 `;
-              }).join('')}
-              </tbody>
-            </table>
+              }).join('') : `
+                <tr>
+                  <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                    No pages found matching "${searchQuery}"
+                  </td>
+                </tr>
+              `}
+            </tbody>
+          </table>
+        </div>
+        
         ${totalPages > 1 ? `
           <div class="mt-4 flex items-center justify-between">
             <div class="text-sm text-gray-500">
-              Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, sortedPages.length)} 
-              of ${sortedPages.length} pages
-          </div>
+              Showing ${(currentPage - 1) * itemsPerPage + 1}-${Math.min(currentPage * itemsPerPage, filteredPages.length)} of ${filteredPages.length} pages
+            </div>
             <div class="flex gap-1">
               <button 
-                class="pages-btn px-2 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 
-                  ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}"
+                class="pages-btn px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                 data-page="${currentPage - 1}"
                 ${currentPage === 1 ? 'disabled' : ''}
               >
-                ←
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
               ${Array.from({ length: totalPages }, (_, i) => i + 1)
                 .map(page => `
                   <button 
-                    class="pages-btn px-3 py-1 rounded-md ${
+                    class="pages-btn w-8 h-8 rounded-md flex items-center justify-center text-sm font-medium transition-colors shadow-sm ${
                       page === currentPage 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-blue-600 text-white border border-blue-600' 
+                        : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
                     }"
                     data-page="${page}"
                   >
@@ -1334,15 +1475,16 @@ const title = "Analytics | Dzaleka Online Services";
                   </button>
                 `).join('')}
               <button 
-                class="pages-btn px-2 py-1 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200
-                  ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}"
+                class="pages-btn px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                 data-page="${currentPage + 1}"
                 ${currentPage === totalPages ? 'disabled' : ''}
               >
-                →
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
               </button>
-        </div>
-        </div>
+            </div>
+          </div>
         ` : ''}
       `;
     }
@@ -1582,6 +1724,11 @@ const title = "Analytics | Dzaleka Online Services";
         return;
       }
       
+      // Global Chart defaults for premium look
+      Chart.defaults.font.family = "'Inter', sans-serif";
+      Chart.defaults.color = '#6B7280';
+      Chart.defaults.scale.grid.color = '#F3F4F6';
+      
       // Calculate visitor trend data
       const visitorTrendData = {
         labels: [],
@@ -1596,7 +1743,7 @@ const title = "Analytics | Dzaleka Online Services";
         const date = new Date(today);
         date.setDate(date.getDate() - i);
         const dateString = date.toISOString().split('T')[0];
-        visitorTrendData.labels.push(date.toLocaleDateString(undefined, { weekday: 'short' }));
+        visitorTrendData.labels.push(date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }));
         
         // Get visitors for this date
         visitorTrendData.visitors.push(getTotalVisitors(data, dateString));
@@ -1622,88 +1769,119 @@ const title = "Analytics | Dzaleka Online Services";
       try {
         // Destroy existing charts if they exist
         const deviceChart = Chart.getChart('device-chart');
-        if (deviceChart) {
-          deviceChart.destroy();
-        }
+        if (deviceChart) deviceChart.destroy();
         
         const browserChart = Chart.getChart('browser-chart');
-        if (browserChart) {
-          browserChart.destroy();
-        }
+        if (browserChart) browserChart.destroy();
         
         const visitorTrendChart = Chart.getChart('visitor-trend-chart');
-        if (visitorTrendChart) {
-          visitorTrendChart.destroy();
-        }
+        if (visitorTrendChart) visitorTrendChart.destroy();
         
         // Visitor Trend Chart
         const visitorTrendCtx = document.getElementById('visitor-trend-chart')?.getContext('2d');
         if (visitorTrendCtx) {
+          // Create gradients
+          const visitorGradient = visitorTrendCtx.createLinearGradient(0, 0, 0, 400);
+          visitorGradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+          visitorGradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+          
+          const pageViewGradient = visitorTrendCtx.createLinearGradient(0, 0, 0, 400);
+          pageViewGradient.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+          pageViewGradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
           new Chart(visitorTrendCtx, {
             id: 'visitor-trend-chart',
-          type: 'line',
-          data: {
+            type: 'line',
+            data: {
               labels: visitorTrendData.labels,
-            datasets: [{
+              datasets: [{
                 label: 'Visitors',
                 data: visitorTrendData.visitors,
                 borderColor: '#3B82F6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-              fill: true,
-                tension: 0.4
+                backgroundColor: visitorGradient,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#FFFFFF',
+                pointBorderColor: '#3B82F6',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
               }, {
                 label: 'Page Views',
                 data: visitorTrendData.pageViews,
                 borderColor: '#10B981',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                backgroundColor: pageViewGradient,
                 fill: true,
-                tension: 0.4
-              }, {
-                label: 'Active Sessions',
-                data: visitorTrendData.activeSessions,
-                borderColor: '#6366F1',
-                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: true,
+                tension: 0.4,
+                pointBackgroundColor: '#FFFFFF',
+                pointBorderColor: '#10B981',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                mode: 'index',
+                intersect: false,
+              },
+              plugins: {
+                legend: {
+                  display: true,
                   position: 'top',
+                  align: 'end',
                   labels: {
                     usePointStyle: true,
-                    padding: 20
+                    boxWidth: 8,
+                    padding: 20,
+                    font: {
+                      size: 12,
+                      weight: 500
+                    }
                   }
-              },
-              tooltip: {
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  titleColor: '#1F2937',
+                  bodyColor: '#4B5563',
+                  borderColor: '#E5E7EB',
+                  borderWidth: 1,
+                  padding: 12,
+                  boxPadding: 4,
+                  usePointStyle: true,
                   callbacks: {
                     label: (context) => {
                       const label = context.dataset.label;
                       const value = context.parsed.y;
-                      return `${label}: ${value}`;
+                      return ` ${label}: ${value}`;
                     }
                   }
                 }
               },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 1
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1,
+                    padding: 10
+                  },
+                  grid: {
+                    drawBorder: false,
                   }
                 },
                 x: {
                   grid: {
                     display: false
+                  },
+                  ticks: {
+                    padding: 10
+                  }
                 }
               }
             }
-          }
-        });
+          });
         }
 
         // Device Distribution Chart
@@ -1717,7 +1895,9 @@ const title = "Analytics | Dzaleka Online Services";
               datasets: [{
                 data: Object.values(data.devices || {}),
                 backgroundColor: ['#3B82F6', '#10B981', '#6366F1', '#8B5CF6'],
-                borderWidth: 0
+                hoverOffset: 4,
+                borderWidth: 2,
+                borderColor: '#FFFFFF'
               }]
             },
             options: {
@@ -1728,17 +1908,22 @@ const title = "Analytics | Dzaleka Online Services";
                   display: false
                 },
                 tooltip: {
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  bodyColor: '#4B5563',
+                  borderColor: '#E5E7EB',
+                  borderWidth: 1,
+                  padding: 12,
                   callbacks: {
                     label: (context) => {
                       const value = context.raw;
                       const total = context.dataset.data.reduce((a, b) => a + b, 0);
                       const percentage = ((value / total) * 100).toFixed(1);
-                      return `${context.label}: ${value} (${percentage}%)`;
+                      return ` ${context.label}: ${value} (${percentage}%)`;
                     }
                   }
                 }
               },
-              cutout: '65%'
+              cutout: '75%'
             }
           });
         }
@@ -1754,9 +1939,12 @@ const title = "Analytics | Dzaleka Online Services";
               datasets: [{
                 data: Object.values(data.browsers || {}),
                 backgroundColor: ['#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'],
-                borderWidth: 0
+                hoverOffset: 4,
+                borderWidth: 2,
+                borderColor: '#FFFFFF'
               }]
             },
+
             options: {
               responsive: true,
               maintainAspectRatio: false,
@@ -1997,12 +2185,15 @@ const title = "Analytics | Dzaleka Online Services";
         // Initialize client-side tracking
         initializeClientTracking();
         
-        // Initialize enhanced tracking (optional - uncomment to enable)
-        // initializeEnhancedTracking();
+        // Initialize enhanced tracking if enabled
+        if (localStorage.getItem('dzaleka_enhanced_tracking') === 'true') {
+          initializeEnhancedTracking();
+        }
         
         // Global function to enable enhanced tracking
         window.enableEnhancedTracking = function() {
           try {
+            localStorage.setItem('dzaleka_enhanced_tracking', 'true');
             initializeEnhancedTracking();
             alert('Enhanced tracking enabled! The page will refresh to start collecting detailed analytics.');
             setTimeout(() => {
@@ -2195,8 +2386,70 @@ const title = "Analytics | Dzaleka Online Services";
       
       // Setup format-specific exports
       document.getElementById('exportCsvBtn').addEventListener('click', () => exportAsCSV());
-      document.getElementById('exportPdfBtn').addEventListener('click', () => exportAsPDF());
+      document.getElementById('exportPdfBtn')?.addEventListener('click', () => exportAsPDF());
       document.getElementById('exportJsonBtn').addEventListener('click', () => exportAsJSON());
+      
+      // Setup Reset Data handler
+      document.getElementById('resetDataBtn')?.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to reset all analytics data? This cannot be undone.')) {
+          const success = await resetAnalyticsData();
+          if (success) {
+            alert('Analytics data has been reset.');
+            window.location.reload();
+          } else {
+            alert('Failed to reset data.');
+          }
+        }
+      });
+
+      // Setup Popular Pages Search
+      document.addEventListener('input', (e) => {
+        if (e.target.id === 'popularPagesSearch') {
+          window.popularPagesSearch = e.target.value;
+          // Debounce re-render
+          clearTimeout(window.searchTimeout);
+          window.searchTimeout = setTimeout(() => {
+            const tableContainer = document.querySelector('#popularPagesTableContainer') || document.querySelector('[data-section="popular-pages"]');
+            if (tableContainer) {
+              // We need to re-render just the table part, but renderAnalytics renders everything.
+              // Ideally we'd have a specific render function for this, but for now we can re-render the whole section
+              // Or just call renderPopularPagesTable and update the container
+              // Let's assume renderAnalytics handles it or we update the specific container if we can find it
+              // Since renderAnalytics updates the whole page content, we might lose focus.
+              // A better approach is to just update the table HTML
+              const tableHTML = renderPopularPagesTable(analyticsData);
+              // Find the container that holds the table. In renderAnalytics it's likely part of a larger block.
+              // Let's look at renderAnalytics structure later. For now, full re-render is safest but might lose focus.
+              // Actually, let's try to find the specific container.
+              // In renderAnalytics, the table is returned as a string.
+              // We might need to wrap the table in a div with an ID in renderAnalytics.
+              // I'll check renderAnalytics again.
+              renderAnalytics(analyticsData);
+              // Restore focus
+              const input = document.getElementById('popularPagesSearch');
+              if (input) {
+                input.focus();
+                input.value = window.popularPagesSearch;
+                // Move cursor to end
+                input.setSelectionRange(input.value.length, input.value.length);
+              }
+            }
+          }, 300);
+        }
+      });
+
+      // Global Sort Handler
+      window.handleSort = (column) => {
+        const currentSort = window.popularPagesSort || { column: 'views', direction: 'desc' };
+        let newDirection = 'desc';
+        
+        if (currentSort.column === column) {
+          newDirection = currentSort.direction === 'desc' ? 'asc' : 'desc';
+        }
+        
+        window.popularPagesSort = { column, direction: newDirection };
+        renderAnalytics(analyticsData);
+      };
       
       // Setup new UI element handlers
       setupDateRangeSelector();
@@ -2210,7 +2463,7 @@ const title = "Analytics | Dzaleka Online Services";
       const dateRangeDisplay = document.getElementById('dateRangeDisplay');
       
       dateRangeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
           // Update active state
           dateRangeBtns.forEach(b => {
             b.classList.remove('bg-primary-600', 'text-white');
@@ -2238,8 +2491,18 @@ const title = "Analytics | Dzaleka Online Services";
           }
           dateRangeDisplay.textContent = displayText;
           
-          // Note: Actual data filtering would happen here
-          // For now, we're just updating the UI
+          // Filter data
+          const fullData = await getAnalyticsData();
+          const filteredData = filterAnalyticsData(fullData, range);
+          
+          // Re-render everything with filtered data
+          // We need to update the global analyticsData variable so other functions use the filtered version
+          // But we should keep a reference to the full data if we want to switch back without fetching again
+          // For simplicity, we'll just re-fetch and filter
+          analyticsData = filteredData;
+          renderAnalytics(analyticsData);
+          initializeCharts(analyticsData);
+          
           console.log(`Date range changed to: ${range} days`);
         });
       });
