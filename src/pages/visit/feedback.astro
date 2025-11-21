@@ -1,0 +1,382 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const pageTitle = "Tour Feedback | Visit Dzaleka";
+const description = "Share your feedback about your Dzaleka tour experience. Help us improve our services.";
+---
+
+<MainLayout title={pageTitle} description={description}>
+  <main class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Tour Feedback</h1>
+          <p class="text-gray-600">Thank you for visiting Dzaleka. Your feedback helps us improve.</p>
+        </div>
+
+        <form
+          id="feedbackForm"
+          class="space-y-6"
+        >
+
+          <!-- Name -->
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Enter your name"
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="e.g., your@dzaleka.com"
+            />
+          </div>
+
+          <!-- Tour Date -->
+          <div>
+            <label for="tour_date" class="block text-sm font-medium text-gray-700 mb-1">Date of Visit</label>
+            <input
+              type="date"
+              id="tour_date"
+              name="tour_date"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+
+          <!-- Tour Guide Name -->
+          <div>
+            <label for="tour_guide" class="block text-sm font-medium text-gray-700 mb-1">Tour Guide Name</label>
+            <input
+              type="text"
+              id="tour_guide"
+              name="tour_guide"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Name of your tour guide"
+            />
+          </div>
+
+          <!-- Country -->
+          <div>
+            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Where are you from?"
+            />
+          </div>
+
+          <!-- Purpose of Visit -->
+          <div>
+            <label for="purpose" class="block text-sm font-medium text-gray-700 mb-1">Purpose of Visit</label>
+            <select
+              id="purpose"
+              name="purpose"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="">Select purpose</option>
+              <option value="Tourism">Tourism</option>
+              <option value="Research">Research / Academic</option>
+              <option value="Volunteering">Volunteering</option>
+              <option value="Media/Journalism">Media / Journalism</option>
+              <option value="NGO/Organization">NGO / Organization Visit</option>
+              <option value="Business">Business</option>
+              <option value="Personal">Personal / Visiting Friends</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Group Size -->
+          <div>
+            <label for="group_size" class="block text-sm font-medium text-gray-700 mb-1">Group Size</label>
+            <select
+              id="group_size"
+              name="group_size"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="">Select group size</option>
+              <option value="1">Just me</option>
+              <option value="2">2 people</option>
+              <option value="3-5">3-5 people</option>
+              <option value="6-10">6-10 people</option>
+              <option value="10+">More than 10</option>
+            </select>
+          </div>
+
+          <!-- How did you hear about us -->
+          <div>
+            <label for="heard_about" class="block text-sm font-medium text-gray-700 mb-1">How did you hear about Visit Dzaleka?</label>
+            <select
+              id="heard_about"
+              name="heard_about"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="">Select an option</option>
+              <option value="Website">Dzaleka Online Services website</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Friend/Colleague">Friend or Colleague</option>
+              <option value="Organization">Organization / NGO</option>
+              <option value="Google Search">Google Search</option>
+              <option value="News/Media">News / Media</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Overall Rating -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Overall Experience</label>
+            <div class="flex gap-4 flex-wrap">
+              {['Excellent', 'Good', 'Average', 'Poor'].map((rating) => (
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="overall_rating"
+                    value={rating}
+                    required
+                    class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                  />
+                  <span class="ml-2 text-gray-700">{rating}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <!-- Tour Guide Rating -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">How was your tour guide?</label>
+            <div class="flex gap-4 flex-wrap">
+              {['Excellent', 'Good', 'Average', 'Poor'].map((rating) => (
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="guide_rating"
+                    value={rating}
+                    required
+                    class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                  />
+                  <span class="ml-2 text-gray-700">{rating}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <!-- What did you enjoy most -->
+          <div>
+            <label for="enjoyed_most" class="block text-sm font-medium text-gray-700 mb-1">What did you enjoy most about the tour?</label>
+            <textarea
+              id="enjoyed_most"
+              name="enjoyed_most"
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Tell us what you liked..."
+            ></textarea>
+          </div>
+
+          <!-- Areas for improvement -->
+          <div>
+            <label for="improvements" class="block text-sm font-medium text-gray-700 mb-1">How can we improve?</label>
+            <textarea
+              id="improvements"
+              name="improvements"
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Any suggestions or areas we can do better..."
+            ></textarea>
+          </div>
+
+          <!-- Would recommend -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Would you recommend this tour to others?</label>
+            <div class="flex gap-6">
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="would_recommend"
+                  value="Yes"
+                  required
+                  class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                />
+                <span class="ml-2 text-gray-700">Yes</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="would_recommend"
+                  value="No"
+                  class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                />
+                <span class="ml-2 text-gray-700">No</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="would_recommend"
+                  value="Maybe"
+                  class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                />
+                <span class="ml-2 text-gray-700">Maybe</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Additional comments -->
+          <div>
+            <label for="additional_comments" class="block text-sm font-medium text-gray-700 mb-1">Any other comments?</label>
+            <textarea
+              id="additional_comments"
+              name="additional_comments"
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="Anything else you'd like to share..."
+            ></textarea>
+          </div>
+
+          <!-- Would visit again -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Would you visit Dzaleka again?</label>
+            <div class="flex gap-6">
+              <label class="flex items-center">
+                <input type="radio" name="visit_again" value="Yes" class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500" />
+                <span class="ml-2 text-gray-700">Yes</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="visit_again" value="No" class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500" />
+                <span class="ml-2 text-gray-700">No</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="visit_again" value="Maybe" class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500" />
+                <span class="ml-2 text-gray-700">Maybe</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Consents Section -->
+          <div class="space-y-4 border-t pt-6">
+            <p class="text-sm font-medium text-gray-700">Permissions & Consent</p>
+
+            <!-- Photo consent -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="photo_consent"
+                  value="Yes"
+                  class="w-5 h-5 mt-0.5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                />
+                <span class="text-sm text-gray-700">
+                  I consent to photos taken during my visit being used on the Visit Dzaleka website and social media.
+                </span>
+              </label>
+            </div>
+
+            <!-- Permission to share testimonial -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="allow_testimonial"
+                  value="Yes"
+                  class="w-5 h-5 mt-0.5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                />
+                <span class="text-sm text-gray-700">
+                  I agree to have my positive feedback featured on the Visit Dzaleka website as a testimonial.
+                </span>
+              </label>
+            </div>
+
+            <!-- Privacy consent -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="privacy_consent"
+                  value="Yes"
+                  required
+                  class="w-5 h-5 mt-0.5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                />
+                <span class="text-sm text-gray-700">
+                  I consent to my data being collected and processed to improve Visit Dzaleka services. View our <a href="/privacy" class="text-green-600 hover:underline">Privacy Policy</a>.
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors"
+          >
+            Submit Feedback
+          </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500 mt-6">
+          Thank you for helping us improve. Your feedback matters.
+        </p>
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="/visit" class="text-green-600 hover:text-green-700 font-medium">
+          ← Back to Visit Dzaleka
+        </a>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<script>
+  document.getElementById('feedbackForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target as HTMLFormElement;
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalText = submitBtn.textContent;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    const formData = new FormData(form);
+    const data: Record<string, any> = {};
+
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    try {
+      const isDev = window.location.hostname === 'localhost';
+      const apiUrl = isDev
+        ? 'http://localhost:9999/.netlify/functions/send-feedback-confirmation'
+        : '/.netlify/functions/send-feedback-confirmation';
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        window.location.href = '/visit/feedback-thanks';
+      } else {
+        throw new Error('Failed to submit');
+      }
+    } catch (error) {
+      alert('There was an error submitting your feedback. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+</script>
