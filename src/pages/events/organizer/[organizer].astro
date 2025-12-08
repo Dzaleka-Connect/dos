@@ -4,19 +4,26 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 import Badge from '../../../components/ui/Badge.astro';
 
-export async function getStaticPaths() {
-  const events = await getCollection('events');
-  
-  // Get unique organizers
-  const organizers = [...new Set(events.map(event => event.data.organizer).filter(Boolean))];
-  
-  return organizers.map(organizer => ({
-    params: { organizer: organizer.toLowerCase().replace(/\s+/g, '-') },
-    props: { organizer, events: events.filter(event => event.data.organizer === organizer) }
-  }));
+export const prerender = false;
+
+const { organizer: organizerSlug } = Astro.params;
+
+if (!organizerSlug) {
+  return Astro.redirect('/events');
 }
 
-const { organizer, events } = Astro.props;
+const allEvents = await getCollection('events');
+
+// Find the organizer name that matches the slug
+const organizerName = [...new Set(allEvents.map(e => e.data.organizer).filter(Boolean))]
+  .find(name => name.toLowerCase().replace(/\s+/g, '-') === organizerSlug);
+
+if (!organizerName) {
+  return Astro.redirect('/404');
+}
+
+const organizer = organizerName;
+const events = allEvents.filter(event => event.data.organizer === organizer);
 
 // Function to format location
 function formatLocation(location: any) {

@@ -5,26 +5,106 @@ import { format } from 'date-fns';
 import Badge from '../../components/ui/Badge.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
-export async function getStaticPaths() {
-  const events = await getCollection('events');
-  return events.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+import EventGrid from '../../components/events/EventGrid.astro';
+import EventPagination from '../../components/events/EventPagination.astro';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+if (!slug) {
+  return Astro.redirect('/404');
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+// Check if the slug is a page number
+const pageNum = parseInt(slug);
+const isPage = !isNaN(pageNum) && pageNum > 0;
 
-// Get related events (same organizer or category)
+// Shared data
 const allEvents = await getCollection('events');
-const relatedEvents = allEvents
+let entry = null;
+let Content = null;
+let paginatedEvents = [];
+let totalPages = 0;
+let validCurrentPage = 1;
+let startIndex = 0;
+let endIndex = 0;
+let totalItems = 0;
+
+if (isPage) {
+  // --- PAGINATION LOGIC ---
+  const currentPage = pageNum;
+  
+  // Recalculate status dynamically
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const eventsWithStatus = allEvents.map(event => {
+    const eventDate = new Date(event.data.date);
+    eventDate.setHours(0, 0, 0, 0);
+    const isUpcoming = eventDate >= today || (event.data.isTBA || event.data.title.toLowerCase().includes('tba'));
+    
+    return {
+      ...event,
+      data: {
+        ...event.data,
+        status: isUpcoming ? 'upcoming' : 'past'
+      }
+    };
+  });
+
+  // Sort events by status and date
+  const sortedEvents = eventsWithStatus.sort((a, b) => {
+    if (a.data.status !== b.data.status) {
+      return a.data.status === 'upcoming' ? -1 : 1;
+    }
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+
+  // Pagination
+  const itemsPerPage = 6;
+  totalItems = sortedEvents.length;
+  totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+  // Redirect if page is invalid
+  if (currentPage > totalPages && totalPages > 0) {
+    return Astro.redirect('/events');
+  }
+
+  validCurrentPage = currentPage;
+  startIndex = (validCurrentPage - 1) * itemsPerPage;
+  endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  paginatedEvents = sortedEvents.slice(startIndex, endIndex);
+
+} else {
+  // --- EVENT DETAILS LOGIC ---
+  entry = allEvents.find(e => e.slug === slug);
+
+  if (!entry) {
+    return Astro.redirect('/404');
+  }
+
+  const renderResult = await entry.render();
+  Content = renderResult.Content;
+
+  // Calculate status dynamically
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(entry.data.date);
+  eventDate.setHours(0, 0, 0, 0);
+  const isUpcoming = eventDate >= today || (entry.data.isTBA || entry.data.title.toLowerCase().includes('tba'));
+
+  // Override status for display logic
+  entry.data.status = isUpcoming ? 'upcoming' : 'past';
+}
+
+// Get related events (only for event details)
+const relatedEvents = !isPage && entry ? allEvents
   .filter(event => 
     event.slug !== entry.slug && 
     (event.data.organizer === entry.data.organizer || 
      event.data.category === entry.data.category)
   )
-  .slice(0, 3);
+  .slice(0, 3) : [];
 
 // Function to format location
 function formatLocation(location: any) {
@@ -45,50 +125,149 @@ function formatDateInCAT(date: Date, formatString: string) {
 }
 
 // Format date for structured data
-const formattedDate = format(entry.data.date, 'yyyy-MM-dd');
-const formattedTime = format(entry.data.date, 'HH:mm');
+// Format date for structured data (only if entry exists)
+const formattedDate = entry ? format(entry.data.date, 'yyyy-MM-dd') : '';
+const formattedTime = entry ? format(entry.data.date, 'HH:mm') : '';
 
-// Create structured data for event
-const eventStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": entry.data.title,
-  "description": entry.data.description,
-  "image": entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
-  "startDate": entry.data.date instanceof Date ? entry.data.date.toISOString() : entry.data.date,
-  "endDate": entry.data.endDate ? (entry.data.endDate instanceof Date ? entry.data.endDate.toISOString() : entry.data.endDate) : (entry.data.date instanceof Date ? entry.data.date.toISOString() : entry.data.date),
-  "eventStatus": entry.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
-  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-  "location": {
-    "@type": "Place",
-    "name": formatLocation(entry.data.location),
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": typeof entry.data.location === 'string' ? entry.data.location : entry.data.location.city || 'Dzaleka',
-      "addressRegion": "Dowa",
-      "addressCountry": "Malawi"
+// Create structured data
+let structuredData = {};
+
+if (isPage) {
+  const eventsStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": paginatedEvents.map((event, index) => ({
+      "@type": "ListItem",
+      "position": startIndex + index + 1,
+      "item": {
+        "@type": "Event",
+        "name": event.data.title,
+        "description": event.data.description,
+        "image": event.data.image.startsWith('http') ? event.data.image : `https://services.dzaleka.com${event.data.image}`,
+        "startDate": event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date,
+        "endDate": event.data.endDate ? (event.data.endDate instanceof Date ? event.data.endDate.toISOString() : event.data.endDate) : (event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date),
+        "eventStatus": event.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Dzaleka Refugee Camp",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Dowa District",
+            "addressLocality": "Dzaleka",
+            "addressRegion": "Central Region",
+            "postalCode": "",
+            "addressCountry": "MW"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": event.data.organizer || "Dzaleka Online Services",
+          "url": event.data.organizerUrl || "https://services.dzaleka.com"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": event.data.registration?.url || `https://services.dzaleka.com/events/${event.slug}`,
+          "price": "0",
+          "priceCurrency": "MWK",
+          "availability": "https://schema.org/InStock"
+        },
+        "url": `https://services.dzaleka.com/events/${event.slug}`
+      }
+    }))
+  };
+
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+    "description": `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`,
+    "url": `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`,
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://services.dzaleka.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Events",
+          "item": "https://services.dzaleka.com/events"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": `Page ${validCurrentPage}`,
+          "item": `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`
+        }
+      ]
+    },
+    "mainEntity": eventsStructuredData
+  };
+} else {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": entry.data.title,
+    "description": entry.data.description,
+    "image": entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
+    "startDate": entry.data.date instanceof Date ? entry.data.date.toISOString() : entry.data.date,
+    "endDate": entry.data.endDate ? (entry.data.endDate instanceof Date ? entry.data.endDate.toISOString() : entry.data.endDate) : (entry.data.date instanceof Date ? entry.data.date.toISOString() : entry.data.date),
+    "eventStatus": entry.data.status === 'upcoming' ? "https://schema.org/EventScheduled" : "https://schema.org/EventCompleted",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "location": {
+      "@type": "Place",
+      "name": formatLocation(entry.data.location),
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": typeof entry.data.location === 'string' ? entry.data.location : entry.data.location.city || 'Dzaleka',
+        "addressRegion": "Dowa",
+        "addressCountry": "Malawi"
+      }
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": entry.data.organizer || "Dzaleka Online Services",
+      "url": entry.data.organizerUrl || "https://services.dzaleka.com"
+    },
+    "performer": {
+      "@type": "Organization",
+      "name": entry.data.organizer || "Dzaleka Online Services"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": entry.data.registration?.url || `https://services.dzaleka.com/events/${entry.slug}`,
+      "price": "0",
+      "priceCurrency": "MWK",
+      "availability": "https://schema.org/InStock"
     }
-  },
-  "organizer": {
-    "@type": "Organization",
-    "name": entry.data.organizer || "Dzaleka Online Services",
-    "url": entry.data.organizerUrl || "https://services.dzaleka.com"
-  },
-  "performer": {
-    "@type": "Organization",
-    "name": entry.data.organizer || "Dzaleka Online Services"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": entry.data.registration?.url || `https://services.dzaleka.com/events/${entry.slug}`,
-    "price": "0",
-    "priceCurrency": "MWK",
-    "availability": "https://schema.org/InStock"
-  }
-};
+  };
+}
 
 // Create SEO metadata
-const seo = {
+const seo = isPage ? {
+  title: `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+  description: `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`,
+  type: "website",
+  canonical: `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`,
+  openGraph: {
+    title: `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+    description: `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`,
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/events/${validCurrentPage > 1 ? validCurrentPage : ''}`
+  },
+  twitter: {
+    card: "summary",
+    title: `Events - Page ${validCurrentPage} | Dzaleka Online Services`,
+    description: `Browse upcoming and past events at Dzaleka Online Services. Page ${validCurrentPage} of ${totalPages}.`
+  }
+} : {
   title: `${entry.data.title}`,
   description: entry.data.description,
   type: "event",
@@ -133,9 +312,77 @@ const seo = {
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(eventStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-  <main class="container mx-auto px-4 py-8">
+  {isPage ? (
+    <>
+      <main class="min-h-screen">
+        <!-- Hero Section -->
+        <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
+          <!-- Subtle African Pattern Background -->
+          <div class="absolute inset-0 opacity-[0.03]">
+            <div class="absolute inset-0 pattern-mudcloth"></div>
+          </div>
+
+          <div class="relative container mx-auto px-4 pt-8 pb-16">
+            <!-- Breadcrumb Navigation -->
+            <div class="mb-8">
+              <Breadcrumb items={[
+                { label: 'Home', href: '/' },
+                { label: 'Events', href: '/events' },
+                { label: `Page ${validCurrentPage}` }
+              ]} />
+            </div>
+
+            <div class="max-w-4xl mx-auto text-center">
+              <div class="inline-block mb-6">
+                <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
+                  Community Events
+                </span>
+              </div>
+
+              <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                What's On in Dzaleka
+              </h1>
+              <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Cultural festivals, performances, webinars, workshops, and community gatherings — discover the vibrant spirit of our community
+              </p>
+              <a
+                href="/events/organize"
+                class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-md"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                Submit Your Event
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <div class="container mx-auto px-4 py-12">
+          <!-- All Events -->
+          <section class="mb-20">
+            <div class="mb-12">
+              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">All Events</h2>
+              <p class="text-lg text-gray-600 text-center">Showing page {validCurrentPage} of {totalPages} ({totalItems} total events)</p>
+            </div>
+
+            <EventGrid events={paginatedEvents} />
+            
+            <div class="mt-12">
+              <EventPagination 
+                currentPage={validCurrentPage}
+                totalPages={totalPages}
+                baseUrl="/events"
+              />
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
+  ) : (
+    <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
       {/* Breadcrumb Navigation */}
       <div class="mb-6">
@@ -573,7 +820,9 @@ const seo = {
       </section>
     )}
   </main>
+  )}
 
+  {!isPage && (
   <script define:vars={{ panelists: entry.data.panelists }}>
     // Panelist modal functionality
     function openPanelistModal(index) {
@@ -720,4 +969,5 @@ const seo = {
       });
     });
   </script>
+  )}
 </MainLayout>

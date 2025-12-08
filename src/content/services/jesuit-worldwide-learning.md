@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/jesuitworldwidelearning'
   linkedin: 'https://www.linkedin.com/company/jesuit-worldwide-learning/'
   website: 'https://www.jwl.org/'
-logo: 'https://www.jwl.org/static/images/logos/world.png'
+logo: 'https://www.jwl.org/images/logo.png'
 featured: true
 verified: true
 lastUpdated: 2024-12-24

@@ -18,7 +18,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/refugees/'
   linkedin: ''
   website: 'https://www.unhcr.org/au/countries/malawi'
-logo: 'https://spherestandards.org/wp-content/uploads/unhcr-logo-650x650.png'
+logo: 'https://play-lh.googleusercontent.com/fwknejqOfwbFCqpLCpeyXTi_z04-y3nLs4H-B1TECuj8-cV-lG6dHL7hcnaj6Ye6Iw'
 featured: true
 verified: true
 lastUpdated: 2024-12-24

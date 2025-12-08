@@ -4,62 +4,59 @@ import EventGrid from '../../../components/events/EventGrid.astro';
 import EventPagination from '../../../components/events/EventPagination.astro';
 import { getCollection } from 'astro:content';
 
-export async function getStaticPaths() {
-  const allEvents = await getCollection('events');
-  const itemsPerPage = 4;
-
-  // Function to determine if an event is upcoming
-  function isUpcoming(date: Date) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const eventDate = new Date(date);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate >= today;
-  }
-
-  // Separate events into upcoming and past
-  const upcomingEvents = allEvents
-    .filter(event => isUpcoming(event.data.date))
-    .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
-
-  const pastEvents = allEvents
-    .filter(event => !isUpcoming(event.data.date))
-    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-  // Generate paths for both upcoming and past events
-  const generatePaths = (events: any[], type: string) => {
-    const totalPages = Math.max(1, Math.ceil(events.length / itemsPerPage));
-    return Array.from({ length: totalPages }, (_, i) => ({
-      params: { type, page: (i + 1).toString() },
-      props: { events, totalPages, currentPage: i + 1 }
-    }));
-  };
-
-  return [
-    ...generatePaths(upcomingEvents, 'upcoming'),
-    ...generatePaths(pastEvents, 'past')
-  ];
-}
+export const prerender = false;
 
 const { type, page } = Astro.params;
-const { events: allEvents, totalPages, currentPage } = Astro.props;
-
-// Paginate events
+const currentPage = parseInt(page || '1');
 const itemsPerPage = 4;
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = Math.min(startIndex + itemsPerPage, allEvents.length);
-const paginatedEvents = allEvents.slice(startIndex, endIndex);
 
-// Update event status based on type
+// Validate type
+if (type !== 'upcoming' && type !== 'past') {
+  return Astro.redirect('/events');
+}
+
+const allEvents = await getCollection('events');
+
+// Function to determine if an event is upcoming
+function isUpcoming(date: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(date);
+  eventDate.setHours(0, 0, 0, 0);
+  return eventDate >= today;
+}
+
+// Filter events based on type
+const filteredEvents = allEvents
+  .filter(event => {
+    const upcoming = isUpcoming(event.data.date);
+    return type === 'upcoming' ? upcoming : !upcoming;
+  })
+  .sort((a, b) => {
+    if (type === 'upcoming') {
+      return new Date(a.data.date).getTime() - new Date(b.data.date).getTime();
+    } else {
+      return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+    }
+  });
+
+const totalEvents = filteredEvents.length;
+const totalPages = Math.max(1, Math.ceil(totalEvents / itemsPerPage));
+
+// Redirect if page is invalid
+if (isNaN(currentPage) || currentPage < 1 || (currentPage > totalPages && totalPages > 0)) {
+  return Astro.redirect(`/events/${type}/1`);
+}
+
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = Math.min(startIndex + itemsPerPage, totalEvents);
+const paginatedEvents = filteredEvents.slice(startIndex, endIndex);
+
+// Update event status
 const events = paginatedEvents.map(event => ({
   ...event,
-  data: { ...event.data, status: type === 'upcoming' ? 'upcoming' : 'past' }
+  data: { ...event.data, status: type as 'upcoming' | 'past' }
 }));
-
-// Redirect to first page if current page is invalid
-if (paginatedEvents.length === 0 && allEvents.length > 0) {
-  return Astro.redirect('/events/' + type + '/1');
-}
 ---
 
 <MainLayout title={`${type === 'upcoming' ? 'Upcoming' : 'Past'} Events`}>

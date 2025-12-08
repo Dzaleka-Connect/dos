@@ -4,6 +4,8 @@ import MainLayout from '../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 import Button from '../components/ui/Button.astro';
 
+export const prerender = false;
+
 // Get all services and filter featured ones
 const services = await getCollection('services');
 const featuredServices = services
@@ -17,7 +19,16 @@ const upcomingEvents = events
   .filter(event => {
     // Check if event is TBA either in data or title
     const isTBA = event.data.isTBA || event.data.title.toLowerCase().includes('tba');
-    return isTBA || new Date(event.data.date) >= new Date();
+    if (isTBA) return true;
+
+    const eventDate = new Date(event.data.date);
+    const now = new Date();
+    
+    // Reset time to start of day for accurate date comparison
+    eventDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+    
+    return eventDate >= now;
   })
   .sort((a, b) => {
     // Put TBA events at the end
@@ -533,7 +544,18 @@ const seo = {
             {upcomingEvents.map(event => {
               const isTBA = event.data.isTBA || event.data.title.toLowerCase().includes('tba');
               const eventDate = isTBA ? null : new Date(event.data.date);
-              const isUpcoming = isTBA || (eventDate && eventDate >= new Date());
+              
+              // Check if upcoming (including today)
+              let isUpcoming = false;
+              if (isTBA) {
+                isUpcoming = true;
+              } else if (eventDate) {
+                const dateToCheck = new Date(eventDate);
+                const now = new Date();
+                dateToCheck.setHours(0, 0, 0, 0);
+                now.setHours(0, 0, 0, 0);
+                isUpcoming = dateToCheck >= now;
+              }
               
               return (
                 <a href={`/events/${event.slug}`}
