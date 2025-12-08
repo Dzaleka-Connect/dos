@@ -201,12 +201,12 @@ const last7DaysTrend = Array.from({ length: 7 }, (_, i) => {
   
   // Count items created/updated on this date
   const count = [
-    ...services.filter(s => (s.data.lastUpdated || s.data.date).toString().startsWith(dateString)),
-    ...resources.filter(r => (r.data.publishDate || r.data.date).toString().startsWith(dateString)),
-    ...events.filter(e => e.data.date.toString().startsWith(dateString)),
-    ...photos.filter(p => p.data.date.toString().startsWith(dateString)),
-    ...jobs.filter(j => (j.data.posted || j.data.date).toString().startsWith(dateString)),
-    ...news.filter(n => n.data.date.toString().startsWith(dateString)),
+    ...services.filter(s => (s.data.lastUpdated || s.data.date)?.toString().startsWith(dateString)),
+    ...resources.filter(r => (r.data.publishDate || r.data.date)?.toString().startsWith(dateString)),
+    ...events.filter(e => e.data.date?.toString().startsWith(dateString)),
+    ...photos.filter(p => p.data.date?.toString().startsWith(dateString)),
+    ...jobs.filter(j => (j.data.posted || j.data.date)?.toString().startsWith(dateString)),
+    ...news.filter(n => n.data.date?.toString().startsWith(dateString)),
     ...dancers.filter(d => d.data.date?.toString().startsWith(dateString)),
     ...poets.filter(p => p.data.date?.toString().startsWith(dateString)),
     ...sites.filter(s => s.data.date?.toString().startsWith(dateString)),

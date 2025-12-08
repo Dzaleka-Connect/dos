@@ -2,6 +2,8 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { corsHeaders, checkRateLimit } from '../../utils/api-utils';
 
+export const prerender = false;
+
 /**
  * Search result cache
  * Cache structure: Map<cacheKey, { results: any, timestamp: number }>
