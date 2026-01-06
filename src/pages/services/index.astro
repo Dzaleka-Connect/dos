@@ -92,7 +92,7 @@ const seo = {
     "itemListElement": paginatedServices.map((service, idx) => ({
       "@type": "ListItem",
       "position": idx + 1,
-      "url": `https://services.dzaleka.com/services/${service.slug}`,
+      "url": `https://services.dzaleka.com/services/${service.id}`,
       "name": service.data.title
     }))
   })}
@@ -250,7 +250,7 @@ const seo = {
               category={service.data.category}
               featured={service.data.featured}
               verified={service.data.verified}
-              href={`/services/${service.slug}`}
+              href={`/services/${service.id}`}
               email={service.data.contact?.email}
               phone={service.data.contact?.phone}
               address={service.data.location?.address}

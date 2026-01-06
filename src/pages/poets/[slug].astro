@@ -1,23 +1,23 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const poets = await getCollection('poets');
   return poets.map(poet => ({
-    params: { slug: poet.slug },
+    params: { slug: poet.id },
     props: { poet }
   }));
 }
 
 const { poet } = Astro.props;
-const { Content } = await poet.render();
+const { Content } = await render(poet);
 
 // Enhanced SEO metadata for individual poet pages
 const pageTitle = `${poet.data.title} - Poet from Dzaleka Refugee Camp`;
 const pageDescription = `${poet.data.description} ${poet.data.age ? `Age: ${poet.data.age} years.` : ''} ${poet.data.nationality ? `Nationality: ${poet.data.nationality}.` : ''} Read poetry and learn more about this talented poet from Dzaleka Refugee Camp.`;
 const pageKeywords = `${poet.data.title}, Dzaleka poet, refugee poetry, ${poet.data.nationality || 'African'} poet, spoken word artist, poetry readings, literary talent, Dzaleka literary community`;
-const canonicalURL = `https://services.dzaleka.com/poets/${poet.slug}`;
+const canonicalURL = `https://services.dzaleka.com/poets/${poet.id}`;
 
 // Generate structured data for individual poet
 const structuredData = {

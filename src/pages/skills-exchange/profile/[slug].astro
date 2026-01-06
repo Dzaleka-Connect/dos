@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 
 export async function getStaticPaths() {
@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { profile } = Astro.props;
-const { Content } = await profile.render();
+const { Content } = await render(profile);
 
 const { 
   name, 
@@ -58,7 +58,7 @@ const {
         <!-- Status Badge -->
         <div class="absolute top-4 right-4 z-10 flex items-center gap-2">
           <a
-            href={`/skills-exchange/update-profile?profile=${Astro.params.slug}`}
+            href={`/skills-exchange/update-profile?profile=${Astro.params.id}`}
             class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors"
             title="Update Profile"
           >

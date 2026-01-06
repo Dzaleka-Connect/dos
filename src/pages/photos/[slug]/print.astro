@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 export async function getStaticPaths() {
   const photos = await getCollection('photos');
   return photos.map(photo => ({
-    params: { slug: photo.slug },
+    params: { slug: photo.id },
     props: { photo }
   }));
 }
@@ -248,7 +248,7 @@ const { title, description, photographer, image, date, tags, location } = photo.
     <div class="footer">
       <p>© {new Date().getFullYear()} Dzaleka Online Services</p>
       <p>Printed on {new Date().toLocaleDateString()}</p>
-      <p>URL: https://services.dzaleka.com/photos/{photo.slug}</p>
+      <p>URL: https://services.dzaleka.com/photos/{photo.id}</p>
     </div>
   </div>
 

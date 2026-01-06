@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { Image } from 'astro:assets';
@@ -7,13 +7,13 @@ import { Image } from 'astro:assets';
 export async function getStaticPaths() {
   const services = await getCollection('services');
   return services.map(service => ({
-    params: { slug: service.slug },
+    params: { slug: service.id },
     props: { service },
   }));
 }
 
 const { service } = Astro.props;
-const { Content } = await service.render();
+const { Content } = await render(service);
 
 const defaultLogo = '/images/dzaleka-digital-heritage.png';
 
@@ -116,7 +116,7 @@ const relatedServices = await getCollection('services')
   .then(services => services
     .filter(s => {
       // Skip if it's the same service
-      if (s.slug === service.slug) return false;
+      if (s.id === service.id) return false;
       
       // Skip if no category
       if (!s.data.category || !service.data.category) return false;
@@ -246,7 +246,7 @@ const organizationSchema = {
   "identifier": {
     "@type": "PropertyValue",
     "name": "Service ID",
-    "value": service.slug
+    "value": service.id
   }
 };
 
@@ -530,7 +530,7 @@ const seo = {
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {relatedServices.map(relatedService => (
                 <a
-                  href={`/services/${relatedService.slug}`}
+                  href={`/services/${relatedService.id}`}
                   class="group flex flex-col p-4 bg-white rounded-lg hover:bg-primary-50 transition-colors border border-gray-100 hover:border-primary-200 h-full shadow-sm hover:shadow-md"
                 >
                   <div class="flex items-center gap-3 mb-3">

@@ -1,18 +1,18 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { formatDate } from '../../utils/dateHelpers';
 
 export async function getStaticPaths() {
   const jobs = await getCollection('jobs');
   return jobs.map(job => ({
-    params: { slug: job.slug },
+    params: { slug: job.id },
     props: { job }
   }));
 }
 
 const { job } = Astro.props;
-const { Content } = await job.render();
+const { Content } = await render(job);
 
 // Check if job is closed
 const currentDate = new Date();
@@ -23,7 +23,7 @@ const isClosed = job.data.status === 'closed' || isExpired;
 const allJobs = await getCollection('jobs');
 const relatedJobs = allJobs
   .filter(j => 
-    j.slug !== job.slug && 
+    j.id !== job.id && 
     !isClosed &&
     (j.data.category === job.data.category || j.data.type === job.data.type)
   )
@@ -33,14 +33,14 @@ const relatedJobs = allJobs
 const seo = {
   description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`,
   type: "article",
-  canonical: `https://services.dzaleka.com/jobs/${job.slug}`,
+  canonical: `https://services.dzaleka.com/jobs/${job.id}`,
   openGraph: {
     title: `${job.data.title}`,
     description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/jobs/${job.slug}`
+    url: `https://services.dzaleka.com/jobs/${job.id}`
   },
   twitter: {
     card: "summary_large_image",
@@ -83,7 +83,7 @@ const jobStructuredData = {
       "unitText": "MONTH"
     }
   } : undefined,
-  "url": `https://services.dzaleka.com/jobs/${job.slug}`
+  "url": `https://services.dzaleka.com/jobs/${job.id}`
 };
 
 // Create breadcrumb structured data
@@ -107,7 +107,7 @@ const breadcrumbStructuredData = {
       "@type": "ListItem",
       "position": 3,
       "name": job.data.title,
-      "item": `https://services.dzaleka.com/jobs/${job.slug}`
+      "item": `https://services.dzaleka.com/jobs/${job.id}`
     }
   ]
 };
@@ -359,7 +359,7 @@ const breadcrumbStructuredData = {
             <div class="grid gap-6 sm:grid-cols-2">
               {relatedJobs.map(relatedJob => (
                 <a 
-                  href={`/jobs/${relatedJob.slug}`}
+                  href={`/jobs/${relatedJob.id}`}
                   class="group block bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-primary-200 hover:shadow-md transition-all duration-200"
                 >
                   <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">{relatedJob.data.title}</h3>

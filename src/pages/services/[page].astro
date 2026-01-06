@@ -90,7 +90,7 @@ const organizationSchema = {
       "@type": "Organization",
       "name": service.data.title,
       "description": service.data.description,
-      "url": `${Astro.site}services/${service.slug}`,
+      "url": `${Astro.site}services/${service.id}`,
       "logo": service.data.logo ? `${Astro.site}${service.data.logo}` : undefined,
       "address": service.data.location?.address ? {
         "@type": "PostalAddress",
@@ -262,7 +262,7 @@ const seo = {
               category={service.data.category}
               featured={service.data.featured}
               verified={service.data.verified}
-              href={`/services/${service.slug}`}
+              href={`/services/${service.id}`}
               email={service.data.contact?.email}
               phone={service.data.contact?.phone}
               address={service.data.location?.address}

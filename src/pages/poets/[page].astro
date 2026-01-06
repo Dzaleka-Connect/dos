@@ -55,7 +55,7 @@ const structuredData = {
         "@type": "Person",
         "name": poet.data.title,
         "description": poet.data.description,
-        "url": `https://services.dzaleka.com/poets/${poet.slug}`,
+        "url": `https://services.dzaleka.com/poets/${poet.id}`,
         "nationality": poet.data.nationality,
         "age": poet.data.age,
         "jobTitle": "Poet"
@@ -136,7 +136,7 @@ const structuredData = {
       <!-- Poets Grid -->
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {currentPagePoets.map(poet => (
-          <a href={`/poets/${poet.slug}`} 
+          <a href={`/poets/${poet.id}`} 
              class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-primary-200 overflow-hidden flex flex-col">
             <div class="relative h-48 overflow-hidden bg-gray-100">
               {poet.data.image ? (

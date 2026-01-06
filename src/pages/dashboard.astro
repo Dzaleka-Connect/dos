@@ -276,7 +276,7 @@ const chartData = {
 const allContent = [
   ...services.map(s => ({ 
     id: s.id,
-    slug: s.slug,
+    slug: s.id,
     type: 'service', 
     title: s.data.title, 
     description: s.data.description,
@@ -286,7 +286,7 @@ const allContent = [
   })),
   ...profiles.map(p => ({
     id: p.id,
-    slug: p.slug,
+    slug: p.id,
     type: 'profile',
     title: p.data.name,
     description: p.data.shortDescription,
@@ -297,7 +297,7 @@ const allContent = [
   })),
   ...resources.map(r => ({
     id: r.id,
-    slug: r.slug,
+    slug: r.id,
     type: 'resource',
     title: r.data.title,
     description: r.data.description,
@@ -307,7 +307,7 @@ const allContent = [
   })),
   ...jobs.map(j => ({
     id: j.id,
-    slug: j.slug,
+    slug: j.id,
     type: 'job',
     title: j.data.title,
     description: j.data.description,
@@ -317,7 +317,7 @@ const allContent = [
   })),
   ...events.map(e => ({ 
     id: e.id,
-    slug: e.slug,
+    slug: e.id,
     type: 'event', 
     title: e.data.title, 
     description: e.data.description,
@@ -327,7 +327,7 @@ const allContent = [
   })),
   ...photos.map(p => ({ 
     id: p.id,
-    slug: p.slug,
+    slug: p.id,
     type: 'photo', 
     title: p.data.title, 
     description: p.data.description,
@@ -337,7 +337,7 @@ const allContent = [
   })),
   ...news.map(n => ({ 
     id: n.id,
-    slug: n.slug,
+    slug: n.id,
     type: 'news', 
     title: n.data.title, 
     description: n.data.description || n.data.excerpt,
@@ -347,7 +347,7 @@ const allContent = [
   })),
   ...dancers.map(d => ({ 
     id: d.id,
-    slug: d.slug,
+    slug: d.id,
     type: 'dancer', 
     title: d.data.title || d.data.name, 
     description: d.data.description || d.data.bio,
@@ -357,7 +357,7 @@ const allContent = [
   })),
   ...poets.map(p => ({ 
     id: p.id,
-    slug: p.slug,
+    slug: p.id,
     type: 'poet', 
     title: p.data.title || p.data.name, 
     description: p.data.description || p.data.bio,
@@ -367,7 +367,7 @@ const allContent = [
   })),
   ...sites.map(s => ({ 
     id: s.id,
-    slug: s.slug,
+    slug: s.id,
     type: 'site', 
     title: s.data.title || s.data.name, 
     description: s.data.description,
@@ -378,7 +378,7 @@ const allContent = [
   })),
   ...artists.map(a => ({ 
     id: a.id,
-    slug: a.slug,
+    slug: a.id,
     type: 'artist', 
     title: a.data.title || a.data.name, 
     description: a.data.description || a.data.bio,
@@ -389,7 +389,7 @@ const allContent = [
   })),
   ...artworks.map(a => ({ 
     id: a.id,
-    slug: a.slug,
+    slug: a.id,
     type: 'artwork', 
     title: a.data.title, 
     description: a.data.description,
@@ -400,7 +400,7 @@ const allContent = [
   })),
   ...talents.map(t => ({
     id: t.id,
-    slug: t.slug,
+    slug: t.id,
     type: 'talent',
     title: t.data.name,
     description: t.data.bio || t.data.description,
@@ -411,7 +411,7 @@ const allContent = [
   })),
   ...docs.map(d => ({
     id: d.id,
-    slug: d.slug,
+    slug: d.id,
     type: 'document',
     title: d.data.title,
     description: d.data.description,
@@ -422,7 +422,7 @@ const allContent = [
   })),
   ...communityVoices.map(c => ({
     id: c.id,
-    slug: c.slug,
+    slug: c.id,
     type: 'voice',
     title: c.data.title,
     description: c.data.excerpt || c.data.description,
@@ -750,7 +750,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                         )}
                       </div>
                       <a
-                        href={`${activity.item.urlPrefix || '/' + (activity.type === 'job' ? 'jobs' : activity.type === 'news' ? 'news' : activity.type === 'event' ? 'events' : activity.type === 'dancer' ? 'dancers' : activity.type === 'poet' ? 'poets' : 'services')}/${activity.item.slug}`}
+                        href={`${activity.item.urlPrefix || '/' + (activity.type === 'job' ? 'jobs' : activity.type === 'news' ? 'news' : activity.type === 'event' ? 'events' : activity.type === 'dancer' ? 'dancers' : activity.type === 'poet' ? 'poets' : 'services')}/${activity.item.id}`}
                         class="text-primary-600 hover:text-primary-700 text-sm font-medium whitespace-nowrap"
                       >
                         View →
@@ -934,7 +934,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                       {resources.slice(0, 3).map(r => (
-                        <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick={`window.location.href='/resources/${r.slug}'`}>
+                        <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick={`window.location.href='/resources/${r.id}'`}>
                           <td class="px-4 py-3 text-sm text-gray-900 truncate max-w-[150px]">{r.data.title}</td>
                           <td class="px-4 py-3 text-sm text-gray-500">{r.data.category}</td>
                           <td class="px-4 py-3 text-sm text-gray-500">{new Date(r.data.date).toLocaleDateString()}</td>
@@ -999,7 +999,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                       {jobs.slice(0, 5).map(j => (
-                        <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick={`window.location.href='/jobs/${j.slug}'`}>
+                        <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick={`window.location.href='/jobs/${j.id}'`}>
                           <td class="px-4 py-3 text-sm text-gray-900 truncate max-w-[150px]">{j.data.title}</td>
                           <td class="px-4 py-3 text-sm text-gray-500">{j.data.organization}</td>
                           <td class="px-4 py-3 text-sm">
@@ -2023,7 +2023,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             ${item.description ? `<p class="text-sm text-gray-600 mt-1 line-clamp-2">${item.description}</p>` : ''}
           </div>
           <a
-            href="${getPathForType(item)}/${item.slug}"
+            href="${getPathForType(item)}/${item.id}"
             class="text-primary-600 hover:text-primary-700 text-sm font-medium whitespace-nowrap"
           >
             View →
@@ -2252,7 +2252,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </span>
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <a href="${getPathForType(item)}/${item.slug}" class="text-primary-600 hover:text-primary-900 mr-3">View</a>
+          <a href="${getPathForType(item)}/${item.id}" class="text-primary-600 hover:text-primary-900 mr-3">View</a>
           <a href="#" class="text-gray-400 hover:text-gray-600 cursor-not-allowed" title="Edit not available">Edit</a>
         </td>
       </tr>

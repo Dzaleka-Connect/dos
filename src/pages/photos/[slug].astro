@@ -1,25 +1,25 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { format } from 'date-fns';
 
 export async function getStaticPaths() {
   const photos = await getCollection('photos');
   return photos.map(photo => ({
-    params: { slug: photo.slug },
+    params: { slug: photo.id },
     props: { photo }
   }));
 }
 
 const { photo } = Astro.props;
 const { title, description, photographer, image, date, tags, location } = photo.data;
-const { Content } = await photo.render();
+const { Content } = await render(photo);
 
 // Get related photos based on tags and location
 const allPhotos = await getCollection('photos');
 const relatedPhotos = allPhotos
   .filter(p => 
-    p.slug !== photo.slug && // Exclude current photo
+    p.id !== photo.id && // Exclude current photo
     (
       // Match by tags
       (p.data.tags && photo.data.tags && 
@@ -38,14 +38,14 @@ const seo = {
   description: description,
   image: image,
   type: "article",
-  canonical: `https://services.dzaleka.com/photos/${photo.slug}`,
+  canonical: `https://services.dzaleka.com/photos/${photo.id}`,
   openGraph: {
     title: `${title} | Dzaleka Online Services`,
     description: description,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/photos/${photo.slug}`,
+    url: `https://services.dzaleka.com/photos/${photo.id}`,
     image: {
       url: image,
       width: 1200,
@@ -130,7 +130,7 @@ const seo = {
             </div>
             <div class="mt-4">
               <a 
-                href={`/photos/${photo.slug}/print`}
+                href={`/photos/${photo.id}/print`}
                 class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,7 +225,7 @@ const seo = {
               <div class="space-y-4">
                 {relatedPhotos.map(relatedPhoto => (
                   <a 
-                    href={`/photos/${relatedPhoto.slug}`}
+                    href={`/photos/${relatedPhoto.id}`}
                     class="block group"
                   >
                     <div class="flex gap-4">

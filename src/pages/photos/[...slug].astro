@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 import Badge from '../../components/ui/Badge.astro';
@@ -7,13 +7,13 @@ import Badge from '../../components/ui/Badge.astro';
 export async function getStaticPaths() {
   const photos = await getCollection('photos');
   return photos.map(entry => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 // Get the year for breadcrumb
 const photoYear = new Date(entry.data.date).getFullYear();
@@ -24,14 +24,14 @@ const seo = {
   description: entry.data.description || `A photograph by ${entry.data.photographer.name} taken on ${format(entry.data.date, 'MMMM d, yyyy')}${entry.data.location ? ` in ${entry.data.location}` : ''}.`,
   image: entry.data.image,
   type: "article",
-  canonical: `https://services.dzaleka.com/photos/${entry.slug}`,
+  canonical: `https://services.dzaleka.com/photos/${entry.id}`,
   openGraph: {
     title: `${entry.data.title}`,
     description: entry.data.description || `A photograph by ${entry.data.photographer.name} taken on ${format(entry.data.date, 'MMMM d, yyyy')}${entry.data.location ? ` in ${entry.data.location}` : ''}.`,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/photos/${entry.slug}`,
+    url: `https://services.dzaleka.com/photos/${entry.id}`,
     image: {
       url: entry.data.image,
       width: 1200,
@@ -96,7 +96,7 @@ const photoStructuredData = {
         "@type": "ListItem",
         "position": 4,
         "name": entry.data.title,
-        "item": `https://services.dzaleka.com/photos/${entry.slug}`
+        "item": `https://services.dzaleka.com/photos/${entry.id}`
       }
     ]
   }

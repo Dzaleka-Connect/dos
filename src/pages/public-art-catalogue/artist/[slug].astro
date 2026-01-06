@@ -32,7 +32,7 @@ const { frontmatter, Content } = artist;
 // Debug logging
 console.log('Artist props:', { 
   artistName: frontmatter.artistName, 
-  slug: frontmatter.slug,
+  slug: frontmatter.id,
   hasContent: !!Content,
   file: artist.file 
 });
@@ -52,14 +52,14 @@ const seo = {
   description: frontmatter.bio || `Learn about ${frontmatter.artistName}, a talented artist in Dzaleka Refugee Camp`,
   image: frontmatter.image,
   type: "profile",
-  canonical: `https://services.dzaleka.com/public-art-catalogue/artist/${frontmatter.slug}`,
+  canonical: `https://services.dzaleka.com/public-art-catalogue/artist/${frontmatter.id}`,
   openGraph: {
     title: `${frontmatter.artistName} | Artist Profile`,
     description: frontmatter.bio || `Learn about ${frontmatter.artistName}, a talented artist in Dzaleka Refugee Camp`,
     type: "profile",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/public-art-catalogue/artist/${frontmatter.slug}`,
+    url: `https://services.dzaleka.com/public-art-catalogue/artist/${frontmatter.id}`,
     image: {
       url: frontmatter.image,
       width: 1200,

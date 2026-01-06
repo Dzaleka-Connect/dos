@@ -1,17 +1,17 @@
 ---
 import MainLayout from '../../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const courses = await getCollection('courses');
   return courses.map(course => ({
-    params: { slug: course.slug },
+    params: { slug: course.id },
     props: { course },
   }));
 }
 
 const { course } = Astro.props;
-const { Content, headings } = await course.render();
+const { Content, headings } = await render(course);
 
 // Filter for top-level modules (H2)
 const moduleHeadings = headings.filter(h => h.depth === 2);
@@ -91,9 +91,9 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
             <nav class="space-y-1" id="course-nav">
               {moduleHeadings.map((heading) => (
                 <a 
-                  href={`#${heading.slug}`}
+                  href={`#${heading.id}`}
                   class="group flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-primary-600 transition-colors border-l-2 border-transparent"
-                  data-target={heading.slug}
+                  data-target={heading.id}
                 >
                   <span class="truncate">{heading.text}</span>
                 </a>
@@ -125,7 +125,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
               <div class="text-gray-600 mt-3 group-open:animate-fadeIn">
                 <nav class="flex flex-col space-y-2">
                   {moduleHeadings.map((heading) => (
-                    <a href={`#${heading.slug}`} class="text-sm py-1 hover:text-primary-600 truncate">
+                    <a href={`#${heading.id}`} class="text-sm py-1 hover:text-primary-600 truncate">
                       {heading.text}
                     </a>
                   ))}

@@ -1,6 +1,6 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 const docs = await getCollection('docs');
 
@@ -37,29 +37,29 @@ const groupedDocs = Object.entries(docGroups).reduce((acc, [key, group]) => {
   acc[key] = {
     title: group.title,
     items: group.items
-      .map(slug => docs.find(doc => doc.slug === slug))
+      .map(slug => docs.find(doc => doc.id === slug))
       .filter(Boolean)
   };
   return acc;
 }, {});
 
-const currentDoc = docs.find(doc => doc.slug === 'getting-started');
+const currentDoc = docs.find(doc => doc.id === 'getting-started');
 
 if (!currentDoc) {
   return Astro.redirect('/404');
 }
 
-const { Content } = await currentDoc.render();
+const { Content } = await render(currentDoc);
 
 // Get related documents based on section
 const getRelatedDocs = (doc) => {
   const currentSection = Object.entries(docGroups).find(([_, group]) => 
-    group.items.includes(doc.slug)
+    group.items.includes(doc.id)
   )?.[0];
   
   return docs.filter(d => 
-    d.slug !== doc.slug && 
-    docGroups[currentSection]?.items.includes(d.slug)
+    d.id !== doc.id && 
+    docGroups[currentSection]?.items.includes(d.id)
   );
 };
 
@@ -110,7 +110,7 @@ const relatedDocs = getRelatedDocs(currentDoc);
             {Object.entries(groupedDocs).map(([section, { title, items }]) => (
               <optgroup label={title}>
                 {items.map(doc => (
-                  <option value={`/docs/${doc.slug}`} selected={doc.slug === currentDoc.slug}>
+                  <option value={`/docs/${doc.id}`} selected={doc.id === currentDoc.id}>
                     {doc.data.title}
                   </option>
                 ))}
@@ -133,9 +133,9 @@ const relatedDocs = getRelatedDocs(currentDoc);
                   {items.map(doc => (
                     <li>
                       <a
-                        href={`/docs/${doc.slug}`}
+                        href={`/docs/${doc.id}`}
                         class={`block px-4 py-3 hover:bg-gray-50/50 transition-colors ${
-                          doc.slug === currentDoc.slug
+                          doc.id === currentDoc.id
                             ? 'text-primary-600 font-medium bg-primary-50/50'
                             : 'text-gray-600 hover:text-gray-900'
                         }`}
@@ -162,7 +162,7 @@ const relatedDocs = getRelatedDocs(currentDoc);
           <!-- Quick Links Cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedDocs.map(doc => (
-              <a href={`/docs/${doc.slug}`} 
+              <a href={`/docs/${doc.id}`} 
                  class="group block">
                 <div class="h-full bg-white rounded-xl border border-gray-200/50 shadow-sm p-6 hover:shadow-md hover:border-primary-100 transition duration-200">
                   <div class="flex items-start gap-3">

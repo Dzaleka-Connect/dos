@@ -64,7 +64,7 @@ const countries = [...new Set(stories.map(story => story.data.country))];
           "@type": "Person",
           "name": story.data.name,
           "description": story.data.description,
-          "url": `${Astro.site}inspirational-stories/${story.slug}`,
+          "url": `${Astro.site}inspirational-stories/${story.id}`,
           "nationality": {
             "@type": "Country",
             "name": story.data.country
@@ -133,7 +133,7 @@ const countries = [...new Set(stories.map(story => story.data.country))];
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="stories-grid">
         {stories.map(story => (
           <article class="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-country={story.data.country}>
-            <a href={`/inspirational-stories/${story.slug}`} class="block">
+            <a href={`/inspirational-stories/${story.id}`} class="block">
               <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-200">
                 {story.data.personImage ? (
                   <img

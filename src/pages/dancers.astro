@@ -29,7 +29,7 @@ const structuredData = {
         "@type": dancer.data.type === 'group' ? "Organization" : "Person",
         "name": dancer.data.title,
         "description": dancer.data.description,
-        "url": `https://services.dzaleka.com/dancers/${dancer.slug}`,
+        "url": `https://services.dzaleka.com/dancers/${dancer.id}`,
         "nationality": dancer.data.nationality,
         "age": dancer.data.age,
         "jobTitle": dancer.data.type === 'group' ? "Dance Group" : "Dancer",
@@ -118,7 +118,7 @@ const structuredData = {
       <!-- Dance Groups Grid -->
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
         {danceGroups.map(group => (
-          <a href={`/dancers/${group.slug}`} 
+          <a href={`/dancers/${group.id}`} 
              class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-primary-200 overflow-hidden flex flex-col">
             <div class="relative h-48 overflow-hidden bg-gray-100">
               {group.data.image ? (
@@ -163,7 +163,7 @@ const structuredData = {
 
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {individualDancers.map(dancer => (
-          <a href={`/dancers/${dancer.slug}`} 
+          <a href={`/dancers/${dancer.id}`} 
              class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-primary-200 overflow-hidden flex flex-col">
             <div class="relative h-48 overflow-hidden bg-gray-100">
               {dancer.data.image ? (

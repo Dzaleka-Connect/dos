@@ -1,18 +1,18 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map(project => ({
-    params: { slug: project.slug },
+    params: { slug: project.id },
     props: { project, projects },
   }));
 }
 
 const { project, projects } = Astro.props;
-const { Content } = await project.render();
+const { Content } = await render(project);
 ---
 
 <MainLayout title={`${project.data.title} | Projects`}>
@@ -180,7 +180,7 @@ const { Content } = await project.render();
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Share This Project</h3>
               <div class="flex flex-wrap gap-3">
                 <a 
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.data.title)}&url=${encodeURIComponent(`https://dzaleka.org/projects/${project.slug}`)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.data.title)}&url=${encodeURIComponent(`https://dzaleka.org/projects/${project.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center px-4 py-2 rounded-lg bg-[#1DA1F2] text-white hover:bg-opacity-90 transition-colors"
@@ -191,7 +191,7 @@ const { Content } = await project.render();
                   Share on X/Twitter
                 </a>
                 <a 
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://dzaleka.org/projects/${project.slug}`)}`}
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://dzaleka.org/projects/${project.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center px-4 py-2 rounded-lg bg-[#1877F2] text-white hover:bg-opacity-90 transition-colors"
@@ -202,7 +202,7 @@ const { Content } = await project.render();
                   Share on Facebook
                 </a>
                 <a 
-                  href={`https://wa.me/?text=${encodeURIComponent(`${project.data.title} - https://dzaleka.org/projects/${project.slug}`)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(`${project.data.title} - https://dzaleka.org/projects/${project.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center px-4 py-2 rounded-lg bg-[#25D366] text-white hover:bg-opacity-90 transition-colors"
@@ -214,7 +214,7 @@ const { Content } = await project.render();
                 </a>
                 <button 
                   class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors copy-link"
-                  data-url={`https://dzaleka.org/projects/${project.slug}`}
+                  data-url={`https://dzaleka.org/projects/${project.id}`}
                   onclick="navigator.clipboard.writeText(this.dataset.url).then(() => { this.textContent = 'Link Copied!'; setTimeout(() => { this.innerHTML = '<svg class=\'w-5 h-5 mr-2\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1\'/></svg>Copy Link'; }, 2000); })"
                 >
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,11 +232,11 @@ const { Content } = await project.render();
           <h2 class="text-3xl font-bold text-gray-900 mb-8">Other MIT Solve Solutions</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects
-              .filter(p => p.slug !== project.slug)
+              .filter(p => p.id !== project.id)
               .slice(0, 3)
               .map(relatedProject => (
                 <a 
-                  href={`/projects/${relatedProject.slug}`}
+                  href={`/projects/${relatedProject.id}`}
                   class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div class="p-6">

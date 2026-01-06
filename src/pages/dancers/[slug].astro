@@ -1,23 +1,23 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const dancers = await getCollection('dancers');
   return dancers.map(dancer => ({
-    params: { slug: dancer.slug },
+    params: { slug: dancer.id },
     props: { dancer }
   }));
 }
 
 const { dancer } = Astro.props;
-const { Content } = await dancer.render();
+const { Content } = await render(dancer);
 
 // Enhanced SEO metadata for individual dancer pages
 const pageTitle = `${dancer.data.title} - ${dancer.data.type === 'group' ? 'Dance Group' : 'Dancer'} from Dzaleka Refugee Camp`;
 const pageDescription = `${dancer.data.description} ${dancer.data.age ? `Age: ${dancer.data.age} years.` : ''} ${dancer.data.nationality ? `Nationality: ${dancer.data.nationality}.` : ''} ${dancer.data.type === 'group' ? 'Book performances and join this dance group.' : 'Book performances and connect with this talented dancer.'} from Dzaleka Refugee Camp.`;
 const pageKeywords = `${dancer.data.title}, Dzaleka ${dancer.data.type === 'group' ? 'dance group' : 'dancer'}, refugee dance, ${dancer.data.nationality || 'African'} ${dancer.data.type === 'group' ? 'dance group' : 'dancer'}, dance performances, traditional dance, contemporary dance, dance booking, Dzaleka dance community`;
-const canonicalURL = `https://services.dzaleka.com/dancers/${dancer.slug}`;
+const canonicalURL = `https://services.dzaleka.com/dancers/${dancer.id}`;
 
 // Generate structured data for individual dancer
 const structuredData = {

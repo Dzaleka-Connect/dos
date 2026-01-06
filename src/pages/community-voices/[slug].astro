@@ -1,22 +1,22 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const voices = await getCollection('community-voices');
   return voices.map(voice => ({
-    params: { slug: voice.slug },
+    params: { slug: voice.id },
     props: { voice },
   }));
 }
 
 const { voice } = Astro.props;
-const { Content } = await voice.render();
+const { Content } = await render(voice);
 
 // Get related stories (same category)
 const allVoices = await getCollection('community-voices');
 const relatedStories = allVoices
-  .filter(v => v.data.category === voice.data.category && v.slug !== voice.slug)
+  .filter(v => v.data.category === voice.data.category && v.id !== voice.id)
   .slice(0, 3);
 
 // Create SEO metadata
@@ -24,14 +24,14 @@ const seo = {
   title: `${voice.data.title} - Community Voice | Dzaleka Online Services`,
   description: voice.data.excerpt,
   type: "article",
-  canonical: `https://services.dzaleka.com/community-voices/${voice.slug}`,
+  canonical: `https://services.dzaleka.com/community-voices/${voice.id}`,
   openGraph: {
     title: voice.data.title,
     description: voice.data.excerpt,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/community-voices/${voice.slug}`,
+    url: `https://services.dzaleka.com/community-voices/${voice.id}`,
     image: voice.data.image ? {
       url: voice.data.image.startsWith('http') ? voice.data.image : `https://services.dzaleka.com${voice.data.image}`,
       width: 1200,
@@ -103,7 +103,7 @@ const articleStructuredData = {
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": `https://services.dzaleka.com/community-voices/${voice.slug}`
+    "@id": `https://services.dzaleka.com/community-voices/${voice.id}`
   },
   "keywords": voice.data.tags ? voice.data.tags.join(", ") : undefined,
   "articleSection": voice.data.category
@@ -202,7 +202,7 @@ const articleStructuredData = {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           {relatedStories.map(story => (
             <a 
-              href={`/community-voices/${story.slug}`}
+              href={`/community-voices/${story.id}`}
               class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <div class="aspect-w-16 aspect-h-9 bg-gray-200">

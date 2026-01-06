@@ -1,17 +1,17 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const listings = await getCollection('marketplace');
   return listings.map(listing => ({
-    params: { slug: listing.slug },
+    params: { slug: listing.id },
     props: { listing },
   }));
 }
 
 const { listing } = Astro.props;
-const { Content } = await listing.render();
+const { Content } = await render(listing);
 
 const priceDisplay = listing.data.priceType === 'free' ? 'Free' :
   listing.data.priceType === 'contact' ? 'Contact for price' :

@@ -1,17 +1,17 @@
 ---
 import MainLayout from '../../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const stores = await getCollection('stores');
   return stores.map(store => ({
-    params: { slug: store.slug },
+    params: { slug: store.id },
     props: { store },
   }));
 }
 
 const { store } = Astro.props;
-const { Content } = await store.render();
+const { Content } = await render(store);
 
 const typeLabels = {
   restaurant: 'Restaurant',

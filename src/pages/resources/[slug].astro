@@ -1,18 +1,18 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const resources = await getCollection('resources');
   return resources.map(resource => ({
-    params: { slug: resource.slug },
+    params: { slug: resource.id },
     props: { resource },
   }));
 }
 
 const { resource } = Astro.props;
-const { Content } = await resource.render();
+const { Content } = await render(resource);
 
 // Category color mapping
 // Category color mapping
@@ -45,7 +45,7 @@ const formattedDate = new Date(resource.data.lastUpdated || resource.data.date).
 const allResources = await getCollection('resources');
 const relatedResources = allResources
   .filter(r =>
-    r.slug !== resource.slug &&
+    r.id !== resource.id &&
     (r.data.category === resource.data.category ||
      r.data.tags?.some(tag => resource.data.tags?.includes(tag)))
   )
@@ -55,14 +55,14 @@ const relatedResources = allResources
 const seo = {
   description: `${resource.data.description || `Learn about ${resource.data.title}, a ${resource.data.category} resource for the Dzaleka community.`}`,
   type: "article",
-  canonical: `https://services.dzaleka.com/resources/${resource.slug}`,
+  canonical: `https://services.dzaleka.com/resources/${resource.id}`,
   openGraph: {
     title: `${resource.data.title} | Dzaleka Online Services`,
     description: resource.data.description || `Learn about ${resource.data.title}, a ${resource.data.category} resource for the Dzaleka community.`,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/resources/${resource.slug}`
+    url: `https://services.dzaleka.com/resources/${resource.id}`
   },
   twitter: {
     card: "summary_large_image",
@@ -90,7 +90,7 @@ const resourceStructuredData = {
       "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png"
     }
   },
-  "url": `https://services.dzaleka.com/resources/${resource.slug}`
+  "url": `https://services.dzaleka.com/resources/${resource.id}`
 };
 
 // Create breadcrumb structured data
@@ -114,7 +114,7 @@ const breadcrumbStructuredData = {
       "@type": "ListItem",
       "position": 3,
       "name": resource.data.title,
-      "item": `https://services.dzaleka.com/resources/${resource.slug}`
+      "item": `https://services.dzaleka.com/resources/${resource.id}`
     }
   ]
 };
@@ -407,7 +407,7 @@ const breadcrumbStructuredData = {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedResources.map(related => (
                 <a
-                  href={`/resources/${related.slug}`}
+                  href={`/resources/${related.id}`}
                   class="group block"
                 >
                   <article class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-primary-200 transition-all duration-200 overflow-hidden h-full">
