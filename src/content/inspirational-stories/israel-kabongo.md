@@ -28,3 +28,5 @@ content: |
   In 2021, around February, Patience Namadingo decided to visit him and gave him his own guitar. He has been using this for years and it was his favourite, but he decided to give it to Israel, and together they collaborated on his award-winning song known as "Mapulani". Israel decided to join the bigger world of music, and started releasing songs more widely.
 
   His plan is to have music schools in refugee camps all over the world because he believes it can also help them live a happy life just like it helped him. He wants to provide homes for those who lost parents at an early age. Israel remains a role-model to his fellow young people in the camp with the amazing work he has done at his age.
+
+---

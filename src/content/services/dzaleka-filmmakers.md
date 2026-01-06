@@ -4,7 +4,7 @@ description: "Dzaleka Filmmakers is a group of all actors and actresses across D
 category: "Cultural"
 featured: false
 verified: true
-image: "/images/Dzaleka Filmmakers  .jpg"
+logo: /images/Dzaleka Filmmakers  .jpg
 contact:
   phone: "+265 995 43 58 23"
   email: "dzalekafilms@gmail.com"

@@ -17,3 +17,5 @@ content: |
   During his high school years in Dzaleka, he joined and worked with community-based organizations Vijana Africa and Pax Mundi as a member and a volunteer. Gabriel is currently the Dzaleka Project Coordinator for Little Acts of Kindness, a volunteer organization based in Calgary, Canada. His job is to keep the Little Acts team updated on current conditions and events, and to help generate articles about life for orphans and elderly camp residents. All these experiences led him to create his own Community-Based Organization called Community For Better Life: https://Communityforbetterlife.org.
 
   Despite all the challenges that Gabriel went through, he is still determined to support his family. His life goal is to deliver support to any group of people that needs it, especially in education, because he believes that education is the most powerful weapon to eradicate poverty. He also plans on becoming a great entrepreneur someday, as he loves entrepreneurship.
+
+---

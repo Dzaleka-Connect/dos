@@ -36,25 +36,49 @@ const resourceTypes = [
     title: "Policy Documents & Legal Frameworks",
     description: "Access refugee policies, legal documents, and protection guidelines from UNHCR and the Malawian government",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>`,
-    categories: ["Legal", "Policy", "Guidelines"]
+    categories: ["Legal", "Policy", "Guidelines"],
+    // Styling
+    bgGradient: "from-earth-50/50",
+    borderColor: "border-earth-100 group-hover:border-earth-200",
+    textColor: "text-earth-700",
+    hoverTextColor: "group-hover:text-earth-800",
+    tagClass: "text-earth-800 border-earth-200 hover:bg-earth-50"
   },
   {
     title: "Situation Reports & Updates",
     description: "Stay informed with the latest updates, factsheets, and reports about Dzaleka Refugee Camp and refugee situations in Malawi",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
-    categories: ["Report", "Situation Reports / Updates", "Brief"]
+    categories: ["Report", "Situation Reports / Updates", "Brief"],
+    // Styling
+    bgGradient: "from-ochre-50/50",
+    borderColor: "border-ochre-100 group-hover:border-ochre-200",
+    textColor: "text-ochre-700",
+    hoverTextColor: "group-hover:text-ochre-800",
+    tagClass: "text-ochre-800 border-ochre-200 hover:bg-ochre-50"
   },
   {
     title: "Research & Academic Studies",
     description: "Explore academic research, case studies, and in-depth analysis of refugee issues, rights, and community development",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>`,
-    categories: ["Research", "Research article", "Research & Report"]
+    categories: ["Research", "Research article", "Research & Report"],
+    // Styling
+    bgGradient: "from-primary-50/50",
+    borderColor: "border-primary-100 group-hover:border-primary-200",
+    textColor: "text-primary-700",
+    hoverTextColor: "group-hover:text-primary-800",
+    tagClass: "text-primary-800 border-primary-100 hover:bg-primary-50"
   },
   {
     title: "Stories & Insights",
     description: "Read personal stories, success cases, and insights about life, culture, and community initiatives in Dzaleka",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2M7 7h10"/></svg>`,
-    categories: ["Story", "Insight & Analysis"]
+    categories: ["Story", "Insight & Analysis"],
+    // Styling
+    bgGradient: "from-terracotta-50/50",
+    borderColor: "border-terracotta-100 group-hover:border-terracotta-200",
+    textColor: "text-terracotta-700",
+    hoverTextColor: "group-hover:text-terracotta-800",
+    tagClass: "text-terracotta-800 border-terracotta-100 hover:bg-terracotta-50"
   }
 ];
 
@@ -144,19 +168,20 @@ function buildPaginationUrl(pageNum: number) {
 }
 
 // Category color mapping - matching detail page style
+// Category color mapping - matching detail page style
 const categoryColors = {
-  'Legal': 'bg-blue-100 text-blue-800 border-blue-200',
-  'Policy': 'bg-green-100 text-green-800 border-green-200',
-  'Guidelines': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  'Report': 'bg-purple-100 text-purple-800 border-purple-200',
-  'Research': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-  'Brief': 'bg-cyan-100 text-cyan-800 border-cyan-200',
-  'Story': 'bg-pink-100 text-pink-800 border-pink-200',
-  'Research article': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-  'Research & Report': 'bg-purple-100 text-purple-800 border-purple-200',
-  'Situation Reports / Updates': 'bg-orange-100 text-orange-800 border-orange-200',
-  'Insight & Analysis': 'bg-teal-100 text-teal-800 border-teal-200',
-  'default': 'bg-gray-100 text-gray-800 border-gray-200'
+  'Legal': 'bg-earth-100 text-earth-800 border-earth-200',
+  'Policy': 'bg-earth-100 text-earth-800 border-earth-200',
+  'Guidelines': 'bg-earth-100 text-earth-800 border-earth-200',
+  'Report': 'bg-primary-100 text-primary-800 border-primary-200',
+  'Research': 'bg-primary-100 text-primary-800 border-primary-200',
+  'Brief': 'bg-ochre-100 text-ochre-800 border-ochre-200',
+  'Story': 'bg-terracotta-100 text-terracotta-800 border-terracotta-200',
+  'Research article': 'bg-primary-100 text-primary-800 border-primary-200',
+  'Research & Report': 'bg-primary-100 text-primary-800 border-primary-200',
+  'Situation Reports / Updates': 'bg-ochre-100 text-ochre-800 border-ochre-200',
+  'Insight & Analysis': 'bg-terracotta-100 text-terracotta-800 border-terracotta-200',
+  'default': 'bg-sand-100 text-gray-800 border-sand-200'
 };
 
 // Create enhanced SEO metadata
@@ -506,20 +531,20 @@ const paginationStructuredData = {
           {resourceTypes.map(type => (
             <div class="group relative">
               {/* Background Pattern */}
-              <div class="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class={`absolute inset-0 bg-gradient-to-br transition-opacity duration-300 rounded-xl opacity-0 group-hover:opacity-100 ${type.bgGradient || 'from-primary-50/50'}`}></div>
               
               {/* Content */}
-              <div class="relative border-2 border-primary-100 rounded-xl p-6 h-full flex flex-col bg-white/80 backdrop-blur-sm group-hover:border-primary-200 transition-colors duration-300">
+              <div class={`relative border-2 rounded-xl p-6 h-full flex flex-col bg-white/80 backdrop-blur-sm transition-colors duration-300 ${type.borderColor || 'border-primary-100 group-hover:border-primary-200'}`}>
                 {/* Icon */}
-                <div class="text-primary-600 mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                <div class={`mb-4 transform group-hover:scale-110 transition-transform duration-300 ${type.textColor || 'text-primary-600'}`}>
                   <Fragment set:html={type.icon} />
                 </div>
                 
                 {/* Title & Description */}
-                <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">
+                <h3 class={`text-xl font-semibold text-gray-900 mb-3 transition-colors ${type.hoverTextColor || 'group-hover:text-primary-700'}`}>
                   {type.title}
                 </h3>
-                <p class="text-gray-600 text-sm mb-4 flex-grow">
+                <p class="text-gray-600 text-base mb-4 flex-grow">
                   {type.description}
                 </p>
                 
@@ -528,7 +553,7 @@ const paginationStructuredData = {
                   {type.categories.map(cat => (
                     <a 
                       href={`/resources?category=${encodeURIComponent(cat)}`}
-                      class="text-xs px-3 py-1.5 bg-white text-primary-700 rounded-full border border-primary-100 hover:bg-primary-50 hover:border-primary-200 transition-colors duration-200"
+                      class={`text-sm px-3 py-1.5 bg-white rounded-full border transition-colors duration-200 ${type.tagClass || 'text-primary-600 border-primary-100 hover:bg-primary-50'}`}
                     >
                       {cat}
                     </a>
@@ -558,14 +583,14 @@ const paginationStructuredData = {
                 <div class="relative bg-gradient-to-br from-primary-50 to-primary-100 p-6 pb-8">
                   <div class="absolute top-4 right-4">
                     {resource.data.fileType === 'pdf' ? (
-                      <span class="inline-flex items-center px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium border border-red-200">
+                      <span class="inline-flex items-center px-3 py-1 bg-terracotta-100 text-terracotta-700 rounded-full text-xs font-medium border border-terracotta-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                         PDF
                       </span>
                     ) : (
-                      <span class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
+                      <span class="inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium border border-primary-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                         </svg>
@@ -574,12 +599,13 @@ const paginationStructuredData = {
                     )}
                   </div>
 
+
                   <div class="flex items-center space-x-2 mb-3">
                     <span class={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[resource.data.category] || categoryColors.default}`}>
                       {resource.data.category}
                     </span>
                     {resource.data.featured && (
-                      <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-300">
+                      <span class="px-3 py-1 rounded-full text-xs font-medium bg-ochre-100 text-ochre-800 border border-ochre-300">
                         Featured
                       </span>
                     )}
@@ -689,23 +715,23 @@ const paginationStructuredData = {
     {/* Information Cards */}
     <section class="mt-16 mb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* History Card */}
-        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+        {/* History Card - Ochre (History/Memory) */}
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-ochre-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-ochre-50/0 to-ochre-50/0 group-hover:from-ochre-50/10 group-hover:to-ochre-50/5 transition-all duration-300"></div>
           <div class="relative">
-            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div class="text-ochre-600 mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">History</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-ochre-700 transition-colors">History</h3>
+            <p class="text-gray-600 text-base leading-relaxed">
               Established to preserve and share the rich history and experiences of the Dzaleka refugee community, documenting our journey since 1994.
             </p>
           </div>
         </div>
 
-        {/* Mission & Scope Card */}
+        {/* Mission & Scope Card - Primary (Core/Vision) */}
         <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
           <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
           <div class="relative">
@@ -715,42 +741,42 @@ const paginationStructuredData = {
               </svg>
             </div>
             <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Mission & Scope</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <p class="text-gray-600 text-base leading-relaxed">
               Providing free, easy, and speedy access to comprehensive and high-quality resources about refugee rights, protection, and community development.
             </p>
           </div>
         </div>
 
-        {/* Our audience Card */}
-        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+        {/* Our audience Card - Earth (Community/Wide Reach) */}
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-earth-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-earth-50/0 to-earth-50/0 group-hover:from-earth-50/10 group-hover:to-earth-50/5 transition-all duration-300"></div>
           <div class="relative">
-            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div class="text-earth-600 mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Our audience</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-earth-700 transition-colors">Our audience</h3>
+            <p class="text-gray-600 text-base leading-relaxed">
               Our audience includes displaced individuals, decision-makers, legal experts, policymakers, scholars, UNHCR staff, and the public.
             </p>
           </div>
         </div>
 
-        {/* Contact Us Card */}
-        <a href="/contact" class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 block relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
+        {/* Contact Us Card - Terracotta (Action/Support) */}
+        <a href="/contact" class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-terracotta-200 hover:shadow-lg transition-all duration-300 block relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-terracotta-50/0 to-terracotta-50/0 group-hover:from-terracotta-50/10 group-hover:to-terracotta-50/5 transition-all duration-300"></div>
           <div class="relative">
-            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div class="text-terracotta-600 mb-4 group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Contact Us</h3>
-            <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-terracotta-700 transition-colors">Contact Us</h3>
+            <p class="text-gray-600 text-base mb-4 leading-relaxed">
               Have questions or want to contribute? Reach out to our team for support, feedback, or collaboration opportunities. 
             </p>
-            <div class="flex items-center text-sm text-primary-600 group-hover:text-primary-700 transition-colors">
+            <div class="flex items-center text-base text-terracotta-600 group-hover:text-terracotta-700 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>

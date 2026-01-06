@@ -76,3 +76,5 @@ content: |
   And I've always wanted to raise the voices of young women, particularly refugees who are denied many rights simply for being refugees. Yes, I haven't yet reached my desired position because I haven't achieved my goals yet, and there is still a long way to go. But I'm not where I was. I currently hold the positions of Director of Star Cosmetics, procurement and operations officer at Takeno LAB the (ICT Academy), and Procurement and Operation officer at Relon Malawi as well. (The Refugee led Organisation)
 
   Working on both sides has never been simple, but there are times when we are forced to do so and we are unwilling to give up so quickly on our objectives. We freely admit that we put in extra effort as volunteers on behalf of refugees and the environment, but our mission to speak up for the voiceless, encourage young women to pursue self-employment, and foster self-confidence in them remains the same.
+
+---

@@ -4,7 +4,7 @@ description: "We educate the community through film. A movie/television studio b
 category: "Cultural"
 featured: false
 verified: true
-image: "/images/Dzaleka films entertainment  .jpg"
+logo: /images/Dzaleka films entertainment  .jpg
 contact:
   phone: "+265 995 43 58 23"
   email: "Dzalekatv@gmail.com"

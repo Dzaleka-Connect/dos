@@ -25,3 +25,5 @@ content: |
   Lack of enough materials and finances remain our weakness and threat. Also, a lot of people are willing to study, but they have no cell phones. We cannot afford to buy cell phones for everyone, which is the basic requirement for our online courses. Some students drop the courses because they don't have phones.
 
   The biggest things we believe in are people. As long as people are on earth, we will continue to provide our courses. We have big visions like reaching a large number of people in the country and outside the country. Lastly, I ask people to help and support our project.
+
+---

@@ -4,7 +4,7 @@ description: "Refugee Youth for Faith, Hope, and Peace is an organization focuse
 category: "Youth"
 featured: false
 verified: true
-image: "/images/Refugee Youth For Faith.jpg"
+logo: /images/Refugee Youth For Faith.jpg
 contact:
   phone: "+265 993 86 67 73"
   email: "refugeeyouthforfaithandpeace@gmail.com"

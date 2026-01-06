@@ -23,3 +23,5 @@ content: |
   "With my camera, I have been able to earn income to support myself together with my family. I shoot music videos, weddings, documentaries, and photo-shoots. This is exactly what I have always dreamt of."
 
   In the future, U-Cley hopes to open her own studio and to have a full-time career as a photographer and videographer. She has already created a brand and given it a name, which is where "U-Cley" comes from. She hopes to inspire many other young girls who look down on themselves not to reject their own career goals simply because they are in fields dominated by men.
+
+---

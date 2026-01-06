@@ -33,3 +33,5 @@ content: |
   I see Salama Africa in five to ten years as an international organization. Our aim is to see Salama Africa worldwide, especially in different refugee camps. Today we are here in Malawi helping refugees. We have our creative centers that we have built. We want to do the same in other camps in other countries.
 
   The thing I can tell the audience of the book and website is that at first we have to start with the mindset that most of the refugees had before. They knew that Dzaleka refugee camp is a prison and they used to say that you can do nothing here. And from that, I just came up with a quote, the message I will share to finish this interview: "detaining my body behind fences while my mind remains free, that's not a prison, but a meditation room." We should take Dzaleka refugee camp not as a prison but as a meditation room. If we all take Dzaleka as a meditation room, we can just warm up and do big things.
+
+---

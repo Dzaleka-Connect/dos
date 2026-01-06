@@ -18,3 +18,5 @@ content: |
   When I heard news that my mother was seriously sick, I decided to go back to Tanzania. When I reached Tanzania, I found my mother in a very critical condition. She was seriously sick, and after 6 months she passed away. That year was the worst year in my life. I had no one to support me. The little that my mother left me, her husband did not want me to have it. He planned to kill me, so I had to flee Tanzania to Malawi.
 
   When I reached Dzaleka, my life was very difficult. I decided to go to Mozambique. There I got a job. After three years of hard work, I earned money. I bought equipment. I returned to Dzaleka. In 2017 I opened a salon. Since I started this business, my life has improved. I teach a lot of youths the skill in the camp. For me, it's a privilege, but lack of enough material is a big challenge. Also, a lot of people have opened salons in Dzaleka, so I no longer have as many customers as I used to have. Secondly, lack of training and trainers, it's also a big challenge for me. I'm asking for support in order to expand the salon and open a big space where people will learn hairdressing and how to work too.
+
+---

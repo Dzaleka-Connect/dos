@@ -20,3 +20,5 @@ content: |
   After a month, I started doing small work like washing people's clothes and ditches, even fetching water, as well as farming. In 2 years I managed to earn 75,000 MK. One of my neighbours was about to be resettled to Australia, so she sold me her sewing machine. I started practising what I had learned in the Congo, and in 2018 I started a sewing business out of my home. As of now I have a lot of customers. People in my neighbourhood know me as a tailor. I earn about 15,000 MK per month. I used to depend on my sister, but now I depend on my work. I am able to support my sister and her kids. Lack of sufficient equipment and materials remains my greatest weakness.
 
   I'm interested in women's fashion. In the future I would like to get a lot of training in fashion and design and become a big fashionista and designer. I also want to open my own tailoring shop in which I would be teaching other women and single mothers tailoring, fashion, and design. I advise my fellow youths to learn tailoring in order to be self-reliant. I ask donors, sponsors and people who have the heart to help to come in with finances to support refugees' work and ideas.
+
+---

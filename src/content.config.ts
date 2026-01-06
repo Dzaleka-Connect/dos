@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 // Define the profile schema
 const profileSchema = z.object({
@@ -397,7 +398,7 @@ const stories = defineCollection({
 });
 
 const inspirationalStories = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/inspirational-stories" }),
   schema: inspirationalStorySchema,
 });
 
@@ -498,7 +499,7 @@ const courseSchema = z.object({
   author: z.string(),
   authorEmail: z.string().optional(),
   description: z.string(),
-  category: z.enum(['technology', 'business', 'languages', 'arts', 'health', 'science', 'professional-skills', 'other']),
+  category: z.enum(['technology', 'business', 'languages', 'arts', 'health', 'science', 'professional-skills', 'personal-development', 'other']),
   duration: z.string(),
   level: z.enum(['beginner', 'intermediate', 'advanced']).optional().default('beginner'),
   tags: z.array(z.string()).optional(),
@@ -514,6 +515,182 @@ const courseSchema = z.object({
 const coursesCollection = defineCollection({
   type: 'content',
   schema: courseSchema,
+});
+
+// Define schemas for previously auto-generated collections
+const artistSchema = z.object({
+  title: z.string(),
+  artistName: z.string(),
+  slug: z.string().optional(),
+  featured: z.boolean().optional(),
+  spotlight: z.boolean().optional(),
+  medium: z.string().optional(),
+  location: z.string().optional(),
+  nationality: z.string().optional(),
+  bio: z.string().optional(),
+  artisticJourney: z.string().optional(),
+  specialties: z.array(z.string()).optional(),
+  achievements: z.array(z.string()).optional(),
+  notableWorks: z.array(z.string()).optional(),
+  contactInfo: z.string().optional(),
+  biographyAuthor: z.string().optional(),
+  image: z.string().optional(),
+  description: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  date: z.coerce.date().optional(),
+});
+
+const artworkSchema = z.object({
+  title: z.string(),
+  artistName: z.string().optional(),
+  dateInstalled: z.string().optional(),
+  location: z.string().optional(),
+  campZone: z.string().optional(),
+  materialsUsed: z.string().optional(),
+  category: z.string().optional(),
+  featured: z.boolean().optional(),
+  image: z.string().optional(),
+  additionalImages: z.array(z.string()).optional(),
+  detailImages: z.array(z.string()).optional(),
+  processImages: z.array(z.string()).optional(),
+  educationalResources: z.array(z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    url: z.string().optional(),
+  })).optional(),
+  artSignage: z.string().optional(),
+});
+
+const dancerSchema = z.object({
+  title: z.string(),
+  slug: z.string().optional(),
+  type: z.enum(['individual', 'group']).optional(),
+  image: z.string().optional(),
+  description: z.string().optional(),
+  interviewer: z.string().optional(),
+  interviewDate: z.string().optional(),
+  biographyAuthor: z.string().optional(),
+  age: z.number().optional(),
+  nationality: z.string().optional(),
+  birthplace: z.string().optional(),
+  arrivedInMalawi: z.string().optional(),
+  danceStyles: z.array(z.string()).optional(),
+  festivals: z.array(z.string()).optional(),
+  inspiration: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  whatsapp: z.string().optional(),
+  featured: z.boolean().optional(),
+  members: z.array(z.object({
+    name: z.string(),
+    age: z.number().optional(),
+    nationality: z.string().optional(),
+    role: z.string().optional(),
+    specialties: z.array(z.string()).optional(),
+  })).optional(),
+});
+
+const poetSchema = z.object({
+  title: z.string(),
+  slug: z.string().optional(),
+  type: z.enum(['individual', 'group']).optional(),
+  image: z.string().optional(),
+  description: z.string().optional(),
+  biographyAuthor: z.string().optional(),
+  age: z.number().optional(),
+  nationality: z.string().optional(),
+  birthYear: z.string().optional(),
+  birthplace: z.string().optional(),
+  arrivedInMalawi: z.string().optional(),
+  nickname: z.string().optional(),
+  startedPoetry: z.string().optional(),
+  firstPerformance: z.string().optional(),
+  poetryGroup: z.string().optional(),
+  currentStatus: z.string().optional(),
+  featured: z.boolean().optional(),
+});
+
+const projectSchema = z.object({
+  title: z.string(),
+  category: z.string().optional(),
+  description: z.string().optional(),
+  location: z.object({
+    address: z.string().optional(),
+    city: z.string().optional(),
+    coordinates: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }).optional(),
+  }).optional(),
+  mitSolve: z.object({
+    solutionUrl: z.string().optional(),
+    submissionYear: z.number().optional(),
+    solutionCategory: z.string().optional(),
+  }).optional(),
+  impact: z.array(z.string()).optional(),
+  programs: z.array(z.string()).optional(),
+  status: z.string().optional(),
+  lastUpdated: z.coerce.date().optional(),
+});
+
+const siteSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  alternativeNames: z.string().optional(),
+  yearEstablished: z.number().optional(),
+  campZone: z.string().optional(),
+  legalStatus: z.string().optional(),
+  category: z.string().optional(),
+  featured: z.boolean().optional(),
+  image: z.string().optional(),
+  additionalImages: z.array(z.string()).optional(),
+  beforeImages: z.array(z.string()).optional(),
+  afterImages: z.array(z.string()).optional(),
+  educationalResources: z.array(z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    url: z.string().optional(),
+  })).optional(),
+});
+
+// Define collections for previously auto-generated folders
+const artistsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/artists" }),
+  schema: artistSchema,
+});
+
+const artworksCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/artworks" }),
+  schema: artworkSchema,
+});
+
+const dancersCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/dancers" }),
+  schema: dancerSchema,
+});
+
+const galleryCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/gallery" }),
+  schema: z.object({
+    title: z.string().optional(),
+    image: z.string().optional(),
+    date: z.string().optional(),
+  }),
+});
+
+const poetsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/poets" }),
+  schema: poetSchema,
+});
+
+const projectsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
+  schema: projectSchema,
+});
+
+const sitesCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/sites" }),
+  schema: siteSchema,
 });
 
 // Export collections
@@ -534,4 +711,11 @@ export const collections = {
   'inspirational-stories': inspirationalStories,
   marketplace: marketplaceCollection,
   stores: storesCollection,
+  artists: artistsCollection,
+  artworks: artworksCollection,
+  dancers: dancersCollection,
+  gallery: galleryCollection,
+  poets: poetsCollection,
+  projects: projectsCollection,
+  sites: sitesCollection,
 } as const;

@@ -21,3 +21,5 @@ content: |
   Since its creation, Volunteer Social Workers has helped the community through various projects including Healing Circles, and Community Outreach Exercises, as well as providing counselling services. Further, Volunteer Social Workers runs agribusiness projects, such as the cultivation of maize, cabbage, sweet potatoes, and beans. They also have pigs and laying chickens with the host community at Mengwe Village.
 
   Finally, Volunteer Social Workers has done advocacy and generated money to support teen mothers with tailoring machines and youths recovering from alcohol-abuse with popcorn-machines. Now, all these beneficiaries are self-reliant.
+
+---

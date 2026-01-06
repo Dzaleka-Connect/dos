@@ -18,3 +18,5 @@ content: |
   In addition to that, Bienvenu is also a talented young man himself. He is an artist who designs tablecloths, bracelets, anklets, necklaces, West Beads, and many other pieces. Through his talents and gifts, he likes to share with others financially and materially, as well as through teaching design. Due to lack of work opportunities, many youth in the camp end up involving themselves in unhealthy behaviours such as drug and substance abuse, theft, and some end up with unwanted pregnancies. Bienvenu wishes to share his talent to as many young people as he can so that they can create their own self-employment and become self-reliant.
 
   Finally, Bienvenu plans to grow his organization and continue supporting vulnerable people. He wants to transform the world. He aims to make YMSS an international organization that will be providing support to thousands of people in the coming decade—especially refugees as they become victims of wars that take place in their countries.
+
+---

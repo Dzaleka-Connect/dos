@@ -11,7 +11,7 @@ import netlify from '@astrojs/netlify';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://services.dzaleka.com',
-  output: 'hybrid',
+  output: 'static',
   adapter: process.env.NETLIFY
     ? netlify()
     : node({
