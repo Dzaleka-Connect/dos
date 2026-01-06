@@ -166,7 +166,8 @@ const photoSchema = z.object({
   contributor: z.string().optional(),
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
-  location: z.string().optional()
+  location: z.string().optional(),
+  gallery: z.array(z.string()).optional()
 });
 
 // Define the page schema
@@ -318,37 +319,37 @@ const inspirationalStorySchema = z.object({
 
 // Define the collections
 const profilesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/profiles" }),
   schema: profileSchema,
 });
 
 const servicesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/services" }),
   schema: serviceSchema,
 });
 
 const resourcesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/resources" }),
   schema: resourceSchema,
 });
 
 const eventsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/events" }),
   schema: eventSchema,
 });
 
 const photosCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/photos" }),
   schema: photoSchema,
 });
 
 const pagesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
   schema: pageSchema,
 });
 
 const newsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/news" }),
   schema: newsSchema,
 });
 
@@ -358,22 +359,22 @@ const talentsCollection = defineCollection({
 });
 
 const communityVoicesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/community-voices" }),
   schema: communityVoiceSchema,
 });
 
 const docsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/docs" }),
   schema: docsSchema,
 });
 
 const jobsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/jobs" }),
   schema: jobSchema,
 });
 
 const photos = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/photos" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -393,7 +394,7 @@ const photos = defineCollection({
 });
 
 const stories = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/stories" }),
   schema: storySchema,
 });
 
@@ -457,7 +458,7 @@ const storeSchema = z.object({
 });
 
 const storesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/stores" }),
   schema: storeSchema,
 });
 
@@ -489,7 +490,7 @@ const marketplaceSchema = z.object({
 });
 
 const marketplaceCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/marketplace" }),
   schema: marketplaceSchema,
 });
 
@@ -513,7 +514,7 @@ const courseSchema = z.object({
 });
 
 const coursesCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: "**/*.md", base: "./src/content/courses" }),
   schema: courseSchema,
 });
 

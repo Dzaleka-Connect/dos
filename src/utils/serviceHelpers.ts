@@ -28,7 +28,7 @@ export function filterServices(
       ...(service.data.tags || []),
       service.data.location?.address,
       service.data.location?.city,
-      service.slug
+      service.id
     ].filter(Boolean); // Remove undefined/null values
 
     return searchableFields.some(field =>

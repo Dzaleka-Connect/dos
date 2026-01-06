@@ -32,7 +32,7 @@ export async function initializeSearch(services: Service[]): Promise<MiniSearch<
 
   // Transform services to flatten data structure
   const documents = services.map(service => ({
-    slug: service.slug,
+    slug: service.id,
     title: service.data.title,
     description: service.data.description,
     category: service.data.category,
@@ -73,6 +73,6 @@ export function searchServices(query: string, services: Service[]): Service[] {
   }
 
   // Map search results back to services
-  const resultSlugs = new Set(searchResults.map(result => result.slug));
-  return services.filter(service => resultSlugs.has(service.slug));
+  const resultSlugs = new Set(searchResults.map(result => result.id));
+  return services.filter(service => resultSlugs.has(service.id));
 }

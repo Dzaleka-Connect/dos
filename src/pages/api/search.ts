@@ -158,7 +158,7 @@ export const GET: APIRoute = async ({ request, url }) => {
               item.data.description,
               item.data.category,
               item.data.tags?.join(' '),
-              item.slug
+              item.id
             ]
               .filter(Boolean)
               .join(' ')
@@ -168,12 +168,12 @@ export const GET: APIRoute = async ({ request, url }) => {
           })
           .slice(0, limit)
           .map(item => ({
-            slug: item.slug,
+            slug: item.id,
             title: item.data.title || item.data.name,
             description: item.data.description,
             category: item.data.category,
             collection: collectionName,
-            url: `/${collectionName}/${item.slug}`,
+            url: `/${collectionName}/${item.id}`,
             image: item.data.image || item.data.logo,
             featured: item.data.featured || false
           }));

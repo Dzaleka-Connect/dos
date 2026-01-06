@@ -92,8 +92,8 @@ export function processCollectionData(collection: any[], collectionName: string)
     itemData.collection = collectionName;
     
     // Add slug if it exists
-    if (item.slug !== undefined) {
-      itemData.slug = item.slug;
+    if (item.id !== undefined) {
+      itemData.id = item.id;
     }
     
     // Extract data from the item

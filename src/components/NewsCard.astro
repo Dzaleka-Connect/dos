@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { news, featured = false, large = false } = Astro.props;
-const { data, slug } = news;
+const { data, id } = news;
 
 // Format date
 const formattedDate = new Date(data.date).toLocaleDateString('en-US', {
@@ -54,7 +54,7 @@ const placeholderImage = (data.image && optimizedImage !== data.image)
 ---
 
 <a
-  href={`/news/${slug}`}
+  href={`/news/${id}`}
   class={`group relative flex ${large ? 'flex-col lg:flex-row' : 'flex-col'} bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden border-2 ${featured ? 'border-primary-200' : 'border-gray-100 hover:border-primary-200'}`}
 >
   <div class={`relative ${large ? 'lg:w-2/3' : 'w-full'}`}>

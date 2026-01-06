@@ -1,33 +1,23 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import MainLayout from '../../../layouts/MainLayout.astro';
+import { getCollection, render } from 'astro:content';
 
 // Generate static paths for all artist profiles
+// Generate static paths for all artist profiles
 export async function getStaticPaths() {
-  let artists = [];
-  try {
-    artists = await Astro.glob('../../../content/artists/*.md');
-    console.log('Found artists:', artists.length);
-    artists.forEach(artist => {
-      console.log('Artist file:', artist.file);
-    });
-  } catch (error) {
-    console.error('Error loading artists:', error);
-    artists = [];
-  }
-  
+  const artists = await getCollection('artists');
   return artists.map((artist) => {
-    const slug = artist.file.split('/').pop().replace('.md', '');
-    console.log('Generated slug:', slug, 'for file:', artist.file);
     return {
-      params: { slug },
+      params: { slug: artist.id },
       props: { artist }
     };
   });
 }
 
 const { artist } = Astro.props;
-const { frontmatter, Content } = artist;
+const { Content } = await render(artist);
+const frontmatter = artist.data;
 
 // Debug logging
 console.log('Artist props:', { 
@@ -52,14 +42,14 @@ const seo = {
   description: frontmatter.bio || `Learn about ${frontmatter.artistName}, a talented artist in Dzaleka Refugee Camp`,
   image: frontmatter.image,
   type: "profile",
-  canonical: `https://services.dzaleka.com/public-art-catalogue/artist/${frontmatter.id}`,
+  canonical: `https://services.dzaleka.com/public-art-catalogue/artist/${artist.id}`,
   openGraph: {
     title: `${frontmatter.artistName} | Artist Profile`,
     description: frontmatter.bio || `Learn about ${frontmatter.artistName}, a talented artist in Dzaleka Refugee Camp`,
     type: "profile",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/public-art-catalogue/artist/${frontmatter.id}`,
+    url: `https://services.dzaleka.com/public-art-catalogue/artist/${artist.id}`,
     image: {
       url: frontmatter.image,
       width: 1200,

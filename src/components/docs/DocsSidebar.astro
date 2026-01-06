@@ -21,15 +21,15 @@ const categories = {
             <h3 class="font-semibold text-gray-900 mb-3">{category}</h3>
             <ul class="space-y-2">
               {items.map(slug => {
-                const doc = docs.find(d => d.slug === slug);
+                const doc = docs.find(d => d.id === slug);
                 if (!doc) return null;
                 return (
                   <li>
                     <a
-                      href={`/docs/${doc.slug}`}
+                      href={`/docs/${doc.id}`}
                       class:list={[
                         'block text-sm',
-                        currentSlug === doc.slug
+                        currentSlug === doc.id
                           ? 'text-primary-600 font-medium'
                           : 'text-gray-600 hover:text-gray-900'
                       ]}

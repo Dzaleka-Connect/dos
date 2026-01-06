@@ -33,7 +33,7 @@ export const GET = async () => {
                 description: data.shortDescription || data.description,
                 type: 'Profile',
                 category: data.category || data.role || 'Member',
-                url: `/skills-exchange/profile/${item.slug}`,
+                url: `/skills-exchange/profile/${item.id}`,
                 image: data.profileImage,
                 tags: data.tags || []
             };
@@ -43,7 +43,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Service',
             category: item.data.category,
-            url: `/services/${item.slug}`,
+            url: `/services/${item.id}`,
             image: item.data.logo || item.data.image,
             tags: item.data.tags || []
         })),
@@ -52,7 +52,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Story',
             category: 'Story',
-            url: `/stories/${item.slug}`,
+            url: `/stories/${item.id}`,
             image: item.data.coverImage,
             tags: item.data.tags || []
         })),
@@ -61,7 +61,7 @@ export const GET = async () => {
             description: item.data.excerpt,
             type: 'Community Voice',
             category: item.data.category,
-            url: `/community-voices/${item.slug}`,
+            url: `/community-voices/${item.id}`,
             image: item.data.image,
             tags: item.data.tags || []
         })),
@@ -70,7 +70,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Event',
             category: item.data.category,
-            url: `/events/${item.slug}`,
+            url: `/events/${item.id}`,
             image: item.data.image,
             tags: item.data.tags || []
         })),
@@ -79,7 +79,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Resource',
             category: item.data.category,
-            url: `/resources/${item.slug}`,
+            url: `/resources/${item.id}`,
             image: item.data.thumbnail,
             tags: item.data.tags || []
         })),
@@ -88,7 +88,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'News',
             category: item.data.category,
-            url: `/news/${item.slug}`,
+            url: `/news/${item.id}`,
             image: item.data.image,
             tags: item.data.tags || []
         })),
@@ -97,7 +97,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Photo',
             category: 'Gallery',
-            url: `/photos/${item.slug}`,
+            url: `/photos/${item.id}`,
             image: item.data.image,
             tags: item.data.tags || []
         })),
@@ -106,7 +106,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Job',
             category: item.data.category,
-            url: `/jobs/${item.slug}`,
+            url: `/jobs/${item.id}`,
             image: null, // Jobs usually don't have a main image in the list view
             tags: item.data.skills || []
         })),
@@ -115,7 +115,7 @@ export const GET = async () => {
             description: item.data.description,
             type: 'Inspirational Story',
             category: 'Story',
-            url: `/inspirational-stories/${item.slug}`,
+            url: `/inspirational-stories/${item.id}`,
             image: item.data.personImage,
             tags: item.data.tags || []
         })),
