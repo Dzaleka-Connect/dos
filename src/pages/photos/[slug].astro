@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Carousel from '../../components/ui/Carousel.astro';
 import { getCollection, render } from 'astro:content';
 import { format } from 'date-fns';
 
@@ -84,65 +85,10 @@ const seo = {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Main Photo and Info -->
         <div class="lg:col-span-2 space-y-6">
-          <!-- Photo or Slideshow -->
+          <!-- Photo or Carousel -->
           <div class="bg-white rounded-xl shadow-sm overflow-hidden">
             {gallery && gallery.length > 0 ? (
-              <div class="relative group">
-                <!-- Main Slideshow Container -->
-                <div 
-                  class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
-                  id="gallery-container"
-                >
-                  {gallery.map((img, index) => (
-                    <div class="w-full flex-shrink-0 snap-center relative" key={index}>
-                      <img 
-                        src={img.split('/').map(part => part.includes('.') ? part : encodeURIComponent(part)).join('/')} 
-                        alt={`${title} - Image ${index + 1}`}
-                        class="w-full h-auto"
-                        loading={index === 0 ? "eager" : "lazy"}
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-                <!-- Navigation Buttons -->
-                <button 
-                  id="prev-btn"
-                  class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all shadow-md z-10"
-                  aria-label="Previous image"
-                >
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button 
-                  id="next-btn"
-                  class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all shadow-md z-10"
-                  aria-label="Next image"
-                >
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-
-                <!-- Thumbnail Strip -->
-                <div class="mt-4 px-1 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2" id="thumbnail-strip">
-                  {gallery.map((img, index) => (
-                    <button
-                      class={`relative w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${index === 0 ? 'border-primary-600 ring-2 ring-primary-100' : 'border-transparent opacity-70 hover:opacity-100'}`}
-                      data-index={index}
-                      aria-label={`Go to image ${index + 1}`}
-                      key={`thumb-${index}`}
-                    >
-                      <img 
-                        src={img.split('/').map(part => part.includes('.') ? part : encodeURIComponent(part)).join('/')} 
-                        alt={`Thumbnail ${index + 1}`}
-                        class="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <Carousel images={gallery} alt={title} showIndicators={true} showControls={true} />
             ) : (
               <img 
                 src={image} 
@@ -157,7 +103,7 @@ const seo = {
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Download Options</h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <a 
-                href={gallery ? gallery[0] : image} 
+                href={(gallery ? gallery[0] : image).split('/').map(part => part.includes('.') ? part : encodeURIComponent(part)).join('/')} 
                 download
                 class="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
                 id="download-btn-original"
@@ -168,7 +114,7 @@ const seo = {
                 Original Size
               </a>
               <a 
-                href={`${gallery ? gallery[0] : image}?w=1200`} 
+                href={`${(gallery ? gallery[0] : image).split('/').map(part => part.includes('.') ? part : encodeURIComponent(part)).join('/')}?w=1200`} 
                 download
                 class="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
                 id="download-btn-medium"
@@ -179,7 +125,7 @@ const seo = {
                 Medium (1200px)
               </a>
               <a 
-                href={`${gallery ? gallery[0] : image}?w=800`} 
+                href={`${(gallery ? gallery[0] : image).split('/').map(part => part.includes('.') ? part : encodeURIComponent(part)).join('/')}?w=800`} 
                 download
                 class="flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors"
                 id="download-btn-small"
@@ -223,7 +169,7 @@ const seo = {
                 <h3 class="text-sm font-medium text-gray-500">Photographer</h3>
                 <p class="text-gray-900">
                   <a 
-                    href={`/photos/contributor/${photo.data.contributor}`}
+                    href={`/photos/contributor/${photo.data.contributor || photographer.name.toLowerCase().replace(/\s+/g, '-')}`}
                     class="text-primary-600 hover:text-primary-700 hover:underline"
                   >
                     {photographer.name}
@@ -332,73 +278,3 @@ const seo = {
     scrollbar-width: none;
   }
 </style>
-
-<script>
-  function setupGallery() {
-    const container = document.getElementById('gallery-container');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const dots = document.querySelectorAll('button[data-index]');
-    const downloadBtns = {
-      original: document.getElementById('download-btn-original'),
-      medium: document.getElementById('download-btn-medium'),
-      small: document.getElementById('download-btn-small')
-    };
-
-    if (!container || !prevBtn || !nextBtn) return;
-
-    // Scroll buttons
-    prevBtn.addEventListener('click', () => {
-      container.scrollBy({ left: -container.clientWidth, behavior: 'smooth' });
-    });
-
-    nextBtn.addEventListener('click', () => {
-      container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
-    });
-
-    // Thumbnail/Dot navigation
-    dots.forEach(dot => {
-      dot.addEventListener('click', () => {
-        const index = parseInt(dot.getAttribute('data-index') || '0');
-        const width = container.clientWidth;
-        container.scrollTo({ left: width * index, behavior: 'smooth' });
-      });
-    });
-
-    // Update active dot and download links on scroll
-    let scrollTimeout: number;
-    container.addEventListener('scroll', () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = window.setTimeout(() => {
-        const index = Math.round(container.scrollLeft / container.clientWidth);
-        
-        // Update thumbnails
-        dots.forEach((dot, i) => {
-          if (i === index) {
-            dot.classList.add('border-primary-600', 'ring-2', 'ring-primary-100');
-            dot.classList.remove('border-transparent', 'opacity-70');
-            
-            // Scroll thumbnail into view
-            dot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-          } else {
-            dot.classList.remove('border-primary-600', 'ring-2', 'ring-primary-100');
-            dot.classList.add('border-transparent', 'opacity-70');
-          }
-        });
-
-        // Update download links
-        const currentImage = container.querySelectorAll('img')[index] as HTMLImageElement;
-        if (currentImage && downloadBtns.original) {
-          const src = currentImage.src;
-          downloadBtns.original.setAttribute('href', src);
-          downloadBtns.medium?.setAttribute('href', `${src}?w=1200`);
-          downloadBtns.small?.setAttribute('href', `${src}?w=800`);
-        }
-      }, 50);
-    });
-  }
-
-  // Run setup when DOM is ready
-  document.addEventListener('astro:page-load', setupGallery);
-  setupGallery(); // Initial load
-</script> 

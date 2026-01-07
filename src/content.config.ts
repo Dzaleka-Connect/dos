@@ -373,25 +373,8 @@ const jobsCollection = defineCollection({
   schema: jobSchema,
 });
 
-const photos = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/photos" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    photographer: z.object({
-      name: z.string(),
-      instagram: z.string().optional(),
-      website: z.string().optional(),
-      bio: z.string().optional(),
-    }),
-    contributor: z.string().optional(),
-    image: z.string(),
-    date: z.string(),
-    tags: z.array(z.string()).optional(),
-    featured: z.boolean().optional(),
-    location: z.string().optional(),
-  }),
-});
+// Note: photos collection is already defined above as photosCollection with the full photoSchema
+// The photosCollection uses photoSchema which includes: gallery, contributor, date transform, etc.
 
 const stories = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/stories" }),
@@ -707,7 +690,7 @@ export const collections = {
   'community-voices': communityVoicesCollection,
   docs: docsCollection,
   jobs: jobsCollection,
-  photos: photos,
+  photos: photosCollection,
   stories: stories,
   'inspirational-stories': inspirationalStories,
   marketplace: marketplaceCollection,
