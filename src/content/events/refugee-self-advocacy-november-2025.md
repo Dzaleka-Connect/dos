@@ -9,7 +9,7 @@ featured: true
 image: "/images/dzaleka-hero.jpeg"
 organizer: "Inua Advocacy"
 organizerUrl: "https://www.inuaadvocacy.org"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   website: "https://www.inuaadvocacy.org"

@@ -8,7 +8,7 @@ category: "Advocacy"
 featured: true
 image: "https://images.unsplash.com/photo-1534629938736-b1b076531d3b?q=80&w=2148&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 organizer: "Inua Advocacy"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@inuaadvocacy.org"
   website: "https://www.facebook.com/inuaadvocacy"

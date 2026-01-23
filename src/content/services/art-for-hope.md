@@ -1,7 +1,7 @@
 ---
 title: Art for Hope
 category: "Education"
-description: Art for Hope is a community organization in the Dzaleka Refugee Camp, Malawi, dedicated to supporting refugees as they rebuild their lives through education, wellness, and community empowerment.
+description: Art for Hope is a non-profit organization in the Dzaleka Refugee Camp, Malawi, dedicated to supporting refugees as they rebuild their lives through education, wellness, and community empowerment.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -10,7 +10,8 @@ location:
     lng: 33.9833
 contact:
   email: 'artforhope89@gmail.com'
-  phone: ''
+  phone: '+265991306413'
+  whatsapp: '+265991306413'
   hours: ''
 socialMedia:
   facebook: 'https://web.facebook.com/people/Art-for-Hope/61558254385271/'
@@ -22,12 +23,14 @@ logo: https://thumbs2.imgbox.com/ab/ac/v3b1jXRL_t.jpg
 featured: false
 verified: false
 status: "active"
-lastUpdated: 2025-03-11
+lastUpdated: 2026-01-24
 ---
 
 ## About Art for Hope
 
-Art for Hope is a community organization in the Dzaleka Refugee Camp, Malawi, dedicated to supporting refugees as they rebuild their lives through education, wellness, and community empowerment. With over 55,000 refugees facing significant challenges, our mission is to foster resilience and hope for a brighter future. Our Homeschooling and Education Enrichment Program caters to children's urgent educational needs, offering tailored curricula and English language classes for enhanced communication and cultural integration. Wellness programs promote physical and mental well-being through yoga, mindfulness, and sports such as the annual 5K Run/Walk, while emergency response provides essential supplies and support to families in need.
+Art for Hope is a **non-profit organization** in the Dzaleka Refugee Camp, Malawi, dedicated to supporting refugees as they rebuild their lives through education, wellness, and community empowerment. Founded in 2016 as a community-based organization, Art for Hope officially transitioned to non-profit status in August 2025, reflecting a deepened commitment to serving the refugee community.
+
+With over 55,000 refugees facing significant challenges, our mission is to foster resilience and hope for a brighter future. Our Homeschooling and Education Enrichment Program caters to children's urgent educational needs, offering tailored curricula and English language classes for enhanced communication and cultural integration. Wellness programs promote physical and mental well-being through yoga, mindfulness, and sports such as the annual 5K Run/Walk, while emergency response provides essential supplies and support to families in need.
 
 ### Mission
 

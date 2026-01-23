@@ -8,7 +8,7 @@ category: "Festival"
 featured: true
 image: "https://tumainiletu.org/wp-content/uploads/2024/10/9L1A6757-1.jpg"
 organizer: "Tumaini Letu"
-status: "upcoming"
+status: "past"
 contact:
   email: "info@tumainiletu.org"
   phone: "+265 993 380 983"

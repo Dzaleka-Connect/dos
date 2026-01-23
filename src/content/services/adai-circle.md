@@ -17,7 +17,7 @@ socialMedia:
   twitter: ''
   instagram: 'https://www.instagram.com/adai.circle/'
   linkedin: 'https://www.linkedin.com/company/adaicircle/'
-  website: 'https://www.facebook.com/adaicircle/'
+  website: 'https://www.adaicircle.ai/'
 logo: '/images/1733081763222.jpeg'
 featured: true
 verified: true
