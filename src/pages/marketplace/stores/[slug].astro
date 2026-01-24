@@ -24,21 +24,114 @@ const typeLabels = {
   other: 'Business',
 };
 
+// Schema.org type mapping
+const schemaTypes = {
+  restaurant: 'Restaurant',
+  cafe: 'CafeOrCoffeeShop',
+  bakery: 'Bakery',
+  grocery: 'GroceryStore',
+  retail: 'Store',
+  salon: 'BeautySalon',
+  workshop: 'LocalBusiness',
+  other: 'LocalBusiness',
+};
+
 const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const sortedHours = store.data.hours?.sort((a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day));
+
+// Generate opening hours spec for Schema.org
+const openingHoursSpec = sortedHours?.filter(h => !h.closed).map(h => ({
+  "@type": "OpeningHoursSpecification",
+  "dayOfWeek": h.day,
+  "opens": h.open,
+  "closes": h.close
+})) || [];
+
+// Generate menu items for Schema.org (for restaurants/cafes/bakeries)
+const menuItems = store.data.menu?.flatMap(category => 
+  category.items.map(item => ({
+    "@type": "MenuItem",
+    "name": item.name,
+    "description": item.description || "",
+    "offers": {
+      "@type": "Offer",
+      "price": item.price?.replace(/[^0-9.]/g, '') || "0",
+      "priceCurrency": "MWK"
+    }
+  }))
+) || [];
+
+// Build the Schema.org structured data
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": schemaTypes[store.data.type] || "LocalBusiness",
+  "name": store.data.name,
+  "description": store.data.description,
+  "image": store.data.coverImage || store.data.logo || "",
+  "url": `https://dzalekaonline.com/marketplace/stores/${store.id}`,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": store.data.location.address,
+    "addressLocality": store.data.location.zone || "Dzaleka",
+    "addressRegion": "Dowa District",
+    "addressCountry": "MW"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -13.7833,
+    "longitude": 33.9833
+  },
+  ...(store.data.owner.phone && { "telephone": store.data.owner.phone }),
+  ...(store.data.owner.email && { "email": store.data.owner.email }),
+  ...(openingHoursSpec.length > 0 && { "openingHoursSpecification": openingHoursSpec }),
+  ...(store.data.paymentMethods?.length > 0 && { "paymentAccepted": store.data.paymentMethods.join(", ") }),
+  ...(store.data.logo && { "logo": store.data.logo }),
+  ...(menuItems.length > 0 && ["restaurant", "cafe", "bakery"].includes(store.data.type) && {
+    "hasMenu": {
+      "@type": "Menu",
+      "hasMenuSection": store.data.menu?.map(category => ({
+        "@type": "MenuSection",
+        "name": category.category,
+        "hasMenuItem": category.items.map(item => ({
+          "@type": "MenuItem",
+          "name": item.name,
+          "description": item.description || "",
+          "offers": {
+            "@type": "Offer",
+            "price": item.price?.replace(/[^0-9.]/g, '') || "0",
+            "priceCurrency": "MWK"
+          }
+        }))
+      }))
+    }
+  }),
+  "priceRange": "$$",
+  "currenciesAccepted": "MWK"
+};
 ---
 
+
 <MainLayout title={`${store.data.name} | Dzaleka Marketplace`} description={store.data.description} image={store.data.coverImage || store.data.logo || '/images/Dzaleka_Marketplace.jpeg'}>
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  
   <main class="min-h-screen bg-gray-50">
     <!-- Cover Image -->
     <div class="h-64 md:h-80 bg-gradient-to-br from-orange-400 to-red-500 relative">
+      <!-- Back Link -->
+      <a href="/marketplace/stores" class="absolute top-4 left-4 z-20 inline-flex items-center bg-white/90 backdrop-blur-sm text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-white transition-colors shadow-md">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Stores
+      </a>
       {store.data.coverImage && (
         <img src={store.data.coverImage} alt={store.data.name} class="w-full h-full object-cover" />
       )}
       <div class="absolute inset-0 bg-black/30"></div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 pb-12 relative z-10">
       <!-- Store Header -->
       <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-end gap-4">
@@ -61,7 +154,7 @@ const sortedHours = store.data.hours?.sort((a, b) => dayOrder.indexOf(a.day) - d
             <h1 class="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
               {store.data.name}
               <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.498 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.491 4.491 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
               </svg>
             </h1>
             <p class="text-gray-600 mt-1">{store.data.description}</p>
@@ -240,12 +333,7 @@ const sortedHours = store.data.hours?.sort((a, b) => dayOrder.indexOf(a.day) - d
         </div>
       </div>
 
-      <!-- Back Link -->
-      <div class="mt-8 pb-12">
-        <a href="/marketplace/stores" class="text-orange-600 hover:text-orange-700 font-medium">
-          ← Back to Stores
-        </a>
-      </div>
+
     </div>
   </main>
 </MainLayout>

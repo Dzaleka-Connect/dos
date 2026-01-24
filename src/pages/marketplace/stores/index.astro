@@ -105,21 +105,23 @@ const typeIcons = {
                 class="store-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
                 data-type={store.data.type}
               >
-                <div class="aspect-video bg-gray-100 relative">
-                  {store.data.coverImage ? (
-                    <img src={store.data.coverImage} alt={store.data.name} class="w-full h-full object-cover" />
-                  ) : (
-                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100">
-                      <span class="text-6xl">{typeIcons[store.data.type]}</span>
-                    </div>
-                  )}
+                <div class="h-48 bg-gray-100 relative">
+                  <div class="absolute inset-0 overflow-hidden">
+                    {store.data.coverImage ? (
+                      <img src={store.data.coverImage} alt={store.data.name} class="w-full h-full object-cover object-center" />
+                    ) : (
+                      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100">
+                        <span class="text-6xl">{typeIcons[store.data.type]}</span>
+                      </div>
+                    )}
+                  </div>
                   {store.data.featured && (
-                    <span class="absolute top-3 right-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded">
+                    <span class="absolute top-3 right-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded z-10">
                       Featured
                     </span>
                   )}
                   {store.data.logo && (
-                    <div class="absolute -bottom-6 left-4">
+                    <div class="absolute -bottom-6 left-4 z-10">
                       <img src={store.data.logo} alt="" class="w-16 h-16 rounded-xl border-4 border-white shadow-md object-cover bg-white" />
                     </div>
                   )}
@@ -129,7 +131,7 @@ const typeIcons = {
                     <h3 class="font-bold text-gray-900 text-lg flex items-center gap-1">
                       {store.data.name}
                       <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.498 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.491 4.491 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
                       </svg>
                     </h3>
                     <span class="text-sm bg-gray-100 px-2 py-1 rounded capitalize">{store.data.type}</span>

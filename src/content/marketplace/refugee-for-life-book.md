@@ -6,7 +6,7 @@ category: "books-media"
 price: "USD 18.00"
 priceType: "fixed"
 images:
-  - "/public/images/My Journey Across Africa to Find a Place Called Home Book.jpeg"
+  - "/images/My Journey Across Africa to Find a Place Called Home Book.jpeg"
 vendor:
   name: "Innocent Magambi"
   phone: ""

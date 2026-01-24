@@ -24,9 +24,47 @@ const conditionDisplay = {
 }[listing.data.condition] || null;
 
 const isBook = listing.data.category === 'books-media';
+
+// Schema.org Structured Data
+const schemaType = isBook ? 'Book' : (listing.data.type === 'service' ? 'Service' : 'Product');
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": schemaType,
+  "name": listing.data.title,
+  "description": listing.data.description,
+  "image": listing.data.images || [],
+  "url": `https://dzalekaonline.com/marketplace/${listing.id}`,
+  ...(isBook && { "author": { "@type": "Person", "name": listing.data.vendor.name } }), // Assuming vendor is author for books here, or just seller
+  "offers": {
+    "@type": "Offer",
+    "price": listing.data.price?.replace(/[^0-9.]/g, '') || "0",
+    "priceCurrency": listing.data.price?.includes('USD') ? 'USD' : 'MWK',
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Person",
+      "name": listing.data.vendor.name
+    },
+    ...(listing.data.condition && {
+      "itemCondition": listing.data.condition === 'new' ? "https://schema.org/NewCondition" : 
+                       listing.data.condition === 'used' ? "https://schema.org/UsedCondition" : 
+                       "https://schema.org/RefurbishedCondition"
+    })
+  },
+  "datePublished": listing.data.datePosted,
+  ...(listing.data.vendor.location && {
+    "areaServed": {
+      "@type": "Place",
+      "name": listing.data.vendor.location
+    }
+  })
+};
 ---
 
 <MainLayout title={`${listing.data.title} | Dzaleka Marketplace`} description={listing.data.description} image={listing.data.images?.[0] || '/images/Dzaleka_Marketplace.jpeg'}>
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
   <main class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
