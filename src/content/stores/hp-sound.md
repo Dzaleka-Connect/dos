@@ -2,7 +2,7 @@
 name: "HP Sound"
 description: "We offer quality sound equipments and professional DJ for your events at an affordable price"
 type: "other"
-logo: "/images/store/dj_hugo_pro.jpg"
+logo: "/images/store/dj hugo pro.jpg"
 coverImage: "https://res.cloudinary.com/dcvwslmow/image/upload/v1769188208/stores/covers/lol97vpeiln2wimwbysu.jpg"
 owner:
   name: "Dj Hugo Pro"

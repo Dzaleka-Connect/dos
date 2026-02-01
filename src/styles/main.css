@@ -54,3 +54,45 @@
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
+
+/* Enhanced Code Block Styling */
+.prose pre {
+  @apply rounded-xl border border-gray-700/50 shadow-lg my-8 !important;
+  padding: 1.5rem !important;
+  background-color: #282a36 !important; /* Dracula background match */
+}
+
+.prose code {
+  @apply font-mono text-sm;
+}
+
+/* Reset inline code styles inside pre blocks */
+.prose pre code {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-weight: inherit !important;
+}
+
+/* Style inline code that is NOT in a pre block */
+.prose :not(pre) > code {
+  @apply bg-gray-100 text-pink-600 px-1.5 py-0.5 rounded-md font-medium border border-gray-200 text-[0.9em];
+}
+
+/* Code block scrollbar */
+.prose pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.prose pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.prose pre::-webkit-scrollbar-thumb {
+  @apply bg-gray-600/50 rounded-full;
+}
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500/80;
+}

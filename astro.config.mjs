@@ -25,7 +25,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkSlug, [remarkToc, { tight: true }]],
     shikiConfig: {
-      theme: 'github-light',
+      theme: 'dracula',
       wrap: true
     },
     rehypePlugins: []
