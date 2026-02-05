@@ -6,8 +6,8 @@ location:
   address: United Nations World Food Programme Family Dental Clinic, Area 14 Compound City Centre, P.O. Box 30571
   city: Lilongwe
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'WFP.Lilongwe@wfp.org'
   phone: '+ 265 (0) 1 774 666'

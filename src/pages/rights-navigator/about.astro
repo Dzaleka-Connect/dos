@@ -1,0 +1,99 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import '../../styles/patterns.css';
+
+const features = [
+  {
+    title: "Clear Laws",
+    desc: "The law should be easy to read, not just for lawyers. We provide the full Refugees Act (1989) and simple summaries of what it means for you.",
+    icon: "⚖️"
+  },
+  {
+    title: "Your Rights",
+    desc: "Knowing your rights helps you protect them. We explain the Constitution and the specific Reservations that affect your life in the camp.",
+    icon: "💡"
+  },
+  {
+    title: "Speaking Up",
+    desc: "Use our Incident Tracker to report what is really happening. Your reports create the proof needed to ask for better treatment.",
+    icon: "📊"
+  }
+];
+---
+
+<MainLayout 
+  title="About the Rights Navigator | Dzaleka" 
+  description="The mission of the Dzaleka Rights Navigator: Making the law clear and useful for refugees."
+>
+  <div class="min-h-screen bg-gray-50">
+    
+    <!-- Hero Section -->
+    <div class="bg-white border-b border-gray-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 text-center">
+        <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold tracking-wide uppercase mb-4">
+          Our Mission
+        </span>
+        <h1 class="text-4xl md:text-5xl font-bold font-heading text-gray-900 mb-6 tracking-tight">
+          Making the Law Clear for <span class="text-blue-600">Dzaleka</span>
+        </h1>
+        <p class="text-xl text-gray-600 leading-relaxed">
+          The Rights Navigator helps you understand the laws, rules, and rights that affect your daily life as a refugee in Malawi.
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      
+      <!-- Values Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        {features.map(feature => (
+          <div class="bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition duration-200">
+            <div class="text-4xl mb-4">{feature.icon}</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading">{feature.title}</h3>
+            <p class="text-gray-600 leading-relaxed">{feature.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Content Split -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+        <div>
+           <h2 class="text-3xl font-bold text-gray-900 font-heading mb-6">Why We Built This</h2>
+           <div class="prose prose-lg text-gray-600">
+             <p class="mb-4">
+               For a long time, refugees in Dzaleka have lived under the <strong>1989 Refugees Act</strong>. There is often confusion about what the law actually says versus what is just camp practice (like "Gate Passes").
+             </p>
+             <p class="mb-4">
+               This website is a tool to check the facts. By putting the laws, the reservations, and legal help all in one place, we hope to make it easier for you to stand up for yourself.
+             </p>
+             <p>
+               It follows global standards (UNHCR RIMAP) but is built specifically for the needs of our community here in Dzaleka.
+             </p>
+           </div>
+        </div>
+        <div class="bg-blue-600 rounded-2xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+           <!-- Decorative circle -->
+           <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500 rounded-full opacity-50 blur-3xl"></div>
+           
+           <div class="relative z-10">
+             <h3 class="text-2xl font-bold mb-4 font-heading">Important Note</h3>
+             <p class="text-blue-100 mb-6 leading-relaxed">
+               This website is for information only. It is <strong>not</strong> a law firm.
+             </p>
+             <div class="bg-blue-700 bg-opacity-50 p-4 rounded-lg border border-blue-500">
+               <p class="text-sm font-medium">
+                 If you need a lawyer for your specific case, please contact <strong>Inua Advocacy</strong> directly.
+               </p>
+             </div>
+             <div class="mt-8">
+               <a href="/rights-navigator/legal-aid-directory" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition">
+                 Find Legal Aid
+               </a>
+             </div>
+           </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</MainLayout>

@@ -1,0 +1,235 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import '../../styles/patterns.css';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Report",
+  "name": "Dzaleka incident Report 2023",
+  "description": "Annual tracking of human rights violations in Dzaleka Refugee Camp.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Inua Advocacy",
+    "url": "https://inuaadvocacy.org"
+  },
+  "contentLocation": {
+    "@type": "Place",
+    "name": "Dzaleka Refugee Camp",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "Malawi"
+    }
+  },
+  "datePublished": "2023-12-31",
+  "about": [
+      { "@type": "Thing", "name": "Human Rights Violations" },
+      { "@type": "Thing", "name": "Refugee Status Determination" }
+  ]
+};
+---
+
+<MainLayout 
+  title="Incident Tracker Dashboard | Rights Navigator" 
+  description="Monitoring human rights violations, tracking trends, and advocating for justice in Dzaleka."
+  schema={schema}
+  openGraph={{
+    title: "Incident Tracker 2023 | Dzaleka Rights Navigator",
+    description: "563 documented complaints. Explore the data on health, protection, and encampment violations in Dzaleka.",
+    type: "website",
+    image: "/images/Refugees-at-Dzaleka-Camp-Nov-2021.jpg"
+  }}
+>
+  <div class="min-h-screen bg-gray-50">
+    
+    <!-- Hero / Context Section - Matching Index Style -->
+    <div class="bg-white border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+        
+        <!-- Back Navigation -->
+        <div class="mb-8">
+            <a href="/rights-navigator" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <div class="text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold tracking-wide uppercase mb-4">
+              Rights Monitoring System
+            </span>
+            <h1 class="text-4xl md:text-5xl font-bold font-heading text-gray-900 mb-4 tracking-tight">
+              Tracking Injustice. <span class="text-blue-600">Demanding Accountability.</span>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              In 2023, Inua Advocacy recorded <span class="font-bold text-gray-900">563 complaints</span> from the refugee population. Your reports help us identify trends and advocate for better protection.
+            </p>
+            
+            <div class="mt-8 flex justify-center gap-4">
+                 <a href="/rights-navigator/report" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Report an Incident
+                  </a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      
+      <!-- Key Statistics Grid - Matching Index Card Style -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-4">
+             <h3 class="font-bold text-gray-900 text-lg">Total Complaints</h3>
+             <span class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+               </svg>
+             </span>
+          </div>
+          <div class="text-4xl font-bold text-gray-900 mb-2">563</div>
+          <p class="text-sm text-gray-600">Documented rights violations & requests in 2023</p>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+               <h3 class="font-bold text-gray-900 text-lg">Top Concern</h3>
+               <span class="p-2 bg-red-50 text-red-600 rounded-lg">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                 </svg>
+               </span>
+            </div>
+            <div class="text-4xl font-bold text-gray-900 mb-2">38%</div>
+            <p class="text-sm text-gray-600">Related to <span class="font-semibold text-gray-900">Health Services</span></p>
+          </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+               <h3 class="font-bold text-gray-900 text-lg">Status Issues</h3>
+               <span class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                 </svg>
+               </span>
+            </div>
+            <div class="text-4xl font-bold text-gray-900 mb-2">25%</div>
+            <p class="text-sm text-gray-600">Refugee Status Determination</p>
+          </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        
+        <!-- Breakdown Chart Column -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-6 font-heading border-b border-gray-200 pb-2">Analysis by Category (2023)</h3>
+                <div class="space-y-6">
+                    <!-- Health -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-sm font-medium text-gray-700">Health Services</span>
+                            <span class="text-sm font-bold text-gray-900">38%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div class="bg-blue-600 h-3 rounded-full" style="width: 38%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Refugee Status -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-sm font-medium text-gray-700">Refugee Status Determination</span>
+                            <span class="text-sm font-bold text-gray-900">25%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div class="bg-purple-500 h-3 rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Forced Re-encampment -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-sm font-medium text-gray-700">Forced Re-encampment</span>
+                            <span class="text-sm font-bold text-gray-900">14%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div class="bg-red-500 h-3 rounded-full" style="width: 14%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Food Assistance -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-sm font-medium text-gray-700">Food Assistance</span>
+                            <span class="text-sm font-bold text-gray-900">12%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div class="bg-yellow-500 h-3 rounded-full" style="width: 12%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Protection Needs -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-sm font-medium text-gray-700">Protection Needs</span>
+                            <span class="text-sm font-bold text-gray-900">11%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div class="bg-orange-500 h-3 rounded-full" style="width: 11%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-xs text-gray-400 mt-8 pt-4 border-t border-gray-100">
+                    Source: Inua Advocacy 2023 Annual Report. Total cases n=563.
+                </p>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-8">
+             <!-- Resources Widget -->
+             <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center font-heading">
+                  Official Reports
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    Download official guides to understand your rights and the current situation.
+                </p>
+                <ul class="space-y-3">
+                  <li>
+                    <a href="https://inuaadvocacy.org/wp-content/uploads/2024/12/MALAWI-REFUGEE-GUIDE-DEC-2024.pdf" target="_blank" class="flex items-center text-gray-600 hover:text-blue-600 group text-sm font-medium">
+                      <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2 group-hover:bg-blue-600 transition"></span>
+                      Malawi Refugee Guide (Dec 2024)
+                    </a>
+                  </li>
+                  <li>
+                     <a href="https://drive.google.com/file/d/1alKD_Pt09Ws07-R2DHQAgr3S0d94jc4g/view" target="_blank" class="flex items-center text-gray-600 hover:text-blue-600 group text-sm font-medium">
+                      <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2 group-hover:bg-blue-600 transition"></span>
+                      Inua Impact Report (2023 Stats)
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+             <!-- Lawyer/Help Box -->
+             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                 <h3 class="text-gray-900 font-bold mb-2">Need Legal Aid?</h3>
+                 <p class="text-sm text-gray-500 mb-3">If you are facing a critical protection issue, contact Inua Advocacy immediately.</p>
+                 <a href="/rights-navigator/legal-aid-directory" class="text-blue-600 font-bold text-sm hover:underline">View Legal Directory &rarr;</a>
+             </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</MainLayout>

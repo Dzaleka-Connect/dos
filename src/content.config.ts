@@ -677,6 +677,23 @@ const sitesCollection = defineCollection({
   schema: siteSchema,
 });
 
+// Define the rights schema
+const rightsSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  category: z.enum(['legislation', 'analysis', 'guide', 'resource']),
+  source: z.string().optional(),
+  date: z.coerce.date().optional(),
+  tags: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
+  related: z.array(z.string()).optional(),
+});
+
+const rightsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/rights" }),
+  schema: rightsSchema,
+});
+
 // Export collections
 export const collections = {
   courses: coursesCollection,
@@ -689,6 +706,7 @@ export const collections = {
   talents: talentsCollection,
   'community-voices': communityVoicesCollection,
   docs: docsCollection,
+  rights: rightsCollection,
   jobs: jobsCollection,
   photos: photosCollection,
   stories: stories,

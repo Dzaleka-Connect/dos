@@ -16,3 +16,4 @@ tags: ["Tumaini Festival", "Dzaleka", "Children", "Celebration", "Malawi"]
 ---
 
 From day 2 in Dzaleka Refugee Camp in Malawi. Children in a festive mood in anticipation of Tumaini Festival (the only festival taking place inside a refugee camp). So lucky to witness this amazing event and to be part of it even for a few days.
+ 

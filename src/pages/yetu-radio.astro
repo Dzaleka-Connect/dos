@@ -631,7 +631,21 @@ const structuredData = {
     }
 
     if (audioPlayer.paused) {
-      audioPlayer.play();
+      const playPromise = audioPlayer.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.error("Stream playback failed:", error);
+          // Reset UI
+          playButton.classList.remove('playing');
+           playButton.innerHTML = `
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          `;
+          artistInfo.textContent = "Stream currently unavailable (Offline)";
+          artistInfo.classList.add('text-red-500');
+        });
+      }
     } else {
       audioPlayer.pause();
     }

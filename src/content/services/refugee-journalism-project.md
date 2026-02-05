@@ -6,8 +6,8 @@ location:
   address: Refugee Journalism Project, University of the Arts London
   city: London SE1 6SB
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'rjp@arts.ac.uk'
   phone: ''

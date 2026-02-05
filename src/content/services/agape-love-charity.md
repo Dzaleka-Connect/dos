@@ -6,8 +6,8 @@ location:
   address: Dzaleka Refugee Camp
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'info@agapelovecharity.org'
   phone: '+265 993 613 373'
@@ -21,12 +21,12 @@ socialMedia:
 logo: >-
   https://agapelovecharity.org/wp-content/uploads/2024/12/Screenshot-10-2.png
 featured: false
-lastUpdated: 2025-01-03
+lastUpdated: 2026-02-05
 ---
 
 ## About Agape Love Charity
 
-Agape Love Charity is a Malawi-based organization dedicated to empowering communities through various social initiatives. Their key programs include:
+Agape Love Charity is a Malawi-based organization dedicated to empowering vulnerable populations by providing essential support. Our charity programs focus on assisting refugees, host communities, single mothers, widows, and marginalized families, helping them achieve self-sufficiency and improve their quality of life.
 
 - **Empowering Widows**: Assisting widows in rebuilding their lives and securing brighter futures for themselves and their families.
 

@@ -14,29 +14,8 @@ const allServices = await getCollection('services');
 // Calculate service stats
 const serviceStats = calculateServiceStats(allServices);
 
-// Get URL parameters
-const sortBy = Astro.url.searchParams.get('sort') || 'featured';
-const verifiedOnly = Astro.url.searchParams.get('verified') === 'true';
-const page = Astro.url.searchParams.get('page');
-
-// If page query parameter is present and not 1, redirect to path-based pagination
-if (page && page !== '1') {
-  const searchParams = new URLSearchParams();
-  if (sortBy !== 'featured') searchParams.set('sort', sortBy);
-  if (verifiedOnly) searchParams.set('verified', 'true');
-  const queryString = searchParams.toString();
-  const redirectUrl = `/services/${page}${queryString ? `?${queryString}` : ''}`;
-  return Astro.redirect(redirectUrl);
-}
-
-// Apply verified filter
-let filteredServices = allServices;
-if (verifiedOnly) {
-  filteredServices = filteredServices.filter(service => service.data.verified);
-}
-
 // Sort services
-const sortedServices = sortServices(filteredServices, sortBy);
+const sortedServices = sortServices(allServices, 'featured');
 
 // Pagination
 const itemsPerPage = 6;
@@ -48,11 +27,8 @@ const endIndex = Math.min(itemsPerPage, totalItems);
 const paginatedServices = sortedServices.slice(startIndex, endIndex);
 
 // Preserve query parameters for pagination links
-const searchParams = new URLSearchParams();
-if (sortBy !== 'featured') searchParams.set('sort', sortBy);
-if (verifiedOnly) searchParams.set('verified', 'true');
-const queryString = searchParams.toString();
-const baseUrl = `/services${queryString ? `?${queryString}` : ''}`;
+// Preserve query parameters for pagination links
+const baseUrl = '/services';
 
 // Group services by category
 const servicesByCategory = allServices.reduce((acc, service) => {
@@ -114,7 +90,7 @@ const seo = {
         alt="Dzaleka Services" 
         class="w-full h-full object-cover opacity-0 animate-fade-in"
       />
-      <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/90 to-primary-50/80"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-white/85 via-white/70 to-primary-50/60"></div>
     </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 pt-12 pb-20 sm:px-6 lg:px-8">
@@ -137,7 +113,7 @@ const seo = {
         </p>
 
         <!-- Search and Filter Row -->
-        <div class="max-w-2xl mx-auto mb-8 bg-white p-2 rounded-xl shadow-lg border border-gray-100">
+        <div class="max-w-2xl mx-auto mb-10 bg-white p-2 rounded-xl shadow-lg border border-gray-100 text-left">
           <div class="flex flex-col sm:flex-row gap-2">
             <!-- Search Bar -->
             <div class="flex-1">
@@ -179,6 +155,8 @@ const seo = {
           </div>
         </div>
 
+
+
         <a
           href="/services/register"
           class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -207,26 +185,6 @@ const seo = {
         </div>
 
         <!-- Advanced Filters -->
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full lg:w-auto">
-          <label class="flex items-center">
-            <input 
-              type="checkbox" 
-              id="verifiedFilter"
-              checked={verifiedOnly}
-              class="h-4 w-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
-            />
-            <span class="ml-2 text-sm text-gray-700">Verified Only</span>
-          </label>
-          
-          <select 
-            id="sortFilter"
-            class="w-full sm:w-auto px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-          >
-            <option value="featured" selected={sortBy === 'featured'}>Featured First</option>
-            <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
-            <option value="newest" selected={sortBy === 'newest'}>Recently Updated</option>
-          </select>
-        </div>
       </div>
     </div>
 
@@ -255,6 +213,8 @@ const seo = {
               phone={service.data.contact?.phone}
               address={service.data.location?.address}
               logo={service.data.logo}
+              hours={service.data.contact?.hours}
+              location={service.data.location}
               socialMedia={socialMedia}
             />
           </div>
@@ -412,12 +372,11 @@ const seo = {
   </div>
 </MainLayout>
 
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const verifiedFilter = document.getElementById('verifiedFilter');
-    const sortFilter = document.getElementById('sortFilter');
-    const serviceSearch = document.getElementById('serviceSearch');
-    const categoryFilter = document.getElementById('categoryFilter');
+    const serviceSearch = document.getElementById('serviceSearch') as HTMLInputElement;
+    const categoryFilter = document.getElementById('categoryFilter') as HTMLSelectElement;
     const clearFiltersBtn = document.getElementById('clearFiltersBtn');
     const serviceCards = document.querySelectorAll('.service-card');
     const noResults = document.getElementById('no-results');
@@ -443,13 +402,16 @@ const seo = {
       let visibleCount = 0;
 
       serviceCards.forEach(card => {
+        // @ts-ignore
         const title = card.dataset.title;
         const matchesSearch = !searchTerm || title.includes(searchTerm.toLowerCase());
 
         if (matchesSearch) {
+          // @ts-ignore
           card.style.display = 'block';
           visibleCount++;
         } else {
+          // @ts-ignore
           card.style.display = 'none';
         }
       });
@@ -469,26 +431,6 @@ const seo = {
       updateClearButtonVisibility();
     }
     
-    function updateFilters() {
-      const url = new URL(window.location.href);
-      
-      // Update verified filter
-      if (verifiedFilter.checked) {
-        url.searchParams.set('verified', 'true');
-      } else {
-        url.searchParams.delete('verified');
-      }
-      
-      // Update sort filter
-      if (sortFilter.value !== 'featured') {
-        url.searchParams.set('sort', sortFilter.value);
-      } else {
-        url.searchParams.delete('sort');
-      }
-      
-      // Navigate to the new URL
-      window.location.href = url.toString();
-    }
     
     // Clear filters functionality
     clearFiltersBtn?.addEventListener('click', () => {
@@ -516,6 +458,7 @@ const seo = {
 
     // Search functionality
     serviceSearch?.addEventListener('input', (e) => {
+      // @ts-ignore
       searchTerm = e.target.value;
       filterServices();
       updateClearSearchButton();
@@ -538,6 +481,7 @@ const seo = {
 
     // Category filter functionality - Navigate to category page
     categoryFilter?.addEventListener('change', (e) => {
+      // @ts-ignore
       const category = e.target.value;
       if (category === 'all') {
         window.location.href = '/services';
@@ -548,9 +492,6 @@ const seo = {
       }
     });
 
-    // Advanced filters
-    verifiedFilter?.addEventListener('change', updateFilters);
-    sortFilter?.addEventListener('change', updateFilters);
 
     // Initialize button visibility on page load
     updateClearButtonVisibility();

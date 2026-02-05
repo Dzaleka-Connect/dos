@@ -7,8 +7,8 @@ location:
   address: Dzaleka Refugee Camp
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 mitSolve:
   solutionUrl: 'https://solve.mit.edu/solutions/30129'
   submissionYear: 2020

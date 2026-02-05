@@ -1,0 +1,211 @@
+---
+import { getCollection, render } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const rightsEntries = await getCollection('rights');
+  return rightsEntries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Determine style based on category
+const categoryStyles = {
+  'legislation': { icon: '⚖️', badge: 'bg-blue-50 text-blue-700 border-blue-100' },
+  'analysis': { icon: '📊', badge: 'bg-purple-50 text-purple-700 border-purple-100' },
+  'guide': { icon: '📘', badge: 'bg-green-50 text-green-700 border-green-100' },
+  'resource': { icon: '🔗', badge: 'bg-gray-100 text-gray-700 border-gray-200' }
+};
+
+const style = categoryStyles[entry.data.category] || categoryStyles['resource'];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": entry.data.category === 'legislation' ? "Legislation" : "Article",
+  "headline": entry.data.title,
+  "description": entry.data.description,
+  "datePublished": entry.data.date ? entry.data.date.toISOString().split('T')[0] : undefined,
+  "author": {
+    "@type": "Organization",
+    "name": entry.data.source || "Dzaleka Rights Navigator"
+  },
+  "legislationType": entry.data.category === 'legislation' ? "Act" : undefined,
+  "legislationJurisdiction": entry.data.category === 'legislation' ? "Malawi" : undefined,
+  "keywords": entry.data.tags?.join(', ')
+};
+---
+
+<MainLayout 
+  title={`${entry.data.title} | Rights Navigator`} 
+  description={entry.data.description}
+  schema={schema}
+  openGraph={{
+    title: entry.data.title,
+    description: entry.data.description,
+    type: "article",
+    article: {
+      publishedTime: entry.data.date?.toISOString(),
+      tags: entry.data.tags,
+      author: entry.data.source,
+      section: entry.data.category
+    }
+  }}
+>
+  <div class="min-h-screen bg-gray-50">
+    
+    <!-- Hero / Header Section -->
+    <div class="bg-white border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        
+        <!-- Breadcrumb -->
+        <nav class="flex mb-6 text-sm font-medium text-gray-500">
+            <a href="/rights-navigator" class="hover:text-blue-600 transition">Rights Navigator</a>
+            <span class="mx-2 text-gray-300">/</span>
+            <span class="text-gray-900 truncate">{entry.data.title}</span>
+        </nav>
+
+        <div class="max-w-4xl">
+            <div class="flex items-center gap-3 mb-4">
+                <span class={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center border ${style.badge}`}>
+                 <span class="mr-2">{style.icon}</span> {entry.data.category}
+               </span>
+               {entry.data.date && (
+                 <span class="text-gray-500 text-sm">
+                   Effective: {entry.data.date.getFullYear()}
+                 </span>
+               )}
+             </div>
+             
+             <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 font-heading leading-tight">
+               {entry.data.title}
+             </h1>
+             
+             <p class="text-xl text-gray-600 leading-relaxed">
+               {entry.data.description}
+             </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Sidebar / Table of Contents -->
+          <div class="lg:col-span-3">
+            <div class="sticky top-8">
+              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Table of Contents</h3>
+              <nav id="toc" class="space-y-1 border-l border-gray-200">
+                <!-- TOC is generated via JS -->
+              </nav>
+
+              <div class="mt-8 pt-8 border-t border-gray-100">
+                  <a href="/rights-navigator" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
+                      &larr; Back to all resources
+                  </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Article Content -->
+          <div class="lg:col-span-9">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12">
+                <article id="article-content" class="prose prose-lg prose-blue max-w-none">
+                <Content />
+                </article>
+                
+                {entry.data.source && (
+                <div class="mt-12 pt-6 border-t border-gray-100 flex items-center text-sm text-gray-500 bg-gray-50 p-4 rounded-lg">
+                    <span class="font-bold mr-2 text-gray-700">Source:</span> {entry.data.source}
+                </div>
+                )}
+            </div>
+          </div>
+
+        </div>
+
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  // Script to generate TOC and handle Accordions
+  document.addEventListener('DOMContentLoaded', () => {
+    const article = document.querySelector('#article-content');
+    if (!article) return;
+
+    // 1. Generate TOC
+    const headings = article.querySelectorAll('h2');
+    const tocContainer = document.querySelector('#toc');
+    
+    if (tocContainer) {
+        if (headings.length > 0) {
+            headings.forEach((heading, index) => {
+                // Create ID if missing
+                if (!heading.id) {
+                heading.id = `section-${index}`;
+                }
+
+                const link = document.createElement('a');
+                link.href = `#${heading.id}`;
+                link.textContent = heading.textContent;
+                link.className = `block pl-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:border-l-2 hover:border-blue-600 transition-colors border-l-2 border-transparent`;
+                
+                // Highlight active on scroll (Basic implementation)
+                link.addEventListener('click', (e) => {
+                e.preventDefault();
+                heading.scrollIntoView({ behavior: 'smooth' });
+                });
+
+                tocContainer.appendChild(link);
+            });
+        } else {
+             // If no H2s, allow TOC container to be empty or show placeholder
+             tocContainer.innerHTML = '<p class="text-sm text-gray-400 pl-4 py-1 italic">No sections</p>';
+        }
+    }
+
+    // 2. Interactive Accordions for H2 sections
+    headings.forEach(heading => {
+      heading.classList.add('cursor-pointer', 'flex', 'items-center', 'justify-between', 'group', 'pb-2', 'border-b', 'border-gray-100');
+      
+      // Add indicator icon
+      const icon = document.createElement('span');
+      icon.innerHTML = `<svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+      heading.appendChild(icon);
+
+      // Wrap content between this H2 and the next H2
+      const contentNodes = [];
+      let sibling = heading.nextElementSibling;
+      
+      while (sibling && sibling.tagName !== 'H2') {
+        contentNodes.push(sibling);
+        sibling = sibling.nextElementSibling;
+      }
+
+      // Create wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'section-content mt-4 mb-8'; // Add spacing
+      
+      // Insert wrapper after heading
+      heading.parentNode?.insertBefore(wrapper, heading.nextSibling);
+      
+      // Move nodes into wrapper
+      contentNodes.forEach(node => wrapper.appendChild(node));
+
+      // Toggle functionality
+      heading.addEventListener('click', () => {
+        wrapper.classList.toggle('hidden');
+        const svg = heading.querySelector('svg');
+        if (svg) {
+          svg.classList.toggle('rotate-180');
+        }
+      });
+    });
+  });
+</script>

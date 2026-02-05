@@ -6,8 +6,8 @@ location:
   address: New Katubzya/In front of Sowing School, Dzaleka
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'hopdevinfo@gmail.com'
   phone: '+265 997 898116'

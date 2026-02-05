@@ -9,9 +9,8 @@ interface Props {
 	title: string;
 	description?: string;
 	keywords?: string;
-	type?: string;
-	canonical?: string;
-	image?: string;
+	ogImage?: string;
+	schema?: object;
 	openGraph?: {
 		title?: string;
 		description?: string;
@@ -56,6 +55,7 @@ const {
 	type = "website",
 	canonical = Astro.url.pathname,
 	image,
+	schema,
 	openGraph,
 	twitter
 } = Astro.props;
@@ -72,6 +72,7 @@ const ogImage = openGraph?.images?.[0]?.url
 	type={type}
 	canonical={canonical}
 	ogImage={ogImage}
+	schema={schema}
 	openGraph={openGraph}
 	twitter={twitter}
 >

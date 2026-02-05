@@ -1,0 +1,244 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import '../../styles/patterns.css';
+
+const rightsParams = await getCollection('rights');
+const legislation = rightsParams.filter(item => item.data.category === 'legislation');
+const analysis = rightsParams.filter(item => item.data.category === 'analysis');
+const resources = rightsParams.filter(item => item.data.category === 'resource' || item.data.category === 'guide');
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Dzaleka Rights Navigator",
+  "description": "A comprehensive guide to refugee rights, legislation, and legal aid in Malawi.",
+  "hasPart": rightsParams.map(doc => ({
+    "@type": doc.data.category === 'legislation' ? "Legislation" : "Article",
+    "name": doc.data.title,
+    "url": `https://services.dzaleka.com/rights-navigator/${doc.id}`
+  }))
+};
+---
+
+<MainLayout 
+  title="Dzaleka Rights Navigator" 
+  description="Know your rights, access legal aid, and understand the laws governing Dzaleka regarding the 1951 Geneva Convention."
+  schema={schema}
+  openGraph={{
+    title: "Dzaleka Rights Navigator | Know Your Rights",
+    description: "Access key legal documents, finding legal aid, and understand your rights as a refugee in Malawi.",
+    type: "website",
+    image: "/images/dzaleka-hero.jpeg"
+  }}
+>
+   <div class="min-h-screen bg-gray-50">
+    
+    <!-- Hero Section: Cleaner, Lighter -->
+    <div class="bg-white border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 text-center">
+        <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold tracking-wide uppercase mb-4">
+          Legal Empowerment Hub
+        </span>
+        <h1 class="text-4xl md:text-5xl font-bold font-heading text-gray-900 mb-4 tracking-tight">
+          Know Your Rights. Own Your Future.
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          A practical guide to the Refugees Act, your constitutional rights, and finding legal aid in Dzaleka.
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      
+      <!-- Search Bar -->
+      <div class="max-w-2xl mx-auto mb-16 relative">
+        <label for="rights-search" class="sr-only">Search rights, legislation, and resources</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <input 
+            type="text" 
+            id="rights-search" 
+            class="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-lg shadow-sm transition" 
+            placeholder="Search for 'work', 'movement', or 'legal aid'..."
+          >
+        </div>
+      </div>
+      
+      <!-- Rights Reality Dashboard (Cards) - Simplified -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-gray-900 text-lg">Freedom of Movement</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">Restricted by Encampment Policy</p>
+          <div class="flex items-center text-red-600 text-sm font-medium">
+            <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+            Requires Gate Pass
+          </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-4">
+             <h3 class="font-bold text-gray-900 text-lg">Right to Work</h3>
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">Restricted (Reservation Art. 17)</p>
+          <div class="flex items-center text-yellow-600 text-sm font-medium">
+            <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+            Limited Access
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-4">
+             <h3 class="font-bold text-gray-900 text-lg">Right to Asylum</h3>
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+             </svg>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">Guaranteed by Constitution</p>
+          <div class="flex items-center text-green-600 text-sm font-medium">
+            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            Protected
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Main Content Column -->
+        <div class="lg:col-span-2 space-y-12">
+          
+          <!-- Legislation Section -->
+          <section>
+            <h2 class="text-2xl font-bold text-gray-900 font-heading mb-6 border-b border-gray-200 pb-2">Primary Legislation</h2>
+            <div class="grid gap-4">
+              {legislation.map(doc => (
+                <a href={`/rights-navigator/${doc.id}`} class="group block bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 hover:shadow-md transition duration-200">
+                  <div class="flex flex-col md:flex-row md:items-start justify-between">
+                    <div>
+                      <span class="text-blue-600 font-semibold text-xs tracking-wider uppercase mb-1 block">
+                        Act No. {doc.data.date?.getFullYear()}
+                      </span>
+                      <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700 transition">
+                        {doc.data.title}
+                      </h3>
+                      <p class="text-gray-600 text-sm leading-relaxed">{doc.data.description}</p>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <!-- Analysis Section -->
+          <section>
+            <h2 class="text-2xl font-bold text-gray-900 font-heading mb-6 border-b border-gray-200 pb-2">Legal Analysis</h2>
+            <div class="grid gap-4">
+              {analysis.map(doc => (
+                 <a href={`/rights-navigator/${doc.id}`} class="group block bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:border-purple-300 hover:shadow-md transition duration-200">
+                     <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-700 transition mb-2">
+                      {doc.data.title}
+                    </h3>
+                    <p class="text-gray-600 text-sm">{doc.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-8">
+          
+          <!-- Resources Widget -->
+          <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center font-heading">
+              Resource Hub
+            </h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="/rights-navigator/about" class="flex items-center text-blue-700 font-bold hover:text-blue-800 group text-sm">
+                  <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span>
+                  About the Navigator
+                </a>
+              </li>
+              {resources.map(doc => (
+                <li>
+                  <a href={`/rights-navigator/${doc.id}`} class="flex items-center text-gray-600 hover:text-blue-600 group text-sm font-medium">
+                    <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2 group-hover:bg-blue-600 transition"></span>
+                    {doc.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Incident Reporting Call to Action -->
+          <div class="bg-blue-600 text-white p-6 rounded-xl shadow-md">
+            <h3 class="text-lg font-bold mb-2 font-heading">Report a Rights Violation</h3>
+            <p class="text-blue-100 mb-4 text-sm leading-relaxed">
+              Issues with gate passes, status determination, or authorities?
+            </p>
+            <a href="/rights-navigator/incident-report" class="block w-full text-center bg-white text-blue-700 py-2.5 rounded-lg font-semibold hover:bg-blue-50 transition text-sm">
+              Open Incident Tracker
+            </a>
+          </div>
+
+          <!-- Lawyer/Help Box -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+             <h3 class="text-gray-900 font-bold mb-2">Need Professional Help?</h3>
+             <p class="text-sm text-gray-500 mb-3">Connect with Inua Advocacy for free legal representation.</p>
+             <a href="/rights-navigator/legal-aid-directory" class="text-blue-600 font-bold text-sm hover:underline">View Legal Directory &rarr;</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer Note -->
+      <div class="mt-16 pt-8 border-t border-gray-200 text-center">
+        <p class="text-sm text-gray-500 max-w-2xl mx-auto">
+          For any discrepancies or additional insights regarding the information in Dzaleka Rights Navigator (DRN), please contact <a href="mailto:info@mail.dzaleka.com" class="text-blue-600 hover:text-blue-800 font-medium">info@mail.dzaleka.com</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('rights-search') as HTMLInputElement;
+    const cards = document.querySelectorAll('a.group'); // Selects all card links
+    const sections = document.querySelectorAll('section, .bg-gray-50.p-6'); // Selects sections to hide if empty
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const term = (e.target as HTMLInputElement).value.toLowerCase();
+        
+        cards.forEach(card => {
+          const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+          const desc = card.querySelector('p')?.textContent?.toLowerCase() || '';
+          const text = title + ' ' + desc;
+          
+          if (text.includes(term)) {
+            (card as HTMLElement).style.display = '';
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    }
+  });
+</script>

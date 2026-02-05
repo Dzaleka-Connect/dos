@@ -6,8 +6,8 @@ location:
   address: Dzaleka Refugee Camp
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: ''
   phone: '+265 999 638 207, +265 993 838 789, +265 982 566 692'
@@ -18,7 +18,7 @@ socialMedia:
   instagram: ''
   linkedin: 'https://www.linkedin.com/company/dzaleka-blood-donors-services'
   website: ''
-logo: ''
+logo: '/images/dzaleka-digital-heritage.png'
 featured: false
 lastUpdated: 2024-03-19
 ---

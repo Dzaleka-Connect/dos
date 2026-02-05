@@ -6,8 +6,8 @@ location:
   address: Area 47, Sector 2, Linthipe Road, Plot Number 6
   city: Lilongwe
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'comms@thereishopemalawi.org'
   phone: '+265 212 273 688'

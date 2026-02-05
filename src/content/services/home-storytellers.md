@@ -7,8 +7,8 @@ location:
   city: Santa Barbara, CA 93108, United States 5214422301659
 
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'info@homestorytellers.org'
   phone: ''

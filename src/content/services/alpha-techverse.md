@@ -6,8 +6,8 @@ location:
   address: Dzaleka Refugee Camp, Lisungwe
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'emma.nd440@gmail.com'
   phone: '+265 995 394 086'

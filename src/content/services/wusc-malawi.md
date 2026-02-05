@@ -6,8 +6,8 @@ location:
   address: Building 51, Lizuzu street Area 47
   city: Lilongwe
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'wuscmalawi@wusc.ca'
   phone: '+265 1 772 275'

@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
 import { checkContentHealth, calculateSystemHealth } from '../utils/monitoring-utils';
 import { convertToCSV } from '../utils/export-utils';
+import { calculateContactStats, calculateSocialBreakdown, calculateFeaturedStats } from '../utils/serviceStats';
 
 // Fetch all collections
 const services = await getCollection('services');
@@ -21,6 +22,10 @@ const sites = await getCollection('sites');
 const artists = await getCollection('artists');
 const artworks = await getCollection('artworks');
 const profiles = await getCollection('profiles'); // Skills Exchange
+const stores = await getCollection('stores');
+const marketplace = await getCollection('marketplace');
+const stories = await getCollection('inspirational-stories');
+const courses = await getCollection('courses');
 
 // Helper functions
 const isWithinLast30Days = (date) => {
@@ -127,7 +132,28 @@ const stats = {
     total: artworks.length,
     recent: artworks.filter(a => isWithinLast30Days(a.data.date)).length,
   },
+  stores: {
+    total: stores.length,
+    active: stores.filter(s => s.data.status === 'active').length,
+  },
+  marketplace: {
+    total: marketplace.length,
+    active: marketplace.filter(m => m.data.status === 'active').length,
+  },
 };
+
+// Calculate detailed analytics
+const collectionsWithContact = [...services, ...events, ...stores];
+const contactStats = calculateContactStats(collectionsWithContact);
+const socialBreakdown = calculateSocialBreakdown([...services, ...stores]);
+
+const allCollections = {
+  services, resources, events, photos, jobs, news, dancers, poets, sites, 
+  artists, artworks, profiles, stores, marketplace, stories, courses, talents, 
+  docs, communityVoices
+};
+
+const featuredStats = calculateFeaturedStats(allCollections);
 
 // Calculate total activity for last 7 days and 30 days
 const totalActivity = {
@@ -269,6 +295,24 @@ const chartData = {
   jobStatus: {
     labels: ['Active', 'Inactive'],
     values: [stats.jobs.active, stats.jobs.inactive]
+  },
+  digitalPresence: {
+    labels: ['Email', 'Phone', 'WhatsApp', 'Social Media', 'Website'],
+    values: [
+      contactStats.withEmail, 
+      contactStats.withPhone, 
+      contactStats.withWhatsApp, 
+      contactStats.withSocialMedia, 
+      contactStats.withWebsite
+    ]
+  },
+  verificationStatus: {
+    labels: ['Verified', 'Standard'],
+    values: [stats.services.verified, stats.services.total - stats.services.verified]
+  },
+  featuredContent: {
+    labels: Object.keys(featuredStats).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+    values: Object.values(featuredStats)
   }
 };
 
@@ -895,6 +939,30 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Arts & Culture Breakdown</h3>
             <div class="h-64">
               <canvas id="artsBreakdownChart" aria-label="Arts and culture breakdown pie chart"></canvas>
+            </div>
+          </div>
+
+           <!-- Digital Presence Chart -->
+           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 lg:col-span-2">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Digital Presence (Services & Stores)</h3>
+            <div class="h-64">
+              <canvas id="digitalPresenceChart" aria-label="Digital presence bar chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Verification Status Chart -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Service Verification</h3>
+            <div class="h-64">
+              <canvas id="verificationStatusChart" aria-label="Verification status doughnut chart"></canvas>
+            </div>
+          </div>
+          
+           <!-- Featured Content Chart -->
+           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 lg:col-span-3">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Featured Content Distribution (All Collections)</h3>
+            <div class="h-80">
+              <canvas id="featuredContentChart" aria-label="Featured content pie chart"></canvas>
             </div>
           </div>
         </div>
@@ -1853,6 +1921,88 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                   padding: 15
                 }
               }
+            }
+          }
+        });
+      }
+
+      // Digital Presence Chart
+      const digitalPresenceCtx = document.getElementById('digitalPresenceChart');
+      if (digitalPresenceCtx) {
+        destroyChart('digitalPresenceChart');
+        chartInstances['digitalPresenceChart'] = new Chart(digitalPresenceCtx, {
+          type: 'bar',
+          data: {
+            labels: chartData.digitalPresence.labels,
+            datasets: [{
+              label: 'Count',
+              data: chartData.digitalPresence.values,
+              backgroundColor: [colors.primary[0], colors.teal, colors.success, colors.purple, colors.orange],
+              borderRadius: 6,
+              barThickness: 40,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
+
+      // Verification Status Chart
+      const verificationStatusCtx = document.getElementById('verificationStatusChart');
+      if (verificationStatusCtx) {
+        destroyChart('verificationStatusChart');
+        chartInstances['verificationStatusChart'] = new Chart(verificationStatusCtx, {
+          type: 'doughnut',
+          data: {
+            labels: chartData.verificationStatus.labels,
+            datasets: [{
+              data: chartData.verificationStatus.values,
+              backgroundColor: [colors.success, '#E5E7EB'],
+              borderWidth: 0,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+              legend: { position: 'bottom' }
+            }
+          }
+        });
+      }
+
+      // Featured Content Chart
+      const featuredContentCtx = document.getElementById('featuredContentChart');
+      if (featuredContentCtx) {
+        destroyChart('featuredContentChart');
+        chartInstances['featuredContentChart'] = new Chart(featuredContentCtx, {
+          type: 'pie',
+          data: {
+            labels: chartData.featuredContent.labels,
+            datasets: [{
+              data: chartData.featuredContent.values,
+              backgroundColor: [
+                colors.primary[0], colors.teal, colors.purple, colors.pink, 
+                colors.warning, colors.success, colors.orange, '#64748B', '#94A3B8'
+              ],
+              borderWidth: 1,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'right' }
             }
           }
         });

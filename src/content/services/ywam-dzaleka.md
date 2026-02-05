@@ -6,8 +6,8 @@ location:
   address: PO Box 16, Dzaleka
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'tresorweny8@gmail.com'
   phone: '+265 993955620'

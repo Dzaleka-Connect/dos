@@ -1,0 +1,28 @@
+---
+title: "PEFA Academy"
+category: "Education"
+description: "Empowering students through quality education and spiritual growth."
+location:
+  address: "Dzaleka Refugee Camp"
+  city: "Dowa"
+  coordinates:
+    lat: -13.6628274
+    lng: 33.8704301
+contact:
+  email: ''
+  phone: ''
+  hours: ''
+socialMedia:
+  facebook: ''
+  twitter: ''
+  instagram: ''
+  linkedin: ''
+  website: ''
+logo: '/images/dzaleka-digital-heritage.png'
+featured: false
+lastUpdated: 2026-02-05
+---
+
+## About PEFA Academy
+
+Empowering students through quality education and spiritual growth.

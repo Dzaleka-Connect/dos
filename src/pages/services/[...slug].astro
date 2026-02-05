@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { Image } from 'astro:assets';
+import { getServiceStatus } from '../../utils/serviceHelpers';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -35,79 +36,6 @@ const formattedDate = service.data.lastUpdated
 
 // Clean phone number for tel: link
 const phoneNumber = service.data.contact?.phone?.replace(/\D/g, '');
-
-// Get service hours status
-const getServiceStatus = (hours) => {
-  if (!hours || typeof hours !== 'string') return null;
-  
-  try {
-    const now = new Date();
-    const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
-    const currentTime = now.getHours() * 100 + now.getMinutes();
-    
-    // Expected format: "Mon-Fri: 9:00 AM - 5:00 PM"
-    const parts = hours.split(': ');
-    if (parts.length !== 2) return null;
-    
-    const [days, times] = parts;
-    if (!days || !times) return null;
-
-    const dayParts = days.split('-');
-    if (dayParts.length !== 2) return null;
-
-    const [startDay, endDay] = dayParts.map(d => {
-      const dayMap = { 
-        'sun': 0, 'mon': 1, 'tue': 2, 'wed': 3, 
-        'thu': 4, 'fri': 5, 'sat': 6 
-      };
-      const mapped = dayMap[d.toLowerCase().trim()];
-      if (typeof mapped !== 'number') return null;
-      return mapped;
-    });
-
-    if (startDay === null || endDay === null) return null;
-
-    const timeParts = times.split(' - ');
-    if (timeParts.length !== 2) return null;
-    
-    const [startTime, endTime] = timeParts.map(time => {
-      try {
-        const [hours, minutesPart] = time.split(':');
-        if (!hours || !minutesPart) return null;
-        
-        const [minutes] = minutesPart.split(' ');
-        if (!minutes) return null;
-
-        const isPM = time.toLowerCase().includes('pm');
-        let hour = parseInt(hours);
-        if (isNaN(hour)) return null;
-        
-        if (isPM && hour !== 12) hour += 12;
-        if (!isPM && hour === 12) hour = 0;
-        
-        const mins = parseInt(minutes);
-        if (isNaN(mins)) return null;
-        
-        return hour * 100 + mins;
-      } catch (e) {
-        return null;
-      }
-    });
-
-    if (startTime === null || endTime === null) return null;
-    
-    // Check if current day is within operating days
-    const isOperatingDay = day >= startDay && day <= endDay;
-    
-    // Check if current time is within operating hours
-    const isOperatingHours = currentTime >= startTime && currentTime < endTime;
-    
-    return isOperatingDay && isOperatingHours ? 'open' : 'closed';
-  } catch (error) {
-    console.error('Error parsing service hours:', error);
-    return null;
-  }
-};
 
 const serviceStatus = service.data.contact?.hours ? getServiceStatus(service.data.contact.hours) : null;
 

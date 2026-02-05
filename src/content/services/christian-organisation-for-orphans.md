@@ -6,8 +6,8 @@ location:
   address: Dzaleka Refugee Camp
   city: Dowa
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: ''
   phone: '+265 886 020 333, +265 996 020 333'
@@ -17,10 +17,10 @@ socialMedia:
   twitter: ''
   instagram: ''
   linkedin: ''
-  website: ''
-logo: ''
+  website: 'https://services.dzaleka.com/services/christian-organisation-for-orphans/'
+logo: '/images/dzaleka-digital-heritage.png'
 featured: false
-lastUpdated: 2024-03-19
+lastUpdated: 2026-02-05
 ---
 
 ## About Christian Organisation for Orphans (COOM)

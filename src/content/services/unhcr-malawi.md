@@ -6,8 +6,8 @@ location:
   address: 8th Floor, Kang'ombe House, Robert Mugabe Crescent, City Centre
   city: Lilongwe
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'mlwli@unhcr.org'
   phone: '+265 177 2155'

@@ -1,0 +1,142 @@
+---
+import MainLayout from '../../../../layouts/MainLayout.astro';
+import ServiceCard from '../../../../components/ServiceCard.astro';
+import ServicePagination from '../../../../components/services/ServicePagination.astro';
+import { getCollection } from 'astro:content';
+import { sortServices } from '../../../../utils/serviceHelpers';
+
+export async function getStaticPaths({ paginate }) {
+  const allServices = await getCollection('services');
+  
+  // Get unique categories
+  const categories = [...new Set(allServices.map(service => service.data.category))];
+  
+  return categories.flatMap(category => {
+    const slug = category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    
+    // Filter services for this category
+    const categoryServices = allServices.filter(service => 
+      service.data.category.toLowerCase() === category.toLowerCase()
+    );
+
+    // We can't easily support dynamic sorting/filtering with static generation + pagination
+    // So we default to 'featured' sort for the static build.
+    // Client-side filtering/sorting would be needed for dynamic behavior, 
+    // or we pre-generate specific sort routes (complex).
+    // For now, let's sort by default (featured).
+    const sortedServices = sortServices(categoryServices, 'featured');
+
+    return paginate(sortedServices, {
+      params: { category: slug },
+      props: { categoryName: category },
+      pageSize: 6
+    });
+  });
+}
+
+const { page } = Astro.props;
+const { categoryName } = Astro.props;
+const { category } = Astro.params;
+
+const paginatedServices = page.data;
+const totalItems = page.total;
+
+// SEO metadata
+const seo = {
+  title: `${categoryName} Services - Dzaleka Online Services`,
+  description: `Discover ${totalItems} ${categoryName.toLowerCase()} services in Dzaleka Refugee Camp.`,
+  image: '/images/services-directory.jpg',
+  type: 'website'
+};
+
+const baseUrl = `/services/category/${category}`;
+---
+
+<MainLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  type={seo.type}
+>
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden bg-primary-50">
+     <div class="absolute inset-0 z-0">
+      <img src="/images/dzaleka-hero.jpeg" alt="Dzaleka Community" class="w-full h-full object-cover opacity-0 animate-fade-in"/>
+      <div class="absolute inset-0 bg-gradient-to-br from-white/85 via-white/70 to-primary-50/60"></div>
+    </div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto text-center pt-12 pb-20 px-4 sm:px-6">
+      <nav class="flex justify-center mb-6" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2 text-sm text-gray-500">
+          <li><a href="/services" class="hover:text-primary-600 transition-colors">Services</a></li>
+          <li class="flex items-center">
+            <svg class="w-4 h-4 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            <span class="text-gray-900 font-medium">{categoryName}</span>
+          </li>
+        </ol>
+      </nav>
+      
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{categoryName} Services</h1>
+      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        Discover {totalItems} {categoryName.toLowerCase()} services in Dzaleka Refugee Camp
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+    <!-- Results Header -->
+    <div class="mb-6 flex justify-between items-center">
+       <h2 class="text-xl font-bold text-gray-900">
+         {page.start + 1}-{page.end + 1} of {totalItems} Services
+       </h2>
+       <!-- Note: Client-side sorting/filtering removed as it conflicts with static pagination -->
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {paginatedServices.map(service => (
+        <div class="service-card">
+          <ServiceCard 
+            title={service.data.title}
+            description={service.data.description}
+            category={service.data.category}
+            featured={service.data.featured}
+            verified={service.data.verified}
+            href={`/services/${service.id}`}
+            email={service.data.contact?.email}
+            phone={service.data.contact?.phone}
+            address={service.data.location?.address}
+            logo={service.data.logo}
+            hours={service.data.contact?.hours}
+            location={service.data.location}
+            socialMedia={service.data.socialMedia}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Pagination -->
+    {page.lastPage > 1 && (
+      <div class="mt-8">
+        <ServicePagination
+          currentPage={page.currentPage}
+          totalPages={page.lastPage}
+          baseUrl={baseUrl}
+        />
+      </div>
+    )}
+    
+    <!-- Info Section -->
+    <div class="mt-16 bg-gray-50 rounded-xl p-8 text-center">
+        <h2 class="text-2xl font-bold mb-4">About {categoryName} Services</h2>
+        <p class="text-gray-600 mb-6">These services provide essential support to the Dzaleka community.</p>
+        <a href="/services" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">Browse All Services</a>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .animate-fade-in { animation: fadeIn 2s ease-out forwards; }
+</style>

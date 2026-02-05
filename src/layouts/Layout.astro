@@ -10,6 +10,7 @@ interface Props {
 	type?: string;
 	canonical?: string;
 	ogImage?: string;
+	schema?: object;
 	openGraph?: {
 		title?: string;
 		description?: string;
@@ -54,6 +55,7 @@ const {
 	type = "website",
 	canonical,
 	ogImage,
+	schema,
 	openGraph,
 	twitter
 } = Astro.props;
@@ -70,6 +72,8 @@ const metaOgImage = ogImage || defaultOgImage;
 const canonicalUrl = canonical && canonical.startsWith('http')
 	? canonical
 	: `https://services.dzaleka.com${canonical || Astro.url.pathname}`;
+
+import Schema from '../components/Schema.astro';
 ---
 
 <!DOCTYPE html>
@@ -138,6 +142,9 @@ const canonicalUrl = canonical && canonical.startsWith('http')
 		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{(title && title.includes('Dzaleka')) ? title : `${title || 'Page'} | Dzaleka Online Services`}</title>
+
+		{/* JSON-LD Schema */}
+		{schema && <Schema item={schema} />}
 
 		<!-- Google Fonts - Distinctive Typography -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

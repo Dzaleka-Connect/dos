@@ -7,8 +7,8 @@ location:
   address: "Dzaleka Refugee Camp"
   city: "Dowa"
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: "yetufmradio@outlook.com"
   phone: "+265 884 90 93 20"

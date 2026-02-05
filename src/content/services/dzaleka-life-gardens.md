@@ -6,8 +6,8 @@ location:
   address: Dzaleka Refugee Camp
   city: Lilongwe
   coordinates:
-    lat: -13.7833
-    lng: 33.9833
+    lat: -13.6628274
+    lng: 33.8704301
 contact:
   email: 'info@iafr.ca'
   phone: '+265 886 82 97 47'
