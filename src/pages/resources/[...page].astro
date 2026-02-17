@@ -381,32 +381,34 @@ const paginationStructuredData = {
     ]} />
 
     {/* Hero Section */}
-    <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
-      {/* Subtle African Pattern Background */}
-      <div class="absolute inset-0 opacity-[0.03]">
-        <div class="absolute inset-0 pattern-mudcloth"></div>
+    <section class="relative bg-white mb-12 overflow-hidden">
+      {/* Background Decor */}
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-primary-50/50 to-transparent"></div>
+        <div class="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] rounded-full bg-primary-50/30 blur-3xl"></div>
+        <div class="absolute top-[20%] -left-[5%] w-[300px] h-[300px] rounded-full bg-ochre-50/20 blur-3xl"></div>
       </div>
 
-      <div class="relative container mx-auto px-4 py-16">
+      <div class="relative container mx-auto px-4 py-16 md:py-24">
         <div class="max-w-4xl mx-auto text-center">
-          {/* Small cultural accent */}
-          <div class="inline-block mb-6">
-            <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
+          {/* Small cultural accent - subtle and centered */}
+          <div class="inline-flex items-center justify-center mb-6">
+            <span class="px-4 py-1.5 bg-white text-primary-700 rounded-full text-sm font-semibold border border-primary-100 shadow-sm">
               Knowledge Archive
             </span>
           </div>
 
-          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Dzaleka Resource Hub
+          <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+            Dzaleka <span class="text-primary-600">Resource Hub</span>
           </h1>
-          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Access 200+ curated documents, reports, and research preserving our community's story and supporting refugee rights
+          <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Access 200+ curated documents, reports, and research preserving our community's story and supporting refugee rights.
           </p>
 
-          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <a
               href="/resources/submit"
-              class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium shadow-sm"
+              class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary-600/20 font-medium"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -415,14 +417,14 @@ const paginationStructuredData = {
             </a>
             <a
               href="/resources/about"
-              class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-600 text-primary-600 bg-white rounded-lg hover:bg-primary-50 transition-colors font-medium"
+              class="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all font-medium shadow-sm hover:shadow-md"
             >
               Learn More
             </a>
           </div>
 
-          {/* Advanced Search & Filter */}
-          <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+          {/* Advanced Search & Filter - Floating Card */}
+          <div class="bg-white rounded-2xl p-4 md:p-6 shadow-xl shadow-gray-200/50 border border-gray-100 max-w-3xl mx-auto">
             <form
               action="/resources"
               method="GET"
@@ -437,22 +439,22 @@ const paginationStructuredData = {
                       type="text"
                       name="search"
                       id="resourceSearch"
-                      placeholder="Search resources by title, author, or keyword..."
+                      placeholder="Search by title, author, or keyword..."
                       value={search || ''}
-                      class="w-full px-4 py-3 pl-11 pr-10 bg-white text-gray-900 placeholder-gray-500 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                      class="w-full px-5 py-3.5 pl-12 bg-gray-50 text-gray-900 placeholder-gray-500 rounded-xl border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-primary-500 transition-shadow duration-200"
                     />
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-focus-within:text-primary-500 transition-colors" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                       </svg>
                     </div>
                     <button
                       type="button"
                       id="clearResourceSearch"
-                      class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 focus:outline-none"
+                      class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
                       aria-label="Clear search"
                     >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
@@ -461,39 +463,42 @@ const paginationStructuredData = {
 
                 {/* Category Filter */}
                 <div class="w-full md:w-64">
-                  <select
-                    name="category"
-                    id="categoryFilter"
-                    class="w-full px-4 py-3 bg-white text-gray-900 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 appearance-none cursor-pointer"
-                    style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%234B5563\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E'); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem;"
-                  >
-                    <option value="">All Categories</option>
-                    {categories.map(cat => (
-                      <option value={cat} selected={category === cat}>{cat}</option>
-                    ))}
-                  </select>
+                  <div class="relative">
+                    <select
+                      name="category"
+                      id="categoryFilter"
+                      class="w-full px-5 py-3.5 bg-gray-50 text-gray-900 rounded-xl border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-primary-500 transition-shadow duration-200 appearance-none cursor-pointer pr-10"
+                    >
+                      <option value="">All Categories</option>
+                      {categories.map(cat => (
+                        <option value={cat} selected={category === cat}>{cat}</option>
+                      ))}
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                      <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Search Button */}
                 <button
                   type="submit"
-                  class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center font-medium whitespace-nowrap"
+                  class="px-8 py-3.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors flex items-center justify-center font-semibold shadow-md shadow-primary-600/20 whitespace-nowrap"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
                   Search
                 </button>
               </div>
 
               {/* Active Filters Display */}
               {(search || category) && (
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="text-gray-600 text-sm">Active filters:</span>
+                <div class="pt-2 flex items-center gap-2 flex-wrap justify-center md:justify-start">
+                  <span class="text-gray-500 text-sm font-medium">Active filters:</span>
                   {search && (
-                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm border border-primary-200">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-sm font-medium border border-primary-100">
                       Search: "{search}"
-                      <button type="button" onclick="document.getElementById('resourceSearch').value=''; document.getElementById('resourceFilterForm').submit();" class="hover:text-primary-900">
+                      <button type="button" onclick="document.getElementById('resourceSearch').value=''; document.getElementById('resourceFilterForm').submit();" class="text-primary-400 hover:text-primary-700 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -501,16 +506,16 @@ const paginationStructuredData = {
                     </span>
                   )}
                   {category && (
-                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm border border-primary-200">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-sm font-medium border border-primary-100">
                       Category: {category}
-                      <button type="button" onclick="document.getElementById('categoryFilter').value=''; document.getElementById('resourceFilterForm').submit();" class="hover:text-primary-900">
+                      <button type="button" onclick="document.getElementById('categoryFilter').value=''; document.getElementById('resourceFilterForm').submit();" class="text-primary-400 hover:text-primary-700 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
                     </span>
                   )}
-                  <a href="/resources" class="text-primary-600 hover:text-primary-700 text-sm underline">Clear all</a>
+                  <a href="/resources" class="text-gray-500 hover:text-gray-800 text-sm font-medium ml-2 underline decoration-gray-300 hover:decoration-gray-500 underline-offset-2 transition-all">Clear all</a>
                 </div>
               )}
             </form>
@@ -521,48 +526,58 @@ const paginationStructuredData = {
 
     {/* Resource Types Overview - Only show when not searching/filtering */}
     {!search && !category && (
-      <section class="mb-12 bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
-        <div class="px-6 py-8 md:px-10">
-          <div class="mb-8 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 mb-3">What resources can you find here?</h2>
-            <p class="text-gray-600">Explore our collection of documents, reports, and research materials</p>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section class="mb-20 container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Browse by Collection</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Explore our organized library of documents, reports, and research materials</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {resourceTypes.map(type => (
-            <div class="group relative">
-              {/* Background Pattern */}
-              <div class={`absolute inset-0 bg-gradient-to-br transition-opacity duration-300 rounded-xl opacity-0 group-hover:opacity-100 ${type.bgGradient || 'from-primary-50/50'}`}></div>
+            <a href={`/resources?category=${encodeURIComponent(type.categories[0])}`} class="group relative block h-full">
+              <div class="absolute inset-0 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5"></div>
               
-              {/* Content */}
-              <div class={`relative border-2 rounded-xl p-6 h-full flex flex-col bg-white/80 backdrop-blur-sm transition-colors duration-300 ${type.borderColor || 'border-primary-100 group-hover:border-primary-200'}`}>
-                {/* Icon */}
-                <div class={`mb-4 transform group-hover:scale-110 transition-transform duration-300 ${type.textColor || 'text-primary-600'}`}>
-                  <Fragment set:html={type.icon} />
+              <div class="relative p-6 h-full flex flex-col items-center text-center">
+                {/* Icon Container */}
+                <div class={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center transition-all duration-300 transform group-hover:scale-105 ${type.bgGradient.replace('/50', '/20')} ${type.textColor}`}>
+                  <div class="w-8 h-8">
+                     <Fragment set:html={type.icon} />
+                  </div>
                 </div>
                 
-                {/* Title & Description */}
-                <h3 class={`text-xl font-semibold text-gray-900 mb-3 transition-colors ${type.hoverTextColor || 'group-hover:text-primary-700'}`}>
+                <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
                   {type.title}
                 </h3>
-                <p class="text-gray-600 text-base mb-4 flex-grow">
+                <p class="text-sm text-gray-500 leading-relaxed mb-6">
                   {type.description}
                 </p>
                 
-                {/* Categories */}
-                <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-100">
-                  {type.categories.map(cat => (
-                    <a 
-                      href={`/resources?category=${encodeURIComponent(cat)}`}
-                      class={`text-sm px-3 py-1.5 bg-white rounded-full border transition-colors duration-200 ${type.tagClass || 'text-primary-600 border-primary-100 hover:bg-primary-50'}`}
-                    >
-                      {cat}
-                    </a>
-                  ))}
+                <div class="mt-auto">
+                   <span class="inline-flex items-center text-sm font-semibold text-primary-600 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                     View Collection
+                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                   </span>
                 </div>
               </div>
-            </div>
+            </a>
           ))}
-          </div>
+        </div>
+        
+        {/* Categories Quick Links */}
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          {categories.slice(0, 8).map(cat => (
+             <a 
+               href={`/resources?category=${encodeURIComponent(cat)}`}
+               class="px-4 py-2 bg-gray-50 text-gray-600 rounded-full text-sm font-medium hover:bg-white hover:text-primary-600 hover:shadow-sm border border-transparent hover:border-gray-200 transition-all"
+             >
+               {cat}
+             </a>
+          ))}
+          {categories.length > 8 && (
+             <a href="#resourceFilterForm" class="px-4 py-2 text-primary-600 text-sm font-medium hover:text-primary-700 transition-colors">
+               + {categories.length - 8} more
+             </a>
+          )}
         </div>
       </section>
     )}
@@ -578,63 +593,62 @@ const paginationStructuredData = {
         <>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {sortedResources.map(resource => (
-              <article class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-primary-200 overflow-hidden h-full flex flex-col">
+              <article class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 hover:border-primary-200 overflow-hidden h-full flex flex-col relative">
                 {/* Card Header with File Type Badge */}
-                <div class="relative bg-gradient-to-br from-primary-50 to-primary-100 p-6 pb-8">
-                  <div class="absolute top-4 right-4">
+                <div class="p-5 pb-0">
+                  <div class="flex justify-between items-start mb-3">
+                    <div class="flex items-center space-x-2">
+                       <span class={`px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase ${categoryColors[resource.data.category] || categoryColors.default} bg-opacity-10 border-opacity-20`}>
+                        {resource.data.category}
+                      </span>
+                      {resource.data.featured && (
+                        <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase bg-ochre-50 text-ochre-700 border border-ochre-100">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                
                     {resource.data.fileType === 'pdf' ? (
-                      <span class="inline-flex items-center px-3 py-1 bg-terracotta-100 text-terracotta-700 rounded-full text-xs font-medium border border-terracotta-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      <span class="inline-flex items-center text-gray-400" title="PDF Document">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
-                        PDF
                       </span>
                     ) : (
-                      <span class="inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium border border-primary-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      <span class="inline-flex items-center text-gray-400" title="Link/Web Page">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                         </svg>
-                        Link
                       </span>
                     )}
                   </div>
 
-
-                  <div class="flex items-center space-x-2 mb-3">
-                    <span class={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[resource.data.category] || categoryColors.default}`}>
-                      {resource.data.category}
-                    </span>
-                    {resource.data.featured && (
-                      <span class="px-3 py-1 rounded-full text-xs font-medium bg-ochre-100 text-ochre-800 border border-ochre-300">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-
-                  <h2 class="text-lg font-bold text-gray-900 line-clamp-2 pr-20">
-                    {resource.data.title}
+                  <h2 class="text-lg font-bold text-gray-900 line-clamp-2 group-hover:text-primary-700 transition-colors leading-snug mb-2">
+                    <a href={`/resources/${resource.id}`} class="before:absolute before:inset-0">
+                      {resource.data.title}
+                    </a>
                   </h2>
                 </div>
 
                 {/* Card Body */}
-                <div class="p-6 flex-grow flex flex-col">
+                <div class="px-5 pb-5 flex-grow flex flex-col">
                   <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed flex-grow">
                     {resource.data.description}
                   </p>
 
                   {/* Metadata */}
-                  <div class="space-y-2 mb-4 text-xs text-gray-500">
-                    {resource.data.author && (
-                      <div class="flex items-center">
-                        <svg class="h-3.5 w-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100 mt-auto">
+                    {resource.data.author ? (
+                      <div class="flex items-center font-medium max-w-[60%] text-gray-600">
+                        <svg class="h-3.5 w-3.5 mr-1.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span class="truncate">{resource.data.author}</span>
                       </div>
-                    )}
-                    <div class="flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    ) : <div></div>}
+                    <div class="flex items-center font-medium text-gray-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                       <time datetime={resource.data.lastUpdated || resource.data.date}>
                         {new Date(resource.data.lastUpdated || resource.data.date).toLocaleDateString('en-US', {
@@ -645,17 +659,6 @@ const paginationStructuredData = {
                       </time>
                     </div>
                   </div>
-
-                  {/* View Button */}
-                  <a
-                    href={`/resources/${resource.id}`}
-                    class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium group-hover:shadow-md"
-                  >
-                    View Resource
-                    <svg class="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </a>
                 </div>
               </article>
             ))}
@@ -716,67 +719,67 @@ const paginationStructuredData = {
     <section class="mt-16 mb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* History Card - Ochre (History/Memory) */}
-        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-ochre-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-ochre-50/0 to-ochre-50/0 group-hover:from-ochre-50/10 group-hover:to-ochre-50/5 transition-all duration-300"></div>
-          <div class="relative">
-            <div class="text-ochre-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-ochre-200 hover:shadow-lg hover:shadow-ochre-900/5 transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-ochre-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="w-10 h-10 bg-ochre-50 rounded-lg flex items-center justify-center text-ochre-600 mb-4 group-hover:scale-105 group-hover:bg-ochre-100 transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-ochre-700 transition-colors">History</h3>
-            <p class="text-gray-600 text-base leading-relaxed">
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-ochre-700 transition-colors">History</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
               Established to preserve and share the rich history and experiences of the Dzaleka refugee community, documenting our journey since 1994.
             </p>
           </div>
         </div>
 
         {/* Mission & Scope Card - Primary (Core/Vision) */}
-        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/10 group-hover:to-primary-50/5 transition-all duration-300"></div>
-          <div class="relative">
-            <div class="text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-lg hover:shadow-primary-900/5 transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-primary-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+            <div class="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 mb-4 group-hover:scale-105 group-hover:bg-primary-100 transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Mission & Scope</h3>
-            <p class="text-gray-600 text-base leading-relaxed">
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-700 transition-colors">Mission & Scope</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
               Providing free, easy, and speedy access to comprehensive and high-quality resources about refugee rights, protection, and community development.
             </p>
           </div>
         </div>
 
         {/* Our audience Card - Earth (Community/Wide Reach) */}
-        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-earth-200 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-earth-50/0 to-earth-50/0 group-hover:from-earth-50/10 group-hover:to-earth-50/5 transition-all duration-300"></div>
-          <div class="relative">
-            <div class="text-earth-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-earth-200 hover:shadow-lg hover:shadow-earth-900/5 transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-earth-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+             <div class="w-10 h-10 bg-earth-50 rounded-lg flex items-center justify-center text-earth-600 mb-4 group-hover:scale-105 group-hover:bg-earth-100 transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-earth-700 transition-colors">Our audience</h3>
-            <p class="text-gray-600 text-base leading-relaxed">
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-earth-700 transition-colors">Our Audience</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
               Our audience includes displaced individuals, decision-makers, legal experts, policymakers, scholars, UNHCR staff, and the public.
             </p>
           </div>
         </div>
 
         {/* Contact Us Card - Terracotta (Action/Support) */}
-        <a href="/contact" class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-terracotta-200 hover:shadow-lg transition-all duration-300 block relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-terracotta-50/0 to-terracotta-50/0 group-hover:from-terracotta-50/10 group-hover:to-terracotta-50/5 transition-all duration-300"></div>
-          <div class="relative">
-            <div class="text-terracotta-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="/contact" class="group bg-white border border-gray-100 rounded-xl p-6 hover:border-terracotta-200 hover:shadow-lg hover:shadow-terracotta-900/5 transition-all duration-300 block relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-terracotta-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="relative z-10">
+             <div class="w-10 h-10 bg-terracotta-50 rounded-lg flex items-center justify-center text-terracotta-600 mb-4 group-hover:scale-105 group-hover:bg-terracotta-100 transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-terracotta-700 transition-colors">Contact Us</h3>
-            <p class="text-gray-600 text-base mb-4 leading-relaxed">
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-terracotta-700 transition-colors">Contact Us</h3>
+            <p class="text-gray-500 text-sm mb-4 leading-relaxed">
               Have questions or want to contribute? Reach out to our team for support, feedback, or collaboration opportunities. 
             </p>
-            <div class="flex items-center text-base text-terracotta-600 group-hover:text-terracotta-700 transition-colors">
+            <div class="flex items-center text-sm font-semibold text-terracotta-600 group-hover:text-terracotta-700 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
