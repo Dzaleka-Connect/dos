@@ -1,0 +1,137 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const pageTitle = 'Services by audience | Dzaleka Online Services';
+const pageDescription = 'Choose the section most relevant to residents, service providers, traders, visitors, artists, educators, and job seekers using Dzaleka Online Services.';
+
+const audiencePaths = [
+  {
+    id: 'residents-families',
+    title: 'Residents and families',
+    description: 'Information and support for everyday needs, community services, rights, and local help.',
+    links: [
+      { label: 'Find Services', href: '/services' },
+      { label: 'Rights Navigator', href: '/rights-navigator' },
+      { label: 'Help Desk', href: '/help-desk' },
+      { label: 'Community Voice', href: '/community-voice' }
+    ]
+  },
+  {
+    id: 'service-providers-ngos',
+    title: 'Service providers and NGOs',
+    description: 'Tools for organisations, programmes, and community services that want to publish, update, or share information.',
+    links: [
+      { label: 'Register a Service', href: '/services/register' },
+      { label: 'Services Directory', href: '/services' },
+      { label: 'Open Data Platform', href: '/open-data-platform' },
+      { label: 'Contact the Team', href: '/contact' }
+    ]
+  },
+  {
+    id: 'small-businesses-market-traders',
+    title: 'Small businesses and market traders',
+    description: 'Pages for shop owners, traders, and local entrepreneurs who want to list or promote their work.',
+    links: [
+      { label: 'Browse Marketplace', href: '/marketplace' },
+      { label: 'Register a Store', href: '/marketplace/stores/register' },
+      { label: 'Entrepreneurs', href: '/entrepreneurs' },
+      { label: 'Business Support', href: '/help-desk' }
+    ]
+  },
+  {
+    id: 'visitors-researchers-partners',
+    title: 'Visitors, researchers, and partners',
+    description: 'Guidance for people planning a visit, reviewing background information, or exploring partnership opportunities.',
+    links: [
+      { label: 'Visit Dzaleka', href: '/visit' },
+      { label: 'Data & Statistics', href: '/data' },
+      { label: 'Support Our Work', href: '/support-our-work' },
+      { label: 'Contact Us', href: '/contact' }
+    ]
+  },
+  {
+    id: 'artists-educators-job-seekers',
+    title: 'Artists, educators, and job seekers',
+    description: 'Opportunities to learn, teach, apply for work, share creative practice, and connect skills to new audiences.',
+    links: [
+      { label: 'Jobs', href: '/jobs' },
+      { label: 'E-Learning', href: '/e-learning' },
+      { label: 'Skills Exchange', href: '/skills-exchange' },
+      { label: 'Public Art Catalogue', href: '/public-art-catalogue' }
+    ]
+  }
+];
+---
+
+<MainLayout title={pageTitle} description={pageDescription} canonical="https://services.dzaleka.com/start-here">
+  <main class="bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
+            Services and information
+          </p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Start here
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            Choose the section that best matches your situation. You can also browse all services, search the site, or contact the team directly.
+          </p>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/services" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            Browse services
+          </a>
+          <a href="/search" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            Search the site
+          </a>
+          <a href="/contact" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            Contact support
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-slate-200 bg-white">
+        {audiencePaths.map((path, index) => (
+          <section id={path.id} class={index === audiencePaths.length - 1 ? 'px-6 py-6 sm:px-8' : 'border-b border-slate-100 px-6 py-6 sm:px-8'}>
+            <h2 class="text-2xl font-semibold text-slate-900">{path.title}</h2>
+            <p class="mt-2 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">{path.description}</p>
+
+            <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+              {path.links.map((link) => (
+                <li>
+                  <a href={link.href} class="inline-flex items-center text-sm font-medium text-primary-700 hover:text-primary-800 hover:underline">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </section>
+
+    <section class="border-t border-slate-200 bg-white">
+      <div class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Need urgent help?</p>
+          <h2 class="mt-3 text-2xl font-bold text-slate-900">Urgent help and support</h2>
+          <p class="mt-3 text-base leading-7 text-slate-600">
+            If your situation is urgent, go directly to protection, legal, support, and emergency contact information.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a href="/help-desk" class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800">
+            Get Support
+          </a>
+          <a href="/rights-navigator" class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+            Rights Navigator
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>

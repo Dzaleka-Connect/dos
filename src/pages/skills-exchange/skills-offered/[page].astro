@@ -1,299 +1,217 @@
 ---
 import MainLayout from '../../../layouts/MainLayout.astro';
+import Breadcrumb from '../../../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
-import Pagination from '../../../components/Pagination.astro';
+
+const itemsPerPage = 9;
 
 export async function getStaticPaths() {
+  const itemsPerPage = 9;
   const allProfiles = await getCollection('profiles');
-  const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available');
-  const itemsPerPage = 6;
-  
-  // Get all categories for filtering
-  const categories = [...new Set(skillsOffered.map(profile => profile.data.category))].sort();
-  
-  // Generate paths for each page (no category filtering)
-  const paths = [];
-  
-  // Add paths for no category (all profiles)
-  const totalPagesAll = Math.ceil(skillsOffered.length / itemsPerPage);
-  for (let page = 1; page <= totalPagesAll; page++) {
-    paths.push({
-      params: { page: page.toString() },
-      props: { 
-        profiles: skillsOffered,
-        currentPage: page,
-        totalPages: totalPagesAll,
-        totalItems: skillsOffered.length,
-        categories,
-        itemsPerPage,
-        selectedCategory: null
+  const offeredProfiles = allProfiles.filter((profile) => profile.data.status === 'Available');
+  const categories = [...new Set(offeredProfiles.map((profile) => profile.data.category))].sort();
+  const totalPages = Math.ceil(offeredProfiles.length / itemsPerPage);
+
+  return Array.from({ length: totalPages }, (_, index) => {
+    const currentPage = index + 1;
+    return {
+      params: { page: currentPage.toString() },
+      props: {
+        profiles: offeredProfiles,
+        currentPage,
+        totalPages,
+        categories
       }
-    });
-  }
-  
-  return paths;
+    };
+  });
 }
 
-const { page } = Astro.params;
-const { profiles, currentPage, totalPages, totalItems, categories, itemsPerPage } = Astro.props;
-
-// Get category from URL search params
+const { profiles, currentPage, totalPages, categories } = Astro.props;
 const selectedCategory = Astro.url.searchParams.get('category');
 
-// Filter profiles by category if selected
 const filteredProfiles = selectedCategory
-  ? profiles.filter(profile => profile.data.category === selectedCategory)
+  ? profiles.filter((profile) => profile.data.category === selectedCategory)
   : profiles;
 
-// Recalculate pagination for filtered results
 const filteredTotalItems = filteredProfiles.length;
-const filteredTotalPages = Math.ceil(filteredTotalItems / itemsPerPage);
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
+const filteredTotalPages = Math.max(1, Math.ceil(filteredTotalItems / itemsPerPage));
+const safeCurrentPage = Math.min(currentPage, filteredTotalPages);
+const startIndex = (safeCurrentPage - 1) * itemsPerPage;
+const currentProfiles = filteredProfiles.slice(startIndex, startIndex + itemsPerPage);
 
-const pageTitle = "Skills Offered";
-const pageDescription = "Browse skills being shared by community members";
+function getPageUrl(pageNumber) {
+  const basePath = `/skills-exchange/skills-offered/${pageNumber}`;
+  return selectedCategory ? `${basePath}?category=${encodeURIComponent(selectedCategory)}` : basePath;
+}
+
+function getVisiblePages(current, total) {
+  if (total <= 5) return Array.from({ length: total }, (_, index) => index + 1);
+
+  const pages = [1];
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+
+  if (start > 2) pages.push('...');
+  for (let page = start; page <= end; page += 1) pages.push(page);
+  if (end < total - 1) pages.push('...');
+  pages.push(total);
+
+  return pages;
+}
+
+const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
 ---
 
-<MainLayout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section with Advanced Animated Background -->
-  <div class="relative min-h-[400px] overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900">
-    <!-- Animated Background Elements -->
-    <div class="absolute inset-0">
-      <!-- Grid Pattern -->
-      <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      
-      <!-- Animated Gradient Overlay -->
-      <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80"></div>
-      
-      <!-- Floating Shapes -->
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-        <div class="floating-shape shape-4"></div>
+<MainLayout title="Skills Offered" description="Browse skills being shared by community members">
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Skills Exchange', href: '/skills-exchange' },
+            { label: 'Skills offered' }
+          ]}
+        />
       </div>
-      
-      <!-- Animated Dots -->
-      <div class="absolute inset-0">
-        <div class="dots-overlay"></div>
+
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Skills Exchange</p>
+        <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Skills offered</h1>
+        <p class="mt-4 text-lg leading-8 text-slate-600">
+          Browse people offering skills, services, and practical experience across the Dzaleka community.
+        </p>
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/skills-exchange/list-profile" class="inline-flex items-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-medium text-white hover:bg-primary-700">
+          Add your profile
+        </a>
+        <a href="/skills-exchange/skills-requested" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+          View learning requests
+        </a>
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-600">
+        <span><span class="font-semibold text-slate-900">{filteredTotalItems}</span> listings</span>
+        {selectedCategory && <span>Category: <span class="font-semibold text-slate-900">{selectedCategory}</span></span>}
+        <span>Page <span class="font-semibold text-slate-900">{safeCurrentPage}</span> of <span class="font-semibold text-slate-900">{filteredTotalPages}</span></span>
       </div>
     </div>
+  </section>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
-      <!-- Hero Content -->
-      <div class="text-center max-w-4xl mx-auto animate-fade-in">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
-          <span class="block animate-title">Available Skills</span>
-          <span class="block text-primary-200 mt-2 animate-title-delayed">in Our Community</span>
-        </h1>
-        <p class="mt-6 text-xl text-primary-100 max-w-2xl mx-auto animate-fade-in-up">
-          Discover and connect with talented community members sharing their knowledge and expertise.
-        </p>
-        <div class="mt-8 animate-fade-in-up" style="animation-delay: 400ms;">
-          <a
-            href="/skills-exchange/list-profile"
-            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-primary-900 bg-white hover:bg-primary-50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-          >
-            <svg class="w-5 h-5 mr-2 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            List Your Profile
-          </a>
-          <a
-            href="/skills-exchange/skills-requested"
-            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-          >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
-            </svg>
-            Offer Help
-          </a>
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <section class="mb-10">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Filter</p>
+          <h2 class="mt-2 text-2xl font-semibold text-slate-900">Categories</h2>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Filters Section -->
-    <div class="mb-8">
-      <!-- Title Section -->
-      <div class="mb-6">
-        <h2 class="text-xl lg:text-2xl font-bold text-gray-900">
-          {filteredTotalItems} Skills Available
-          {selectedCategory && <span class="text-primary-600">in {selectedCategory}</span>}
-        </h2>
-      </div>
-      
-      <!-- Categories Filter -->
-      <div class="flex flex-wrap gap-2">
+      <div class="mt-6 flex flex-wrap gap-3">
         <a
-          href={`/skills-exchange/skills-offered/1`}
-          class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-            !selectedCategory
-              ? 'bg-primary-100 text-primary-800'
-              : 'text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200'
-          }`}
+          href="/skills-exchange/skills-offered/1"
+          class:list={[
+            'inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium',
+            !selectedCategory ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:text-slate-900'
+          ]}
         >
-          All Categories
+          All categories
         </a>
-        {categories.map(category => (
+        {categories.map((category) => (
           <a
-            href={`/skills-exchange/skills-offered/1?category=${category}`}
-            class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              selectedCategory === category
-                ? 'bg-primary-100 text-primary-800'
-                : 'text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200'
-            }`}
+            href={`/skills-exchange/skills-offered/1?category=${encodeURIComponent(category)}`}
+            class:list={[
+              'inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium',
+              selectedCategory === category ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:text-slate-900'
+            ]}
           >
             {category}
           </a>
         ))}
       </div>
-    </div>
+    </section>
 
-    <!-- Skills Grid -->
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      {currentProfiles.map(profile => (
-        <a
-          href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`}
-          class="group relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
-        >
-          <div class="aspect-w-16 aspect-h-9 bg-gray-200">
-            <img
-              src={profile.data.profileImage}
-              alt={profile.data.name}
-              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-            />
-          </div>
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0">
-                  <img
-                    src={profile.data.profileImage}
-                    alt={profile.data.name}
-                    class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm"
-                  />
-                </div>
+    <section>
+      <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {currentProfiles.map((profile) => (
+          <a
+            href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`}
+            class="block overflow-hidden rounded-lg border border-slate-200 bg-white transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <div class="aspect-[16/10] bg-slate-100">
+              <img src={profile.data.profileImage} alt={profile.data.name} class="h-full w-full object-cover" />
+            </div>
+
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-4">
                 <div>
-                  <h3 class="text-lg font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
-                    {profile.data.name}
-                  </h3>
-                  <p class="text-sm text-gray-500">{profile.data.location}</p>
+                  <h3 class="text-base font-semibold text-slate-900">{profile.data.skill}</h3>
+                  <p class="mt-1 text-sm text-slate-500">{profile.data.name}{profile.data.location ? ` · ${profile.data.location}` : ''}</p>
                 </div>
+                <span class="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">Available</span>
               </div>
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                Available
-              </span>
-            </div>
-            <div>
-              <div class="text-lg font-semibold text-gray-900 mb-2">
-                {profile.data.skill}
-              </div>
-              <p class="text-gray-500 text-sm line-clamp-2">
-                {profile.data.shortDescription}
-              </p>
-            </div>
-            <div class="mt-4 space-y-3">
-              {profile.data.chargeType === 'paid' && (
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {profile.data.rate}
-                    </span>
-                  </div>
-                  <div class="flex items-center space-x-2">
-                    {profile.data.paymentMethods?.map(method => (
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                        {method.type}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {profile.data.chargeType === 'free' && (
-                <div class="flex items-center">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Free Service
-                  </span>
-                </div>
-              )}
-              
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                    {profile.data.category}
-                  </span>
-                  {profile.data.level && (
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                      {profile.data.level}
-                    </span>
-                  )}
-                </div>
-                <span class="text-primary-600 text-sm font-medium group-hover:text-primary-700">
-                  View Profile →
-                </span>
-              </div>
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
 
-    <!-- Pagination -->
+              <p class="mt-4 text-sm leading-6 text-slate-600 line-clamp-2">{profile.data.shortDescription}</p>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.category}</span>
+                {profile.data.level && <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.level}</span>}
+                {profile.data.chargeType === 'paid' && profile.data.rate && (
+                  <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.rate}</span>
+                )}
+                {profile.data.chargeType === 'free' && (
+                  <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">Free</span>
+                )}
+              </div>
+
+              <div class="mt-5 text-sm font-medium text-primary-700">View profile</div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {currentProfiles.length === 0 && (
+        <div class="rounded-lg border border-slate-200 bg-white px-6 py-12 text-center">
+          <h2 class="text-2xl font-semibold text-slate-900">No profiles found</h2>
+          <p class="mt-3 text-slate-600">There are no available skills in this category yet.</p>
+        </div>
+      )}
+    </section>
+
     {filteredTotalPages > 1 && (
-      <nav class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0 mt-12">
-        <div class="w-0 flex-1 flex">
-          {currentPage > 1 && (
-            <a
-              href={currentPage === 2 
-                ? `/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`
-                : `/skills-exchange/skills-offered/${currentPage - 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`
-              }
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
-            >
-              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
+      <nav class="mt-12 flex items-center justify-between border-t border-slate-200 pt-6" aria-label="Pagination">
+        <div class="flex flex-1">
+          {safeCurrentPage > 1 && (
+            <a href={getPageUrl(safeCurrentPage - 1)} class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-700">
               Previous
             </a>
           )}
         </div>
-        <div class="hidden md:flex">
-          {Array.from({ length: filteredTotalPages }, (_, i) => i + 1).map(num => (
-            <a
-              href={num === 1 
-                ? `/skills-exchange/skills-offered${selectedCategory ? `?category=${selectedCategory}` : ''}`
-                : `/skills-exchange/skills-offered/${num}${selectedCategory ? `?category=${selectedCategory}` : ''}`
-              }
-              class={`inline-flex items-center px-4 py-2 text-sm font-medium ${
-                currentPage === num
-                  ? 'text-primary-600 bg-primary-50'
-                  : 'text-gray-700 hover:text-primary-600'
-              }`}
-            >
-              {num}
-            </a>
-          ))}
+
+        <div class="hidden md:flex md:items-center md:gap-2">
+          {visiblePages.map((pageNumber) =>
+            pageNumber === '...' ? (
+              <span class="px-2 text-sm text-slate-500">...</span>
+            ) : (
+              <a
+                href={getPageUrl(pageNumber)}
+                class:list={[
+                  'inline-flex min-w-10 items-center justify-center rounded-md px-3 py-2 text-sm font-medium',
+                  safeCurrentPage === pageNumber ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ]}
+              >
+                {pageNumber}
+              </a>
+            )
+          )}
         </div>
-        <div class="w-0 flex-1 flex justify-end">
-          {currentPage < filteredTotalPages && (
-            <a
-              href={`/skills-exchange/skills-offered/${currentPage + 1}${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600"
-            >
+
+        <div class="flex flex-1 justify-end">
+          {safeCurrentPage < filteredTotalPages && (
+            <a href={getPageUrl(safeCurrentPage + 1)} class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-700">
               Next
-              <svg class="ml-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
             </a>
           )}
         </div>
@@ -303,130 +221,10 @@ const pageDescription = "Browse skills being shared by community members";
 </MainLayout>
 
 <style>
-.bg-grid-pattern {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-  animation: grid-fade 2s ease-out;
-}
-
-.floating-shape {
-  @apply absolute rounded-full opacity-20 bg-white;
-  animation: float 20s infinite ease-in-out;
-}
-
-.shape-1 {
-  width: 300px;
-  height: 300px;
-  left: -100px;
-  top: -100px;
-  animation-delay: 0s;
-}
-
-.shape-2 {
-  width: 200px;
-  height: 200px;
-  right: -50px;
-  top: 50%;
-  animation-delay: -5s;
-}
-
-.shape-3 {
-  width: 150px;
-  height: 150px;
-  left: 50%;
-  bottom: -50px;
-  animation-delay: -10s;
-}
-
-.shape-4 {
-  width: 250px;
-  height: 250px;
-  right: 25%;
-  top: -75px;
-  animation-delay: -15s;
-}
-
-.dots-overlay {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 30px 30px;
-  animation: dots-fade 2s ease-out;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-20px) scale(1.05);
-  }
-}
-
-@keyframes grid-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.05;
-  }
-}
-
-@keyframes dots-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 1s ease-out;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 1s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-title {
-  animation: title-slide 1s ease-out;
-}
-
-.animate-title-delayed {
-  animation: title-slide 1s ease-out;
-  animation-delay: 200ms;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes title-slide {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

@@ -1,309 +1,276 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
-import PageHeader from '../../components/ui/PageHeader.astro';
 
-const pageTitle = "Skills Exchange Matches";
-const pageDescription = "View potential matches between skills offered and requested in the community";
+const pageTitle = 'Skills Exchange Matches';
+const pageDescription = 'View skill categories where people offering support and people requesting support can be matched.';
 
-// Get all profiles
 const allProfiles = await getCollection('profiles');
-
-// Filter for skills offered and requested
-const skillsOffered = allProfiles.filter(profile => profile.data.status === 'Available');
-const skillsRequested = allProfiles.filter(profile => 
-  profile.data.status === 'Requested' && 
-  (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
+const skillsOffered = allProfiles.filter((profile) => profile.data.status === 'Available');
+const skillsRequested = allProfiles.filter(
+  (profile) =>
+    profile.data.status === 'Requested' &&
+    (!profile.data.requestStatus || profile.data.requestStatus === 'Open')
 );
 
-// Group skills by category
 const skillsByCategory = {};
 
-// Count offers by category
-skillsOffered.forEach(profile => {
+skillsOffered.forEach((profile) => {
   const category = profile.data.category || 'Uncategorized';
   if (!skillsByCategory[category]) {
-    skillsByCategory[category] = { 
-      offers: [], 
-      requests: [] 
-    };
+    skillsByCategory[category] = { offers: [], requests: [] };
   }
   skillsByCategory[category].offers.push(profile);
 });
 
-// Count requests by category
-skillsRequested.forEach(profile => {
+skillsRequested.forEach((profile) => {
   const category = profile.data.category || 'Uncategorized';
   if (!skillsByCategory[category]) {
-    skillsByCategory[category] = { 
-      offers: [], 
-      requests: [] 
-    };
+    skillsByCategory[category] = { offers: [], requests: [] };
   }
   skillsByCategory[category].requests.push(profile);
 });
 
-// Filter categories with both offers and requests (potential matches)
 const matchCategories = Object.entries(skillsByCategory)
   .filter(([_, data]) => data.offers.length > 0 && data.requests.length > 0)
   .sort((a, b) => {
-    // Sort by total potential matches (min of offers and requests)
     const potentialMatchesA = Math.min(a[1].offers.length, a[1].requests.length);
     const potentialMatchesB = Math.min(b[1].offers.length, b[1].requests.length);
     return potentialMatchesB - potentialMatchesA;
   });
 
-// Calculate total potential matches
 const totalPotentialMatches = matchCategories.reduce((sum, [_, data]) => {
   return sum + Math.min(data.offers.length, data.requests.length);
 }, 0);
 
-// Function to get relative time
-function getRelativeTime(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffTime = Math.abs(now - date);
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  
-  if (diffDays === 0) {
-    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-    if (diffHours === 0) {
-      const diffMinutes = Math.floor(diffTime / (1000 * 60));
-      return `${diffMinutes} minutes ago`;
-    }
-    return `${diffHours} hours ago`;
-  } else if (diffDays === 1) {
-    return 'Yesterday';
-  } else {
-    return `${diffDays} days ago`;
+const summaryStats = [
+  { label: 'Potential matches', value: totalPotentialMatches },
+  { label: 'Categories with overlap', value: matchCategories.length },
+  { label: 'Skills offered', value: skillsOffered.length },
+  { label: 'Open requests', value: skillsRequested.length }
+];
+
+const processSteps = [
+  {
+    title: 'Find overlap',
+    description: 'Categories appear here when at least one person is offering a skill and another person is requesting it.'
+  },
+  {
+    title: 'Review profiles',
+    description: 'Open the relevant profiles to compare availability, experience, and contact details before reaching out.'
+  },
+  {
+    title: 'Process matches',
+    description: 'Use the match action when you want the platform to record or process the category-level match.'
   }
-}
+];
 ---
 
 <MainLayout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <div class="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 text-white">
-    <div class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-          Skills Exchange Matches
-        </h1>
-        <p class="mt-6 text-xl max-w-3xl mx-auto">
-          Connect with community members who offer the skills you need or need the skills you offer.
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Skills Exchange', href: '/skills-exchange' },
+            { label: 'Matches' }
+          ]}
+        />
+      </div>
+
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Matching</p>
+        <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Skills Exchange Matches</h1>
+        <p class="mt-4 text-lg leading-8 text-slate-600">
+          View categories where skill offers and skill requests overlap so people can connect more quickly.
         </p>
-        
-        <div class="mt-10 flex flex-wrap justify-center gap-4">
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
-            <span class="block text-3xl font-bold">{totalPotentialMatches}</span>
-            <span class="block text-sm opacity-80">Potential Matches</span>
-          </div>
-          
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
-            <span class="block text-3xl font-bold">{matchCategories.length}</span>
-            <span class="block text-sm opacity-80">Categories</span>
-          </div>
-          
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
-            <span class="block text-3xl font-bold">{skillsOffered.length}</span>
-            <span class="block text-sm opacity-80">Skills Offered</span>
-          </div>
-          
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
-            <span class="block text-3xl font-bold">{skillsRequested.length}</span>
-            <span class="block text-sm opacity-80">Skills Requested</span>
-          </div>
-        </div>
       </div>
-    </div>
-  </div>
-  
-  <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-    <!-- How It Works Section -->
-    <div class="mb-12 bg-white rounded-xl shadow-sm p-6">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">How Matching Works</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <div class="flex items-center mb-3">
-            <div class="bg-primary-100 rounded-full p-2 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold">1. Find Matches</h3>
-          </div>
-          <p class="text-gray-600">Browse potential matches based on skill categories. We match people offering skills with those requesting similar skills.</p>
-        </div>
-        
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <div class="flex items-center mb-3">
-            <div class="bg-primary-100 rounded-full p-2 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold">2. Connect</h3>
-          </div>
-          <p class="text-gray-600">Reach out to potential matches through the platform. View their profiles to learn more about their skills and requirements.</p>
-        </div>
-        
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <div class="flex items-center mb-3">
-            <div class="bg-primary-100 rounded-full p-2 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold">3. Exchange Skills</h3>
-          </div>
-          <p class="text-gray-600">Arrange skill exchange sessions. After completion, you can mark the exchange as complete and leave feedback.</p>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Matches by Category -->
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Potential Matches by Category</h2>
-    
-    {matchCategories.length > 0 ? (
-      <div class="space-y-8">
-        {matchCategories.map(([category, data]) => (
-          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-              <div class="flex justify-between items-center">
-                <h3 class="text-lg font-semibold text-gray-900">{category}</h3>
-                <div class="flex items-center">
-                  <span class="text-sm text-gray-600 mr-4">
-                    {Math.min(data.offers.length, data.requests.length)} potential matches
-                  </span>
-                  <button 
-                    data-category={category}
-                    class="match-all-btn inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                  >
-                    Match All
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <div class="p-6">
-              <div class="grid md:grid-cols-2 gap-6">
-                <!-- Skills Offered -->
-                <div>
-                  <h4 class="text-md font-medium text-gray-900 mb-3">Skills Offered ({data.offers.length})</h4>
-                  <div class="bg-gray-50 rounded-lg p-4 max-h-80 overflow-y-auto">
-                    {data.offers.map(profile => (
-                      <div class="flex items-center p-3 hover:bg-gray-100 rounded-lg transition-colors mb-2">
-                        <div class="flex-shrink-0 h-10 w-10">
-                          <img 
-                            class="h-10 w-10 rounded-full object-cover" 
-                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
-                            alt={profile.data.name} 
-                          />
-                        </div>
-                        <div class="ml-4 flex-1">
-                          <div class="text-sm font-medium text-gray-900">{profile.data.name}</div>
-                          <div class="text-xs text-gray-500">{profile.data.skill}</div>
-                        </div>
-                        <div class="ml-2">
-                          <a href={`/skills-exchange/profile/${profile.id}`} class="text-xs text-primary-600 hover:text-primary-800">View Profile</a>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <!-- Skills Requested -->
-                <div>
-                  <h4 class="text-md font-medium text-gray-900 mb-3">Skills Requested ({data.requests.length})</h4>
-                  <div class="bg-gray-50 rounded-lg p-4 max-h-80 overflow-y-auto">
-                    {data.requests.map(profile => (
-                      <div class="flex items-center p-3 hover:bg-gray-100 rounded-lg transition-colors mb-2">
-                        <div class="flex-shrink-0 h-10 w-10">
-                          <img 
-                            class="h-10 w-10 rounded-full object-cover" 
-                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'} 
-                            alt={profile.data.name} 
-                          />
-                        </div>
-                        <div class="ml-4 flex-1">
-                          <div class="text-sm font-medium text-gray-900">{profile.data.name}</div>
-                          <div class="text-xs text-gray-500">{profile.data.skill}</div>
-                        </div>
-                        <div class="ml-2">
-                          <a href={`/skills-exchange/profile/${profile.id}`} class="text-xs text-primary-600 hover:text-primary-800">View Profile</a>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              <div class="mt-6 flex justify-center">
-                <a href={`/skills-exchange/matches/${category}`} class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                  View All Matches in {category}
-                </a>
-              </div>
-            </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {summaryStats.map((stat) => (
+          <div class="rounded-lg border border-slate-200 bg-slate-50 px-5 py-4">
+            <div class="text-sm text-slate-500">{stat.label}</div>
+            <div class="mt-1 text-2xl font-semibold text-slate-900">{stat.value}</div>
           </div>
         ))}
       </div>
-    ) : (
-      <div class="bg-white rounded-xl shadow-sm p-8 text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No Matches Found</h3>
-        <p class="text-gray-600 mb-6">We couldn't find any potential matches between skills offered and requested.</p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/skills-exchange/list-profile" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-            Offer a Skill
-          </a>
-          <a href="/skills-exchange/request" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-            Request a Skill
-          </a>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <section class="mb-12 grid gap-4 lg:grid-cols-3">
+      {processSteps.map((step, index) => (
+        <div class="rounded-lg border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-700">
+              {index + 1}
+            </div>
+            <div>
+              <h2 class="text-base font-semibold text-slate-900">{step.title}</h2>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{step.description}</p>
+            </div>
+          </div>
         </div>
+      ))}
+    </section>
+
+    <section>
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Categories</p>
+          <h2 class="mt-2 text-2xl font-semibold text-slate-900">Potential matches by category</h2>
+        </div>
+        <a href="/skills-exchange/skills-offered" class="text-sm font-medium text-primary-700 hover:text-primary-800">
+          Browse all skills
+        </a>
       </div>
-    )}
-    
-    <!-- Call to Action -->
-    <div class="mt-12 bg-gradient-to-r from-primary-800 to-primary-900 rounded-xl shadow-lg overflow-hidden">
-      <div class="px-6 py-12 sm:px-12 md:flex md:items-center md:justify-between">
-        <div class="max-w-3xl">
-          <h2 class="text-3xl font-extrabold tracking-tight text-white">
-            Don't see the skill you're looking for?
-          </h2>
-          <p class="mt-4 text-lg text-primary-100">
-            You can offer your own skills or request skills from others. Join our skills exchange community today!
+
+      {matchCategories.length > 0 ? (
+        <div class="mt-6 space-y-6">
+          {matchCategories.map(([category, data]) => (
+            <section class="rounded-lg border border-slate-200 bg-white">
+              <div class="flex flex-col gap-4 border-b border-slate-200 px-6 py-5 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 class="text-lg font-semibold text-slate-900">{category}</h3>
+                  <p class="mt-1 text-sm text-slate-500">
+                    {Math.min(data.offers.length, data.requests.length)} possible matches based on current profiles.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                  <button
+                    data-category={category}
+                    class="match-all-btn inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                  >
+                    Match all
+                  </button>
+                  <a
+                    href={`/skills-exchange/matches/${category}`}
+                    class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
+                  >
+                    View category
+                  </a>
+                </div>
+              </div>
+
+              <div class="grid gap-6 px-6 py-6 lg:grid-cols-2">
+                <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Skills offered</h4>
+                  <div class="mt-4 space-y-3">
+                    {data.offers.slice(0, 4).map((profile) => (
+                      <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                        <div class="flex items-start gap-3">
+                          <img
+                            class="h-10 w-10 rounded-lg object-cover"
+                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'}
+                            alt={profile.data.name}
+                          />
+                          <div class="min-w-0 flex-1">
+                            <div class="text-sm font-semibold text-slate-900">{profile.data.name}</div>
+                            <div class="mt-1 text-sm text-slate-600">{profile.data.skill}</div>
+                          </div>
+                          <a href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`} class="text-sm font-medium text-primary-700 hover:text-primary-800">
+                            View
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Requests</h4>
+                  <div class="mt-4 space-y-3">
+                    {data.requests.slice(0, 4).map((profile) => (
+                      <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                        <div class="flex items-start gap-3">
+                          <img
+                            class="h-10 w-10 rounded-lg object-cover"
+                            src={profile.data.profileImage || '/images/avatars/default-avatar.png'}
+                            alt={profile.data.name}
+                          />
+                          <div class="min-w-0 flex-1">
+                            <div class="text-sm font-semibold text-slate-900">{profile.data.name}</div>
+                            <div class="mt-1 text-sm text-slate-600">{profile.data.skill}</div>
+                          </div>
+                          <a href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`} class="text-sm font-medium text-primary-700 hover:text-primary-800">
+                            View
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-8 text-center">
+          <h3 class="text-lg font-semibold text-slate-900">No matches found yet</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            There are currently no categories with both active offers and open requests.
+          </p>
+          <div class="mt-6 flex flex-wrap justify-center gap-3">
+            <a
+              href="/skills-exchange/list-profile"
+              class="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+            >
+              Offer a skill
+            </a>
+            <a
+              href="/skills-exchange/request"
+              class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
+            >
+              Request a skill
+            </a>
+          </div>
+        </div>
+      )}
+    </section>
+
+    <section class="mt-12 rounded-lg border border-slate-200 bg-slate-50 p-6 sm:p-8">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Next steps</p>
+          <h2 class="mt-2 text-2xl font-semibold text-slate-900">Add more profiles to improve matching</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+            The quality of matches improves as more people list their skills and learning requests.
           </p>
         </div>
-        <div class="mt-8 md:mt-0 flex flex-col sm:flex-row gap-4">
-          <a href="/skills-exchange/list-profile" class="w-full sm:w-auto text-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-800 focus:ring-white">
-            Offer a Skill
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a
+            href="/skills-exchange/list-profile"
+            class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-medium text-white hover:bg-primary-700"
+          >
+            Offer a skill
           </a>
-          <a href="/skills-exchange/request" class="w-full sm:w-auto text-center px-5 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-800 focus:ring-white">
-            Request a Skill
+          <a
+            href="/skills-exchange/request"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
+          >
+            Request a skill
           </a>
         </div>
       </div>
-    </div>
+    </section>
   </div>
-  
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Match All buttons
       const matchBtns = document.querySelectorAll('.match-all-btn');
-      
-      matchBtns.forEach(btn => {
+
+      matchBtns.forEach((btn) => {
         btn.addEventListener('click', async function() {
-          const button = this as HTMLButtonElement;
+          const button = this;
           const category = button.dataset.category;
           const originalText = button.textContent;
-          
-          // Set loading state
+
           button.disabled = true;
           button.textContent = 'Processing...';
           button.classList.add('opacity-75', 'cursor-not-allowed');
-          
+
           try {
             const response = await fetch('/api/match-category', {
               method: 'POST',
@@ -312,9 +279,9 @@ function getRelativeTime(dateString) {
               },
               body: JSON.stringify({ category })
             });
-            
+
             const data = await response.json();
-            
+
             if (response.ok) {
               showNotification(data.message, 'success');
             } else {
@@ -324,17 +291,14 @@ function getRelativeTime(dateString) {
             console.error('Error:', error);
             showNotification('An unexpected error occurred', 'error');
           } finally {
-            // Reset button state
             button.disabled = false;
             button.textContent = originalText;
             button.classList.remove('opacity-75', 'cursor-not-allowed');
           }
         });
       });
-      
-      // Helper function to show notifications
+
       function showNotification(message, type = 'info') {
-        // Check if notification container exists, create if not
         let notificationContainer = document.getElementById('notification-container');
         if (!notificationContainer) {
           notificationContainer = document.createElement('div');
@@ -342,31 +306,25 @@ function getRelativeTime(dateString) {
           notificationContainer.className = 'fixed bottom-4 right-4 z-50 flex flex-col space-y-2';
           document.body.appendChild(notificationContainer);
         }
-        
-        // Create notification element
+
         const notification = document.createElement('div');
-        
-        // Set appropriate styling based on type
-        let bgColor, textColor;
+        let bgColor;
+
         switch (type) {
           case 'success':
-            bgColor = 'bg-green-500';
-            textColor = 'text-white';
+            bgColor = 'bg-green-600';
             break;
           case 'error':
-            bgColor = 'bg-red-500';
-            textColor = 'text-white';
+            bgColor = 'bg-red-600';
             break;
           case 'warning':
-            bgColor = 'bg-yellow-500';
-            textColor = 'text-white';
+            bgColor = 'bg-yellow-600';
             break;
-          default: // info
-            bgColor = 'bg-blue-500';
-            textColor = 'text-white';
+          default:
+            bgColor = 'bg-slate-700';
         }
-        
-        notification.className = `${bgColor} ${textColor} px-4 py-3 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ease-in-out translate-x-0`;
+
+        notification.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ease-in-out translate-x-0`;
         notification.innerHTML = `
           <div class="flex items-center">
             <div class="flex-1">
@@ -379,20 +337,15 @@ function getRelativeTime(dateString) {
             </button>
           </div>
         `;
-        
-        // Add to container
+
         notificationContainer.appendChild(notification);
-        
-        // Add click event to close button
+
         const closeButton = notification.querySelector('button');
         closeButton.addEventListener('click', () => {
           notification.classList.add('opacity-0', 'translate-x-full');
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
+          setTimeout(() => notification.remove(), 300);
         });
-        
-        // Auto remove after 5 seconds
+
         setTimeout(() => {
           if (notification.parentNode) {
             notification.classList.add('opacity-0', 'translate-x-full');
@@ -406,4 +359,4 @@ function getRelativeTime(dateString) {
       }
     });
   </script>
-</MainLayout> 
+</MainLayout>

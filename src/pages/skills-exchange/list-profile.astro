@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 // Get environment variables
 const CLOUDINARY_CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME;
@@ -248,39 +249,43 @@ const paymentMethodFields = [
 
 ---
 
-<MainLayout title="List Your Skills">
-  <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-    <div class="mb-8">
-      <a
-        href="/skills-exchange"
-        class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary-600"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
-          <path d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-        </svg>
-        Back to Skills Exchange
-      </a>
-    </div>
+<MainLayout title="List Your Skills" description="Create a skills profile for the Dzaleka Skills Exchange.">
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Skills Exchange', href: '/skills-exchange' },
+            { label: 'List your skills' }
+          ]}
+        />
+      </div>
 
-    <div class="bg-white shadow rounded-lg">
-      <div class="px-4 py-5 sm:p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">List Your Skills</h1>
-        
-        <div class="bg-primary-50 border-l-4 border-primary-600 p-4 mb-8">
-          <div class="flex items-start">
-            <div class="flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div class="ml-3">
-              <h3 class="text-sm font-medium text-primary-800">Share Your Skills</h3>
-              <p class="mt-2 text-sm text-primary-700">
-                List your skills and start connecting with learners in the community. Create a detailed profile to showcase your expertise.
-              </p>
-            </div>
-          </div>
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Create a listing</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">List your skills</h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            Add your experience, contact details, and availability so learners and collaborators can find you.
+          </p>
         </div>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-lg font-semibold text-slate-900">Before you submit</h2>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <li>Choose the skill and category that describe your work most clearly.</li>
+            <li>Add a short summary and a fuller description so people know what you offer.</li>
+            <li>Include contact details and payment information if your service is paid.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="rounded-lg border border-slate-200 bg-white">
+      <div class="px-4 py-6 sm:p-8">
 
         <form 
           action="https://formspree.io/f/xqaaajae" 
@@ -312,7 +317,7 @@ const paymentMethodFields = [
                 <button
                   type="button"
                   onclick="document.getElementById('imageUpload').click()"
-                  class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 >
                   Upload Photo
                 </button>
@@ -436,7 +441,7 @@ const paymentMethodFields = [
           <div class="pt-6">
             <button
               type="submit"
-              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              class="w-full rounded-lg bg-primary-600 px-4 py-3 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
             >
               List My Skills
             </button>

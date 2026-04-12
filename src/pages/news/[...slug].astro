@@ -1,11 +1,11 @@
 ---
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import PageHeader from '../../components/ui/PageHeader.astro';
+import NewsCard from '../../components/NewsCard.astro';
 
 export async function getStaticPaths() {
   const newsEntries = await getCollection('news');
-  return newsEntries.map(entry => ({
+  return newsEntries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
@@ -14,143 +14,120 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-// Format date
+const allNews = await getCollection('news');
+const relatedNews = allNews
+  .filter((item) => item.id !== entry.id)
+  .sort((a, b) => {
+    const aMatch = a.data.category === entry.data.category ? 1 : 0;
+    const bMatch = b.data.category === entry.data.category ? 1 : 0;
+    if (aMatch !== bMatch) return bMatch - aMatch;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .slice(0, 3);
+
 const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 
-// Get category label
 const categoryLabels = {
-  'business-spotlight': 'Business Spotlight',
-  'announcement': 'Announcement',
-  'success-story': 'Success Story',
-  'business-guide': 'Business Guide',
-  'news': 'Community Updates'
+  'business-spotlight': 'Business spotlight',
+  announcement: 'Announcement',
+  'success-story': 'Success story',
+  'business-guide': 'Business guide',
+  news: 'Community update'
 };
 
-// Get category color
-const categoryColors = {
-  'business-spotlight': 'bg-blue-50 text-blue-700 border-blue-200',
-  'announcement': 'bg-amber-50 text-amber-700 border-amber-200',
-  'success-story': 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  'business-guide': 'bg-purple-50 text-purple-700 border-purple-200',
-  'news': 'bg-yellow-50 text-yellow-700 border-yellow-200'
-};
-
-// Create SEO metadata
 const seo = {
   title: `${entry.data.title} | Dzaleka Online Services`,
   description: entry.data.description,
-  type: "article",
+  type: 'article',
   canonical: `https://services.dzaleka.com/news/${entry.id}`,
   openGraph: {
     title: entry.data.title,
     description: entry.data.description,
-    type: "article",
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
+    type: 'article',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
     url: `https://services.dzaleka.com/news/${entry.id}`,
     image: entry.data.image ? {
       url: entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
       width: 1200,
       height: 630,
       alt: entry.data.title,
-      type: "image/jpeg"
+      type: 'image/jpeg'
     } : {
-      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      url: 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
       width: 1200,
       height: 630,
-      alt: "Dzaleka Online Services",
-      type: "image/jpeg"
+      alt: 'Dzaleka Online Services',
+      type: 'image/jpeg'
     },
     article: {
       publishedTime: entry.data.date.toISOString(),
       modifiedTime: entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
-      authors: entry.data.author ? [entry.data.author] : undefined,
       tags: entry.data.tags || [],
-      section: categoryLabels[entry.data.category] || "News"
+      section: categoryLabels[entry.data.category] || 'News'
     }
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: entry.data.title,
     description: entry.data.description,
     image: entry.data.image ? (
       entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
-    ) : "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
-    creator: entry.data.author ? `@${entry.data.author.replace(/\s+/g, '')}` : "@DzalekaConnect"
+    ) : 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
+    creator: entry.data.author ? `@${entry.data.author.replace(/\s+/g, '')}` : '@DzalekaConnect'
   }
 };
 
-// Create structured data for the article
 const articleStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  "headline": entry.data.title,
-  "description": entry.data.description,
-  "image": {
-    "@type": "ImageObject",
-    "url": entry.data.image ? (
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: entry.data.title,
+  description: entry.data.description,
+  image: {
+    '@type': 'ImageObject',
+    url: entry.data.image ? (
       entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
-    ) : "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
-    "width": 1200,
-    "height": 630,
-    "acquireLicensePage": "https://services.dzaleka.com/contact",
-    "creditText": entry.data.author ? `Photo by ${entry.data.author}` : "Dzaleka Online Services",
-    "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
+    ) : 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
+    width: 1200,
+    height: 630,
+    acquireLicensePage: 'https://services.dzaleka.com/contact',
+    creditText: entry.data.author ? `Photo by ${entry.data.author}` : 'Dzaleka Online Services',
+    copyrightNotice: `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
   },
-  "datePublished": entry.data.date.toISOString(),
-  "dateModified": entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
-  "author": {
-    "@type": "Person",
-    "name": entry.data.author || "Dzaleka Online Services",
-    "url": "https://services.dzaleka.com"
+  datePublished: entry.data.date.toISOString(),
+  dateModified: entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: entry.data.author || 'Dzaleka Online Services',
+    url: 'https://services.dzaleka.com'
   },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Dzaleka Online Services",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
-      "width": "200",
-      "height": "200"
+  publisher: {
+    '@type': 'Organization',
+    name: 'Dzaleka Online Services',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png',
+      width: '200',
+      height: '200'
     },
-    "url": "https://services.dzaleka.com",
-    "sameAs": [
-      "https://twitter.com/DzalekaConnect",
-      "https://facebook.com/DzalekaOnline",
-      "https://instagram.com/DzalekaOnline"
-    ]
+    url: 'https://services.dzaleka.com'
   },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": `https://services.dzaleka.com/news/${entry.id}`
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://services.dzaleka.com/news/${entry.id}`
   },
-  "articleSection": categoryLabels[entry.data.category] || "News",
-  "keywords": entry.data.tags ? entry.data.tags.join(", ") : undefined,
-  "wordCount": entry.data.wordCount || 0,
-  "inLanguage": "en-US",
-  "isAccessibleForFree": true,
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "Dzaleka Online Services",
-    "url": "https://services.dzaleka.com"
-  },
-  "about": {
-    "@type": "Thing",
-    "name": "Dzaleka Refugee Camp",
-    "description": "A refugee camp in Malawi providing services and support to refugees"
-  },
-  "mentions": entry.data.tags ? entry.data.tags.map(tag => ({
-    "@type": "Thing",
-    "name": tag
-  })) : undefined
+  articleSection: categoryLabels[entry.data.category] || 'News',
+  keywords: entry.data.tags ? entry.data.tags.join(', ') : undefined,
+  inLanguage: 'en-US',
+  isAccessibleForFree: true
 };
 ---
 
-<MainLayout 
+<MainLayout
   title={seo.title}
   description={seo.description}
   type={seo.type}
@@ -159,124 +136,125 @@ const articleStructuredData = {
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(articleStructuredData)} />
-  
-  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="mb-8">
-      <a 
-        href="/news" 
-        class="inline-flex items-center text-gray-600 hover:text-primary-600 mb-8 group"
-      >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          class="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" 
-          viewBox="0 0 20 20" 
-          fill="currentColor"
-        >
-          <path 
-            fill-rule="evenodd" 
-            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" 
-            clip-rule="evenodd" 
-          />
+
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <a href="/news" class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-        Back to News
+        Back to news
       </a>
 
-      <div class="flex flex-wrap gap-3 mb-4">
-        <span class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[entry.data.category]}`}>
-          {categoryLabels[entry.data.category]}
-        </span>
-        {entry.data.featured && (
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-50 text-yellow-700 border border-yellow-200">
-            Featured
+      <div class="mt-6">
+        <div class="flex flex-wrap items-center gap-3 text-sm">
+          <span class="font-semibold uppercase tracking-[0.12em] text-slate-500">
+            {categoryLabels[entry.data.category]}
           </span>
-        )}
-      </div>
+          {entry.data.featured && (
+            <span class="font-semibold uppercase tracking-[0.12em] text-primary-700">
+              Featured
+            </span>
+          )}
+        </div>
 
-      <PageHeader
-        title={entry.data.title}
-        description={entry.data.description}
-      />
+        <h1 class="mt-5 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{entry.data.title}</h1>
+        <p class="mt-5 text-lg leading-8 text-slate-600">{entry.data.description}</p>
 
-      <div class="flex items-center gap-2 text-sm text-gray-600 mt-6">
-        <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
-        {entry.data.author && (
-          <>
-            <span>•</span>
-            <span>{entry.data.author}</span>
-          </>
-        )}
+        <div class="mt-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+          <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
+          {entry.data.author && (
+            <>
+              <span aria-hidden="true">•</span>
+              <span>{entry.data.author}</span>
+            </>
+          )}
+        </div>
       </div>
     </div>
+  </section>
 
+  <article class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
     {entry.data.image && (
-      <div class="relative aspect-video w-full mb-12">
+      <div class="mb-10 overflow-hidden border border-slate-200">
         <img
           src={entry.data.image}
           alt={entry.data.title}
-          class="w-full h-full object-cover rounded-2xl"
+          class="h-full w-full object-cover"
           loading="eager"
         />
       </div>
     )}
 
-    <div class="prose prose-lg max-w-none">
-      <Content />
-    </div>
+    <div class="max-w-none">
+      <div class="prose prose-lg max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-li:text-slate-700 prose-a:text-primary-700">
+        <Content />
+      </div>
 
-    {entry.data.businessName && (
-      <div class="mt-12 p-8 bg-gray-50 rounded-2xl">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Business Information</h2>
-        <div class="space-y-4">
-          <div>
-            <p class="text-lg"><span class="font-medium">Business:</span> {entry.data.businessName}</p>
+      {entry.data.businessName && (
+        <div class="mt-10 border-t border-slate-200 pt-6">
+          <h2 class="text-2xl font-semibold text-slate-900">Business information</h2>
+          <div class="mt-5 space-y-3 text-slate-700">
+            <p><span class="font-semibold text-slate-900">Business:</span> {entry.data.businessName}</p>
             {entry.data.businessOwner && (
-              <p class="text-lg mt-2"><span class="font-medium">Owner:</span> {entry.data.businessOwner}</p>
+              <p><span class="font-semibold text-slate-900">Owner:</span> {entry.data.businessOwner}</p>
             )}
           </div>
+
           {entry.data.contactInfo && (
-            <div class="pt-4 border-t space-y-3">
-              <h3 class="font-medium text-gray-900">Contact Information</h3>
+            <div class="mt-6 border-t border-slate-200 pt-5 space-y-3">
+              <h3 class="font-semibold text-slate-900">Contact</h3>
               {entry.data.contactInfo.email && (
-                <a href={`mailto:${entry.data.contactInfo.email}`} class="flex items-center text-primary-600 hover:text-primary-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
+                <a href={`mailto:${entry.data.contactInfo.email}`} class="block text-primary-700 hover:underline">
                   {entry.data.contactInfo.email}
                 </a>
               )}
               {entry.data.contactInfo.phone && (
-                <a href={`tel:${entry.data.contactInfo.phone}`} class="flex items-center text-primary-600 hover:text-primary-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                  </svg>
+                <a href={`tel:${entry.data.contactInfo.phone}`} class="block text-primary-700 hover:underline">
                   {entry.data.contactInfo.phone}
                 </a>
               )}
               {entry.data.contactInfo.website && (
-                <a href={entry.data.contactInfo.website} target="_blank" rel="noopener noreferrer" class="flex items-center text-primary-600 hover:text-primary-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zm10 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118h1.946a6.004 6.004 0 011.414 4.118zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd" />
-                  </svg>
-                  Visit Website
+                <a href={entry.data.contactInfo.website} target="_blank" rel="noopener noreferrer" class="block text-primary-700 hover:underline">
+                  Visit website
                 </a>
               )}
             </div>
           )}
         </div>
-      </div>
-    )}
+      )}
+    </div>
 
     {entry.data.tags && entry.data.tags.length > 0 && (
-      <div class="mt-12">
-        <div class="flex flex-wrap gap-2">
-          {entry.data.tags.map(tag => (
-            <span class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
+      <section class="mt-12 border-t border-slate-200 pt-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Topics</p>
+        <h2 class="mt-2 text-2xl font-semibold text-slate-900">Tags</h2>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {entry.data.tags.map((tag) => (
+            <span class="rounded-md border border-slate-200 px-3 py-1 text-sm text-slate-700">
               #{tag}
             </span>
           ))}
         </div>
-      </div>
+      </section>
+    )}
+
+    {relatedNews.length > 0 && (
+      <section class="mt-12 border-t border-slate-200 pt-8">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Continue reading</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900">More news</h2>
+          </div>
+          <a href="/news" class="text-sm font-medium text-primary-700 hover:text-primary-800">All news</a>
+        </div>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          {relatedNews.map((item) => (
+            <NewsCard news={item} featured={item.data.featured} />
+          ))}
+        </div>
+      </section>
     )}
   </article>
 </MainLayout>
