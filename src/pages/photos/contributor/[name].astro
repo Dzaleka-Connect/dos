@@ -88,6 +88,23 @@ const yearsActive = new Date(photographer.lastPhotoDate).getFullYear() - new Dat
 const averagePhotosPerYear = Math.round(totalPhotos / yearsActive);
 const uniqueLocations = photographer.locations.size;
 const uniqueTags = photographer.tags.size;
+const siteUrl = "https://services.dzaleka.com";
+const toAbsoluteUrl = (value?: string) => {
+  if (!value) return `${siteUrl}/images/dzaleka-hero.jpeg`;
+  return value.startsWith('http') ? value : `${siteUrl}${value}`;
+};
+const validSameAs = [
+  photographer.instagram ? `https://instagram.com/${photographer.instagram}` : null,
+  photographer.website
+].filter((value): value is string => {
+  if (!value) return false;
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+});
 
 // Create SEO metadata
 const seo = {
@@ -104,7 +121,7 @@ const seo = {
     locale: "en_US",
     url: `https://services.dzaleka.com/photos/contributor/${Astro.params.name}`,
     image: {
-      url: photographer.latestPhoto.data.image,
+      url: toAbsoluteUrl(photographer.latestPhoto.data.image),
       width: 1200,
       height: 630,
       alt: `${photographer.name}'s latest photo`,
@@ -120,11 +137,8 @@ const photographerStructuredData = {
   "name": photographer.name,
   "description": photographer.bio,
   "url": `https://services.dzaleka.com/photos/contributor/${Astro.params.name}`,
-  "image": photographer.latestPhoto.data.image,
-  "sameAs": [
-    photographer.instagram ? `https://instagram.com/${photographer.instagram}` : null,
-    photographer.website
-  ].filter(Boolean),
+  "image": toAbsoluteUrl(photographer.latestPhoto.data.image),
+  "sameAs": validSameAs,
   "knowsAbout": Array.from(photographer.tags),
   "worksFor": {
     "@type": "Organization",

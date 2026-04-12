@@ -49,6 +49,8 @@ const seo = {
   }
 };
 
+const parsedSalary = job.data.salary?.replace(/[^0-9.]/g, '');
+
 // Create structured data for the job posting
 const jobStructuredData = {
   "@context": "https://schema.org",
@@ -74,12 +76,12 @@ const jobStructuredData = {
     }
   },
   "applicationRequirements": job.data.skills?.join(", "),
-  "baseSalary": job.data.contact?.salary ? {
+  "baseSalary": parsedSalary ? {
     "@type": "MonetaryAmount",
     "currency": "MWK",
     "value": {
       "@type": "QuantitativeValue",
-      "value": job.data.contact.salary.replace(/[^0-9]/g, ""),
+      "value": parsedSalary,
       "unitText": "MONTH"
     }
   } : undefined,

@@ -23,6 +23,11 @@ export async function getStaticPaths() {
 
 const { artwork } = Astro.props;
 const { frontmatter, Content } = artwork;
+const siteUrl = "https://services.dzaleka.com";
+const toAbsoluteUrl = (value?: string) => {
+  if (!value) return `${siteUrl}/images/dzaleka-hero.jpeg`;
+  return value.startsWith('http') ? value : `${siteUrl}${value}`;
+};
 
 // Get related artworks based on category and location
 const allArtworks = await Astro.glob('../../content/artworks/*.md');
@@ -55,7 +60,7 @@ const seo = {
     locale: "en_US",
     url: `https://services.dzaleka.com/public-art-catalogue/${artwork.file.split('/').pop().replace('.md', '')}`,
     image: {
-      url: frontmatter.image,
+      url: toAbsoluteUrl(frontmatter.image),
       width: 1200,
       height: 630,
       alt: frontmatter.title,
@@ -74,6 +79,37 @@ const images = [
 
 // Generate QR code URL
 const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`https://services.dzaleka.com/public-art-catalogue/${artwork.file.split('/').pop().replace('.md', '')}`)}`;
+const artworkUrl = `https://services.dzaleka.com/public-art-catalogue/${artwork.file.split('/').pop().replace('.md', '')}`;
+const artworkStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "VisualArtwork",
+  "name": frontmatter.title,
+  "description": frontmatter.description || `Explore ${frontmatter.title} by ${frontmatter.artistName} in Dzaleka Refugee Camp`,
+  "url": artworkUrl,
+  "artMedium": frontmatter.medium,
+  "genre": frontmatter.category,
+  "creator": {
+    "@type": "Person",
+    "name": frontmatter.artistName
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": toAbsoluteUrl(frontmatter.image),
+    "caption": frontmatter.title,
+    "creator": {
+      "@type": "Person",
+      "name": frontmatter.artistName
+    },
+    "creditText": `Artwork by ${frontmatter.artistName}`,
+    "copyrightNotice": `© ${new Date().getFullYear()} ${frontmatter.artistName}`,
+    "license": "https://services.dzaleka.com/public-art-catalogue/license",
+    "acquireLicensePage": "https://services.dzaleka.com/contact"
+  },
+  "locationCreated": frontmatter.campZone ? {
+    "@type": "Place",
+    "name": frontmatter.campZone
+  } : undefined
+};
 ---
 
 <MainLayout 
@@ -84,6 +120,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
   canonical={seo.canonical} 
   openGraph={seo.openGraph}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(artworkStructuredData)} />
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Back Button -->

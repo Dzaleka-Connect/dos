@@ -4,47 +4,43 @@ import MainLayout from '../layouts/MainLayout.astro';
 const seo = {
   title: "Open Data Platform",
   description: "Access Dzaleka's comprehensive open data platform featuring cultural heritage, community demographics, and historical records. Support community-led research, storytelling, and heritage preservation with verified datasets from Malawi's largest refugee camp.",
-  canonicalURL: new URL(Astro.url.pathname, Astro.site),
+  keywords: "Dzaleka, open data, cultural heritage, refugee camp, digital archive, community storytelling, research platform",
+  canonical: "https://services.dzaleka.com/open-data-platform",
   openGraph: {
-    basic: {
-      title: "Open Data Platform - Dzaleka Online Services",
-      type: "article",
-      image: "/images/dzaleka-hero.jpeg",
-    },
-    optional: {
-      description: "Access Dzaleka's comprehensive open data platform featuring cultural heritage, community demographics, and historical records. Support community-led research, storytelling, and heritage preservation with verified datasets from Malawi's largest refugee camp.",
-      siteName: "Dzaleka Online Services",
-    },
+    title: "Open Data Platform - Dzaleka Online Services",
+    description: "Access Dzaleka's comprehensive open data platform featuring cultural heritage, community demographics, and historical records. Support community-led research, storytelling, and heritage preservation with verified datasets from Malawi's largest refugee camp.",
+    type: "article",
     image: {
+      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
       alt: "Dzaleka Open Data Platform - Preserving Cultural Heritage",
     },
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/open-data-platform",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@dzalekaconnect",
     creator: "@dzalekaconnect",
     title: "Open Data Platform - Dzaleka Online Services",
     description: "Access Dzaleka's comprehensive open data platform featuring cultural heritage, community demographics, and historical records. Support community-led research, storytelling, and heritage preservation with verified datasets from Malawi's largest refugee camp.",
-    image: "/images/dzaleka-hero.jpeg",
-    imageAlt: "Dzaleka Open Data Platform - Preserving Cultural Heritage",
-  },
-  robots: {
-    index: true,
-    follow: true,
+    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
   },
 };
 ---
 
-<MainLayout title={seo.title} description={seo.description}>
-  <head>
-    <meta property="og:image" content="/images/dzaleka-hero.jpeg" />
-    <meta property="og:image:alt" content="Dzaleka Open Data Platform - Preserving Cultural Heritage" />
-    <meta name="twitter:image" content="/images/dzaleka-hero.jpeg" />
-    <meta name="keywords" content="Dzaleka, open data, cultural heritage, refugee camp, digital archive, community storytelling, research platform" />
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <Fragment slot="head">
     <meta name="author" content="Dzaleka Online Services" />
     <meta name="geo.region" content="MW" />
     <meta name="geo.placename" content="Dzaleka Refugee Camp" />
-  </head>
+  </Fragment>
 
   <!-- Hero Section with Image -->
   <div class="relative">

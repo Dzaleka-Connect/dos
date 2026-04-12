@@ -13,17 +13,16 @@ import { ResourcesWidget } from '../components/data/ResourcesWidget';
 import { FinanceWidget } from '../components/data/FinanceWidget';
 import { PopulationChart } from '../components/data/PopulationChart';
 
-// Enhanced SEO metadata
-const pageTitle = "Dzaleka Camp Data Hub | Statistics & Demographics";
+const pageTitle = "Dzaleka Camp — Data & Statistics";
 const seo = {
   title: pageTitle,
-  description: "Access real-time population data, demographics, and economic insights for Dzaleka Refugee Camp. View 57,000+ resident statistics, healthcare metrics, educational data, and community development indicators from Malawi's largest refugee settlement.",
+  description: "Population data, demographics, and context for Dzaleka Refugee Camp in Dowa District, Malawi. 57,000+ residents across 201 hectares.",
   type: "website",
   canonical: "https://services.dzaleka.com/data",
-  keywords: "Dzaleka refugee camp, Malawi refugee statistics, refugee demographics, humanitarian data, camp population, refugee services",
+  keywords: "Dzaleka refugee camp, Malawi refugee statistics, refugee demographics, humanitarian data",
   openGraph: {
     title: pageTitle,
-    description: "Access real-time population data, demographics, and economic insights for Dzaleka Refugee Camp. View 57,000+ resident statistics, healthcare metrics, educational data, and community development indicators from Malawi's largest refugee settlement.",
+    description: "Population data, demographics, and context for Dzaleka Refugee Camp in Dowa District, Malawi.",
     type: "website",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
@@ -33,7 +32,7 @@ const seo = {
         url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
         width: 1200,
         height: 630,
-        alt: "Dzaleka Refugee Camp Aerial View"
+        alt: "Dzaleka Refugee Camp"
       }
     ]
   },
@@ -42,52 +41,25 @@ const seo = {
     site: "@dzalekaconnect",
     creator: "@dzalekaconnect",
     title: pageTitle,
-    description: "Access real-time population data, demographics, and economic insights for Dzaleka Refugee Camp. View 57,000+ resident statistics, healthcare metrics, educational data, and community development indicators from Malawi's largest refugee settlement.",
+    description: "Population data, demographics, and context for Dzaleka Refugee Camp in Dowa District, Malawi.",
     image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
   }
 };
 
-// Enhanced structured data
 const structuredData = [
-  // Dataset Schema
   {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    "name": "Dzaleka Camp Data Hub",
-    "description": "Comprehensive statistical data about Dzaleka Refugee Camp including population demographics, economic impact, and services.",
+    "name": "Dzaleka Camp Data",
+    "description": "Statistical data about Dzaleka Refugee Camp including population, demographics, and services.",
     "url": "https://services.dzaleka.com/data",
-    "keywords": ["refugee statistics", "demographics", "humanitarian data", "camp population", "refugee services"],
+    "keywords": ["refugee statistics", "demographics", "humanitarian data"],
     "creator": {
       "@type": "Organization",
       "name": "Dzaleka Online Services",
       "url": "https://services.dzaleka.com"
     },
     "dateModified": new Date().toISOString(),
-    "variableMeasured": [
-      {
-        "@type": "PropertyValue",
-        "name": "Total Population",
-        "value": "57,438",
-        "unitText": "People"
-      },
-      {
-        "@type": "PropertyValue",
-        "name": "DRC Refugees",
-        "value": "37,245",
-        "unitText": "People"
-      },
-      {
-        "@type": "PropertyValue",
-        "name": "Funding Needed",
-        "value": "26.3",
-        "unitText": "Million USD"
-      }
-    ],
-    "distribution": {
-      "@type": "DataDownload",
-      "encodingFormat": "HTML",
-      "contentUrl": "https://services.dzaleka.com/data"
-    },
     "temporalCoverage": "2025",
     "spatialCoverage": {
       "@type": "Place",
@@ -104,25 +76,6 @@ const structuredData = [
       }
     }
   },
-  // Organization Schema
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Dzaleka Online Services",
-    "url": "https://services.dzaleka.com",
-    "logo": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
-    "sameAs": [
-      "https://x.com/Dzalekaconnect",
-      "https://facebook.com/dzalekaonline"
-    ],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+265-xxx-xxxx",
-      "contactType": "customer service",
-      "availableLanguage": ["English", "French", "Swahili"]
-    }
-  },
-  // Breadcrumb Schema
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -136,17 +89,27 @@ const structuredData = [
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Data Hub",
+        "name": "Data",
         "item": "https://services.dzaleka.com/data"
       }
     ]
   }
 ];
 
-const languages = [
-  { code: 'en', name: 'English' },
-  { code: 'fr', name: 'Français' },
-  { code: 'sw', name: 'Kiswahili' }
+const quickNavItems = [
+  { href: '#overview', label: 'Overview' },
+  { href: '#timeline', label: 'Timeline' },
+  { href: '#historical', label: 'History' },
+  { href: '#legal', label: 'Legal' },
+  { href: '#demographics', label: 'Demographics' },
+  { href: '#housing-infrastructure', label: 'Housing' },
+  { href: '#events', label: 'Events' },
+  { href: '#stakeholders', label: 'Stakeholders' },
+  { href: '#economic', label: 'Economic' },
+  { href: '#healthcare', label: 'Healthcare' },
+  { href: '#additional-demographics', label: 'More Demographics' },
+  { href: '#current-challenges', label: 'Challenges' },
+  { href: '#funding-unhcr', label: 'Funding' }
 ];
 ---
 
@@ -159,411 +122,346 @@ const languages = [
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
-  {/* Enhanced Meta Tags */}
   <link rel="alternate" hreflang="en" href="https://services.dzaleka.com/data" />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Dzaleka Online Services" />
-  <meta name="revisit-after" content="7 days" />
   <meta name="geo.region" content="MW-DO" />
   <meta name="geo.placename" content="Dzaleka Refugee Camp" />
   <meta name="geo.position" content="-13.7047;33.9245" />
   <meta name="ICBM" content="-13.7047, 33.9245" />
 
-  {/* Structured Data */}
   {structuredData.map(data => (
     <script type="application/ld+json" set:html={JSON.stringify(data)} />
   ))}
-  
-  <!-- Hero Section -->
-  <div class="relative bg-gradient-to-br from-primary-50 via-white to-primary-50 overflow-hidden">
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
-    {/* Content Overlay */}
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl tracking-tight">
-          <span class="block">Dzaleka Camp</span>
-          <span class="block text-primary-600">Data & Statistics</span>
-        </h1>
-        <p class="mt-4 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-          Comprehensive data insights into Dzaleka Refugee Camp's population, resources, and operations.
-        </p>
-      </div>
+  <!-- Header -->
+  <header class="border-b border-gray-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+        Dzaleka Refugee Camp
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg text-gray-600 leading-relaxed">
+        Population, services, and reference data for Malawi's only refugee settlement — established 1994, Dowa District. This page combines published UNHCR figures with community-sourced context.
+      </p>
 
-      {/* Stats */}
-      <div class="mt-16">
-        <dl class="rounded-2xl bg-white shadow-xl border border-gray-100 sm:grid sm:grid-cols-4 overflow-hidden">
-          <div class="flex flex-col border-b border-gray-100 p-8 text-center sm:border-0 sm:border-r hover:bg-gray-50 transition-colors">
-            <dt class="order-2 mt-2 text-sm font-medium leading-6 text-gray-500 uppercase tracking-wide">Total Population</dt>
-            <dd class="order-1 text-4xl font-extrabold text-primary-600">57,438</dd>
-          </div>
-          <div class="flex flex-col border-t border-b border-gray-100 p-8 text-center sm:border-0 sm:border-l sm:border-r hover:bg-gray-50 transition-colors">
-            <dt class="order-2 mt-2 text-sm font-medium leading-6 text-gray-500 uppercase tracking-wide">DRC Refugees</dt>
-            <dd class="order-1 text-4xl font-extrabold text-primary-600">37,245</dd>
-          </div>
-          <div class="flex flex-col border-t border-b border-gray-100 p-8 text-center sm:border-0 sm:border-l sm:border-r hover:bg-gray-50 transition-colors">
-            <dt class="order-2 mt-2 text-sm font-medium leading-6 text-gray-500 uppercase tracking-wide">Funding Needed (2025)</dt>
-            <dd class="order-1 text-4xl font-extrabold text-red-600">$26.3M</dd>
-          </div>
-          <div class="flex flex-col border-t border-gray-100 p-8 text-center sm:border-0 sm:border-l hover:bg-gray-50 transition-colors">
-            <dt class="order-2 mt-2 text-sm font-medium leading-6 text-gray-500 uppercase tracking-wide">UNHCR Staff</dt>
-            <dd class="order-1 text-4xl font-extrabold text-primary-600">66</dd>
-          </div>
-        </dl>
-        <div class="text-center mt-6 text-sm text-gray-500">
-          <p>Sources: 
-            <a href="https://data.unhcr.org/en/country/mwi" class="text-primary-600 hover:text-primary-700 underline decoration-primary-300 underline-offset-2" target="_blank" rel="noopener noreferrer">UNHCR Malawi Data (31 Mar 2025)</a>
-          </p>
-          <p class="mt-2 text-xs text-gray-400">Latest data as of March 31, 2025</p>
+      <dl class="mt-10 grid grid-cols-2 gap-px bg-gray-200 sm:grid-cols-4 rounded-lg overflow-hidden">
+        <div class="bg-white px-5 py-6 text-center">
+          <dt class="text-sm text-gray-500">Population</dt>
+          <dd class="mt-1 text-3xl font-bold text-gray-900">57,438</dd>
         </div>
-      </div>
+        <div class="bg-white px-5 py-6 text-center">
+          <dt class="text-sm text-gray-500">From DRC</dt>
+          <dd class="mt-1 text-3xl font-bold text-gray-900">37,245</dd>
+        </div>
+        <div class="bg-white px-5 py-6 text-center">
+          <dt class="text-sm text-gray-500">2025 funding need</dt>
+          <dd class="mt-1 text-3xl font-bold text-gray-900">$26.3M</dd>
+        </div>
+        <div class="bg-white px-5 py-6 text-center">
+          <dt class="text-sm text-gray-500">UNHCR staff</dt>
+          <dd class="mt-1 text-3xl font-bold text-gray-900">66</dd>
+        </div>
+      </dl>
+      <p class="mt-4 text-sm text-gray-400">
+        Source: <a href="https://data.unhcr.org/en/country/mwi" class="underline hover:text-gray-600" target="_blank" rel="noopener noreferrer">UNHCR Malawi</a>, 31 March 2025
+      </p>
     </div>
-  </div>
+  </header>
 
   <!-- Main Content -->
   <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    {/* Quick Navigation */}
-    {/* Quick Navigation */}
-    <nav class="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-2 border border-gray-100 mb-8 sticky top-4 z-10">
-      <div class="flex overflow-x-auto pb-2 sm:pb-0 px-2 scrollbar-hide">
-        <div class="flex gap-2 min-w-max">
-          <a href="#overview" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Overview</a>
-          <a href="#timeline" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Timeline</a>
-          <a href="#historical" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">History</a>
-          <a href="#legal" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Legal</a>
-          <a href="#demographics" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Demographics</a>
-          <a href="#housing-infrastructure" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Housing</a>
-          <a href="#events" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Events</a>
-          <a href="#stakeholders" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Stakeholders</a>
-          <a href="#economic" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Economic</a>
-          <a href="#healthcare" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Healthcare</a>
-          <a href="#additional-demographics" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">More Demographics</a>
-          <a href="#current-challenges" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Challenges</a>
-          <a href="#funding-unhcr" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50 transition-all whitespace-nowrap shadow-sm">Funding</a>
-        </div>
+    <nav class="data-nav sticky top-0 z-10 mb-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+      <div class="flex overflow-x-auto scrollbar-hide gap-1">
+        {quickNavItems.map((item) => (
+          <a href={item.href} class="shrink-0 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors">
+            {item.label}
+          </a>
+        ))}
       </div>
     </nav>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Main Content Column */}
-      <div class="lg:col-span-2">
-        {/* First Section: Overview & Demographics */}
-        <div id="overview" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Camp Overview</h2>
+    <div class="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,1fr)_340px]">
+      <!-- Main Column -->
+      <div class="space-y-0">
+
+        <!-- Overview -->
+        <section id="overview" class="scroll-mt-20 pb-10">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Overview</h2>
           <OverviewSection client:load />
-        </div>
+        </section>
 
-        {/* Timeline Section */}
-        <div id="timeline" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Camp History</h2>
+        <!-- Timeline -->
+        <section id="timeline" class="scroll-mt-20 border-t border-gray-200 py-10">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Camp History</h2>
+            <p class="mt-1 text-sm text-gray-500">From political prison to Malawi's primary refugee settlement, 1994–present.</p>
+          </div>
           <TimelineSection client:load />
-        </div>
+        </section>
 
-        {/* Historical Background Section */}
-        <div id="historical" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Historical Background -->
+        <section id="historical" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Historical Background</h2>
-          <div class="prose max-w-none">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Malawi's History of Hosting Refugees</h3>
-            <ul class="space-y-3 text-gray-600">
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Malawi's History of Hosting Refugees</h3>
+            <ul class="space-y-2 text-gray-600 list-none pl-0">
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                 <span>Luwani Camp opened in 1977 for Mozambican refugees, closed in 2007</span>
               </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                 <span>Dzaleka Camp, originally a political prison, repurposed in 1994 for refugees from Rwanda and Burundi</span>
               </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                 <span>Malawi hosted over one million Mozambican refugees during the 1980s and early 1990s</span>
               </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                 <span>Malawi ratified the UN Refugee Convention and enacted the Refugee Act in 1989</span>
               </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                 <span>Dzaleka's population has grown from 10,000-12,000 to over 60,000 by 2024</span>
               </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                 <span>Malawi has also experienced refugee outflows in the 1960s and 1970s due to political persecution</span>
               </li>
             </ul>
-            <div class="mt-6 pt-4 border-t border-gray-100">
-              <p class="text-sm text-gray-500 italic">
-                Source: <a href="https://inuaadvocacy.org/2024/12/malawi-refugee-guide/" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700">Inua Advocacy</a>
-              </p>
-            </div>
+            <p class="mt-4 text-sm text-gray-400">
+              Source: <a href="https://inuaadvocacy.org/2024/12/malawi-refugee-guide/" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-600">Inua Advocacy</a>
+            </p>
           </div>
 
-          <!-- Enhanced Historical Timeline -->
-          <div class="mt-8 pt-8 border-t border-gray-100">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Detailed Population Timeline</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div class="text-center p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div class="w-16 h-16 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span class="text-lg font-bold">150</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">1995</div>
-                <div class="text-xs text-gray-500">Initial refugees</div>
-                <div class="text-xs text-gray-400 mt-1">"Well-equipped centre"</div>
+          <!-- Population Growth -->
+          <div class="mt-10">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Population Growth</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="border border-gray-200 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-gray-900">150</div>
+                <div class="text-sm font-medium text-gray-600 mt-1">1995</div>
+                <div class="text-xs text-gray-400">Initial refugees</div>
               </div>
-              <div class="text-center p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div class="w-16 h-16 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span class="text-lg font-bold">5,000</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">2007</div>
-                <div class="text-xs text-gray-500">Before Luwani closure</div>
-                <div class="text-xs text-gray-400 mt-1">Pre-consolidation</div>
+              <div class="border border-gray-200 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-gray-900">5,000</div>
+                <div class="text-sm font-medium text-gray-600 mt-1">2007</div>
+                <div class="text-xs text-gray-400">Before Luwani closure</div>
               </div>
-              <div class="text-center p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div class="w-16 h-16 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span class="text-lg font-bold">8,800</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">2007</div>
-                <div class="text-xs text-gray-500">After Luwani closure</div>
-                <div class="text-xs text-gray-400 mt-1">Post-consolidation</div>
+              <div class="border border-gray-200 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-gray-900">8,800</div>
+                <div class="text-sm font-medium text-gray-600 mt-1">2007</div>
+                <div class="text-xs text-gray-400">After Luwani closure</div>
               </div>
-              <div class="text-center p-4 bg-white border border-primary-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 ring-1 ring-primary-50">
-                <div class="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
-                  <span class="text-lg font-bold">55,425</span>
-                </div>
-                <div class="text-sm font-bold text-gray-900">2024</div>
-                <div class="text-xs text-gray-600">Current population</div>
-                <div class="text-xs text-primary-600 mt-1 font-medium">August 2024</div>
+              <div class="border-2 border-gray-900 rounded-lg p-4 text-center bg-gray-50">
+                <div class="text-2xl font-bold text-gray-900">55,425</div>
+                <div class="text-sm font-bold text-gray-700 mt-1">2024</div>
+                <div class="text-xs text-gray-500">August 2024</div>
               </div>
             </div>
           </div>
 
-          <!-- Name Origin Section -->
-          <div class="mt-8 pt-8 border-t border-gray-100">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">The Name "Dzaleka"</h3>
-            <div class="bg-gradient-to-r from-primary-50 to-white p-6 rounded-xl border border-primary-100">
-              <p class="text-gray-700 mb-4 leading-relaxed">
-                The name Dzaleka comes from the Chichewa phrase "N'dzaleka," meaning "I will never do it again." This name carries profound significance, representing both the hope for a better future and the acknowledgment of past suffering.
-              </p>
-              <div class="border-l-4 border-primary-400 pl-4">
-                <blockquote class="text-gray-700 italic">
-                  "The name serves as a reminder of the transformation from a place of oppression to a place of refuge and hope."
+          <!-- Name Origin -->
+          <div class="mt-10">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">The Name "Dzaleka"</h3>
+            <p class="text-gray-600 leading-relaxed">
+              From the Chichewa phrase "N'dzaleka," meaning "I will never do it again." The name carries the weight of the site's history as a political prison and the hope that such suffering won't be repeated.
+            </p>
+          </div>
+
+          <!-- Documents & Testimonies -->
+          <div class="mt-10">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Documents & Testimonies</h3>
+            <div class="space-y-8">
+              <div class="border-l-2 border-gray-300 pl-6">
+                <div class="text-sm font-mono text-gray-400 mb-2">1976</div>
+                <h4 class="font-semibold text-gray-900 mb-2">State Department Cable</h4>
+                <blockquote class="text-gray-600 italic leading-relaxed">
+                  "In the Dzaleka detention camp near Dowa, north of Lilongwe, there are now over 3,000 male witnesses who have been incarcerated for a two-year period."
                 </blockquote>
+                <p class="mt-2 text-xs text-gray-400">Cable 1976-135342</p>
+              </div>
+
+              <div class="border-l-2 border-gray-300 pl-6">
+                <div class="text-sm font-mono text-gray-400 mb-2">1995</div>
+                <h4 class="font-semibold text-gray-900 mb-2">Joseph Ndereyimana</h4>
+                <blockquote class="text-gray-600 italic leading-relaxed">
+                  "On 23rd December 1995, we were taken to the Dzaleka Refugee Centre, outside Dowa. We were feeling happy in the hope that we might meet up with people we knew, and even hear news of our families whom we had left behind in Kashusha."
+                </blockquote>
+                <p class="mt-2 text-xs text-gray-400">"Walk this way: the journey of a Rwandan refugee" (1999)</p>
+              </div>
+
+              <div class="border-l-2 border-gray-300 pl-6">
+                <div class="text-sm font-mono text-gray-400 mb-2">2007</div>
+                <h4 class="font-semibold text-gray-900 mb-2">State Department Cable</h4>
+                <blockquote class="text-gray-600 italic leading-relaxed">
+                  "The Dzaleka camp covers 201 hectares and UNHCR estimates it can hold a maximum of 9300 people. Once all refugees are relocated it will have a population approaching 8800 people and continues to get a steady stream of new refugees from the Congo."
+                </blockquote>
+                <p class="mt-2 text-xs text-gray-400">Cable 07LILONGWE803</p>
               </div>
             </div>
           </div>
 
-          <!-- Historical Documents Section -->
-          <div class="mt-8 pt-8 border-t border-gray-100">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Historical Documents & Testimonies</h3>
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-200 hover:border-primary-300 transition-colors pl-6 py-2">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1976</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">State Department Cable</h4>
-                    <blockquote class="text-gray-600 italic mb-3 text-lg leading-relaxed">
-                      "In the Dzaleka detention camp near Dowa, north of Lilongwe, there are now over 3,000 male witnesses who have been incarcerated for a two-year period."
-                    </blockquote>
-                    <span class="text-sm text-gray-400 font-medium">Source: State Department Cable 1976-135342</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-200 hover:border-primary-300 transition-colors pl-6 py-2">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1995</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Personal Testimony: Joseph Ndereyimana</h4>
-                    <blockquote class="text-gray-600 italic mb-3 text-lg leading-relaxed">
-                      "On 23rd December 1995, we were taken to the Dzaleka Refugee Centre, outside Dowa. We were feeling happy in the hope that we might meet up with people we knew, and even hear news of our families whom we had left behind in Kashusha."
-                    </blockquote>
-                    <span class="text-sm text-gray-400 font-medium">Source: "Walk this way: the journey of a Rwandan refugee" (1999)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-200 hover:border-primary-300 transition-colors pl-6 py-2">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">2007</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">State Department Cable</h4>
-                    <blockquote class="text-gray-600 italic mb-3 text-lg leading-relaxed">
-                      "The Dzaleka camp covers 201 hectares and UNHCR estimates it can hold a maximum of 9300 people. Once all refugees are relocated it will have a population approaching 8800 people and continues to get a steady stream of new refugees from the Congo."
-                    </blockquote>
-                    <span class="text-sm text-gray-400 font-medium">Source: State Department Cable 07LILONGWE803</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cultural Achievements Section -->
-          <div class="mt-8 pt-8 border-t border-gray-200">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Cultural Achievements & Community Development</h3>
-            <div class="grid md:grid-cols-2 gap-8">
-              <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border border-green-200">
-                <h4 class="text-lg font-bold text-gray-900 mb-4">Tumaini Festival</h4>
-                <p class="text-gray-700 mb-4 leading-relaxed">
+          <!-- Cultural Achievements -->
+          <div class="mt-10">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Cultural Achievements</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="border border-gray-200 rounded-lg p-5">
+                <h4 class="font-semibold text-gray-900 mb-2">Tumaini Festival</h4>
+                <p class="text-sm text-gray-600 mb-2">
                   Founded by Congolese refugee Trésor Nzengu Mpauni, this annual arts and cultural event has reached an estimated 40 million people worldwide.
                 </p>
-                <span class="text-sm text-gray-500">Established: 2014</span>
+                <span class="text-xs text-gray-400">Established 2014</span>
               </div>
-
-              <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-lg border border-purple-200">
-                <h4 class="text-lg font-bold text-gray-900 mb-4">Community Organizations</h4>
-                <p class="text-gray-700 mb-4 leading-relaxed">
+              <div class="border border-gray-200 rounded-lg p-5">
+                <h4 class="font-semibold text-gray-900 mb-2">Community Organizations</h4>
+                <p class="text-sm text-gray-600 mb-2">
                   Refugee-led initiatives including There is Hope, RELON Malawi, and various cultural groups have transformed the camp's narrative.
                 </p>
-                <span class="text-sm text-gray-500">Ongoing Development</span>
+                <span class="text-xs text-gray-400">Ongoing</span>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Legal Framework Section */}
-        <div id="legal" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Legal Framework -->
+        <section id="legal" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Legal Framework</h2>
-          <div class="prose max-w-none">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Understanding the Laws Governing Refugees in Malawi</h3>
-            
-            <div class="mb-6">
-              <h4 class="text-md font-medium text-gray-900 mb-3">Refugee Act of 1989</h4>
-              <p class="text-gray-600">
-                The Refugee Act of 1989 establishes the legal framework for the reception, admission, and treatment of refugees in Malawi. While it aligns with key international refugee laws, it has faced criticism for being outdated and insufficient in addressing current refugee needs.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="text-md font-medium text-gray-900 mb-3">Reservations to the 1951 UN Refugee Convention</h4>
-              <p class="text-gray-600 mb-4">Malawi's reservations limit certain rights of refugees, including:</p>
-              <ul class="space-y-3 text-gray-600">
-                <li class="flex items-start">
-                  <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
-                  <span><strong>Freedom of Movement:</strong> Refugees must reside in designated camps</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
-                  <span><strong>Employment:</strong> Restrictions on work outside camps</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary-500 mr-3"></span>
-                  <span><strong>Public Relief and Assistance:</strong> Limited access to social services</span>
-                </li>
-              </ul>
-              <p class="text-gray-600 mt-4">
-                These reservations significantly impact refugees' ability to achieve self-sufficiency and integrate into Malawian society.
-              </p>
-            </div>
-            <div class="mt-6 pt-4 border-t border-gray-100">
-              <p class="text-sm text-gray-500 italic">
-                Source: <a href="https://inuaadvocacy.org/2024/12/malawi-refugee-guide/" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700">Inua Advocacy</a>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div id="demographics" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Demographics</h2>
           
-          {/* Updated Population Statistics */}
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">Population by Origin (March 31, 2025)</h3>
-              <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Total Population:</span>
-                  <span class="font-bold text-lg text-blue-600">57,438</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">DR Congo:</span>
-                  <span class="font-bold text-blue-600">37,245</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Burundi:</span>
-                  <span class="font-bold text-blue-600">12,604</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Rwanda:</span>
-                  <span class="font-bold text-blue-600">7,135</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Mozambique:</span>
-                  <span class="font-bold text-blue-600">35</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Others:</span>
-                  <span class="font-bold text-blue-600">~419</span>
-                </div>
-              </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Refugee Act of 1989</h3>
+            <p class="text-gray-600 mb-6">
+              The Refugee Act of 1989 establishes the legal framework for the reception, admission, and treatment of refugees in Malawi. While it aligns with key international refugee laws, it has faced criticism for being outdated and insufficient in addressing current refugee needs.
+            </p>
+
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Reservations to the 1951 UN Refugee Convention</h3>
+            <p class="text-gray-600 mb-3">Malawi's reservations limit certain rights:</p>
+            <ul class="space-y-2 text-gray-600 list-none pl-0">
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
+                <span><strong>Freedom of Movement:</strong> Refugees must reside in designated camps</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
+                <span><strong>Employment:</strong> Restrictions on work outside camps</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 shrink-0"></span>
+                <span><strong>Public Relief and Assistance:</strong> Limited access to social services</span>
+              </li>
+            </ul>
+            <p class="text-gray-600 mt-4">
+              These reservations significantly impact refugees' ability to achieve self-sufficiency and integrate into Malawian society.
+            </p>
+            <p class="mt-4 text-sm text-gray-400">
+              Source: <a href="https://inuaadvocacy.org/2024/12/malawi-refugee-guide/" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-600">Inua Advocacy</a>
+            </p>
+          </div>
+        </section>
+
+        <!-- Demographics -->
+        <section id="demographics" class="scroll-mt-20 border-t border-gray-200 py-10">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Demographics</h2>
+            <p class="mt-1 text-sm text-gray-500">UNHCR data as of 31 March 2025</p>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-4">Population by Origin</h3>
+              <table class="w-full text-sm">
+                <tbody>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Total Population</td>
+                    <td class="py-2 text-right font-bold text-gray-900">57,438</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">DR Congo</td>
+                    <td class="py-2 text-right font-bold text-gray-900">37,245</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Burundi</td>
+                    <td class="py-2 text-right font-bold text-gray-900">12,604</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Rwanda</td>
+                    <td class="py-2 text-right font-bold text-gray-900">7,135</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Mozambique</td>
+                    <td class="py-2 text-right font-bold text-gray-900">35</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-gray-600">Others</td>
+                    <td class="py-2 text-right font-bold text-gray-900">~419</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">Camp Capacity Issues</h3>
-              <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Original Design Capacity:</span>
-                  <span class="font-bold text-orange-600">10,000-12,000</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Current Population:</span>
-                  <span class="font-bold text-red-600">57,438</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Overcrowding Factor:</span>
-                  <span class="font-bold text-red-600">~478%</span>
-                </div>
-              </div>
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-4">Capacity</h3>
+              <table class="w-full text-sm">
+                <tbody>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Design capacity</td>
+                    <td class="py-2 text-right font-bold text-gray-900">10,000–12,000</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Current population</td>
+                    <td class="py-2 text-right font-bold text-gray-900">57,438</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-gray-600">Over capacity by</td>
+                    <td class="py-2 text-right font-bold text-red-700">~478%</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
-
-
-          {/* Enhanced Demographics Context */}
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
-              <h4 class="text-lg font-semibold text-gray-900 mb-4">Historical Context</h4>
-              <ul class="space-y-3 text-gray-700">
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+          <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-3">Displacement Context</h3>
+              <ul class="space-y-2 text-sm text-gray-600 list-none pl-0">
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>DRC:</strong> Majority of population, ongoing displacement due to conflicts</span>
                 </li>
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Burundi:</strong> Significant population, political instability concerns</span>
                 </li>
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Rwanda:</strong> Long-term residents since 1994 genocide</span>
                 </li>
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Others:</strong> Smaller populations from Somalia, Ethiopia, Mozambique</span>
                 </li>
               </ul>
             </div>
 
-            <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border border-green-200">
-              <h4 class="text-lg font-semibold text-gray-900 mb-4">Community Development</h4>
-              <ul class="space-y-3 text-gray-700">
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-3">Community Development</h3>
+              <ul class="space-y-2 text-sm text-gray-600 list-none pl-0">
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Tumaini Festival:</strong> Annual arts event reaching 40M+ people</span>
                 </li>
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Refugee-led organizations:</strong> There is Hope, RELON Malawi</span>
                 </li>
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Educational institutions:</strong> Schools and training centers</span>
                 </li>
-                <li class="flex items-start gap-3">
-                  <div class="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <li class="flex items-start gap-2">
+                  <span class="block w-1 h-1 rounded-full bg-gray-400 mt-2 shrink-0"></span>
                   <span><strong>Cultural preservation:</strong> Traditional arts and music</span>
                 </li>
               </ul>
@@ -571,293 +469,246 @@ const languages = [
           </div>
 
           <PopulationChart client:load />
-        </div>
+        </section>
 
-        {/* Housing & Infrastructure Section */}
-        <div id="housing-infrastructure" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Housing & Infrastructure Development</h2>
+        <!-- Housing & Infrastructure -->
+        <section id="housing-infrastructure" class="scroll-mt-20 border-t border-gray-200 py-10">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Housing & Infrastructure</h2>
           
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <!-- Current Challenges -->
-            <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">Current Challenges</h3>
-              </div>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                Dzaleka refugee camp remains highly congested, resulting in poor living conditions and inadequate infrastructure due to limited space and resources.
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-2">Current Conditions</h3>
+              <p class="text-sm text-gray-600">
+                Dzaleka remains highly congested, resulting in poor living conditions and inadequate infrastructure due to limited space and resources.
               </p>
             </div>
-
-            <!-- 2023 Progress -->
-            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">2023 Achievements</h3>
-              </div>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                To improve housing conditions, a total of <strong>8,047 housing units</strong> were constructed in 2023, significantly enhancing living standards for camp residents.
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-2">2023: 8,047 Units Built</h3>
+              <p class="text-sm text-gray-600">
+                A total of 8,047 housing units were constructed in 2023 to improve living standards for camp residents.
               </p>
             </div>
           </div>
 
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <!-- 2024 Progress -->
-            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">2024 Developments</h3>
-              </div>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                Significant progress in shelter and infrastructure establishment at camp extension areas: <strong>Katubza</strong>, <strong>Woodlot</strong>, and <strong>Dzaleka Hills</strong> to accommodate more refugees.
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-2">2024 Expansion</h3>
+              <p class="text-sm text-gray-600">
+                Shelter and infrastructure progress at camp extensions: <strong>Katubza</strong>, <strong>Woodlot</strong>, and <strong>Dzaleka Hills</strong>.
               </p>
             </div>
-
-            <!-- New Settlement Plan -->
-            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">New Settlement Plan</h3>
-              </div>
-              <p class="text-gray-600 text-sm leading-relaxed">
-                Government identified new site in <strong>Kayilizi area, Chitipa</strong>: <strong>439 hectares</strong> to accommodate <strong>10,240 households</strong> (approximately <strong>51,200 individuals</strong>).
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-2">New Settlement: Kayilizi, Chitipa</h3>
+              <p class="text-sm text-gray-600">
+                Government identified new site: <strong>439 hectares</strong> for <strong>10,240 households</strong> (~51,200 individuals).
               </p>
             </div>
           </div>
 
-          <div class="mt-8 text-center">
-            <p class="text-sm text-gray-500">
-              Two Joint Assessment Missions (JAM) conducted in July 2023 and March 2024 to evaluate the new settlement site.
-            </p>
-            <p class="text-sm text-gray-500 mt-2">
-              Source: <a href="https://www.unhcr.org/where-we-work/countries/malawi" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">UNHCR Malawi Overview - End of 2024</a>
-            </p>
-          </div>
-        </div>
+          <p class="text-sm text-gray-400">
+            Two Joint Assessment Missions conducted July 2023 and March 2024. Source: <a href="https://www.unhcr.org/where-we-work/countries/malawi" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-600">UNHCR Malawi</a>
+          </p>
+        </section>
 
-        {/* Second Section: Events & Stakeholders */}
-        <div id="events" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Events -->
+        <section id="events" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Events</h2>
           <EventsSection client:load />
-        </div>
+        </section>
 
-        <div id="stakeholders" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Stakeholders -->
+        <section id="stakeholders" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Key Stakeholders</h2>
           <StakeholdersSection client:load />
-        </div>
+        </section>
 
-        {/* Third Section: Economic & Healthcare */}
-        <div id="economic" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Economic -->
+        <section id="economic" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Economic Impact</h2>
           <EconomicSection client:load />
-        </div>
+        </section>
 
-        <div id="healthcare" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Healthcare Services</h2>
+        <!-- Healthcare -->
+        <section id="healthcare" class="scroll-mt-20 border-t border-gray-200 py-10">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Healthcare</h2>
           <HealthcareSection client:load />
-        </div>
+        </section>
 
-        {/* Fourth Section: Additional Demographics */}
-        <div id="additional-demographics" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Additional Demographics -->
+        <section id="additional-demographics" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Additional Demographics</h2>
           <DemographicsSection client:load />
-        </div>
+        </section>
 
-        {/* Current Challenges Section */}
-        <div id="current-challenges" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Current Challenges -->
+        <section id="current-challenges" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Challenges</h2>
           
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <div class="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-lg border border-red-200">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">Overcrowding</h3>
-              </div>
-              <p class="text-gray-700 leading-relaxed">
-                The camp now houses over four times its original intended capacity, leading to resource strain and infrastructure challenges. Originally designed for 10,000-12,000 people, it now accommodates over 56,000 residents.
+          <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-2">Overcrowding</h3>
+              <p class="text-sm text-gray-600">
+                The camp houses over four times its intended capacity. Originally designed for 10,000–12,000 people, it now holds over 57,000 residents, straining every resource and service.
               </p>
             </div>
-
-            <div class="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-lg border border-red-200">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900">Human Trafficking</h3>
-              </div>
-              <p class="text-gray-700 leading-relaxed">
-                In 2022, UNODC and Malawian Police uncovered widespread exploitation networks operating within the camp, leading to ongoing efforts to dismantle these operations and protect vulnerable populations.
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-2">Human Trafficking</h3>
+              <p class="text-sm text-gray-600">
+                In 2022, UNODC and Malawian Police uncovered widespread exploitation networks. Ongoing efforts continue to dismantle these operations and protect vulnerable populations.
               </p>
             </div>
           </div>
 
-          {/* Contemporary Documentation */}
-          <div class="border-t border-gray-100 pt-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Contemporary Documentation</h3>
-            <p class="text-gray-600 mb-6">Recent sources and research from 2007-2025</p>
-            
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-200 hover:border-primary-300 transition-colors pl-6 py-2">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">2023</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Academic Research</h4>
-                    <blockquote class="text-gray-600 italic mb-3 text-lg leading-relaxed">
-                      "This study inquired into the nature of identity among refugee youth living at Dzaleka Refugee Camp in Malawi. Aged between eighteen and twenty-four, the sample comprised of twenty-two female and thirty-eight male participants, from Burundi, the Democratic Republic of Congo, Rwanda, and Somalia."
-                    </blockquote>
-                    <span class="text-sm text-gray-400 font-medium">Source: Refugee Youth Identity Formation at Dzaleka Refugee Camp (2023)</span>
-                  </div>
-                </div>
+          <!-- Recent Research -->
+          <div class="mt-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Recent Research</h3>
+            <div class="space-y-8">
+              <div class="border-l-2 border-gray-300 pl-6">
+                <div class="text-sm font-mono text-gray-400 mb-2">2023</div>
+                <h4 class="font-semibold text-gray-900 mb-2">Identity Among Refugee Youth</h4>
+                <blockquote class="text-sm text-gray-600 italic leading-relaxed">
+                  "This study inquired into the nature of identity among refugee youth living at Dzaleka Refugee Camp in Malawi. Aged between eighteen and twenty-four, the sample comprised of twenty-two female and thirty-eight male participants, from Burundi, the Democratic Republic of Congo, Rwanda, and Somalia."
+                </blockquote>
+                <p class="mt-2 text-xs text-gray-400">Refugee Youth Identity Formation at Dzaleka Refugee Camp (2023)</p>
               </div>
 
-              <div class="border-l-4 border-gray-200 hover:border-primary-300 transition-colors pl-6 py-2">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">2025</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Food Security Study</h4>
-                    <blockquote class="text-gray-600 italic mb-3 text-lg leading-relaxed">
-                      "Food security and dietary diversity surveys were conducted with 300 women living in Dzaleka camp, Malawi. Ninety-one percent of women had severe food insecurity and women only ate on average 2–3 food groups the previous day."
-                    </blockquote>
-                    <span class="text-sm text-gray-400 font-medium">Source: Food insecurity and dietary diversity among women living in Dzaleka refugee camp, Malawi (2025)</span>
-                  </div>
-                </div>
+              <div class="border-l-2 border-gray-300 pl-6">
+                <div class="text-sm font-mono text-gray-400 mb-2">2025</div>
+                <h4 class="font-semibold text-gray-900 mb-2">Food Security</h4>
+                <blockquote class="text-sm text-gray-600 italic leading-relaxed">
+                  "Food security and dietary diversity surveys were conducted with 300 women living in Dzaleka camp, Malawi. Ninety-one percent of women had severe food insecurity and women only ate on average 2–3 food groups the previous day."
+                </blockquote>
+                <p class="mt-2 text-xs text-gray-400">Food insecurity and dietary diversity among women living in Dzaleka refugee camp, Malawi (2025)</p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Funding & UNHCR Presence Section */}
-        <div id="funding-unhcr" class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 mt-8">
+        <!-- Funding & UNHCR -->
+        <section id="funding-unhcr" class="scroll-mt-20 border-t border-gray-200 py-10">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Funding & UNHCR Presence</h2>
           
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Funding Overview */}
-            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">Funding Overview (2025 Requirements)</h3>
-              <div class="space-y-4">
-                <div class="text-center">
-                  <div class="text-3xl font-bold text-green-600 mb-2">USD 26.3M</div>
-                  <div class="text-gray-600">Total Requirements</div>
-                </div>
-                <div class="text-center p-3 bg-white/60 backdrop-blur-sm rounded-lg shadow-sm">
-                  <p class="text-sm text-gray-600">
-                    Required to ensure that operations and programmes in Malawi are sustained for 2025.
-                  </p>
-                </div>
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-4">2025 Funding (as of 31 July 2025)</h3>
+              <table class="w-full text-sm mb-4">
+                <tbody>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Requirements</td>
+                    <td class="py-2 text-right font-bold text-gray-900">USD 26.3M</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Funded</td>
+                    <td class="py-2 text-right font-bold text-green-700">USD 4.7M (18%)</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-gray-600">Gap</td>
+                    <td class="py-2 text-right font-bold text-red-700">USD 21.6M (82%)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-green-600 h-2 rounded-full" style="width: 18%"></div>
               </div>
             </div>
 
-            {/* UNHCR Staff */}
-            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-100">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">UNHCR Staff Presence</h3>
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-4">2026 Budget</h3>
               <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">National Staff:</span>
-                  <span class="font-bold text-purple-600">23</span>
+                <p class="text-sm text-gray-600">
+                  UNHCR Malawi's operational budget dropped from <strong>$8M in 2025</strong> to <strong>$1M in 2026</strong> — a 90% reduction. This forced the scaling back of protection, GBV response, and non-food distributions.
+                </p>
+                <p class="text-sm text-gray-600">
+                  WFP requires an additional <strong>$11M</strong> to maintain food rations through December 2026. Confirmed funding covers only through June 2026.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-4">Staff</h3>
+              <table class="w-full text-sm">
+                <tbody>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">National Staff</td>
+                    <td class="py-2 text-right font-bold text-gray-900">23</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">International Staff</td>
+                    <td class="py-2 text-right font-bold text-gray-900">9</td>
+                  </tr>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-2 text-gray-600">Others</td>
+                    <td class="py-2 text-right font-bold text-gray-900">34</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 font-semibold text-gray-700">Total</td>
+                    <td class="py-2 text-right font-bold text-gray-900">66</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-5">
+              <h3 class="font-semibold text-gray-900 mb-4">Offices</h3>
+              <div class="grid grid-cols-2 gap-4 text-center text-sm">
+                <div>
+                  <div class="font-bold text-gray-900">Branch Office</div>
+                  <div class="text-gray-500">Lilongwe</div>
                 </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">International Staff:</span>
-                  <span class="font-bold text-purple-600">9</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600">Others:</span>
-                  <span class="font-bold text-purple-600">34</span>
-                </div>
-                <div class="border-t border-purple-200 pt-3 mt-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-gray-700 font-semibold">TOTAL STAFF:</span>
-                    <span class="font-bold text-lg text-purple-600">66</span>
-                  </div>
+                <div>
+                  <div class="font-bold text-gray-900">Field Office</div>
+                  <div class="text-gray-500">Karonga</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* UNHCR Offices */}
-          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-100">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">UNHCR Offices</h3>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="text-center p-4 bg-white/60 backdrop-blur-sm rounded-lg shadow-sm">
-                <div class="text-2xl font-bold text-blue-600 mb-2">1</div>
-                <div class="text-gray-700 font-medium">Branch Office</div>
-                <div class="text-sm text-gray-600">Lilongwe</div>
-              </div>
-              <div class="text-center p-4 bg-white/60 backdrop-blur-sm rounded-lg shadow-sm">
-                <div class="text-2xl font-bold text-blue-600 mb-2">1</div>
-                <div class="text-gray-700 font-medium">Field Office</div>
-                <div class="text-sm text-gray-600">Karonga</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-6 text-center">
-            <p class="text-sm text-gray-500">
-              Source: <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">UNHCR Malawi Fact Sheet - August 2024</a>
-            </p>
-          </div>
-        </div>
+          <p class="text-sm text-gray-400">
+            Sources: <a href="https://reporting.unhcr.org/operational/operations/malawi" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-600">UNHCR Global Focus</a>, <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-600">UNHCR Malawi Fact Sheet (Aug 2024)</a>
+          </p>
+        </section>
       </div>
 
-      {/* Sidebar */}
-      <div class="space-y-8">
-        {/* News */}
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Latest News</h2>
-          <div class="overflow-y-auto max-h-[400px] pr-2">
+      <!-- Sidebar -->
+      <aside class="space-y-6 xl:sticky xl:top-16 xl:self-start">
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="border-b border-gray-100 px-5 py-4 bg-gray-50">
+            <h2 class="font-semibold text-gray-900">Latest News</h2>
+          </div>
+          <div class="max-h-[400px] overflow-y-auto px-5 py-4">
             <NewsWidget client:load />
           </div>
         </div>
 
-        {/* Emergency Alerts */}
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Emergency Alerts</h2>
-          <div class="overflow-y-auto max-h-[300px] pr-2">
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="border-b border-gray-100 px-5 py-4 bg-gray-50">
+            <h2 class="font-semibold text-gray-900">Emergency Alerts</h2>
+          </div>
+          <div class="max-h-[300px] overflow-y-auto px-5 py-4">
             <EmergencyAlerts client:load />
           </div>
         </div>
 
-        {/* Finance */}
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Finance</h2>
-          <div class="overflow-y-auto max-h-[300px] pr-2">
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="border-b border-gray-100 px-5 py-4 bg-gray-50">
+            <h2 class="font-semibold text-gray-900">Finance</h2>
+          </div>
+          <div class="max-h-[300px] overflow-y-auto px-5 py-4">
             <FinanceWidget client:load />
           </div>
         </div>
 
-        {/* Resources */}
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Resources</h2>
-          <div class="overflow-y-auto max-h-[300px] pr-2">
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="border-b border-gray-100 px-5 py-4 bg-gray-50">
+            <h2 class="font-semibold text-gray-900">Resources</h2>
+          </div>
+          <div class="max-h-[300px] overflow-y-auto px-5 py-4">
             <ResourcesWidget client:load />
           </div>
         </div>
-      </div>
+      </aside>
     </div>
   </main>
 </MainLayout>
@@ -873,21 +724,15 @@ const languages = [
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
   @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
-  /* Hide scrollbar for Chrome, Safari and Opera */
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 </style>
 
@@ -948,7 +793,6 @@ const languages = [
   }
 
   function updateDashboard(population) {
-    // Update statistics
     const totalPopulation = document.getElementById('total-population');
     const newArrivals = document.getElementById('new-arrivals');
     const womenPercentage = document.getElementById('women-percentage');
@@ -967,6 +811,4 @@ const languages = [
   setInterval(fetchCampData, 300000);
 </script>
 
-<!-- Error Message -->
-<div id="error-message" class="hidden fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
-</div>
+<div id="error-message" class="hidden fixed top-4 right-4 bg-red-600 text-white px-5 py-3 rounded-lg shadow-lg text-sm"></div>

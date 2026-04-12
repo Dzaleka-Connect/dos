@@ -64,12 +64,16 @@ const countries = [...new Set(stories.map(story => story.data.country))];
           "@type": "Person",
           "name": story.data.name,
           "description": story.data.description,
-          "url": `${Astro.site}inspirational-stories/${story.id}`,
+          "url": `https://services.dzaleka.com/inspirational-stories/${story.id}`,
           "nationality": {
             "@type": "Country",
             "name": story.data.country
           },
-          "image": story.data.personImage || `${Astro.site}images/default-profile.jpg`
+          "image": story.data.personImage
+            ? (story.data.personImage.startsWith('http')
+              ? story.data.personImage
+              : `https://services.dzaleka.com${story.data.personImage}`)
+            : "https://services.dzaleka.com/images/default-profile.jpg"
         }
       }))
     }

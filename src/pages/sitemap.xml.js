@@ -1,151 +1,152 @@
+import { getCollection } from 'astro:content';
+
+const baseUrl = 'https://services.dzaleka.com';
+
+const EXCLUDED_STATIC_ROUTES = new Set([
+  '/404',
+  '/api-test',
+  '/test-api',
+  '/test-resources',
+]);
+
+const EXCLUDED_ROUTE_PREFIXES = [
+  '/api/',
+  '/applications/internal/',
+  '/staff/',
+];
+
+const xmlEscape = (value) =>
+  String(value).replace(/[<>&'"]/g, (character) => {
+    switch (character) {
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+      case '\'':
+        return '&apos;';
+      case '"':
+        return '&quot;';
+      default:
+        return character;
+    }
+  });
+
+const toAbsoluteUrl = (pathname) => new URL(pathname, baseUrl).toString();
+
+const toDateString = (value) => {
+  if (!value) {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  const parsed = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(parsed.getTime())
+    ? new Date().toISOString().split('T')[0]
+    : parsed.toISOString().split('T')[0];
+};
+
+const toStaticRoute = (filePath) => {
+  if (!filePath.endsWith('.astro') || filePath.includes('/[')) {
+    return null;
+  }
+
+  let route = filePath
+    .replace('/src/pages', '')
+    .replace(/\.astro$/, '')
+    .replace(/\/index$/, '');
+
+  if (!route) {
+    route = '/';
+  }
+
+  if (EXCLUDED_STATIC_ROUTES.has(route)) {
+    return null;
+  }
+
+  if (EXCLUDED_ROUTE_PREFIXES.some((prefix) => route.startsWith(prefix))) {
+    return null;
+  }
+
+  return route;
+};
+
+const publicPageModules = import.meta.glob('/src/pages/**/*.astro', { eager: true });
+
 export async function GET() {
-  const baseUrl = 'https://services.dzaleka.com';
-  
-  // XML escaping function
-  const escapeXml = (unsafe) => {
-    if (typeof unsafe !== 'string') return '';
-    return unsafe.replace(/[<>&'"]/g, (c) => {
-      switch (c) {
-        case '<': return '&lt;';
-        case '>': return '&gt;';
-        case '&': return '&amp;';
-        case '\'': return '&apos;';
-        case '"': return '&quot;';
-        default: return c;
-      }
+  const urls = new Map();
+
+  const addUrl = (pathname, lastmod) => {
+    if (!pathname || EXCLUDED_STATIC_ROUTES.has(pathname)) {
+      return;
+    }
+
+    if (EXCLUDED_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+      return;
+    }
+
+    urls.set(pathname, {
+      loc: toAbsoluteUrl(pathname),
+      lastmod: toDateString(lastmod),
     });
   };
 
-  // Service-specific categories with their priorities
-  const serviceCategories = {
-    'e-learning': { priority: '0.95', changefreq: 'daily' },
-    'skills-exchange': { priority: '0.9', changefreq: 'daily' },
-    'community-voices': { priority: '0.9', changefreq: 'daily' },
-    'talents': { priority: '0.85', changefreq: 'weekly' },
-    'applications': { priority: '0.85', changefreq: 'daily' },
-    'jobs': { priority: '0.95', changefreq: 'daily' },
-    'resources': { priority: '0.8', changefreq: 'weekly' },
-    'updates': { priority: '0.9', changefreq: 'daily' },
-    'culture': { priority: '0.8', changefreq: 'weekly' },
-    'photo-gallery': { priority: '0.8', changefreq: 'weekly' },
-    'success-stories': { priority: '0.85', changefreq: 'weekly' }
-  };
-  
-  // Get all content files with their module imports
-  const contentFiles = import.meta.glob([
-    '/src/content/**/*.{md,mdx}',
-    '/src/pages/**/*.astro'
-  ], { eager: true });
+  for (const filePath of Object.keys(publicPageModules)) {
+    const route = toStaticRoute(filePath);
+    if (route) {
+      addUrl(route);
+    }
+  }
 
-  const urls = await Promise.all(
-    Object.entries(contentFiles).map(async ([path, module]) => {
-      // Get frontmatter/metadata from the content
-      const frontmatter = module.frontmatter || {};
-      const metadata = module.metadata || {};
-      
-      // Convert file path to URL
-      const url = path
-        .replace('/src/content/', '')
-        .replace('/src/pages/', '')
-        .replace(/\.(md|mdx|astro)$/, '')
-        .replace(/\/index$/, '')
-        .replace(/^\//, '');
+  const collectionRoutes = [
+    { name: 'community-voices', buildPath: (entry) => `/community-voices/${entry.id}`, lastmod: (entry) => entry.data.date },
+    { name: 'courses', buildPath: (entry) => `/e-learning/courses/${entry.id}`, lastmod: (entry) => entry.data.lastUpdated || entry.data.datePublished },
+    { name: 'dancers', buildPath: (entry) => `/dancers/${entry.id}` },
+    { name: 'docs', buildPath: (entry) => `/docs/${entry.id}`, lastmod: (entry) => entry.data.lastUpdated },
+    { name: 'events', buildPath: (entry) => `/events/${entry.id}`, lastmod: (entry) => entry.data.endDate || entry.data.date },
+    { name: 'inspirational-stories', buildPath: (entry) => `/inspirational-stories/${entry.id}`, lastmod: (entry) => entry.data.date },
+    { name: 'jobs', buildPath: (entry) => `/jobs/${entry.id}`, lastmod: (entry) => entry.data.posted || entry.data.deadline },
+    { name: 'marketplace', buildPath: (entry) => `/marketplace/${entry.id}`, lastmod: (entry) => entry.data.datePosted },
+    { name: 'news', buildPath: (entry) => `/news/${entry.id}`, lastmod: (entry) => entry.data.date },
+    { name: 'photos', buildPath: (entry) => `/photos/${entry.id}`, lastmod: (entry) => entry.data.date },
+    { name: 'poets', buildPath: (entry) => `/poets/${entry.id}` },
+    { name: 'projects', buildPath: (entry) => `/projects/${entry.id}` },
+    { name: 'resources', buildPath: (entry) => `/resources/${entry.id}`, lastmod: (entry) => entry.data.lastUpdated || entry.data.date },
+    { name: 'rights', buildPath: (entry) => `/rights-navigator/${entry.id}`, lastmod: (entry) => entry.data.date },
+    { name: 'services', buildPath: (entry) => `/services/${entry.id}`, lastmod: (entry) => entry.data.lastUpdated },
+    { name: 'sites', buildPath: (entry) => `/site-register/${entry.id}` },
+    { name: 'stores', buildPath: (entry) => `/marketplace/stores/${entry.id}`, lastmod: (entry) => entry.data.dateJoined },
+    { name: 'stories', buildPath: (entry) => `/stories/${entry.id}`, lastmod: (entry) => entry.data.date },
+    { name: 'artworks', buildPath: (entry) => `/public-art-catalogue/${entry.id}` },
+    { name: 'artists', buildPath: (entry) => `/public-art-catalogue/artist/${entry.data.slug || entry.id}` },
+  ];
 
-      // Get last modified date from frontmatter or file metadata
-      const lastmod = frontmatter.updatedDate || frontmatter.date || new Date().toISOString().split('T')[0];
+  for (const collectionConfig of collectionRoutes) {
+    const entries = await getCollection(collectionConfig.name);
+    for (const entry of entries) {
+      addUrl(collectionConfig.buildPath(entry), collectionConfig.lastmod?.(entry));
+    }
+  }
 
-      // Enhanced priority calculation for service pages
-      let priority = '0.7';
-      let changefreq = 'weekly';
-
-      // Check if the page is in a service category
-      const serviceCategory = Object.keys(serviceCategories).find(category => 
-        url.startsWith(category) || path.includes(`/${category}/`)
-      );
-
-      if (serviceCategory) {
-        priority = serviceCategories[serviceCategory].priority;
-        changefreq = serviceCategories[serviceCategory].changefreq;
-      } else {
-        // Default priority rules
-        if (url.split('/').length <= 2) priority = '0.8';
-        if (path.includes('/content/')) priority = '0.6';
-        if (path.includes('/news/') || path.includes('/updates/')) {
-          changefreq = 'daily';
-          priority = '0.85';
-        }
-        if (path.includes('/about/')) changefreq = 'monthly';
-      }
-
-      // Prepare image data if available
-      const imageXml = frontmatter.image ? `
-      <image:image>
-        <image:loc>${escapeXml(baseUrl + frontmatter.image)}</image:loc>
-        <image:title>${escapeXml(frontmatter.title || url)}</image:title>
-        ${frontmatter.description ? `<image:caption>${escapeXml(frontmatter.description)}</image:caption>` : ''}
-      </image:image>` : '';
-
-      // Add news-specific metadata
-      const newsXml = (path.includes('/news/') || path.includes('/updates/')) && frontmatter.title ? `
-      <news:news>
-        <news:publication>
-          <news:name>Dzaleka Heritage Services</news:name>
-          <news:language>en</news:language>
-        </news:publication>
-        <news:publication_date>${escapeXml(lastmod)}</news:publication_date>
-        <news:title>${escapeXml(frontmatter.title)}</news:title>
-      </news:news>` : '';
-
-      return `
-    <url>
-      <loc>${escapeXml(baseUrl + '/' + url)}</loc>
-      <lastmod>${escapeXml(lastmod)}</lastmod>
-      <changefreq>${changefreq}</changefreq>
-      <priority>${priority}</priority>${imageXml}${newsXml}
-    </url>`;
-    })
-  );
-
-  // Enhanced static pages with service-focused priorities
-  const staticPages = [
-    { url: '', priority: '1.0', changefreq: 'daily' },
-    { url: 'services', priority: '0.95', changefreq: 'daily' },
-    { url: 'e-learning', priority: '0.95', changefreq: 'daily' },
-    { url: 'skills-exchange', priority: '0.9', changefreq: 'daily' },
-    { url: 'jobs', priority: '0.95', changefreq: 'daily' },
-    { url: 'community-voice', priority: '0.9', changefreq: 'daily' },
-    { url: 'talents', priority: '0.85', changefreq: 'weekly' },
-    { url: 'resources', priority: '0.8', changefreq: 'weekly' },
-    { url: 'news', priority: '0.9', changefreq: 'daily' },
-    { url: 'updates', priority: '0.9', changefreq: 'daily' },
-    { url: 'culture', priority: '0.8', changefreq: 'weekly' },
-    { url: 'photo-gallery', priority: '0.8', changefreq: 'weekly' },
-    { url: 'success-stories', priority: '0.85', changefreq: 'weekly' },
-    { url: 'about', priority: '0.8', changefreq: 'monthly' },
-    { url: 'contact', priority: '0.8', changefreq: 'monthly' }
-  ].map(page => `
-    <url>
-      <loc>${escapeXml(baseUrl + '/' + page.url)}</loc>
-      <lastmod>${escapeXml(new Date().toISOString().split('T')[0])}</lastmod>
-      <changefreq>${page.changefreq}</changefreq>
-      <priority>${page.priority}</priority>
-    </url>`
-  );
+  const sitemapEntries = [...urls.values()]
+    .sort((left, right) => left.loc.localeCompare(right.loc))
+    .map(({ loc, lastmod }) => `  <url>
+    <loc>${xmlEscape(loc)}</loc>
+    <lastmod>${xmlEscape(lastmod)}</lastmod>
+  </url>`)
+    .join('\n');
 
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-    ${staticPages.join('')}
-    ${urls.join('')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapEntries}
 </urlset>`,
     {
       status: 200,
       headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'public, max-age=3600'
-      }
+        'Content-Type': 'application/xml; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+      },
     }
   );
 }

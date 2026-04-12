@@ -1,0 +1,248 @@
+{
+  "$ref": "#/definitions/stores",
+  "definitions": {
+    "stores": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "restaurant",
+            "cafe",
+            "bakery",
+            "grocery",
+            "retail",
+            "salon",
+            "workshop",
+            "other"
+          ]
+        },
+        "logo": {
+          "type": "string"
+        },
+        "coverImage": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "whatsapp": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "phone"
+          ],
+          "additionalProperties": false
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "zone": {
+              "type": "string"
+            },
+            "landmark": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "address"
+          ],
+          "additionalProperties": false
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "day": {
+                "type": "string"
+              },
+              "open": {
+                "type": "string"
+              },
+              "close": {
+                "type": "string"
+              },
+              "closed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "day",
+              "open",
+              "close"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "menu": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string"
+                    },
+                    "popular": {
+                      "type": "boolean"
+                    },
+                    "available": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "price"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "category",
+              "items"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "price": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "price"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "paymentMethods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deliveryOptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "pending",
+            "inactive"
+          ],
+          "default": "pending"
+        },
+        "dateJoined": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "socialMedia": {
+          "type": "object",
+          "properties": {
+            "facebook": {
+              "type": "string"
+            },
+            "instagram": {
+              "type": "string"
+            },
+            "tiktok": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "type",
+        "owner",
+        "location",
+        "dateJoined"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

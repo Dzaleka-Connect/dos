@@ -29,5 +29,20 @@ export default defineConfig({
       wrap: true
     },
     rehypePlugins: []
+  },
+  vite: {
+    resolve: {
+      dedupe: ['react', 'react-dom']
+    },
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react-chartjs-2',
+        'chart.js',
+        'chart.js/auto'
+      ]
+    }
   }
 });

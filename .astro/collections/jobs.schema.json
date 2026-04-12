@@ -1,0 +1,136 @@
+{
+  "$ref": "#/definitions/jobs",
+  "definitions": {
+    "jobs": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "full-time",
+            "part-time",
+            "contract",
+            "volunteer",
+            "internship"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "education",
+            "healthcare",
+            "technology",
+            "community",
+            "business",
+            "arts",
+            "services",
+            "other"
+          ]
+        },
+        "salary": {
+          "type": "string"
+        },
+        "deadline": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "posted": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "closed",
+            "draft"
+          ],
+          "default": "open"
+        },
+        "featured": {
+          "type": "boolean",
+          "default": false
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "website": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "email"
+          ],
+          "additionalProperties": false
+        },
+        "description": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "organization",
+        "location",
+        "type",
+        "category",
+        "deadline",
+        "posted",
+        "skills",
+        "contact",
+        "description"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

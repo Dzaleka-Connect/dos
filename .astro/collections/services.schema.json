@@ -1,0 +1,168 @@
+{
+  "$ref": "#/definitions/services",
+  "definitions": {
+    "services": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "whatsapp": {
+              "type": "string"
+            },
+            "hours": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "coordinates": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "number"
+                },
+                "lng": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "lat",
+                "lng"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "address",
+            "city"
+          ],
+          "additionalProperties": false
+        },
+        "socialMedia": {
+          "type": "object",
+          "properties": {
+            "website": {
+              "type": "string"
+            },
+            "facebook": {
+              "type": "string"
+            },
+            "instagram": {
+              "type": "string"
+            },
+            "twitter": {
+              "type": "string"
+            },
+            "linkedin": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "businessHours": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "day": {
+                "type": "string"
+              },
+              "open": {
+                "type": "string"
+              },
+              "close": {
+                "type": "string"
+              },
+              "closed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "day",
+              "open",
+              "close"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "lastUpdated": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "inactive"
+          ],
+          "default": "active"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "category"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

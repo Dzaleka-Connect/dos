@@ -158,7 +158,7 @@ export function EventsSection() {
       
       <div className="text-center pt-4">
         <a 
-          href="https://www.dzaleka.com/"
+          href="/events"
           className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
         >
           View All Events

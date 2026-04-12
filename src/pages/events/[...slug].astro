@@ -318,47 +318,43 @@ const seo = isPage ? {
     <>
       <main class="min-h-screen">
         <!-- Hero Section -->
-        <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
-          <!-- Subtle African Pattern Background -->
-          <div class="absolute inset-0 opacity-[0.03]">
-            <div class="absolute inset-0 pattern-mudcloth"></div>
+        <div class="relative border-b border-gray-200 overflow-hidden bg-gray-900 mb-12">
+          <div class="absolute inset-0 z-0">
+            <img src="/images/dzaleka-hero.jpeg" alt="Dzaleka Events Hub" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gray-900/60"></div>
           </div>
 
-          <div class="relative container mx-auto px-4 pt-8 pb-16">
-            <!-- Breadcrumb Navigation -->
-            <div class="mb-8">
-              <Breadcrumb items={[
-                { label: 'Home', href: '/' },
-                { label: 'Events', href: '/events' },
-                { label: `Page ${validCurrentPage}` }
-              ]} />
-            </div>
-
-            <div class="max-w-4xl mx-auto text-center">
-              <div class="inline-block mb-6">
-                <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
-                  Community Events
-                </span>
+          <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+            <div class="max-w-3xl mx-auto text-center">
+              <div class="mb-6 flex justify-center">
+                <Breadcrumb items={[
+                  { label: 'Home', href: '/' },
+                  { label: 'Events', href: '/events' },
+                  { label: `Page ${validCurrentPage}` }
+                ]} light={true} />
               </div>
 
-              <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
                 What's On in Dzaleka
               </h1>
-              <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+              <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
                 Cultural festivals, performances, webinars, workshops, and community gatherings — discover the vibrant spirit of our community
               </p>
-              <a
-                href="/events/organize"
-                class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-md"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                Submit Your Event
-              </a>
+
+              <div class="mt-8 flex justify-center gap-4">
+                <a
+                  href="/events/organize"
+                  class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-gray-900 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors shadow-sm"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                  </svg>
+                  Submit Your Event
+                </a>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
         <div class="container mx-auto px-4 py-12">
           <!-- All Events -->
@@ -668,7 +664,7 @@ const seo = isPage ? {
                     href={entry.data.registration.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+                    class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors"
                   >
                     Register Now
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -692,7 +688,7 @@ const seo = isPage ? {
               </p>
               <a
                 href="/events"
-                class="inline-flex items-center px-6 py-3 mt-6 text-base font-medium rounded-md text-primary-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-sm"
+                class="inline-flex items-center px-6 py-3 mt-6 text-base font-medium rounded-md text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors shadow-sm"
               >
                 View Upcoming Events
               </a>
@@ -704,7 +700,7 @@ const seo = isPage ? {
             {entry.data.registrationLink && entry.data.status === 'upcoming' && (
               <a
                 href={entry.data.registrationLink}
-                class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
+                class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-colors"
               >
                 Register Now
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -715,7 +711,7 @@ const seo = isPage ? {
             {entry.data.gallery && entry.data.status === 'past' && (
               <a
                 href={entry.data.gallery}
-                class="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-700 rounded-xl hover:bg-primary-200 transition-colors"
+                class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
               >
                 View Photo Gallery
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -744,7 +740,7 @@ const seo = isPage ? {
                 <div class="mt-6">
                   <a 
                     href={`/events/organizer/${entry.data.organizer.toLowerCase().replace(/\s+/g, '-')}`}
-                    class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                    class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium border border-transparent"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -769,9 +765,9 @@ const seo = isPage ? {
                       />
                       {/* Category badge */}
                       <div class="absolute bottom-3 right-3 z-10">
-                        <span class="px-3 py-1 rounded-full text-xs font-medium shadow-sm bg-white/90 backdrop-blur-sm border border-white/20" class:list={{
-                          'text-blue-700': related.data.status === 'upcoming',
-                          'text-green-700': related.data.status === 'past'
+                        <span class="px-3 py-1 rounded-full text-xs font-medium shadow-sm bg-white/90 backdrop-blur-sm border border-gray-200" class:list={{
+                          'text-gray-900': related.data.status === 'upcoming',
+                          'text-gray-600': related.data.status === 'past'
                         }}>
                           {related.data.category}
                         </span>
@@ -792,8 +788,8 @@ const seo = isPage ? {
                           </time>
                           {/* Status indicator */}
                           <span class="px-2 py-1 rounded-full text-xs font-medium capitalize" class:list={{
-                            'bg-blue-100 text-blue-800 border border-blue-200': related.data.status === 'upcoming',
-                            'bg-gray-100 text-gray-800 border border-gray-200': related.data.status === 'past'
+                            'bg-gray-100 text-gray-800 border border-gray-200': related.data.status === 'upcoming',
+                            'bg-gray-50 text-gray-600 border border-gray-100': related.data.status === 'past'
                           }}>
                             {related.data.status}
                           </span>

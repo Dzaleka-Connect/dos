@@ -147,9 +147,25 @@ export const GET: APIRoute = async () => {
   } catch (error) {
     console.error('Error fetching weather data:', error);
     return new Response(JSON.stringify({
-      error: 'Failed to fetch weather data'
+      location: 'Dowa',
+      date: new Date().toLocaleDateString(),
+      forecast: {
+        current: {
+          temperature: '21.3',
+          minTemperature: '15.3',
+          condition: 'Weather data temporarily unavailable',
+          rainfall: '0',
+          windSpeed: '0',
+          windDirection: '0',
+          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        },
+        hourly: []
+      },
+      alerts: [],
+      lastUpdated: new Date().toISOString(),
+      stale: true
     }), {
-      status: 500,
+      status: 200,
       headers: {
         'Content-Type': 'application/json'
       }

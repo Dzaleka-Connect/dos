@@ -1,62 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 
-// Helper function to clean HTML from text
-function cleanHtml(text: string) {
-  if (!text) return '';
-  
-  // First decode HTML entities
-  const decoded = text
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ');
-    
-  // Remove all HTML tags and their content
-  const withoutHtml = decoded
-    .replace(/<div[^>]*>[\s\S]*?<\/div>/g, '')
-    .replace(/<a[^>]*>[\s\S]*?<\/a>/g, '')
-    .replace(/<img[^>]*>/g, '')
-    .replace(/<[^>]*>/g, '');
-    
-  // Clean up whitespace
-  return withoutHtml.replace(/\s+/g, ' ').trim();
-}
-
-// Fetch local news
+// Render the latest local news without depending on a retired external RSS feed.
 const localNews = await getCollection('news');
-const localNewsItems = localNews.map(article => ({
-  title: article.data.title,
-  description: article.data.description,
-  date: article.data.date,
-  link: `/news/${article.id}`
-}));
-
-// Fetch RSS news
-const rssResponse = await fetch('https://www.dzaleka.com/feeds/posts/default?alt=rss');
-const rssText = await rssResponse.text();
-const rssItems = rssText
-  .match(/<item>[\s\S]*?<\/item>/g)
-  ?.map(item => {
-    const titleMatch = item.match(/<title>([\s\S]*?)<\/title>/);
-    const descriptionMatch = item.match(/<description>([\s\S]*?)<\/description>/);
-    const linkMatch = item.match(/<link>([\s\S]*?)<\/link>/);
-    const dateMatch = item.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
-
-    return {
-      title: cleanHtml(titleMatch?.[1] || ''),
-      description: cleanHtml(descriptionMatch?.[1] || ''),
-      link: linkMatch?.[1] || '',
-      date: new Date(dateMatch?.[1] || '')
-    };
-  }) || [];
-
-// Combine and sort all news
-const allNews = [...localNewsItems, ...rssItems]
+const allNews = localNews
+  .map((article) => ({
+    title: article.data.title,
+    description: article.data.description,
+    date: article.data.date,
+    link: `/news/${article.id}`
+  }))
   .sort((a, b) => b.date.getTime() - a.date.getTime())
-  .slice(0, 5); // Show only the latest 5 articles
+  .slice(0, 5);
 ---
 
 <div class="space-y-4">

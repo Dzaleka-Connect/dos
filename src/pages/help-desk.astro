@@ -8,12 +8,54 @@ const description = "Get expert support for Dzaleka Online Services with 24-48 h
 const keywords = "help desk, support center, technical support, customer service, Dzaleka services, business support, community support, cultural support, education support, employment support, gallery support, event support, resource center";
 const ogImage = "https://services.dzaleka.com/images/Visit_Dzaleka.png";
 
-// Additional SEO metadata
 const canonicalUrl = "https://services.dzaleka.com/help-desk";
-const author = "Dzaleka Online Services";
-const twitterHandle = "@dzalekaonline";
-const ogType = "website";
-const ogSiteName = "Dzaleka Online Services";
+const seo = {
+  title: pageTitle,
+  description,
+  keywords,
+  canonical: canonicalUrl,
+  openGraph: {
+    title: pageTitle,
+    description,
+    type: "website",
+    image: {
+      url: ogImage,
+      alt: "Dzaleka Online Services Help Desk"
+    },
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: canonicalUrl
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@dzalekaonline",
+    title: pageTitle,
+    description,
+    image: ogImage
+  }
+};
+
+const helpDeskStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CustomerService",
+  "name": "Dzaleka Online Services Help Desk",
+  "description": "Comprehensive support center for Dzaleka Online Services",
+  "url": canonicalUrl,
+  "telephone": "",
+  "email": "dzalekaconnect@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Dzaleka Refugee Camp",
+    "addressRegion": "Dowa",
+    "addressCountry": "Malawi"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "email": "dzalekaconnect@gmail.com",
+    "availableLanguage": ["English", "French", "Swahili"]
+  }
+};
 
 const faqs = [
   {
@@ -94,40 +136,14 @@ if (Astro.request.method === "POST") {
 ---
 
 <MainLayout 
-  title={pageTitle}
-  description={description}
-  keywords={keywords}
-  ogImage={ogImage}
-  canonicalUrl={canonicalUrl}
-  author={author}
-  twitterHandle={twitterHandle}
-  ogType={ogType}
-  ogSiteName={ogSiteName}
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
 >
-  <!-- JSON-LD Structured Data for Help Desk -->
-  <script type="application/ld+json" slot="head">
-    {
-      "@context": "https://schema.org",
-      "@type": "CustomerService",
-      "name": "Dzaleka Online Services Help Desk",
-      "description": "Comprehensive support center for Dzaleka Online Services",
-      "url": "https://services.dzaleka.com/help-desk",
-      "telephone": "",
-      "email": "dzalekaconnect@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Dzaleka Refugee Camp",
-        "addressRegion": "Dowa",
-        "addressCountry": "Malawi"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "email": "dzalekaconnect@gmail.com",
-        "availableLanguage": ["English", "French", "Swahili"]
-      }
-    }
-  </script>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(helpDeskStructuredData)} />
 
   <main class="min-h-screen bg-gray-50">
     <!-- Hidden data element for support categories -->

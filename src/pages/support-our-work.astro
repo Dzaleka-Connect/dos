@@ -5,61 +5,37 @@ const seo = {
   title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
   description: "Support Dzaleka Online Services to preserve and promote Dzaleka's cultural heritage. Donate now to help digitize history, empower refugees, and amplify community voices.",
   keywords: "support Dzaleka, donate Dzaleka, cultural heritage, refugee stories, digital archive, Malawi, empower refugees, preserve history, Dzaleka Online Services, charity, nonprofit, African heritage, community support, fundraising, digital storytelling, oral history, youth empowerment, creative economy, donate now, help refugees",
-  canonicalURL: new URL(Astro.url.pathname, Astro.site),
+  canonical: "https://services.dzaleka.com/support-our-work",
   openGraph: {
-    basic: {
-      title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
-      type: "article",
-      image: "https://images.pexels.com/photos/2678468/pexels-photo-2678468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-    optional: {
-      description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
-      siteName: "Dzaleka Online Services",
-    },
+    title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
+    description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
+    type: "article",
     image: {
-      alt: "Support Dzaleka Online Services - Preserving Cultural Heritage",
+      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      alt: "Support Dzaleka Online Services - Preserving Cultural Heritage"
     },
-    url: "https://dzaleka.com/support-our-work"
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: "https://services.dzaleka.com/support-our-work"
   },
   twitter: {
     card: "summary_large_image",
-    site: "@dzalekaconnect",
     creator: "@dzalekaconnect",
     title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
     description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
-    image: "https://images.pexels.com/photos/2678468/pexels-photo-2678468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    imageAlt: "Support Dzaleka Online Services - Preserving Cultural Heritage",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
+  }
 };
 ---
 
-<MainLayout title={seo.title} description={seo.description}>
-  <head>
-    <title>{seo.title}</title>
-    <meta name="description" content={seo.description} />
-    <meta name="keywords" content={seo.keywords} />
-    <link rel="canonical" href={seo.canonicalURL} />
-    <meta property="og:title" content={seo.openGraph.basic.title} />
-    <meta property="og:description" content={seo.openGraph.optional.description} />
-    <meta property="og:type" content={seo.openGraph.basic.type} />
-    <meta property="og:image" content={seo.openGraph.basic.image} />
-    <meta property="og:image:alt" content={seo.openGraph.image.alt} />
-    <meta property="og:url" content={seo.openGraph.url} />
-    <meta property="og:site_name" content={seo.openGraph.optional.siteName} />
-    <meta name="twitter:card" content={seo.twitter.card} />
-    <meta name="twitter:site" content={seo.twitter.site} />
-    <meta name="twitter:creator" content={seo.twitter.creator} />
-    <meta name="twitter:title" content={seo.twitter.title} />
-    <meta name="twitter:description" content={seo.twitter.description} />
-    <meta name="twitter:image" content={seo.twitter.image} />
-    <meta name="twitter:image:alt" content={seo.twitter.imageAlt} />
-    <meta name="robots" content="index, follow" />
-  </head>
-
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
   <!-- Hero Section with Image -->
   <div class="relative">
     <!-- Hero Image -->
@@ -196,7 +172,7 @@ const seo = {
               Institutional giving plays a key role in expanding our impact. If you're part of a foundation, NGO, or funder interested in digital heritage, refugee storytelling, or African-led innovation — we'd love to connect.
             </p>
             <p class="text-gray-700 mb-4">
-              Reach us at: <a href="mailto:dzalekaconnnect@gmail.com" class="text-primary-600 hover:text-primary-700">dzalekaconnnect@gmail.com</a>
+              Reach us at: <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:text-primary-700">dzalekaconnect@gmail.com</a>
             </p>
             <p class="text-sm text-gray-600">We are committed to transparency and only accept funding aligned with our values.</p>
           </div>
@@ -211,7 +187,7 @@ const seo = {
               <li>Books, stationery, or event space</li>
             </ul>
             <p class="text-gray-700">
-              Have something to offer? Email <a href="mailto:dzalekaconnnect@gmail.com" class="text-primary-600 hover:text-primary-700">dzalekaconnnect@gmail.com</a>
+              Have something to offer? Email <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:text-primary-700">dzalekaconnect@gmail.com</a>
             </p>
           </div>
 
@@ -220,7 +196,7 @@ const seo = {
             <h3 class="text-xl font-semibold text-gray-900 mb-4">Airtel Money / TNM Mpamba / Direct Transfer</h3>
             <p class="text-gray-700 mb-4">Prefer to donate through mobile money or bank transfer?</p>
             <p class="text-gray-700">
-              Contact us for details: <a href="mailto:dzalekaconnnect@gmail.com" class="text-primary-600 hover:text-primary-700">dzalekaconnnect@gmail.com</a>
+              Contact us for details: <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:text-primary-700">dzalekaconnect@gmail.com</a>
             </p>
           </div>
         </section>

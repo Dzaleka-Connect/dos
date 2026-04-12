@@ -170,10 +170,10 @@ Source: WFP Malawi Country Brief (Dec 2024) & UNHCR Malawi`
     {
         date: '2025-02-11',
         type: 'feature',
-        title: 'API Test Page',
-        text: 'Added an API Test page for developers and admins to test API endpoints, view request/response details, and debug data collections.',
-        link: '/api-test',
-        linkText: 'Try API Test'
+        title: 'API Reference Updated',
+        text: 'Published the latest API reference for developers working with Dzaleka Online Services data and integrations.',
+        link: '/api-docs',
+        linkText: 'View API Reference'
     },
     {
         date: '2025-02-11',

@@ -1,68 +1,61 @@
 import React, { useEffect, useState } from 'react';
 
 interface NewsItem {
+  id: string;
   title: string;
   description: string;
-  pubDate: string;
-  link: string;
+  date: string;
+  category?: string;
 }
+
+interface NewsResponse {
+  data?: {
+    news?: NewsItem[];
+  };
+}
+
+const formatDate = (value: string) => {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? 'Recently updated'
+    : date.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+};
 
 export function NewsWidget() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const cleanDescription = (html: string): string => {
-    // Create a temporary div to parse HTML
-    const temp = document.createElement('div');
-    temp.innerHTML = html;
-    
-    // Remove images
-    const images = temp.getElementsByTagName('img');
-    while (images.length > 0) {
-      images[0].parentNode?.removeChild(images[0]);
-    }
-    
-    // Get text content and trim it
-    let text = temp.textContent || '';
-    text = text.trim();
-    
-    // Limit to ~150 characters and add ellipsis if needed
-    return text.length > 150 ? text.substring(0, 147) + '...' : text;
-  };
-
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/rss');
+        const response = await fetch('/api/news');
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, "text/xml");
-        const items = xmlDoc.querySelectorAll("item");
 
-        const newsItems = Array.from(items).map(item => ({
-          title: item.querySelector("title")?.textContent || "",
-          description: cleanDescription(item.querySelector("description")?.textContent || ""),
-          pubDate: item.querySelector("pubDate")?.textContent || "",
-          link: item.querySelector("link")?.textContent || ""
-        }));
+        const payload: NewsResponse = await response.json();
+        const items = [...(payload.data?.news || [])]
+          .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())
+          .slice(0, 5);
 
-        setNews(newsItems);
+        setNews(items);
         setError(null);
       } catch (err) {
-        setError('Failed to load news. Please try again later.');
         console.error('Error fetching news:', err);
+        setError('Failed to load news. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchNews();
-    // Refresh news every 5 minutes
     const interval = setInterval(fetchNews, 300000);
     return () => clearInterval(interval);
   }, []);
@@ -93,34 +86,29 @@ export function NewsWidget() {
 
   return (
     <div className="space-y-4">
-      {news.map((item, index) => (
-        <article 
-          key={index} 
+      {news.map((item) => (
+        <article
+          key={item.id}
           className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
         >
+          <div className="flex items-center justify-between gap-3 mb-2">
+            {item.category ? (
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-primary-700 bg-primary-50 px-2 py-1 rounded-full">
+                {item.category.replace(/-/g, ' ')}
+              </span>
+            ) : (
+              <span />
+            )}
+            <time className="text-xs text-gray-500">{formatDate(item.date)}</time>
+          </div>
+
           <h3 className="font-medium text-gray-900 mb-2">
-            <a 
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary-600"
-            >
+            <a href={`/news/${item.id}`} className="hover:text-primary-600">
               {item.title}
             </a>
           </h3>
-          <p className="text-sm text-gray-600 mb-2">
-            {item.description}
-          </p>
-          <time 
-            dateTime={new Date(item.pubDate).toISOString()}
-            className="text-xs text-gray-500"
-          >
-            {new Date(item.pubDate).toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })}
-          </time>
+
+          <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
         </article>
       ))}
     </div>

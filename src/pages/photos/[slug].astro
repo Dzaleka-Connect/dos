@@ -15,6 +15,14 @@ export async function getStaticPaths() {
 const { photo } = Astro.props;
 const { title, description, photographer, image, date, tags, location, gallery } = photo.data;
 const { Content } = await render(photo);
+const siteUrl = "https://services.dzaleka.com";
+const toAbsoluteUrl = (value?: string) => {
+  if (!value) return `${siteUrl}/images/dzaleka-hero.jpeg`;
+  return value.startsWith('http') ? value : `${siteUrl}${value}`;
+};
+const photographerName = typeof photographer === 'string'
+  ? photographer
+  : (photographer?.name || "Dzaleka Community Photographers");
 
 // Get related photos based on tags and location
 const allPhotos = await getCollection('photos');
@@ -48,13 +56,45 @@ const seo = {
     locale: "en_US",
     url: `https://services.dzaleka.com/photos/${photo.id}`,
     image: {
-      url: image,
+      url: toAbsoluteUrl(image),
       width: 1200,
       height: 630,
       alt: title,
       type: "image/jpeg"
     }
   }
+};
+
+const photoStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Photograph",
+  "name": title,
+  "description": description,
+  "url": `https://services.dzaleka.com/photos/${photo.id}`,
+  "dateCreated": new Date(date).toISOString(),
+  "contentUrl": toAbsoluteUrl(image),
+  "image": {
+    "@type": "ImageObject",
+    "url": toAbsoluteUrl(image),
+    "caption": title,
+    "creator": {
+      "@type": "Person",
+      "name": photographerName
+    },
+    "creditText": `Photo by ${photographerName}`,
+    "copyrightNotice": `© ${new Date(date).getFullYear()} ${photographerName}`,
+    "license": "https://services.dzaleka.com/photos/license",
+    "acquireLicensePage": "https://services.dzaleka.com/contact"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": photographerName
+  },
+  "keywords": tags?.join(", "),
+  "locationCreated": location ? {
+    "@type": "Place",
+    "name": location
+  } : undefined
 };
 ---
 
@@ -66,6 +106,7 @@ const seo = {
   canonical={seo.canonical} 
   openGraph={seo.openGraph}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(photoStructuredData)} />
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Back Button -->

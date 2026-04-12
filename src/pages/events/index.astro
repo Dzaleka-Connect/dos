@@ -189,46 +189,42 @@ const eventsStructuredData = {
 
   <main class="min-h-screen">
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
-      <!-- Subtle African Pattern Background -->
-      <div class="absolute inset-0 opacity-[0.03]">
-        <div class="absolute inset-0 pattern-mudcloth"></div>
+    <div class="relative border-b border-gray-200 overflow-hidden bg-gray-900 mb-12">
+      <div class="absolute inset-0 z-0">
+        <img src="/images/dzaleka-hero.jpeg" alt="Dzaleka Events Hub" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gray-900/60"></div>
       </div>
 
-      <div class="relative container mx-auto px-4 pt-8 pb-16">
-        <!-- Breadcrumb Navigation -->
-        <div class="mb-8">
-          <Breadcrumb items={[
-            { label: 'Home', href: '/' },
-            { label: 'Events' }
-          ]} />
-        </div>
-
-        <div class="max-w-4xl mx-auto text-center">
-          <div class="inline-block mb-6">
-            <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
-              Community Events
-            </span>
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+        <div class="max-w-3xl mx-auto text-center">
+          <div class="mb-6 flex justify-center">
+            <Breadcrumb items={[
+              { label: 'Home', href: '/' },
+              { label: 'Events' }
+            ]} light={true} />
           </div>
 
-          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
             What's On in Dzaleka
           </h1>
-          <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
             Cultural festivals, performances, webinars, workshops, and community gatherings — discover the vibrant spirit of our community
           </p>
-          <a
-            href="/events/organize"
-            class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-md"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-            </svg>
-            Submit Your Event
-          </a>
+
+          <div class="mt-8 flex justify-center gap-4">
+            <a
+              href="/events/organize"
+              class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-gray-900 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+              Submit Your Event
+            </a>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <div class="container mx-auto px-4 py-12">
       <!-- Upcoming Events -->
@@ -245,10 +241,10 @@ const eventsStructuredData = {
             <div class="mt-12 text-center">
               <a
                 href="/events/upcoming/1"
-                class="group inline-flex items-center text-white bg-primary-600 hover:bg-primary-700 font-semibold px-8 py-4 rounded-lg shadow-md transition-colors"
+                class="inline-flex items-center text-gray-900 bg-white border border-gray-300 hover:bg-gray-50 font-medium px-6 py-3 rounded-lg shadow-sm transition-colors text-sm"
               >
                 Explore All Upcoming Events ({allUpcomingEvents.length})
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
@@ -278,10 +274,10 @@ const eventsStructuredData = {
               <div class="mt-12 text-center">
                 <a
                   href="/events/past/1"
-                  class="group inline-flex items-center text-primary-600 border-2 border-primary-600 hover:bg-primary-600 hover:text-white font-semibold px-8 py-4 rounded-lg shadow-md bg-white transition-colors"
+                  class="inline-flex items-center text-gray-600 border border-gray-300 hover:bg-gray-50 font-medium px-6 py-3 rounded-lg shadow-sm bg-white transition-colors text-sm"
                 >
                   View All Past Events ({allPastEvents.length})
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </a>
