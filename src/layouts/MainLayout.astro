@@ -8,6 +8,7 @@ import Toast from '../components/ui/Toast.astro';
 interface Props {
 	title: string;
 	description?: string;
+	author?: string;
 	keywords?: string;
 	type?: string;
 	canonical?: string;
@@ -55,6 +56,7 @@ interface Props {
 const { 
 	title,
 	description,
+	author,
 	keywords,
 	type = "website",
 	canonical = Astro.url.pathname,
@@ -73,6 +75,7 @@ const ogImage = openGraph?.images?.[0]?.url
 <Layout 
 	title={title}
 	description={description}
+	author={author}
 	keywords={keywords}
 	type={type}
 	canonical={canonical}

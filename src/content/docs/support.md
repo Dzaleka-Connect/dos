@@ -1,74 +1,47 @@
 ---
 title: Support & Contact
-description: Get help and contact our team
+description: How to get help with Dzaleka Online Services
 section: support
 ---
 
 # Support & Contact
 
-Get assistance and connect with our support team.
+Use the support routes below when you need help using the platform, correcting public information, or contacting the team.
 
-## Support Options
+## Main support routes
 
-### General Support
-- Platform usage
-- Technical issues
-- Account help
-- Navigation assistance
-- Feature questions
+### Support page
 
-### Content Support
-- Submission help
-- Content guidelines
-- Media uploads
-- Documentation
-- Editing assistance
+[Support](/support) is the main public help page for common questions and guidance.
 
-### Service Support
-- Provider registration
-- Service listings
-- Resource access
-- Directory help
-- Updates and changes
+### Help desk
 
-## Quick Actions
+Use [Help Desk](/help-desk) if you need to send a question, report a problem, or ask for follow-up help.
 
-### Get Help
-1. Visit [Support Center](/support)
-2. Choose category
-3. Submit request
-4. Track status
+### Contact page
 
-### Contact Us
-1. Go to [Contact Form](/contact)
-2. Provide details:
-   - Name and email
-   - Topic
-   - Message
-3. Submit inquiry
+Use [Contact](/contact) for general enquiries, partnerships, and messages that do not fit a section-specific form.
 
-### Report Issues
-1. Access [Issue Report](/support/report)
-2. Describe problem
-3. Add details
-4. Submit report
+## When to use section forms instead
 
-## Support Features
+Use the form inside the section itself when you are trying to:
 
-- Help articles
-- FAQ section
-- Contact forms
-- Issue tracking
-- Response updates
+- [register a service](/services/register)
+- [submit a resource](/resources/submit)
+- [organize an event](/events/organize)
+- [submit photos](/photos/submit)
+- [share your voice](/submit-voice)
+- [submit a grant or programme opportunity](/grants-and-programs/submit)
 
-## Guidelines
+## What to include when asking for help
 
-- [Support Policy](/support/policy)
-- [Response Times](/support/sla)
-- [Privacy Notice](/privacy)
+- the page link if something is wrong
+- a short description of the issue
+- your contact details
+- any deadline or urgency we should know about
 
-## Additional Help
+## Related guides
 
-- [Platform FAQ](/support/faq)
-- [User Guide](/docs/getting-started)
-- [Community Guidelines](/guidelines)
+- [Getting Started](/docs/getting-started)
+- [FAQ](/docs/faq)
+- [Privacy Guidelines](/docs/privacy-guidelines)

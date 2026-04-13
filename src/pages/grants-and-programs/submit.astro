@@ -1,0 +1,357 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const pageTitle = 'Submit an opportunity';
+const pageDescription =
+  'Submit a grant, programme, fellowship, finance product, or support opportunity for review and possible listing on the Dzaleka grants and programs page.';
+
+const opportunityTypes = [
+  'Grant',
+  'Programme',
+  'Fellowship',
+  'Training',
+  'Business support',
+  'Loan or finance',
+  'Job opportunity',
+  'Open call',
+  'Other'
+];
+
+const statuses = ['Open now', 'Opening soon', 'Ongoing support', 'Watchlist'];
+const regions = ['Malawi', 'Regional', 'Global'];
+const audiences = [
+  'Residents and families',
+  'Service providers and NGOs',
+  'Small businesses and traders',
+  'Visitors, researchers, and partners',
+  'Artists, educators, and job seekers'
+];
+---
+
+<MainLayout
+  title={`${pageTitle} | Grants and programs`}
+  description={pageDescription}
+  canonical="https://services.dzaleka.com/grants-and-programs/submit"
+  robots="index, follow, max-image-preview:large"
+>
+  <section class="relative overflow-hidden border-b border-slate-200 bg-slate-900">
+    <div class="absolute inset-0 z-0">
+      <img src="/images/dzaleka-hero.jpeg" alt="Community opportunity submissions" class="h-full w-full object-cover" />
+      <div class="absolute inset-0 bg-slate-900/65"></div>
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div class="mb-8 flex justify-center">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Grants and programs', href: '/grants-and-programs' },
+            { label: 'Submit an opportunity' }
+          ]}
+          light={true}
+        />
+      </div>
+
+      <div class="mx-auto max-w-4xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-200">Funding and support opportunities</p>
+        <h1 class="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Submit an opportunity</h1>
+        <p class="mt-5 text-lg leading-8 text-slate-200 sm:text-xl">
+          Share a verified grant, programme, fellowship, finance product, or support opportunity that could benefit the Dzaleka community.
+        </p>
+
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href="#opportunity-form"
+            class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100"
+          >
+            Go to form
+          </a>
+          <a
+            href="/grants-and-programs"
+            class="inline-flex items-center justify-center rounded-lg border border-white/30 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
+          >
+            Back to grants and programs
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+        <h2 class="text-lg font-semibold text-slate-900">Before you submit</h2>
+        <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+          <li>Include the official source link so we can verify the opportunity.</li>
+          <li>Explain who can apply and whether it is Malawi-specific, regional, or global.</li>
+          <li>Use the notes field to clarify if it is a grant, loan, training programme, or watchlist source.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <div id="opportunity-form" class="mx-auto max-w-3xl rounded-lg border border-slate-200 bg-white p-6 sm:p-8 scroll-mt-24">
+      <div class="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight text-slate-900">Opportunity details</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Provide enough detail for review, verification, and possible listing.</p>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a
+            href="#submit-actions"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
+          >
+            Review before submit
+          </a>
+          <button
+            type="button"
+            id="topSubmitButton"
+            class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+          >
+            Submit opportunity
+          </button>
+        </div>
+      </div>
+
+      <form id="opportunityForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+        <input type="hidden" name="_subject" value="New grants and programs opportunity submission" />
+        <input type="hidden" name="_next" value="/thank-you?type=opportunity-submission" />
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="organizationName" class="text-sm font-medium text-slate-700 sm:pt-3">Organisation name</label>
+          <input
+            type="text"
+            name="organizationName"
+            id="organizationName"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="contactName" class="text-sm font-medium text-slate-700 sm:pt-3">Contact name</label>
+          <input
+            type="text"
+            name="contactName"
+            id="contactName"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="email" class="text-sm font-medium text-slate-700 sm:pt-3">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="phone" class="text-sm font-medium text-slate-700 sm:pt-3">Phone or WhatsApp</label>
+          <input
+            type="text"
+            name="phone"
+            id="phone"
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="opportunityTitle" class="text-sm font-medium text-slate-700 sm:pt-3">Opportunity title</label>
+          <input
+            type="text"
+            name="opportunityTitle"
+            id="opportunityTitle"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="sourceUrl" class="text-sm font-medium text-slate-700 sm:pt-3">Official source URL</label>
+          <input
+            type="url"
+            name="sourceUrl"
+            id="sourceUrl"
+            required
+            placeholder="https://"
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="opportunityType" class="text-sm font-medium text-slate-700 sm:pt-3">Opportunity type</label>
+          <select
+            id="opportunityType"
+            name="opportunityType"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          >
+            <option value="">Select a type</option>
+            {opportunityTypes.map((type) => (
+              <option value={type}>{type}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="status" class="text-sm font-medium text-slate-700 sm:pt-3">Current status</label>
+          <select
+            id="status"
+            name="status"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          >
+            <option value="">Select status</option>
+            {statuses.map((status) => (
+              <option value={status}>{status}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="region" class="text-sm font-medium text-slate-700 sm:pt-3">Region</label>
+          <select
+            id="region"
+            name="region"
+            required
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          >
+            <option value="">Select region</option>
+            {regions.map((region) => (
+              <option value={region}>{region}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="closingDate" class="text-sm font-medium text-slate-700 sm:pt-3">Closing date</label>
+          <input
+            type="date"
+            name="closingDate"
+            id="closingDate"
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <span class="text-sm font-medium text-slate-700 sm:pt-3">Relevant audience</span>
+          <div class="grid gap-3 sm:grid-cols-2">
+            {audiences.map((audience) => (
+              <label class="flex items-start gap-3 rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  name="audience"
+                  value={audience}
+                  class="mt-0.5 h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                />
+                <span>{audience}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="summary" class="text-sm font-medium text-slate-700 sm:pt-3">Short summary</label>
+          <textarea
+            id="summary"
+            name="summary"
+            rows="4"
+            required
+            placeholder="What is the opportunity and what support does it offer?"
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          ></textarea>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="eligibilityNote" class="text-sm font-medium text-slate-700 sm:pt-3">Eligibility note</label>
+          <textarea
+            id="eligibilityNote"
+            name="eligibilityNote"
+            rows="4"
+            required
+            placeholder="Who can apply, and are there location, legal, or documentation requirements?"
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          ></textarea>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
+          <label for="notes" class="text-sm font-medium text-slate-700 sm:pt-3">Why it should be listed</label>
+          <textarea
+            id="notes"
+            name="notes"
+            rows="4"
+            placeholder="Anything we should know when reviewing this for the Dzaleka grants and programs page."
+            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+          ></textarea>
+        </div>
+
+        <div id="submit-actions" class="flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end scroll-mt-24">
+          <button
+            type="button"
+            onclick="window.location.href='/grants-and-programs'"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700"
+          >
+            Submit opportunity
+          </button>
+        </div>
+      </form>
+
+      <div id="successMessage" class="mt-6 hidden rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <p class="text-sm font-medium text-emerald-800">Opportunity submitted successfully.</p>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  const form = document.getElementById('opportunityForm');
+  const successMessage = document.getElementById('successMessage');
+  const topSubmitButton = document.getElementById('topSubmitButton');
+
+  if (form && successMessage) {
+    topSubmitButton?.addEventListener('click', () => {
+      form.requestSubmit();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            Accept: 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Submission failed');
+        }
+
+        successMessage.classList.remove('hidden');
+        form.reset();
+
+        setTimeout(() => {
+          window.location.href = '/thank-you?type=opportunity-submission';
+        }, 1200);
+      } catch (error) {
+        console.error('Error submitting opportunity:', error);
+        alert('There was a problem sending the form. Please try again.');
+      }
+    });
+  }
+</script>

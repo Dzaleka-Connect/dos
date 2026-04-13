@@ -1,64 +1,46 @@
 ---
 title: Service Directory
-description: Find and connect with local services
+description: Guide to browsing and using service listings
 section: services
 ---
 
 # Service Directory
 
-Find and connect with organizations and services in Dzaleka Refugee Camp.
+The service directory helps residents, families, partners, and visitors find organisations and programmes working in and around Dzaleka.
 
-## Features
+## What you can do
 
-### Browse Services
-- View all services
-- Filter verified services
-- Sort by:
-  - Featured first
-  - Name (A-Z)
-  - Recently updated
+- browse [Services](/services)
+- search by keyword
+- open service detail pages
+- review contact details and locations
 
-### Service Details
-Each service listing includes:
-- Service description
-- Contact information
-- Location details
-- Verification status
-- Service category
+## How to use the directory
 
-## Quick Actions
+1. Visit [Services](/services).
+2. Search by topic, organisation, or keyword.
+3. Open the listing that looks most relevant.
+4. Use the contact details provided on the page.
 
-### Find Services
-1. Visit [Service Directory](/services)
-2. Use filters:
-   - Verified only
-   - Sort options
-   - Search
-3. Contact providers
+## What a service page may include
 
-### Register Service
-1. Go to [Register Service](/services/register)
-2. Provide details:
-   - Service information
-   - Contact details
-   - Service category
-3. Submit for review
+- organisation name
+- description of the service
+- category
+- location or coverage area
+- contact details
+- opening hours or availability
 
-### Service Categories
-- [All Services](/services)
-- [Verified Services](/services?verified=true)
-- [Featured Services](/services?sort=featured)
+## If information is incorrect
 
-## Service Features
+If a public service listing needs to be corrected, use:
 
-- Service verification
-- Contact options
-- Location mapping
-- Service updates
-- Provider profiles
+- [Service Update Request](/services/update-request)
+- [Contact](/contact)
 
-## Need Help?
+## Related pages
 
-- [Service Guidelines](/services/guidelines)
-- [Contact Support](/contact)
-- [Report Issue](/support)
+- [Services](/services)
+- [Service Registration](/services/register)
+- [Service Statistics](/services/stats)
+- [Help Desk](/help-desk)

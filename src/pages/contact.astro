@@ -42,38 +42,36 @@ const seo = {
 >
   <main class="min-h-screen">
     <!-- Hero Section -->
-    <div class="relative overflow-hidden bg-primary-50 border-b border-primary-100">
-      <div class="absolute inset-0 opacity-[0.03]">
-        <div class="absolute inset-0 pattern-mudcloth"></div>
-      </div>
-      
-      <div class="relative z-10 max-w-7xl mx-auto px-4 py-16 sm:py-24 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-          Get in Touch
-        </h1>
-        <p class="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Have questions, need support, or want to collaborate? We're here to help connect our community
-        </p>
+    <div class="border-b border-slate-200 bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-16 sm:py-24 sm:px-6 lg:px-8">
+        <div class="mb-8">
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Contact Us' }
+          ]} />
+        </div>
+        <div class="text-center">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+            Get in Touch
+          </h1>
+          <p class="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Have questions, need support, or want to collaborate? We're here to help connect our community
+          </p>
+        </div>
       </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-      <div class="mb-8">
-        <Breadcrumb items={[
-          { label: 'Home', href: '/' },
-          { label: 'Contact Us' }
-        ]} />
-      </div>
 
       <div class="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
         <!-- Contact Information -->
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all duration-300">
+        <div class="bg-white rounded-xl p-8 border border-slate-200 hover:border-slate-300 transition-colors">
           <h2 class="text-2xl font-bold text-gray-900 mb-8">Contact Information</h2>
 
           <div class="space-y-8">
             <div class="flex items-start">
               <div class="flex-shrink-0">
-                <div class="flex items-center justify-center h-12 w-12 rounded-lg bg-primary-50 text-primary-600">
+                <div class="flex items-center justify-center h-12 w-12 rounded-lg bg-slate-50 text-slate-600 border border-slate-200">
                   <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -81,7 +79,7 @@ const seo = {
               </div>
               <div class="ml-4">
                 <p class="text-lg font-medium text-gray-900">Email</p>
-                <a href={`mailto:${contactInfo.email}`} class="mt-1 text-gray-600 hover:text-primary-600 transition-colors block">
+                <a href={`mailto:${contactInfo.email}`} class="mt-1 text-gray-600 hover:text-slate-900 transition-colors block">
                   {contactInfo.email}
                 </a>
               </div>
@@ -89,7 +87,7 @@ const seo = {
 
             <div class="flex items-start">
               <div class="flex-shrink-0">
-                <div class="flex items-center justify-center h-12 w-12 rounded-lg bg-primary-50 text-primary-600">
+                <div class="flex items-center justify-center h-12 w-12 rounded-lg bg-slate-50 text-slate-600 border border-slate-200">
                   <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -112,7 +110,7 @@ const seo = {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 hover:bg-primary-600 hover:text-white transition-all duration-300"
+                  class="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 hover:bg-slate-700 hover:text-white transition-colors"
                 >
                   <span class="sr-only">{social.name}</span>
                   <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -133,7 +131,7 @@ const seo = {
         </div>
 
         <!-- Contact Form -->
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all duration-300">
+        <div class="bg-white rounded-xl p-8 border border-slate-200 hover:border-slate-300 transition-colors">
           <h2 class="text-2xl font-bold text-gray-900 mb-8">Send a Message</h2>
           <ContactForm />
         </div>

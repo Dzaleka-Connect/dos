@@ -13,7 +13,15 @@ const collections = [
   'talents', 
   'community-voices', 
   'docs', 
-  'jobs'
+  'jobs',
+  'courses',
+  'artists',
+  'artworks',
+  'marketplace',
+  'stores',
+  'rights',
+  'poets',
+  'dancers'
 ];
 
 // Template for API endpoint

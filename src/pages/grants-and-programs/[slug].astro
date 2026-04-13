@@ -1,0 +1,222 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import {
+  curatedGrantsPrograms,
+  audienceShortLabels,
+  getStatusClasses
+} from '../../data/grantsPrograms';
+
+export function getStaticPaths() {
+  return curatedGrantsPrograms.map((program) => ({
+    params: { slug: program.slug },
+    props: { program }
+  }));
+}
+
+const { program } = Astro.props;
+const canonicalUrl = `https://services.dzaleka.com/grants-and-programs/${program.slug}`;
+const pageKeywords = `${program.title}, Dzaleka grants, Dzaleka programs, community opportunities Malawi, refugee support programs`;
+
+const pageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: program.title,
+  description: program.summary,
+  url: canonicalUrl,
+  about: {
+    '@type': 'Thing',
+    name: program.title,
+    description: program.summary
+  }
+};
+
+const breadcrumbStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://services.dzaleka.com'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Grants and programs',
+      item: 'https://services.dzaleka.com/grants-and-programs'
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: program.title,
+      item: canonicalUrl
+    }
+  ]
+};
+---
+
+<MainLayout
+  title={`${program.title} | Grants and programs`}
+  description={program.summary}
+  keywords={pageKeywords}
+  canonical={canonicalUrl}
+  robots="index, follow, max-image-preview:large"
+  openGraph={{
+    title: `${program.title} | Grants and programs`,
+    description: program.summary,
+    type: 'article',
+    url: canonicalUrl,
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US'
+  }}
+  twitter={{
+    card: 'summary_large_image',
+    title: `${program.title} | Grants and programs`,
+    description: program.summary
+  }}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
+
+  <main class="min-h-screen bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="mb-6">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Grants and programs', href: '/grants-and-programs' },
+              { label: program.title }
+            ]}
+          />
+        </div>
+
+        <div class="max-w-4xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class:list={['inline-flex rounded-[5px] px-2.5 py-1 text-xs font-semibold capitalize', getStatusClasses(program.status)]}>
+              {program.status}
+            </span>
+            <span class="inline-flex rounded-[5px] bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
+              {program.type}
+            </span>
+          </div>
+
+          <h1 class="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{program.title}</h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">{program.summary}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_320px]">
+        <div class="space-y-8">
+          <section class="border border-slate-200 bg-white px-6 py-6">
+            <h2 class="text-2xl font-semibold text-slate-900">About this opportunity</h2>
+            <p class="mt-4 text-base leading-7 text-slate-700">{program.intro}</p>
+          </section>
+
+          <section class="border border-slate-200 bg-white px-6 py-6">
+            <h2 class="text-2xl font-semibold text-slate-900">What it can help with</h2>
+            <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
+              {program.support.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="border border-slate-200 bg-white px-6 py-6">
+            <h2 class="text-2xl font-semibold text-slate-900">Who this is for</h2>
+            <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
+              {program.eligibility.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="border border-slate-200 bg-white px-6 py-6">
+            <h2 class="text-2xl font-semibold text-slate-900">How to access it</h2>
+            <ol class="mt-4 space-y-3 text-base leading-7 text-slate-700">
+              {program.applicationSteps.map((item, index) => (
+                <li class="flex gap-4">
+                  <span class="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
+                    {index + 1}
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+
+        <aside class="space-y-6">
+          <section class="border border-slate-200 bg-white px-6 py-6">
+            <h2 class="text-lg font-semibold text-slate-900">Program details</h2>
+            <dl class="mt-4 space-y-4 text-sm text-slate-700">
+              <div>
+                <dt class="font-medium text-slate-900">Status</dt>
+                <dd class="mt-1 capitalize">{program.status}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-slate-900">Type</dt>
+                <dd class="mt-1">{program.type}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-slate-900">Audience</dt>
+                <dd class="mt-1">{program.audience.map((audience) => audienceShortLabels[audience]).join(', ')}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-slate-900">Organisation</dt>
+                <dd class="mt-1">{program.organization}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-slate-900">Location</dt>
+                <dd class="mt-1">{program.location}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-slate-900">Closing date</dt>
+                <dd class="mt-1">{program.deadline || 'Ongoing'}</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="border border-slate-200 bg-white px-6 py-6">
+            <h2 class="text-lg font-semibold text-slate-900">Next step</h2>
+            <div class="mt-4">
+              <a href={program.actionHref} class="inline-flex w-full items-center justify-center rounded-md bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800">
+                {program.actionLabel}
+              </a>
+            </div>
+          </section>
+
+          {program.contacts && program.contacts.length > 0 && (
+            <section class="border border-slate-200 bg-white px-6 py-6">
+              <h2 class="text-lg font-semibold text-slate-900">Contacts</h2>
+              <div class="mt-4 space-y-3 text-sm text-slate-700">
+                {program.contacts.map((contact) => (
+                  <div>
+                    <div class="font-medium text-slate-900">{contact.label}</div>
+                    {contact.href ? (
+                      <a href={contact.href} class="mt-1 inline-flex text-primary-700 hover:text-primary-800 hover:underline">
+                        {contact.value}
+                      </a>
+                    ) : (
+                      <div class="mt-1">{contact.value}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </aside>
+      </div>
+    </section>
+  </main>
+</MainLayout>

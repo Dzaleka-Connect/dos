@@ -13,6 +13,15 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const articleUrl = `https://services.dzaleka.com/news/${entry.id}`;
+const articleImageUrl = entry.data.image
+  ? (entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`)
+  : 'https://services.dzaleka.com/images/dzaleka-hero.jpeg';
+const modifiedDate = entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString();
+const authorName = entry.data.author || 'Dzaleka Online Services';
+const publisherName = 'Dzaleka Online Services';
+const publisherLogoUrl = 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png';
+const articleWordCount = entry.body ? entry.body.trim().split(/\s+/).filter(Boolean).length : undefined;
 
 const allNews = await getCollection('news');
 const relatedNews = allNews
@@ -30,6 +39,13 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+const formattedUpdatedDate = entry.data.updated
+  ? new Date(entry.data.updated).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
 
 const categoryLabels = {
   'business-spotlight': 'Business spotlight',
@@ -43,30 +59,26 @@ const seo = {
   title: `${entry.data.title} | Dzaleka Online Services`,
   description: entry.data.description,
   type: 'article',
-  canonical: `https://services.dzaleka.com/news/${entry.id}`,
+  canonical: articleUrl,
+  robots: 'index, follow, max-image-preview:large',
   openGraph: {
     title: entry.data.title,
     description: entry.data.description,
     type: 'article',
     site_name: 'Dzaleka Online Services',
     locale: 'en_US',
-    url: `https://services.dzaleka.com/news/${entry.id}`,
-    image: entry.data.image ? {
-      url: entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`,
+    url: articleUrl,
+    image: {
+      url: articleImageUrl,
       width: 1200,
       height: 630,
       alt: entry.data.title,
       type: 'image/jpeg'
-    } : {
-      url: 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
-      width: 1200,
-      height: 630,
-      alt: 'Dzaleka Online Services',
-      type: 'image/jpeg'
     },
     article: {
       publishedTime: entry.data.date.toISOString(),
-      modifiedTime: entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
+      modifiedTime: modifiedDate,
+      author: [authorName],
       tags: entry.data.tags || [],
       section: categoryLabels[entry.data.category] || 'News'
     }
@@ -75,63 +87,55 @@ const seo = {
     card: 'summary_large_image',
     title: entry.data.title,
     description: entry.data.description,
-    image: entry.data.image ? (
-      entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
-    ) : 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
-    creator: entry.data.author ? `@${entry.data.author.replace(/\s+/g, '')}` : '@DzalekaConnect'
+    image: articleImageUrl,
+    creator: '@dzalekaconnect'
   }
 };
 
 const articleStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'NewsArticle',
+  url: articleUrl,
   headline: entry.data.title,
   description: entry.data.description,
-  image: {
-    '@type': 'ImageObject',
-    url: entry.data.image ? (
-      entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`
-    ) : 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
-    width: 1200,
-    height: 630,
-    acquireLicensePage: 'https://services.dzaleka.com/contact',
-    creditText: entry.data.author ? `Photo by ${entry.data.author}` : 'Dzaleka Online Services',
-    copyrightNotice: `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
-  },
+  image: [articleImageUrl],
+  thumbnailUrl: articleImageUrl,
   datePublished: entry.data.date.toISOString(),
-  dateModified: entry.data.updated ? entry.data.updated.toISOString() : entry.data.date.toISOString(),
+  dateModified: modifiedDate,
   author: {
     '@type': 'Person',
-    name: entry.data.author || 'Dzaleka Online Services',
-    url: 'https://services.dzaleka.com'
+    name: authorName
   },
   publisher: {
     '@type': 'Organization',
-    name: 'Dzaleka Online Services',
+    name: publisherName,
     logo: {
       '@type': 'ImageObject',
-      url: 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png',
-      width: '200',
-      height: '200'
+      url: publisherLogoUrl,
+      width: 200,
+      height: 200
     },
     url: 'https://services.dzaleka.com'
   },
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': `https://services.dzaleka.com/news/${entry.id}`
+    '@id': articleUrl
   },
   articleSection: categoryLabels[entry.data.category] || 'News',
   keywords: entry.data.tags ? entry.data.tags.join(', ') : undefined,
   inLanguage: 'en-US',
-  isAccessibleForFree: true
+  isAccessibleForFree: true,
+  wordCount: articleWordCount
 };
 ---
 
 <MainLayout
   title={seo.title}
   description={seo.description}
+  author={authorName}
   type={seo.type}
   canonical={seo.canonical}
+  robots={seo.robots}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
@@ -167,6 +171,12 @@ const articleStructuredData = {
             <>
               <span aria-hidden="true">•</span>
               <span>{entry.data.author}</span>
+            </>
+          )}
+          {formattedUpdatedDate && (
+            <>
+              <span aria-hidden="true">•</span>
+              <span>Updated {formattedUpdatedDate}</span>
             </>
           )}
         </div>

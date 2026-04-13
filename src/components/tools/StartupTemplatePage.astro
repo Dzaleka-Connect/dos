@@ -1,0 +1,371 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../ui/Breadcrumb.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  template: CollectionEntry<'startup-templates'>;
+  relatedTools: CollectionEntry<'startup-templates'>[];
+}
+
+const { template, relatedTools } = Astro.props;
+
+const canonical = `https://services.dzaleka.com/tools-and-templates/${template.id}`;
+
+const breadcrumbStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://services.dzaleka.com'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Tools and templates',
+      item: 'https://services.dzaleka.com/tools-and-templates'
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: template.data.title,
+      item: canonical
+    }
+  ]
+};
+
+const pageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: template.data.title,
+  description: template.data.description,
+  url: canonical,
+  isPartOf: {
+    '@type': 'CollectionPage',
+    name: 'Tools and Templates',
+    url: 'https://services.dzaleka.com/tools-and-templates'
+  }
+};
+---
+
+<MainLayout
+  title={template.data.title}
+  description={template.data.description}
+  keywords={template.data.keywords}
+  canonical={canonical}
+  robots="index, follow, max-image-preview:large"
+  openGraph={{
+    title: `${template.data.title} | Dzaleka Online Services`,
+    description: template.data.description,
+    type: 'website',
+    url: canonical,
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US'
+  }}
+  twitter={{
+    card: 'summary_large_image',
+    title: `${template.data.title} | Dzaleka Online Services`,
+    description: template.data.description
+  }}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
+
+  <main class="startup-template-page min-h-screen bg-white">
+    <section class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="template-print-hidden">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Tools and templates', href: '/tools-and-templates' },
+              { label: template.data.title }
+            ]}
+          />
+        </div>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-start">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">Business startup template</p>
+            <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">{template.data.title}</h1>
+            <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-600">{template.data.description}</p>
+          </div>
+
+          <aside class="rounded-lg border border-slate-200 bg-white p-5">
+            <dl class="space-y-4 text-sm">
+              <div>
+                <dt class="font-medium text-slate-900">Best for</dt>
+                <dd class="mt-1 leading-6 text-slate-600">{template.data.bestFor}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-slate-900">Estimated time</dt>
+                <dd class="mt-1 leading-6 text-slate-600">{template.data.estimatedTime}</dd>
+              </div>
+            </dl>
+            <div class="template-print-hidden mt-5 flex flex-col gap-3">
+              <button
+                type="button"
+                onclick="window.print()"
+                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                Print this template
+              </button>
+              <a
+                href="/tools-and-templates"
+                class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+              >
+                Back to tools library
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold text-slate-900">What this template is for</h2>
+        <p class="mt-3 max-w-4xl text-base leading-7 text-slate-600">{template.data.intro}</p>
+      </div>
+    </section>
+
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="grid gap-8 lg:grid-cols-2">
+          <div>
+            <h2 class="text-2xl font-semibold text-slate-900">Who should use it</h2>
+            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+              {template.data.whoShouldUse.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 flex-none rounded-full bg-primary-700"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-semibold text-slate-900">Before you start</h2>
+            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+              {template.data.beforeYouStart.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 flex-none rounded-full bg-slate-400"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold text-slate-900">The template</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            Use the sections below as a worksheet. You can print this page or copy the headings into a notebook, document, or spreadsheet.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          {template.data.sections.map((section) => (
+            <article class="worksheet-block rounded-lg border border-slate-200 bg-white">
+              <div class="border-b border-slate-200 px-5 py-4">
+                <h3 class="text-xl font-semibold text-slate-900">{section.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">{section.description}</p>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                  <thead class="bg-slate-50">
+                    <tr>
+                      <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Section item</th>
+                      <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">What to write</th>
+                      <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Your notes</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200">
+                    {section.rows.map((row) => (
+                      <tr>
+                        <td class="px-5 py-4 align-top text-sm font-medium text-slate-900">{row.label}</td>
+                        <td class="px-5 py-4 align-top text-sm leading-6 text-slate-600">{row.prompt}</td>
+                        <td class="px-5 py-4 align-top">
+                          <div class="template-notes-area min-h-[220px] rounded-md border border-dashed border-slate-300 bg-white"></div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold text-slate-900">Example for a Dzaleka small business</h2>
+          <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            <span class="font-medium text-slate-900">{template.data.example.businessName}</span> is a {template.data.example.businessType.toLowerCase()}.
+            {' '}{template.data.example.summary}
+          </p>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {template.data.example.sections.map((section) => (
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+              <h3 class="text-lg font-semibold text-slate-900">{section.title}</h3>
+              <ul class="mt-3 space-y-3 text-sm leading-6 text-slate-600">
+                {section.items.map((item) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-2 w-2 flex-none rounded-full bg-primary-700"></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="template-related grid gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
+          <div>
+            <h2 class="text-2xl font-semibold text-slate-900">Next steps and related tools</h2>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+              Most businesses benefit from using more than one planning tool. Use the related pages below to keep your business plan practical and realistic.
+            </p>
+
+            <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {relatedTools.map((tool) => (
+                <a href={`/tools-and-templates/${tool.id}`} class="rounded-lg border border-slate-200 bg-slate-50 p-4 hover:bg-white">
+                  <h3 class="text-base font-semibold text-slate-900">{tool.data.shortTitle}</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{tool.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <aside class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+            <h3 class="text-lg font-semibold text-slate-900">Useful routes</h3>
+            <div class="mt-4 space-y-3 text-sm">
+              <a href="/marketplace/submit" class="block text-primary-700 hover:text-primary-800 hover:underline">List a product or service</a>
+              <a href="/grants-and-programs" class="block text-primary-700 hover:text-primary-800 hover:underline">Browse grants and programs</a>
+              <a href="/entrepreneurs" class="block text-primary-700 hover:text-primary-800 hover:underline">Business support routes</a>
+              <a href="/tools-and-templates" class="block text-primary-700 hover:text-primary-800 hover:underline">Return to tools library</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style is:global>
+  @media print {
+    header,
+    footer,
+    .template-print-hidden,
+    .template-related,
+    .toast-container,
+    .skip-link {
+      display: none !important;
+    }
+
+    body {
+      background: #fff !important;
+      padding-top: 0 !important;
+    }
+
+    .startup-template-page,
+    .startup-template-page section,
+    .startup-template-page article,
+    .startup-template-page aside {
+      background: #fff !important;
+      box-shadow: none !important;
+    }
+
+    .startup-template-page section {
+      border-color: #d1d5db !important;
+      break-inside: avoid;
+    }
+
+    .worksheet-block {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+    }
+
+    .worksheet-block table {
+      width: 100%;
+      font-size: 11px;
+    }
+
+    .worksheet-block td,
+    .worksheet-block th {
+      padding: 0.5rem !important;
+    }
+
+    .worksheet-block thead {
+      display: none !important;
+    }
+
+    .worksheet-block table,
+    .worksheet-block tbody,
+    .worksheet-block tr,
+    .worksheet-block td {
+      display: block !important;
+      width: 100% !important;
+    }
+
+    .worksheet-block tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      border-bottom: 1px solid #d1d5db;
+      padding: 0.75rem 0;
+    }
+
+    .worksheet-block tr:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .worksheet-block td {
+      border: 0 !important;
+      padding: 0.25rem 0 !important;
+    }
+
+    .worksheet-block td:first-child {
+      font-weight: 700;
+      font-size: 12px;
+      color: #0f172a !important;
+    }
+
+    .worksheet-block td:nth-child(2) {
+      font-size: 11px;
+      line-height: 1.6;
+      color: #475569 !important;
+    }
+
+    .template-notes-area {
+      min-height: 520px !important;
+      width: 100% !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 0 !important;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          #ffffff 0,
+          #ffffff 28px,
+          #e2e8f0 29px,
+          #ffffff 30px
+        ) !important;
+    }
+  }
+</style>

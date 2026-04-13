@@ -55,7 +55,7 @@ function getPaginationUrl(pageNum: number) {
 
 <MainLayout title="Community Job Board">
   <!-- Hero Section -->
-  <div class="relative overflow-hidden bg-primary-50">
+  <div class="relative overflow-hidden bg-slate-50">
     <div class="absolute inset-0 opacity-[0.03]">
       <div class="absolute inset-0 pattern-mudcloth"></div>
     </div>
@@ -71,7 +71,7 @@ function getPaginationUrl(pageNum: number) {
       <div class="flex flex-wrap gap-4 justify-center">
         <a
           href="/jobs/post"
-          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
         >
           <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -94,7 +94,7 @@ function getPaginationUrl(pageNum: number) {
         <label for="sort-select" class="text-sm font-medium text-gray-700">Sort by:</label>
         <select
           id="sort-select"
-          class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-lg"
+          class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 sm:text-sm rounded-lg"
           onchange="window.location.href = this.value === 'recent' ? '/jobs' : '/jobs?sort=' + this.value"
         >
           <option value="recent" selected={currentSort === 'recent'}>Most Recent</option>
@@ -147,7 +147,7 @@ function getPaginationUrl(pageNum: number) {
                 href={getPaginationUrl(pageNum)}
                 class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                   page.currentPage === pageNum
-                    ? 'bg-primary-600 text-white'
+                    ? 'bg-gray-900 text-white'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
                 aria-current={page.currentPage === pageNum ? 'page' : undefined}

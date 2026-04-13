@@ -1,171 +1,63 @@
 ---
 title: Privacy Guidelines
-description: Understanding privacy and data protection in the Dzaleka Online Services
+description: Practical privacy guidance for contributors and users of the platform
 section: policies
 ---
 
 # Privacy Guidelines
 
-The Dzaleka Online Services is committed to protecting the privacy and security of our community members. These guidelines outline how we handle personal information and cultural content.
+These guidelines explain the privacy expectations contributors should follow when sharing content on Dzaleka Online Services.
 
-## Data Protection
+## Protect personal information
 
-### Personal Information
-We protect:
-- Names and identities
-- Contact details
-- Location information
-- Personal stories
-- Family histories
+Take extra care when sharing:
 
-### Cultural Content
-We safeguard:
-- Traditional knowledge
-- Cultural practices
-- Community stories
-- Sacred information
-- Historical records
+- full names
+- phone numbers and email addresses
+- home or exact location details
+- information about children or vulnerable people
+- health, legal, or case-related details
 
-## Consent Requirements
+## Get consent before sharing
 
-### Individual Consent
-Required for:
-- Personal stories
-- Photographs
-- Voice recordings
-- Video content
-- Contact information
+Consent is especially important for:
 
-### Community Consent
-Needed for:
-- Cultural practices
-- Traditional knowledge
-- Community events
-- Group photographs
-- Shared stories
+- photos of identifiable people
+- personal stories
+- audio or video recordings
+- group activities where individuals may be sensitive about being published
 
-## Content Guidelines
+If you are not sure whether consent is clear, do not publish the material yet.
 
-### Sensitive Content
-Protection of:
-- Personal identifiers
-- Location details
-- Vulnerable groups
-- Cultural secrets
-- Sacred knowledge
+## Be careful with sensitive content
 
-### Content Restrictions
-We do not share:
-- Private information
-- Sensitive locations
-- Protected knowledge
-- Restricted practices
-- Confidential data
+Do not upload content that:
 
-## User Rights
+- puts someone at risk
+- reveals confidential case details
+- exposes protected cultural knowledge without permission
+- shares private data that is not needed for the public record
 
-### Access Rights
-Users can:
-- View their data
-- Request corrections
-- Download content
-- Delete submissions
-- Update information
+## If you need something corrected or removed
 
-### Content Control
-Contributors can:
-- Modify submissions
-- Set privacy levels
-- Remove content
-- Update details
-- Manage access
+Use one of these support routes:
 
-## Data Usage
+- [Contact](/contact)
+- [Help Desk](/help-desk)
+- [Privacy Policy](/privacy)
 
-### Permitted Uses
-Content may be used for:
-- Cultural preservation
-- Educational purposes
-- Community programs
-- Research activities
-- Public awareness
+Include the page link and explain what needs to be reviewed.
 
-### Usage Restrictions
-Content may not be:
-- Commercially exploited
-- Shared without permission
-- Modified without consent
-- Used harmfully
-- Misrepresented
+## Good privacy practice for contributors
 
-## Security Measures
+- use only the details needed for public understanding
+- avoid unnecessary personal identifiers
+- double-check names, dates, and image captions
+- ask before uploading someone else's photo or story
 
-### Technical Security
-We implement:
-- Data encryption
-- Secure storage
-- Access controls
-- Regular backups
-- Security updates
+## Need help?
 
-### Access Controls
-We maintain:
-- User authentication
-- Permission levels
-- Activity logging
-- Content monitoring
-- Security reviews
-
-## Reporting Issues
-
-### Privacy Concerns
-Report issues about:
-- Data breaches
-- Privacy violations
-- Unauthorized use
-- Content misuse
-- Security concerns
-
-### Response Process
-We will:
-- Investigate reports
-- Take quick action
-- Update affected users
-- Implement fixes
-- Prevent recurrence
-
-## Best Practices
-
-### For Contributors
-When sharing:
-- Consider privacy
-- Get proper consent
-- Review content
-- Protect identities
-- Follow guidelines
-
-### For Users
-When accessing:
-- Respect privacy
-- Honor restrictions
-- Credit sources
-- Share responsibly
-- Report concerns
-
-## Contact Information
-
-### Privacy Team
-Reach us for:
-- Privacy questions
-- Content concerns
-- Access requests
-- Policy clarification
-- Issue reporting
-
-### Support Channels
-Contact through:
-- Email: [privacy@dzalekaheritage.org]
-- Office: [Community Center]
-- Hours: [Monday-Friday, 9AM-5PM]
-
-Help us maintain a secure and respectful digital archive!
+- [Privacy Policy](/privacy)
+- [Terms of Service](/terms)
+- [Contact](/contact)
+- Email: [dzalekaconnect@gmail.com](mailto:dzalekaconnect@gmail.com)

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import JobCard from '../../components/jobs/JobCard.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { isJobExpired } from '../../utils/dateHelpers';
 // Get URL parameters
 const currentSort = Astro.url.searchParams.get('sort') || 'recent';
@@ -147,35 +148,63 @@ const jobsStructuredData = {
   <script type="application/ld+json" set:html={JSON.stringify(jobsStructuredData)} />
 
   <!-- Hero Section -->
-  <div class="relative overflow-hidden bg-primary-50">
-    <div class="absolute inset-0 opacity-[0.03]">
-      <div class="absolute inset-0 pattern-mudcloth"></div>
+  <div class="relative overflow-hidden border-b border-gray-200 bg-gray-900 mb-12">
+    <div class="absolute inset-0 z-0">
+      <img src="/images/dzaleka-hero.jpeg" alt="Dzaleka Community Job Board" class="h-full w-full object-cover" />
+      <div class="absolute inset-0 bg-gray-900/65"></div>
     </div>
-    
-    <div class="relative z-10 max-w-4xl mx-auto text-center pt-12 pb-16 px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-        Community Job Board
-      </h1>
-      <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-        Discover meaningful work and build your career within the Dzaleka community
-      </p>
-      
-      <div class="flex flex-wrap gap-4 justify-center">
-        <a
-          href="/jobs/post"
-          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-        >
-          <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-          </svg>
-          Post a Job
-        </a>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="mb-6 flex justify-center">
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Jobs' }
+          ]} light={true} />
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
+          Community Job Board
+        </h1>
+        <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Browse current opportunities, share vacancies, and connect Dzaleka community members with meaningful work.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#jobs-list"
+            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-gray-900 bg-white hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            Browse opportunities
+          </a>
+          <a
+            href="/jobs/post"
+            class="inline-flex items-center justify-center px-6 py-3 bg-transparent text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors font-medium shadow-sm text-sm"
+          >
+            <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Post a job
+          </a>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-gray-100">
+          <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-medium">
+            {activeJobs.length} active opportunities
+          </span>
+          <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-medium">
+            {featuredJobs.length} featured listings
+          </span>
+          <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-medium">
+            Sorted by {currentSort === 'deadline' ? 'deadline' : 'most recent'}
+          </span>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Main Content -->
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div id="jobs-list" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-mt-24">
     <!-- Filters and Stats Row -->
     <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
       <h2 class="text-xl font-bold text-gray-900">
@@ -186,7 +215,7 @@ const jobsStructuredData = {
         <label for="sort-select" class="text-sm font-medium text-gray-700">Sort by:</label>
         <select
           id="sort-select"
-          class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-lg"
+          class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 sm:text-sm rounded-lg"
           onchange="window.location.href = this.value === 'recent' ? '/jobs' : '/jobs?sort=' + this.value"
         >
           <option value="recent" selected={currentSort === 'recent'}>Most Recent</option>
@@ -226,7 +255,7 @@ const jobsStructuredData = {
             ))}
           </div>
         ) : (
-          <div class="text-center py-16 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+          <div class="text-center py-16 bg-gray-50 border-y border-dashed border-gray-200">
             <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
@@ -242,7 +271,7 @@ const jobsStructuredData = {
           <div class="flex gap-2">
             <a
               href={currentPage > 1 ? getPaginationUrl(currentPage - 1) : '#'}
-              class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              class={`inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-200 transition-colors ${
                 currentPage === 1
                   ? 'text-gray-400 cursor-not-allowed'
                   : 'text-gray-700 hover:bg-gray-50'
@@ -255,9 +284,9 @@ const jobsStructuredData = {
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
               <a
                 href={getPaginationUrl(page)}
-                class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                class={`inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-200 transition-colors ${
                   currentPage === page
-                    ? 'bg-primary-600 text-white'
+                    ? 'bg-gray-900 text-white'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
                 aria-current={currentPage === page ? 'page' : undefined}
@@ -268,7 +297,7 @@ const jobsStructuredData = {
 
             <a
               href={currentPage < totalPages ? getPaginationUrl(currentPage + 1) : '#'}
-              class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              class={`inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-200 transition-colors ${
                 currentPage === totalPages
                   ? 'text-gray-400 cursor-not-allowed'
                   : 'text-gray-700 hover:bg-gray-50'
@@ -283,24 +312,3 @@ const jobsStructuredData = {
     </div>
   </div>
 </MainLayout>
-
-<script>
-  // Function to handle form submission with client-side navigation
-  function handleSort(value: string) {
-    const url = new URL(window.location.href);
-    if (value === 'recent') {
-      url.searchParams.delete('sort');
-    } else {
-      url.searchParams.set('sort', value);
-    }
-    window.location.href = url.toString();
-  }
-
-  // Add event listeners to radio buttons
-  document.querySelectorAll('input[name="sort"]').forEach((radio) => {
-    radio.addEventListener('change', (e) => {
-      const target = e.target as HTMLInputElement;
-      handleSort(target.value);
-    });
-  });
-</script>

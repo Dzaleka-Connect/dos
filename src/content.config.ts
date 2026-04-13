@@ -183,6 +183,7 @@ const newsSchema = z.object({
   title: z.string(),
   description: z.string(),
   date: z.date(),
+  updated: z.date().optional(),
   category: z.enum(['business-spotlight', 'announcement', 'success-story', 'business-guide', 'news', 'education']),
   featured: z.boolean().optional(),
   image: z.string().optional(),
@@ -317,6 +318,43 @@ const inspirationalStorySchema = z.object({
   }).optional(),
 });
 
+const startupTemplateSchema = z.object({
+  title: z.string(),
+  shortTitle: z.string(),
+  description: z.string(),
+  bestFor: z.string(),
+  estimatedTime: z.string(),
+  intro: z.string(),
+  order: z.number(),
+  keywords: z.string(),
+  whoShouldUse: z.array(z.string()),
+  beforeYouStart: z.array(z.string()),
+  sections: z.array(
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      rows: z.array(
+        z.object({
+          label: z.string(),
+          prompt: z.string(),
+        })
+      ),
+    })
+  ),
+  example: z.object({
+    businessName: z.string(),
+    businessType: z.string(),
+    summary: z.string(),
+    sections: z.array(
+      z.object({
+        title: z.string(),
+        items: z.array(z.string()),
+      })
+    ),
+  }),
+  related: z.array(z.string()),
+});
+
 // Define the collections
 const profilesCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/profiles" }),
@@ -384,6 +422,11 @@ const stories = defineCollection({
 const inspirationalStories = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/inspirational-stories" }),
   schema: inspirationalStorySchema,
+});
+
+const startupTemplatesCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/startup-templates" }),
+  schema: startupTemplateSchema,
 });
 
 // Define the store schema
@@ -711,6 +754,7 @@ export const collections = {
   photos: photosCollection,
   stories: stories,
   'inspirational-stories': inspirationalStories,
+  'startup-templates': startupTemplatesCollection,
   marketplace: marketplaceCollection,
   stores: storesCollection,
   artists: artistsCollection,

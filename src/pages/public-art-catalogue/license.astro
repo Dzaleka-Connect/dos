@@ -1,245 +1,213 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
-const seo = {
-  title: "License & Usage Policy - Dzaleka Online Services",
-  description: "Learn about the licensing terms and usage policies for the Dzaleka Online Services content and artwork documentation.",
-  type: "website",
-  canonical: "https://services.dzaleka.com/public-art-catalogue/license",
-  openGraph: {
-    title: "License & Usage Policy - Dzaleka Online Services",
-    description: "Learn about the licensing terms and usage policies for the Dzaleka Online Services content and artwork documentation.",
-    type: "website",
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
-    url: "https://services.dzaleka.com/public-art-catalogue/license"
-  }
-};
+const title = 'License and usage policy - Dzaleka Online Services';
+const description =
+  'Learn how material from the Public Art Catalogue can be used, shared, and credited.';
+const lastUpdated = new Date().toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
-  openGraph={seo.openGraph}
->
-  <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section -->
-    <div class="bg-white border-b border-gray-200">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <div class="mb-6">
-          <a 
-            href="/public-art-catalogue"
-            class="inline-flex items-center gap-2 text-gray-500 hover:text-primary-600 transition-colors mb-8"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span>Back to Catalogue</span>
-          </a>
+<MainLayout title={title} description={description} canonical="https://services.dzaleka.com/public-art-catalogue/license">
+  <section class="border-b border-slate-200 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Public Art Catalogue', href: '/public-art-catalogue' },
+            { label: 'License and usage policy' }
+          ]}
+        />
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Policy</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            License and usage policy
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            This page explains how artwork records, catalogue text, and related documentation may
+            be reused, credited, and adapted.
+          </p>
         </div>
-        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">License & Usage Policy</h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Understanding how you can use and share content from the Dzaleka Online Services
-        </p>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-lg font-semibold text-slate-900">At a glance</h2>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <li>The catalogue is intended for non-commercial learning, documentation, and sharing.</li>
+            <li>Artwork and artist records should always be credited clearly.</li>
+            <li>Commercial reuse needs permission before publication or sale.</li>
+          </ul>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Content -->
-      <div class="space-y-8">
-        
-        <!-- Overview -->
-        <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
-          <p class="text-gray-600 leading-relaxed">
-            The Dzaleka Online Services is an independent documentation project that aims to preserve and share information about public artworks in and around Dzaleka Refugee Camp. This license and usage policy outlines how you can use, share, and contribute to this project.
+  <div class="bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Overview</h2>
+        <p class="mt-4 text-base leading-7 text-slate-600">
+          The Public Art Catalogue documents artworks, artists, and community context connected to
+          Dzaleka. The aim is to support visibility, preservation, and responsible public access.
+        </p>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Creative Commons license</h2>
+        <div class="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <h3 class="text-lg font-semibold text-slate-900">CC BY-NC-SA 4.0</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            Attribution-NonCommercial-ShareAlike 4.0 International.
           </p>
-        </section>
-
-        <!-- Creative Commons License -->
-        <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Creative Commons License</h2>
-          <div class="bg-primary-50 border border-primary-100 rounded-xl p-8 mb-8">
-            <div class="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-              <svg class="w-16 h-16 text-primary-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <div>
-                <h3 class="text-xl font-bold text-primary-900 mb-2">CC BY-NC-SA 4.0</h3>
-                <p class="text-primary-700 font-medium mb-2">Attribution-NonCommercial-ShareAlike 4.0 International</p>
-                <p class="text-primary-600 text-sm">
-                  This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="grid md:grid-cols-3 gap-6">
-            <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-100">
-              <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-primary-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <h4 class="font-bold text-gray-900 mb-2">Attribution</h4>
-              <p class="text-sm text-gray-600">You must give appropriate credit to the Dzaleka Online Services and contributors.</p>
-            </div>
-            
-            <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-100">
-              <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-amber-500">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h4 class="font-bold text-gray-900 mb-2">Non-Commercial</h4>
-              <p class="text-sm text-gray-600">You may not use the material for commercial purposes without permission.</p>
-            </div>
-            
-            <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-100">
-              <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-primary-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </div>
-              <h4 class="font-bold text-gray-900 mb-2">Share Alike</h4>
-              <p class="text-sm text-gray-600">If you remix or build upon the material, you must distribute under the same license.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Permitted Uses -->
-        <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Permitted Uses</h2>
-          <div class="grid sm:grid-cols-2 gap-6">
-            <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-              <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-bold text-gray-900 mb-1">Educational Purposes</h3>
-                <p class="text-sm text-gray-600">Use in classrooms, research papers, academic presentations, and educational materials.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-              <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-bold text-gray-900 mb-1">Personal Use</h3>
-                <p class="text-sm text-gray-600">Personal blogs, social media sharing, and non-commercial personal projects.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-              <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-bold text-gray-900 mb-1">Community Documentation</h3>
-                <p class="text-sm text-gray-600">Community projects, cultural preservation efforts, and heritage documentation.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
-              <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-bold text-gray-900 mb-1">News and Journalism</h3>
-                <p class="text-sm text-gray-600">News articles, documentaries, and journalistic coverage of refugee communities.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Attribution Requirements -->
-        <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Attribution Requirements</h2>
-          <p class="text-gray-600 mb-6">
-            When using content from the Dzaleka Online Services, you must provide proper attribution. Include the following information:
-          </p>
-          <div class="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-100">
-            <h3 class="font-bold text-gray-900 mb-4">Required Attribution Format:</h3>
-            <div class="bg-white rounded-lg border border-gray-200 p-4 font-mono text-sm text-gray-700 space-y-2">
-              <p><span class="text-gray-400">Artwork:</span> [Artwork Title] by [Artist Name]</p>
-              <p><span class="text-gray-400">Source:</span> Dzaleka Online Services</p>
-              <p><span class="text-gray-400">URL:</span> https://services.dzaleka.com/public-art-catalogue/[artwork-slug]</p>
-              <p><span class="text-gray-400">License:</span> CC BY-NC-SA 4.0</p>
-            </div>
-          </div>
-          <p class="text-gray-600 text-sm">
-            For digital use, include a link to the original artwork page. For print use, include the URL in your references or bibliography.
-          </p>
-        </section>
-
-        <!-- Commercial Use Policy -->
-        <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Commercial Use Policy</h2>
-          <div class="bg-amber-50 border border-amber-100 rounded-xl p-6">
-            <div class="flex items-start gap-4">
-              <svg class="w-6 h-6 text-amber-600 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-              <div>
-                <h3 class="font-bold text-amber-900 mb-2">Commercial Use Requires Permission</h3>
-                <p class="text-amber-800 mb-4">
-                  Commercial use of content from the Dzaleka Online Services requires explicit permission. This includes:
-                </p>
-                <ul class="list-disc list-inside text-amber-800 space-y-1 text-sm ml-2">
-                  <li>Commercial publications and books</li>
-                  <li>Advertising and marketing materials</li>
-                  <li>Commercial merchandise and products</li>
-                  <li>Paid exhibitions and events</li>
-                  <li>Commercial websites and applications</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Contact for Permissions -->
-        <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Contact for Permissions</h2>
-          <div class="bg-primary-50 border border-primary-100 rounded-xl p-6">
-            <h3 class="font-bold text-primary-900 mb-2">Commercial Use Inquiries</h3>
-            <p class="text-primary-800 mb-6">
-              For commercial use permissions or questions about licensing, please contact us:
-            </p>
-            <div class="space-y-3">
-              <div class="flex items-center gap-3 text-primary-800">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <a href="mailto:info@dzaleka.com" class="font-medium hover:text-primary-900 underline decoration-primary-300 hover:decoration-primary-900 transition-all">info@dzaleka.com</a>
-              </div>
-              <div class="flex items-center gap-3 text-primary-800">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
-                <span>Subject: "Commercial Use Permission - Public Art Catalogue"</span>
-              </div>
-            </div>
-            <p class="text-primary-700 text-sm mt-6">
-              Please include details about your intended use, the specific content you wish to use, and your contact information.
-            </p>
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <div class="border-t border-gray-200 pt-8 text-center">
-          <p class="text-sm text-gray-500">
-            Last updated: January 2025 | Dzaleka Online Services
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            You may share and adapt catalogue material for non-commercial purposes when attribution
+            is included and derivative work is published under the same license.
           </p>
         </div>
-      </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Attribution</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Credit the catalogue and the artist or contributor when identified.
+            </p>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Non-commercial</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Material cannot be used for commercial products, campaigns, or merchandise without permission.
+            </p>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Share alike</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Adapted catalogue content must remain under the same license terms.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Permitted uses</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="font-medium text-slate-900">Education and research</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">
+              Classroom materials, teaching, academic work, and independent research.
+            </p>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="font-medium text-slate-900">Community documentation</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">
+              Cultural heritage initiatives, local archiving, and public history projects.
+            </p>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="font-medium text-slate-900">Personal use</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">
+              Personal reference, learning, or non-commercial sharing with proper credit.
+            </p>
+          </div>
+          <div class="rounded-lg border border-slate-200 p-5">
+            <h3 class="font-medium text-slate-900">Journalistic coverage</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">
+              Non-commercial reporting, commentary, and documentary use with attribution.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Attribution requirements</h2>
+        <p class="mt-4 text-base leading-7 text-slate-600">
+          Attribution should identify the artwork, the artist when known, and the catalogue page.
+        </p>
+        <div class="mt-6 space-y-4">
+          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 font-mono text-sm leading-6 text-slate-700">
+            "[Artwork title]" by [Artist name]. Source: Dzaleka Online Services Public Art Catalogue.
+            Licensed under CC BY-NC-SA 4.0.
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 font-mono text-sm leading-6 text-slate-700">
+            https://services.dzaleka.com/public-art-catalogue/[artwork-slug]
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Commercial use</h2>
+        <div class="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-6">
+          <h3 class="text-lg font-semibold text-amber-900">Permission required</h3>
+          <p class="mt-3 text-sm leading-6 text-amber-800">
+            Commercial publications, paid exhibitions, branded campaigns, merchandise, commercial
+            apps, and other revenue-generating uses require advance approval.
+          </p>
+        </div>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Ownership and rights</h2>
+        <div class="mt-6 space-y-5 text-sm leading-6 text-slate-600">
+          <div>
+            <h3 class="font-medium text-slate-900">Artist and contributor rights</h3>
+            <p class="mt-2">
+              Artists and contributors retain rights in their original work while allowing the
+              catalogue to document and present it.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-medium text-slate-900">Images and documentation</h3>
+            <p class="mt-2">
+              Photographs, scans, and supporting media may have additional restrictions based on
+              the creator or source.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-medium text-slate-900">Third-party material</h3>
+            <p class="mt-2">
+              Any third-party content included in the catalogue remains subject to its original terms.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Contact and permissions</h2>
+        <div class="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <p class="text-sm leading-6 text-slate-600">
+            For commercial use requests, licensing questions, or permissions beyond this policy, contact:
+          </p>
+          <div class="mt-4 space-y-2 text-sm leading-6 text-slate-700">
+            <p>
+              <span class="font-medium text-slate-900">Email:</span>
+              <a href="mailto:dzalekaconnect@gmail.com" class="text-slate-700 underline hover:text-slate-900">
+                dzalekaconnect@gmail.com
+              </a>
+            </p>
+            <p>
+              <span class="font-medium text-slate-900">Website:</span>
+              <a href="https://services.dzaleka.com" class="text-slate-700 underline hover:text-slate-900">
+                services.dzaleka.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-lg border border-slate-200 bg-white p-8">
+        <h2 class="text-2xl font-semibold text-slate-900">Policy updates</h2>
+        <p class="mt-4 text-base leading-7 text-slate-600">
+          This policy may be revised as the catalogue develops. Continued use of the material means
+          you accept the current published version.
+        </p>
+        <p class="mt-4 text-sm text-slate-500">Last updated: {lastUpdated}</p>
+      </section>
     </div>
   </div>
 </MainLayout>

@@ -2,354 +2,397 @@
 import MainLayout from '../layouts/MainLayout.astro';
 
 const siteUrl = 'https://services.dzaleka.com';
+const baseApiUrl = `${siteUrl}/api`;
 
-// API Endpoints documentation
-const endpoints = [
+const collectionEndpoints = [
+  { name: 'Services', path: '/api/services', dataKey: 'services', description: 'Published service organisations and support listings.' },
+  { name: 'Resources', path: '/api/resources', dataKey: 'resources', description: 'Published resources, documents, and downloads.' },
+  { name: 'Events', path: '/api/events', dataKey: 'events', description: 'Published community events and activity listings.' },
+  { name: 'Photos', path: '/api/photos', dataKey: 'photos', description: 'Photo gallery items and related metadata.' },
+  { name: 'Jobs', path: '/api/jobs', dataKey: 'jobs', description: 'Published job listings and opportunity notices.' },
+  { name: 'News', path: '/api/news', dataKey: 'news', description: 'Published news articles and updates.' },
+  { name: 'Courses', path: '/api/courses', dataKey: 'courses', description: 'Published e-learning course records and learning resources.' },
+  { name: 'Community Voices', path: '/api/community-voices', dataKey: 'community-voices', description: 'Community stories and voice submissions that are already published.' },
+  { name: 'Profiles', path: '/api/profiles', dataKey: 'profiles', description: 'Published skills exchange profiles.' },
+  { name: 'Talents', path: '/api/talents', dataKey: 'talents', description: 'Talent directory records exposed through the API.' },
+  { name: 'Marketplace Listings', path: '/api/marketplace', dataKey: 'marketplace', description: 'Published marketplace product and service listings.' },
+  { name: 'Stores', path: '/api/stores', dataKey: 'stores', description: 'Published marketplace stores and vendor storefronts.' },
+  { name: 'Rights Navigator', path: '/api/rights', dataKey: 'rights', description: 'Published rights and legal guidance entries from the rights navigator.' },
+  { name: 'Artists', path: '/api/artists', dataKey: 'artists', description: 'Published artist profiles used by the public art catalogue.' },
+  { name: 'Artworks', path: '/api/artworks', dataKey: 'artworks', description: 'Published artwork records from the public art catalogue.' },
+  { name: 'Poets', path: '/api/poets', dataKey: 'poets', description: 'Published poet profiles and creative directory entries.' },
+  { name: 'Dancers', path: '/api/dancers', dataKey: 'dancers', description: 'Published dancer and dance crew profiles.' },
+  { name: 'Docs', path: '/api/docs', dataKey: 'docs', description: 'Documentation pages from the docs content collection.' },
+  { name: 'Pages', path: '/api/pages', dataKey: 'pages', description: 'Published site pages if a pages collection is available. This may currently return an empty result.' },
+];
+
+const searchEndpoints = [
   {
     name: 'Search',
-    method: 'GET',
+    methods: ['GET', 'OPTIONS'],
     path: '/api/search',
-    description: 'Server-side search across multiple collections with caching',
+    description: 'Search across multiple collections with rate limiting and a short cache.',
     parameters: [
-      { name: 'q', type: 'string', required: true, description: 'Search query (min 2 characters)' },
-      { name: 'collections', type: 'string', required: false, description: 'Comma-separated list of collections (services,events,resources,news,photos,jobs,docs)' },
-      { name: 'limit', type: 'number', required: false, description: 'Max results per collection (default: 10)' }
+      '`q` required search query, minimum 2 characters',
+      '`collections` optional comma-separated list such as `services,resources,news`',
+      '`limit` optional results per collection, default `10`',
     ],
-    response: {
-      status: 'success',
-      query: 'refugee services',
-      totalResults: 25,
-      results: {
-        services: [{ slug: 'example', title: 'Example Service', description: '...', category: 'Education' }],
-        events: []
-      },
-      cached: false
-    },
-    rateLimit: '60 requests per minute',
-    cache: '5 minutes TTL, 100 queries max',
-    example: `${siteUrl}/api/search?q=education&collections=services,events&limit=5`
+    example: `${baseApiUrl}/search?q=education&collections=services,events&limit=5`,
   },
   {
-    name: 'Services',
-    method: 'GET',
-    path: '/api/services',
-    description: 'Retrieve all service organizations',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 100,
-      data: {
-        services: [{ id: '...', title: 'Service Name', category: 'Education', verified: true }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/services`
+    name: 'Search Index',
+    methods: ['GET'],
+    path: '/api/search-index.json',
+    description: 'Flat public search index used by site search and lightweight integrations.',
+    example: `${baseApiUrl}/search-index.json`,
   },
   {
-    name: 'Events',
-    method: 'GET',
-    path: '/api/events',
-    description: 'Retrieve all events',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 30,
-      data: {
-        events: [{ id: '...', title: 'Event Name', date: '2025-01-15', location: 'Dzaleka' }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/events`
+    name: 'RSS Feed',
+    methods: ['GET'],
+    path: '/api/rss',
+    description: 'XML RSS feed for the latest news items.',
+    example: `${baseApiUrl}/rss`,
   },
-  {
-    name: 'Resources',
-    method: 'GET',
-    path: '/api/resources',
-    description: 'Retrieve all resources and documents',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 300,
-      data: {
-        resources: [{ id: '...', title: 'Resource Name', category: 'Policy', fileType: 'pdf' }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/resources`
-  },
-  {
-    name: 'News',
-    method: 'GET',
-    path: '/api/news',
-    description: 'Retrieve all news articles',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 50,
-      data: {
-        news: [{ id: '...', title: 'News Title', category: 'announcement', date: '2025-01-10' }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/news`
-  },
-  {
-    name: 'Photos',
-    method: 'GET',
-    path: '/api/photos',
-    description: 'Retrieve photo gallery items',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 35,
-      data: {
-        photos: [{ id: '...', title: 'Photo Title', date: '2024-12-01', image: 'url' }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/photos`
-  },
-  {
-    name: 'Jobs',
-    method: 'GET',
-    path: '/api/jobs',
-    description: 'Retrieve job listings',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 20,
-      data: {
-        jobs: [{ id: '...', title: 'Job Title', type: 'full-time', category: 'education', status: 'open' }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/jobs`
-  },
-  {
-    name: 'Docs',
-    method: 'GET',
-    path: '/api/docs',
-    description: 'Retrieve documentation pages',
-    parameters: [],
-    response: {
-      status: 'success',
-      count: 20,
-      data: {
-        docs: [{ id: '...', title: 'Getting Started', description: '...' }]
-      }
-    },
-    rateLimit: '60 requests per minute',
-    example: `${siteUrl}/api/docs`
-  }
 ];
+
+const dataEndpoints = [
+  { name: 'Emergency Alerts', methods: ['GET'], path: '/api/alerts', description: 'Curated high-priority alert items for the data page and crisis messaging.', example: `${baseApiUrl}/alerts` },
+  { name: 'Population Snapshot', methods: ['GET'], path: '/api/population', description: 'Population totals, demographic split, nationality breakdown, and trend series.', example: `${baseApiUrl}/population` },
+  { name: 'Finance Snapshot', methods: ['GET'], path: '/api/finance', description: 'UNHCR funding snapshot used by the data dashboard.', example: `${baseApiUrl}/finance` },
+  { name: 'Weather', methods: ['GET'], path: '/api/weather', description: 'Current weather and forecast data, with a safe fallback if the upstream weather source is unavailable.', example: `${baseApiUrl}/weather` },
+  { name: 'Weather Alerts', methods: ['GET'], path: '/api/weather-alerts', description: 'Weather alert feed for the weather page, sourced from the upstream CAP RSS feed when available.', example: `${baseApiUrl}/weather-alerts` },
+  { name: 'Geolocation', methods: ['GET'], path: '/api/geolocation', description: 'Same-origin geolocation proxy returning coarse location data or a safe unavailable response.', example: `${baseApiUrl}/geolocation` },
+  { name: 'Charts', methods: ['GET'], path: '/api/charts', description: 'Prepared chart series used by visual dashboard sections.', example: `${baseApiUrl}/charts` },
+  { name: 'Analytics Pageviews', methods: ['GET'], path: '/api/analytics/pageviews', description: 'Lightweight pageview total used by analytics widgets.', example: `${baseApiUrl}/analytics/pageviews` },
+];
+
+const actionEndpoints = [
+  {
+    name: 'Export',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    path: '/api/export',
+    description: 'Export multiple content collections in one response, with optional metadata and stats.',
+    notes: [
+      '`GET` returns the export endpoint description and supported collections.',
+      '`POST` accepts a JSON body with `collections` and optional `options.includeMetadata` / `options.includeStats`.',
+    ],
+    example: `curl -X POST "${baseApiUrl}/export" -H "Content-Type: application/json" -d '{"collections":["services","resources","events"],"options":{"includeMetadata":true,"includeStats":true}}'`,
+  },
+  {
+    name: 'Match Category',
+    methods: ['POST'],
+    path: '/api/match-category',
+    description: 'Accepts a skills category and returns a simple matching confirmation response for the skills exchange flow.',
+    notes: ['Body requires `category`.'],
+    example: `curl -X POST "${baseApiUrl}/match-category" -H "Content-Type: application/json" -d '{"category":"Business"}'`,
+  },
+  {
+    name: 'Submit Voice',
+    methods: ['POST'],
+    path: '/api/submit-voice',
+    description: 'Submits a community voice/story payload for follow-up review and email notification.',
+    notes: ['Body requires `title`, `author`, and `content`.'],
+    example: `curl -X POST "${baseApiUrl}/submit-voice" -H "Content-Type: application/json" -d '{"title":"Story title","author":"Name","content":"Story text"}'`,
+  },
+  {
+    name: 'Send Booking Confirmation',
+    methods: ['POST'],
+    path: '/api/send-booking-confirmation',
+    description: 'Processes a visit booking request and sends a booking confirmation email.',
+    notes: ['Used by the visit booking flow. Requires booking details in JSON.'],
+    example: `curl -X POST "${baseApiUrl}/send-booking-confirmation" -H "Content-Type: application/json" -d '{"name":"Visitor","email":"visitor@example.com","visitDate":"2026-04-20","visitTime":"10:00","groupSize":"2-5","tourType":"standard","meetingPoint":"appfactory","paymentMethod":"cash"}'`,
+  },
+];
+
+const commonResponse = {
+  status: 'success',
+  count: 147,
+  data: {
+    services: [
+      {
+        id: 'sample-service',
+        collection: 'services',
+        title: 'Sample service',
+      },
+    ],
+  },
+};
+
+const exportResponse = {
+  status: 'success',
+  data: {
+    services: [{ id: 'sample-service', title: 'Sample service' }],
+    resources: [{ id: 'sample-resource', title: 'Sample resource' }],
+    metadata: {
+      exportDate: '2026-04-14T01:00:00.000Z',
+      totalCollections: 2,
+      collections: ['services', 'resources'],
+    },
+    stats: {
+      totalItems: 2,
+      itemsPerCollection: {
+        services: 1,
+        resources: 1,
+      },
+    },
+  },
+};
+
+const searchResponse = {
+  status: 'success',
+  query: 'education',
+  totalResults: 3,
+  results: {
+    services: [{ slug: 'sample-service', title: 'Education service', collection: 'services', url: '/services/sample-service' }],
+    events: [{ slug: 'sample-event', title: 'Education workshop', collection: 'events', url: '/events/sample-event' }],
+  },
+  cached: false,
+};
+
+const methodClassMap = {
+  GET: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  POST: 'bg-blue-100 text-blue-800 border-blue-200',
+  OPTIONS: 'bg-gray-100 text-gray-700 border-gray-200',
+};
 ---
 
 <MainLayout
   title="API Documentation - Dzaleka Online Services"
-  description="Complete API documentation for Dzaleka Online Services. Access services, events, resources, news, photos, and more through our RESTful API endpoints."
-  keywords="API documentation, REST API, Dzaleka API, developer docs, API reference"
+  description="Public API reference for Dzaleka Online Services, including collection endpoints, search, exports, live data snapshots, and submission endpoints."
+  keywords="Dzaleka API, API docs, public API, services API, resources API, search API"
 >
-  <div class="container mx-auto px-4 py-12 max-w-6xl">
-    <!-- Header -->
-    <div class="mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">API Documentation</h1>
-      <p class="text-xl text-gray-600 mb-6">
-        Access Dzaleka Online Services data through our RESTful API endpoints.
-        All endpoints support CORS and return JSON responses.
-      </p>
+  <div class="min-h-screen bg-gray-50">
+    <header class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="max-w-4xl">
+          <p class="text-sm font-medium text-gray-500">Developers</p>
+          <h1 class="mt-2 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+            API documentation
+          </h1>
+          <p class="mt-4 text-base leading-7 text-gray-600">
+            Public JSON endpoints for published content, dashboards, search, feeds, and selected submission workflows across Dzaleka Online Services.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a
+              href="/docs/api-documentation"
+              class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Docs version
+            </a>
+            <a
+              href="/open-data-platform"
+              class="inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+            >
+              Open data platform
+            </a>
+          </div>
+        </div>
 
-      <!-- Quick Start -->
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
-        <h2 class="text-lg font-semibold text-blue-900 mb-2">Quick Start</h2>
-        <p class="text-blue-800 mb-4">All API endpoints are publicly accessible and require no authentication.</p>
-        <div class="bg-white p-4 rounded-lg font-mono text-sm">
-          <code class="text-blue-600">
-            curl {siteUrl}/api/services
-          </code>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Base URL</p>
+            <p class="mt-2 break-all font-mono text-sm text-gray-900">{baseApiUrl}</p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Authentication</p>
+            <p class="mt-2 text-sm leading-6 text-gray-900">Read access is public. Some action endpoints accept JSON submissions without account auth.</p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Format</p>
+            <p class="mt-2 text-sm leading-6 text-gray-900">JSON responses by default. RSS is available at <code>/api/rss</code>.</p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Rate limiting</p>
+            <p class="mt-2 text-sm leading-6 text-gray-900">Collection and search endpoints are limited to 60 requests per minute per IP.</p>
+          </div>
         </div>
       </div>
-    </div>
+    </header>
 
-    <!-- Rate Limiting -->
-    <div class="mb-12 bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-lg">
-      <h2 class="text-lg font-semibold text-amber-900 mb-2">Rate Limiting</h2>
-      <p class="text-amber-800 mb-2">All endpoints are rate-limited to prevent abuse:</p>
-      <ul class="list-disc list-inside text-amber-800 space-y-1">
-        <li><strong>Limit:</strong> 60 requests per minute per IP address</li>
-        <li><strong>Headers:</strong> X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset</li>
-        <li><strong>429 Response:</strong> Includes Retry-After header (in seconds)</li>
-      </ul>
-    </div>
-
-    <!-- Caching -->
-    <div class="mb-12 bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
-      <h2 class="text-lg font-semibold text-green-900 mb-2">Caching</h2>
-      <p class="text-green-800 mb-2">Search API includes intelligent caching:</p>
-      <ul class="list-disc list-inside text-green-800 space-y-1">
-        <li><strong>TTL:</strong> 5 minutes for search results</li>
-        <li><strong>Cache-Control:</strong> public, max-age=300</li>
-        <li><strong>X-Cache Header:</strong> HIT (cached) or MISS (fresh query)</li>
-        <li><strong>Max Size:</strong> 100 unique queries cached</li>
-      </ul>
-    </div>
-
-    <!-- Endpoints -->
-    <div class="space-y-8">
-      <h2 class="text-3xl font-bold text-gray-900 mb-6">API Endpoints</h2>
-
-      {endpoints.map((endpoint) => (
-        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-          <!-- Endpoint Header -->
-          <div class="bg-gradient-to-r from-primary-50 to-primary-100 px-6 py-4 border-b border-gray-200">
-            <div class="flex items-center justify-between flex-wrap gap-4">
-              <div class="flex items-center gap-3">
-                <span class={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  endpoint.method === 'GET' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
-                }`}>
-                  {endpoint.method}
-                </span>
-                <code class="text-lg font-mono text-gray-900">{endpoint.path}</code>
-              </div>
-              <span class="text-sm text-gray-600">Rate Limit: {endpoint.rateLimit}</span>
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="space-y-8 lg:flex lg:items-start lg:gap-8 lg:space-y-0">
+        <aside class="hidden lg:block lg:w-72 lg:flex-none">
+          <nav class="sticky top-6 space-y-4" aria-label="API navigation">
+            <div class="rounded-xl border border-gray-200 bg-white p-5">
+              <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">On this page</h2>
+              <ul class="mt-4 space-y-3 text-sm">
+                <li><a class="text-primary-700 hover:text-primary-800" href="#collections">Collection endpoints</a></li>
+                <li><a class="text-primary-700 hover:text-primary-800" href="#search-and-feeds">Search and feeds</a></li>
+                <li><a class="text-primary-700 hover:text-primary-800" href="#data-snapshots">Data snapshots</a></li>
+                <li><a class="text-primary-700 hover:text-primary-800" href="#actions">Action endpoints</a></li>
+                <li><a class="text-primary-700 hover:text-primary-800" href="#examples">Examples</a></li>
+              </ul>
             </div>
-            <p class="mt-2 text-gray-700">{endpoint.description}</p>
-            {endpoint.cache && (
-              <p class="mt-1 text-sm text-gray-600">Cache: {endpoint.cache}</p>
-            )}
-          </div>
+            <div class="rounded-xl border border-gray-200 bg-white p-5">
+              <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">Notes</h2>
+              <ul class="mt-4 space-y-3 text-sm leading-6 text-gray-600">
+                <li>Collection endpoints expose published content collections only.</li>
+                <li><code>/api/pages</code> is valid, but may currently return zero items if the pages collection is empty.</li>
+                <li>Maintenance and test routes are not listed here.</li>
+              </ul>
+            </div>
+          </nav>
+        </aside>
 
-          <div class="p-6 space-y-6">
-            <!-- Parameters -->
-            {endpoint.parameters.length > 0 && (
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-3">Parameters</h3>
-                <div class="overflow-x-auto">
-                  <table class="w-full text-sm">
-                    <thead>
-                      <tr class="border-b border-gray-200">
-                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Name</th>
-                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Type</th>
-                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Required</th>
-                        <th class="text-left py-2 px-3 font-semibold text-gray-700">Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {endpoint.parameters.map((param) => (
-                        <tr class="border-b border-gray-100">
-                          <td class="py-2 px-3">
-                            <code class="text-blue-600 bg-blue-50 px-2 py-1 rounded">{param.name}</code>
-                          </td>
-                          <td class="py-2 px-3 text-gray-600">{param.type}</td>
-                          <td class="py-2 px-3">
-                            {param.required ? (
-                              <span class="text-red-600 font-semibold">Yes</span>
-                            ) : (
-                              <span class="text-gray-500">No</span>
-                            )}
-                          </td>
-                          <td class="py-2 px-3 text-gray-600">{param.description}</td>
-                        </tr>
+        <main class="min-w-0 flex-1 space-y-10">
+          <section id="collections" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+            <div class="max-w-3xl">
+              <h2 class="text-2xl font-semibold text-gray-900">Collection endpoints</h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                These endpoints share the same public response pattern. `GET` returns the full collection, `POST` returns the same collection with optional metadata and stats, and `OPTIONS` is available for CORS.
+              </p>
+            </div>
+
+            <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
+              <div class="hidden grid-cols-[minmax(0,1.1fr)_7rem_9rem_minmax(0,1fr)] gap-4 bg-gray-50 px-5 py-3 text-sm font-medium text-gray-700 md:grid">
+                <div>Endpoint</div>
+                <div>Methods</div>
+                <div>Data key</div>
+                <div>Description</div>
+              </div>
+              <div class="divide-y divide-gray-200">
+                {collectionEndpoints.map((endpoint) => (
+                  <div class="px-5 py-4">
+                    <div class="grid gap-4 md:grid-cols-[minmax(0,1.1fr)_7rem_9rem_minmax(0,1fr)] md:items-start">
+                      <div>
+                        <h3 class="text-base font-medium text-gray-900">{endpoint.name}</h3>
+                        <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                      </div>
+                      <div class="flex flex-wrap gap-2">
+                        {['GET', 'POST', 'OPTIONS'].map((method) => (
+                          <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                            {method}
+                          </span>
+                        ))}
+                      </div>
+                      <div>
+                        <code class="rounded-[5px] bg-gray-100 px-2 py-1 text-xs text-gray-700">{endpoint.dataKey}</code>
+                      </div>
+                      <p class="text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="search-and-feeds" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+            <h2 class="text-2xl font-semibold text-gray-900">Search and feeds</h2>
+            <div class="mt-6 space-y-5">
+              {searchEndpoints.map((endpoint) => (
+                <div class="rounded-xl border border-gray-200 p-5">
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
+                      <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      {endpoint.methods.map((method) => (
+                        <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                          {method}
+                        </span>
                       ))}
-                    </tbody>
-                  </table>
+                    </div>
+                  </div>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  {endpoint.parameters && (
+                    <ul class="mt-3 space-y-2 text-sm leading-6 text-gray-600">
+                      {endpoint.parameters.map((parameter) => (
+                        <li>{parameter}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <div class="mt-4 rounded-lg bg-gray-900 p-4">
+                    <code class="break-all text-sm text-green-400">{endpoint.example}</code>
+                  </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
+          </section>
 
-            <!-- Example Request -->
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-3">Example Request</h3>
-              <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                <code class="text-green-400 text-sm font-mono break-all">
-                  {endpoint.example}
-                </code>
+          <section id="data-snapshots" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+            <h2 class="text-2xl font-semibold text-gray-900">Data snapshots and dashboard endpoints</h2>
+            <div class="mt-6 grid gap-4 lg:grid-cols-2">
+              {dataEndpoints.map((endpoint) => (
+                <div class="rounded-xl border border-gray-200 p-5">
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
+                      <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      {endpoint.methods.map((method) => (
+                        <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                          {method}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  <div class="mt-4 rounded-lg bg-gray-900 p-4">
+                    <code class="break-all text-sm text-green-400">{endpoint.example}</code>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="actions" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+            <h2 class="text-2xl font-semibold text-gray-900">Action and submission endpoints</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600">
+              These endpoints accept request bodies and are used for export flows, skills matching, visit booking confirmations, and community voice submissions.
+            </p>
+            <div class="mt-6 space-y-5">
+              {actionEndpoints.map((endpoint) => (
+                <div class="rounded-xl border border-gray-200 p-5">
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
+                      <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      {endpoint.methods.map((method) => (
+                        <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                          {method}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  {endpoint.notes && (
+                    <ul class="mt-3 space-y-2 text-sm leading-6 text-gray-600">
+                      {endpoint.notes.map((note) => (
+                        <li>{note}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <div class="mt-4 rounded-lg bg-gray-900 p-4">
+                    <code class="block whitespace-pre-wrap break-words text-sm text-green-400">{endpoint.example}</code>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="examples" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+            <h2 class="text-2xl font-semibold text-gray-900">Example responses</h2>
+            <div class="mt-6 space-y-6">
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">Collection response shape</h3>
+                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(commonResponse, null, 2)}</pre>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">Search response shape</h3>
+                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(searchResponse, null, 2)}</pre>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">Export response shape</h3>
+                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(exportResponse, null, 2)}</pre>
               </div>
             </div>
-
-            <!-- Example Response -->
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-3">Example Response</h3>
-              <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                <pre class="text-green-400 text-sm font-mono">{JSON.stringify(endpoint.response, null, 2)}</pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <!-- Additional Information -->
-    <div class="mt-12 space-y-6">
-      <h2 class="text-3xl font-bold text-gray-900 mb-6">Additional Information</h2>
-
-      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Error Responses</h3>
-        <div class="space-y-4">
-          <div>
-            <h4 class="font-semibold text-gray-800 mb-2">400 Bad Request</h4>
-            <pre class="bg-gray-900 text-red-400 p-4 rounded-lg text-sm overflow-x-auto">{JSON.stringify({
-  status: 'error',
-  message: 'Search query must be at least 2 characters long'
-}, null, 2)}</pre>
-          </div>
-
-          <div>
-            <h4 class="font-semibold text-gray-800 mb-2">429 Too Many Requests</h4>
-            <pre class="bg-gray-900 text-red-400 p-4 rounded-lg text-sm overflow-x-auto">{JSON.stringify({
-  status: 'error',
-  message: 'Rate limit exceeded. Please try again later.',
-  retryAfter: 45
-}, null, 2)}</pre>
-          </div>
-
-          <div>
-            <h4 class="font-semibold text-gray-800 mb-2">500 Internal Server Error</h4>
-            <pre class="bg-gray-900 text-red-400 p-4 rounded-lg text-sm overflow-x-auto">{JSON.stringify({
-  status: 'error',
-  message: 'Failed to fetch services',
-  error: 'Error details...'
-}, null, 2)}</pre>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">CORS Support</h3>
-        <p class="text-gray-700 mb-4">All API endpoints support Cross-Origin Resource Sharing (CORS) with the following headers:</p>
-        <ul class="list-disc list-inside text-gray-700 space-y-2">
-          <li><code class="bg-gray-100 px-2 py-1 rounded">Access-Control-Allow-Origin: *</code></li>
-          <li><code class="bg-gray-100 px-2 py-1 rounded">Access-Control-Allow-Methods: GET, POST, OPTIONS</code></li>
-          <li><code class="bg-gray-100 px-2 py-1 rounded">Access-Control-Allow-Headers: Content-Type</code></li>
-        </ul>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Support</h3>
-        <p class="text-gray-700 mb-4">
-          For questions, bug reports, or feature requests, please visit:
-        </p>
-        <a
-          href="/contact"
-          class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
-        >
-          Contact Support
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-          </svg>
-        </a>
+          </section>
+        </main>
       </div>
     </div>
   </div>
 </MainLayout>
-
-<style>
-  /* Syntax highlighting for code blocks */
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-
-  code {
-    font-family: 'Courier New', Courier, monospace;
-  }
-</style>

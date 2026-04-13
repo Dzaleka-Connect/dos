@@ -1,63 +1,44 @@
 ---
 title: Online Resources
-description: Access Dzaleka's digital resource collection
+description: Guide to browsing and sharing resources on the platform
 section: resources
 ---
 
 # Online Resources
 
-Access a curated collection of documents, reports, and media about Dzaleka Refugee Camp.
+The resources section brings together reports, guides, toolkits, forms, research, and other useful material related to Dzaleka and refugee support work.
 
-## Resource Types
+## What you can find
 
-### Reports
-Research findings and official documentation about Dzaleka.
+- Community guides and toolkits
+- Research reports and policy material
+- Education and training resources
+- Business tools and templates
+- Public reference documents
 
-### Guides
-Step-by-step instructions and how-to materials.
+## How to find resources
 
-### Factsheets
-Quick reference materials and key information.
+1. Open the [Resources hub](/resources).
+2. Search by keyword or browse categories.
+3. Open the item page to read more details.
+4. Download or follow the source link when available.
 
-### Documents
-Important forms, templates, and official papers.
+## How to share a resource
 
-### Research
-Academic studies and community research projects.
+1. Visit [Submit Resource](/resources/submit).
+2. Add the title, summary, and category.
+3. Upload the file or include the source link.
+4. Submit it for review.
 
-## Quick Actions
+## Helpful places to visit
 
-### Find Resources
-1. Visit [Resource Hub](/resources)
-2. Use search or filters:
-   - Search by keyword
-   - Filter by category
-   - Sort by date
-3. Access materials
+- [Resources](/resources)
+- [About the resources section](/resources/about)
+- [Submit a resource](/resources/submit)
+- [Tools and Templates](/tools-and-templates)
 
-### Submit Resource
-1. Go to [Submit Resource](/resources/submit)
-2. Provide details:
-   - Title and description
-   - Category
-   - File upload
-3. Submit for review
+## Need help?
 
-### Browse Categories
-- [All Resources](/resources)
-- [Latest Updates](/resources?sort=recent)
-- [By Category](/resources#categories)
-
-## Resource Features
-
-- Full-text search
-- Category filtering
-- Date sorting
-- Download options
-- Resource previews
-
-## Need Help?
-
-- [Usage Guidelines](/resources/guidelines)
-- [Contact Support](/contact)
-- [Submit Feedback](/support)
+- [Contact](/contact)
+- [Help Desk](/help-desk)
+- [Support](/support)

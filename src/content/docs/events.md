@@ -1,81 +1,47 @@
 ---
 title: Community Events
-description: Discover and share local events
+description: Guide to browsing and organizing events on the platform
 section: events
 ---
 
 # Community Events
 
-Stay connected with cultural and community events in Dzaleka.
+Use the events section to browse what is happening in Dzaleka and to share public events that should appear on the site.
 
-## Event Types
+## Browse events
 
-### Cultural Events
-- Traditional celebrations
-- Cultural performances
-- Art exhibitions
-- Music festivals
-- Heritage workshops
+- [All events](/events)
+- [Upcoming events](/events/upcoming/1)
+- [Past events](/events/past/1)
 
-### Community Events
-- Local gatherings
-- Educational programs
-- Skills workshops
-- Support groups
-- Social activities
+Event listings usually include the title, date, location, organiser, and a short summary.
 
-### Special Events
-- Annual celebrations
-- Community milestones
-- Award ceremonies
-- Fundraising events
-- Awareness programs
+## Organize or list an event
 
-## Quick Actions
+1. Open [Organize an event](/events/organize).
+2. Add the event title, date, location, and description.
+3. Include organiser details and any registration link.
+4. Submit the form for review.
 
-### Submit Event
-1. Visit [Submit Event](/events/submit)
-2. Provide details:
-   - Event title
-   - Date and time
-   - Location
-   - Description
-   - Category
-3. Submit for review
+## What kinds of events fit here?
 
-### Find Events
-1. Go to [Events Calendar](/events)
-2. Browse by:
-   - Date
-   - Category
-   - Location
-3. Get details
+- Workshops and training sessions
+- Community meetings
+- Cultural celebrations
+- Public talks and awareness activities
+- Youth, arts, and education programmes
 
-### Event Features
-- Event calendar
-- Category filters
-- Location mapping
-- Registration options
-- Event updates
+## Good event listing practice
 
-## Guidelines
+- Use the final confirmed date and time.
+- Make the location clear.
+- Explain who the event is for.
+- Add a contact method people can use for questions.
+- Update the team if something changes after submission.
 
-### Event Standards
-- Clear information
-- Accurate details
-- Appropriate content
-- Community focus
-- Safety guidelines
+## Need help?
 
-### Organizer Rules
-- Event management
-- Communication
-- Updates handling
-- Participant safety
-- Feedback collection
-
-## Need Help?
-
-- [Event Guidelines](/events/guidelines)
-- [Organizer Guide](/events/organize)
-- [Contact Support](/support)
+- [Events](/events)
+- [Organize an event](/events/organize)
+- [Contact](/contact)
+- [Support](/support)

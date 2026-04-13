@@ -15,10 +15,10 @@ const { Content } = await render(entry);
 
 // Determine style based on category
 const categoryStyles = {
-  'legislation': { icon: '⚖️', badge: 'bg-blue-50 text-blue-700 border-blue-100' },
-  'analysis': { icon: '📊', badge: 'bg-purple-50 text-purple-700 border-purple-100' },
-  'guide': { icon: '📘', badge: 'bg-green-50 text-green-700 border-green-100' },
-  'resource': { icon: '🔗', badge: 'bg-gray-100 text-gray-700 border-gray-200' }
+  'legislation': { icon: '⚖️', badge: 'bg-gray-100 text-gray-900 border-gray-200' },
+  'analysis': { icon: '📊', badge: 'bg-slate-100 text-slate-800 border-slate-200' },
+  'guide': { icon: '📘', badge: 'bg-gray-100 text-gray-800 border-gray-200' },
+  'resource': { icon: '🔗', badge: 'bg-slate-50 text-slate-700 border-slate-200' }
 };
 
 const style = categoryStyles[entry.data.category] || categoryStyles['resource'];
@@ -58,14 +58,14 @@ const schema = {
   <div class="min-h-screen bg-gray-50">
     
     <!-- Hero / Header Section -->
-    <div class="bg-white border-b border-gray-200">
+    <div class="bg-gray-900 border-b border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         
         <!-- Breadcrumb -->
-        <nav class="flex mb-6 text-sm font-medium text-gray-500">
-            <a href="/rights-navigator" class="hover:text-blue-600 transition">Rights Navigator</a>
-            <span class="mx-2 text-gray-300">/</span>
-            <span class="text-gray-900 truncate">{entry.data.title}</span>
+        <nav class="flex mb-6 text-sm font-medium text-gray-400">
+            <a href="/rights-navigator" class="hover:text-white transition-colors">Rights Navigator</a>
+            <span class="mx-2 text-gray-600">/</span>
+            <span class="text-white truncate">{entry.data.title}</span>
         </nav>
 
         <div class="max-w-4xl">
@@ -80,11 +80,11 @@ const schema = {
                )}
              </div>
              
-             <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 font-heading leading-tight">
+             <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 font-heading leading-tight">
                {entry.data.title}
              </h1>
              
-             <p class="text-xl text-gray-600 leading-relaxed">
+             <p class="text-xl text-gray-300 leading-relaxed">
                {entry.data.description}
              </p>
         </div>
@@ -105,7 +105,7 @@ const schema = {
               </nav>
 
               <div class="mt-8 pt-8 border-t border-gray-100">
-                  <a href="/rights-navigator" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
+                  <a href="/rights-navigator" class="text-sm font-medium text-slate-800 hover:text-slate-900 transition-colors flex items-center">
                       &larr; Back to all resources
                   </a>
               </div>
@@ -114,13 +114,13 @@ const schema = {
 
           <!-- Article Content -->
           <div class="lg:col-span-9">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12">
-                <article id="article-content" class="prose prose-lg prose-blue max-w-none">
+            <div class="bg-white rounded-xl border border-gray-200 p-8 md:p-12">
+                <article id="article-content" class="prose prose-lg prose-slate max-w-none">
                 <Content />
                 </article>
                 
                 {entry.data.source && (
-                <div class="mt-12 pt-6 border-t border-gray-100 flex items-center text-sm text-gray-500 bg-gray-50 p-4 rounded-lg">
+                <div class="mt-12 pt-6 border-t border-gray-100 flex items-center text-sm text-gray-500 bg-gray-50 p-4 rounded-xl">
                     <span class="font-bold mr-2 text-gray-700">Source:</span> {entry.data.source}
                 </div>
                 )}
@@ -154,7 +154,7 @@ const schema = {
                 const link = document.createElement('a');
                 link.href = `#${heading.id}`;
                 link.textContent = heading.textContent;
-                link.className = `block pl-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:border-l-2 hover:border-blue-600 transition-colors border-l-2 border-transparent`;
+                link.className = `block pl-4 py-2 text-sm text-gray-600 hover:text-slate-900 hover:border-l-2 hover:border-slate-800 transition-colors border-l-2 border-transparent`;
                 
                 // Highlight active on scroll (Basic implementation)
                 link.addEventListener('click', (e) => {
@@ -176,7 +176,7 @@ const schema = {
       
       // Add indicator icon
       const icon = document.createElement('span');
-      icon.innerHTML = `<svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+      icon.innerHTML = `<svg class="w-5 h-5 text-gray-400 group-hover:text-slate-900 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
       heading.appendChild(icon);
 
       // Wrap content between this H2 and the next H2

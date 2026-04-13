@@ -61,7 +61,7 @@ const structuredData = {
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-primary-50 to-white border-b-2 border-primary-200 mb-12 overflow-hidden">
+  <section class="relative bg-gradient-to-br from-slate-50 to-white border-b-2 border-slate-200 mb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.03]">
       <div class="absolute inset-0 pattern-mudcloth"></div>
     </div>
@@ -69,7 +69,7 @@ const structuredData = {
     <div class="relative container mx-auto px-4 py-16">
       <div class="max-w-4xl mx-auto text-center">
         <div class="inline-block mb-6">
-          <span class="px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-medium border border-primary-200">
+          <span class="px-4 py-1.5 bg-slate-100 text-slate-700 rounded-full text-sm font-medium border border-slate-200">
             Dance Community
           </span>
         </div>
@@ -82,19 +82,19 @@ const structuredData = {
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#browse-dancers" class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium">
+          <a href="#browse-dancers" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             Browse Dancers
           </a>
-          <a href="/dancers/book-performance" class="inline-flex items-center px-6 py-3 border-2 border-primary-600 text-primary-600 bg-white rounded-lg hover:bg-primary-50 transition-colors font-medium">
+          <a href="/dancers/book-performance" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             Book Performance
           </a>
-          <a href="/dancers/submit" class="inline-flex items-center px-6 py-3 border-2 border-primary-600 text-primary-600 bg-white rounded-lg hover:bg-primary-50 transition-colors font-medium">
+          <a href="/dancers/submit" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
@@ -119,14 +119,14 @@ const structuredData = {
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
         {danceGroups.map(group => (
           <a href={`/dancers/${group.id}`} 
-             class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-primary-200 overflow-hidden flex flex-col">
+             class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
             <div class="relative h-48 overflow-hidden bg-gray-100">
               {group.data.image ? (
                 <img src={group.data.image} alt={group.data.title} 
                      class="w-full h-full object-cover" />
               ) : (
-                <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                  <svg class="w-16 h-16 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                  <svg class="w-16 h-16 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -146,7 +146,7 @@ const structuredData = {
                 <span class="text-gray-500">
                   {Array.isArray(group.data.members) ? group.data.members.length : group.data.members} members
                 </span>
-                <span class="text-primary-600 font-medium">
+                <span class="text-slate-700 font-medium">
                   View Profile →
                 </span>
               </div>
@@ -164,14 +164,14 @@ const structuredData = {
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {individualDancers.map(dancer => (
           <a href={`/dancers/${dancer.id}`} 
-             class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-primary-200 overflow-hidden flex flex-col">
+             class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
             <div class="relative h-48 overflow-hidden bg-gray-100">
               {dancer.data.image ? (
                 <img src={dancer.data.image} alt={dancer.data.title} 
                      class="w-full h-full object-cover" />
               ) : (
-                <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                  <svg class="w-16 h-16 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                  <svg class="w-16 h-16 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
@@ -189,7 +189,7 @@ const structuredData = {
               <p class="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{dancer.data.description}</p>
               <div class="flex items-center justify-between text-sm">
                 <span class="text-gray-500">{dancer.data.age} years • {dancer.data.nationality}</span>
-                <span class="text-primary-600 font-medium">
+                <span class="text-slate-700 font-medium">
                   View Profile →
                 </span>
               </div>
@@ -212,8 +212,8 @@ const structuredData = {
       
       <div class="grid md:grid-cols-3 gap-6">
         <div class="text-center bg-white p-6 rounded-lg border border-gray-100">
-          <div class="bg-primary-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
-            <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-slate-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>
@@ -222,8 +222,8 @@ const structuredData = {
         </div>
         
         <div class="text-center bg-white p-6 rounded-lg border border-gray-100">
-          <div class="bg-primary-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
-            <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-slate-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
             </svg>
           </div>
@@ -232,8 +232,8 @@ const structuredData = {
         </div>
         
         <div class="text-center bg-white p-6 rounded-lg border border-gray-100">
-          <div class="bg-primary-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
-            <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-slate-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
@@ -252,13 +252,13 @@ const structuredData = {
         Whether you want to book a performance or add your profile, there are many ways to get involved
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/contact" class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors font-medium">
+        <a href="/contact" class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors font-medium">
           Book a Performance
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
-        <a href="/dancers/submit" class="inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-primary-600 text-primary-600 bg-white hover:bg-primary-50 transition-colors font-medium">
+        <a href="/dancers/submit" class="inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-gray-900 text-slate-700 bg-white hover:bg-slate-50 transition-colors font-medium">
           Add Your Profile
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

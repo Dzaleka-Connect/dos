@@ -1,9 +1,9 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
 import { checkContentHealth, calculateSystemHealth } from '../utils/monitoring-utils';
-import { convertToCSV } from '../utils/export-utils';
 import { calculateContactStats, calculateSocialBreakdown, calculateFeaturedStats } from '../utils/serviceStats';
 
 // Fetch all collections
@@ -163,6 +163,19 @@ const totalActivity = {
               stats.jobs.recent + stats.news.recent,
 };
 
+const totalContentItems =
+  stats.services.total +
+  stats.resources.total +
+  stats.events.total +
+  stats.photos.total +
+  stats.jobs.total +
+  stats.news.total +
+  stats.dancers.total +
+  stats.poets.total +
+  stats.sites.total +
+  stats.artists.total +
+  stats.artworks.total;
+
 // Get top categories
 const servicesByCategory = services.reduce((acc, service) => {
   const category = service.data.category;
@@ -210,14 +223,7 @@ const apiStatus = {
 const systemHealthPercentage = Math.round(
   (Object.values(apiStatus).filter(s => s.status === 'operational').length / Object.keys(apiStatus).length) * 100
 );
-
-// Recent items for activity feed
-const recentActivity = [
-  ...services.slice(0, 3).map(s => ({ type: 'service', item: s, date: s.data.lastUpdated || s.data.date })),
-  ...events.slice(0, 3).map(e => ({ type: 'event', item: e, date: e.data.date })),
-  ...news.slice(0, 3).map(n => ({ type: 'news', item: n, date: n.data.date })),
-  ...jobs.slice(0, 3).map(j => ({ type: 'job', item: j, date: j.data.posted || j.data.date })),
-].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+const systemHealthSummary = calculateSystemHealth(Object.values(apiStatus));
 
 // Trend data for last 7 days (calculated from actual content)
 const last7DaysTrend = Array.from({ length: 7 }, (_, i) => {
@@ -337,7 +343,7 @@ const allContent = [
     date: new Date(), // Profiles don't have a date field in schema, using now
     status: p.data.status || 'Active',
     category: p.data.category,
-    urlPrefix: '/skills-exchange'
+    urlPrefix: '/skills-exchange/profile'
   })),
   ...resources.map(r => ({
     id: r.id,
@@ -477,9 +483,52 @@ const allContent = [
   }))
 ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-const tabClass = "flex-1 py-2.5 text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 ease-in-out";
-const activeTabClass = "bg-white text-primary-600 shadow-sm ring-1 ring-black/5";
-const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
+const activityItems = allContent.filter((item) =>
+  ['service', 'event', 'news', 'job'].includes(item.type)
+);
+const recentActivity = activityItems.slice(0, 10);
+
+const getDashboardPath = (item) => {
+  const slug = item.slug || item.id;
+  if (item.urlPrefix) return `${item.urlPrefix}/${slug}`;
+
+  switch (item.type) {
+    case 'job':
+      return `/jobs/${slug}`;
+    case 'news':
+      return `/news/${slug}`;
+    case 'event':
+      return `/events/${slug}`;
+    case 'dancer':
+      return `/dancers/${slug}`;
+    case 'poet':
+      return `/poets/${slug}`;
+    case 'site':
+      return `/site-register/${slug}`;
+    case 'artist':
+      return `/public-art-catalogue/artist/${slug}`;
+    case 'artwork':
+      return `/public-art-catalogue/${slug}`;
+    case 'photo':
+      return `/photos/${slug}`;
+    case 'resource':
+      return `/resources/${slug}`;
+    case 'profile':
+      return `/skills-exchange/profile/${slug}`;
+    case 'talent':
+      return `/talents/${slug}`;
+    case 'document':
+      return `/docs/${slug}`;
+    case 'voice':
+      return `/community-voices/${slug}`;
+    default:
+      return `/services/${slug}`;
+  }
+};
+
+const tabClass = "tab-button flex-shrink-0 min-w-[120px] sm:flex-1 rounded-md px-4 py-2.5 text-xs sm:text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2";
+const activeTabClass = "bg-primary-600 text-white";
+const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
 
 ---
 
@@ -516,66 +565,80 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
     }
   </style>
 
-  <div class="min-h-screen bg-gray-50/50">
-    <!-- Header -->
-    <!-- Header with Hero Background -->
-    <div class="relative bg-gray-900 pb-16 sm:pb-24 md:pb-32 overflow-hidden">
-      <!-- Hero Image -->
-      <div class="absolute inset-0">
-        <img
-          class="w-full h-full object-cover"
-          src="/images/dzaleka-hero.jpeg"
-          alt="Dzaleka Camp View"
-        />
-        <div class="absolute inset-0 bg-gray-900 mix-blend-multiply opacity-80"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-      </div>
+  <div class="min-h-screen bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="mb-8">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Dashboard' }
+            ]}
+          />
+        </div>
 
-      <!-- Header Content -->
-      <div class="relative z-10">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between h-auto sm:h-24 md:h-32 py-6 sm:py-0 gap-4 sm:gap-0">
-            <div>
-              <h1 class="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
-              <p class="text-xs sm:text-sm text-gray-300 mt-0.5 sm:mt-1">Welcome back! Here's what's happening.</p>
-            </div>
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:items-start">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Operations and reporting</p>
+            <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Dashboard</h1>
+            <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+              Review platform activity, monitor content health, and export operational data across
+              Dzaleka Online Services.
+            </p>
 
-            <!-- Quick Actions -->
-            <div class="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto">
+            <div class="mt-6 flex flex-wrap gap-3">
               <button
                 id="refreshDashboard"
-                class="inline-flex items-center justify-center px-2 sm:px-3 py-1.5 border border-transparent rounded-lg text-xs font-medium text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50 transition-colors backdrop-blur-sm flex-1 sm:flex-none"
+                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 aria-label="Refresh dashboard data"
               >
-                <svg class="w-3.5 h-3.5 sm:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                <span class="hidden sm:inline">Refresh</span>
+                Refresh data
               </button>
               <a
                 href="/staff"
-                class="inline-flex items-center justify-center px-2 sm:px-3 py-1.5 border border-transparent rounded-lg text-xs font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors shadow-lg flex-1 sm:flex-none"
+                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               >
-                <svg class="w-3.5 h-3.5 sm:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                <span class="hidden sm:inline">Staff Portal</span>
+                Staff portal
               </a>
+            </div>
+          </div>
+
+          <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <h2 class="text-lg font-semibold text-slate-900">Current snapshot</h2>
+            <div class="mt-5 grid grid-cols-2 gap-4">
+              <div class="rounded-lg border border-slate-200 bg-white p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Total content</p>
+                <p class="mt-2 text-2xl font-bold text-slate-900">{totalContentItems}</p>
+              </div>
+              <div class="rounded-lg border border-slate-200 bg-white p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">30-day activity</p>
+                <p class="mt-2 text-2xl font-bold text-slate-900">{totalActivity.last30Days}</p>
+              </div>
+              <div class="rounded-lg border border-slate-200 bg-white p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Content health</p>
+                <p class="mt-2 text-2xl font-bold text-slate-900">{healthPercentage}%</p>
+              </div>
+              <div class="rounded-lg border border-slate-200 bg-white p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Core APIs</p>
+                <p class="mt-2 text-2xl font-bold text-slate-900">{systemHealthPercentage}%</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Main Content Container (moved up to overlap hero) -->
-    <!-- Main Content Container (moved up to overlap hero) -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 -mt-12 sm:-mt-16 md:-mt-24 relative z-20">
-      <!-- Tab Navigation Card -->
-      <div class="bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-xl border border-white/20 mb-6 sm:mb-8 p-1.5 sm:p-2">
-        <!-- Tab Navigation -->
-        <div class="flex p-1 space-x-1 bg-gray-100/50 rounded-xl overflow-x-auto custom-scrollbar" role="tablist" aria-label="Dashboard sections">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-8 rounded-lg border border-slate-200 bg-white p-2">
+        <div class="flex gap-1 overflow-x-auto rounded-md bg-slate-100 p-1 custom-scrollbar" role="tablist" aria-label="Dashboard sections">
           <button
-            class="tab-button flex-shrink-0 min-w-[120px] sm:flex-1 py-2.5 px-4 text-xs sm:text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 ease-in-out bg-white text-primary-600 shadow-sm ring-1 ring-black/5"
+            class={`${tabClass} ${activeTabClass}`}
             data-tab="overview"
             role="tab"
             aria-selected="true"
@@ -589,7 +652,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </button>
           <button
-            class="tab-button flex-shrink-0 min-w-[120px] sm:flex-1 py-2.5 px-4 text-xs sm:text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 ease-in-out text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            class={`${tabClass} ${inactiveTabClass}`}
             data-tab="analytics"
             role="tab"
             aria-selected="false"
@@ -603,7 +666,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </button>
           <button
-            class="tab-button flex-shrink-0 min-w-[120px] sm:flex-1 py-2.5 px-4 text-xs sm:text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 ease-in-out text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            class={`${tabClass} ${inactiveTabClass}`}
             data-tab="content"
             role="tab"
             aria-selected="false"
@@ -617,7 +680,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </button>
           <button
-            class="tab-button flex-shrink-0 min-w-[120px] sm:flex-1 py-2.5 px-4 text-xs sm:text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 ease-in-out text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            class={`${tabClass} ${inactiveTabClass}`}
             data-tab="health"
             role="tab"
             aria-selected="false"
@@ -631,7 +694,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </button>
           <button
-            class="tab-button flex-shrink-0 min-w-[120px] sm:flex-1 py-2.5 px-4 text-xs sm:text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 ease-in-out text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            class={`${tabClass} ${inactiveTabClass}`}
             data-tab="export"
             role="tab"
             aria-selected="false"
@@ -646,23 +709,20 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </button>
         </div>
       </div>
-    </div>
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 pb-8">
       <!-- Overview Tab -->
       <div id="overview-panel" class="tab-panel animate-fade-in-up" role="tabpanel" aria-labelledby="overview-tab">
         <!-- Key Metrics -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <!-- Total Content -->
-          <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+          <div class="rounded-lg border border-slate-200 bg-white p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Total Content</p>
-                <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{stats.services.total + stats.resources.total + stats.events.total + stats.photos.total + stats.jobs.total + stats.news.total + stats.dancers.total + stats.poets.total + stats.sites.total + stats.artists.total + stats.artworks.total}</p>
+                <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{totalContentItems}</p>
                 <p class="text-xs text-gray-500 mt-1">Across all collections</p>
               </div>
-              <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+              <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
@@ -670,21 +730,21 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
             <div class="mt-4">
               <div class="flex items-center text-sm">
-                <span class="text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded-full">↑ {totalActivity.last7Days}</span>
+                <span class="text-green-700 font-medium bg-green-50 px-2 py-0.5 rounded-md">↑ {totalActivity.last7Days}</span>
                 <span class="text-gray-500 ml-2">new in last 7 days</span>
               </div>
             </div>
           </div>
 
           <!-- Active Services -->
-          <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group animation-delay-100 animate-fade-in-up">
+          <div class="rounded-lg border border-slate-200 bg-white p-6 animation-delay-100 animate-fade-in-up">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Active Services</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{stats.services.active}</p>
                 <p class="text-xs text-gray-500 mt-1">of {stats.services.total} total</p>
               </div>
-              <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center group-hover:bg-green-100 transition-colors">
+              <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -698,14 +758,14 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Upcoming Events -->
-          <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group animation-delay-200 animate-fade-in-up">
+          <div class="rounded-lg border border-slate-200 bg-white p-6 animation-delay-200 animate-fade-in-up">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Upcoming Events</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{stats.events.upcoming}</p>
                 <p class="text-xs text-gray-500 mt-1">in next 30 days</p>
               </div>
-              <div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+              <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -717,14 +777,14 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Content Health -->
-          <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group animation-delay-300 animate-fade-in-up">
+          <div class="rounded-lg border border-slate-200 bg-white p-6 animation-delay-300 animate-fade-in-up">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">System Health</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{healthPercentage}%</p>
                 <p class="text-xs text-gray-500 mt-1">Content quality score</p>
               </div>
-              <div class={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${healthPercentage >= 90 ? 'bg-green-50 group-hover:bg-green-100' : healthPercentage >= 70 ? 'bg-yellow-50 group-hover:bg-yellow-100' : 'bg-red-50 group-hover:bg-red-100'}`}>
+              <div class={`w-12 h-12 rounded-lg flex items-center justify-center ${healthPercentage >= 90 ? 'bg-green-50' : healthPercentage >= 70 ? 'bg-yellow-50' : 'bg-red-50'}`}>
                 <svg class={`w-6 h-6 ${healthPercentage >= 90 ? 'text-green-600' : healthPercentage >= 70 ? 'text-yellow-600' : 'text-red-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -740,8 +800,8 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Recent Activity -->
           <div class="lg:col-span-2 animate-fade-in-up animation-delay-200">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div class="p-6 border-b border-gray-100 bg-gray-50/50">
+            <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+              <div class="p-6 border-b border-slate-200 bg-slate-50">
                 <div class="flex items-center justify-between">
                   <h2 class="text-lg font-semibold text-gray-900">Recent Activity</h2>
                   <div class="flex items-center space-x-2">
@@ -756,7 +816,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                 </div>
               </div>
               <div class="divide-y divide-gray-200" id="activityList">
-                {recentActivity.map((activity, index) => (
+                {recentActivity.map((activity) => (
                   <div class="p-4 hover:bg-gray-50 transition-colors activity-item">
                     <div class="flex items-start space-x-3">
                       <div class={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -787,14 +847,14 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                         )}
                       </div>
                       <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate">{activity.item.data.title}</p>
-                        <p class="text-sm text-gray-50 capitalize">{activity.type} • {new Date(activity.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
-                        {activity.item.data.description && (
-                          <p class="text-sm text-gray-600 mt-1 line-clamp-2">{activity.item.data.description}</p>
+                        <p class="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
+                        <p class="text-sm text-gray-500 capitalize">{activity.type} • {new Date(activity.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                        {activity.description && (
+                          <p class="text-sm text-gray-600 mt-1 line-clamp-2">{activity.description}</p>
                         )}
                       </div>
                       <a
-                        href={`${activity.item.urlPrefix || '/' + (activity.type === 'job' ? 'jobs' : activity.type === 'news' ? 'news' : activity.type === 'event' ? 'events' : activity.type === 'dancer' ? 'dancers' : activity.type === 'poet' ? 'poets' : 'services')}/${activity.item.id}`}
+                        href={getDashboardPath(activity)}
                         class="text-primary-600 hover:text-primary-700 text-sm font-medium whitespace-nowrap"
                       >
                         View →
@@ -814,7 +874,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           <!-- Quick Stats -->
           <div class="space-y-6">
             <!-- Collection Breakdown -->
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white rounded-lg border border-slate-200 p-6">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Content Breakdown</h3>
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
@@ -845,7 +905,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
 
             <!-- Quick Actions -->
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white rounded-lg border border-slate-200 p-6">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
               <div class="space-y-2">
                 <a href="/events/organize" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
@@ -876,7 +936,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
 
             <!-- Top Categories -->
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white rounded-lg border border-slate-200 p-6">
               <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Top Categories</h3>
               <div class="space-y-3">
                 {topCategories.map(([category, count]) => (
@@ -895,7 +955,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
       <div id="analytics-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="analytics-tab">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <!-- Activity Trend Chart -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Activity Trend</h3>
             <div class="h-64 sm:h-80">
               <canvas id="activityTrendChart" aria-label="Activity trend chart showing last 7 days"></canvas>
@@ -903,7 +963,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Content Overview Chart -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Content Overview</h3>
             <div class="h-64 sm:h-80">
               <canvas id="contentOverviewChart" aria-label="Content overview pie chart"></canvas>
@@ -911,7 +971,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Service Status Chart -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Service Status</h3>
             <div class="h-48 sm:h-64">
               <canvas id="serviceStatusChart" aria-label="Service status doughnut chart"></canvas>
@@ -919,7 +979,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Event Status Chart -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Event Status</h3>
             <div class="h-48 sm:h-64">
               <canvas id="eventStatusChart" aria-label="Event status doughnut chart"></canvas>
@@ -927,7 +987,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Top Categories Chart -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Service Categories</h3>
             <div class="h-64">
               <canvas id="topCategoriesChart" aria-label="Top categories bar chart"></canvas>
@@ -935,7 +995,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Arts & Culture Breakdown -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Arts & Culture Breakdown</h3>
             <div class="h-64">
               <canvas id="artsBreakdownChart" aria-label="Arts and culture breakdown pie chart"></canvas>
@@ -943,7 +1003,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
            <!-- Digital Presence Chart -->
-           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 lg:col-span-2">
+           <div class="bg-white rounded-lg border border-slate-200 p-6 lg:col-span-2">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Digital Presence (Services & Stores)</h3>
             <div class="h-64">
               <canvas id="digitalPresenceChart" aria-label="Digital presence bar chart"></canvas>
@@ -951,7 +1011,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
 
           <!-- Verification Status Chart -->
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Service Verification</h3>
             <div class="h-64">
               <canvas id="verificationStatusChart" aria-label="Verification status doughnut chart"></canvas>
@@ -959,7 +1019,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </div>
           
            <!-- Featured Content Chart -->
-           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 lg:col-span-3">
+           <div class="bg-white rounded-lg border border-slate-200 p-6 lg:col-span-3">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Featured Content Distribution (All Collections)</h3>
             <div class="h-80">
               <canvas id="featuredContentChart" aria-label="Featured content pie chart"></canvas>
@@ -973,13 +1033,13 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Resource Analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div class="bg-white rounded-lg border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Top Resource Categories</h4>
                 <div class="h-64">
                   <canvas id="resourceCategoriesChart"></canvas>
                 </div>
               </div>
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div class="bg-white rounded-lg border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Resource Activity</h4>
                 <div class="flex items-center justify-between mb-6">
                   <div>
@@ -1019,7 +1079,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Skills Exchange Analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div class="bg-white rounded-lg border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Skills Distribution</h4>
                 <div class="h-48">
                   <canvas id="skillsDistributionChart"></canvas>
@@ -1035,7 +1095,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
                   </div>
                 </div>
               </div>
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 lg:col-span-2">
+              <div class="bg-white rounded-lg border border-slate-200 p-6 lg:col-span-2">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Top Skill Categories</h4>
                 <div class="h-64">
                   <canvas id="skillCategoriesChart"></canvas>
@@ -1048,13 +1108,13 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Jobs Analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div class="bg-white rounded-lg border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Jobs Status</h4>
                 <div class="h-64">
                   <canvas id="jobStatusChart"></canvas>
                 </div>
               </div>
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div class="bg-white rounded-lg border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Recent Job Activity</h4>
                 <div class="overflow-hidden rounded-lg border border-gray-200">
                   <table class="min-w-full divide-y divide-gray-200">
@@ -1088,7 +1148,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
 
       <!-- Content Tab -->
       <div id="content-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="content-tab">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="bg-white rounded-lg border border-slate-200">
           <div class="p-6 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Content Management</h2>
             <div class="flex flex-col sm:flex-row gap-4">
@@ -1160,7 +1220,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
       <div id="health-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="health-tab">
         <!-- Content Health Overview -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Healthy Content</p>
@@ -1174,7 +1234,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Missing Images</p>
@@ -1188,7 +1248,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Incomplete Metadata</p>
@@ -1202,7 +1262,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Broken Links</p>
@@ -1219,14 +1279,14 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
 
         <!-- Content Health Chart & Details -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Content Health Distribution</h3>
             <div class="h-64">
               <canvas id="contentHealthChart" aria-label="Content health distribution chart"></canvas>
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Health by Collection</h3>
             <div class="space-y-4">
               {Object.entries(contentHealthData).map(([collection, data]) => {
@@ -1255,7 +1315,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           <h3 class="text-xl font-bold text-gray-900 mb-4">System Health Monitoring</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(apiStatus).map(([serviceName, statusData]) => (
-              <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div class="bg-white rounded-lg border border-slate-200 p-6">
                 <div class="flex items-center justify-between mb-3">
                   <h4 class="text-lg font-semibold text-gray-900 capitalize">{serviceName} API</h4>
                   <span class={`px-2 py-0.5 rounded-full text-xs font-medium ${statusData.status === 'operational' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -1277,14 +1337,14 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Overall system health is {systemHealthPercentage}%. All core services are operational.
+            Overall system health is {systemHealthPercentage}%. Current status: {systemHealthSummary.status}.
           </div>
         </div>
       </div>
 
       <!-- Export Tab -->
       <div id="export-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="export-tab">
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <div class="bg-white rounded-lg border border-slate-200 p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-4">Data Export Tools</h2>
           <p class="text-gray-600 mb-6">Select the type of data you wish to export. Data will be provided in CSV format.</p>
 
@@ -1376,10 +1436,10 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
   <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2" role="region" aria-label="Notifications" aria-live="polite"></div>
 </MainLayout>
 
-<script is:inline define:vars={{ chartDataJSON: JSON.stringify(chartData), allContentJSON: JSON.stringify(allContent) }}>
+<script is:inline define:vars={{ chartDataJSON: JSON.stringify(chartData), allContentJSON: JSON.stringify(allContent), activityItemsJSON: JSON.stringify(activityItems) }}>
   // Tab management
-  const tabClass = "inline-flex items-center justify-center px-3 py-2.5 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out";
-  const inactiveTabClass = "text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200";
+  const tabClass = "tab-button flex-shrink-0 min-w-[120px] sm:flex-1 rounded-md px-4 py-2.5 text-xs sm:text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2";
+  const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
   const activeTabClass = "text-white bg-primary-600";
 
   function initTabs() {
@@ -2049,30 +2109,26 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
     }, 5000);
   }
 
+  let currentPage = 1;
+  const itemsPerPage = 10;
+  let filteredContent = [];
+  let allContent = [];
+  let activityItems = [];
+  let activityPage = 1;
+  const activityPerPage = 10;
+
   // Initialize on load
   document.addEventListener('DOMContentLoaded', () => {
     initTabs();
-
-    // Export functionality
-    const startExportBtn = document.getElementById('startExportBtn');
-    if (startExportBtn) {
-      startExportBtn.addEventListener('click', () => {
-        showToast('Preparing export package...', 'info');
-        setTimeout(() => {
-          showToast('Export started! Download will begin shortly.', 'success');
-        }, 1500);
-      });
-    }
+    initContentTable();
+    initActivityFeed();
 
     // Individual export buttons
     const exportButtons = document.querySelectorAll('.start-export-btn');
     exportButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const type = btn.getAttribute('data-export-type');
-        showToast(`Exporting ${type} data...`, 'info');
-        setTimeout(() => {
-          showToast(`${type} export complete!`, 'success');
-        }, 1500);
+        const type = btn.getAttribute('data-export-type') || 'all';
+        exportData(type);
       });
     });
 
@@ -2080,34 +2136,43 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
     const refreshBtn = document.getElementById('refreshDashboard');
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        showToast('Refreshing dashboard...', 'info');
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        currentPage = 1;
+        activityPage = 1;
+        filteredContent = [...allContent];
+
+        const searchInput = document.getElementById('contentSearch');
+        const filterSelect = document.getElementById('contentFilter');
+        const activitySearch = document.getElementById('activitySearch');
+
+        if (searchInput) searchInput.value = '';
+        if (filterSelect) filterSelect.value = 'all';
+        if (activitySearch) activitySearch.value = '';
+
+        renderContentTable();
+        renderActivityFeed();
+
+        const analyticsPanel = document.getElementById('analytics-panel');
+        if (analyticsPanel && !analyticsPanel.classList.contains('hidden') && typeof Chart !== 'undefined') {
+          initCharts();
+        }
+
+        showToast('Dashboard view refreshed', 'success');
       });
     }
 
     // Activity search
     const activitySearch = document.getElementById('activitySearch');
     if (activitySearch) {
-      activitySearch.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const items = document.querySelectorAll('.activity-item');
-
-        items.forEach(item => {
-          const text = item.textContent.toLowerCase();
-          item.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
+      activitySearch.addEventListener('input', () => {
+        activityPage = 1;
+        renderActivityFeed();
       });
     }
 
-    // Initialize activity feed
-    initActivityFeed();
+    showToast('Dashboard loaded successfully', 'success');
+  });
 
   // Activity Feed Logic
-  let activityPage = 1;
-  const activityPerPage = 10;
-
   function initActivityFeed() {
     const loadMoreBtn = document.getElementById('loadMoreActivity');
     if (loadMoreBtn) {
@@ -2116,47 +2181,34 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
         renderActivityFeed();
       });
     }
+
+    renderActivityFeed();
   }
 
+  function getFilteredActivityItems() {
+    const activitySearch = document.getElementById('activitySearch');
+    const searchTerm = activitySearch ? activitySearch.value.trim().toLowerCase() : '';
 
+    if (!searchTerm) return activityItems;
+
+    return activityItems.filter((item) =>
+      item.title.toLowerCase().includes(searchTerm) ||
+      item.type.toLowerCase().includes(searchTerm) ||
+      (item.category && item.category.toLowerCase().includes(searchTerm)) ||
+      (item.description && item.description.toLowerCase().includes(searchTerm))
+    );
+  }
 
   function renderActivityFeed() {
     const container = document.getElementById('activityList');
     const loadMoreBtn = document.getElementById('loadMoreActivity');
-    
+
     if (!container) return;
 
-    const start = (activityPage - 1) * activityPerPage;
-    const end = start + activityPerPage;
-    // We skip the first 10 because they are already rendered by server
-    // Actually, to be safe and consistent, we should probably re-render everything or append.
-    // But the server rendered the first 10.
-    // Let's just append the next batch.
-    
-    // Wait, if we use allContent, it contains EVERYTHING.
-    // The server rendered the first 10 of `recentActivity`.
-    // `recentActivity` is sorted by date. `allContent` is also sorted by date.
-    // So we can just take slices from `allContent`.
-    
-    const newItems = allContent.slice(start, end);
-    
-    if (newItems.length === 0) {
-      if (loadMoreBtn) {
-        loadMoreBtn.textContent = 'No more activity';
-        loadMoreBtn.disabled = true;
-        loadMoreBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      }
-      return;
-    }
+    const filteredActivityItems = getFilteredActivityItems();
+    const visibleItems = filteredActivityItems.slice(0, activityPage * activityPerPage);
 
-    // If it's the first page (which is already rendered), we don't do anything unless we want to replace it.
-    // But here we are called on "Load More", so we are on page 2+.
-    // However, the server rendered items 0-10.
-    // So if activityPage starts at 1, and we increment to 2.
-    // We want items 10-20.
-    // So start = (2-1) * 10 = 10. Correct.
-
-    const html = newItems.map(item => `
+    container.innerHTML = visibleItems.map((item) => `
       <div class="p-4 hover:bg-gray-50 transition-colors activity-item">
         <div class="flex items-start space-x-3">
           <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -2173,7 +2225,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
             ${item.description ? `<p class="text-sm text-gray-600 mt-1 line-clamp-2">${item.description}</p>` : ''}
           </div>
           <a
-            href="${getPathForType(item)}/${item.id}"
+            href="${getPathForType(item)}"
             class="text-primary-600 hover:text-primary-700 text-sm font-medium whitespace-nowrap"
           >
             View →
@@ -2182,32 +2234,27 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
       </div>
     `).join('');
 
-    container.insertAdjacentHTML('beforeend', html);
-    
-    if (end >= allContent.length) {
-      if (loadMoreBtn) {
-        loadMoreBtn.textContent = 'No more activity';
-        loadMoreBtn.disabled = true;
-        loadMoreBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      }
+    if (visibleItems.length === 0) {
+      container.innerHTML = `
+        <div class="p-6 text-sm text-gray-500">
+          No activity matched your search.
+        </div>
+      `;
+    }
+
+    if (loadMoreBtn) {
+      const hasMore = visibleItems.length < filteredActivityItems.length;
+      loadMoreBtn.textContent = hasMore ? 'Load more activity' : 'No more activity';
+      loadMoreBtn.disabled = !hasMore;
+      loadMoreBtn.classList.toggle('opacity-50', !hasMore);
+      loadMoreBtn.classList.toggle('cursor-not-allowed', !hasMore);
     }
   }
-
-    showToast('Dashboard loaded successfully', 'success');
-    
-    // Initialize content table
-    initContentTable();
-  });
-
-  // Content Table Logic
-  let currentPage = 1;
-  const itemsPerPage = 10;
-  let filteredContent = [];
-  let allContent = [];
 
   function initContentTable() {
     try {
       allContent = JSON.parse(allContentJSON);
+      activityItems = JSON.parse(activityItemsJSON);
       filteredContent = [...allContent];
       
       const searchInput = document.getElementById('contentSearch');
@@ -2251,22 +2298,45 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
       // Export button
       const exportBtn = document.getElementById('exportButton');
       if (exportBtn) {
-        exportBtn.addEventListener('click', exportData);
+        exportBtn.addEventListener('click', () => exportData('filtered'));
       }
     } catch (e) {
       console.error('Error initializing content table:', e);
     }
   }
 
-  function exportData() {
+  function getExportItems(type) {
+    switch (type) {
+      case 'services':
+        return allContent.filter((item) => item.type === 'service');
+      case 'events':
+        return allContent.filter((item) => item.type === 'event');
+      case 'news':
+        return allContent.filter((item) => item.type === 'news');
+      case 'jobs':
+        return allContent.filter((item) => item.type === 'job');
+      case 'photos':
+        return allContent.filter((item) => item.type === 'photo');
+      case 'all':
+        return allContent;
+      case 'filtered':
+      default:
+        return filteredContent.length > 0 ? filteredContent : allContent;
+    }
+  }
+
+  function exportData(type = 'filtered') {
     try {
-      // Convert data to CSV format
       const headers = ['ID', 'Type', 'Title', 'Category', 'Status', 'Date', 'Description'];
       const csvRows = [headers.join(',')];
-      
-      // Use filtered content if available, otherwise all content
-      const dataToExport = filteredContent.length > 0 ? filteredContent : allContent;
-      
+
+      const dataToExport = getExportItems(type);
+
+      if (dataToExport.length === 0) {
+        showToast('No data available for this export', 'warning');
+        return;
+      }
+
       dataToExport.forEach(item => {
         const row = [
           item.id,
@@ -2283,16 +2353,17 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
       const csvContent = csvRows.join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      
+
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', `dashboard_export_${new Date().toISOString().split('T')[0]}.csv`);
+      link.setAttribute('download', `dashboard_${type}_${new Date().toISOString().split('T')[0]}.csv`);
       link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
-      showToast('Export started successfully', 'success');
+      URL.revokeObjectURL(url);
+
+      showToast(`${type === 'filtered' ? 'Filtered content' : type.charAt(0).toUpperCase() + type.slice(1)} export downloaded`, 'success');
     } catch (e) {
       console.error('Export failed:', e);
       showToast('Failed to export data', 'error');
@@ -2300,19 +2371,25 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
   }
 
   function getPathForType(item) {
-    if (item.urlPrefix) return item.urlPrefix;
+    const slug = item.slug || item.id;
+    if (item.urlPrefix) return `${item.urlPrefix}/${slug}`;
+
     switch (item.type) {
-      case 'job': return '/jobs';
-      case 'news': return '/news';
-      case 'event': return '/events';
-      case 'dancer': return '/dancers';
-      case 'poet': return '/poets';
-      case 'site': return '/sites';
-      case 'artist': return '/artists';
-      case 'artwork': return '/artworks';
-      case 'photo': return '/photos';
-      case 'resource': return '/resources';
-      default: return '/services';
+      case 'job': return `/jobs/${slug}`;
+      case 'news': return `/news/${slug}`;
+      case 'event': return `/events/${slug}`;
+      case 'dancer': return `/dancers/${slug}`;
+      case 'poet': return `/poets/${slug}`;
+      case 'site': return `/site-register/${slug}`;
+      case 'artist': return `/public-art-catalogue/artist/${slug}`;
+      case 'artwork': return `/public-art-catalogue/${slug}`;
+      case 'photo': return `/photos/${slug}`;
+      case 'resource': return `/resources/${slug}`;
+      case 'profile': return `/skills-exchange/profile/${slug}`;
+      case 'talent': return `/talents/${slug}`;
+      case 'document': return `/docs/${slug}`;
+      case 'voice': return `/community-voices/${slug}`;
+      default: return `/services/${slug}`;
     }
   }
 
@@ -2321,7 +2398,8 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
     
     filteredContent = allContent.filter(item => {
       const matchesSearch = item.title.toLowerCase().includes(searchTerm) || 
-                            (item.category && item.category.toLowerCase().includes(searchTerm));
+                            (item.category && item.category.toLowerCase().includes(searchTerm)) ||
+                            (item.description && item.description.toLowerCase().includes(searchTerm));
       const matchesType = typeFilter === 'all' || item.type === typeFilter || item.type + 's' === typeFilter;
       
       return matchesSearch && matchesType;
@@ -2402,8 +2480,7 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
           </span>
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <a href="${getPathForType(item)}/${item.id}" class="text-primary-600 hover:text-primary-900 mr-3">View</a>
-          <a href="#" class="text-gray-400 hover:text-gray-600 cursor-not-allowed" title="Edit not available">Edit</a>
+          <a href="${getPathForType(item)}" class="text-primary-600 hover:text-primary-900">View</a>
         </td>
       </tr>
     `).join('');
@@ -2437,14 +2514,6 @@ const inactiveTabClass = "text-gray-500 hover:text-gray-700 hover:bg-gray-50";
 </script>
 
 <style>
-  .tab-button[aria-selected="true"] {
-    @apply border-primary-600 text-primary-600;
-  }
-
-  .tab-button[aria-selected="false"] {
-    @apply border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300;
-  }
-
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;

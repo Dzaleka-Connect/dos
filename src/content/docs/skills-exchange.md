@@ -1,61 +1,48 @@
 ---
 title: Skills Exchange
-description: Share and learn skills within the community
+description: Guide to sharing skills and requesting learning support
 section: community
 ---
 
 # Skills Exchange
 
-Connect with community members to share knowledge and learn new skills.
+Skills Exchange connects people who can teach, offer, or share a skill with people who are looking to learn or find help.
 
-## Features
+## Main pages
 
-### [Browse Skills](/skills-exchange)
-- View available skills
-- Search by category
-- Filter by availability
-- Find instructors
-- See skill levels
+- [Skills Exchange home](/skills-exchange)
+- [List your profile](/skills-exchange/list-profile)
+- [Request a skill or learning help](/skills-exchange/request)
+- [Skills offered](/skills-exchange/skills-offered)
+- [Skills requested](/skills-exchange/skills-requested)
 
-### [Share Your Skills](/skills-exchange/share)
-- Register as an instructor
-- List your expertise
-- Set availability
-- Define teaching style
-- Share credentials
+## If you want to share a skill
 
-### [Learn Skills](/skills-exchange/learn)
-- Browse available courses
-- Contact instructors
-- Schedule sessions
-- Track progress
-- Give feedback
+1. Open [List your profile](/skills-exchange/list-profile).
+2. Add your skill area, experience, and availability.
+3. Include contact details people can actually use.
+4. Submit the form for review.
 
-## Quick Actions
+## If you want to learn something
 
-### Register Skills
-1. Visit [Share Skills](/skills-exchange/share)
-2. Fill in details:
-   - Skill categories
-   - Experience level
-   - Teaching methods
-   - Availability
-3. Submit for review
+1. Browse [Skills offered](/skills-exchange/skills-offered) or use the main [Skills Exchange](/skills-exchange) page.
+2. If you cannot find the right person, use [Request a skill](/skills-exchange/request).
+3. Explain what you are looking for and how people can reach you.
 
-### Find Skills
-1. Go to [Skills Directory](/skills-exchange)
-2. Browse categories
-3. Contact instructors
-4. Schedule learning
+## If you already have a profile
 
-## Guidelines
+Use [Update profile](/skills-exchange/update-profile) when your availability, contact details, or service information changes.
 
-- [Teaching Standards](/skills-exchange/standards)
-- [Learning Guidelines](/skills-exchange/guidelines)
-- [Code of Conduct](/skills-exchange/conduct)
+## Good practice
 
-## Need Help?
+- Be clear about what you can teach or what help you need.
+- Keep rates or payment expectations transparent if they apply.
+- Use respectful language and realistic availability.
+- Share only the contact details you are comfortable publishing.
 
-- [Skills FAQ](/skills-exchange/faq)
-- [Contact Support](/contact)
-- [Report Issues](/support)
+## Need help?
+
+- [Skills Exchange](/skills-exchange)
+- [List your profile](/skills-exchange/list-profile)
+- [Request a skill](/skills-exchange/request)
+- [Contact](/contact)

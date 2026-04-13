@@ -1,91 +1,58 @@
 ---
 title: Service Provider Registration
-description: Guide to registering as a service provider
+description: Guide to registering and updating a service listing
 section: services
 ---
 
 # Service Provider Registration
 
-Join our network of service providers in Dzaleka. This guide explains how to register your organization and services.
+This guide explains how organisations, programmes, and community initiatives can publish service information on the platform.
 
-## Organization Types
+## Who can register
 
-- Non-Governmental Organization (NGO)
-- Community-Based Organization (CBO)
-- Business/Enterprise
-- Faith-Based Organization
-- Educational Institution
-- Healthcare Provider
-- Social Enterprise
-- Other Organizations
+- NGOs and CBOs
+- schools and training centres
+- healthcare providers
+- legal and protection services
+- social enterprises and businesses
+- faith-based and community organisations
 
-## Service Categories
+## What to prepare
 
-- Education & Training
-- Healthcare Services
-- Legal Aid & Support
-- Business & Employment
-- Community Development
-- Youth Programs
-- Women's Empowerment
-- Technology & Digital Services
-- Arts & Culture
-- Environmental Programs
-- Sports & Recreation
-- Other Services
+Before opening the form, gather:
 
-## Registration Process
+- organisation name
+- contact details
+- short description
+- service categories
+- service location or coverage area
+- opening times or availability
+- any supporting documents you want the team to review
 
-### Required Information
-1. Organization Details:
-   - Organization name
-   - Organization type
-   - Description
-   - Logo (recommended: 400x400px)
-   - Contact information
+## How to register
 
-2. Service Details:
-   - Service categories
-   - Service descriptions
-   - Service locations
-   - Operating hours
-   - Target beneficiaries
+1. Visit [Service Registration](/services/register).
+2. Add the organisation and service details.
+3. Upload supporting material if needed.
+4. Submit the form for review.
 
-3. Required Documents:
-   - Registration certificate
-   - Tax documents (if applicable)
-   - Additional certifications
-   - Supporting documents
+## After submission
 
-### Steps to Register
-1. Visit [Service Registration](/services/register)
-2. Fill out organization information
-3. Provide service details
-4. Upload required documents
-5. Submit for review
+The team may review the listing before it appears publicly. If something on a published listing needs to change later, use:
 
-## After Registration
+- [Service Update Request](/services/update-request)
+- [Contact](/contact)
 
-### Review Process
-- Document verification
-- Service validation
-- Provider approval
-- Profile activation
+## Good listing practice
 
-### Provider Dashboard
-- Manage services
-- Update information
-- Track requests
-- View analytics
+- Keep contact details current.
+- Use the categories that best match the actual service.
+- Make the service area and eligibility clear.
+- Tell the team if a listing closes or changes significantly.
 
-## Guidelines
+## Need help?
 
-- [Provider Standards](/services/standards)
-- [Service Quality](/services/quality)
-- [Code of Conduct](/services/conduct)
-
-## Need Help?
-
-- [Registration FAQ](/services/faq)
-- [Contact Support](/contact)
-- [Report Issues](/support)
+- [Services](/services)
+- [Service Registration](/services/register)
+- [Service Update Request](/services/update-request)
+- [Help Desk](/help-desk)

@@ -1,144 +1,112 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
-const title = "About Dzaleka Online Services";
-const description = "Learn about the independent community project that preserves and documents important cultural, historical, and community sites in Dzaleka Refugee Camp.";
+const title = 'About Dzaleka Site Register';
+const description = 'Learn about the independent community project documenting cultural, historical, and community sites in Dzaleka.';
+
+const principles = [
+  {
+    title: 'Independent documentation',
+    description: 'The register exists as a public community record and is not an official authority list.'
+  },
+  {
+    title: 'Community memory',
+    description: 'It helps preserve stories, landmarks, and places that matter to people living in and connected to Dzaleka.'
+  },
+  {
+    title: 'Public reference',
+    description: 'Visitors, researchers, and journalists can use it to understand the significance of local places.'
+  },
+  {
+    title: 'Care and preservation',
+    description: 'Recording a site can help encourage attention, care, and future preservation efforts.'
+  }
+];
 ---
 
 <MainLayout title={title} description={description}>
-  <Layout>
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-white">
-      <div class="absolute inset-0 bg-black/60"></div>
-      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <div class="mb-6">
-          <span class="inline-flex items-center px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/90">
-            About This Project
-          </span>
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Site Register', href: '/site-register' },
+            { label: 'About' }
+          ]}
+        />
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">About the project</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">About the Site Register</h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            The Dzaleka Site Register is an independent public record of important places in and around Dzaleka Refugee Camp.
+            It exists to document cultural, historical, and community sites so their meaning is easier to find and less likely
+            to be lost.
+          </p>
         </div>
-        
-        <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
-          About Dzaleka<br/>
-          <span class="text-blue-300">Digital Site Register</span>
-        </h1>
-        
-        <p class="text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed">
-          An independent community initiative to preserve and document the cultural heritage of Dzaleka Refugee Camp
-        </p>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-lg font-semibold text-slate-900">What you will find</h2>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <li>Descriptions of important sites and what they are used for.</li>
+            <li>Location notes, images, and supporting background information.</li>
+            <li>Community submissions, corrections, and updates over time.</li>
+          </ul>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- About Section -->
-    <section class="py-16 bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-blue-50 rounded-xl p-8 mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">About This Project</h2>
-          <p class="text-gray-700 mb-6 leading-relaxed">
-            The Dzaleka Online Services is an <strong>independent online record</strong> of important places in and around Dzaleka Refugee Camp. 
-            It is <strong>not managed or endorsed by camp authorities</strong>. The aim is to gather and share information about landmarks, cultural spaces, 
-            memorials, and community facilities so that their history and meaning are not lost.
+  <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <section class="rounded-lg border border-slate-200 bg-white p-6 sm:p-8">
+      <h2 class="text-2xl font-semibold text-slate-900">Why the register exists</h2>
+      <div class="mt-6 space-y-5 text-sm leading-7 text-slate-600 sm:text-base">
+        <p>
+          Many places in Dzaleka carry meaning that is not formally documented anywhere else. A school, memorial,
+          gathering place, business, church, field, or cultural site may have a history that matters deeply to the
+          community but is hard to access from outside the people who know it.
+        </p>
+        <p>
+          This register creates a shared public record. It is intended to help preserve memory, support local knowledge,
+          and make it easier for people to understand why a place matters.
+        </p>
+        <p>
+          The project is independent. It does not replace official records or legal authority, but it gives the community
+          a way to document sites from a public and cultural perspective.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10 grid gap-4 sm:grid-cols-2">
+      {principles.map((item) => (
+        <div class="rounded-lg border border-slate-200 bg-white p-6">
+          <h3 class="text-lg font-semibold text-slate-900">{item.title}</h3>
+          <p class="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
+        </div>
+      ))}
+    </section>
+
+    <section class="mt-10 rounded-lg border border-slate-200 bg-slate-50 p-6 sm:p-8">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div>
+          <h2 class="text-2xl font-semibold text-slate-900">Contribute to the register</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+            You can help by submitting a site, suggesting an update, or reporting incorrect information.
           </p>
-          <p class="text-gray-700 leading-relaxed">
-            Each listing combines descriptions, photographs, maps, and background details to make these sites accessible to anyone interested in Dzaleka's heritage.
-          </p>
         </div>
-
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
-          <!-- Independent Preservation - Hexagon Style -->
-          <div class="relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 overflow-hidden group hover:shadow-xl transition-all duration-300">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-blue-200 rounded-full -mr-12 -mt-12 opacity-50 group-hover:scale-110 transition-transform"></div>
-            <div class="relative z-10">
-              <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-6 transform rotate-12 group-hover:rotate-0 transition-transform">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold text-blue-900 mb-4">Independent Preservation</h3>
-              <p class="text-blue-800 leading-relaxed">
-                This register exists outside official management, giving space to document places that matter to the community from a public perspective.
-              </p>
-            </div>
-          </div>
-
-          <!-- Keeping Stories Alive - Book Style -->
-          <div class="relative bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-8 overflow-hidden group hover:shadow-xl transition-all duration-300">
-            <div class="absolute top-4 right-4 w-16 h-20 bg-green-300 rounded-sm transform rotate-12 opacity-30 group-hover:rotate-0 transition-transform"></div>
-            <div class="absolute top-6 right-6 w-12 h-16 bg-green-400 rounded-sm transform rotate-6 opacity-40 group-hover:rotate-0 transition-transform"></div>
-            <div class="relative z-10">
-              <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold text-green-900 mb-4">Keeping Stories Alive</h3>
-              <p class="text-green-800 leading-relaxed">
-                Many sites in Dzaleka have meaning that isn't recorded anywhere else; this project makes sure those stories are available.
-              </p>
-            </div>
-          </div>
-
-          <!-- Shared Identity - Network Style -->
-          <div class="relative bg-gradient-to-br from-purple-50 to-violet-100 rounded-2xl p-8 overflow-hidden group hover:shadow-xl transition-all duration-300">
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C88FF" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
-            <div class="relative z-10">
-              <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold text-purple-900 mb-4">Shared Identity</h3>
-              <p class="text-purple-800 leading-relaxed">
-                Recording these sites helps strengthen pride and connection among residents and former residents.
-              </p>
-            </div>
-          </div>
-
-          <!-- Public Reference - Search Style -->
-          <div class="relative bg-gradient-to-br from-orange-50 to-amber-100 rounded-2xl p-8 overflow-hidden group hover:shadow-xl transition-all duration-300">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-orange-200 rounded-full -mr-16 -mt-16 opacity-30 group-hover:scale-110 transition-transform"></div>
-            <div class="absolute bottom-0 left-0 w-20 h-20 bg-orange-300 rounded-full -ml-10 -mb-10 opacity-40 group-hover:scale-110 transition-transform"></div>
-            <div class="relative z-10">
-              <div class="w-16 h-16 bg-orange-600 rounded-lg flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold text-orange-900 mb-4">Public Reference</h3>
-              <p class="text-orange-800 leading-relaxed">
-                Visitors, researchers, and journalists can use it as a guide to understand Dzaleka better.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Encouraging Care - Heart Style -->
-        <div class="relative bg-gradient-to-br from-yellow-50 to-amber-100 rounded-2xl p-8 overflow-hidden group hover:shadow-xl transition-all duration-300">
-          <div class="absolute top-0 right-0 w-20 h-20 bg-yellow-300 rounded-full -mr-10 -mt-10 opacity-40 group-hover:scale-110 transition-transform"></div>
-          <div class="absolute bottom-0 left-0 w-16 h-16 bg-amber-400 rounded-full -ml-8 -mb-8 opacity-30 group-hover:scale-110 transition-transform"></div>
-          <div class="relative z-10 text-center">
-            <div class="w-20 h-20 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-yellow-900 mb-4">Encouraging Care</h3>
-            <p class="text-yellow-800 leading-relaxed max-w-2xl mx-auto">
-              Highlighting important places can encourage preservation, even without formal protection.
-            </p>
-          </div>
-        </div>
-
-        <!-- Navigation -->
-        <div class="mt-12 text-center">
-          <a href="/site-register" class="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Site Register
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a href="/site-register/submit" class="inline-flex items-center justify-center rounded-lg bg-gray-900 px-5 py-3 text-sm font-medium text-white hover:bg-gray-800">
+            Submit a site
+          </a>
+          <a href="/site-register" class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+            Browse sites
           </a>
         </div>
       </div>
     </section>
-  </Layout>
+  </div>
 </MainLayout>

@@ -1,0 +1,368 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+
+const startupTemplates = (await getCollection('startup-templates')).sort((a, b) => a.data.order - b.data.order);
+
+const featuredTools = [
+  {
+    title: 'Dzaleka Digital File Profiling',
+    description: 'Open-source workflows for reviewing digital files, checking technical characteristics, and supporting preservation or archival preparation.',
+    href: 'https://github.com/Dzaleka-Connect/Dzaleka-Digital-File-Profiling',
+    label: 'GitHub repository',
+    audience: 'Archivists, librarians, cultural organisations'
+  },
+  {
+    title: 'Dzaleka Metadata Standard',
+    description: 'Shared metadata guidance for describing Dzaleka collections, records, and digital materials in a more consistent way.',
+    href: 'https://github.com/Dzaleka-Connect/Dzaleka-Metadata-Standard',
+    label: 'GitHub repository',
+    audience: 'Researchers, archives, collection managers'
+  },
+  {
+    title: 'Dzaleka API Skills',
+    description: 'Agent skills and references for accessing Dzaleka Online Services data such as services, events, jobs, news, and resources.',
+    href: 'https://github.com/Dzaleka-Connect/dzaleka-api-skills',
+    label: 'GitHub repository',
+    audience: 'Developers, AI builders, civic tech teams'
+  }
+];
+
+const platformTools = [
+  {
+    title: 'Submit a resource',
+    description: 'Share reports, guides, research, and public documents with the Dzaleka resource hub.',
+    href: '/resources/submit'
+  },
+  {
+    title: 'Register a service',
+    description: 'Add an organisation, community group, school, clinic, or local service to the directory.',
+    href: '/services/register'
+  },
+  {
+    title: 'Submit a site record',
+    description: 'Document a community place, institution, or local landmark for the public register.',
+    href: '/site-register/submit'
+  },
+  {
+    title: 'Submit public art',
+    description: 'Add artworks, artist records, and cultural contributions to the public art catalogue.',
+    href: '/public-art-catalogue/submit'
+  },
+  {
+    title: 'Post a job',
+    description: 'Share a vacancy, opportunity, or community role on the job board.',
+    href: '/jobs/post'
+  },
+  {
+    title: 'Submit an opportunity',
+    description: 'Share grants, programmes, or open calls for review before they are listed publicly.',
+    href: '/grants-and-programs/submit'
+  }
+];
+
+const guidesAndReferences = [
+  {
+    title: 'API documentation',
+    description: 'Browse public endpoints, examples, and reference material for Dzaleka Online Services.',
+    href: '/api-docs'
+  },
+  {
+    title: 'Platform documentation',
+    description: 'Read platform guides, onboarding notes, and help material.',
+    href: '/docs'
+  },
+  {
+    title: 'Open Data Platform',
+    description: 'Access datasets, public records, and open information for analysis and reuse.',
+    href: '/open-data-platform'
+  },
+  {
+    title: 'Resource hub',
+    description: 'Find reports, legal documents, studies, and public guides relevant to Dzaleka.',
+    href: '/resources'
+  }
+];
+
+const seo = {
+  title: 'Tools and Templates',
+  description: 'Access practical tools, templates, submission routes, and open-source resources supporting Dzaleka Online Services and the wider community.',
+  canonical: 'https://services.dzaleka.com/tools-and-templates',
+  openGraph: {
+    title: 'Tools and Templates | Dzaleka Online Services',
+    description: 'Access practical tools, templates, submission routes, and open-source resources supporting Dzaleka Online Services and the wider community.',
+    type: 'website',
+    url: 'https://services.dzaleka.com/tools-and-templates',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tools and Templates | Dzaleka Online Services',
+    description: 'Practical tools, templates, and open-source resources for community publishing, metadata, and digital services.'
+  }
+};
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Tools and Templates',
+  description: seo.description,
+  url: seo.canonical,
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://services.dzaleka.com'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Tools and Templates',
+        item: seo.canonical
+      }
+    ]
+  }
+};
+---
+
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  type="website"
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <main class="min-h-screen bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="mb-8">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Tools and templates' }
+            ]}
+          />
+        </div>
+
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-start">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">Tools library</p>
+            <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+              Tools and templates
+            </h1>
+            <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+              Practical tools, submission templates, and open-source references for organisations, contributors,
+              developers, researchers, and community partners working with Dzaleka Online Services.
+            </p>
+          </div>
+
+          <aside class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <h2 class="text-lg font-semibold text-slate-900">On this page</h2>
+            <div class="mt-4 space-y-3">
+              <a href="#business-startup-templates" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Business startup templates
+              </a>
+              <a href="#featured-tools" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Featured digital tools
+              </a>
+              <a href="#platform-templates" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Platform templates
+              </a>
+              <a href="#guides-and-reference" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Guides and reference
+              </a>
+            </div>
+            <p class="mt-4 text-sm leading-6 text-slate-600">
+              Looking for a task rather than a tool? Visit <a href="/start-here" class="font-medium text-primary-700 hover:text-primary-800">Start Here</a>.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="business-startup-templates" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 scroll-mt-24">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Business startup templates</h2>
+        <p class="mt-2 max-w-3xl text-base leading-7 text-slate-600">
+          Practical planning templates for small businesses, traders, and first-time entrepreneurs in Dzaleka.
+          Use them online, print them, or copy the sections into your own notebook or document.
+        </p>
+      </div>
+
+      <div id="startup-templates-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {startupTemplates.map((tool) => (
+          <article class="startup-template-card rounded-lg border border-slate-200 bg-white p-6">
+            <div class="flex flex-wrap gap-2 text-xs font-medium text-slate-600">
+              <span class="inline-flex rounded-[5px] border border-slate-200 bg-slate-50 px-2.5 py-1">
+                Best for: {tool.data.bestFor}
+              </span>
+              <span class="inline-flex rounded-[5px] border border-slate-200 bg-slate-50 px-2.5 py-1">
+                {tool.data.estimatedTime}
+              </span>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">{tool.data.title}</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">{tool.data.description}</p>
+            <a
+              href={`/tools-and-templates/${tool.id}`}
+              class="mt-5 inline-flex items-center text-sm font-medium text-primary-700 hover:text-primary-800"
+            >
+              Open template
+              <span class="ml-2">→</span>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      {startupTemplates.length > 4 && (
+        <div class="mt-8 flex items-center justify-center gap-3">
+          <button
+            id="startup-templates-prev"
+            type="button"
+            class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span id="startup-templates-page-info" class="text-sm text-slate-600"></span>
+          <button
+            id="startup-templates-next"
+            type="button"
+            class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </section>
+
+    <section id="featured-tools" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 scroll-mt-24">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Featured digital tools</h2>
+        <p class="mt-2 max-w-3xl text-base leading-7 text-slate-600">
+          Open-source resources and technical references that support data access, metadata quality, and digital recordkeeping.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {featuredTools.map((tool) => (
+          <article class="rounded-lg border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between gap-3">
+              <span class="inline-flex rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-600">
+                {tool.label}
+              </span>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">{tool.title}</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">{tool.description}</p>
+            <p class="mt-4 text-sm text-slate-500">
+              Best for: <span class="font-medium text-slate-700">{tool.audience}</span>
+            </p>
+            <a
+              href={tool.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-5 inline-flex items-center text-sm font-medium text-primary-700 hover:text-primary-800"
+            >
+              Open repository
+              <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5h5m0 0v5m0-5L10 14" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 9v10h10" />
+              </svg>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="platform-templates" class="border-y border-slate-200 bg-white scroll-mt-24">
+      <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Platform templates and submissions</h2>
+          <p class="mt-2 max-w-3xl text-base leading-7 text-slate-600">
+            Use these routes to submit information, publish records, or add opportunities to the platform.
+          </p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {platformTools.map((item) => (
+            <a href={item.href} class="rounded-lg border border-slate-200 bg-slate-50 p-5 hover:bg-white">
+              <h3 class="text-base font-semibold text-slate-900">{item.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
+              <span class="mt-4 inline-flex items-center text-sm font-medium text-primary-700">
+                Open template
+                <span class="ml-2">→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="guides-and-reference" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 scroll-mt-24">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Guides and reference</h2>
+        <p class="mt-2 max-w-3xl text-base leading-7 text-slate-600">
+          Supporting guides, API references, and public information pages that work alongside the tools above.
+        </p>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        {guidesAndReferences.map((item) => (
+          <a href={item.href} class="rounded-lg border border-slate-200 bg-white p-6 hover:bg-slate-50">
+            <h3 class="text-base font-semibold text-slate-900">{item.title}</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = Array.from(document.querySelectorAll('.startup-template-card'));
+    const prevButton = document.getElementById('startup-templates-prev');
+    const nextButton = document.getElementById('startup-templates-next');
+    const pageInfo = document.getElementById('startup-templates-page-info');
+
+    if (!cards.length || !prevButton || !nextButton || !pageInfo) return;
+
+    const itemsPerPage = 4;
+    let currentPage = 1;
+
+    function updateStartupTemplatesPagination() {
+      const totalPages = Math.ceil(cards.length / itemsPerPage);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+
+      cards.forEach((card, index) => {
+        card.classList.toggle('hidden', index < startIndex || index >= endIndex);
+      });
+
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevButton.toggleAttribute('disabled', currentPage === 1);
+      nextButton.toggleAttribute('disabled', currentPage === totalPages);
+    }
+
+    prevButton.addEventListener('click', () => {
+      if (currentPage === 1) return;
+      currentPage -= 1;
+      updateStartupTemplatesPagination();
+    });
+
+    nextButton.addEventListener('click', () => {
+      const totalPages = Math.ceil(cards.length / itemsPerPage);
+      if (currentPage === totalPages) return;
+      currentPage += 1;
+      updateStartupTemplatesPagination();
+    });
+
+    updateStartupTemplatesPagination();
+  });
+</script>

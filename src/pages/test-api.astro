@@ -1,642 +1,642 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Define all available collections as simple array
-const collections = [
-  'profiles',
-  'services', 
-  'resources', 
-  'events', 
-  'photos', 
-  'pages', 
-  'news', 
-  'talents', 
-  'community-voices', 
-  'docs', 
-  'jobs'
+const exportApiEndpoint = '/api/export';
+
+const collectionGroups = [
+  {
+    title: 'Core content',
+    description: 'Main public collections used across services, updates, and learning pages.',
+    items: [
+      { key: 'services', label: 'Services', description: 'Service organisations and support listings.' },
+      { key: 'resources', label: 'Resources', description: 'Documents, guides, and downloads.' },
+      { key: 'events', label: 'Events', description: 'Community events and activity listings.' },
+      { key: 'news', label: 'News', description: 'Published articles and updates.' },
+      { key: 'jobs', label: 'Jobs', description: 'Job listings and opportunity notices.' },
+      { key: 'courses', label: 'Courses', description: 'E-learning courses and training content.' },
+      { key: 'docs', label: 'Docs', description: 'Documentation pages for the platform.' },
+      { key: 'pages', label: 'Pages', description: 'Optional published pages collection.' },
+    ],
+  },
+  {
+    title: 'Community and culture',
+    description: 'Collections used by community storytelling, culture, and creative directory pages.',
+    items: [
+      { key: 'community-voices', label: 'Community voices', description: 'Published community voice stories.' },
+      { key: 'photos', label: 'Photos', description: 'Photo gallery items and metadata.' },
+      { key: 'artists', label: 'Artists', description: 'Public art artist profiles.' },
+      { key: 'artworks', label: 'Artworks', description: 'Public art catalogue artwork entries.' },
+      { key: 'poets', label: 'Poets', description: 'Poet directory entries.' },
+      { key: 'dancers', label: 'Dancers', description: 'Dance crew and dancer profiles.' },
+      { key: 'rights', label: 'Rights navigator', description: 'Legal and rights guidance entries.' },
+    ],
+  },
+  {
+    title: 'Directories and business',
+    description: 'Marketplace, store, talent, and profile collections used across business-facing sections.',
+    items: [
+      { key: 'profiles', label: 'Profiles', description: 'Skills exchange profiles.' },
+      { key: 'talents', label: 'Talents', description: 'Talent directory data endpoint.' },
+      { key: 'marketplace', label: 'Marketplace', description: 'Marketplace product and service listings.' },
+      { key: 'stores', label: 'Stores', description: 'Marketplace store profiles.' },
+    ],
+  },
 ];
 
-// Define export API endpoint
-const exportApiEndpoint = '/api/export';
+const collectionRecords = collectionGroups.flatMap((group) => group.items);
+const totalCollections = collectionRecords.length;
 ---
 
-<Layout title="API Test">
+<Layout title="API Test Utility">
   <Fragment slot="head">
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>
-  <main class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">API Test Dashboard</h1>
-    
-    <div class="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
-      <h2 class="text-lg font-semibold text-blue-800 mb-2">API Testing Tools</h2>
-      <p class="text-sm text-blue-700 mb-2">
-        Use this dashboard to test the API endpoints for different collections. You can test both the export API and individual collection endpoints.
-      </p>
-    </div>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Export API Section -->
-      <div class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">Export API</h2>
-        
-        <div class="mb-4">
-          <label for="exportApiUrl" class="block text-sm font-medium text-gray-700 mb-1">API URL:</label>
-          <div class="flex">
-            <input type="text" id="exportApiUrl" value={exportApiEndpoint} class="w-full p-2 border border-gray-300 rounded-md text-sm bg-gray-50" readonly />
-            <button id="copyExportUrl" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded text-sm">
-              Copy
-            </button>
+
+  <main class="min-h-screen bg-gray-50">
+    <header class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="max-w-4xl">
+          <p class="text-sm font-medium text-gray-500">Internal utility</p>
+          <h1 class="mt-2 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+            API test utility
+          </h1>
+          <p class="mt-4 text-base leading-7 text-gray-600">
+            Check public collection endpoints, test export responses, and verify that API routes return the expected shape before publishing changes.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Collections listed</p>
+            <p class="mt-2 text-2xl font-semibold text-gray-900">{totalCollections}</p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Export endpoint</p>
+            <code class="mt-2 block text-sm text-gray-900">{exportApiEndpoint}</code>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Methods covered</p>
+            <p class="mt-2 text-sm leading-6 text-gray-900">GET, POST, OPTIONS for collection endpoints.</p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Use this page for</p>
+            <p class="mt-2 text-sm leading-6 text-gray-900">Collection checks, export payloads, and quick endpoint debugging.</p>
           </div>
         </div>
-        
-        <div class="mb-4">
-          <button id="testGet" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 text-sm">
-            Test GET
-          </button>
-        </div>
-        
-        <div class="mb-4">
-          <label for="exportCollection" class="block text-sm font-medium text-gray-700 mb-1">Collection:</label>
-          <select id="exportCollection" class="w-full p-2 border border-gray-300 rounded-md text-sm">
-            {collections.map(collection => (
-              <option value={collection}>{collection}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div class="mb-4">
-          <label class="flex items-center space-x-2 text-sm">
-            <input type="checkbox" id="includeMetadata" class="rounded text-blue-600" checked>
-            <span>Include Metadata</span>
-          </label>
-          <label class="flex items-center space-x-2 text-sm mt-2">
-            <input type="checkbox" id="includeStats" class="rounded text-blue-600" checked>
-            <span>Include Stats</span>
-          </label>
-        </div>
-        
-        <button id="testExportPost" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
-          Test POST Export
-        </button>
       </div>
-      
-      <!-- Direct Collection API Section -->
-      <div class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">Collection API</h2>
-        
-        <div class="mb-4">
-          <label for="directCollection" class="block text-sm font-medium text-gray-700 mb-1">Collection:</label>
-          <select id="directCollection" class="w-full p-2 border border-gray-300 rounded-md text-sm">
-            {collections.map(collection => (
-              <option value={collection}>{collection}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div class="mb-4">
-          <label for="directApiUrl" class="block text-sm font-medium text-gray-700 mb-1">API URL:</label>
-          <div class="flex">
-            <input type="text" id="directApiUrl" class="w-full p-2 border border-gray-300 rounded-md text-sm bg-gray-50" readonly />
-            <button id="copyDirectUrl" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded text-sm">
-              Copy
-            </button>
+    </header>
+
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="grid gap-8 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+        <section class="space-y-8">
+          <div class="grid gap-6 lg:grid-cols-2">
+            <section class="rounded-xl border border-gray-200 bg-white p-6">
+              <h2 class="text-lg font-semibold text-gray-900">Export tester</h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                Use the export endpoint to fetch a selected collection with optional metadata and stats.
+              </p>
+
+              <div class="mt-5 space-y-4">
+                <div>
+                  <label for="exportApiUrl" class="block text-sm font-medium text-gray-700">Endpoint</label>
+                  <div class="mt-2 flex gap-2">
+                    <input id="exportApiUrl" type="text" class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700" readonly />
+                    <button id="copyExportUrl" type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="exportCollection" class="block text-sm font-medium text-gray-700">Collection</label>
+                  <select id="exportCollection" class="mt-2 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:ring-primary-500">
+                    {collectionGroups.map((group) => (
+                      <optgroup label={group.title}>
+                        {group.items.map((collection) => (
+                          <option value={collection.key}>{collection.label}</option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <label class="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                    <input type="checkbox" id="includeMetadata" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500" checked />
+                    Include metadata
+                  </label>
+                  <label class="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                    <input type="checkbox" id="includeStats" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500" checked />
+                    Include stats
+                  </label>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                  <button id="testGet" type="button" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Test GET info
+                  </button>
+                  <button id="testExportPost" type="button" class="rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700">
+                    Test POST export
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded-xl border border-gray-200 bg-white p-6">
+              <h2 class="text-lg font-semibold text-gray-900">Collection tester</h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                Test one public collection endpoint directly, or use the cards below to inspect each collection quickly.
+              </p>
+
+              <div class="mt-5 space-y-4">
+                <div>
+                  <label for="directCollection" class="block text-sm font-medium text-gray-700">Collection</label>
+                  <select id="directCollection" class="mt-2 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:ring-primary-500">
+                    {collectionGroups.map((group) => (
+                      <optgroup label={group.title}>
+                        {group.items.map((collection) => (
+                          <option value={collection.key}>{collection.label}</option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label for="directApiUrl" class="block text-sm font-medium text-gray-700">Endpoint</label>
+                  <div class="mt-2 flex gap-2">
+                    <input id="directApiUrl" type="text" class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700" readonly />
+                    <button id="copyDirectUrl" type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <label class="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                    <input type="checkbox" id="directIncludeMetadata" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500" checked />
+                    Include metadata
+                  </label>
+                  <label class="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                    <input type="checkbox" id="directIncludeStats" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500" checked />
+                    Include stats
+                  </label>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                  <button id="testDirectGet" type="button" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Test GET
+                  </button>
+                  <button id="testDirectPost" type="button" class="rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700">
+                    Test POST
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
-        </div>
-        
-        <div class="mb-4">
-          <label class="flex items-center space-x-2 text-sm">
-            <input type="checkbox" id="directIncludeMetadata" class="rounded text-blue-600" checked>
-            <span>Include Metadata</span>
-          </label>
-          <label class="flex items-center space-x-2 text-sm mt-2">
-            <input type="checkbox" id="directIncludeStats" class="rounded text-blue-600" checked>
-            <span>Include Stats</span>
-          </label>
-        </div>
-        
-        <div class="flex space-x-2">
-          <button id="testDirectGet" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded text-sm">
-            Test GET
-          </button>
-          <button id="testDirectPost" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded text-sm">
-            Test POST
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Results Section -->
-    <div class="mt-6">
-      <div class="mb-4">
-        <h2 class="text-xl font-bold mb-2">Request:</h2>
-        <pre id="request" class="bg-gray-100 p-4 rounded overflow-auto max-h-40 text-sm">Select an option above to test the API...</pre>
-      </div>
-      
-      <div>
-        <h2 class="text-xl font-bold mb-2">Response:</h2>
-        <pre id="response" class="bg-gray-100 p-4 rounded overflow-auto max-h-96 text-sm">Response will appear here...</pre>
-      </div>
-    </div>
-    
-    <!-- Collection Status Section -->
-    <div class="mt-8 bg-white p-4 rounded-lg shadow">
-      <h2 class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">Collection Status</h2>
-      
-      <div class="flex justify-between items-center mb-4">
-        <button id="checkAllCollections" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
-          Check All Collections
-        </button>
-        <div class="text-sm text-gray-500">
-          <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-1"></span> Available
-          <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mx-1 ml-3"></span> Empty
-          <span class="inline-block w-3 h-3 rounded-full bg-red-500 mx-1 ml-3"></span> Unavailable
-          <span class="inline-block w-3 h-3 rounded-full bg-gray-300 mx-1 ml-3"></span> Not Checked
-        </div>
-      </div>
-      
-      <div id="collectionStatus" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {collections.map(collection => (
-          <div class="collection-card border rounded-lg p-3" data-collection={collection} data-endpoint={`/api/${collection}`}>
-            <h3 class="font-medium text-gray-800">{collection}</h3>
-            <div class="text-xs text-gray-500 mb-2 endpoint-url">{`/api/${collection}`}</div>
-            <div class="flex items-center mt-2">
-              <div class="status-indicator w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
-              <span class="status-text text-sm text-gray-500">Not checked</span>
+
+          <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-lg font-semibold text-gray-900">Collection status</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">
+                  Check all public content collections and see whether the endpoint is available and returning items.
+                </p>
+              </div>
+              <button id="checkAllCollections" type="button" class="rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700">
+                Check all collections
+              </button>
             </div>
-            <div class="text-xs text-gray-400 mt-1 item-count"></div>
-            <div class="mt-2 flex justify-end">
-              <button class="test-collection-btn text-xs text-blue-600 hover:text-blue-800 hover:underline">Test</button>
+
+            <div class="mt-6 grid gap-6">
+              {collectionGroups.map((group) => (
+                <section>
+                  <div class="mb-3">
+                    <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-900">{group.title}</h3>
+                    <p class="mt-1 text-sm leading-6 text-gray-600">{group.description}</p>
+                  </div>
+                  <div class="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+                    {group.items.map((collection) => (
+                      <article
+                        class="collection-card rounded-xl border border-gray-200 bg-white p-4 transition"
+                        data-collection={collection.key}
+                        data-endpoint={`/api/${collection.key}`}
+                      >
+                        <div class="flex items-start justify-between gap-4">
+                          <div>
+                            <h4 class="text-base font-medium text-gray-900">{collection.label}</h4>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">{collection.description}</p>
+                          </div>
+                          <button class="test-collection-btn rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50" type="button">
+                            Test
+                          </button>
+                        </div>
+                        <code class="endpoint-url mt-4 block text-xs text-primary-700"></code>
+                        <div class="mt-4 flex items-center gap-2">
+                          <span class="status-indicator inline-block h-3 w-3 rounded-full bg-gray-300"></span>
+                          <span class="status-text text-sm text-gray-500">Not checked</span>
+                        </div>
+                        <div class="item-count mt-1 text-xs text-gray-400"></div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              ))}
             </div>
-          </div>
-        ))}
+          </section>
+        </section>
+
+        <aside class="space-y-6">
+          <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <div class="flex items-center justify-between gap-3">
+              <h2 class="text-lg font-semibold text-gray-900">Request</h2>
+              <button id="copyRequest" type="button" class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Copy
+              </button>
+            </div>
+            <pre id="request" class="mt-4 max-h-64 overflow-auto rounded-lg bg-gray-950 p-4 text-sm text-green-400">Select an option above to test the API…</pre>
+          </section>
+
+          <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <div class="flex items-center justify-between gap-3">
+              <h2 class="text-lg font-semibold text-gray-900">Response</h2>
+              <button id="copyResponse" type="button" class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Copy
+              </button>
+            </div>
+            <pre id="response" class="mt-4 max-h-[32rem] overflow-auto rounded-lg bg-gray-950 p-4 text-sm text-green-400">Response will appear here…</pre>
+          </section>
+
+          <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <h2 class="text-base font-semibold text-gray-900">What was fixed</h2>
+            <ul class="mt-4 space-y-3 text-sm leading-6 text-gray-600">
+              <li>`courses` is now part of the public collection API and export list.</li>
+              <li>The tester now groups collections instead of showing one long flat list.</li>
+              <li>Error responses now include response bodies when available, not just generic status text.</li>
+              <li>Status checks reset old border/state classes instead of stacking stale colors.</li>
+            </ul>
+          </section>
+        </aside>
       </div>
-    </div>
-    
-    <!-- Hidden inputs to store collection data -->
-    <div style="display: none;">
-      <input type="hidden" id="collectionsData" value={collections.join(',')} />
-      <input type="hidden" id="exportApiEndpoint" value={exportApiEndpoint} />
     </div>
   </main>
-</Layout>
 
-<script>
-  // Get collections from hidden input
-  const collectionsData = document.getElementById('collectionsData').value.split(',');
-  
-  // Determine base URL - specifically optimized for Netlify
-  const getBaseUrl = () => {
-    // Always use the current window location as the base URL
-    // This ensures we're using the same domain the site is hosted on
-    const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    console.log(`Using base URL: ${baseUrl}`);
-    return baseUrl;
-  };
-  
-  // Get the base URL for API requests
-  const baseUrl = getBaseUrl();
-  console.log(`API requests will be made to: ${baseUrl}/api/*`);
-  
-  // Create API endpoints object with proper base URL
-  const apiEndpoints = {
-    export: `${baseUrl}/api/export`
-  };
-  
-  // Add collection endpoints
-  collectionsData.forEach(collection => {
-    apiEndpoints[collection] = `${baseUrl}/api/${collection}`;
-  });
-  
-  // Log API endpoints for debugging
-  console.log('API Endpoints:', apiEndpoints);
-  
-  // Update direct API URL when collection changes
-  document.getElementById('directCollection')?.addEventListener('change', (e) => {
-    const collection = e.target.value;
-    const directApiUrlInput = document.getElementById('directApiUrl');
-    if (directApiUrlInput) {
-      directApiUrlInput.value = apiEndpoints[collection];
-    }
-  });
-  
-  // Initialize direct API URL
-  const initialCollection = document.getElementById('directCollection')?.value || 'services';
-  const directApiUrlInput = document.getElementById('directApiUrl');
-  if (directApiUrlInput) {
-    directApiUrlInput.value = apiEndpoints[initialCollection];
-  }
-  
-  // Copy URL buttons
-  document.getElementById('copyExportUrl')?.addEventListener('click', () => {
-    const exportApiUrlInput = document.getElementById('exportApiUrl');
-    if (exportApiUrlInput) {
-      navigator.clipboard.writeText(apiEndpoints.export);
-      
-      const button = document.getElementById('copyExportUrl');
-      if (button) {
-        const originalText = button.textContent;
-        button.textContent = 'Copied!';
-        button.classList.add('bg-green-200');
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.classList.remove('bg-green-200');
-        }, 1500);
-      }
-    }
-  });
-  
-  document.getElementById('copyDirectUrl')?.addEventListener('click', () => {
-    const directApiUrlInput = document.getElementById('directApiUrl');
-    if (directApiUrlInput) {
-      navigator.clipboard.writeText(directApiUrlInput.value);
-      
-      const button = document.getElementById('copyDirectUrl');
-      if (button) {
-        const originalText = button.textContent;
-        button.textContent = 'Copied!';
-        button.classList.add('bg-green-200');
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.classList.remove('bg-green-200');
-        }, 1500);
-      }
-    }
-  });
-  
-  // Update the export API URL input
-  const exportApiUrlInput = document.getElementById('exportApiUrl');
-  if (exportApiUrlInput) {
-    exportApiUrlInput.value = apiEndpoints.export;
-  }
-  
-  // Helper function for API requests with proper error handling
-  async function makeApiRequest(url, options = {}) {
-    try {
-      const response = await fetch(url, options);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error(`API request error for ${url}:`, error);
-      throw error;
-    }
-  }
-  
-  // Helper function to display response
-  function displayResponse(requestText, responseData, isError) {
+  <script define:vars={{ collectionRecords, exportApiEndpoint }}>
     const requestEl = document.getElementById('request');
     const responseEl = document.getElementById('response');
-    
-    if (requestEl) requestEl.textContent = requestText;
-    
-    if (responseEl) {
-      if (isError) {
-        responseEl.textContent = `Error: ${responseData}`;
-        responseEl.classList.add('text-red-500');
-        console.error('API Error:', responseData);
-      } else {
-        // Format the response data
-        let formattedData = responseData;
-        
-        // If the response has a data property with collections, summarize them
-        if (responseData.data) {
-          const { data, ...rest } = responseData;
-          const summary = {
-            ...rest,
-            data: Object.fromEntries(
-              Object.entries(data).map(([key, value]) => [
-                key, 
-                Array.isArray(value) 
-                  ? `[${value.length} items]` 
-                  : value
-              ])
-            )
-          };
-          formattedData = summary;
-        }
-        
-        responseEl.textContent = JSON.stringify(formattedData, null, 2);
-        responseEl.classList.remove('text-red-500');
-      }
+    const exportApiUrlInput = document.getElementById('exportApiUrl');
+    const directApiUrlInput = document.getElementById('directApiUrl');
+    const exportCollectionEl = document.getElementById('exportCollection');
+    const directCollectionEl = document.getElementById('directCollection');
+
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const collectionMap = Object.fromEntries(collectionRecords.map((entry) => [entry.key, entry]));
+    const apiEndpoints = {
+      export: `${baseUrl}${exportApiEndpoint}`,
+      ...Object.fromEntries(collectionRecords.map((entry) => [entry.key, `${baseUrl}/api/${entry.key}`])),
+    };
+
+    function updateRequest(text) {
+      if (requestEl) requestEl.textContent = text;
     }
-  }
-  
-  // Test GET on export API
-  document.getElementById('testGet')?.addEventListener('click', async () => {
-    try {
-      displayResponse(`GET ${apiEndpoints.export}`, { message: 'Loading...' });
-      
-      const data = await makeApiRequest(apiEndpoints.export, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      displayResponse(`GET ${apiEndpoints.export}`, data);
-    } catch (error) {
-      displayResponse(`GET ${apiEndpoints.export}`, error instanceof Error ? error.message : String(error), true);
+
+    function updateResponse(text, isError = false) {
+      if (!responseEl) return;
+      responseEl.textContent = text;
+      responseEl.classList.toggle('text-red-400', isError);
+      responseEl.classList.toggle('text-green-400', !isError);
     }
-  });
-  
-  // Test POST on export API
-  document.getElementById('testExportPost')?.addEventListener('click', async () => {
-    try {
-      const collectionEl = document.getElementById('exportCollection');
-      const collection = collectionEl ? collectionEl.value : 'services';
-      
-      const metadataEl = document.getElementById('includeMetadata');
-      const includeMetadata = metadataEl ? metadataEl.checked : false;
-      
-      const statsEl = document.getElementById('includeStats');
-      const includeStats = statsEl ? statsEl.checked : false;
-      
-      const requestBody = {
-        format: 'json',
-        collections: [collection],
-        options: {
-          includeMetadata,
-          includeStats
-        }
-      };
-      
-      const requestText = `POST ${apiEndpoints.export}\n${JSON.stringify(requestBody, null, 2)}`;
-      displayResponse(requestText, { message: 'Loading...' });
-      
-      const data = await makeApiRequest(apiEndpoints.export, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-      
-      displayResponse(requestText, data);
-    } catch (error) {
-      displayResponse(`POST ${apiEndpoints.export}`, error instanceof Error ? error.message : String(error), true);
+
+    function copyText(text, button) {
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      if (!button) return;
+      const originalText = button.textContent;
+      button.textContent = 'Copied';
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 1200);
     }
-  });
-  
-  // Test GET on direct collection API
-  document.getElementById('testDirectGet')?.addEventListener('click', async () => {
-    try {
-      const collectionEl = document.getElementById('directCollection');
-      const collection = collectionEl ? collectionEl.value : 'services';
-      const apiUrl = apiEndpoints[collection];
-      const requestText = `GET ${apiUrl}`;
-      
-      displayResponse(requestText, { message: 'Loading...' });
-      
-      const data = await makeApiRequest(apiUrl, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      displayResponse(requestText, data);
-    } catch (error) {
-      const collectionEl = document.getElementById('directCollection');
-      const collection = collectionEl ? collectionEl.value : 'services';
-      displayResponse(`GET ${apiEndpoints[collection]}`, error instanceof Error ? error.message : String(error), true);
-    }
-  });
-  
-  // Test POST on direct collection API
-  document.getElementById('testDirectPost')?.addEventListener('click', async () => {
-    try {
-      const collectionEl = document.getElementById('directCollection');
-      const collection = collectionEl ? collectionEl.value : 'services';
-      const apiUrl = apiEndpoints[collection];
-      
-      const metadataEl = document.getElementById('directIncludeMetadata');
-      const includeMetadata = metadataEl ? metadataEl.checked : false;
-      
-      const statsEl = document.getElementById('directIncludeStats');
-      const includeStats = statsEl ? statsEl.checked : false;
-      
-      const requestBody = {
-        options: {
-          includeMetadata,
-          includeStats
-        }
-      };
-      
-      const requestText = `POST ${apiUrl}\n${JSON.stringify(requestBody, null, 2)}`;
-      displayResponse(requestText, { message: 'Loading...' });
-      
-      const data = await makeApiRequest(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-      
-      displayResponse(requestText, data);
-    } catch (error) {
-      const collectionEl = document.getElementById('directCollection');
-      const collection = collectionEl ? collectionEl.value : 'services';
-      displayResponse(`POST ${apiEndpoints[collection]}`, error instanceof Error ? error.message : String(error), true);
-    }
-  });
-  
-  // Check all collections
-  document.getElementById('checkAllCollections')?.addEventListener('click', async () => {
-    const collectionCards = document.querySelectorAll('.collection-card');
-    const collections = [];
-    
-    collectionCards.forEach(card => {
-      const collection = card.dataset.collection;
-      if (collection) {
-        collections.push(collection);
-      }
-    });
-    
-    // Update button to show loading state
-    const checkAllBtn = document.getElementById('checkAllCollections');
-    if (checkAllBtn) {
-      const originalText = checkAllBtn.textContent;
-      checkAllBtn.textContent = 'Checking...';
-      checkAllBtn.classList.add('opacity-75');
-      checkAllBtn.disabled = true;
-    }
-    
-    for (const collection of collections) {
-      const card = document.querySelector(`.collection-card[data-collection="${collection}"]`);
-      const statusIndicator = card?.querySelector('.status-indicator');
-      const statusText = card?.querySelector('.status-text');
-      const itemCount = card?.querySelector('.item-count');
-      
-      if (statusIndicator && statusText) {
-        // Set to loading state
-        statusIndicator.className = 'status-indicator w-3 h-3 rounded-full bg-yellow-500 mr-2';
-        statusText.textContent = 'Checking...';
-        statusText.className = 'status-text text-sm text-yellow-500';
-        
+
+    async function parseResponse(response) {
+      const contentType = response.headers.get('content-type') || '';
+      const rawText = await response.text();
+
+      if (!rawText) return null;
+
+      if (contentType.includes('application/json')) {
         try {
-          const apiUrl = apiEndpoints[collection];
-          const data = await makeApiRequest(apiUrl, {
+          return JSON.parse(rawText);
+        } catch (error) {
+          return rawText;
+        }
+      }
+
+      return rawText;
+    }
+
+    async function makeApiRequest(url, options = {}) {
+      const response = await fetch(url, options);
+      const payload = await parseResponse(response);
+
+      if (!response.ok) {
+        const message =
+          typeof payload === 'string'
+            ? payload
+            : payload?.message || payload?.error || `HTTP ${response.status}`;
+        throw new Error(message);
+      }
+
+      return payload;
+    }
+
+    function summariseResponse(responseData) {
+      if (!responseData || typeof responseData !== 'object') {
+        return responseData;
+      }
+
+      if (responseData.data && typeof responseData.data === 'object') {
+        return {
+          ...responseData,
+          data: Object.fromEntries(
+            Object.entries(responseData.data).map(([key, value]) => [
+              key,
+              Array.isArray(value) ? `[${value.length} items]` : value,
+            ])
+          ),
+        };
+      }
+
+      return responseData;
+    }
+
+    function resetCardState(card) {
+      card.classList.remove(
+        'border-green-300',
+        'border-yellow-300',
+        'border-red-300',
+        'bg-green-50',
+        'bg-yellow-50',
+        'bg-red-50'
+      );
+    }
+
+    function setCardState(card, state, countText = '') {
+      const indicator = card.querySelector('.status-indicator');
+      const label = card.querySelector('.status-text');
+      const count = card.querySelector('.item-count');
+
+      resetCardState(card);
+
+      if (!indicator || !label || !count) return;
+
+      const states = {
+        idle: {
+          indicator: 'bg-gray-300',
+          label: 'Not checked',
+          labelClass: 'text-gray-500',
+          card: '',
+        },
+        loading: {
+          indicator: 'bg-blue-500',
+          label: 'Checking…',
+          labelClass: 'text-blue-600',
+          card: '',
+        },
+        available: {
+          indicator: 'bg-green-500',
+          label: 'Available',
+          labelClass: 'text-green-700',
+          card: 'border-green-300 bg-green-50',
+        },
+        empty: {
+          indicator: 'bg-yellow-500',
+          label: 'Empty',
+          labelClass: 'text-yellow-700',
+          card: 'border-yellow-300 bg-yellow-50',
+        },
+        unavailable: {
+          indicator: 'bg-red-500',
+          label: 'Unavailable',
+          labelClass: 'text-red-700',
+          card: 'border-red-300 bg-red-50',
+        },
+      };
+
+      const config = states[state];
+      indicator.className = `status-indicator inline-block h-3 w-3 rounded-full ${config.indicator}`;
+      label.textContent = config.label;
+      label.className = `status-text text-sm ${config.labelClass}`;
+      count.textContent = countText;
+      if (config.card) {
+        card.classList.add(...config.card.split(' '));
+      }
+    }
+
+    function syncCollectionUrls() {
+      if (exportApiUrlInput) exportApiUrlInput.value = apiEndpoints.export;
+      if (directApiUrlInput && directCollectionEl) {
+        directApiUrlInput.value = apiEndpoints[directCollectionEl.value];
+      }
+    }
+
+    function buildExportBody() {
+      return {
+        collections: [exportCollectionEl?.value || 'services'],
+        options: {
+          includeMetadata: document.getElementById('includeMetadata')?.checked || false,
+          includeStats: document.getElementById('includeStats')?.checked || false,
+        },
+      };
+    }
+
+    function buildDirectBody() {
+      return {
+        options: {
+          includeMetadata: document.getElementById('directIncludeMetadata')?.checked || false,
+          includeStats: document.getElementById('directIncludeStats')?.checked || false,
+        },
+      };
+    }
+
+    async function runRequest(requestText, requestFactory, button) {
+      const originalLabel = button?.textContent;
+      if (button) {
+        button.disabled = true;
+        button.classList.add('opacity-70');
+        button.textContent = 'Loading…';
+      }
+
+      updateRequest(requestText);
+      updateResponse('Loading…');
+
+      try {
+        const data = await requestFactory();
+        updateResponse(JSON.stringify(summariseResponse(data), null, 2));
+      } catch (error) {
+        updateResponse(error instanceof Error ? error.message : String(error), true);
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.classList.remove('opacity-70');
+          button.textContent = originalLabel;
+        }
+      }
+    }
+
+    async function testCollection(collectionKey, button = null) {
+      if (directCollectionEl) directCollectionEl.value = collectionKey;
+      syncCollectionUrls();
+
+      const requestText = `GET ${apiEndpoints[collectionKey]}`;
+      await runRequest(
+        requestText,
+        () =>
+          makeApiRequest(apiEndpoints[collectionKey], {
             method: 'GET',
-            headers: {
-              'Accept': 'application/json'
-            }
+            headers: { Accept: 'application/json' },
+          }),
+        button
+      );
+    }
+
+    exportCollectionEl?.addEventListener('change', syncCollectionUrls);
+    directCollectionEl?.addEventListener('change', syncCollectionUrls);
+    syncCollectionUrls();
+
+    document.getElementById('copyExportUrl')?.addEventListener('click', (event) => {
+      copyText(exportApiUrlInput?.value || '', event.currentTarget);
+    });
+
+    document.getElementById('copyDirectUrl')?.addEventListener('click', (event) => {
+      copyText(directApiUrlInput?.value || '', event.currentTarget);
+    });
+
+    document.getElementById('copyRequest')?.addEventListener('click', (event) => {
+      copyText(requestEl?.textContent || '', event.currentTarget);
+    });
+
+    document.getElementById('copyResponse')?.addEventListener('click', (event) => {
+      copyText(responseEl?.textContent || '', event.currentTarget);
+    });
+
+    document.getElementById('testGet')?.addEventListener('click', async (event) => {
+      await runRequest(
+        `GET ${apiEndpoints.export}`,
+        () => makeApiRequest(apiEndpoints.export, { method: 'GET', headers: { Accept: 'application/json' } }),
+        event.currentTarget
+      );
+    });
+
+    document.getElementById('testExportPost')?.addEventListener('click', async (event) => {
+      const payload = buildExportBody();
+      await runRequest(
+        `POST ${apiEndpoints.export}\n${JSON.stringify(payload, null, 2)}`,
+        () =>
+          makeApiRequest(apiEndpoints.export, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }),
+        event.currentTarget
+      );
+    });
+
+    document.getElementById('testDirectGet')?.addEventListener('click', async (event) => {
+      const collectionKey = directCollectionEl?.value || 'services';
+      await testCollection(collectionKey, event.currentTarget);
+    });
+
+    document.getElementById('testDirectPost')?.addEventListener('click', async (event) => {
+      const collectionKey = directCollectionEl?.value || 'services';
+      const payload = buildDirectBody();
+      await runRequest(
+        `POST ${apiEndpoints[collectionKey]}\n${JSON.stringify(payload, null, 2)}`,
+        () =>
+          makeApiRequest(apiEndpoints[collectionKey], {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }),
+        event.currentTarget
+      );
+    });
+
+    document.querySelectorAll('.collection-card').forEach((card) => {
+      card.addEventListener('click', async () => {
+        const collectionKey = card.dataset.collection;
+        if (!collectionKey) return;
+        await testCollection(collectionKey);
+      });
+    });
+
+    document.querySelectorAll('.test-collection-btn').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        event.stopPropagation();
+        const card = event.currentTarget.closest('.collection-card');
+        const collectionKey = card?.dataset.collection;
+        if (!collectionKey) return;
+
+        await testCollection(collectionKey, event.currentTarget);
+      });
+    });
+
+    document.getElementById('checkAllCollections')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Checking…';
+      button.classList.add('opacity-70');
+
+      const cards = [...document.querySelectorAll('.collection-card')];
+
+      for (const card of cards) {
+        const collectionKey = card.dataset.collection;
+        if (!collectionKey) continue;
+
+        setCardState(card, 'loading');
+
+        try {
+          const data = await makeApiRequest(apiEndpoints[collectionKey], {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
           });
-          
-          const count = data.count || (data.data && data.data[collection] ? data.data[collection].length : 0);
-          
+
+          const count =
+            typeof data?.count === 'number'
+              ? data.count
+              : Array.isArray(data?.data?.[collectionKey])
+                ? data.data[collectionKey].length
+                : 0;
+
           if (count > 0) {
-            // Collection exists and has items
-            statusIndicator.className = 'status-indicator w-3 h-3 rounded-full bg-green-500 mr-2';
-            statusText.textContent = 'Available';
-            statusText.className = 'status-text text-sm text-green-600';
-            if (itemCount) itemCount.textContent = `${count} items`;
-            card.classList.add('border-green-200');
+            setCardState(card, 'available', `${count} items`);
           } else {
-            // Collection exists but is empty
-            statusIndicator.className = 'status-indicator w-3 h-3 rounded-full bg-yellow-500 mr-2';
-            statusText.textContent = 'Empty';
-            statusText.className = 'status-text text-sm text-yellow-600';
-            if (itemCount) itemCount.textContent = '0 items';
-            card.classList.add('border-yellow-200');
+            setCardState(card, 'empty', '0 items');
           }
         } catch (error) {
-          // Collection endpoint doesn't exist or other error
-          statusIndicator.className = 'status-indicator w-3 h-3 rounded-full bg-red-500 mr-2';
-          statusText.textContent = 'Unavailable';
-          statusText.className = 'status-text text-sm text-red-600';
-          if (itemCount) itemCount.textContent = 'API endpoint not found';
-          card.classList.add('border-red-200');
-          console.error(`Error checking collection ${collection}:`, error);
+          setCardState(card, 'unavailable', error instanceof Error ? error.message : 'API request failed');
         }
       }
-    }
-    
-    // Restore button state
-    if (checkAllBtn) {
-      checkAllBtn.textContent = 'Check All Collections';
-      checkAllBtn.classList.remove('opacity-75');
-      checkAllBtn.disabled = false;
-    }
-  });
-  
-  // Update collection cards with proper API URLs
-  document.querySelectorAll('.collection-card').forEach(card => {
-    const collection = card.dataset.collection;
-    if (collection) {
-      // Update the endpoint URL display
-      const endpointUrlEl = card.querySelector('.endpoint-url');
-      if (endpointUrlEl) {
-        endpointUrlEl.textContent = apiEndpoints[collection];
-      }
-      
-      // Update the data-endpoint attribute
-      card.dataset.endpoint = apiEndpoints[collection];
-    }
-    
-    // Add click event
-    card.addEventListener('click', () => {
-      const collection = card.dataset.collection;
-      if (collection) {
-        const directCollectionEl = document.getElementById('directCollection');
-        if (directCollectionEl) {
-          directCollectionEl.value = collection;
-        }
-        
-        // Update the direct API URL
-        const directApiUrlInput = document.getElementById('directApiUrl');
-        if (directApiUrlInput) {
-          directApiUrlInput.value = apiEndpoints[collection];
-        }
-        
-        const testDirectGetBtn = document.getElementById('testDirectGet');
-        if (testDirectGetBtn) {
-          testDirectGetBtn.click();
-        }
-      }
-    });
-  });
 
-  // Add event listeners to test buttons in collection cards
-  document.querySelectorAll('.test-collection-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevent the card click event from firing
-      const card = e.target.closest('.collection-card');
-      const collection = card?.dataset.collection;
-      
-      if (collection) {
-        // Set up the direct API test
-        const directCollectionEl = document.getElementById('directCollection');
-        if (directCollectionEl) {
-          directCollectionEl.value = collection;
-        }
-        
-        const directApiUrlInput = document.getElementById('directApiUrl');
-        if (directApiUrlInput) {
-          directApiUrlInput.value = apiEndpoints[collection];
-        }
-        
-        // Scroll to the test section
-        const testSection = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-2');
-        if (testSection) {
-          testSection.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Run the test after a short delay to allow scrolling
-        setTimeout(() => {
-          const testDirectGetBtn = document.getElementById('testDirectGet');
-          if (testDirectGetBtn) {
-            testDirectGetBtn.click();
-          }
-        }, 300);
-      }
+      button.disabled = false;
+      button.textContent = originalText;
+      button.classList.remove('opacity-70');
     });
-  });
-  
-  // Add a notice about Netlify deployment if we're on Netlify
-  if (window.location.hostname.includes('netlify.app')) {
-    const mainContainer = document.querySelector('main.container');
-    if (mainContainer) {
-      const netlifyNotice = document.createElement('div');
-      netlifyNotice.className = 'mb-6 bg-purple-50 p-4 rounded-lg border border-purple-200';
-      netlifyNotice.innerHTML = `
-        <h2 class="text-lg font-semibold text-purple-800 mb-2">Netlify Deployment Detected</h2>
-        <p class="text-sm text-purple-700 mb-2">
-          This API test dashboard is running on Netlify. API requests will be made to: <code class="bg-purple-100 px-2 py-1 rounded">${baseUrl}</code>
-        </p>
-        <p class="text-sm text-purple-700">
-          If you're experiencing 404 errors, make sure your Netlify configuration includes proper redirects for API endpoints.
-        </p>
-      `;
-      
-      // Insert after the first info box
-      const firstInfoBox = mainContainer.querySelector('.bg-blue-50');
-      if (firstInfoBox && firstInfoBox.parentNode) {
-        firstInfoBox.parentNode.insertBefore(netlifyNotice, firstInfoBox.nextSibling);
-      } else {
-        // Or insert at the beginning if the info box isn't found
-        mainContainer.insertBefore(netlifyNotice, mainContainer.firstChild);
-      }
-    }
-  }
-</script>
+  </script>
 
-<style>
-  .collection-card {
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .collection-card:hover {
-    background-color: #f9fafb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-  }
-  
-  .endpoint-url {
-    font-family: monospace;
-  }
-</style> 
+  <style>
+    .collection-card {
+      cursor: pointer;
+    }
+
+    .collection-card:hover {
+      border-color: rgb(191 219 254);
+      background-color: rgb(249 250 251);
+    }
+
+    .endpoint-url {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+  </style>
+</Layout>

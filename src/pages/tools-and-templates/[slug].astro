@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import StartupTemplatePage from '../../components/tools/StartupTemplatePage.astro';
+
+export async function getStaticPaths() {
+  const templates = await getCollection('startup-templates');
+
+  return templates.map((template) => ({
+    params: { slug: template.id },
+    props: { template }
+  }));
+}
+
+const { template } = Astro.props;
+
+const allTemplates = await getCollection('startup-templates');
+const relatedTools = (template.data.related || [])
+  .map((slug: string) => allTemplates.find((entry) => entry.id === slug))
+  .filter(Boolean);
+---
+
+<StartupTemplatePage template={template} relatedTools={relatedTools} />

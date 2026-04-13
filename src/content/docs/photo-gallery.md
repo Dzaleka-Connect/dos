@@ -1,51 +1,38 @@
 ---
 title: Photo Gallery
-description: Explore and share community photographs
+description: Guide to browsing and submitting community photographs
 section: content
 ---
 
 # Photo Gallery
 
-Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp.
+The photo gallery documents people, places, public life, and community history connected to Dzaleka.
 
-## Features
+## What you can do
 
-### [Browse by Year](/photos)
-Photos are organized by year, with the most recent displayed first. Each year shows:
-- Preview of latest photos
-- Total number of photos
-- Full collection access
+- Browse the main gallery in [Photos](/photos)
+- Open a single photo page from the gallery listing
+- Review contributor pages in [Photo contributors](/photos/contributors)
+- Submit a new image through [Photo submission](/photos/submit)
 
-### [Submit Photos](/photos/submit)
-Share your photographs with the community:
-1. Click "Submit Your Photo"
-2. Fill in photo details
-3. Upload your image
-4. Submit for review
+## What each photo page includes
 
-### [View Details](/photos/[slug])
-Each photo includes:
-- Full-size image
-- Title and description
-- Date taken
-- Photographer credit
+- image preview
+- title and description
+- photographer or contributor credit
+- date information when available
+- print or sharing options where provided
 
-## Photo Guidelines
+## Before you submit a photo
 
-### Image Requirements
-- High-quality photos
-- Clear, focused images
-- Relevant to community
-- Proper documentation
+- Make sure you have permission to share it.
+- Use a clear title and description.
+- Add the date or approximate date if known.
+- Avoid uploading sensitive or harmful content.
 
-### Privacy Rules
-- Respect privacy
-- Get consent
-- Avoid sensitive content
-- Follow community standards
+## Helpful references
 
-## Need Help?
-
-- [Contact Photo Team](/contact)
-- [Submission Guide](/photos/submit)
-- [Usage Guidelines](/guidelines)
+- [Photo submission](/photos/submit)
+- [Photo guidelines](/photo-guidelines)
+- [Photo license](/photos/license)
+- [Contact](/contact)

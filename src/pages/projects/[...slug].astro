@@ -18,7 +18,7 @@ const { Content } = await render(project);
 <MainLayout title={`${project.data.title} | Projects`}>
   <main>
     <!-- Hero Section -->
-    <div class="relative overflow-hidden bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+    <div class="relative overflow-hidden bg-gray-900 text-white">
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
@@ -33,7 +33,7 @@ const { Content } = await render(project);
             <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-white/10 backdrop-blur-sm">
               {project.data.mitSolve?.solutionCategory}
             </span>
-            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-500/20 backdrop-blur-sm">
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-slate-500/20 backdrop-blur-sm">
               {project.data.status}
             </span>
           </div>
@@ -44,9 +44,9 @@ const { Content } = await render(project);
           <div class="flex flex-wrap gap-4 relative z-20">
             <a 
               href="/projects"
-              class="group inline-flex items-center px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition-all duration-200 cursor-pointer border border-white/10 hover:border-white/20"
+              class="group inline-flex items-center px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition-colors duration-200 cursor-pointer border border-white/10 hover:border-white/20"
             >
-              <svg class="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               <span class="relative top-px">Back to Projects</span>
@@ -56,13 +56,13 @@ const { Content } = await render(project);
                 href={project.data.mitSolve.solutionUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary-600 font-medium hover:bg-primary-50 hover:text-primary-700 transition-all duration-200 cursor-pointer border border-gray-100 hover:border-primary-100 hover:shadow-sm"
+                class="group inline-flex items-center px-6 py-3 rounded-lg bg-white text-slate-700 font-medium hover:bg-slate-50 hover:text-slate-700 transition-colors duration-200 cursor-pointer border border-gray-100 hover:border-slate-200 hover:border border-gray-200"
               >
-                <svg class="w-5 h-5 mr-2 text-primary-500 group-hover:text-primary-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 mr-2 text-slate-500 group-hover:text-slate-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                 </svg>
                 <span class="relative top-px">View on MIT Solve</span>
-                <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </a>
@@ -79,11 +79,11 @@ const { Content } = await render(project);
           <div class="inline-flex flex-wrap items-center gap-2 -mt-6 mb-6 relative z-10">
             {project.data.impact.slice(0, 3).map((impact, index) => (
               <div 
-                class="group inline-flex items-center px-3 py-1.5 bg-white rounded-md text-sm font-medium text-gray-600 border border-gray-100 hover:bg-gray-50 hover:text-primary-600 hover:border-primary-100 transition-all duration-200"
+                class="group inline-flex items-center px-3 py-1.5 bg-white rounded-md text-sm font-medium text-gray-600 border border-gray-100 hover:bg-gray-50 hover:text-slate-700 hover:border-slate-200 transition-colors duration-200"
                 style={`animation-delay: ${index * 100}ms`}
               >
                 <svg 
-                  class="w-3.5 h-3.5 mr-1.5 text-primary-500" 
+                  class="w-3.5 h-3.5 mr-1.5 text-slate-500" 
                   fill="currentColor" 
                   viewBox="0 0 20 20"
                 >
@@ -99,7 +99,7 @@ const { Content } = await render(project);
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <!-- Main Content -->
           <div class="lg:col-span-2">
-            <div class="prose prose-primary max-w-none">
+            <div class="prose prose-slate max-w-none">
               <Content />
             </div>
           </div>
@@ -107,7 +107,7 @@ const { Content } = await render(project);
           <!-- Sidebar -->
           <div class="space-y-8">
             <!-- Project Info Card -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
               <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Project Information</h3>
                 <dl class="space-y-4">
@@ -124,7 +124,7 @@ const { Content } = await render(project);
                   <div>
                     <dt class="text-sm font-medium text-gray-500">Status</dt>
                     <dd class="mt-1">
-                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-50 text-slate-700">
                         {project.data.status}
                       </span>
                     </dd>
@@ -135,13 +135,13 @@ const { Content } = await render(project);
 
             <!-- Programs Card -->
             {project.data.programs && (
-              <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div class="p-6">
                   <h3 class="text-lg font-semibold text-gray-900 mb-4">Key Programs</h3>
                   <ul class="space-y-3">
                     {project.data.programs.map(program => (
                       <li class="flex items-start group">
-                        <svg class="w-5 h-5 text-primary-500 mr-3 mt-1 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-slate-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                         <span class="text-gray-600 group-hover:text-gray-900 transition-colors">{program}</span>
@@ -154,13 +154,13 @@ const { Content } = await render(project);
 
             <!-- Impact Card -->
             {project.data.impact && (
-              <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div class="p-6">
                   <h3 class="text-lg font-semibold text-gray-900 mb-4">Impact Highlights</h3>
                   <ul class="space-y-3">
                     {project.data.impact.map(item => (
                       <li class="flex items-start group">
-                        <svg class="w-5 h-5 text-primary-500 mr-3 mt-1 transform group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-slate-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span class="text-gray-600 group-hover:text-gray-900 transition-colors">{item}</span>
@@ -175,7 +175,7 @@ const { Content } = await render(project);
 
         <!-- Social Share Section -->
         <section class="mb-12">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div class="p-6">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Share This Project</h3>
               <div class="flex flex-wrap gap-3">
@@ -237,24 +237,24 @@ const { Content } = await render(project);
               .map(relatedProject => (
                 <a 
                   href={`/projects/${relatedProject.id}`}
-                  class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  class="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-slate-400 transition-colors duration-300"
                 >
                   <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
-                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-600 group-hover:bg-primary-100 transition-colors">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-50 text-slate-700 group-hover:bg-slate-100 transition-colors">
                         {relatedProject.data.category}
                       </span>
                       <span class="text-sm text-gray-500">{relatedProject.data.mitSolve?.submissionYear}</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-slate-700 transition-colors">
                       {relatedProject.data.title}
                     </h3>
                     <p class="text-gray-600 line-clamp-2 mb-4 group-hover:text-gray-700 transition-colors">
                       {relatedProject.data.description}
                     </p>
-                    <div class="flex items-center text-primary-600 font-medium">
+                    <div class="flex items-center text-slate-700 font-medium">
                       Learn More
-                      <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
@@ -272,22 +272,22 @@ const { Content } = await render(project);
   @keyframes fade-in-up {
     from {
       opacity: 0;
-      transform: translateY(20px);
+     : translateY(20px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+     : translateY(0);
     }
   }
 
   @keyframes slide-in {
     from {
       opacity: 0;
-      transform: translateX(-20px);
+     : translateX(-20px);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+     : translateX(0);
     }
   }
 
@@ -327,12 +327,12 @@ const { Content } = await render(project);
   }
 
   .prose a {
-    color: theme('colors.primary.600');
+    color: theme('colors.slate.700');
     text-decoration: none;
     transition: color 0.2s;
   }
 
   .prose a:hover {
-    color: theme('colors.primary.700');
+    color: theme('colors.slate.800');
   }
 </style>

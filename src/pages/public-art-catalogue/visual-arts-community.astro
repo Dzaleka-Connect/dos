@@ -1,6 +1,6 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 const title = "Visual Arts Community | Dzaleka Public Art & Visual Culture";
 const description = "Meet the talented visual artists from Dzaleka Refugee Camp who are part of the Dzaleka Art Project, contributing to the vibrant artistic community.";
@@ -35,33 +35,25 @@ const visualArtists = [
 ---
 
 <MainLayout title={title} description={description}>
-  <Layout>
-    <!-- Back Button -->
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <a 
-        href="/public-art-catalogue" 
-        class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        <span>Back to Public Art Catalogue</span>
-      </a>
-    </div>
-
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-primary-50 to-white overflow-hidden">
-      <div class="absolute inset-0 bg-grid-slate-900/[0.04] bg-[bottom_1px_center] [mask-image:linear-gradient(to_bottom,transparent,black)]"></div>
-      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <div class="mb-6">
-          <span class="inline-flex items-center px-3 py-1 bg-primary-100 rounded-full text-sm font-medium text-primary-800">
-            Dzaleka Art Project
-          </span>
+    <section class="border-b border-slate-200 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="mb-8">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Public Art Catalogue', href: '/public-art-catalogue' },
+              { label: 'Visual Arts Community' }
+            ]}
+          />
         </div>
-        
+      </div>
+    </section>
+
+    <div class="relative bg-white">
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight text-gray-900">
           Visual Arts<br/>
-          <span class="text-primary-600">Community</span>
+          <span class="text-slate-700">Community</span>
         </h1>
         
         <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
@@ -69,7 +61,7 @@ const visualArtists = [
         </p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#artists" class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors shadow-sm hover:shadow-md">
+          <a href="#artists" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">
             Meet the Artists
           </a>
           <a href="https://www.dzalekaartproject.com/visualarts.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -92,8 +84,8 @@ const visualArtists = [
         <div class="grid md:grid-cols-2 gap-12 mb-16">
           <div class="space-y-8">
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex-shrink-0 w-12 h-12 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center">
+                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
@@ -106,8 +98,8 @@ const visualArtists = [
             </div>
             
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex-shrink-0 w-12 h-12 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center">
+                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
@@ -122,8 +114,8 @@ const visualArtists = [
           
           <div class="space-y-8">
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex-shrink-0 w-12 h-12 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center">
+                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
                 </svg>
               </div>
@@ -136,8 +128,8 @@ const visualArtists = [
             </div>
             
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex-shrink-0 w-12 h-12 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center">
+                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
@@ -163,7 +155,7 @@ const visualArtists = [
               <p class="text-sm text-gray-600">Top artists participate in international exhibitions and earn significant income.</p>
             </div>
             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-              <div class="text-lg font-bold text-primary-600 mb-2">Innovation</div>
+              <div class="text-lg font-bold text-slate-600 mb-2">Innovation</div>
               <p class="text-sm text-gray-600">Using found materials and creating community-based art initiatives.</p>
             </div>
           </div>
@@ -185,9 +177,9 @@ const visualArtists = [
             const hasImage = true; // This will be true when you add the images
             
             return (
-              <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
+              <div class="bg-white rounded-xl border border-slate-200 p-6 hover:border-slate-300 transition-colors group">
                 <div class="text-center">
-                  <div class="w-24 h-24 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-100 transition-colors overflow-hidden">
+                  <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 overflow-hidden">
                     {hasImage ? (
                       <img 
                         src={artistImagePath} 
@@ -197,15 +189,15 @@ const visualArtists = [
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                       />
                     ) : null}
-                    <svg class="w-10 h-10 text-primary-300" style={hasImage ? "display:none" : ""} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-10 h-10 text-slate-300" style={hasImage ? "display:none" : ""} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
-                  <h3 class="text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
+                  <h3 class="text-lg font-bold text-gray-900 mb-1 group-hover:text-slate-700 transition-colors">
                     {artist.name}
                   </h3>
-                  <p class="text-sm text-primary-600 font-medium mb-4">{artist.role}</p>
-                  <a href={`/public-art-catalogue/artist/${artist.id}`} class="inline-flex items-center text-gray-500 hover:text-primary-600 font-medium text-sm transition-colors">
+                  <p class="text-sm text-slate-600 font-medium mb-4">{artist.role}</p>
+                  <a href={`/public-art-catalogue/artist/${artist.id}`} class="inline-flex items-center text-slate-700 hover:text-slate-900 font-medium text-sm transition-colors">
                     View Profile
                     <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -231,7 +223,7 @@ const visualArtists = [
           href="https://www.dzalekaartproject.com/visualarts.html" 
           target="_blank" 
           rel="noopener noreferrer"
-          class="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors shadow-sm hover:shadow-md"
+          class="inline-flex items-center px-8 py-4 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
         >
           Visit Dzaleka Art Project
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -240,5 +232,4 @@ const visualArtists = [
         </a>
       </div>
     </section>
-  </Layout>
 </MainLayout>

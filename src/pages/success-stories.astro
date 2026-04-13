@@ -1,227 +1,153 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 
-const title = "Success Stories | Dzaleka Online Services";
-const description = "Inspiring stories of achievement, resilience, and innovation from the Dzaleka refugee community. Discover how refugees are making a difference through innovation, arts, education, and entrepreneurship.";
+const title = 'Success Stories | Dzaleka Online Services';
+const description =
+  'Examples of achievement, creativity, and community leadership connected to Dzaleka.';
 
-const seo = {
-  title,
-  description,
-  type: "website",
-  canonical: "https://services.dzaleka.com/success-stories",
-  keywords: "Dzaleka success stories, refugee achievements, innovation, arts, education, entrepreneurship, Malawi refugees",
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
-    url: "https://services.dzaleka.com/success-stories",
-    images: [
-      {
-        url: "https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Dzaleka Refugee Success Stories"
-      }
-    ]
+const featuredStories = [
+  {
+    name: 'Innocent Magambi',
+    summary:
+      'Founded There is Hope and later Inua Advocacy, helping expand health, advocacy, and support services for refugees and host communities.',
+    highlights: ['Founded There is Hope', 'Supported health outreach', 'Built advocacy networks'],
   },
-  twitter: {
-    card: "summary_large_image",
-    site: "@Dzalekaconnect",
-    creator: "@Dzalekaconnect",
-    title,
-    description,
-    image: "https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg"
-  }
-};
+  {
+    name: 'Menes la Plume',
+    summary:
+      'Used poetry, music, and festival organising to create visibility for refugee artists and strengthen cultural exchange through Tumaini Festival.',
+    highlights: ['Founded Tumaini Festival', 'Promoted arts and culture', 'Expanded local tourism visibility'],
+  },
+  {
+    name: 'Remy Gakwaya',
+    summary:
+      'Helped grow technology learning and refugee-led coordination through TakenoLAB and RELON Malawi.',
+    highlights: ['Built digital learning spaces', 'Supported refugee-led organisations', 'Expanded tech opportunities'],
+  },
+];
 
-// Structured data for success stories
+const moreStories = [
+  {
+    title: 'Mirash Films',
+    description:
+      'Award-winning film work from Dzaleka has shown how local storytelling can travel across Malawi and beyond.',
+  },
+  {
+    title: 'Salama Africa',
+    description:
+      'Dance and performance continue to open doors for collaboration, cultural preservation, and paid creative work.',
+  },
+  {
+    title: 'Amahoro Burundian Drummers',
+    description:
+      'Years of performance work have turned cultural practice into a strong public-facing community asset.',
+  },
+  {
+    title: 'Fountain of Hope',
+    description:
+      'Education and income-generation work has helped demonstrate what inclusive community development can look like in practice.',
+  },
+];
+
 const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Success Stories",
-  "description": description,
-  "url": "https://services.dzaleka.com/success-stories",
-  "about": {
-    "@type": "Organization",
-    "name": "Dzaleka Online Services",
-    "description": "A platform showcasing the achievements and contributions of the Dzaleka refugee community."
-  }
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Success Stories',
+  description,
+  url: 'https://services.dzaleka.com/success-stories',
+  about: {
+    '@type': 'Organization',
+    name: 'Dzaleka Online Services',
+    description: 'A platform highlighting activity, services, and community achievements connected to Dzaleka.',
+  },
 };
 ---
 
-<MainLayout {...seo}>
+<MainLayout
+  title={title}
+  description={description}
+  canonical="https://services.dzaleka.com/success-stories"
+  openGraph={{
+    title,
+    description,
+    type: 'website',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: 'https://services.dzaleka.com/success-stories',
+  }}
+>
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-  <main class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-r from-primary-700 to-primary-900 text-white py-16 md:py-24">
-      <div class="absolute inset-0 bg-[url('https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg')] bg-cover bg-center opacity-10"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-primary-900/95 to-primary-800/95"></div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto text-center">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
-            Success Stories
-          </h1>
-          <p class="text-xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed">
-            Celebrating the achievements and contributions of our community members who are making a difference through innovation, arts, education, and entrepreneurship.
+  <main class="bg-gray-50">
+    <section class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <nav class="mb-4 text-sm text-gray-500">
+          <a href="/" class="hover:text-primary-700">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-gray-900">Success stories</span>
+        </nav>
+
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Community stories</p>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Success stories from Dzaleka</h1>
+          <p class="mt-4 text-lg leading-8 text-gray-600">
+            These examples show the range of work, leadership, and creativity emerging from the community. Some are individual stories. Others reflect organisations, artists, and businesses building longer-term impact.
           </p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Stories Grid -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-        <!-- Innocent Magambi Story -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
-          <div class="relative overflow-hidden">
-            <img 
-              src="https://scd.infomigrants.net/media/resize/my_image_big/0d95d4ebde63adb1109a368f653d8a8d39b3aa10.png" 
-              alt="Innocent Magambi" 
-              class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" 
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-          <div class="p-6">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Innocent Magambi</h2>
-            <p class="text-gray-600 mb-4">Arrived at Dzaleka in 2003, Innocent's journey began with a scholarship to study theology through an international church in Lilongwe. He founded There is Hope (TIH), which now employs 60 people and assists over 300 individuals annually.</p>
-            <p class="text-gray-600 mb-4">In 2007, he made the bold decision to relinquish his refugee status to expand his impact. After leading TIH for 15 years, he transitioned to lead Inua Advocacy, continuing his work for refugee rights.</p>
-            <div class="text-sm text-gray-500">
-              <h3 class="font-semibold text-gray-700 mb-2">Key Achievements:</h3>
-              <ul class="list-disc list-inside space-y-1">
-                <li>Founded There is Hope (TIH)</li>
-                <li>Employs 60 people</li>
-                <li>Assists 300+ individuals annually</li>
-                <li>Extended medical support to 52,000+ at Dzaleka Health Centre</li>
-                <li>Established Inua Advocacy</li>
+    <section class="bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="grid gap-6 lg:grid-cols-3">
+          {featuredStories.map((story) => (
+            <article class="rounded-xl border border-gray-200 bg-white p-6">
+              <h2 class="text-xl font-semibold text-gray-900">{story.name}</h2>
+              <p class="mt-3 text-sm leading-6 text-gray-600">{story.summary}</p>
+              <ul class="mt-4 space-y-2 text-sm text-gray-700">
+                {story.highlights.map((highlight) => (
+                  <li class="flex items-start gap-2">
+                    <span class="mt-1 h-1.5 w-1.5 rounded-full bg-primary-600"></span>
+                    <span>{highlight}</span>
+                  </li>
+                ))}
               </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Menes la Plume Story -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
-          <div class="relative overflow-hidden">
-            <img 
-              src="https://reifoundation.com/media/pages/partners/36d33e8d4a-1716269840/menes-la-plume-1-logo.jpg" 
-              alt="Menes la Plume" 
-              class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" 
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-          <div class="p-6">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Menes la Plume (Trésor Nzengu Mpauni)</h2>
-            <p class="text-gray-600 mb-4">A Congolese poet and musician who has become a symbol of resilience and hope for refugees in Malawi. Through his art, he has empowered refugees and promoted cultural understanding.</p>
-            <p class="text-gray-600 mb-4">His crowning achievement is the Tumaini Festival, the world's first music and arts festival held in a refugee camp, which has significantly boosted Malawi's tourism industry and the camp's informal economy.</p>
-            <div class="text-sm text-gray-500">
-              <h3 class="font-semibold text-gray-700 mb-2">Impact Areas:</h3>
-              <ul class="list-disc list-inside space-y-1">
-                <li>Founded Tumaini Festival</li>
-                <li>Cultural preservation</li>
-                <li>Tourism development</li>
-                <li>Economic empowerment</li>
-                <li>Arts advocacy</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Remy Gakwaya Story -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
-          <div class="relative overflow-hidden">
-            <img 
-              src="https://www.unhcr.org/africa/sites/afr/files/legacy-images/58c7ec274_3.jpg" 
-              alt="Remy Gakwaya" 
-              class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300" 
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-          <div class="p-6">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Remy Gakwaya</h2>
-            <p class="text-gray-600 mb-4">A self-taught computer programmer who revolutionized tech education in Dzaleka through TakenoLAB. His vision expanded beyond technology when he founded RELON Malawi, creating a network for all refugee-led organizations.</p>
-            <div class="text-sm text-gray-500">
-              <h3 class="font-semibold text-gray-700 mb-2">Achievements:</h3>
-              <ul class="list-disc list-inside space-y-1">
-                <li>Founded TakenoLAB</li>
-                <li>Established RELON Malawi</li>
-                <li>Tech education pioneer</li>
-                <li>Community network builder</li>
-                <li>Digital skills advocate</li>
-              </ul>
-            </div>
-          </div>
+            </article>
+          ))}
         </div>
       </div>
+    </section>
 
-      <!-- Additional Stories -->
-      <div class="space-y-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">More Success Stories</h2>
-        
-        <!-- Mirash Films -->
-        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
-          <h3 class="text-2xl font-semibold text-gray-900 mb-4">Mirash Films</h3>
-          <p class="text-gray-600 mb-4">Founded by Raphael Ndabaga, this film production company has earned recognition for its compelling storytelling and technical excellence, winning 6 awards at national and international film festivals in Malawi between 2023 and 2024.</p>
-        </div>
+    <section class="border-t border-gray-200 bg-gray-50">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900">More examples</h2>
+            <div class="mt-6 grid gap-4">
+              {moreStories.map((story) => (
+                <article class="rounded-xl border border-gray-200 bg-white p-5">
+                  <h3 class="text-lg font-semibold text-gray-900">{story.title}</h3>
+                  <p class="mt-2 text-sm leading-6 text-gray-600">{story.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
 
-        <!-- Salama Africa -->
-        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
-          <h3 class="text-2xl font-semibold text-gray-900 mb-4">Salama Africa</h3>
-          <p class="text-gray-600 mb-4">Founded by Freddy Farini, Toussaint Farini, Alain Tenta and Iris Nganji, Salama Africa has become a cornerstone of Malawi's dance scene. Their performances alongside well-known Malawian artists and multiple national awards showcase the power of cultural expression.</p>
-        </div>
-
-        <!-- Amahoro Burundian Drummers -->
-        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
-          <h3 class="text-2xl font-semibold text-gray-900 mb-4">Amahoro Burundian Drummers</h3>
-          <p class="text-gray-600 mb-4">Started in 2006 by Stanislas Nshimirimana, a Burundian refugee with a rich multicultural background, Amahoro has become a cultural ambassador. Their performances at major festivals, corporate events, and presidential galas spread a message of peace and cultural heritage preservation.</p>
-        </div>
-
-        <!-- Fountain of Hope -->
-        <div class="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition-all duration-300">
-          <h3 class="text-2xl font-semibold text-gray-900 mb-4">Fountain of Hope</h3>
-          <p class="text-gray-600 mb-4">Founded by Marcel Chiruza, who brought his community development expertise from DRC, Fountain of Hope has made significant contributions to education and income-generation. Their work benefits both refugees and Malawians, demonstrating the power of inclusive development.</p>
+          <aside class="rounded-xl border border-gray-200 bg-white p-6">
+            <h2 class="text-lg font-semibold text-gray-900">Keep exploring</h2>
+            <p class="mt-3 text-sm leading-6 text-gray-600">
+              For more current stories and individual profiles, use the sections below.
+            </p>
+            <ul class="mt-5 space-y-3 text-sm">
+              <li><a href="/inspirational-stories" class="text-primary-700 hover:text-primary-800">Inspirational stories</a></li>
+              <li><a href="/news" class="text-primary-700 hover:text-primary-800">Latest news</a></li>
+              <li><a href="/public-art-catalogue" class="text-primary-700 hover:text-primary-800">Public art catalogue</a></li>
+              <li><a href="/skills-exchange" class="text-primary-700 hover:text-primary-800">Skills exchange</a></li>
+              <li><a href="/marketplace" class="text-primary-700 hover:text-primary-800">Marketplace</a></li>
+            </ul>
+          </aside>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </MainLayout>
-
-<style>
-  /* Card hover effects */
-  .group:hover .group-hover\:scale-105 {
-    transform: scale(1.05);
-  }
-
-  /* Smooth transitions */
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
-  }
-
-  /* Gradient overlay */
-  .bg-gradient-to-t {
-    background-image: linear-gradient(to top, var(--tw-gradient-stops));
-  }
-
-  /* Shadow effects */
-  .shadow-sm {
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  }
-
-  .shadow-lg {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 640px) {
-    .text-4xl {
-      font-size: 2rem;
-    }
-    
-    .text-2xl {
-      font-size: 1.5rem;
-    }
-  }
-</style>

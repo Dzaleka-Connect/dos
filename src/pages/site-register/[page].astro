@@ -1,9 +1,8 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 export async function getStaticPaths() {
-  // Dynamically import all site content
   let sites = [];
   try {
     sites = await Astro.glob('../../content/sites/*.md');
@@ -12,36 +11,24 @@ export async function getStaticPaths() {
     sites = [];
   }
 
-  // Sort sites by featured status and title
   sites.sort((a, b) => {
     if (a.frontmatter.featured && !b.frontmatter.featured) return -1;
     if (!a.frontmatter.featured && b.frontmatter.featured) return 1;
     return a.frontmatter.title.localeCompare(b.frontmatter.title);
   });
 
-  // Pagination settings
   const itemsPerPage = 9;
   const totalPages = Math.ceil(sites.length / itemsPerPage);
 
-  // Generate paths for all pages
-  const paths = [];
-  for (let page = 1; page <= totalPages; page++) {
-    paths.push({ params: { page: page.toString() } });
-  }
-
-  return paths;
+  return Array.from({ length: totalPages }, (_, index) => ({
+    params: { page: String(index + 1) }
+  }));
 }
 
 const { page } = Astro.params;
 const currentPage = parseInt(page) || 1;
-
-const title = `Dzaleka Online Services - Page ${currentPage}`;
-const description = "Explore important cultural, historical, and community locations in and around Dzaleka Refugee Camp. Discover the rich heritage and significance of these sites through detailed documentation, photos, and stories.";
-
-// Pagination settings
 const itemsPerPage = 9;
 
-// Dynamically import all site content
 let sites = [];
 try {
   sites = await Astro.glob('../../content/sites/*.md');
@@ -50,21 +37,18 @@ try {
   sites = [];
 }
 
-// Sort sites by featured status and title
 sites.sort((a, b) => {
   if (a.frontmatter.featured && !b.frontmatter.featured) return -1;
   if (!a.frontmatter.featured && b.frontmatter.featured) return 1;
   return a.frontmatter.title.localeCompare(b.frontmatter.title);
 });
 
-// Calculate pagination
 const totalItems = sites.length;
 const totalPages = Math.ceil(totalItems / itemsPerPage);
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 const currentSites = sites.slice(startIndex, endIndex);
 
-// Generate pagination info
 const pagination = {
   currentPage,
   totalPages,
@@ -76,238 +60,205 @@ const pagination = {
   startItem: startIndex + 1,
   endItem: Math.min(endIndex, totalItems)
 };
+
+const title = currentPage === 1 ? 'Dzaleka Site Register' : `Dzaleka Site Register - Page ${currentPage}`;
+const description = 'Explore cultural, historical, and community locations documented across Dzaleka Refugee Camp.';
+
+const summaryStats = [
+  { label: 'Documented sites', value: totalItems },
+  { label: 'Current page', value: currentPage },
+  { label: 'Featured on this page', value: currentSites.filter((site) => site.frontmatter.featured).length }
+];
+
+const getPageHref = (pageNumber) => pageNumber === 1 ? '/site-register' : `/site-register/${pageNumber}`;
 ---
 
 <MainLayout title={title} description={description}>
-  <Layout>
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-white">
-      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/dzaleka-hero.jpeg');"></div>
-      <div class="absolute inset-0 bg-black/60"></div>
-      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <div class="mb-6">
-          <span class="inline-flex items-center px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/90">
-            Independent Community Project
-          </span>
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Site Register' }
+          ]}
+        />
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Community places</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Dzaleka Site Register</h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            Browse important cultural, historical, and community locations documented by the community.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/site-register/submit" class="inline-flex items-center rounded-lg bg-gray-900 px-5 py-3 text-sm font-medium text-white hover:bg-gray-800">
+              Submit a site
+            </a>
+            <a href="/site-register/about" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+              About the register
+            </a>
+          </div>
         </div>
-        
-        <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
-          Dzaleka Digital<br/>
-          <span class="text-blue-300">Site Register</span>
-        </h1>
-        
-        <p class="text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed">
-          Discover and explore the cultural, historical, and community locations that shape the identity of Dzaleka Refugee Camp
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#sites" class="inline-flex items-center px-6 py-3 bg-white text-blue-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
-            Explore Sites
-          </a>
-          <a href="/site-register/submit" class="inline-flex items-center px-6 py-3 border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
-            Submit a Site
-          </a>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-lg font-semibold text-slate-900">Independent project</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            This is an independent public record of places that matter to the Dzaleka community. It is not an official authority list.
+          </p>
+          <div class="mt-5 grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+            {summaryStats.map((stat) => (
+              <div class="rounded-lg border border-slate-200 bg-white px-4 py-4">
+                <div class="text-sm text-slate-500">{stat.label}</div>
+                <div class="mt-1 text-2xl font-semibold text-slate-900">{stat.value}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Quick Info Section -->
-    <section class="py-12 bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-blue-50 rounded-xl p-8 text-center">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Independent Community Project</h2>
-          <p class="text-gray-700 mb-6 leading-relaxed max-w-2xl mx-auto">
-            The Dzaleka Online Services is an independent online record of important places in and around Dzaleka Refugee Camp. 
-            It is not managed or endorsed by camp authorities, but exists to preserve and document cultural heritage.
-          </p>
-          <a href="/site-register/about" class="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-            Learn More About This Project
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <section>
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Listings</p>
+          <h2 class="mt-2 text-2xl font-semibold text-slate-900">Sites on this page</h2>
         </div>
+        <p class="text-sm text-slate-500">
+          Showing {pagination.startItem} to {pagination.endItem} of {pagination.totalItems}
+        </p>
       </div>
-    </section>
 
-    <!-- Featured Sites Section -->
-    <section id="sites" class="py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Sites</h2>
-          <p class="text-lg text-gray-600">Explore some of the most significant locations in Dzaleka</p>
-        </div>
-
-        <!-- Dynamic site listings -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {currentSites.length > 0 ? (
-            currentSites.map((site) => (
-              <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-                <div class="relative h-56 bg-gradient-to-br from-blue-50 to-indigo-100">
+      {currentSites.length > 0 ? (
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {currentSites.map((site) => {
+            const slug = site.file.split('/').pop().replace('.md', '');
+            return (
+              <article class="rounded-lg border border-slate-200 bg-white">
+                <div class="aspect-[4/3] overflow-hidden border-b border-slate-200 bg-slate-100">
                   {site.frontmatter.image ? (
-                    <img src={site.frontmatter.image} alt={site.frontmatter.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img src={site.frontmatter.image} alt={site.frontmatter.title} class="h-full w-full object-cover" />
                   ) : (
-                    <div class="w-full h-full flex items-center justify-center">
-                      <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    <div class="flex h-full items-center justify-center text-slate-400">
+                      <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" />
                       </svg>
-                    </div>
-                  )}
-                  <div class="absolute top-4 left-4">
-                    <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                      {site.frontmatter.category}
-                    </span>
-                  </div>
-                  {site.frontmatter.featured && (
-                    <div class="absolute top-4 right-4">
-                      <span class="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                        Featured
-                      </span>
                     </div>
                   )}
                 </div>
-                <div class="p-6">
-                  <div class="flex items-start justify-between mb-3">
-                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                      {site.frontmatter.title}
-                    </h3>
+
+                <div class="p-5">
+                  <div class="flex flex-wrap items-center gap-2">
+                    {site.frontmatter.category && (
+                      <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700">
+                        {site.frontmatter.category}
+                      </span>
+                    )}
+                    {site.frontmatter.featured && (
+                      <span class="rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+                        Featured
+                      </span>
+                    )}
                   </div>
-                  <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
-                    {site.frontmatter.description || 'Brief description of the site and its significance...'}
+
+                  <h3 class="mt-4 text-lg font-semibold text-slate-900">{site.frontmatter.title}</h3>
+                  {site.frontmatter.campZone && (
+                    <p class="mt-2 text-sm text-slate-500">{site.frontmatter.campZone}</p>
+                  )}
+                  <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                    {site.frontmatter.description || 'Description not yet available.'}
                   </p>
-                  <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div class="flex items-center space-x-2 text-sm text-gray-500">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span>{site.frontmatter.campZone}</span>
-                    </div>
-                    <a href={`/site-register/${site.file.split('/').pop().replace('.md', '')}`} class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold group-hover:translate-x-1 transition-transform">
-                      Learn More
-                      <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                      </svg>
+
+                  <div class="mt-5">
+                    <a href={`/site-register/${slug}`} class="text-sm font-medium text-slate-700 hover:text-slate-900">
+                      View site
                     </a>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <div class="col-span-full text-center py-16">
-              <div class="max-w-md mx-auto">
-                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">No Sites Yet</h3>
-                <p class="text-gray-600 mb-6">Be the first to submit a cultural, historical, or community site to our register!</p>
-                <a href="/site-register/submit" class="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                  Submit First Site
-                  <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          )}
+              </article>
+            );
+          })}
         </div>
-
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div class="mt-12">
-            <div class="flex items-center justify-between">
-              {/* Results info */}
-              <div class="text-sm text-gray-600">
-                Showing {pagination.startItem} to {pagination.endItem} of {pagination.totalItems} sites
-              </div>
-              
-              {/* Pagination buttons */}
-              <div class="flex items-center space-x-2">
-                {/* Previous button */}
-                {pagination.hasPrevPage ? (
-                  <a href={pagination.prevPage === 1 ? "/site-register" : `/site-register/${pagination.prevPage}`} class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Previous
-                  </a>
-                ) : (
-                  <button disabled class="inline-flex items-center px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Previous
-                  </button>
-                )}
-                
-                {/* Page numbers */}
-                <div class="flex items-center space-x-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                    pageNum === currentPage ? (
-                      <span class="inline-flex items-center px-3 py-2 border border-blue-500 rounded-lg text-sm font-medium text-blue-600 bg-blue-50">
-                        {pageNum}
-                      </span>
-                    ) : (
-                      <a href={pageNum === 1 ? "/site-register" : `/site-register/${pageNum}`} class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                        {pageNum}
-                      </a>
-                    )
-                  ))}
-                </div>
-                
-                {/* Next button */}
-                {pagination.hasNextPage ? (
-                  <a href={`/site-register/${pagination.nextPage}`} class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                    Next
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                ) : (
-                  <button disabled class="inline-flex items-center px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
-                    Next
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div class="text-center mt-12">
-          <a href="/site-register/submit" class="inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-            Submit a New Site
-          </a>
+      ) : (
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-8 text-center">
+          <h3 class="text-lg font-semibold text-slate-900">No sites yet</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            Be the first to document a cultural, historical, or community site.
+          </p>
         </div>
-      </div>
+      )}
     </section>
 
-    <!-- How to Contribute Section -->
-    <section class="py-16 bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">How to Contribute</h2>
-          <p class="text-lg text-gray-600">Help us document and preserve Dzaleka's important sites</p>
-        </div>
+    {totalPages > 1 && (
+      <section class="mt-10 rounded-lg border border-slate-200 bg-white p-5">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-2">
+            {pagination.hasPrevPage ? (
+              <a href={getPageHref(pagination.prevPage)} class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+                Previous
+              </a>
+            ) : (
+              <span class="inline-flex items-center rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-400">Previous</span>
+            )}
 
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Submit a Site</h3>
-            <p class="text-gray-600 mb-4">Share information about a cultural, historical, or community site that should be documented in our register.</p>
-            <a href="/site-register/submit" class="text-blue-600 hover:text-blue-700 font-medium">Submit Now →</a>
-          </div>
+            <div class="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                pageNum === currentPage ? (
+                  <span class="inline-flex items-center rounded-lg border border-slate-900 bg-slate-900 px-3 py-2 text-sm font-medium text-white">
+                    {pageNum}
+                  </span>
+                ) : (
+                  <a href={getPageHref(pageNum)} class="inline-flex items-center rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+                    {pageNum}
+                  </a>
+                )
+              ))}
+            </div>
 
-          <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Photo Guidelines</h3>
-            <p class="text-gray-600 mb-4">Tips for taking good photos: clear lighting, wide shots showing context, and detail shots of important features.</p>
-            <a href="/photo-guidelines" class="text-blue-600 hover:text-blue-700 font-medium">View Guidelines →</a>
+            {pagination.hasNextPage ? (
+              <a href={getPageHref(pagination.nextPage)} class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+                Next
+              </a>
+            ) : (
+              <span class="inline-flex items-center rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-400">Next</span>
+            )}
           </div>
         </div>
+      </section>
+    )}
+
+    <section class="mt-10 grid gap-5 lg:grid-cols-2">
+      <div class="rounded-lg border border-slate-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-slate-900">Submit a site</h2>
+        <p class="mt-3 text-sm leading-6 text-slate-600">
+          Share information about a place that should be documented in the register.
+        </p>
+        <a href="/site-register/submit" class="mt-5 inline-block text-sm font-medium text-slate-700 hover:text-slate-900">
+          Submit now
+        </a>
+      </div>
+
+      <div class="rounded-lg border border-slate-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-slate-900">Report an issue</h2>
+        <p class="mt-3 text-sm leading-6 text-slate-600">
+          Send corrections or flag problems with an existing site listing.
+        </p>
+        <a href="/site-register/report-issue" class="mt-5 inline-block text-sm font-medium text-slate-700 hover:text-slate-900">
+          Report now
+        </a>
       </div>
     </section>
-  </Layout>
+  </div>
 </MainLayout>
+
+<style>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

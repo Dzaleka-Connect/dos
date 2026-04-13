@@ -1,121 +1,59 @@
 ---
 title: Frequently Asked Questions
-description: Common questions and answers about the platform
+description: Common questions about Dzaleka Online Services
 section: help
 ---
 
 # Frequently Asked Questions
 
-Find answers to common questions about using the Dzaleka Online Services.
+## What is Dzaleka Online Services?
 
-## General Questions
+It is a public platform that brings together service information, resources, jobs, events, stories, opportunities, and community tools connected to Dzaleka.
 
-### What is the Dzaleka Online Services?
-The Dzaleka Online Services is a digital platform dedicated to preserving and sharing the cultural heritage of Dzaleka Refugee Camp through stories, photos, events, and community services.
+## Do I need an account to use the site?
 
-### How do I get started?
-1. Visit our [Getting Started](/docs/getting-started) guide
-2. Create an account
-3. Complete your profile
-4. Explore platform features
-5. Start contributing
+No. Most parts of the site are public. When you submit something, you may be asked for your name, email, or organisation details so the team can review it.
 
-### Is the platform free to use?
-Yes, the platform is completely free for all community members to use and contribute to.
+## How do I get started?
 
-## Content & Contributions
+1. Visit [Start Here](/start-here) if you want help choosing a section.
+2. Use [Search](/search) if you already know what you need.
+3. Browse key areas like [Services](/services), [Resources](/resources), [Jobs](/jobs), and [Events](/events).
 
-### How do I share my story?
-1. Go to [Community Voice](/community-voice)
-2. Click "Share Your Story"
-3. Fill in the story details
-4. Add any media (optional)
-5. Submit for review
+## How do I share a story?
 
-### Can I submit photos?
-Yes! Visit our [Photo Gallery](/photos) to:
-- Browse existing photos
-- Submit new photos
-- Create collections
-- Share visual stories
+Use [Submit Voice](/submit-voice) to send a story, reflection, or community update for review.
 
-### How do I submit an event?
-1. Visit [Events](/events)
-2. Click "Submit Event"
-3. Provide event details
-4. Add location and time
-5. Submit for review
+## Can I submit photos?
 
-## Services & Resources
+Yes. Visit [Photos](/photos) to browse the archive or use [Photo submission](/photos/submit) to share a new image.
 
-### How do I register my service?
-1. Go to [Service Registration](/services/register)
-2. Fill in organization details
-3. Describe your services
-4. Upload required documents
-5. Submit for verification
+## How do I list an event?
 
-### How do I find local services?
-1. Visit [Service Directory](/services)
-2. Browse categories
-3. Use search filters
-4. Contact providers
-5. Access services
+Use [Organize an event](/events/organize) and include the date, location, organiser details, and a clear description.
 
-### Can I share my skills?
-Yes! Through our [Skills Exchange](/skills-exchange) you can:
-- Register as an instructor
-- Share your expertise
-- Connect with learners
-- Schedule sessions
-- Build community
+## How do organisations list services?
 
-## Technical Support
+Use [Service registration](/services/register). If your published details need to be corrected later, use [Service update request](/services/update-request).
 
-### How do I search the platform?
-Use our [Search](/search) feature to:
-- Find specific content
-- Filter by type
-- Sort results
-- Save searches
-- Get recommendations
+## Can I share skills or request training?
 
-### What if I need help?
-We offer multiple support options:
-- [Help Documentation](/docs)
-- [Support Center](/support)
-- [Contact Form](/contact)
-- [Report Issues](/support/report)
+Yes. The [Skills Exchange](/skills-exchange) lets people list skills, browse profiles, and post learning requests.
 
-### How do I update my profile?
-1. Log into your account
-2. Go to Profile Settings
-3. Update information
-4. Save changes
-5. Review updates
+## How do I search the site?
 
-## Privacy & Security
+Use [Search](/search). The results page lets you look across published services, resources, events, news, jobs, photos, and docs.
 
-### How is my data protected?
-We follow strict privacy guidelines:
-- Secure data storage
-- Limited data sharing
-- User consent required
-- Regular security updates
-- Privacy controls
+## How do I get help?
 
-### Can I control my content?
-Yes, you have full control over:
-- Content visibility
-- Profile privacy
-- Contact preferences
-- Data sharing
-- Account settings
+You can use:
 
-## Need More Help?
+- [Support](/support)
+- [Help Desk](/help-desk)
+- [Contact](/contact)
 
-If you can't find an answer to your question:
-- [Contact Support](/support)
-- [Submit Question](/support/question)
-- [Visit Help Center](/docs)
-- [Community Guidelines](/guidelines)
+## Where can I read the privacy and terms pages?
+
+- [Privacy Policy](/privacy)
+- [Terms of Service](/terms)
+- [Privacy Guidelines](/docs/privacy-guidelines)

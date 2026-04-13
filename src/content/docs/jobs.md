@@ -1,101 +1,56 @@
 ---
 title: Community Job Board
-description: Find and post job opportunities
+description: Guide to finding and posting jobs on the platform
 section: community
 ---
 
 # Community Job Board
 
-Connect with job opportunities and organizations in Dzaleka.
+The job board helps organisations publish vacancies and helps job seekers browse openings linked to Dzaleka and the wider community.
 
-## Features
+## What you can do
 
-### Browse Jobs
-- View all opportunities
-- Filter by category
-- Sort by date/deadline
-- Search positions
-- Track applications
+- Browse current listings in [Jobs](/jobs)
+- Read background information in [About the job board](/jobs/about)
+- Post a vacancy through [Post Job](/jobs/post)
 
-### Post Jobs
-Organizations can post jobs by:
-1. Visiting [Post Job](/jobs/post)
-2. Providing details:
-   - Organization info
-   - Job description
-   - Requirements
-   - Contact details
-3. Submitting for review
+## For job seekers
 
-## Job Categories
+Use the jobs page to:
 
-### Types of Jobs
-- Full Time
-- Part Time
-- Contract
-- Volunteer
-- Internship
+- browse open roles
+- check deadlines
+- review the organisation and role summary
+- use the contact or application details provided in the listing
 
-### Categories
-- Education
-- Healthcare
-- Technology
-- Community
-- Business
-- Arts & Culture
-- Services
-- Other
+## For organisations
 
-## Quick Actions
+Use [Post Job](/jobs/post) when you want to publish:
 
-### Find Jobs
-1. Visit [Job Board](/jobs)
-2. Use filters:
-   - Job type
-   - Category
-   - Location
-3. Apply for positions
+- paid roles
+- contract work
+- internships
+- volunteer opportunities
 
-### Submit Job
-1. Go to [Post Job](/jobs/post)
-2. Fill job details
-3. Add requirements
-4. Submit listing
+Before you submit, prepare:
 
-## Job Features
+- organisation name
+- job title
+- short description
+- application instructions
+- closing date
+- contact information
 
-### For Job Seekers
-- Easy search
-- Category filters
-- Application tracking
-- Job alerts
-- Saved searches
+## Good posting practice
 
-### For Organizations
-- Job posting
-- Application management
-- Organization profile
-- Listing analytics
-- Update listings
+- Be clear about the role and who can apply.
+- Use a real closing date.
+- Keep the contact details current.
+- Update the team if the role closes early or changes.
 
-## Guidelines
+## Need help?
 
-### Posting Rules
-- Clear descriptions
-- Accurate details
-- Fair opportunities
-- Timely updates
-- Regular maintenance
-
-### Application Tips
-- Complete profile
-- Match requirements
-- Professional communication
-- Follow instructions
-- Track applications
-
-## Need Help?
-
-- [Posting Guide](/jobs/guide)
-- [Contact Support](/support)
-- [Report Issue](/support)
+- [Jobs](/jobs)
+- [Post Job](/jobs/post)
+- [Contact](/contact)
+- [Help Desk](/help-desk)

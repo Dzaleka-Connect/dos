@@ -8,6 +8,7 @@ interface Props {
 	title: string;
 	description?: string;
 	keywords?: string;
+	author?: string;
 	type?: string;
 	canonical?: string;
 	ogImage?: string;
@@ -54,6 +55,7 @@ const {
 	title, 
 	description, 
 	keywords, 
+	author = "Dzaleka Online Services",
 	type = "website",
 	canonical,
 	ogImage,
@@ -87,7 +89,7 @@ import Schema from '../components/Schema.astro';
 		<meta name="description" content={metaDescription} />
 		<meta name="keywords" content={metaKeywords} />
 		<meta name="robots" content={robots} />
-		<meta name="author" content="Dzaleka Online Services" />
+		<meta name="author" content={author} />
 		
 		<!-- OpenGraph Meta Tags -->
 		<meta property="og:title" content={openGraph?.title || title} />

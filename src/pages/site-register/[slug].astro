@@ -1,6 +1,6 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 // Generate static paths for all sites
 export async function getStaticPaths() {
@@ -82,27 +82,37 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
   canonical={seo.canonical} 
   openGraph={seo.openGraph}
 >
-  <div class="min-h-screen bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Back Button -->
-      <div class="mb-6">
-        <a 
-          href="/site-register" 
-          class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          <span>Back to Site Register</span>
-        </a>
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Site Register', href: '/site-register' },
+            { label: frontmatter.title }
+          ]}
+        />
       </div>
 
-      <!-- Site Content -->
+      <div class="max-w-4xl">
+        {frontmatter.category && (
+          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">{frontmatter.category}</p>
+        )}
+        <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{frontmatter.title}</h1>
+        {frontmatter.description && (
+          <p class="mt-4 text-lg leading-8 text-slate-600">{frontmatter.description}</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <div class="min-h-screen bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Image Gallery -->
-          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
             {images.length > 0 ? (
               <div class="relative">
                 <!-- Main Image -->
@@ -117,7 +127,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
 
               </div>
             ) : (
-              <div class="w-full h-64 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+              <div class="w-full h-64 bg-slate-100 flex items-center justify-center">
                 <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
@@ -126,13 +136,13 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
           </div>
 
           <!-- Action Buttons -->
-          <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Take Action</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <!-- Report Issues -->
               <a 
                 href="/site-register/report-issue"
-                class="flex items-center justify-center gap-2 px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -143,7 +153,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
               <!-- Submit Updates -->
               <a 
                 href="/site-register/submit-update"
-                class="flex items-center justify-center gap-2 px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -154,7 +164,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
               <!-- Volunteer Opportunities -->
               <a 
                 href="/contact"
-                class="flex items-center justify-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -165,7 +175,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
               <!-- Donation Link -->
               <a 
                 href="/support-our-work"
-                class="flex items-center justify-center gap-2 px-4 py-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -177,7 +187,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
               <a 
                 href={frontmatter.image}
                 download
-                class="flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -188,7 +198,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
               <!-- QR Code -->
               <button 
                 onclick="showQRCode()"
-                class="flex items-center justify-center gap-2 px-4 py-3 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-white hover:bg-gray-800 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
@@ -199,8 +209,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
           </div>
 
           <!-- Site Description -->
-          <div class="bg-white rounded-xl p-6 shadow-sm">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">{frontmatter.title}</h1>
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             {frontmatter.alternativeNames && (
               <p class="text-lg text-gray-600 mb-6">Also known as: {frontmatter.alternativeNames}</p>
             )}
@@ -212,7 +221,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
 
           <!-- Before/After Images (if available) -->
           {frontmatter.beforeImages && frontmatter.afterImages && (
-            <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="bg-white rounded-lg border border-slate-200 p-6">
               <h2 class="text-xl font-semibold text-gray-900 mb-4">Restoration Progress</h2>
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
@@ -247,7 +256,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
 
           <!-- Educational Resources (if available) -->
           {frontmatter.educationalResources && (
-            <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="bg-white rounded-lg border border-slate-200 p-6">
               <h2 class="text-xl font-semibold text-gray-900 mb-4">Educational Resources</h2>
               <div class="space-y-3">
                 {frontmatter.educationalResources.map((resource, index) => (
@@ -255,14 +264,14 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
                     href={resource.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                  class="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 hover:border-slate-300 hover:bg-white transition-colors"
                   >
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                     <div>
                       <p class="font-medium text-blue-900">{resource.title}</p>
-                      <p class="text-sm text-blue-700">{resource.description}</p>
+                      <p class="text-sm text-slate-700">{resource.description}</p>
                     </div>
                   </a>
                 ))}
@@ -271,12 +280,12 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
           )}
 
           <!-- Download/Share Options -->
-          <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Share & Download</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <a 
                 href={`/site-register/${site.file.split('/').pop().replace('.md', '')}/print`}
-                class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -285,7 +294,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
               </a>
               <button 
                 onclick="navigator.share({title: '${frontmatter.title}', text: '${frontmatter.description || `Learn about ${frontmatter.title} in Dzaleka Refugee Camp`}', url: window.location.href})"
-                class="flex items-center justify-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+                class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
@@ -299,7 +308,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
         <!-- Sidebar -->
         <div class="space-y-6">
           <!-- Site Info -->
-          <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Site Information</h2>
             
             <div class="space-y-4">
@@ -342,7 +351,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
             <div class="mt-6 pt-6 border-t">
               <a 
                 href="/site-register/license" 
-                class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+                class="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors"
                 aria-label="View Site Register License and Usage Policy"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -355,7 +364,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
 
           <!-- Related Sites -->
           {relatedSites.length > 0 && (
-            <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="bg-white rounded-lg border border-slate-200 p-6">
               <h2 class="text-lg font-semibold text-gray-900 mb-4">Related Sites</h2>
               <div class="space-y-4">
                 {relatedSites.map(relatedSite => (
@@ -372,7 +381,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
                             class="w-full h-full object-cover rounded-lg"
                           />
                         ) : (
-                          <div class="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg flex items-center justify-center">
+                          <div class="w-full h-full bg-slate-100 rounded-lg flex items-center justify-center">
                             <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
@@ -380,7 +389,7 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
                         )}
                       </div>
                       <div>
-                        <div class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                        <div class="text-sm font-medium text-gray-900 group-hover:text-slate-700 transition-colors">
                           {relatedSite.frontmatter.title}
                         </div>
                         <p class="text-xs text-gray-500 mt-1">
@@ -400,14 +409,14 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data
           )}
 
           <!-- Submit Site -->
-          <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-slate-200 p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Contribute</h2>
             <p class="text-sm text-gray-600 mb-4">
               Know of another important site in Dzaleka? Help us document it.
             </p>
             <a 
               href="/site-register/submit" 
-              class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              class="inline-flex items-center justify-center w-full gap-2 rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-800 transition-colors font-medium"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

@@ -13,6 +13,14 @@ const VALID_COLLECTIONS = [
   'docs',
   'news',
   'pages',
+  'courses',
+  'artists',
+  'artworks',
+  'marketplace',
+  'stores',
+  'rights',
+  'poets',
+  'dancers',
 ] as const;
 
 const corsHeaders = {

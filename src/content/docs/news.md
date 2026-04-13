@@ -1,67 +1,38 @@
 ---
 title: News & Updates
-description: Stay informed about Dzaleka community news
+description: Guide to reading community news and updates
 section: news
 ---
 
 # News & Updates
 
-Stay connected with the latest news, announcements, and updates from Dzaleka.
+The news section collects published stories, announcements, and updates related to Dzaleka and the platform.
 
-## News Categories
+## What you can find
 
-### Community News
-- Local events
-- Community initiatives
-- Success stories
-- Project updates
-- Announcements
+- community updates
+- service announcements
+- event coverage
+- feature stories
+- public notices and platform updates
 
-### Cultural Updates
-- Heritage activities
-- Cultural celebrations
-- Traditional events
-- Art exhibitions
-- Performance showcases
+## How to use the news section
 
-### Service Updates
-- New services
-- Program changes
-- Resource updates
-- Provider news
-- Support information
+1. Visit [News](/news).
+2. Open the latest story or browse the article list.
+3. Use category pages when you want a narrower topic.
+4. Check [Updates](/updates) for platform-specific release notes and change logs.
 
-## Quick Actions
+## About publishing
 
-### Read News
-1. Visit [News Section](/news)
-2. Browse categories
-3. Read articles
-4. Share stories
+There is currently no public news submission page. If your organisation has an announcement or correction that should be reviewed for publication, use:
 
-### Submit News
-1. Go to [Submit News](/news/submit)
-2. Provide details:
-   - Title and content
-   - Category
-   - Media files
-3. Submit for review
+- [Contact](/contact)
+- [Help Desk](/help-desk)
 
-### News Features
-- Latest updates
-- Featured stories
-- Community highlights
-- Event coverage
-- Service announcements
+## Related pages
 
-## Guidelines
-
-- [Content Guidelines](/news/guidelines)
-- [Submission Rules](/news/rules)
-- [Editorial Policy](/news/policy)
-
-## Need Help?
-
-- [News FAQ](/news/faq)
-- [Contact Editor](/contact)
-- [Report Issue](/support)
+- [News](/news)
+- [Updates](/updates)
+- [Events](/events)
+- [Community Voice](/community-voice)

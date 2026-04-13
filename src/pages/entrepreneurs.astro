@@ -2,232 +2,249 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 
-const pageTitle = "Entrepreneurs | Dzaleka Online Services";
-const pageDescription = "Join our entrepreneur community supporting refugee businesses in Dzaleka. Access business development resources, connect with mentors, find funding opportunities, and build sustainable enterprises.";
+const pageTitle = 'Entrepreneurs | Dzaleka Online Services';
+const pageDescription =
+  'Find business support, training, marketplace tools, and examples from entrepreneurs in Dzaleka.';
 
-// Get entrepreneur profiles - show featured profiles or all profiles
 const allProfiles = await getCollection('profiles');
-const entrepreneurs = allProfiles
-  .filter(profile => profile.data.featured === true)
-  .slice(0, 3);
+const featuredProfiles = allProfiles.filter((profile) => profile.data.featured === true).slice(0, 3);
+const displayProfiles = featuredProfiles.length > 0 ? featuredProfiles : allProfiles.slice(0, 3);
 
-// If no featured profiles, show the first 3 profiles
-const displayProfiles = entrepreneurs.length > 0 ? entrepreneurs : allProfiles.slice(0, 3);
+const supportAreas = [
+  {
+    title: 'Start or improve a business',
+    description: 'Use the platform to present your work, share a service, or find examples from others already trading in the community.',
+    href: '/skills-exchange',
+    action: 'Browse profiles',
+  },
+  {
+    title: 'Sell products or services',
+    description: 'List items in the marketplace or register a store so buyers can contact you directly.',
+    href: '/marketplace',
+    action: 'Open marketplace',
+  },
+  {
+    title: 'Learn and build skills',
+    description: 'Explore training, digital learning, and practical knowledge that can help with planning, promotion, and customer service.',
+    href: '/e-learning',
+    action: 'View learning resources',
+  },
+  {
+    title: 'Find work and partnerships',
+    description: 'Check job opportunities, community organisations, and local support pathways that can help your business grow.',
+    href: '/jobs',
+    action: 'See opportunities',
+  },
+];
 
 const seo = {
   title: pageTitle,
   description: pageDescription,
-  type: "website",
-  canonical: "https://services.dzaleka.com/entrepreneurs",
+  type: 'website',
+  canonical: 'https://services.dzaleka.com/entrepreneurs',
   openGraph: {
     title: pageTitle,
     description: pageDescription,
-    type: "website",
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
-    url: "https://services.dzaleka.com/entrepreneurs"
-  }
+    type: 'website',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: 'https://services.dzaleka.com/entrepreneurs',
+  },
 };
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
 >
-  <main class="bg-white">
-    <!-- Hero Section -->
-    <section class="relative bg-primary-900 overflow-hidden">
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0 pattern-mudcloth bg-white"></div>
-      </div>
-      <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900/90"></div>
-      
-      <div class="container mx-auto px-4 py-20 sm:py-24 relative z-10">
-        <div class="max-w-4xl mx-auto text-center">
-          <span class="inline-block py-1 px-3 rounded-full bg-primary-800 border border-primary-700 text-primary-200 text-sm font-semibold mb-6 animate-fade-in-up">
-            Empowering Refugee Business
-          </span>
-          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in-up [animation-delay:200ms]">
-            Turn Your Vision Into <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">Reality</span>
-          </h1>
-          <p class="text-xl text-primary-100 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up [animation-delay:400ms]">
-            Join a thriving community of innovators. Access mentorship, funding opportunities, and the digital tools you need to build a sustainable business in Dzaleka.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up [animation-delay:600ms]">
-            <a 
-              href="#join-waitlist" 
-              class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-900 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:bg-gray-50 transition-all transform hover:-translate-y-1"
-            >
-              Join the Program
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-            <a 
-              href="#featured-entrepreneurs" 
-              class="inline-flex items-center justify-center px-8 py-4 bg-primary-800/50 text-white border border-primary-700/50 rounded-xl font-bold text-lg backdrop-blur-sm hover:bg-primary-800 transition-all"
-            >
-              Meet Entrepreneurs
-            </a>
+  <main class="bg-gray-50">
+    <section class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <nav class="mb-4 text-sm text-gray-500">
+          <a href="/" class="hover:text-primary-700">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-gray-900">Entrepreneurs</span>
+        </nav>
+
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
+          <div class="max-w-3xl">
+            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Business support</p>
+            <h1 class="mt-3 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+              Entrepreneurs in Dzaleka
+            </h1>
+            <p class="mt-4 text-lg leading-8 text-gray-600">
+              This page brings together practical routes for people building businesses in and around Dzaleka.
+              Use it to find examples, promote what you offer, and connect with training or support.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a
+                href="/marketplace/submit"
+                class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-800"
+              >
+                List a product or service
+              </a>
+              <a
+                href="/skills-exchange"
+                class="inline-flex items-center rounded-lg border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 transition hover:border-primary-300 hover:text-primary-700"
+              >
+                Browse community profiles
+              </a>
+            </div>
           </div>
+
+          <aside class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-gray-700">Quick links</h2>
+            <ul class="mt-4 space-y-3 text-sm text-gray-600">
+              <li><a href="/marketplace" class="hover:text-primary-700">Marketplace</a></li>
+              <li><a href="/marketplace/stores" class="hover:text-primary-700">Restaurants and shops</a></li>
+              <li><a href="/e-learning" class="hover:text-primary-700">E-learning</a></li>
+              <li><a href="/jobs" class="hover:text-primary-700">Jobs</a></li>
+              <li><a href="/support-our-work" class="hover:text-primary-700">Support and partnerships</a></li>
+            </ul>
+          </aside>
         </div>
       </div>
     </section>
 
-    <!-- Featured Entrepreneurs Section -->
+    <section class="border-b border-gray-200 bg-gray-50">
+      <div class="mx-auto grid max-w-6xl gap-4 px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+        {supportAreas.map((area) => (
+          <article class="rounded-xl border border-gray-200 bg-white p-5">
+            <h2 class="text-lg font-semibold text-gray-900">{area.title}</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600">{area.description}</p>
+            <a href={area.href} class="mt-4 inline-flex text-sm font-medium text-primary-700 hover:text-primary-800">
+              {area.action}
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+
     {displayProfiles.length > 0 && (
-      <section id="featured-entrepreneurs" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Entrepreneurs</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Meet some of the innovative minds building the future of Dzaleka.</p>
+      <section class="bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+          <div class="max-w-2xl">
+            <h2 class="text-2xl font-semibold text-gray-900">Featured profiles</h2>
+            <p class="mt-3 text-base leading-7 text-gray-600">
+              A few examples of people sharing skills, services, and business activity through the platform.
+            </p>
           </div>
-          
-          <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {displayProfiles.map(profile => (
-              <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
-                <div class="aspect-w-3 aspect-h-2 bg-gray-200 relative overflow-hidden">
-                  <img 
-                    src={profile.data.profileImage || '/images/dzaleka-digital-heritage.png'} 
+
+          <div class="mt-8 grid gap-6 md:grid-cols-3">
+            {displayProfiles.map((profile) => (
+              <article class="overflow-hidden rounded-xl border border-gray-200 bg-white">
+                <div class="aspect-[4/3] bg-gray-100">
+                  <img
+                    src={profile.data.profileImage || '/images/dzaleka-digital-heritage.png'}
                     alt={profile.data.name}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    class="h-full w-full object-cover"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                <div class="p-6">
-                  <h3 class="text-xl font-bold text-gray-900 mb-1">{profile.data.name}</h3>
-                  <p class="text-primary-600 font-medium mb-3">{profile.data.skill}</p>
-                  <p class="text-gray-600 text-sm line-clamp-2 mb-4">{profile.data.shortDescription}</p>
-                  <a href={`/skills-exchange/profile/${profile.id}`} class="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center">
-                    View Profile 
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <div class="p-5">
+                  <p class="text-sm font-medium text-primary-700">{profile.data.skill}</p>
+                  <h3 class="mt-1 text-xl font-semibold text-gray-900">{profile.data.name}</h3>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">
+                    {profile.data.shortDescription || 'Community profile on Dzaleka Online Services.'}
+                  </p>
+                  <a
+                    href={`/skills-exchange/profile/${profile.id}`}
+                    class="mt-4 inline-flex text-sm font-medium text-primary-700 hover:text-primary-800"
+                  >
+                    View profile
                   </a>
                 </div>
-              </div>
+              </article>
             ))}
-          </div>
-          
-          <div class="text-center mt-12">
-            <a href="/skills-exchange" class="inline-flex items-center text-gray-600 hover:text-primary-600 font-medium transition-colors">
-              View all entrepreneurs
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </a>
           </div>
         </div>
       </section>
     )}
 
-    <!-- Services Section -->
-    <section class="py-20 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How We Support You</h2>
-            <p class="text-lg text-gray-600">Comprehensive support at every stage of your business journey.</p>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-8">
-            <!-- Community & Networking -->
-            <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
-              <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Community & Networking</h3>
-              <p class="text-gray-600 mb-6">Connect with fellow entrepreneurs and industry leaders.</p>
-              <ul class="space-y-3">
-                <li class="flex items-start text-gray-700">
-                  <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  Monthly networking events
-                </li>
-                <li class="flex items-start text-gray-700">
-                  <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  Industry-specific groups
-                </li>
-              </ul>
+    <section class="border-t border-gray-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="rounded-xl border border-gray-200 bg-gray-50 p-6 sm:p-8">
+          <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-start">
+            <div>
+              <h2 class="text-2xl font-semibold text-gray-900">Business planning templates</h2>
+              <p class="mt-3 max-w-3xl text-sm leading-6 text-gray-600">
+                If you are starting out or trying to organise the next stage of your business, use the startup tools library for simple planning templates on marketing, cash flow, action steps, and risk planning.
+              </p>
             </div>
-
-            <!-- Mentoring & Training -->
-            <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
-              <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Mentoring & Training</h3>
-              <p class="text-gray-600 mb-6">Gain skills through workshops and 1:1 coaching.</p>
-              <ul class="space-y-3">
-                <li class="flex items-start text-gray-700">
-                  <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  Business plan workshops
-                </li>
-                <li class="flex items-start text-gray-700">
-                  <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  Expert mentorship program
-                </li>
-              </ul>
+            <div class="flex flex-col gap-3">
+              <a
+                href="/tools-and-templates"
+                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:border-primary-300 hover:text-primary-700"
+              >
+                Open tools library
+              </a>
+              <a
+                href="/tools-and-templates/marketing-plan-template"
+                class="inline-flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-primary-800"
+              >
+                Start with marketing plan
+              </a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Join Waitlist Section -->
-    <section id="join-waitlist" class="py-20 bg-gray-900 text-white relative overflow-hidden">
-      <div class="absolute inset-0 opacity-20">
-        <div class="absolute inset-0 pattern-dots"></div>
-      </div>
-      <div class="container mx-auto px-4 relative z-10">
-        <div class="max-w-3xl mx-auto">
-          <div class="text-center mb-10">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your Journey?</h2>
-            <p class="text-lg text-gray-300">Applications open soon. Join the waitlist to get early access.</p>
+    <section class="border-t border-gray-200 bg-gray-50">
+      <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
+          <div class="max-w-2xl">
+            <h2 class="text-2xl font-semibold text-gray-900">Join the entrepreneur mailing list</h2>
+            <p class="mt-3 text-sm leading-6 text-gray-600">
+              Leave your details if you want updates about business support, marketplace opportunities, or future entrepreneurship programmes.
+            </p>
           </div>
-          
-          <form 
-            action="https://formspree.io/f/xqaaajae" 
-            method="POST"
-            class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-2xl"
-          >
-            <div class="grid md:grid-cols-2 gap-6 mb-6">
+
+          <form action="https://formspree.io/f/xqaaajae" method="POST" class="mt-8 space-y-5">
+            <div class="grid gap-5 sm:grid-cols-2">
               <div>
-                <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
+                <label for="name" class="block text-sm font-medium text-gray-700">Full name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
                   required
-                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                  placeholder="John Doe"
+                  class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                  placeholder="Your name"
                 />
               </div>
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required
-                    class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                    placeholder="name@domain.com"
-                  />
+                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                  placeholder="name@example.com"
+                />
               </div>
             </div>
-            <div class="mb-8">
-              <label for="business" class="block text-sm font-medium text-gray-300 mb-2">Business Idea (Optional)</label>
-              <textarea 
-                id="business" 
-                name="business" 
-                rows="3" 
-                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                placeholder="Tell us briefly about your business idea..."
+
+            <div>
+              <label for="business" class="block text-sm font-medium text-gray-700">Business idea or service</label>
+              <textarea
+                id="business"
+                name="business"
+                rows="4"
+                class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                placeholder="Tell us briefly what you do or what support you are looking for."
               ></textarea>
             </div>
-            <button 
-              type="submit" 
-              class="w-full px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold text-lg shadow-lg transition-all transform hover:-translate-y-0.5"
+
+            <button
+              type="submit"
+              class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-800"
             >
-              Join Waitlist
+              Join updates
             </button>
           </form>
         </div>
@@ -235,27 +252,3 @@ const seo = {
     </section>
   </main>
 </MainLayout>
-
-<style>
-  .pattern-mudcloth {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-  
-  .pattern-dots {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style> 

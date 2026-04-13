@@ -1,85 +1,51 @@
 ---
 title: Search Guide
-description: Find content across the platform
+description: Guide to using site search
 section: search
 ---
 
 # Search Guide
 
-Learn how to find content across the Dzaleka Online Services.
+The site search helps you find published content across multiple sections of Dzaleka Online Services.
 
-## Search Features
+## Where search is useful
 
-### Global Search
-- Full-text search
-- Category filters
-- Advanced options
-- Recent searches
-- Search history
+You can use [Search](/search) to look across:
 
-### Content Types
-- Community stories
-- Photo galleries
-- Local events
-- Service listings
-- Skills exchange
-- News articles
+- services
+- resources
+- events
+- news
+- jobs
+- photos
+- docs
 
-### Search Filters
-- Content type
-- Date range
-- Categories
-- Location
-- Language
+## Basic search flow
 
-## Quick Actions
+1. Open [Search](/search).
+2. Enter a word, phrase, or organisation name.
+3. Review the results page at [Search Results](/search/results).
+4. Open the most relevant item.
 
-### Basic Search
-1. Use search bar
-2. Enter keywords
-3. View results
-4. Apply filters
+## Good search tips
 
-### Advanced Search
-1. Click [Advanced Search](/search/advanced)
-2. Set filters:
-   - Content types
-   - Date range
-   - Categories
-3. Get results
+- Try short keywords first.
+- Search for organisation names as well as topics.
+- If one term gives too many results, add a second keyword.
+- If one spelling does not work, try a close variation.
 
-### Search Tips
-- Use keywords
-- Try variations
-- Check spelling
-- Use filters
-- Sort results
+## If you need structured search data
 
-## Search Areas
+Developers can use the public search endpoint:
 
-### Stories Search
-- Personal stories
-- Cultural content
-- Community voices
-- Historical records
-- News articles
+```text
+/api/search?q=your-query
+```
 
-### Media Search
-- Photos
-- Documents
-- Audio files
-- Video content
-- Presentations
+See [API Documentation](/api-docs) for details.
 
-### Directory Search
-- Services
-- Events
-- Skills
-- Resources
-- Contacts
+## Need help?
 
-## Need Help?
-
-- [Search Tips](/search/tips)
-- [FAQ](/search/faq)
-- [Contact Support](/support)
+- [Search](/search)
+- [Support](/support)
+- [Contact](/contact)

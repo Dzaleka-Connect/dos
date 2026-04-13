@@ -1,80 +1,42 @@
 ---
 title: Community Voice
-description: Share your stories and experiences
+description: Guide to sharing stories and perspectives from Dzaleka
 section: community
 ---
 
 # Community Voice
 
-Share your stories and experiences with the Dzaleka community.
+Community Voice is the storytelling section of the platform. It is where residents, contributors, and partners can share perspectives, memories, and reflections connected to Dzaleka.
 
-## Story Types
+## What works well here
 
-### Personal Stories
-- Life experiences
-- Cultural memories
-- Family histories
-- Community connections
-- Personal journeys
+- Personal stories and lived experience
+- Community updates and reflections
+- Cultural memory and heritage writing
+- Success stories and local initiatives
 
-### Cultural Stories
-- Traditional practices
-- Cultural celebrations
-- Heritage preservation
-- Language stories
-- Art and music
+## How to share a story
 
-### Community Stories
-- Local initiatives
-- Success stories
-- Community projects
-- Collaborative efforts
-- Historical events
+1. Open [Submit Voice](/submit-voice).
+2. Add a clear title and your story text.
+3. Include any supporting image or media if relevant.
+4. Add your name and contact details.
+5. Submit the story for review.
 
-## Quick Actions
+## Before you submit
 
-### Share Story
-1. Visit [Submit Story](/submit-voice)
-2. Provide details:
-   - Title and content
-   - Story category
-   - Media files
-   - Author information
-3. Submit for review
+- Make sure the information is accurate.
+- Avoid publishing private details you do not want shared.
+- Get permission before naming or showing other people.
+- Keep the language respectful and clear.
 
-### Browse Stories
-1. Go to [Community Voice](/community-voice)
-2. Use filters:
-   - Categories
-   - Recent/Popular
-   - Featured stories
-3. Read and engage
+## Where to read stories
 
-### Story Features
-- Rich text editor
-- Media uploads
-- Category tagging
-- Author profiles
-- Story sharing
+- [Community Voice](/community-voice)
+- [Voice submission confirmation](/voice-submitted)
 
-## Guidelines
+## Related guidance
 
-### Content Standards
-- Respectful content
-- Cultural sensitivity
-- Accurate information
-- Clear writing
-- Media quality
-
-### Privacy Rules
-- Personal information
-- Photo permissions
-- Story rights
-- Content usage
-- Data protection
-
-## Need Help?
-
-- [Story Guidelines](/voice/guidelines)
-- [Writing Tips](/voice/tips)
-- [Contact Support](/support)
+- [Privacy Guidelines](/docs/privacy-guidelines)
+- [Getting Started](/docs/getting-started)
+- [Contact](/contact)

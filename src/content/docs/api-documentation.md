@@ -1,419 +1,157 @@
 ---
 title: API Documentation
-description: Complete guide to using the Dzaleka Online Services API for developers
+description: Overview of the public Dzaleka Online Services API
 section: developers
 ---
 
 # Dzaleka Online Services API
 
-This documentation provides a comprehensive guide to using the Dzaleka Online Services API. The API allows developers to access and integrate the platform's data into their applications.
+The Dzaleka Online Services API provides public JSON access to published collections across the site. It is useful for dashboards, research, integrations, and lightweight public tools.
 
-## API Overview
+## Base URL
 
-The Dzaleka Online Services API is a RESTful API that provides access to various collections of data, including services, resources, events, photos, and more. The API supports both JSON and CSV formats for data export.
-
-### Base URL
-
-All API endpoints are relative to the base URL:
-
-```
+```text
 https://services.dzaleka.com/api
 ```
 
-### Authentication
+## Authentication
 
-Currently, the API is publicly accessible without authentication. Future versions may implement authentication for certain endpoints.
+Read access is currently public. If rate limits or protected endpoints are added later, they will be documented in [API Docs](/api-docs).
 
-## API Endpoints
+## Main endpoints
 
-### Collection-Specific Endpoints
+### Collection endpoints
 
-Each collection has its own dedicated endpoint:
+Collection endpoints are available for published data such as:
 
-| Collection | Endpoint | Description |
-|------------|----------|-------------|
-| Services | `/services` | Community services and providers |
-| Resources | `/resources` | Educational and informational resources |
-| Events | `/events` | Community events and activities |
-| Photos | `/photos` | Photo gallery and albums |
-| Profiles | `/profiles` | Skills exchange profiles |
-| Talents | `/talents` | Community talent showcase |
-| Community Voices | `/community-voices` | Stories and experiences |
-| News | `/news` | News articles and updates |
-| Jobs | `/jobs` | Job listings and opportunities |
-| Docs | `/docs` | Documentation and guides |
-| Pages | `/pages` | Static page content |
+- `/api/services`
+- `/api/resources`
+- `/api/events`
+- `/api/photos`
+- `/api/jobs`
+- `/api/news`
+- `/api/courses`
+- `/api/community-voices`
+- `/api/profiles`
+- `/api/talents`
+- `/api/marketplace`
+- `/api/stores`
+- `/api/rights`
+- `/api/artists`
+- `/api/artworks`
+- `/api/poets`
+- `/api/dancers`
+- `/api/docs`
+- `/api/pages`
 
-### Export API
+These collection endpoints support `GET`, `POST`, and `OPTIONS`.
 
-The Export API allows you to retrieve data from multiple collections in a single request:
+- `GET` returns the published collection
+- `POST` returns the same collection and can include metadata or stats
+- `OPTIONS` is available for CORS support
 
-```
-/api/export
-```
+Some collections may return an empty result if nothing is currently published there. This is especially true for `/api/pages` if the pages collection is not populated.
 
-## Request Methods
+### Search and feed endpoints
 
-### GET Requests
+- `/api/search`
+- `/api/search-index.json`
+- `/api/rss`
 
-Use GET requests to retrieve data from a specific collection:
+### Data snapshot endpoints
 
-```
-GET /api/{collection}
-```
+- `/api/alerts`
+- `/api/population`
+- `/api/finance`
+- `/api/weather`
+- `/api/weather-alerts`
+- `/api/geolocation`
+- `/api/charts`
+- `/api/analytics/pageviews`
 
-Example:
+### Action endpoints
 
-```
-GET /api/resources
-```
+- `/api/export`
+- `/api/match-category`
+- `/api/submit-voice`
+- `/api/send-booking-confirmation`
 
-Response:
+## Common request patterns
 
-```json
-{
-  "success": true,
-  "count": 76,
-  "data": {
-    "resources": [
-      {
-        "id": "banking-services",
-        "collection": "resources",
-        "slug": "banking-services",
-        "title": "Banking services in Dzaleka Refugee Camp",
-        "description": "Overview of banking and financial services available in Dzaleka",
-        "category": "Finance",
-        "author": "Financial Team",
-        "fileType": "PDF",
-        "fileSize": "1.2MB",
-        "downloadUrl": "/resources/banking-services.pdf",
-        "resourceUrl": "https://services.dzaleka.com/banking-services"
-      },
-      // More resources...
-    ]
-  }
-}
+### Get a collection
+
+```bash
+curl "https://services.dzaleka.com/api/services"
 ```
 
-### POST Requests
+Use collection endpoints when you need one content type at a time.
 
-Use POST requests to retrieve data with additional options:
+### Search across collections
 
-```
-POST /api/{collection}
-```
-
-Request body:
-
-```json
-{
-  "options": {
-    "includeMetadata": true,
-    "includeStats": true
-  }
-}
+```bash
+curl "https://services.dzaleka.com/api/search?q=education"
 ```
 
-Example:
+Optional query parameters:
 
-```
-POST /api/resources
-```
+- `q` for the search term
+- `collections` for a comma-separated list such as `services,resources,news`
+- `limit` for results per collection
 
-With body:
+### Export multiple collections
 
-```json
-{
-  "options": {
-    "includeMetadata": true,
-    "includeStats": true
-  }
-}
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "count": 76,
-  "metadata": {
-    "lastUpdated": "2023-03-08T12:34:56Z",
-    "version": "1.0.0"
-  },
-  "stats": {
-    "categories": {
-      "Education": 25,
-      "Health": 18,
-      "Finance": 10,
-      "Legal": 15,
-      "Other": 8
-    },
-    "totalDownloads": 1250,
-    "averageFileSize": "2.4MB"
-  },
-  "data": {
-    "resources": [
-      // Resources data...
-    ]
-  }
-}
-```
-
-### Export API POST Request
-
-Use the Export API to retrieve data from multiple collections:
-
-```
-POST /api/export
-```
-
-Request body:
-
-```json
-{
-  "format": "json",
-  "collections": ["resources", "services"],
-  "options": {
-    "includeMetadata": true,
-    "includeStats": true
-  }
-}
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "metadata": {
-    "exportDate": "2023-03-08T12:34:56Z",
-    "version": "1.0.0"
-  },
-  "stats": {
-    "resources": {
-      "count": 76,
-      "categories": 5
-    },
-    "services": {
-      "count": 42,
-      "categories": 8
+```bash
+curl -X POST "https://services.dzaleka.com/api/export" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "collections": ["services", "resources", "events"],
+    "options": {
+      "includeMetadata": true,
+      "includeStats": true
     }
-  },
-  "data": {
-    "resources": [
-      // Resources data...
-    ],
-    "services": [
-      // Services data...
-    ]
-  }
-}
+  }'
 ```
 
-## Response Formats
+Use the export endpoint when you need several collections in one response.
 
-### JSON Format
+## Other useful requests
 
-The default response format is JSON. Example:
+### Get the search index
 
-```json
-{
-  "success": true,
-  "count": 76,
-  "data": {
-    "resources": [
-      {
-        "id": "banking-services",
-        "title": "Banking services in Dzaleka Refugee Camp",
-        // More fields...
-      }
-    ]
-  }
-}
+```bash
+curl "https://services.dzaleka.com/api/search-index.json"
 ```
 
-### CSV Format
+### Get the RSS feed
 
-You can request data in CSV format using the Export API:
-
-```
-POST /api/export
+```bash
+curl "https://services.dzaleka.com/api/rss"
 ```
 
-With body:
+### Get alerts or dashboard snapshots
 
-```json
-{
-  "format": "csv",
-  "collections": ["resources"]
-}
+```bash
+curl "https://services.dzaleka.com/api/alerts"
+curl "https://services.dzaleka.com/api/population"
+curl "https://services.dzaleka.com/api/finance"
 ```
 
-Response will be a CSV file with headers and data rows.
+## Response format
 
-## Common Data Structures
+Most endpoints return JSON with a success or status field plus the requested data. Search and export responses can also include metadata, counts, grouped results, or cache information depending on the endpoint.
 
-### Services
+RSS is the main exception and returns XML.
 
-```json
-{
-  "id": "string",
-  "collection": "services",
-  "slug": "string",
-  "title": "string",
-  "description": "string",
-  "category": "string",
-  "contact": {
-    "name": "string",
-    "email": "string",
-    "phone": "string"
-  },
-  "location": {
-    "address": "string",
-    "coordinates": {
-      "lat": "number",
-      "lng": "number"
-    }
-  },
-  "socialMedia": {
-    "facebook": "string",
-    "twitter": "string",
-    "instagram": "string"
-  },
-  "verified": "boolean",
-  "status": "string"
-}
-```
+## Good uses for the API
 
-### Resources
+- Building lightweight public dashboards
+- Pulling published services or resources into another site
+- Research and reporting workflows
+- Testing integrations before building a larger tool
 
-```json
-{
-  "id": "string",
-  "collection": "resources",
-  "slug": "string",
-  "title": "string",
-  "description": "string",
-  "category": "string",
-  "author": "string",
-  "fileType": "string",
-  "fileSize": "string",
-  "downloadUrl": "string",
-  "resourceUrl": "string"
-}
-```
+## Related pages
 
-### Events
-
-```json
-{
-  "id": "string",
-  "collection": "events",
-  "slug": "string",
-  "title": "string",
-  "description": "string",
-  "date": "string (ISO date)",
-  "time": "string",
-  "location": "string",
-  "organizer": "string",
-  "category": "string",
-  "featured": "boolean"
-}
-```
-
-## Error Handling
-
-The API uses standard HTTP status codes to indicate the success or failure of a request:
-
-- 200: Success
-- 400: Bad Request
-- 404: Not Found
-- 500: Internal Server Error
-
-Error response example:
-
-```json
-{
-  "success": false,
-  "error": {
-    "code": 404,
-    "message": "Collection not found"
-  }
-}
-```
-
-## Rate Limiting
-
-Currently, there are no rate limits in place. However, we recommend limiting requests to a reasonable number to ensure optimal performance for all users.
-
-## Testing the API
-
-You can test the API using our interactive API Test Dashboard:
-
-```
-/test-api
-```
-
-This dashboard allows you to:
-- Test different API endpoints
-- Try various request options
-- View response data
-- Check the status of all collections
-
-## Examples
-
-### Fetch Resources with JavaScript
-
-```javascript
-async function fetchResources() {
-  try {
-    const response = await fetch('https://services.dzaleka.com/api/resources');
-    const data = await response.json();
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching resources:', error);
-  }
-}
-```
-
-### Export Multiple Collections with JavaScript
-
-```javascript
-async function exportCollections() {
-  try {
-    const response = await fetch('https://services.dzaleka.com/api/export', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        format: 'json',
-        collections: ['resources', 'services'],
-        options: {
-          includeMetadata: true,
-          includeStats: true
-        }
-      })
-    });
-    const data = await response.json();
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error('Error exporting collections:', error);
-  }
-}
-```
-
-## Support
-
-If you have any questions or need assistance with the API, please contact our development team at contact@mail.dzaleka.com.
-
-## Changelog
-
-### Version 1.0.0 (March 8, 2025)
-- Initial release of the API
-- Support for all collections
-- JSON and CSV export formats
-- Metadata and statistics options 
+- [Live API documentation](/api-docs)
+- [Open Data Platform](/open-data-platform)
+- [Tools and Templates](/tools-and-templates)
+- [Contact](/contact)

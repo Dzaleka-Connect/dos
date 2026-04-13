@@ -1,73 +1,37 @@
 ---
 title: Privacy & Terms
-description: Our privacy policy and terms of use
+description: Quick links to the platform privacy and terms pages
 section: legal
 ---
 
 # Privacy & Terms
 
-Important information about your privacy and platform usage.
+This page is a short guide to the platform's main legal and privacy references.
 
-## Privacy Policy
+## Primary policy pages
 
-### Data Collection
-- Personal information
-- Usage data
-- Content submissions
-- Service information
-- Communication records
+- [Privacy Policy](/privacy)
+- [Terms of Service](/terms)
 
-### Data Usage
-- Platform operation
-- Service provision
-- Content management
-- Communication
-- Analytics
-
-### Data Protection
-- Security measures
-- Access controls
-- Data encryption
-- Regular backups
-- Breach prevention
-
-## Terms of Use
-
-### Platform Usage
-- Account creation
-- Content submission
-- Service access
-- Communication
-- Resource usage
-
-### User Responsibilities
-- Accurate information
-- Appropriate content
-- Respectful behavior
-- Privacy respect
-- Guidelines compliance
-
-### Content Rules
-- Submission guidelines
-- Copyright respect
-- Cultural sensitivity
-- Quality standards
-- Usage rights
-
-## Quick Links
+## What these pages cover
 
 ### Privacy
-- [Full Privacy Policy](/privacy)
-- [Data Request](/privacy/data)
-- [Privacy Settings](/settings/privacy)
+
+- how submitted information is handled
+- how public content is reviewed and published
+- how to raise a privacy concern
 
 ### Terms
-- [Terms of Service](/terms)
-- [Usage Rules](/terms/rules)
-- [Content Policy](/terms/content)
 
-## Need Help?
+- acceptable use of the platform
+- contributor responsibilities
+- content and conduct expectations
 
-- [Privacy FAQ](/privacy/faq)
-- [Terms FAQ](/terms/faq)
-- [Contact Support](/support)
+## If you need help
+
+Use these routes if you need clarification or want to raise a concern:
+
+- [Contact](/contact)
+- [Help Desk](/help-desk)
+- [Support](/support)
+- [Privacy Guidelines](/docs/privacy-guidelines)

@@ -23,15 +23,39 @@ const businessTypes = [
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 ---
 
-<MainLayout title={pageTitle} description={description} image={image}>
+<MainLayout title={pageTitle} description={description} image={image} canonical="https://services.dzaleka.com/marketplace/stores/register">
   <main class="min-h-screen bg-gray-50 py-12">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10">
-        <h1 class="text-3xl font-bold text-gray-900 mb-3">Register Your Restaurant or Shop</h1>
-        <p class="text-gray-600">List your eatery or shop on Dzaleka Marketplace and reach more customers</p>
+      <nav class="mb-4 text-sm text-gray-500">
+        <a href="/" class="hover:text-primary-700">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/marketplace" class="hover:text-primary-700">Marketplace</a>
+        <span class="mx-2">/</span>
+        <a href="/marketplace/stores" class="hover:text-primary-700">Restaurants and shops</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900">Register a business</span>
+      </nav>
+
+      <div class="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Business profile</p>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-gray-900">Register your restaurant or shop</h1>
+          <p class="mt-4 text-base leading-7 text-gray-600">
+            Use this form if you want a fuller business page with opening hours, menu items or services, payment methods, and location details.
+          </p>
+        </div>
+
+        <div class="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-gray-700">Before you start</h2>
+          <ul class="mt-3 space-y-2 text-sm text-gray-600">
+            <li>Prepare your business name, location details, and contact information.</li>
+            <li>Add business hours if you want customers to know when you are open.</li>
+            <li>Menu items and services are optional, but they help people understand what you offer.</li>
+          </ul>
+        </div>
       </div>
 
-      <form id="storeForm" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8 space-y-8">
+      <form id="storeForm" class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8 space-y-8">
         <!-- Business Type -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-3">Business Type *</label>

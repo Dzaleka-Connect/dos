@@ -1,56 +1,43 @@
 ---
 title: Cultural Events
-description: Discover and participate in community events
+description: Quick guide to browsing and sharing community events
 section: community
 ---
 
 # Cultural Events
 
-Discover and participate in events that celebrate our diverse community and cultural heritage.
+The events section helps you discover workshops, celebrations, meetings, and other community activities taking place in and around Dzaleka.
 
-## Event Features
+## What you can do
 
-### [Upcoming Events](/events)
-Browse and join upcoming events:
+- Browse upcoming activities in [Events](/events)
+- Review older listings in [Past Events](/events/past/1)
+- Jump straight to future listings through [Upcoming Events](/events/upcoming/1)
+- Share an event through the [Organizer page](/events/organize)
+
+## Before you submit an event
+
+Prepare the details below before opening the form:
+
+- Event title
+- Date and time
+- Venue or meeting point
+- Short description
+- Organiser name and contact details
+- Registration link if one exists
+
+## Common event types
+
 - Cultural celebrations
-- Community gatherings
-- Educational programs
-- Special events
+- Community meetings
+- Workshops and training
+- Performances and exhibitions
+- Education and youth programmes
+- Advocacy and public information sessions
 
-### [Past Events](/events)
-Explore our event history:
-- Event photos
-- Community highlights
-- Success stories
-- Event archives
+## Need help?
 
-## Quick Actions
-
-### Submit Event
-1. Visit [Submit Event](/events/organize)
-2. Provide event details:
-   - Title and description
-   - Date and time
-   - Location
-   - Category
-3. Submit for review
-
-### Find Events
-- [View All Events](/events)
-- [Upcoming Events](/events/upcoming/1)
-- [Past Events](/events/past/1)
-
-## Event Categories
-
-- Cultural Celebrations
-- Educational Programs
-- Community Gatherings
-- Special Events
-- Workshops
-- Performances
-
-## Need Help?
-
-- [Event Guidelines](/events/guidelines)
-- [Contact Events Team](/contact)
+- [Events](/events)
+- [Organizer guide and form](/events/organize)
+- [Contact](/contact)
 - [Support](/support)

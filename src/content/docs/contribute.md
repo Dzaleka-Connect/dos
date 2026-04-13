@@ -1,162 +1,67 @@
 ---
 title: How to Contribute
-description: Learn how you can contribute to the Dzaleka Online Services
+description: Practical ways to contribute information, stories, and resources
 section: guides
 ---
 
 # How to Contribute
 
-Your contributions help preserve and share our community's rich cultural heritage. Here's how you can participate in building the Dzaleka Online Services.
+You can help keep Dzaleka Online Services useful by sharing accurate, community-relevant information. Contributions do not need to be formal or academic. They do need to be clear, respectful, and safe to publish.
 
-## Types of Contributions
+## Common ways to contribute
 
-### 1. Stories and Narratives
-Share personal experiences, family histories, or community stories:
-- Personal journeys
-- Family traditions
-- Community experiences
-- Cultural practices
-- Historical events
+### Stories and reflections
 
-### 2. Photographs
-Submit photographs that document:
-- Community events
-- Cultural celebrations
-- Daily life
-- Historical moments
-- Artistic expressions
+- [Share your voice](/submit-voice)
+- Suitable for personal stories, community reflections, and local updates
 
-### 3. Cultural Knowledge
-Document and share:
-- Traditional practices
-- Cultural ceremonies
-- Language resources
-- Art forms
-- Culinary traditions
+### Photos
 
-### 4. Community Events
-Help organize and document:
-- Cultural celebrations
-- Educational workshops
-- Community gatherings
-- Art exhibitions
-- Heritage festivals
+- [Submit photos](/photos/submit)
+- Suitable for community events, daily life, heritage, and public documentation
 
-## Submission Guidelines
+### Events
 
-### Story Submissions
-1. **Format Requirements**
-   - Clear, concise writing
-   - Accurate information
-   - Relevant context
-   - Personal perspective
-   - Cultural sensitivity
+- [Organize or list an event](/events/organize)
+- Suitable for workshops, meetings, performances, and public activities
 
-2. **Required Information**
-   - Author name
-   - Date of events
-   - Location details
-   - Cultural context
-   - Related photographs
+### Resources
 
-### Photo Submissions
-1. **Image Requirements**
-   - High resolution
-   - Clear focus
-   - Good lighting
-   - Proper framing
-   - Digital format
+- [Submit a resource](/resources/submit)
+- Suitable for guides, reports, toolkits, forms, and learning materials
 
-2. **Required Metadata**
-   - Photographer name
-   - Date taken
-   - Location
-   - Description
-   - Subject consent
+### Opportunities
 
-### Event Documentation
-1. **Event Details**
-   - Event name
-   - Date and time
-   - Location
-   - Description
-   - Contact person
+- [Submit a grant or programme](/grants-and-programs/submit)
+- Suitable for open calls, opportunities, and support programmes that others can apply for
 
-2. **Required Materials**
-   - Event photos
-   - Participant list
-   - Activity summary
-   - Feedback collected
-   - Impact assessment
+## Before you submit
 
-## Quality Standards
+- Check that names, dates, and links are correct.
+- Use a short, descriptive title.
+- Add enough context for someone new to understand the item.
+- Make sure you have permission to share any photo or personal information.
+- Use respectful language and avoid harmful or misleading claims.
 
-### Content Guidelines
-- Accurate information
-- Cultural sensitivity
-- Clear presentation
-- Proper attribution
-- Ethical considerations
+## Good contribution habits
 
-### Technical Standards
-- High-quality media
-- Proper formatting
-- Complete metadata
-- Organized structure
-- Accessible format
+- Give credit to the original person or organisation when possible.
+- Keep files and images clear and readable.
+- Mention whether something is ongoing, open now, or already closed.
+- Include a real contact method if people may need to follow up.
 
-## Submission Process
+## If you are not sure where something belongs
 
-### 1. Prepare Content
-- Gather materials
-- Check guidelines
-- Format properly
-- Add metadata
-- Review content
+- Services and organisations: [Register a service](/services/register)
+- Community stories: [Submit Voice](/submit-voice)
+- Photos: [Photo submission](/photos/submit)
+- Public resources: [Submit Resource](/resources/submit)
+- General questions: [Contact](/contact)
 
-### 2. Submit Materials
-- Use online form
-- Upload files
-- Add descriptions
-- Provide context
-- Include credits
+## Need help before submitting?
 
-### 3. Review Process
-- Initial screening
-- Quality check
-- Content verification
-- Community review
-- Final approval
-
-## Best Practices
-
-### Documentation Tips
-- Be thorough
-- Include context
-- Verify facts
-- Add references
-- Use clear language
-
-### Cultural Sensitivity
-- Respect traditions
-- Consider privacy
-- Obtain consent
-- Credit sources
-- Follow protocols
-
-## Support and Resources
-
-### Available Help
-- Submission guides
-- Technical support
-- Cultural advisors
-- Community mentors
-- Training resources
-
-### Contact Information
-For assistance, contact:
-- Email: [contribute@dzalekaheritage.org]
-- Visit: [Community Center]
-- Hours: [Monday-Friday, 9AM-5PM]
-
-Join us in building a comprehensive archive of our community's heritage!
+- [Getting Started](/docs/getting-started)
+- [Privacy Guidelines](/docs/privacy-guidelines)
+- [Help Desk](/help-desk)
+- [Contact](/contact)
+- Email: [dzalekaconnect@gmail.com](mailto:dzalekaconnect@gmail.com)
