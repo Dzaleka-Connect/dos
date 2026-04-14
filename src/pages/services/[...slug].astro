@@ -94,7 +94,15 @@ const organizationSchema = {
   "url": currentUrl,
   "logo": {
     "@type": "ImageObject",
-    "url": logoUrl
+    "url": logoUrl,
+    "creator": {
+      "@type": "Organization",
+      "name": service.data.title
+    },
+    "creditText": service.data.title,
+    "copyrightNotice": `© ${new Date().getFullYear()} ${service.data.title}`,
+    "license": "https://services.dzaleka.com/terms",
+    "acquireLicensePage": "https://services.dzaleka.com/contact"
   },
   "address": service.data.location?.address ? {
     "@type": "PostalAddress",

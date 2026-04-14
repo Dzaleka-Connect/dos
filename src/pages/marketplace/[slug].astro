@@ -34,6 +34,9 @@ const isBook = listing.data.category === 'books-media';
 const listingLabel = isBook ? 'Book' : listing.data.type === 'service' ? 'Service' : 'Product';
 const schemaType = isBook ? 'Book' : listing.data.type === 'service' ? 'Service' : 'Product';
 const listingUrl = `https://services.dzaleka.com/marketplace/${listing.id}`;
+const isMarketplaceProduct = !isBook && listing.data.type === 'product';
+const returnPolicyUrl = 'https://services.dzaleka.com/marketplace/returns';
+const shippingPolicyUrl = 'https://services.dzaleka.com/marketplace/shipping';
 
 const schemaData = {
   '@context': 'https://schema.org',
@@ -42,6 +45,13 @@ const schemaData = {
   description: listing.data.description,
   image: listing.data.images || [],
   url: listingUrl,
+  ...(isMarketplaceProduct && {
+    brand: {
+      '@type': 'Brand',
+      name: listing.data.vendor.name,
+    },
+    sku: listing.id,
+  }),
   ...(isBook && { author: { '@type': 'Person', name: listing.data.vendor.name } }),
   offers: {
     '@type': 'Offer',
@@ -52,6 +62,17 @@ const schemaData = {
       '@type': 'Person',
       name: listing.data.vendor.name,
     },
+    ...(isMarketplaceProduct && {
+      hasMerchantReturnPolicy: {
+        '@id': `${returnPolicyUrl}#policy`,
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        hasShippingService: {
+          '@id': `${shippingPolicyUrl}#policy`,
+        },
+      },
+    }),
     ...(listing.data.condition && {
       itemCondition:
         listing.data.condition === 'new'
@@ -232,6 +253,13 @@ const schemaData = {
                     </ul>
                   </div>
                 )}
+              </div>
+              <div class="mt-6 border-t border-gray-200 pt-4 text-sm text-gray-600">
+                <p>Delivery, pickup, and return terms depend on the vendor and the item.</p>
+                <div class="mt-3 flex flex-wrap gap-4">
+                  <a href="/marketplace/shipping" class="text-primary-700 hover:text-primary-800">Marketplace shipping guidance</a>
+                  <a href="/marketplace/returns" class="text-primary-700 hover:text-primary-800">Marketplace returns guidance</a>
+                </div>
               </div>
             </article>
           )}

@@ -128,6 +128,7 @@ function formatDateInCAT(date: Date, formatString: string) {
 // Format date for structured data (only if entry exists)
 const formattedDate = entry ? format(entry.data.date, 'yyyy-MM-dd') : '';
 const formattedTime = entry ? format(entry.data.date, 'HH:mm') : '';
+const todayIso = new Date().toISOString().split('T')[0];
 
 // Create structured data
 let structuredData = {};
@@ -153,10 +154,10 @@ if (isPage) {
           "name": "Dzaleka Refugee Camp",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Dowa District",
+            "streetAddress": "Dzaleka Refugee Camp",
             "addressLocality": "Dzaleka",
             "addressRegion": "Central Region",
-            "postalCode": "",
+            "postalCode": "DZ001",
             "addressCountry": "MW"
           }
         },
@@ -165,11 +166,16 @@ if (isPage) {
           "name": event.data.organizer || "Dzaleka Online Services",
           "url": event.data.organizerUrl || "https://services.dzaleka.com"
         },
+        "performer": {
+          "@type": "PerformingGroup",
+          "name": event.data.organizer || "Dzaleka Online Services"
+        },
         "offers": {
           "@type": "Offer",
           "url": event.data.registration?.url || `https://services.dzaleka.com/events/${event.id}`,
           "price": "0",
           "priceCurrency": "MWK",
+          ...(event.data.status === 'upcoming' && { "validFrom": todayIso }),
           "availability": "https://schema.org/InStock"
         },
         "url": `https://services.dzaleka.com/events/${event.id}`
@@ -224,8 +230,10 @@ if (isPage) {
       "name": formatLocation(entry.data.location),
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Dzaleka Refugee Camp",
         "addressLocality": typeof entry.data.location === 'string' ? entry.data.location : entry.data.location.city || 'Dzaleka',
         "addressRegion": "Dowa",
+        "postalCode": "DZ001",
         "addressCountry": "Malawi"
       }
     },
@@ -235,7 +243,7 @@ if (isPage) {
       "url": entry.data.organizerUrl || "https://services.dzaleka.com"
     },
     "performer": {
-      "@type": "Organization",
+      "@type": "PerformingGroup",
       "name": entry.data.organizer || "Dzaleka Online Services"
     },
     "offers": {
@@ -243,6 +251,7 @@ if (isPage) {
       "url": entry.data.registration?.url || `https://services.dzaleka.com/events/${entry.id}`,
       "price": "0",
       "priceCurrency": "MWK",
+      ...(entry.data.status === 'upcoming' && { "validFrom": todayIso }),
       "availability": "https://schema.org/InStock"
     }
   };

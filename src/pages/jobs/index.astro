@@ -54,20 +54,6 @@ function getPaginationUrl(page: number) {
   return `${basePath}/${page}${queryString ? `?${queryString}` : ''}`;
 }
 
-function getStructuredAddress(location: string) {
-  const normalized = location.toLowerCase();
-  const isDzalekaBased = normalized.includes('dzaleka') || normalized.includes('dowa');
-
-  return {
-    "@type": "PostalAddress",
-    "streetAddress": isDzalekaBased ? "Dzaleka Refugee Camp" : location,
-    "addressLocality": isDzalekaBased ? "Dzaleka" : "Malawi",
-    "addressRegion": isDzalekaBased ? "Dowa" : "Malawi",
-    "postalCode": isDzalekaBased ? "DZ001" : "00000",
-    "addressCountry": "Malawi"
-  };
-}
-
 // Create SEO metadata
 const seo = {
   description: "Browse job opportunities and career resources for refugees in Dzaleka Refugee Camp. Find employment listings, training programs, and connect with employers seeking refugee talent. Support sustainable employment solutions in Malawi's largest refugee community.",
@@ -116,20 +102,9 @@ const jobsStructuredData = {
       "@type": "ListItem",
       "position": index + 1,
       "item": {
-        "@type": "JobPosting",
-        "title": job.data.title,
+        "@type": "WebPage",
+        "name": job.data.title,
         "description": job.data.description,
-        "datePosted": job.data.posted,
-        "validThrough": job.data.deadline,
-        "employmentType": job.data.type,
-        "hiringOrganization": {
-          "@type": "Organization",
-          "name": job.data.organization
-        },
-        "jobLocation": {
-          "@type": "Place",
-          "address": getStructuredAddress(job.data.location)
-        },
         "url": `https://services.dzaleka.com/jobs/${job.id}`
       }
     }))

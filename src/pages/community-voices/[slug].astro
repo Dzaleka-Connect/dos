@@ -65,6 +65,17 @@ const seo = {
   }
 };
 
+const defaultImageMetadata = {
+  "license": "https://services.dzaleka.com/terms",
+  "acquireLicensePage": "https://services.dzaleka.com/contact",
+  "creator": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services"
+  },
+  "creditText": "Dzaleka Online Services",
+  "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services`
+};
+
 // Create structured data
 const articleStructuredData = {
   "@context": "https://schema.org",
@@ -78,6 +89,7 @@ const articleStructuredData = {
     ) : "https://services.dzaleka.com/images/placeholder-voice.jpg",
     "width": 1200,
     "height": 630,
+    ...defaultImageMetadata,
     "creditText": `Photo by ${voice.data.author}`,
     "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services. All rights reserved.`
   },
@@ -98,7 +110,8 @@ const articleStructuredData = {
       "@type": "ImageObject",
       "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
       "width": "200",
-      "height": "200"
+      "height": "200",
+      ...defaultImageMetadata
     }
   },
   "mainEntityOfPage": {

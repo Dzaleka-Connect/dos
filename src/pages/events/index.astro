@@ -57,6 +57,7 @@ const allPastEvents = events
 // Get first 4 events of each type
 const upcomingEvents = allUpcomingEvents.slice(0, 4);
 const pastEvents = allPastEvents.slice(0, 4);
+const todayIso = new Date().toISOString().split('T')[0];
 
 // Create SEO metadata
 const seo = {
@@ -104,10 +105,10 @@ const eventsStructuredData = {
           "name": "Dzaleka Refugee Camp",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Dowa District",
+            "streetAddress": "Dzaleka Refugee Camp",
             "addressLocality": "Dzaleka",
             "addressRegion": "Central Region",
-            "postalCode": "",
+            "postalCode": "DZ001",
             "addressCountry": "MW"
           }
         },
@@ -117,7 +118,7 @@ const eventsStructuredData = {
           "url": event.data.organizerUrl || "https://services.dzaleka.com"
         },
         "performer": {
-          "@type": "Organization",
+          "@type": "PerformingGroup",
           "name": event.data.organizer || "Dzaleka Online Services"
         },
         "offers": {
@@ -125,6 +126,7 @@ const eventsStructuredData = {
           "url": event.data.registration?.url || `https://services.dzaleka.com/events/${event.id}`,
           "price": "0",
           "priceCurrency": "MWK",
+          "validFrom": todayIso,
           "availability": "https://schema.org/InStock"
         },
         "url": `https://services.dzaleka.com/events/${event.id}`
@@ -147,10 +149,10 @@ const eventsStructuredData = {
           "name": "Dzaleka Refugee Camp",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Dowa District",
+            "streetAddress": "Dzaleka Refugee Camp",
             "addressLocality": "Dzaleka",
             "addressRegion": "Central Region",
-            "postalCode": "",
+            "postalCode": "DZ001",
             "addressCountry": "MW"
           }
         },
@@ -160,7 +162,7 @@ const eventsStructuredData = {
           "url": event.data.organizerUrl || "https://services.dzaleka.com"
         },
         "performer": {
-          "@type": "Organization",
+          "@type": "PerformingGroup",
           "name": event.data.organizer || "Dzaleka Online Services"
         },
         "offers": {

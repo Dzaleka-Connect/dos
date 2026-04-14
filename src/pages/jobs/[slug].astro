@@ -49,7 +49,122 @@ const seo = {
   }
 };
 
-const parsedSalary = job.data.salary?.replace(/[^0-9.]/g, '');
+const employmentTypeMap = {
+  'full-time': 'FULL_TIME',
+  'part-time': 'PART_TIME',
+  contract: 'CONTRACTOR',
+  temporary: 'TEMPORARY',
+  intern: 'INTERN',
+  volunteer: 'VOLUNTEER',
+} as const;
+
+const salarySources = [
+  job.data.contact?.salary,
+  job.body,
+].filter(Boolean) as string[];
+
+function extractSalaryData(rawSources: string[]) {
+  for (const raw of rawSources) {
+    const normalized = raw.replace(/,/g, '');
+    const match = normalized.match(/(MWK|MK|USD)\s*([0-9]+(?:\.[0-9]+)?)(?:\s*(?:-|to)\s*([0-9]+(?:\.[0-9]+)?))?/i);
+
+    if (!match) continue;
+
+    const currency = match[1].toUpperCase() === 'USD' ? 'USD' : 'MWK';
+    const unitText = /hour/i.test(normalized)
+      ? 'HOUR'
+      : /day/i.test(normalized)
+        ? 'DAY'
+        : /week/i.test(normalized)
+          ? 'WEEK'
+          : /year|annual|annum/i.test(normalized)
+            ? 'YEAR'
+            : 'MONTH';
+
+    return {
+      currency,
+      value: match[3]
+        ? {
+            "@type": "QuantitativeValue",
+            "minValue": Number(match[2]),
+            "maxValue": Number(match[3]),
+            unitText,
+          }
+        : {
+            "@type": "QuantitativeValue",
+            "value": Number(match[2]),
+            unitText,
+          },
+    };
+  }
+
+  return null;
+}
+
+function buildJobLocationSchema(location: string, address?: string) {
+  const normalized = location.toLowerCase();
+
+  if (normalized.includes('remote')) {
+    return {
+      jobLocationType: 'TELECOMMUTE',
+      applicantLocationRequirements: {
+        "@type": "Country",
+        "name": "Malawi",
+      },
+    };
+  }
+
+  if (normalized.includes('lilongwe')) {
+    return {
+      jobLocation: {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": address?.split('\n')[0] || location,
+          "addressLocality": "Lilongwe",
+          "addressRegion": "Central Region",
+          "postalCode": "00000",
+          "addressCountry": "MW",
+        },
+      },
+    };
+  }
+
+  if (normalized.includes('dzaleka') || normalized.includes('dowa') || normalized.includes('lilambwe')) {
+    return {
+      jobLocation: {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": location,
+          "addressLocality": "Dzaleka",
+          "addressRegion": "Dowa",
+          "postalCode": "DZ001",
+          "addressCountry": "MW",
+        },
+      },
+    };
+  }
+
+  return {
+    jobLocation: {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": address?.split('\n')[0] || location,
+        "addressLocality": "Malawi",
+        "addressRegion": "Malawi",
+        "postalCode": "00000",
+        "addressCountry": "MW",
+      },
+    },
+  };
+}
+
+const salaryData = extractSalaryData(salarySources);
+const employmentType = employmentTypeMap[job.data.type as keyof typeof employmentTypeMap] || 'OTHER';
+const locationSchema = buildJobLocationSchema(job.data.location, job.data.contact?.address);
+const directApply = Boolean(job.data.contact.email || job.data.contact.website);
 
 // Create structured data for the job posting
 const jobStructuredData = {
@@ -59,33 +174,28 @@ const jobStructuredData = {
   "description": job.data.description,
   "datePosted": job.data.posted,
   "validThrough": job.data.deadline,
-  "employmentType": job.data.type,
+  "employmentType": employmentType,
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": job.data.organization,
+    "value": job.id,
+  },
   "hiringOrganization": {
     "@type": "Organization",
-    "name": job.data.organization
+    "name": job.data.organization,
+    ...(job.data.contact.website && { "sameAs": job.data.contact.website }),
   },
-  "jobLocation": {
-    "@type": "Place",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": job.data.location.includes("Dzaleka") ? "Dzaleka Refugee Camp" : job.data.location,
-      "addressLocality": "Dzaleka",
-      "addressRegion": "Dowa",
-      "postalCode": "DZ001",
-      "addressCountry": "Malawi"
-    }
-  },
+  ...locationSchema,
   "applicationRequirements": job.data.skills?.join(", "),
-  "baseSalary": parsedSalary ? {
-    "@type": "MonetaryAmount",
-    "currency": "MWK",
-    "value": {
-      "@type": "QuantitativeValue",
-      "value": parsedSalary,
-      "unitText": "MONTH"
-    }
-  } : undefined,
-  "url": `https://services.dzaleka.com/jobs/${job.id}`
+  ...(salaryData && {
+    "baseSalary": {
+      "@type": "MonetaryAmount",
+      "currency": salaryData.currency,
+      "value": salaryData.value,
+    },
+  }),
+  ...(directApply && { "directApply": true }),
+  "url": `https://services.dzaleka.com/jobs/${job.id}`,
 };
 
 // Create breadcrumb structured data

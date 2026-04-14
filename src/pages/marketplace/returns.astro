@@ -1,0 +1,60 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const canonical = 'https://services.dzaleka.com/marketplace/returns';
+const merchantReturnPolicy = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Dzaleka Online Services",
+  "url": "https://services.dzaleka.com",
+  "hasMerchantReturnPolicy": {
+    "@type": "MerchantReturnPolicy",
+    "@id": `${canonical}#policy`,
+    "merchantReturnLink": canonical
+  }
+};
+---
+
+<MainLayout
+  title="Marketplace returns guidance"
+  description="How returns and disputes are handled for Dzaleka Marketplace listings."
+  canonical={canonical}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(merchantReturnPolicy)} />
+  <main class="bg-white">
+    <section class="border-b border-gray-200">
+      <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+        <nav class="mb-4 text-sm text-gray-500">
+          <a href="/" class="hover:text-primary-700">Home</a>
+          <span class="mx-2">/</span>
+          <a href="/marketplace" class="hover:text-primary-700">Marketplace</a>
+          <span class="mx-2">/</span>
+          <span class="text-gray-900">Returns guidance</span>
+        </nav>
+        <h1 class="text-3xl font-semibold tracking-tight text-gray-900">Marketplace returns guidance</h1>
+        <p class="mt-4 max-w-2xl text-lg text-gray-600">
+          Return and refund terms depend on the vendor listed on each marketplace page.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-gray-200 bg-gray-50 p-6">
+        <h2 class="text-xl font-semibold text-gray-900">Before you pay</h2>
+        <ul class="mt-4 space-y-3 text-sm text-gray-700">
+          <li>Ask the vendor whether returns, exchanges, or refunds are accepted for that item.</li>
+          <li>Confirm the condition of the item, delivery method, and payment method in writing where possible.</li>
+          <li>Keep contact details and message history if you need to follow up.</li>
+        </ul>
+      </div>
+
+      <div class="mt-8 rounded-xl border border-gray-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-gray-900">Platform role</h2>
+        <p class="mt-4 text-sm leading-7 text-gray-700">
+          Dzaleka Marketplace helps people discover listings, but return decisions are handled by the seller unless a listing clearly states otherwise.
+          If you have a dispute, contact the vendor first and keep a record of the agreed terms.
+        </p>
+      </div>
+    </section>
+  </main>
+</MainLayout>

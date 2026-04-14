@@ -1,0 +1,71 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const canonical = 'https://services.dzaleka.com/marketplace/shipping';
+const shippingPolicy = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Dzaleka Online Services",
+  "url": "https://services.dzaleka.com",
+  "hasShippingService": {
+    "@type": "ShippingService",
+    "@id": `${canonical}#policy`,
+    "name": "Marketplace shipping guidance",
+    "shippingConditions": [
+      {
+        "@type": "ShippingConditions",
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": "MW"
+        },
+        "doesNotShip": false
+      }
+    ]
+  }
+};
+---
+
+<MainLayout
+  title="Marketplace shipping guidance"
+  description="How pickup and delivery work for Dzaleka Marketplace listings."
+  canonical={canonical}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(shippingPolicy)} />
+  <main class="bg-white">
+    <section class="border-b border-gray-200">
+      <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+        <nav class="mb-4 text-sm text-gray-500">
+          <a href="/" class="hover:text-primary-700">Home</a>
+          <span class="mx-2">/</span>
+          <a href="/marketplace" class="hover:text-primary-700">Marketplace</a>
+          <span class="mx-2">/</span>
+          <span class="text-gray-900">Shipping guidance</span>
+        </nav>
+        <h1 class="text-3xl font-semibold tracking-tight text-gray-900">Marketplace shipping guidance</h1>
+        <p class="mt-4 max-w-2xl text-lg text-gray-600">
+          Pickup and delivery options vary by vendor and by listing.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-gray-200 bg-gray-50 p-6">
+        <h2 class="text-xl font-semibold text-gray-900">Common fulfilment options</h2>
+        <ul class="mt-4 space-y-3 text-sm text-gray-700">
+          <li>Local pickup inside Dzaleka or at an agreed meeting point.</li>
+          <li>Vendor delivery within the camp or nearby host community areas.</li>
+          <li>External courier or shop dispatch where the vendor already has that arrangement.</li>
+        </ul>
+      </div>
+
+      <div class="mt-8 rounded-xl border border-gray-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-gray-900">Before you order</h2>
+        <ul class="mt-4 space-y-3 text-sm text-gray-700">
+          <li>Confirm whether delivery is available for your area.</li>
+          <li>Confirm the delivery charge, timing, and payment method before sending money.</li>
+          <li>Use the vendor’s listed phone, WhatsApp, or email if you need clarification.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</MainLayout>

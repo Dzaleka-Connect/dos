@@ -70,6 +70,17 @@ const seo = {
   }
 };
 
+const defaultImageMetadata = {
+  "creator": {
+    "@type": "Organization",
+    "name": "Dzaleka Online Services"
+  },
+  "creditText": "Dzaleka Online Services",
+  "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services`,
+  "license": "https://services.dzaleka.com/terms",
+  "acquireLicensePage": "https://services.dzaleka.com/contact"
+};
+
 // Create structured data for the resource
 const resourceStructuredData = {
   "@context": "https://schema.org",
@@ -87,7 +98,8 @@ const resourceStructuredData = {
     "name": "Dzaleka Online Services",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png"
+      "url": "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
+      ...defaultImageMetadata
     }
   },
   "url": `https://services.dzaleka.com/resources/${resource.id}`
