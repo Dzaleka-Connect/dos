@@ -3,6 +3,13 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 
+type StoryImage = {
+  image: string;
+  caption?: string;
+  text?: string;
+  photographer?: string;
+};
+
 export async function getStaticPaths() {
   const stories = await getCollection('stories');
   return stories.map(story => ({
@@ -12,142 +19,309 @@ export async function getStaticPaths() {
 }
 
 const { story } = Astro.props;
-const { title, description, date, coverImage, author, tags, content } = story.data;
-const currentUrl = Astro.url.href;
+const { title, description, date, coverImage, author, tags, content, source, photos } = story.data;
+const storyTags = tags ?? [];
+const storySections = content ?? [];
+const storyPhotos = photos ?? [];
+const storyImages: StoryImage[] = [...storyPhotos, ...storySections
+  .filter((section) => Boolean(section.image))
+  .map((section) => ({
+    image: section.image!,
+    caption: section.caption,
+  }))];
+const uniqueStoryImages = storyImages.reduce<StoryImage[]>((images, photo) => {
+  if (!photo.image) return images;
+
+  const existingPhoto = images.find((item) => item.image === photo.image);
+  if (existingPhoto) {
+    existingPhoto.caption = existingPhoto.caption || photo.caption;
+    existingPhoto.text = existingPhoto.text || photo.text;
+    existingPhoto.photographer = existingPhoto.photographer || photo.photographer;
+    return images;
+  }
+
+  images.push({ ...photo });
+  return images;
+}, []);
+const galleryPhotos = uniqueStoryImages.filter((photo) => photo.image !== coverImage);
+const photoCount = uniqueStoryImages.length;
+const leadPhotographer = uniqueStoryImages.find((photo) => photo.photographer)?.photographer;
+const coverPhoto = uniqueStoryImages.find((photo) => photo.image === coverImage) ?? uniqueStoryImages[0];
+const formattedDate = format(new Date(date), 'MMMM d, yyyy');
 ---
 
 <MainLayout title={`${title} | Dzaleka Online Services`}>
   <article class="min-h-screen bg-gray-50">
-    {/* Hero Section with Full-width Image */}
-    <div class="relative w-full h-[70vh] min-h-[600px]">
-      <img
-        src={coverImage}
-        alt={title}
-        class="w-full h-full object-cover"
-      />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-      
-      {/* Content Overlay */}
-      <div class="absolute inset-0 flex items-end">
-        <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-          <div class="space-y-6">
-            {/* Tags */}
-            <div class="flex flex-wrap gap-2">
-              {tags.map(tag => (
-                <span class="px-3 py-1 text-sm font-medium bg-white/10 backdrop-blur-sm rounded-full text-white">
-                  {tag}
-                </span>
+    <section class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <nav class="mb-4 text-sm text-gray-500">
+          <a href="/" class="hover:text-primary-700">Home</a>
+          <span class="mx-2">/</span>
+          <a href="/stories" class="hover:text-primary-700">Stories</a>
+          <span class="mx-2">/</span>
+          <span class="text-gray-900">{title}</span>
+        </nav>
+
+        <figure class="mt-5 overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <div class="bg-gray-100">
+            <img
+              src={coverImage}
+              alt={coverPhoto?.caption || title}
+              class="w-full h-auto"
+            />
+          </div>
+          {(coverPhoto?.caption || coverPhoto?.photographer) && (
+            <figcaption class="border-t border-gray-200 px-4 py-3 sm:px-5">
+              {coverPhoto?.caption && (
+                <p class="text-sm leading-6 text-gray-700">{coverPhoto.caption}</p>
+              )}
+              {coverPhoto?.photographer && (
+                <p class="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-gray-500">
+                  Photo by {coverPhoto.photographer}
+                </p>
+              )}
+            </figcaption>
+          )}
+        </figure>
+
+        <div class="mt-6 max-w-4xl">
+          <div class="flex flex-wrap gap-2">
+            <span class="rounded-md bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700">
+              Photo story
+            </span>
+            {source && (
+              <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                Adapted source
+              </span>
+            )}
+            {storyTags.map((tag) => (
+              <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <h1 class="mt-4 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+            {title}
+          </h1>
+          <p class="mt-3 max-w-3xl text-lg leading-8 text-gray-600">
+            {description}
+          </p>
+
+          <div class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+            <p><span class="font-medium text-gray-900">Published:</span> {formattedDate}</p>
+            <p><span class="font-medium text-gray-900">Author:</span> {author.name}</p>
+            {author.role && <p>{author.role}</p>}
+            <p><span class="font-medium text-gray-900">Images:</span> {photoCount}</p>
+            <p><span class="font-medium text-gray-900">Photo credit:</span> {leadPhotographer || author.name}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="space-y-8">
+        {galleryPhotos.length > 0 && (
+          <section class="rounded-xl border border-gray-200 bg-white p-4">
+            <div class="mb-3 flex items-center justify-between gap-4">
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Photo log</p>
+                <h2 class="mt-1 text-base font-semibold text-gray-900">Story images</h2>
+              </div>
+              <div class="flex items-center gap-3">
+                <p class="text-xs uppercase tracking-[0.18em] text-gray-500">{galleryPhotos.length} image{galleryPhotos.length === 1 ? '' : 's'}</p>
+                {galleryPhotos.length > 4 && (
+                  <div class="flex items-center gap-2">
+                    <button
+                      type="button"
+                      class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 text-sm text-gray-700 transition hover:border-primary-300 hover:text-primary-700 disabled:cursor-not-allowed disabled:opacity-40"
+                      data-photo-scroll-prev
+                      aria-label="Show previous photos"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 text-sm text-gray-700 transition hover:border-primary-300 hover:text-primary-700 disabled:cursor-not-allowed disabled:opacity-40"
+                      data-photo-scroll-next
+                      aria-label="Show next photos"
+                    >
+                      →
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div
+              class="photo-log-track flex gap-3 overflow-x-auto scroll-smooth pb-2"
+              data-photo-scroll-track
+            >
+              {galleryPhotos.map((photo, index) => (
+                <button
+                  type="button"
+                  class="w-[calc(100%-0rem)] shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition hover:border-primary-300 hover:shadow-sm sm:w-[calc(50%-0.375rem)] xl:w-[calc(25%-0.5625rem)]"
+                  data-photo-trigger
+                  data-photo-src={photo.image}
+                  data-photo-alt={photo.caption || `${title} photo ${index + 1}`}
+                  data-photo-caption={photo.caption || ''}
+                  data-photo-credit={photo.photographer ? `Photo by ${photo.photographer}` : ''}
+                >
+                  <div class="aspect-[4/3] overflow-hidden bg-gray-100">
+                    <img
+                      src={photo.image}
+                      alt={photo.caption || `${title} photo ${index + 1}`}
+                      class="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="space-y-1 px-3 py-2.5">
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500">
+                      Photo {String(index + 1).padStart(2, '0')}
+                    </p>
+                    {photo.caption && <p class="text-xs leading-5 text-gray-700">{photo.caption}</p>}
+                  </div>
+                </button>
               ))}
             </div>
-            
-            {/* Title and Description */}
-            <div class="space-y-4">
-              <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight">
-                {title}
-              </h1>
-              <p class="text-xl text-gray-200 max-w-2xl">
-                {description}
-              </p>
-            </div>
+          </section>
+        )}
 
-            {/* Author and Date */}
-            <div class="flex items-center gap-6 pt-4">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                  <span class="text-xl font-medium text-white">
-                    {author.name.charAt(0)}
-                  </span>
+        <div class="space-y-6">
+          {storySections.map((section, index) => (
+            <section class="overflow-hidden rounded-xl border border-gray-200 bg-white">
+              {section.image && (
+                <div class="bg-gray-100">
+                  <img
+                    src={section.image}
+                    alt={section.caption || `Image ${index + 1}`}
+                    class="max-h-[640px] w-full object-cover"
+                  />
                 </div>
-                <div>
-                  <p class="font-medium text-white">{author.name}</p>
-                  <p class="text-sm text-gray-300">{author.role}</p>
+              )}
+              <div class="p-5 sm:p-6">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-4">
+                  <p class="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+                    Section {String(index + 1).padStart(2, '0')}
+                  </p>
+                  {section.image && (
+                    <p class="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
+                      Photo Essay
+                    </p>
+                  )}
+                </div>
+
+                {section.caption && (
+                  <p class="mt-4 max-w-3xl text-sm italic leading-6 text-gray-500">
+                    {section.caption}
+                  </p>
+                )}
+
+                {section.text && (
+                  <div class="mt-4 max-w-3xl text-base leading-8 text-gray-700">
+                    <p>{section.text}</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {(source || storyTags.length > 0) && (
+          <section class="border-t border-gray-200 pt-6">
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+              <div class="space-y-5">
+                {source && (
+                  <div>
+                    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Source note</p>
+                    <p class="mt-3 text-sm leading-6 text-gray-700">
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-medium underline decoration-gray-300 underline-offset-4 hover:text-primary-700"
+                      >
+                        {source.title}
+                      </a>
+                    </p>
+                    {source.note && <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600">{source.note}</p>}
+                  </div>
+                )}
+
+                {storyTags.length > 0 && (
+                  <div>
+                    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Tags</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                      {storyTags.map((tag) => (
+                        <span class="text-sm text-gray-600">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Share</p>
+                <div class="mt-3 flex flex-wrap gap-3">
+                  <button
+                    class="text-sm font-medium text-gray-700 underline decoration-gray-300 underline-offset-4 transition hover:text-primary-700"
+                    data-share="twitter"
+                    aria-label="Share on Twitter"
+                  >
+                    Twitter
+                  </button>
+                  <button
+                    class="text-sm font-medium text-gray-700 underline decoration-gray-300 underline-offset-4 transition hover:text-primary-700"
+                    data-share="facebook"
+                    aria-label="Share on Facebook"
+                  >
+                    Facebook
+                  </button>
+                  <button
+                    class="text-sm font-medium text-gray-700 underline decoration-gray-300 underline-offset-4 transition hover:text-primary-700"
+                    data-share="whatsapp"
+                    aria-label="Share on WhatsApp"
+                  >
+                    WhatsApp
+                  </button>
                 </div>
               </div>
-              <time class="text-gray-300">
-                {format(new Date(date), 'MMMM d, yyyy')}
-              </time>
             </div>
-          </div>
-        </div>
+          </section>
+        )}
       </div>
     </div>
 
-    {/* Main Content */}
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Back Button */}
-      <div class="mb-12">
-        <a
-          href="/stories"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          <span>Back to Stories</span>
-        </a>
-      </div>
-
-      {/* Story Content */}
-      <div class="prose prose-lg max-w-none bg-white rounded-2xl shadow-sm p-8">
-        {content.map((section, index) => (
-          <div class="mb-16 last:mb-0">
-            {section.image && (
-              <div class="relative aspect-[16/9] mb-8 rounded-xl overflow-hidden">
-                <img
-                  src={section.image}
-                  alt={section.caption || `Image ${index + 1}`}
-                  class="w-full h-full object-cover"
-                />
-              </div>
-            )}
-            {section.caption && (
-              <p class="text-sm text-gray-500 italic mb-6">{section.caption}</p>
-            )}
-            {section.text && (
-              <div class="text-gray-700 leading-relaxed space-y-4">
-                {section.text}
-              </div>
-            )}
+    <dialog id="photo-log-viewer" class="m-auto w-full max-w-6xl rounded-none bg-transparent p-0 backdrop:bg-black/80">
+      <div class="flex min-h-screen items-center justify-center p-4">
+        <div class="w-full overflow-hidden rounded-xl bg-white shadow-2xl">
+          <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3">
+            <p class="text-sm font-semibold text-gray-900">Photo preview</p>
+            <button
+              type="button"
+              class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:border-primary-300 hover:text-primary-700"
+              data-photo-close
+            >
+              Close
+            </button>
           </div>
-        ))}
-      </div>
-
-      {/* Share Section */}
-      <div class="mt-12 pt-8 border-t border-gray-200">
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900">Share this story</h3>
-          <div class="flex gap-3">
-            <button
-              class="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-              data-share="twitter"
-              aria-label="Share on Twitter"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-              </svg>
-            </button>
-            <button
-              class="p-2 rounded-full bg-blue-800 text-white hover:bg-blue-900 transition-colors"
-              data-share="facebook"
-              aria-label="Share on Facebook"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-              </svg>
-            </button>
-            <button
-              class="p-2 rounded-full bg-green-600 text-white hover:bg-green-700 transition-colors"
-              data-share="whatsapp"
-              aria-label="Share on WhatsApp"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-            </button>
+          <div class="bg-gray-100 p-4">
+            <img
+              id="photo-log-viewer-image"
+              src=""
+              alt=""
+              class="max-h-[80vh] w-full object-contain"
+            />
+          </div>
+          <div class="border-t border-gray-200 px-4 py-4 sm:px-5">
+            <p id="photo-log-viewer-caption" class="text-sm leading-6 text-gray-700"></p>
+            <p id="photo-log-viewer-credit" class="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-gray-500"></p>
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   </article>
 </MainLayout>
 
@@ -179,29 +353,76 @@ const currentUrl = Astro.url.href;
       }
     });
   });
+
+  // Photo log viewer
+  const photoDialog = document.getElementById('photo-log-viewer');
+  const photoImage = document.getElementById('photo-log-viewer-image');
+  const photoCaption = document.getElementById('photo-log-viewer-caption');
+  const photoCredit = document.getElementById('photo-log-viewer-credit');
+  const photoScrollTrack = document.querySelector('[data-photo-scroll-track]');
+  const photoScrollPrev = document.querySelector('[data-photo-scroll-prev]');
+  const photoScrollNext = document.querySelector('[data-photo-scroll-next]');
+  const photoTriggers = document.querySelectorAll('[data-photo-trigger]');
+  const photoCloseButtons = document.querySelectorAll('[data-photo-close]');
+
+  function updatePhotoScrollButtons() {
+    if (!photoScrollTrack || !photoScrollPrev || !photoScrollNext) return;
+
+    const maxScrollLeft = photoScrollTrack.scrollWidth - photoScrollTrack.clientWidth - 1;
+    photoScrollPrev.disabled = photoScrollTrack.scrollLeft <= 0;
+    photoScrollNext.disabled = photoScrollTrack.scrollLeft >= maxScrollLeft;
+  }
+
+  photoTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      if (!photoDialog || !photoImage || !photoCaption || !photoCredit) return;
+
+      photoImage.setAttribute('src', trigger.getAttribute('data-photo-src') || '');
+      photoImage.setAttribute('alt', trigger.getAttribute('data-photo-alt') || '');
+      photoCaption.textContent = trigger.getAttribute('data-photo-caption') || '';
+      photoCredit.textContent = trigger.getAttribute('data-photo-credit') || '';
+
+      if (typeof photoDialog.showModal === 'function') {
+        photoDialog.showModal();
+      }
+    });
+  });
+
+  photoCloseButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (photoDialog && typeof photoDialog.close === 'function') {
+        photoDialog.close();
+      }
+    });
+  });
+
+  photoDialog?.addEventListener('click', (event) => {
+    if (event.target === photoDialog && typeof photoDialog.close === 'function') {
+      photoDialog.close();
+    }
+  });
+
+  photoScrollPrev?.addEventListener('click', () => {
+    if (!photoScrollTrack) return;
+    photoScrollTrack.scrollBy({ left: -photoScrollTrack.clientWidth, behavior: 'smooth' });
+  });
+
+  photoScrollNext?.addEventListener('click', () => {
+    if (!photoScrollTrack) return;
+    photoScrollTrack.scrollBy({ left: photoScrollTrack.clientWidth, behavior: 'smooth' });
+  });
+
+  photoScrollTrack?.addEventListener('scroll', updatePhotoScrollButtons);
+  window.addEventListener('resize', updatePhotoScrollButtons);
+  updatePhotoScrollButtons();
 </script>
 
 <style>
-  .prose img {
-    margin: 0;
-  }
-  
-  .prose p {
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
+  .photo-log-track {
+    scrollbar-width: none;
   }
 
-  .prose h2 {
-    font-size: 1.75rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+  .photo-log-track::-webkit-scrollbar {
+    display: none;
   }
-
-  .prose h3 {
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-</style> 
+</style>

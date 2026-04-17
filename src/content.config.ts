@@ -282,6 +282,11 @@ const storySchema = z.object({
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
   coverImage: z.string(),
+  source: z.object({
+    title: z.string(),
+    url: z.string().url(),
+    note: z.string().optional(),
+  }).optional(),
   photos: z.array(z.object({
     image: z.string(),
     caption: z.string().optional(),

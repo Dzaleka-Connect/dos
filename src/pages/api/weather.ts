@@ -1,174 +1,125 @@
 import type { APIRoute } from 'astro';
+import { getSeasonalFallbackWeather } from '../../data/weather';
+
+function cleanCell(cell: string) {
+  return cell
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/°C/g, '')
+    .replace(/km\/h/g, '')
+    .replace(/mm/g, '')
+    .replace(/°/g, '')
+    .trim();
+}
+
+function getWeatherCondition(cell: string) {
+  const altMatch = cell.match(/<img[^>]*alt="([^"]*)"[^>]*>/i);
+  if (altMatch?.[1]) return altMatch[1].trim();
+
+  const titleMatch = cell.match(/title="([^"]*)"/i);
+  if (titleMatch?.[1]) return titleMatch[1].trim();
+
+  const srcMatch = cell.match(/<img[^>]*src="([^"]*)"[^>]*>/i);
+  if (srcMatch?.[1]) {
+    const src = srcMatch[1].toLowerCase();
+    if (src.includes('rain')) return 'Rain';
+    if (src.includes('storm') || src.includes('thunder')) return 'Thunderstorm';
+    if (src.includes('cloud')) return 'Cloudy';
+    if (src.includes('clear') || src.includes('sun')) return 'Clear';
+  }
+
+  const text = cleanCell(cell);
+  return text || 'Unknown';
+}
 
 export const GET: APIRoute = async () => {
   try {
-    // Fetch daily forecast for Dowa district
-    const response = await fetch('https://www.metmalawi.gov.mw/weather/daily-table/dowa/');
+    const response = await fetch('https://www.metmalawi.gov.mw/weather/daily-table/dowa/', {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      },
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Weather upstream returned ${response.status}`);
+    }
+
     const html = await response.text();
-    
-    // Extract location and date information
-    const locationRegex = /<h2[^>]*>([^<]+)<\/h2>/;
-    const locationMatch = html.match(locationRegex);
-    const location = locationMatch ? locationMatch[1].trim() : 'Dowa';
-    
-    // Extract date information
-    const dateRegex = /<h5[^>]*>([^<]+)<\/h5>/;
-    const dateMatch = html.match(dateRegex);
-    const date = dateMatch ? dateMatch[1].trim() : new Date().toLocaleDateString();
-    
-    // Extract the first day's forecast table
-    const tableRegex = /<div class="table-wrapper">\s*<table[^>]*>([\s\S]*?)<\/table>/;
-    const tableMatch = html.match(tableRegex);
-    
-    if (!tableMatch) {
-      throw new Error('Weather data table not found');
+
+    const location = html.match(/<h2[^>]*>([^<]+)<\/h2>/i)?.[1]?.trim() || 'Dowa District';
+    const date = html.match(/<h5[^>]*>([^<]+)<\/h5>/i)?.[1]?.trim() || new Date().toLocaleDateString();
+    const tableMarkup = html.match(/<table[^>]*>([\s\S]*?)<\/table>/i)?.[1];
+
+    if (!tableMarkup) {
+      throw new Error('Weather table not found');
     }
 
-    // Extract rows from the table
-    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/g;
-    const rows = tableMatch[1].match(rowRegex) || [];
-    
-    // Skip header row and get first data row
-    const firstDataRow = rows[1];
-    if (!firstDataRow) {
-      throw new Error('Weather data not available');
+    const rows = tableMarkup.match(/<tr[^>]*>([\s\S]*?)<\/tr>/gi) || [];
+    const dataRows = rows.slice(1);
+
+    if (dataRows.length === 0) {
+      throw new Error('Weather rows not found');
     }
 
-    // Extract cell data
-    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/g;
-    const cells = firstDataRow.match(cellRegex) || [];
-    
-    // Clean cell content
-    const cleanCell = (cell) => {
-      return cell
-        .replace(/<[^>]*>/g, '') // Remove HTML tags
-        .replace(/&nbsp;/g, ' ') // Replace &nbsp; with space
-        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-        .trim();
-    };
+    const parseRow = (row: string) => {
+      const cells = row.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || [];
 
-    // Extract weather condition from image alt text or cell content
-    const getWeatherCondition = (cell) => {
-      // Try to get from image alt text
-      const imgRegex = /<img[^>]*alt="([^"]*)"[^>]*>/;
-      const imgMatch = cell.match(imgRegex);
-      if (imgMatch) {
-        return imgMatch[1].trim();
-      }
-
-      // Try to get from title attribute
-      const titleRegex = /title="([^"]*)"/;
-      const titleMatch = cell.match(titleRegex);
-      if (titleMatch) {
-        return titleMatch[1].trim();
-      }
-
-      // Try to get from cell content
-      const cleanContent = cleanCell(cell);
-      if (cleanContent && cleanContent !== '') {
-        return cleanContent;
-      }
-
-      // If no condition found, try to get from the image src
-      const srcRegex = /<img[^>]*src="([^"]*)"[^>]*>/;
-      const srcMatch = cell.match(srcRegex);
-      if (srcMatch) {
-        const src = srcMatch[1].toLowerCase();
-        if (src.includes('rain')) return 'Rain';
-        if (src.includes('cloud')) return 'Cloudy';
-        if (src.includes('sun')) return 'Sunny';
-        if (src.includes('clear')) return 'Clear';
-      }
-
-      return 'Unknown';
-    };
-
-    const currentWeather = {
-      time: cleanCell(cells[0] || ''),
-      condition: getWeatherCondition(cells[1] || ''),
-      maxTemp: cleanCell(cells[2] || ''),
-      minTemp: cleanCell(cells[3] || ''),
-      rainfall: cleanCell(cells[4] || ''),
-      windSpeed: cleanCell(cells[5] || ''),
-      windDirection: cleanCell(cells[6] || '')
-    };
-
-    // Extract hourly forecast
-    const hourlyForecast = rows.slice(1).map(row => {
-      const cells = row.match(cellRegex) || [];
       return {
         time: cleanCell(cells[0] || ''),
         condition: getWeatherCondition(cells[1] || ''),
         maxTemp: cleanCell(cells[2] || ''),
-        minTemp: cleanCell(cells[3] || ''),
+        minTemperature: cleanCell(cells[3] || ''),
         rainfall: cleanCell(cells[4] || ''),
         windSpeed: cleanCell(cells[5] || ''),
-        windDirection: cleanCell(cells[6] || '')
+        windDirection: cleanCell(cells[6] || ''),
       };
-    });
+    };
 
-    // Log the extracted data for debugging
-    console.log('Current Weather Condition:', currentWeather.condition);
-    console.log('First Hourly Forecast Condition:', hourlyForecast[0]?.condition);
-    console.log('Raw Weather Cell:', cells[1]);
+    const current = parseRow(dataRows[0]);
+    const hourly = dataRows.slice(0, 6).map(parseRow);
 
-    // Generate weather alerts
-    const alerts = hourlyForecast
-      .filter(hour => hour.condition && hour.condition !== 'Unknown')
-      .map(hour => ({
-        type: hour.condition.toLowerCase().includes('rain') ? 'warning' : 
-              hour.condition.toLowerCase().includes('storm') ? 'severe' : 'info',
-        message: `${hour.time}: ${hour.condition} - ${hour.rainfall} rainfall, ${hour.windSpeed} km/h wind`
-      }));
-
-    return new Response(JSON.stringify({
+    const payload = {
       location,
       date,
       forecast: {
         current: {
-          temperature: currentWeather.maxTemp,
-          minTemperature: currentWeather.minTemp,
-          condition: currentWeather.condition,
-          rainfall: currentWeather.rainfall,
-          windSpeed: currentWeather.windSpeed,
-          windDirection: currentWeather.windDirection,
-          time: currentWeather.time
+          temperature: current.maxTemp || current.minTemperature || '',
+          minTemperature: current.minTemperature || '',
+          maxTemp: current.maxTemp || '',
+          condition: current.condition || 'Unknown',
+          time: current.time || '',
+          rainfall: current.rainfall || '0',
+          windSpeed: current.windSpeed || '0',
+          windDirection: current.windDirection || '',
         },
-        hourly: hourlyForecast
+        hourly,
       },
-      alerts,
-      lastUpdated: new Date().toISOString()
-    }), {
+      lastUpdated: new Date().toISOString(),
+      stale: false,
+      source: 'met-malawi-live' as const,
+      sourceLabel: 'MET Malawi live feed',
+      sourceNote: 'Live district forecast pulled from the Malawi Meteorological Department public weather table.',
+    };
+
+    return new Response(JSON.stringify(payload), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=900',
+      },
     });
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    return new Response(JSON.stringify({
-      location: 'Dowa',
-      date: new Date().toLocaleDateString(),
-      forecast: {
-        current: {
-          temperature: '21.3',
-          minTemperature: '15.3',
-          condition: 'Weather data temporarily unavailable',
-          rainfall: '0',
-          windSpeed: '0',
-          windDirection: '0',
-          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-        },
-        hourly: []
-      },
-      alerts: [],
-      lastUpdated: new Date().toISOString(),
-      stale: true
-    }), {
+
+    return new Response(JSON.stringify(getSeasonalFallbackWeather()), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      },
     });
   }
-}; 
+};

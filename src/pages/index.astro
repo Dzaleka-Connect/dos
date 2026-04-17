@@ -54,23 +54,80 @@ const announcements = news
   .slice(0, 3);
 
 // SEO metadata
+const canonical = 'https://services.dzaleka.com/';
 const seo = {
-  title: 'Dzaleka Online Services',
-  description: 'Your digital gateway to Dzaleka Refugee Camp services, cultural heritage, and community connections. Find healthcare, education, business services, photo galleries, and local resources in Malawi\'s largest refugee community.',
-  image: '/images/283945145_548818096818208_2823546272117801301_n.jpg',
-  keywords: [
-    'Dzaleka Services',
-    'Refugee Services',
-    'Community Services',
-    'Malawi Refugee Camp',
-    'Online Services'
-  ].filter(Boolean).join(', '),
-  type: 'website'
+  title: 'Dzaleka Online Services | Help, services and community information',
+  description: 'Find urgent help, local services, jobs, events, resources, and community information for Dzaleka Refugee Camp in Malawi.',
+  canonical,
+  openGraph: {
+    title: 'Dzaleka Online Services | Help, services and community information',
+    description: 'Find urgent help, local services, jobs, events, resources, and community information for Dzaleka Refugee Camp in Malawi.',
+    type: 'website',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: canonical,
+    image: {
+      url: 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
+      alt: 'View of community life in Dzaleka Refugee Camp'
+    }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Dzaleka Online Services | Help, services and community information',
+    description: 'Find urgent help, local services, jobs, events, resources, and community information for Dzaleka Refugee Camp in Malawi.',
+    image: 'https://services.dzaleka.com/images/dzaleka-hero.jpeg'
+  }
 };
+
+const homepageSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${canonical}#website`,
+    name: 'Dzaleka Online Services',
+    url: canonical,
+    description: seo.description,
+    inLanguage: 'en',
+    publisher: {
+      '@id': `${canonical}#organization`
+    }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${canonical}#organization`,
+    name: 'Dzaleka Online Services',
+    url: canonical,
+    description: seo.description,
+    email: 'mailto:dzalekaconnect@gmail.com',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png'
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Dzaleka Refugee Camp',
+      addressRegion: 'Dowa District',
+      addressCountry: 'MW'
+    },
+    sameAs: [
+      'https://facebook.com/dzalekaonline',
+      'https://twitter.com/dzalekaconnect',
+      'https://instagram.com/dzalekaonline'
+    ]
+  }
+];
 
 ---
 
-<MainLayout title="Welcome to Dzaleka Online Services">
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+  schema={homepageSchema}
+>
   <main>
     <!-- Hero Section -->
     <div class="relative min-h-[600px] flex items-center justify-center text-white overflow-hidden">
@@ -133,14 +190,20 @@ const seo = {
         <div class="flex flex-col items-center gap-3">
           <span class="text-white/80 text-sm font-medium uppercase tracking-wider">Popular pages</span>
           <div class="flex flex-wrap justify-center gap-3">
+            <a href="/get-help-now" class="px-4 py-2 rounded-full bg-red-500/85 hover:bg-red-500 text-white border border-red-300/40 transition-all duration-200 text-sm font-medium">
+              Get help now
+            </a>
+            <a href="/new-to-dzaleka" class="px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              New to Dzaleka
+            </a>
             <a href="/start-here" class="px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
               Start Here
             </a>
-            <a href="/visit" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
-              Visit Dzaleka
+            <a href="/easy-read" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              Easy Read
             </a>
-            <a href="/dzaleka-time-capsule" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
-              Time Capsule
+            <a href="/languages" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
+              Languages
             </a>
             <a href="/jobs" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-200 text-sm font-medium">
               Job Board
@@ -154,7 +217,7 @@ const seo = {
     </div>
 
     <!-- What are you looking for? Section -->
-    <section class="py-16 bg-white relative z-20 -mt-8 rounded-t-3xl">
+    <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">What are you looking for?</h2>
         

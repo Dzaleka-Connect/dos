@@ -1,202 +1,166 @@
 export interface Update {
     date: string;
-    type: 'announcement' | 'feature' | 'update' | 'data' | 'improvement';
+    type: 'announcement' | 'feature' | 'data' | 'improvement';
     title: string;
+    description: string;
     text: string;
+    link?: string;
+    linkText?: string;
 }
 
-export interface UpdateWithLink extends Update {
-    link: string;
-    linkText: string;
-}
-
-export const updates: (Update | UpdateWithLink)[] = [
+export const updates: Update[] = [
     {
         date: '2025-02-11',
         type: 'feature',
-        title: 'Enhanced Radio Player Features',
-        text: 'Added new interactive features to the Yetu Radio player including favorite button with local storage persistence, share functionality with Web Share API support, and dynamic now playing information based on time of day.'
+        title: 'Help Desk opened as the site’s main support entry point',
+        description: 'The platform now has one clear place to ask for technical help, business guidance, or follow-up support.',
+        text: [
+            'We added a dedicated Help Desk so support requests no longer have to be routed through scattered forms and contact pages.',
+            'The page combines a submission form, support categories, and a short FAQ so users can quickly decide whether they need technical help, business support, or a general response from the team.',
+            'This change matters because the rest of the site now has a consistent place to send people when they hit a dead end.'
+        ].join('\n\n'),
+        link: '/help-desk',
+        linkText: 'Open Help Desk'
     },
     {
         date: '2025-02-11',
         type: 'feature',
-        title: 'Radio Player Visual Enhancements',
-        text: 'Introduced new visual elements to the radio player including animated radio waves, pulsing status indicators, and improved volume control with custom styling. Added smooth transitions and hover effects for better interactivity.'
+        title: 'Yetu Radio player rebuilt around listening, not decoration',
+        description: 'The Yetu Radio page now remembers favorites, shares cleanly, and reads more clearly on phones.',
+        text: [
+            'The Yetu Radio player was overhauled to behave like a real listening tool instead of a static media block.',
+            'We added favorite-state persistence through local storage, share actions that can use the Web Share API when available, and clearer “now playing” messaging tied to the time of day.',
+            'We also tightened the mobile layout, simplified the status indicators, and made the frequency and coverage details easier to scan on smaller screens.'
+        ].join('\n\n'),
+        link: '/yetu-radio',
+        linkText: 'Listen to Yetu Radio'
     },
     {
         date: '2025-02-11',
-        type: 'improvement',
-        title: 'Radio Player Mobile Optimization',
-        text: 'Enhanced mobile responsiveness of the Yetu Radio player. Improved layout and controls for better user experience on mobile devices, including optimized language badges, status indicators, and player controls.'
+        type: 'feature',
+        title: 'Weather page launched with live conditions and alert handling',
+        description: 'Dzaleka now has a dedicated weather page that combines current conditions, seasonal context, and alerts in one place.',
+        text: [
+            'We published a weather page that pulls together current conditions, forecast information, and weather alert data for Dzaleka.',
+            'The work was not just visual. We also documented the related API endpoints and built the page so it can fail more safely when the upstream source is unavailable.',
+            'That gives visitors and staff a single reference point for practical weather checks instead of relying on scattered sources.'
+        ].join('\n\n'),
+        link: '/weather',
+        linkText: 'View weather page'
     },
     {
         date: '2025-02-11',
-        type: 'improvement',
-        title: 'Radio Status Display Enhancement',
-        text: 'Streamlined the radio status display by combining live broadcast and 24/7 indicators. Added clear frequency and coverage area information with improved visual hierarchy.'
+        type: 'feature',
+        title: 'Projects page now groups flagship initiatives in one archive',
+        description: 'Key community and partner projects now live in a dedicated section instead of being scattered across the site.',
+        text: [
+            'We created a Projects section to pull major initiatives into one place, including work that has been recognized by MIT Solve and other partner networks.',
+            'The page gives each project room for its own description, outcomes, and supporting context instead of burying that information in news posts or general landing pages.',
+            'This makes the platform feel more like an archive of ongoing work, not just a collection of announcements.'
+        ].join('\n\n'),
+        link: '/projects',
+        linkText: 'Browse projects'
+    },
+    {
+        date: '2025-02-11',
+        type: 'feature',
+        title: 'API reference refreshed around the endpoints people actually use',
+        description: 'The API documentation now points more directly to weather, analytics, and collection endpoints already running on the site.',
+        text: [
+            'We revised the API reference so developers can see the live endpoint structure more quickly, with clearer examples for weather, weather alerts, and analytics pageviews.',
+            'This update also aligns the documentation more closely with the endpoints already exposed by the platform instead of describing the API in abstract terms.',
+            'The result is a better handoff between the public-facing site and anyone trying to reuse the data behind it.'
+        ].join('\n\n'),
+        link: '/api-docs',
+        linkText: 'Read API docs'
     },
     {
         date: '2025-02-10',
         type: 'feature',
-        title: 'Skills Exchange Matching',
-        text: 'New matching algorithm helps connect people offering skills with those requesting them. The system now suggests potential matches based on skill categories and availability.',
+        title: 'Skills Exchange now surfaces direct matches by category',
+        description: 'People offering and requesting skills can now be linked through a dedicated matches view instead of manual browsing alone.',
+        text: [
+            'We added a matching view to the Skills Exchange so offers and requests are grouped into more usable connections.',
+            'Instead of making people scan long lists on their own, the new route highlights likely overlaps by category and helps users jump straight into the right cluster of profiles.',
+            'It is a small structural change, but it makes the exchange feel more practical as a working tool.'
+        ].join('\n\n'),
         link: '/skills-exchange/matches',
-        linkText: 'View Matches'
-    },
-    {
-        date: '2025-02-09',
-        type: 'improvement',
-        title: 'API Performance Improved',
-        text: 'Export API response time reduced by 40%. Data exports now process faster with improved error handling and better format options.'
+        linkText: 'See matches'
     },
     {
         date: '2025-02-08',
         type: 'data',
-        title: 'Content Update Required',
-        text: '5 resources need metadata updates. Please review and update the missing information to improve searchability.',
+        title: 'Population figures and camp reference stats were refreshed',
+        description: 'The site’s headline camp numbers were updated against late-2024 reporting instead of leaving older figures in circulation.',
+        text: [
+            'We refreshed the platform’s baseline Dzaleka figures using more recent reporting, including a total population estimate of 56,760 people.',
+            'The update also restated the gender balance and the main nationality breakdown so the site’s core reference pages are working from the same frame of reference.',
+            'This kind of maintenance is easy to ignore, but outdated numbers make the whole archive less trustworthy.'
+        ].join('\n\n'),
         link: '/dashboard',
-        linkText: 'View Content Issues'
+        linkText: 'Review platform data'
     },
     {
         date: '2025-02-07',
         type: 'announcement',
-        title: 'New Community Voice Submission',
-        text: 'A new community story has been submitted for review. Check the submission and approve or request changes.',
+        title: 'A new community voice submission is waiting for editorial review',
+        description: 'The editorial queue has a fresh community submission ready for checking, revision, or approval.',
+        text: [
+            'A new community voice entry has come into the review workflow.',
+            'The update is here to flag editorial attention rather than celebrate a launch: someone needs to review the submission, decide whether it is ready, and request changes if the draft still needs work.',
+            'Keeping this visible in the updates feed makes the editorial queue feel like part of the living site, not a hidden back-office task.'
+        ].join('\n\n'),
         link: '/community-voices/admin',
-        linkText: 'Review Submission'
-    },
-    {
-        date: '2025-02-06',
-        type: 'improvement',
-        title: 'Dashboard Enhancements',
-        text: 'Added new Platform Overview cards for all content types. The dashboard now provides comprehensive statistics for all collections including Talents, Documentation, and Pages.'
+        linkText: 'Review submission'
     },
     {
         date: '2025-02-05',
         type: 'announcement',
-        title: 'New Job Opportunities Available',
-        text: 'We\'ve added new job listings to our job board, including a Driver position. Check out our jobs page to view all available opportunities.',
+        title: 'Job board received new listings and a cleaner handoff to applicants',
+        description: 'Fresh openings were added to the jobs page, including practical roles users can act on immediately.',
+        text: [
+            'We refreshed the jobs area with new listings, including operational roles such as a driver position.',
+            'This is a straightforward content update, but it matters because jobs are one of the most action-oriented parts of the platform and stale listings make the page feel abandoned fast.',
+            'The update keeps the board looking active and gives users a clearer next step when they visit the site for opportunity-finding rather than browsing.'
+        ].join('\n\n'),
         link: '/jobs',
-        linkText: 'View Jobs'
+        linkText: 'View jobs'
     },
     {
         date: '2025-02-04',
-        type: 'feature',
-        title: 'API Documentation & Improvements',
-        text: 'Released comprehensive API documentation for developers. Enhanced API endpoints for all collections with improved error handling and Netlify compatibility.',
+        type: 'improvement',
+        title: 'API docs and export routes were tightened up together',
+        description: 'The export and reference work now reads as one system instead of separate technical notes.',
+        text: [
+            'We cleaned up the API documentation and related export behavior so the public reference matches the way the site actually serves data.',
+            'That included clearer endpoint descriptions, better error handling language, and a more usable explanation of what developers can expect from collection-based routes.',
+            'The goal here was not to sound more technical; it was to make the platform easier to work with when someone needs the data behind the interface.'
+        ].join('\n\n'),
         link: '/docs/api-documentation',
-        linkText: 'View API Docs'
-    },
-    {
-        date: '2025-02-03',
-        type: 'feature',
-        title: 'WhatsNew Widget Added',
-        text: 'Added a new WhatsNew widget to keep users informed about latest updates and announcements.'
+        linkText: 'Open documentation'
     },
     {
         date: '2025-02-03',
         type: 'improvement',
-        title: 'SEO Enhancements',
-        text: 'Added meta tags, OpenGraph tags, and dynamic sitemap generation for better search engine visibility.'
+        title: 'What’s New widget added to make site changes easier to notice',
+        description: 'Recent platform changes now surface in a compact widget instead of disappearing into the background.',
+        text: [
+            'We added a lightweight What’s New widget so recent platform changes can appear across the site without forcing people to visit the full updates archive first.',
+            'The purpose is simple: make active maintenance visible, especially when the changes are small but meaningful.',
+            'This turns the updates log into a living part of the site’s interface rather than a page only staff ever open.'
+        ].join('\n\n'),
+        link: '/updates/1',
+        linkText: 'View all updates'
     },
     {
         date: '2025-02-02',
         type: 'feature',
-        title: 'Emergency Application System',
-        text: 'Launched new emergency application system for urgent assistance requests.'
-    },
-    {
-        date: '2025-02-01',
-        type: 'improvement',
-        title: 'Enhanced Search Experience',
-        text: 'Improved search functionality with better results filtering and presentation.'
-    },
-    {
-        date: '2025-02-01',
-        type: 'feature',
-        title: 'Featured Services Section',
-        text: 'Added new featured services section to highlight key community resources.'
-    },
-    {
-        date: '2025-01-31',
-        type: 'improvement',
-        title: 'Mobile Navigation',
-        text: 'Optimized navigation menu for better mobile responsiveness.'
-    },
-    {
-        date: '2025-01-30',
-        type: 'feature',
-        title: 'Application Status Tracking',
-        text: 'New system to track and view the status of submitted applications.'
-    },
-    {
-        date: '2025-01-29',
-        type: 'announcement',
-        title: 'Service Directory Launch',
-        text: 'Launched comprehensive directory of all available community services.'
-    },
-    {
-        date: '2025-01-28',
-        type: 'improvement',
-        title: 'Search Results Layout',
-        text: 'Redesigned search results page for better clarity and usability.'
-    },
-    {
-        date: '2025-01-27',
-        type: 'feature',
-        title: 'Smart Search Suggestions',
-        text: 'Implemented intelligent search suggestions based on user queries.'
-    },
-    {
-        date: '2025-02-05',
-        type: 'data',
-        title: 'Data & Statistics Update',
-        text: `Updated camp statistics from latest UNHCR and WFP reports:
-
-• Total refugee population: 56,760 people
-• Women & Girls: 60% of camp population
-• Main nationalities: DRC (62%), Burundi (19%), Rwanda (7%), Others (2%)
-
-Source: WFP Malawi Country Brief (Dec 2024) & UNHCR Malawi`
-    },
-    {
-        date: '2025-02-11',
-        type: 'feature',
-        title: 'Help Desk & Support Center Launched',
-        text: 'Introduced a new Help Desk page for user support, including a support form, FAQ, and support categories. Users can now submit requests and get assistance for technical, business, and community issues.',
-        link: '/help-desk',
-        linkText: 'Visit Help Desk'
-    },
-    {
-        date: '2025-02-11',
-        type: 'feature',
-        title: 'API Reference Updated',
-        text: 'Published the latest API reference for developers working with Dzaleka Online Services data and integrations.',
-        link: '/api-docs',
-        linkText: 'View API Reference'
-    },
-    {
-        date: '2025-02-11',
-        type: 'feature',
-        title: 'Weather & Climate Page',
-        text: 'Launched a real-time weather and climate information page for Dzaleka, including live weather, seasonal patterns, and weather alerts.',
-        link: '/weather',
-        linkText: 'View Weather'
-    },
-    {
-        date: '2025-02-11',
-        type: 'feature',
-        title: 'Analytics Dashboard',
-        text: 'Released a privacy-focused analytics dashboard for tracking site activity, engagement, and performance metrics.',
-        link: '/analytics',
-        linkText: 'View Analytics'
-    },
-    {
-        date: '2025-02-11',
-        type: 'feature',
-        title: 'Projects & MIT Solve Solutions Page',
-        text: 'Created a new Projects page showcasing innovative solutions from Dzaleka recognized by MIT Solve, with categories, highlights, and project details.',
-        link: '/projects',
-        linkText: 'Explore Projects'
+        title: 'Emergency application flow was added for urgent requests',
+        description: 'The platform now includes a dedicated route for urgent assistance applications instead of forcing them through general forms.',
+        text: [
+            'We launched an emergency application path for requests that should not be buried inside general-purpose site forms.',
+            'This separates urgent assistance traffic from routine submissions and gives the platform a clearer way to signal priority when something time-sensitive comes in.',
+            'It is the kind of change users may only notice when they need it, which is exactly why it needs to be structured well.'
+        ].join('\n\n')
     }
 ];

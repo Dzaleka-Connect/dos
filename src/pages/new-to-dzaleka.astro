@@ -1,0 +1,277 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const pageTitle = 'New to Dzaleka | Dzaleka Online Services';
+const description =
+  'A practical starting page for people who are new to Dzaleka, with urgent help, health, documentation, language support, and key site links.';
+const canonical = 'https://services.dzaleka.com/new-to-dzaleka';
+const checkedDate = '18 April 2026';
+
+const firstSteps = [
+  {
+    title: 'If you need urgent help, start there first',
+    body:
+      'If someone is at risk, if you need protection, or if the problem cannot wait, use the urgent support page before anything else.',
+    cta: { label: 'Open Get help now', href: '/get-help-now' },
+  },
+  {
+    title: 'Keep your documents and important numbers together',
+    body:
+      'Keep identity papers, registration papers, referrals, and phone numbers in one safe place. If your question is about refugee status, documentation, or official follow-up, start with UNHCR Malawi.',
+    cta: { label: 'Open UNHCR Malawi', href: '/services/unhcr-malawi' },
+  },
+  {
+    title: 'Learn where to ask for health help',
+    body:
+      'The Dzaleka Health Centre is the main local health route on this site. If you are sick, injured, pregnant, or need treatment, do not delay.',
+    cta: { label: 'View Dzaleka Health Centre', href: '/services/dzaleka-health-centre' },
+  },
+  {
+    title: 'Say what language you need early',
+    body:
+      'If you need help in another language, say that as early as you can. Use the language support page and Yetu Radio for the clearest routes on this site.',
+    cta: { label: 'Open Language support', href: '/languages' },
+  },
+];
+
+const siteRoutes = [
+  {
+    title: 'Get help now',
+    description: 'Urgent contacts for safety, protection, legal problems, health issues, and emergency support.',
+    href: '/get-help-now',
+  },
+  {
+    title: 'Start Here',
+    description: 'A broader guide to the main sections of the platform if you are still finding your way around.',
+    href: '/start-here',
+  },
+  {
+    title: 'Services directory',
+    description: 'Browse clinics, schools, NGOs, and community programmes working in and around Dzaleka.',
+    href: '/services',
+  },
+  {
+    title: 'Help Desk',
+    description: 'Use this when the situation is not urgent and you need help finding the right route or need a reply from the site team.',
+    href: '/help-desk',
+  },
+  {
+    title: 'Easy Read',
+    description: 'A hub of shorter and simpler guides about Dzaleka, getting help, and using this website.',
+    href: '/easy-read',
+  },
+  {
+    title: 'Language support',
+    description: 'See where language support exists today and which pages to use first.',
+    href: '/languages',
+  },
+  {
+    title: 'Search the site',
+    description: 'Search for services, events, resources, rights information, and community pages.',
+    href: '/search',
+  },
+];
+
+const practicalTopics = [
+  {
+    title: 'Protection and legal help',
+    text:
+      'If you are worried about safety, violence, trafficking, arrest, detention, or a rights problem, use the Rights Navigator and the urgent support page.',
+    links: [
+      { label: 'Protection hotlines', href: '/rights-navigator/protection-hotlines' },
+      { label: 'Legal aid directory', href: '/rights-navigator/legal-aid-directory' },
+      { label: 'Report a rights violation', href: '/rights-navigator/incident-report' },
+    ],
+  },
+  {
+    title: 'Health and care',
+    text:
+      'If you need treatment, a clinic, maternal care, or another health-related service, start with the health centre page and then browse the wider services directory if needed.',
+    links: [
+      { label: 'Dzaleka Health Centre', href: '/services/dzaleka-health-centre' },
+      { label: 'Browse services', href: '/services' },
+    ],
+  },
+  {
+    title: 'Language and local information',
+    text:
+      'If you need information in different languages, start with the language support page, Yetu Radio, and the Help Desk.',
+    links: [
+      { label: 'Language support', href: '/languages' },
+      { label: 'Yetu Radio', href: '/yetu-radio' },
+      { label: 'Help Desk', href: '/help-desk' },
+    ],
+  },
+  {
+    title: 'Daily life and opportunities',
+    text:
+      'When the immediate basics are covered, you can use the site to find education, skills, jobs, community events, and support organisations.',
+    links: [
+      { label: 'Jobs', href: '/jobs' },
+      { label: 'E-learning', href: '/e-learning' },
+      { label: 'Skills Exchange', href: '/skills-exchange' },
+      { label: 'Events', href: '/events' },
+    ],
+  },
+];
+
+const quickFacts = [
+  'Dzaleka is in Dowa District, about 41 km from Lilongwe.',
+  'UNHCR says the camp was originally set up for about 10,000 to 12,000 people.',
+  'UNHCR reported in June 2025 that Dzaleka was hosting over 52,000 people as of 31 December 2024.',
+];
+
+const sourceLinks = [
+  {
+    label: 'UNHCR Malawi country page',
+    href: 'https://www.unhcr.org/us/where-we-work/countries/malawi',
+    note: 'Checked 18 April 2026 for location, population, and office contact details.',
+  },
+  {
+    label: 'YONECO helpline information',
+    href: 'https://yoneco.org/information/',
+    note: 'Checked 18 April 2026 for the 5600, 116, and 393 hotline listings.',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: pageTitle,
+  description,
+  url: canonical,
+};
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
+  <main class="bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">New to Dzaleka</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Start here if you are new to Dzaleka
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            Use this page in your first day or first week. It points to the pages most people need
+            first: urgent help, documents, clinic information, language support, and services.
+          </p>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href="/get-help-now"
+            class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+          >
+            Get help now
+          </a>
+          <a
+            href="/easy-read"
+            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          >
+            Easy Read
+          </a>
+          <a
+            href="/languages"
+            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          >
+            Language support
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="space-y-8">
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 class="text-2xl font-semibold text-slate-900">First steps</h2>
+          <div class="mt-6 grid gap-4">
+            {firstSteps.map((step) => (
+              <article class="border-t border-slate-300 pt-4 first:border-t-0 first:pt-0">
+                <h3 class="text-lg font-semibold text-slate-900">{step.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">{step.body}</p>
+                <div class="mt-4">
+                  <a
+                    href={step.cta.href}
+                    class="inline-flex items-center rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-white"
+                  >
+                    {step.cta.label}
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 class="text-2xl font-semibold text-slate-900">Useful pages on this site</h2>
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            {siteRoutes.map((route) => (
+              <a
+                href={route.href}
+                class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-5 transition-colors hover:border-slate-300 hover:bg-white"
+              >
+                <h3 class="text-lg font-semibold text-slate-900">{route.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">{route.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 class="text-2xl font-semibold text-slate-900">Common things people need first</h2>
+          <div class="mt-6 grid gap-4">
+            {practicalTopics.map((topic) => (
+              <article class="border-t border-slate-300 pt-4 first:border-t-0 first:pt-0">
+                <h3 class="text-lg font-semibold text-slate-900">{topic.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">{topic.text}</p>
+                <div class="mt-4 flex flex-wrap gap-3">
+                  {topic.links.map((link) => (
+                    <a
+                      href={link.href}
+                      class="inline-flex items-center rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-white"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 class="text-2xl font-semibold text-slate-900">Quick facts</h2>
+          <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
+            {quickFacts.map((fact) => (
+              <li class="flex gap-3">
+                <span class="mt-2 h-2.5 w-2.5 flex-none rounded-full bg-slate-400"></span>
+                <span>{fact}</span>
+              </li>
+            ))}
+          </ul>
+          <h3 class="mt-6 text-lg font-semibold text-slate-900">Facts checked on {checkedDate}</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            Camp location and population figures on this page were checked against UNHCR Malawi.
+            Helpline numbers were checked against YONECO. Internal links point to pages already on
+            this site.
+          </p>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-700">
+            {sourceLinks.map((source) => (
+              <li>
+                <a href={source.href} class="font-medium text-slate-900 underline hover:text-slate-700">
+                  {source.label}
+                </a>
+                <p class="mt-1 text-slate-600">{source.note}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 text-sm leading-6 text-slate-600">
+            If the issue affects safety, registration, legal status, or health care, confirm the
+            latest details with the responsible organisation directly.
+          </p>
+        </section>
+      </div>
+    </section>
+  </main>
+</MainLayout>

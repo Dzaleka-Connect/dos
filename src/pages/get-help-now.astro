@@ -1,0 +1,295 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const pageTitle = 'Get help now | Dzaleka Online Services';
+const description =
+  'Urgent contacts and next steps for safety, protection, health, legal issues, and essential support in and around Dzaleka.';
+const canonical = 'https://services.dzaleka.com/get-help-now';
+const reviewedDate = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date());
+
+const immediateSteps = [
+  'If someone is in immediate danger, use the fastest safe option available: call a hotline, go to the nearest clinic, or go to the nearest protection or police point.',
+  'If a child may be at risk, call 116 as soon as you can.',
+  'If the first number does not connect, try another listed contact and keep moving to the safest available help.',
+];
+
+const hotlines = [
+  {
+    title: 'Gender-based violence, trafficking, or forced marriage',
+    value: '5600',
+    href: 'tel:5600',
+    detail: 'Tithandizane GBV crisis line. Free to call from Malawian mobile networks.',
+    availability: '24 hours',
+  },
+  {
+    title: 'Child protection',
+    value: '116',
+    href: 'tel:116',
+    detail: 'Use this if a child is being abused, exploited, neglected, or is in danger.',
+    availability: '24 hours',
+  },
+  {
+    title: 'Youth support and sexual health information',
+    value: '393',
+    href: 'tel:393',
+    detail: 'Confidential support for young people who need advice or referrals.',
+    availability: '24 hours',
+  },
+];
+
+const officeContacts = [
+  {
+    title: 'UNHCR Malawi office',
+    value: '+265 177 2155',
+    href: 'tel:+2651772155',
+    detail: 'For protection, documentation, or status issues that need UNHCR follow-up.',
+    availability: 'Mon-Thu 7:30-17:00, Fri 7:30-13:30',
+  },
+  {
+    title: 'UNHCR protection email',
+    value: 'mlwli@unhcr.org',
+    href: 'mailto:mlwli@unhcr.org',
+    detail: 'Useful when you need to send written details or documents.',
+    availability: 'Email',
+  },
+];
+
+const helpRoutes = [
+  {
+    title: 'I need safety or protection help',
+    description:
+      'Use this if you are dealing with violence, abuse, trafficking, threats, exploitation, or a protection concern.',
+    links: [
+      { label: 'Protection hotlines', href: '/rights-navigator/protection-hotlines' },
+      { label: 'Report a rights violation', href: '/rights-navigator/incident-report' },
+      { label: 'Rights Navigator', href: '/rights-navigator' },
+    ],
+  },
+  {
+    title: 'I need legal help or I have been arrested',
+    description:
+      'Use this if you need legal advice, help with refugee status issues, or support after arrest or detention.',
+    links: [
+      { label: 'Legal aid directory', href: '/rights-navigator/legal-aid-directory' },
+      { label: 'UNHCR Malawi', href: '/services/unhcr-malawi' },
+      { label: 'Rights Navigator', href: '/rights-navigator' },
+    ],
+  },
+  {
+    title: 'I need medical help',
+    description:
+      'Use this if you are sick, injured, pregnant, need treatment, or need urgent health support.',
+    links: [
+      { label: 'Dzaleka Health Centre', href: '/services/dzaleka-health-centre' },
+      { label: 'Browse services', href: '/services' },
+      { label: 'Help Desk', href: '/help-desk' },
+    ],
+  },
+  {
+    title: 'I need food, shelter, or basic support',
+    description:
+      'Use this if your need is urgent but not only legal or medical, and you need help reaching the right support route.',
+    links: [
+      { label: 'Emergency relief application', href: '/applications/internal/emergency' },
+      { label: 'Help Desk', href: '/help-desk' },
+      { label: 'Start Here', href: '/start-here' },
+    ],
+  },
+];
+
+const beforeYouCall = [
+  'Your name and a safe phone number, if you have one.',
+  'Your exact location or block.',
+  'What happened and when it happened.',
+  'Who is at risk right now.',
+  'Whether you need language support or an interpreter.',
+];
+
+const sourceLinks = [
+  {
+    label: 'YONECO contact page',
+    href: 'https://yoneco.org/information/',
+    note: 'Checked 18 April 2026 for the 5600, 116, and 393 hotline listings.',
+  },
+  {
+    label: 'UNHCR Malawi office page',
+    href: 'https://www.unhcr.org/us/where-we-work/countries/malawi',
+    note: 'Checked 18 April 2026 for the Malawi office phone number, email, and working hours.',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: pageTitle,
+  description,
+  url: canonical,
+};
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
+  <main class="bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Urgent help</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Get help now
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            Use this page when your problem cannot wait. It brings together the quickest routes for
+            safety, protection, legal, health, and essential support.
+          </p>
+        </div>
+
+        <section class="mt-8 rounded-2xl border border-red-200 bg-red-50 px-6 py-6 sm:px-8">
+          <h2 class="text-2xl font-semibold text-slate-900">If the situation is urgent</h2>
+          <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
+            {immediateSteps.map((step) => (
+              <li class="flex gap-3">
+                <span class="mt-2 h-2.5 w-2.5 flex-none rounded-full bg-red-500"></span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
+        <div class="space-y-8">
+          <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <h2 class="text-2xl font-semibold text-slate-900">Call or email now</h2>
+                <p class="mt-2 text-base leading-7 text-slate-600">
+                  Start with the most direct contact for your situation.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 grid gap-4">
+              {hotlines.map((hotline) => (
+                <a
+                  href={hotline.href}
+                  class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 transition-colors hover:border-slate-300 hover:bg-white"
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 class="text-base font-semibold text-slate-900">{hotline.title}</h3>
+                      <p class="mt-1 text-2xl font-bold tracking-tight text-slate-900">{hotline.value}</p>
+                      <p class="mt-2 text-sm leading-6 text-slate-600">{hotline.detail}</p>
+                    </div>
+                    <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                      {hotline.availability}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              {officeContacts.map((contact) => (
+                <a
+                  href={contact.href}
+                  class="rounded-xl border border-slate-200 bg-white px-5 py-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+                >
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    {contact.title}
+                  </h3>
+                  <p class="mt-2 text-lg font-semibold text-slate-900">{contact.value}</p>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{contact.detail}</p>
+                  <p class="mt-3 text-xs font-medium text-slate-500">{contact.availability}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold text-slate-900">Choose the right route</h2>
+            <div class="mt-6 grid gap-4">
+              {helpRoutes.map((route) => (
+                <article class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-5">
+                  <h3 class="text-lg font-semibold text-slate-900">{route.title}</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{route.description}</p>
+                  <div class="mt-4 flex flex-wrap gap-3">
+                    {route.links.map((link) => (
+                      <a
+                        href={link.href}
+                        class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div class="space-y-6">
+          <section class="rounded-2xl border border-slate-200 bg-white p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Before you call or write</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              If it is safe to do so, prepare these details first.
+            </p>
+            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-700">
+              {beforeYouCall.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 flex-none rounded-full bg-slate-400"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Not sure which page to use?</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              If your situation is urgent but you are not sure where it fits, start with support and
+              ask to be routed to the right team.
+            </p>
+            <div class="mt-4 flex flex-col gap-3">
+              <a
+                href="/help-desk"
+                class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                Open Help Desk
+              </a>
+              <a
+                href="/start-here"
+                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Go to Start Here
+              </a>
+            </div>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Source note</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              This page was reviewed on {reviewedDate}. Hotline and office details were checked
+              against the sources below.
+            </p>
+            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-700">
+              {sourceLinks.map((source) => (
+                <li>
+                  <a href={source.href} class="font-medium text-slate-900 underline hover:text-slate-700">
+                    {source.label}
+                  </a>
+                  <p class="mt-1 text-slate-600">{source.note}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>

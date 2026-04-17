@@ -1,0 +1,163 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const pageTitle = 'Language support | Dzaleka Online Services';
+const description =
+  'A practical language support page showing where to start if you need information in simpler English or another language.';
+const canonical = 'https://services.dzaleka.com/languages';
+const checkedDate = '18 April 2026';
+
+const supportRoutes = [
+  {
+    title: 'Most pages are still in English',
+    text:
+      'If English is difficult, start with Easy Read for shorter sentences and simpler structure.',
+    links: [
+      { label: 'Open Easy Read', href: '/easy-read' },
+      { label: 'Open New to Dzaleka', href: '/new-to-dzaleka' },
+    ],
+  },
+  {
+    title: 'If you need urgent help in a crisis',
+    text:
+      'Use the urgent help page first and tell the person helping you what language you need.',
+    links: [{ label: 'Open Get help now', href: '/get-help-now' }],
+  },
+  {
+    title: 'If you want spoken news and community information',
+    text:
+      'UNHCR says Yetu broadcasts in Chichewa, English, French, Swahili, and Kinyarwanda.',
+    links: [{ label: 'Open Yetu Radio', href: '/yetu-radio' }],
+  },
+  {
+    title: 'If you need a reply from the site team',
+    text:
+      'The Help Desk says it can support people in English, French, and Swahili for non-urgent questions.',
+    links: [{ label: 'Open Help Desk', href: '/help-desk' }],
+  },
+];
+
+const currentSupport = [
+  'Easy Read uses shorter English and simpler page structure.',
+  'Yetu Radio is the clearest multilingual route currently linked on this site.',
+  'Help Desk says it can respond in English, French, and Swahili.',
+  'Not every page or service is translated yet.',
+];
+
+const sourceLinks = [
+  {
+    label: 'UNHCR story about Yetu community radio',
+    href: 'https://www.unhcr.org/news/stories/community-radio-fosters-refugee-inclusion-malawi',
+    note:
+      'Published 13 February 2024. It says Yetu broadcasts in Chichewa, English, French, Swahili, and Kinyarwanda, and broadcasts online.',
+  },
+  {
+    label: 'Yetu FM about page',
+    href: 'https://yetufm.mw/about-us/',
+    note:
+      'Accessed 18 April 2026. It confirms the station describes itself as a five-language community radio service in Dzaleka.',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: pageTitle,
+  description,
+  url: canonical,
+};
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
+  <main class="bg-slate-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Language support</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Start here if you need another language
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            This site does not yet have full page translation. This page shows the clearest current
+            routes if you need simpler wording, spoken information, or help in another language.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="space-y-8">
+        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+          <h2 class="text-2xl font-semibold text-slate-900">Where to start</h2>
+          <div class="mt-6 grid gap-4">
+            {supportRoutes.map((route) => (
+              <article class="border-t border-slate-300 pt-4 first:border-t-0 first:pt-0">
+                <h3 class="text-lg font-semibold text-slate-900">{route.title}</h3>
+                <p class="mt-2 text-base leading-7 text-slate-600">{route.text}</p>
+                <div class="mt-4 flex flex-wrap gap-3">
+                  {route.links.map((link) => (
+                    <a
+                      href={link.href}
+                      class="inline-flex items-center rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-white"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+          <h2 class="text-2xl font-semibold text-slate-900">What language support exists today</h2>
+          <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
+            {currentSupport.map((item) => (
+              <li class="flex gap-3">
+                <span class="mt-2 h-2.5 w-2.5 flex-none rounded-full bg-slate-400"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+          <h2 class="text-2xl font-semibold text-slate-900">Important note</h2>
+          <p class="mt-4 text-base leading-7 text-slate-600">
+            This page is a language access guide. It does not mean every page or organisation on
+            the site can reply in every language. If something is urgent, say what language you
+            need as early as possible.
+          </p>
+        </section>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900">Language facts checked on {checkedDate}</h2>
+          <p class="mt-4 text-base leading-7 text-slate-600">
+            The Yetu language list on this page comes from UNHCR and Yetu FM. The Help Desk language
+            note comes from this site&apos;s own Help Desk page.
+          </p>
+        </div>
+
+        <ul class="mt-8 space-y-4">
+          {sourceLinks.map((source) => (
+            <li class="border-t border-slate-300 pt-4">
+              <a
+                href={source.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-base font-semibold text-primary-700 hover:text-primary-800 hover:underline"
+              >
+                {source.label}
+              </a>
+              <p class="mt-2 max-w-4xl text-sm leading-6 text-slate-600">{source.note}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </main>
+</MainLayout>

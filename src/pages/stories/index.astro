@@ -12,50 +12,150 @@ try {
   console.error('Error loading stories:', error);
 }
 
-// Get unique tags from all stories
-const allTags = [...new Set(stories.flatMap(story => story.data.tags))];
+const sortedStories = [...stories].sort((a, b) => {
+  if (Boolean(a.data.featured) !== Boolean(b.data.featured)) {
+    return a.data.featured ? -1 : 1;
+  }
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+const leadStory = sortedStories[0] ?? null;
+const storyGrid = leadStory ? sortedStories.slice(1) : sortedStories;
+const allTags = [...new Set(sortedStories.flatMap((story) => story.data.tags ?? []))];
 ---
 
 <MainLayout title={title}>
-  <main class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <header class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Photo Stories</h1>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Explore narrative journeys through Dzaleka Refugee Camp, combining powerful imagery with compelling stories.
-        </p>
-      </header>
+  <main class="bg-gray-50">
+    <section class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Photo stories</p>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+            Reporting, archive, and image-led stories from Dzaleka
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-gray-600">
+            Explore photo essays, adapted reporting, and community stories that keep images, captions, and context together.
+          </p>
+        </div>
+      </div>
+    </section>
 
-      <div class="mb-8">
-        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div class="w-full sm:w-96">
+    <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      {leadStory && (
+        <article
+          data-story-card
+          data-story-id={leadStory.id}
+          data-title={leadStory.data.title.toLowerCase()}
+          data-description={leadStory.data.description.toLowerCase()}
+          data-tags={(leadStory.data.tags ?? []).map((tag) => tag.toLowerCase()).join('|')}
+          class="mb-8 overflow-hidden rounded-xl border border-gray-200 bg-white"
+        >
+          <div class="grid lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+            <a href={`/stories/${leadStory.id}`} class="block h-full overflow-hidden bg-gray-100">
+              <img
+                src={leadStory.data.coverImage}
+                alt={leadStory.data.title}
+                class="h-full w-full object-cover"
+              />
+            </a>
+            <div class="flex flex-col justify-between p-6 sm:p-8">
+              <div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="rounded-md bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700">
+                    Lead Story
+                  </span>
+                  {leadStory.data.source && (
+                    <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                      Adapted source
+                    </span>
+                  )}
+                  {(leadStory.data.tags ?? []).slice(0, 3).map((tag) => (
+                    <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <p class="mt-5 text-sm text-gray-500">
+                  {new Date(leadStory.data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </p>
+                <h2 class="mt-3 text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                  <a href={`/stories/${leadStory.id}`} class="hover:text-primary-700">
+                    {leadStory.data.title}
+                  </a>
+                </h2>
+                <p class="mt-4 text-base leading-7 text-gray-600">
+                  {leadStory.data.description}
+                </p>
+              </div>
+
+              <div class="mt-6 flex flex-col gap-4 border-t border-gray-200 pt-5">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
+                    {leadStory.data.author.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-gray-900">{leadStory.data.author.name}</p>
+                    {leadStory.data.author.role && (
+                      <p class="text-sm text-gray-500">{leadStory.data.author.role}</p>
+                    )}
+                  </div>
+                </div>
+                <a
+                  href={`/stories/${leadStory.id}`}
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-primary-700"
+                >
+                  Read the full photo essay
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      )}
+
+      <section class="mb-8 rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div class="w-full lg:max-w-md">
+            <label class="sr-only" for="search">Search stories</label>
             <input
               type="text"
               id="search"
-              placeholder="Search stories..."
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search titles, descriptions, or tags..."
+              class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
-          
           <div class="flex flex-wrap gap-2">
-            {allTags.map(tag => (
+            {allTags.map((tag) => (
               <button
-                class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                data-tag={tag}
+                class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-primary-300 hover:text-primary-700"
+                data-filter-tag={tag}
               >
                 {tag}
               </button>
             ))}
           </div>
         </div>
+        <p id="stories-results-count" class="mt-4 text-sm text-gray-500">
+          {sortedStories.length} {sortedStories.length === 1 ? 'story' : 'stories'}
+        </p>
+      </section>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3" id="stories-grid">
+        {storyGrid.map((story) => <StoryCard story={story} />)}
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="stories-grid">
-        {stories.map(story => <StoryCard story={story} />)}
+      <div id="stories-empty-state" class={`rounded-xl border border-gray-200 bg-white px-6 py-10 text-center ${sortedStories.length ? 'hidden' : ''}`}>
+        <p class="text-lg font-medium text-gray-900">
+          No stories match this search yet.
+        </p>
+        <p class="mt-2 text-sm text-gray-600">
+          Try a different keyword or clear one of the active tag filters.
+        </p>
       </div>
 
-      {!stories.length && (
-        <div class="text-center py-12">
+      {!sortedStories.length && (
+        <div class="py-12 text-center">
           <p class="text-gray-600">
             No stories available at the moment. Please check back later.
           </p>
@@ -68,42 +168,57 @@ const allTags = [...new Set(stories.flatMap(story => story.data.tags))];
 <script>
   // Search functionality
   const searchInput = document.getElementById('search');
-  const storiesGrid = document.getElementById('stories-grid');
-  const storyCards = storiesGrid?.querySelectorAll('article');
-  const tagButtons = document.querySelectorAll('[data-tag]');
+  const storyCards = Array.from(document.querySelectorAll('[data-story-card]'));
+  const tagButtons = Array.from(document.querySelectorAll('[data-filter-tag]'));
+  const emptyState = document.getElementById('stories-empty-state');
+  const resultsCount = document.getElementById('stories-results-count');
   
   let activeTags = new Set();
   
   function filterStories() {
-    const searchTerm = searchInput?.value.toLowerCase() || '';
+    const searchTerm = searchInput?.value.toLowerCase().trim() || '';
+    let visibleCount = 0;
     
-    storyCards?.forEach(card => {
-      const title = card.querySelector('h2')?.textContent?.toLowerCase() || '';
-      const description = card.querySelector('p')?.textContent?.toLowerCase() || '';
-      const tags = Array.from(card.querySelectorAll('[data-tag]')).map(tag => tag.textContent?.toLowerCase());
+    storyCards.forEach(card => {
+      const title = card.dataset.title || '';
+      const description = card.dataset.description || '';
+      const tags = (card.dataset.tags || '').split('|').filter(Boolean);
       
-      const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
-      const matchesTags = activeTags.size === 0 || tags.some(tag => activeTags.has(tag));
+      const matchesSearch =
+        !searchTerm ||
+        title.includes(searchTerm) ||
+        description.includes(searchTerm) ||
+        tags.some(tag => tag.includes(searchTerm));
+      const matchesTags =
+        activeTags.size === 0 ||
+        Array.from(activeTags).every(tag => tags.includes(tag));
       
-      card.style.display = matchesSearch && matchesTags ? 'block' : 'none';
+      const isVisible = matchesSearch && matchesTags;
+      card.classList.toggle('hidden', !isVisible);
+      if (isVisible) visibleCount += 1;
     });
+
+    emptyState?.classList.toggle('hidden', visibleCount !== 0);
+    if (resultsCount) {
+      resultsCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'story' : 'stories'}`;
+    }
   }
   
   searchInput?.addEventListener('input', filterStories);
   
   tagButtons.forEach(button => {
     button.addEventListener('click', () => {
-      const tag = button.dataset.tag?.toLowerCase();
+      const tag = button.dataset.filterTag?.toLowerCase();
       if (!tag) return;
       
       if (activeTags.has(tag)) {
         activeTags.delete(tag);
-        button.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200');
-        button.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+        button.classList.remove('border-primary-200', 'bg-primary-50', 'text-primary-700');
+        button.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
       } else {
         activeTags.add(tag);
-        button.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-        button.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200');
+        button.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+        button.classList.add('border-primary-200', 'bg-primary-50', 'text-primary-700');
       }
       
       filterStories();

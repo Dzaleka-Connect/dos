@@ -1,11 +1,5 @@
 import type { APIRoute } from 'astro';
-
-type WeatherAlert = {
-  title: string;
-  description: string;
-  type: 'info' | 'warning' | 'severe';
-  publishedAt?: string;
-};
+import { getSeasonalFallbackAlerts, type WeatherAlert } from '../../data/weather';
 
 function stripXml(value: string) {
   return value
@@ -39,21 +33,15 @@ function classifyAlert(text: string): WeatherAlert['type'] {
   return 'info';
 }
 
-function fallbackAlerts(): WeatherAlert[] {
-  return [
-    {
-      title: 'Weather alerts temporarily unavailable',
-      description:
-        'Live weather alerts could not be loaded from the upstream weather source. Check again later for updated conditions.',
-      type: 'info',
-      publishedAt: new Date().toISOString(),
-    },
-  ];
-}
-
 export const GET: APIRoute = async () => {
   try {
-    const response = await fetch('https://www.metmalawi.gov.mw/api/cap/rss.xml');
+    const response = await fetch('https://www.metmalawi.gov.mw/api/cap/rss.xml', {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      },
+      signal: AbortSignal.timeout(10000),
+    });
 
     if (!response.ok) {
       throw new Error(`Weather alerts upstream returned ${response.status}`);
@@ -65,23 +53,20 @@ export const GET: APIRoute = async () => {
     const alerts = itemMatches
       .map((match) => {
         const item = match[1];
-        const titleMatch = item.match(/<title>([\s\S]*?)<\/title>/);
-        const descriptionMatch = item.match(/<description>([\s\S]*?)<\/description>/);
-        const pubDateMatch = item.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
-
-        const title = stripXml(titleMatch?.[1] || 'Weather alert');
-        const description = stripXml(descriptionMatch?.[1] || title);
+        const title = stripXml(item.match(/<title>([\s\S]*?)<\/title>/)?.[1] || 'Weather alert');
+        const description = stripXml(item.match(/<description>([\s\S]*?)<\/description>/)?.[1] || title);
+        const publishedAtRaw = item.match(/<pubDate>([\s\S]*?)<\/pubDate>/)?.[1];
 
         return {
           title,
           description,
           type: classifyAlert(`${title} ${description}`),
-          publishedAt: pubDateMatch?.[1] ? new Date(pubDateMatch[1]).toISOString() : undefined,
+          publishedAt: publishedAtRaw ? new Date(publishedAtRaw).toISOString() : undefined,
         } satisfies WeatherAlert;
       })
       .filter((alert) => alert.title && alert.description);
 
-    return new Response(JSON.stringify(alerts.length > 0 ? alerts : fallbackAlerts()), {
+    return new Response(JSON.stringify(alerts.length > 0 ? alerts : getSeasonalFallbackAlerts()), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -91,7 +76,7 @@ export const GET: APIRoute = async () => {
   } catch (error) {
     console.error('Error fetching weather alerts:', error);
 
-    return new Response(JSON.stringify(fallbackAlerts()), {
+    return new Response(JSON.stringify(getSeasonalFallbackAlerts()), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { CloudinaryPresets, getPlaceholderUrl } from '../utils/cloudinary';
 
 interface Props {
   story: {
+    id: string;
     data: {
       title: string;
       description: string;
@@ -11,16 +12,29 @@ interface Props {
       coverImage: string;
       author: {
         name: string;
-        role: string;
+        role?: string;
       };
-      tags: string[];
+      tags?: string[];
+      featured?: boolean;
+      source?: {
+        title: string;
+        url: string;
+      };
+      photos?: Array<{
+        image: string;
+      }>;
+      content?: Array<{
+        image?: string;
+      }>;
     };
-    slug: string;
   };
 }
 
 const { story } = Astro.props;
-const { title, description, date, coverImage, author, tags } = story.data;
+const { title, description, date, coverImage, author, tags, featured, source, photos, content } = story.data;
+const storyTags = tags ?? [];
+const photoCount = photos?.length ?? content?.filter((section) => Boolean(section.image)).length ?? 0;
+const displayTags = storyTags.slice(0, 3);
 
 // Optimize cover image using Cloudinary (only if it's a Cloudinary URL)
 const originalImage = coverImage;
@@ -30,60 +44,93 @@ const placeholderImage = (originalImage && optimizedImage !== originalImage)
   : null;
 ---
 
-<article class="group relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
-  <a href={`/stories/${story.id}`} class="block">
-    <div class="aspect-w-16 aspect-h-9 overflow-hidden">
+<article
+  data-story-card
+  data-story-id={story.id}
+  data-title={title.toLowerCase()}
+  data-description={description.toLowerCase()}
+  data-tags={storyTags.map((tag) => tag.toLowerCase()).join('|')}
+  class="h-full"
+>
+  <a
+    href={`/stories/${story.id}`}
+    class="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
+  >
+    <div class="aspect-[4/3] overflow-hidden bg-gray-100">
       <img
         src={placeholderImage || optimizedImage}
         data-src={placeholderImage ? optimizedImage : undefined}
         alt={title}
-        class={`${placeholderImage ? 'lazy-load' : ''} w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105`}
+        class={`${placeholderImage ? 'lazy-load' : ''} h-full w-full object-cover`}
         loading="lazy"
       />
     </div>
-    
-    <div class="p-6">
-      <div class="flex items-center gap-2 mb-3">
-        {tags.map(tag => (
-          <span class="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full">
-            {tag}
+
+    <div class="flex flex-1 flex-col p-5">
+      <div class="flex flex-wrap gap-2">
+        <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+          Photo story
+        </span>
+        {featured && (
+          <span class="rounded-md bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700">
+            Featured
           </span>
-        ))}
+        )}
+        {source && (
+          <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+            Adapted source
+          </span>
+        )}
       </div>
-      
-      <h2 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+
+      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+        <span>{format(new Date(date), 'MMMM d, yyyy')}</span>
+        {photoCount > 0 && <span>{photoCount} photos</span>}
+      </div>
+
+      <h2 class="mt-3 text-xl font-semibold leading-tight text-gray-900">
         {title}
       </h2>
-      
-      <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+
+      <p class="mt-3 line-clamp-3 text-sm leading-6 text-gray-600">
         {description}
       </p>
-      
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-            <span class="text-sm font-medium text-gray-600">
+
+      {displayTags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {displayTags.map((tag) => (
+            <span class="rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-600">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <div class="mt-6 flex items-end justify-between gap-4 border-t border-gray-100 pt-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
+            <span>
               {author.name.charAt(0)}
             </span>
           </div>
           <div>
             <p class="text-sm font-medium text-gray-900">{author.name}</p>
-            <p class="text-xs text-gray-500">{author.role}</p>
+            {author.role && <p class="text-xs text-gray-500">{author.role}</p>}
           </div>
         </div>
-        
-        <time class="text-sm text-gray-500">
-          {format(new Date(date), 'MMM d, yyyy')}
-        </time>
+
+        <span class="text-sm font-medium text-primary-700">
+          Read story
+        </span>
       </div>
     </div>
   </a>
 </article>
 
 <style>
-  .line-clamp-2 {
+  .line-clamp-3 {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

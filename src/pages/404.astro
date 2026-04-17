@@ -1,49 +1,92 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import { Image } from 'astro:assets';
 
-const links = [
-  { text: 'Go to Homepage', href: '/' },
-  { text: 'Browse Services', href: '/services' },
-  { text: 'View Events', href: '/events' },
-  { text: 'Visit Resources', href: '/resources' }
+const pageTitle = 'Page not found | Dzaleka Online Services';
+const pageDescription =
+  'The page you requested could not be found. Use the links below to search the archive, return home, or continue browsing the site.';
+
+const quickLinks = [
+  { text: 'Search the site', href: '/search' },
+  { text: 'Browse services', href: '/services' },
+  { text: 'Read updates', href: '/updates' },
+  { text: 'Start here', href: '/start-here' },
 ];
 ---
 
-<MainLayout title="Page Not Found">
-  <main class="min-h-[80vh] flex items-center justify-center px-6 py-16 bg-gray-50">
-    <div class="max-w-lg w-full text-center space-y-8">
-      {/* 404 Text */}
-      <div class="space-y-2">
-        <h1 class="text-8xl font-black text-primary-600">404</h1>
-        <p class="text-2xl font-bold text-gray-900">Page Not Found</p>
-        <p class="text-gray-600 mt-2">
-          Sorry, we couldn't find the page you're looking for.
-        </p>
-      </div>
+<MainLayout title={pageTitle} description={pageDescription}>
+  <section class="bg-slate-50">
+    <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <div class="grid gap-10 rounded-2xl border border-slate-200 bg-white px-6 py-8 shadow-sm sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,1.1fr)] lg:items-center">
+        <div class="order-2 lg:order-1">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">404 error</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            This page is missing from the archive
+          </h1>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+            The link may be out of date, the page may have moved, or the address may be incomplete.
+            The rest of the site is still available.
+          </p>
 
-      {/* Navigation Links */}
-      <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        {links.map((link) => (
-          <a
-            href={link.href}
-            class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
-          >
-            {link.text}
-          </a>
-        ))}
-      </div>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a
+              href="/"
+              class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
+            >
+              Back to home
+            </a>
+            <a
+              href="/search"
+              class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              Search the site
+            </a>
+            <button
+              type="button"
+              onclick="history.back()"
+              class="inline-flex items-center justify-center rounded-lg text-sm font-semibold text-slate-600 transition-colors hover:text-slate-900"
+            >
+              Go back
+            </button>
+          </div>
 
-      {/* Back Button */}
-      <button 
-        onclick="history.back()" 
-        class="text-sm text-gray-500 hover:text-primary-600 flex items-center gap-1 mx-auto"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-        </svg>
-        Go Back
-      </button>
+          <div class="mt-8 border-t border-slate-200 pt-6">
+            <p class="text-sm font-medium text-slate-900">Try one of these instead:</p>
+            <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+              {quickLinks.map((link) => (
+                <li>
+                  <a href={link.href} class="text-sm font-medium text-primary-700 hover:text-primary-800 hover:underline">
+                    {link.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="order-1 flex justify-center lg:order-2 lg:justify-end">
+          <div class="w-full max-w-sm rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <svg viewBox="0 0 320 240" class="h-auto w-full" role="img" aria-labelledby="not-found-title not-found-desc">
+              <title id="not-found-title">Missing page illustration</title>
+              <desc id="not-found-desc">An archive page with a question mark and a small magnifying glass.</desc>
+              <rect x="44" y="28" width="170" height="190" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="8" />
+              <path d="M78 28h80l30 30v0H78c-8.837 0-16-7.163-16-16v-14h16z" fill="#e2e8f0" />
+              <path d="M158 28l56 56h-40c-8.837 0-16-7.163-16-16V28z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="8" stroke-linejoin="round" />
+              <line x1="84" y1="108" x2="174" y2="108" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
+              <line x1="84" y1="136" x2="156" y2="136" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
+              <line x1="84" y1="164" x2="138" y2="164" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
+              <circle cx="132" cy="92" r="30" fill="#eff6ff" />
+              <path d="M122 84c0-6 4.8-10 10.7-10 6.4 0 11.3 4.2 11.3 10.4 0 4.6-2.2 7-6.7 10.2-4.4 3-5.8 4.7-5.8 7.8v1.4" fill="none" stroke="#2563eb" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="131.5" cy="117.5" r="4.5" fill="#2563eb" />
+              <circle cx="238" cy="172" r="34" fill="#ffffff" stroke="#0f172a" stroke-width="8" />
+              <line x1="262" y1="196" x2="292" y2="226" stroke="#0f172a" stroke-width="10" stroke-linecap="round" />
+              <circle cx="238" cy="172" r="16" fill="#f8fafc" />
+            </svg>
+            <p class="mt-4 text-sm leading-6 text-slate-600">
+              If you followed an old link, the content may have been renamed while the archive was being reorganised.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-  </main>
+  </section>
 </MainLayout>

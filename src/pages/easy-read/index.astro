@@ -1,0 +1,116 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const pageTitle = 'Easy Read | Dzaleka Online Services';
+const description =
+  'Clear and easy to read guides about Dzaleka, getting help, and using this website.';
+const canonical = 'https://services.dzaleka.com/easy-read';
+
+const guides = [
+  {
+    title: 'About Dzaleka',
+    description: 'Simple facts about where Dzaleka is, when it started, and who lives there.',
+    href: '/easy-read/about-dzaleka',
+  },
+  {
+    title: 'Getting help',
+    description: 'Plain-language guidance for urgent contacts, support routes, and what to say when you ask for help.',
+    href: '/easy-read/getting-help',
+  },
+  {
+    title: 'Using this website',
+    description: 'A short guide to Start Here, Search, Services, Rights Navigator, and the Help Desk.',
+    href: '/easy-read/using-this-site',
+  },
+];
+
+const extraLinks = [
+  {
+    title: 'New to Dzaleka',
+    description: 'A practical first-step page if you have just arrived or are starting to find your way.',
+    href: '/new-to-dzaleka',
+  },
+  {
+    title: 'Language support',
+    description: 'See where language support exists today and which pages to use first.',
+    href: '/languages',
+  },
+  {
+    title: 'Get help now',
+    description: 'Use this first if the problem is urgent and cannot wait.',
+    href: '/get-help-now',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: pageTitle,
+  description,
+  url: canonical,
+};
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
+  <main class="bg-stone-50">
+    <section class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Easy Read</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Clear and easy to read guides
+          </h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">
+            Short guides about Dzaleka, getting help, and using this website. Start with one of the
+            guides below.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Guides</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900">Start with a short guide</h2>
+      </div>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-2">
+        {guides.map((guide) => (
+          <a
+            href={guide.href}
+            class="rounded-2xl border border-slate-200 bg-white px-6 py-6 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 class="text-xl font-semibold text-slate-900">{guide.title}</h3>
+            <p class="mt-3 text-base leading-7 text-slate-600">{guide.description}</p>
+            <p class="mt-4 text-sm font-medium text-primary-700">Open guide</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Useful next pages</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900">Other good places to start</h2>
+          <p class="mt-4 text-base leading-7 text-slate-600">
+            These pages are not Easy Read guides, but they are useful if you need practical help,
+            language support, or a stronger first-step route.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          {extraLinks.map((link) => (
+            <a
+              href={link.href}
+              class="border-t border-slate-300 pt-4 transition-colors hover:border-slate-500"
+            >
+              <h3 class="text-lg font-semibold text-slate-900">{link.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{link.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
