@@ -1,60 +1,69 @@
 ---
 title: About Dzaleka Online Services
-description: Learn what Dzaleka Online Services includes and how to use it
+description: What the site covers, who it is for, and what can be submitted or discovered here
 section: about
+lastUpdated: 2026-04-18
 ---
 
 # About Dzaleka Online Services
 
-Dzaleka Online Services is a public information and community services platform for Dzaleka. It brings together practical service listings, community resources, jobs, events, stories, business tools, and other public information in one place.
+Dzaleka Online Services is a public information and publishing platform for Dzaleka. It combines practical help routes, public directories, community publishing, and open data access in one site.
 
-## What the platform includes
+## What you can do here
 
-- [Services](/services) for organisations, community programmes, and support options
-- [Resources](/resources) for guides, reports, templates, and learning material
-- [Events](/events) for upcoming and past community activities
-- [Jobs](/jobs) for vacancies, volunteer roles, and opportunities
-- [News](/news) for updates and announcements
-- [Skills Exchange](/skills-exchange) for community skill sharing and learning requests
-- [Grants and Programs](/grants-and-programs) for opportunities, calls, and support pathways
-- [Tools and Templates](/tools-and-templates) for startup and organisational planning tools
+- find support organisations and local services
+- read guides, reports, and public resources
+- follow news, updates, and stories
+- explore jobs, grants, and skills exchange opportunities
+- browse photos, community voice, and cultural material
+- use public API and discovery routes for integrations
 
-## Who it is for
+## Key public sections
 
-- Residents and families looking for services or local information
-- Service providers and NGOs sharing support information
-- Small businesses, traders, and entrepreneurs promoting work and finding tools
-- Visitors, researchers, and partners learning about Dzaleka
-- Community members sharing stories, photos, and events
+- [Services](/services)
+- [Resources](/resources)
+- [Jobs](/jobs)
+- [Events](/events)
+- [News](/news)
+- [Stories](/stories)
+- [Updates](/updates)
+- [Marketplace](/marketplace)
+- [Rights Navigator](/rights-navigator)
 
-## How to get started
+## New support front doors
 
-1. Visit [Start Here](/start-here) if you want help finding the right section.
-2. Use [Search](/search) to look across the site.
-3. Browse the main service areas that matter most to you.
-4. Use the relevant submission form if you want to contribute information.
+The site now includes clearer entry routes for common public needs:
+
+- [Get help now](/get-help-now)
+- [New to Dzaleka](/new-to-dzaleka)
+- [Easy Read](/easy-read)
+- [Languages](/languages)
+
+## Who the site is for
+
+- residents and families looking for services or practical information
+- service providers, NGOs, and community groups publishing support information
+- entrepreneurs, traders, and programme teams sharing opportunities
+- visitors, researchers, and partners learning about Dzaleka
+- developers and automated clients using public APIs and discovery endpoints
 
 ## Ways to contribute
 
 - [Register a service](/services/register)
 - [Submit a resource](/resources/submit)
 - [Organize an event](/events/organize)
-- [Post a job](/jobs/post)
 - [Submit a photo](/photos/submit)
 - [Share your voice](/submit-voice)
 - [Submit a grant or programme opportunity](/grants-and-programs/submit)
 
-## Helpful guides
+## Developer access
 
-- [Getting Started](/docs/getting-started)
-- [Platform Features](/platform-features)
-- [Frequently Asked Questions](/docs/faq)
-- [Privacy Guidelines](/docs/privacy-guidelines)
-- [API Documentation](/api-docs)
+- [API Docs](/api-docs)
+- [API Documentation](/docs/api-reference)
+- [Agent Access](/docs/agent-access-guide)
 
 ## Need help?
 
 - [Support](/support)
 - [Help Desk](/help-desk)
 - [Contact](/contact)
-- Email: [dzalekaconnect@gmail.com](mailto:dzalekaconnect@gmail.com)

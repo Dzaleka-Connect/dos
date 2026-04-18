@@ -8,20 +8,9 @@
 [functions]
   directory = "netlify/functions"
 
-
-
-# Handle static files and other routes
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Handle 404s last
-[[redirects]]
-  from = "/*"
-  to = "/404"
-  status = 404
-  conditions = {Not = [{Path = ["/api/*", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/*.ttf", "/*.eot", "/*.json", "/*.xml", "/*.txt", "/*.pdf", "/*.zip", "/*.rar", "/*.doc", "/*.docx", "/*.xls", "/*.xlsx", "/*.ppt", "/*.pptx", "/*.csv", "/*.tsv", "/*.md", "/*.html"]}]}
+# This is a multi-page Astro site, not a SPA shell.
+# Let Netlify serve the generated route files directly so each HTML page
+# stays aligned with the hashed /_astro assets from the same deploy.
 
 # Specific redirects
 [[redirects]]

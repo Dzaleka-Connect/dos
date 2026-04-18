@@ -27,7 +27,7 @@ export const docsGroups = [
     id: 'policies',
     title: 'Policies & Reference',
     description: 'Privacy, contribution guidance, and technical reference.',
-    items: ['privacy-terms', 'privacy-guidelines', 'contribute', 'api-documentation', 'dzdk-cli', 'photo-gallery'],
+    items: ['privacy-terms', 'privacy-guidelines', 'contribute', 'api-reference', 'agent-access-guide', 'dzdk-cli', 'photo-gallery'],
   },
 ] as const;
 

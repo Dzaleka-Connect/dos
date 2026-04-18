@@ -1,54 +1,62 @@
 ---
 title: Getting Started
-description: Quick guide to using Dzaleka Online Services
+description: Best first routes for help, services, language support, and contribution on Dzaleka Online Services
 section: guides
+lastUpdated: 2026-04-18
 ---
 
 # Getting Started
 
-This guide is the fastest way to learn where to begin on Dzaleka Online Services.
+This is the quickest way to choose the right part of Dzaleka Online Services.
 
-## Start with the section that fits your goal
+## Start with the route that matches your situation
 
-- [Start Here](/start-here) if you want audience-based guidance
-- [Services](/services) if you need support from an organisation
-- [Resources](/resources) if you need a guide, report, or toolkit
-- [Jobs](/jobs) if you are looking for work or posting a vacancy
-- [Events](/events) if you want upcoming or past community activities
-- [Grants and Programs](/grants-and-programs) if you are looking for opportunities
-- [Tools and Templates](/tools-and-templates) if you are building a business or organisation
+- [Get help now](/get-help-now) if the problem is urgent or someone is at risk
+- [New to Dzaleka](/new-to-dzaleka) if you have just arrived or need the first key steps
+- [Easy Read](/easy-read) if you want shorter, simpler guidance
+- [Languages](/languages) if you need language support routes
+- [Start Here](/start-here) if you want audience-based guidance across the site
+- [Search](/search) if you already know the topic, organisation, or service name
 
-## A simple first path
+## Common first actions
 
-1. Go to [Search](/search) or [Start Here](/start-here).
-2. Open the section that matches your need.
-3. Read the listing or guide page carefully.
-4. Use the contact form or relevant submission form when you need to contribute or ask for help.
-
-## Common actions
-
-### Find a service
+### Find services
 
 - [Browse services](/services)
-- [Register a service](/services/register)
-- [Request a service listing update](/services/update-request)
+- [Search services](/search/results)
+- [Help Desk](/help-desk) if you are not sure which service fits
 
-### Share something with the community
+### Find practical information
 
-- [Submit Voice](/submit-voice)
-- [Submit Photos](/photos/submit)
-- [Organize an Event](/events/organize)
-- [Submit a Resource](/resources/submit)
+- [Resources](/resources)
+- [Weather](/weather)
+- [Updates](/updates)
+- [Stories](/stories)
 
-### Explore opportunities
+### Find opportunities
 
 - [Jobs](/jobs)
 - [Grants and Programs](/grants-and-programs)
 - [Skills Exchange](/skills-exchange)
+- [Tools and Templates](/tools-and-templates)
 
-## If you get stuck
+### Contribute something public
+
+- [Submit Voice](/submit-voice)
+- [Photo submission](/photos/submit)
+- [Organize an event](/events/organize)
+- [Submit a resource](/resources/submit)
+- [Register a service](/services/register)
+
+## If you are stuck
 
 - [Support](/support)
 - [Help Desk](/help-desk)
+- [FAQ](/docs/faq)
 - [Contact](/contact)
-- [Frequently Asked Questions](/docs/faq)
+
+## Good next reads
+
+- [About Dzaleka Online Services](/docs/about)
+- [Platform Features](/docs/platform-features)
+- [Support & Contact](/docs/support)

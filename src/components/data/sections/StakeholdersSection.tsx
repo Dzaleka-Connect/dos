@@ -1,6 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import '../../../utils/chartConfig';
+import '../chartConfig';
 
 interface Stakeholder {
   name: string;

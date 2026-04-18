@@ -13,7 +13,9 @@ export default defineConfig({
   site: 'https://services.dzaleka.com',
   output: 'static',
   adapter: process.env.NETLIFY
-    ? netlify()
+    ? netlify({
+      edgeMiddleware: true
+    })
     : node({
       mode: 'standalone'
     }),

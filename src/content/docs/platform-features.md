@@ -1,26 +1,38 @@
 ---
 title: Platform Features
-description: Overview of the main public features available on Dzaleka Online Services
+description: What the site includes for support, discovery, publishing, business tools, and developer access
 section: features
+lastUpdated: 2026-04-18
 ---
 
 # Platform Features
 
-Dzaleka Online Services brings together public information, community publishing, and practical online tools. This page gives a high-level overview of the main areas of the platform without repeating every detail from each section.
+Dzaleka Online Services is not one tool. It is a public site made up of support routes, community publishing, directories, and developer access points.
 
-## Service and information access
+## Help and orientation
 
-- [Services](/services) for organisations and support listings
-- [Resources](/resources) for guides, reports, and public materials
+- [Get help now](/get-help-now) for urgent safety, protection, legal, or health support routes
+- [New to Dzaleka](/new-to-dzaleka) for first-step newcomer guidance
+- [Easy Read](/easy-read) for simpler guidance
+- [Languages](/languages) for language support routes
+- [Start Here](/start-here) for audience-based wayfinding
+
+## Public information and discovery
+
+- [Services](/services) for organisations, clinics, schools, NGOs, and support listings
+- [Resources](/resources) for guides, reports, templates, and practical material
 - [Search](/search) for cross-site discovery
-- [Visit](/visit) for tour and visitor information
+- [Weather](/weather) for local weather conditions and fallback climate guidance
+- [Updates](/updates) for product and site changes
+- [Stories](/stories) for editorial and archive-led storytelling
 
 ## Community publishing
 
-- [Events](/events) for public event listings
-- [Community Voice](/community-voice) for stories and reflections
-- [Photos](/photos) for visual documentation
-- [News](/news) and [Updates](/updates) for current information
+- [Events](/events)
+- [Community Voice](/community-voice)
+- [Photos](/photos)
+- [News](/news)
+- [Yetu Radio](/yetu-radio)
 
 ## Opportunities and business tools
 
@@ -32,21 +44,23 @@ Dzaleka Online Services brings together public information, community publishing
 
 ## Specialist sections
 
+- [Rights Navigator](/rights-navigator)
 - [Public Art Catalogue](/public-art-catalogue)
 - [Site Register](/site-register)
 - [Open Data Platform](/open-data-platform)
-- [Rights Navigator](/rights-navigator)
 
-## Developer and data access
+## Developer and agent access
 
-- [API Documentation](/api-docs)
-- [Open Data Platform](/open-data-platform)
-- Public API endpoints under `https://services.dzaleka.com/api`
+- [API Docs](/api-docs)
+- [API Documentation](/docs/api-reference)
+- Public API routes under `/api`
+- Discovery endpoints under `/.well-known`
+- Agent skills index at `/.well-known/agent-skills/index.json`
+- Markdown negotiation for agents on HTML pages
+- WebMCP browser tools on supported clients
 
-## Getting help
+## Related guides
 
 - [Getting Started](/docs/getting-started)
-- [Frequently Asked Questions](/docs/faq)
-- [Support](/support)
-- [Help Desk](/help-desk)
-- [Contact](/contact)
+- [About Dzaleka Online Services](/docs/about)
+- [Agent Access](/docs/agent-access-guide)

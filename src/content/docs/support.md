@@ -1,47 +1,62 @@
 ---
 title: Support & Contact
-description: How to get help with Dzaleka Online Services
+description: Where to go for urgent help, general support, and section-specific forms on Dzaleka Online Services
 section: support
+lastUpdated: 2026-04-18
 ---
 
 # Support & Contact
 
-Use the support routes below when you need help using the platform, correcting public information, or contacting the team.
+Use the support route that matches the type of help you need.
 
-## Main support routes
+## If the problem is urgent
 
-### Support page
+Start with [Get help now](/get-help-now).
 
-[Support](/support) is the main public help page for common questions and guidance.
+That page is the right first route for:
 
-### Help desk
+- safety concerns
+- protection issues
+- legal trouble
+- urgent health support
 
-Use [Help Desk](/help-desk) if you need to send a question, report a problem, or ask for follow-up help.
+Do not wait for a normal help desk reply if the problem cannot wait.
 
-### Contact page
+## For general site help
 
-Use [Contact](/contact) for general enquiries, partnerships, and messages that do not fit a section-specific form.
+Use [Support](/support) for common guidance and public help options.
 
-## When to use section forms instead
+## For a follow-up question or correction
 
-Use the form inside the section itself when you are trying to:
+Use [Help Desk](/help-desk) if you need to:
 
-- [register a service](/services/register)
-- [submit a resource](/resources/submit)
-- [organize an event](/events/organize)
-- [submit photos](/photos/submit)
-- [share your voice](/submit-voice)
-- [submit a grant or programme opportunity](/grants-and-programs/submit)
+- ask a question
+- report a broken page
+- correct public information
+- request follow-up help
 
-## What to include when asking for help
+## For partnerships or general enquiries
+
+Use [Contact](/contact).
+
+## Use the section form when the task already has one
+
+- [Register a service](/services/register)
+- [Submit a resource](/resources/submit)
+- [Organize an event](/events/organize)
+- [Submit photos](/photos/submit)
+- [Share your voice](/submit-voice)
+- [Submit a grant or programme opportunity](/grants-and-programs/submit)
+
+## What to include when you ask for help
 
 - the page link if something is wrong
-- a short description of the issue
+- a short explanation of the issue
 - your contact details
-- any deadline or urgency we should know about
+- any deadline or urgency
 
 ## Related guides
 
 - [Getting Started](/docs/getting-started)
+- [Search Guide](/docs/search)
 - [FAQ](/docs/faq)
-- [Privacy Guidelines](/docs/privacy-guidelines)

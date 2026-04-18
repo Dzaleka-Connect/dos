@@ -1,5 +1,11 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import {
+  API_CATALOG_PATH,
+  OPENAPI_PATH,
+  API_STATUS_PATH,
+  discoveryLinks,
+} from '../data/agentDiscovery';
 
 const siteUrl = 'https://services.dzaleka.com';
 const baseApiUrl = `${siteUrl}/api`;
@@ -23,7 +29,7 @@ const collectionEndpoints = [
   { name: 'Poets', path: '/api/poets', dataKey: 'poets', description: 'Published poet profiles and creative directory entries.' },
   { name: 'Dancers', path: '/api/dancers', dataKey: 'dancers', description: 'Published dancer and dance crew profiles.' },
   { name: 'Docs', path: '/api/docs', dataKey: 'docs', description: 'Documentation pages from the docs content collection.' },
-  { name: 'Pages', path: '/api/pages', dataKey: 'pages', description: 'Published site pages if a pages collection is available. This may currently return an empty result.' },
+  { name: 'Pages', path: '/api/pages', dataKey: 'pages', description: 'Published markdown reference pages served through the catch-all page route.' },
 ];
 
 const searchEndpoints = [
@@ -154,6 +160,31 @@ const methodClassMap = {
   POST: 'bg-blue-100 text-blue-800 border-blue-200',
   OPTIONS: 'bg-gray-100 text-gray-700 border-gray-200',
 };
+
+const discoveryEndpoints = [
+  {
+    name: 'API catalog',
+    path: API_CATALOG_PATH,
+    description: 'Well-known discovery document in Linkset JSON format for agents and automated API clients.',
+    contentType: 'application/linkset+json',
+  },
+  {
+    name: 'OpenAPI description',
+    path: OPENAPI_PATH,
+    description: 'Machine-readable OpenAPI 3.1 document for the public API.',
+    contentType: 'application/openapi+json',
+  },
+  {
+    name: 'API status',
+    path: API_STATUS_PATH,
+    description: 'Lightweight health and discovery status document.',
+    contentType: 'application/json',
+  },
+];
+
+const linkHeaderExample = discoveryLinks
+  .map((link) => `<${link.href}>; rel="${link.rel}"; type="${link.type}"`)
+  .join(', ');
 ---
 
 <MainLayout
@@ -174,7 +205,7 @@ const methodClassMap = {
           </p>
           <div class="mt-6 flex flex-wrap gap-3">
             <a
-              href="/docs/api-documentation"
+              href="/docs/api-reference"
               class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Docs version
@@ -217,6 +248,7 @@ const methodClassMap = {
               <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">On this page</h2>
               <ul class="mt-4 space-y-3 text-sm">
                 <li><a class="text-primary-700 hover:text-primary-800" href="#collections">Collection endpoints</a></li>
+                <li><a class="text-primary-700 hover:text-primary-800" href="#discovery">Discovery</a></li>
                 <li><a class="text-primary-700 hover:text-primary-800" href="#search-and-feeds">Search and feeds</a></li>
                 <li><a class="text-primary-700 hover:text-primary-800" href="#data-snapshots">Data snapshots</a></li>
                 <li><a class="text-primary-700 hover:text-primary-800" href="#actions">Action endpoints</a></li>
@@ -227,7 +259,7 @@ const methodClassMap = {
               <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">Notes</h2>
               <ul class="mt-4 space-y-3 text-sm leading-6 text-gray-600">
                 <li>Collection endpoints expose published content collections only.</li>
-                <li><code>/api/pages</code> is valid, but may currently return zero items if the pages collection is empty.</li>
+                <li><code>/api/pages</code> is for markdown reference pages, not a full inventory of every Astro route on the site.</li>
                 <li>Maintenance and test routes are not listed here.</li>
               </ul>
             </div>
@@ -235,6 +267,45 @@ const methodClassMap = {
         </aside>
 
         <main class="min-w-0 flex-1 space-y-10">
+          <section id="discovery" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+            <div class="max-w-3xl">
+              <h2 class="text-2xl font-semibold text-gray-900">Discovery</h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                Agents can discover this API from Link response headers on HTML pages, the API catalog at <code>/.well-known/api-catalog</code>, and the OpenAPI document below.
+              </p>
+            </div>
+
+            <div class="mt-6 grid gap-4 lg:grid-cols-3">
+              {discoveryEndpoints.map((endpoint) => (
+                <div class="rounded-xl border border-gray-200 p-5">
+                  <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
+                  <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  <p class="mt-3 text-xs uppercase tracking-wide text-gray-500">{endpoint.contentType}</p>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-6 space-y-4">
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">Homepage Link header</h3>
+                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{linkHeaderExample}</pre>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">Markdown negotiation</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  HTML pages also respond in markdown when the request sends <code>Accept: text/markdown</code>. Those responses return <code>Content-Type: text/markdown</code>, <code>Vary: Accept</code>, and an <code>x-markdown-tokens</code> estimate for agents.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">Browser agent tools</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  On supported browsers, site pages also publish read-only WebMCP tools for search, services search, weather summary, urgent help contacts, language support routes, and newcomer first steps. Published agent skills are available at <code>/.well-known/agent-skills/index.json</code>.
+                </p>
+              </div>
+            </div>
+          </section>
+
           <section id="collections" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
             <div class="max-w-3xl">
               <h2 class="text-2xl font-semibold text-gray-900">Collection endpoints</h2>

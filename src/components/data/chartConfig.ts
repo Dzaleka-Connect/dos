@@ -1,4 +1,33 @@
-import { ChartOptions } from 'chart.js';
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  RadialLinearScale,
+  PointElement, 
+  LineElement, 
+  BarElement, 
+  ArcElement, 
+  Title, 
+  Tooltip, 
+  Legend,
+  Filler,
+  type ChartOptions 
+} from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 export const chartConfig: ChartOptions = {
   responsive: true,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Radar } from 'react-chartjs-2';
-import '../../../utils/chartConfig';
+import '../chartConfig';
 
 interface EconomicImpact {
   area: string;

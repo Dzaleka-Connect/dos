@@ -136,7 +136,7 @@ export const updates: Update[] = [
             'That included clearer endpoint descriptions, better error handling language, and a more usable explanation of what developers can expect from collection-based routes.',
             'The goal here was not to sound more technical; it was to make the platform easier to work with when someone needs the data behind the interface.'
         ].join('\n\n'),
-        link: '/docs/api-documentation',
+        link: '/docs/api-reference',
         linkText: 'Open documentation'
     },
     {
