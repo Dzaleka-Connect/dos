@@ -7,6 +7,7 @@ import {
   OPENAPI_URL,
   SITE_URL,
 } from '../../data/agentDiscovery';
+import { MCP_SERVER_CARD_URL } from '../../data/mcpServerCard';
 
 export const prerender = false;
 
@@ -21,6 +22,7 @@ export const GET: APIRoute = async () =>
         documentation: API_DOCS_URL,
         catalog: API_CATALOG_URL,
         openapi: OPENAPI_URL,
+        mcpServerCard: MCP_SERVER_CARD_URL,
         self: API_STATUS_URL,
         checkedAt: new Date().toISOString(),
       },

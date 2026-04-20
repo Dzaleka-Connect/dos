@@ -1,0 +1,267 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const pageTitle = 'The Research — Dzaleka Wellbeing';
+const description =
+  'A plain-language summary of the 2022 Psychiatry Research study on mental health in Dzaleka Refugee Camp, including methodology, key findings, limitations, and what the numbers mean.';
+const canonical = 'https://services.dzaleka.com/dzaleka-wellbeing/the-research';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ScholarlyArticle',
+      name: 'It is time to think about refugees\' mental health: The case of Dzaleka Refugee Camp - Malawi',
+      description,
+      url: canonical,
+      datePublished: '2022-10-01',
+      author: [
+        { '@type': 'Person', name: 'Rodolfo Furlan Damiano' },
+        { '@type': 'Person', name: 'Sophia Aguiar Monteiro Borges' },
+        { '@type': 'Person', name: 'Renato Lara Jarreta' },
+        { '@type': 'Person', name: 'Renner Augusto Raposo Pereira' },
+        { '@type': 'Person', name: 'Giancarlo Lucchetti' },
+      ],
+      isPartOf: { '@type': 'Periodical', name: 'Psychiatry Research' },
+      sameAs: 'https://pubmed.ncbi.nlm.nih.gov/36037741/',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Dzaleka Wellbeing', item: 'https://services.dzaleka.com/dzaleka-wellbeing' },
+        { '@type': 'ListItem', position: 3, name: 'The Research', item: canonical },
+      ],
+    },
+  ],
+};
+
+const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, refugee camp depression study, Psychiatry Research 2022, Dzaleka Refugee Camp';
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema} keywords={keywords}>
+
+  <div class="wbs-crisis-strip" role="alert">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
+      <p class="text-sm text-white">
+        <strong>Need urgent help?</strong> If you or someone you know is in immediate danger, please act now.
+      </p>
+      <a href="/get-help-now" class="wbs-crisis-btn">Get help now</a>
+    </div>
+  </div>
+
+  <main class="wbs-page">
+    <div class="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Dzaleka Wellbeing', href: '/dzaleka-wellbeing' },
+        { label: 'The Research' },
+      ]} />
+    </div>
+
+    <article class="mx-auto max-w-4xl px-4 pb-20 sm:px-6 lg:px-8">
+
+      <header class="mb-12">
+        <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Evidence</p>
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          The research behind this page
+        </h1>
+        <p class="mt-4 text-lg leading-8 text-slate-600">
+          The statistics on the Dzaleka Wellbeing page come primarily from a single peer-reviewed study published in <em>Psychiatry Research</em> in 2022. This page explains what the study found, how it was done, and what it doesn't tell us.
+        </p>
+      </header>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">The study</h2>
+        <dl class="wbs-meta-grid">
+          <div>
+            <dt>Title</dt>
+            <dd>It is time to think about refugees' mental health: The case of Dzaleka Refugee Camp — Malawi</dd>
+          </div>
+          <div>
+            <dt>Authors</dt>
+            <dd>Damiano RF, Borges SAM, Jarreta RL, Pereira RAR, Lucchetti G</dd>
+          </div>
+          <div>
+            <dt>Journal</dt>
+            <dd>Psychiatry Research, Volume 316, October 2022</dd>
+          </div>
+          <div>
+            <dt>DOI</dt>
+            <dd><a href="https://doi.org/10.1016/j.psychres.2022.114783" target="_blank" rel="noopener noreferrer" class="wbs-link">10.1016/j.psychres.2022.114783</a></dd>
+          </div>
+          <div>
+            <dt>PubMed ID</dt>
+            <dd><a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="wbs-link">36037741</a></dd>
+          </div>
+          <div>
+            <dt>Affiliation</dt>
+            <dd>Universidade de São Paulo, Fraternity Without Borders, Federal University of Juiz de Fora</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">What they did</h2>
+        <p class="wbs-p">
+          The researchers assessed 102 individuals living in Dzaleka Refugee Camp using the <strong>PHQ-9</strong> (Patient Health Questionnaire-9), a widely used screening tool for depression. The PHQ-9 asks nine questions about symptoms experienced over the past two weeks — things like loss of interest, fatigue, difficulty concentrating, and thoughts of death.
+        </p>
+        <p class="wbs-p">
+          A score of 10 or above is typically interpreted as "probable depression" — meaning the person likely meets clinical criteria, though it is not a formal diagnosis. The study also asked about suicidal ideation and suicide attempts in the 12 months before the assessment.
+        </p>
+      </section>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">The headline numbers</h2>
+        <div class="grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 sm:grid-cols-2">
+          <div class="wbs-stat">
+            <p class="wbs-stat-value">78%</p>
+            <p class="wbs-stat-label">Probable depression</p>
+            <p class="wbs-stat-detail">Scored 10 or above on the PHQ-9. For reference, the global average for clinically significant depression is approximately 3.8% (WHO, 2023). This number is roughly 20 times higher.</p>
+          </div>
+          <div class="wbs-stat">
+            <p class="wbs-stat-value">53%</p>
+            <p class="wbs-stat-label">Thoughts of death</p>
+            <p class="wbs-stat-detail">More than half of the assessed individuals reported frequent thoughts about being better off dead or of hurting themselves. This corresponds to item 9 of the PHQ-9.</p>
+          </div>
+          <div class="wbs-stat">
+            <p class="wbs-stat-value">25.5%</p>
+            <p class="wbs-stat-label">Formulated a suicide plan</p>
+            <p class="wbs-stat-detail">One in four people assessed had moved beyond ideation to actively planning how they might end their life.</p>
+          </div>
+          <div class="wbs-stat">
+            <p class="wbs-stat-value">15%</p>
+            <p class="wbs-stat-label">Attempted suicide</p>
+            <p class="wbs-stat-detail">In the 12 months before the study. For context, the global annual rate of suicide attempts is estimated at roughly 0.4%.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">What "probable depression" means — and what it doesn't</h2>
+        <p class="wbs-p">
+          The PHQ-9 is a screening tool, not a clinical diagnosis. A score of 10+ means the individual <em>probably</em> meets diagnostic criteria for major depressive disorder, but a formal diagnosis requires assessment by a trained clinician. In many refugee camps — including Dzaleka — there is no access to such clinicians, which means we use screening tools as the best available proxy.
+        </p>
+        <p class="wbs-p">
+          The 78% figure should be understood as: <strong>in a sample of 102 people assessed in Dzaleka, roughly 4 out of every 5 showed symptoms consistent with clinical depression</strong>. It is not a census of the entire camp population of 57,000+, and extrapolation should be done carefully.
+        </p>
+      </section>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Study limitations</h2>
+        <p class="wbs-p">This study is the best available evidence for mental health in Dzaleka, but it has significant constraints.</p>
+        <ul class="wbs-list">
+          <li><strong>Small sample size.</strong> 102 individuals from a camp of 57,000+. The sample may not be representative of the full population.</li>
+          <li><strong>Cross-sectional design.</strong> A single snapshot in time. It cannot tell us whether things are getting better, worse, or how long these conditions have persisted.</li>
+          <li><strong>Selection bias.</strong> The study does not describe its sampling strategy in detail. People who volunteered to be assessed may differ systematically from those who did not.</li>
+          <li><strong>Self-report.</strong> The PHQ-9 relies on self-report, which can be affected by cultural norms around expressing distress, language barriers, and social desirability bias.</li>
+          <li><strong>No control group.</strong> There is no comparison with non-refugee populations in the Malawian host community, making it harder to isolate the effects of camp conditions specifically.</li>
+        </ul>
+      </section>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">The treatment gap</h2>
+        <p class="wbs-p">
+          Perhaps the most important implication of this study is what it says about the gap between need and access. If 78% of assessed individuals show probable depression, and only an estimated 2–3% of the camp population accesses any form of psychosocial support, the vast majority of severe distress goes completely untreated.
+        </p>
+        <p class="wbs-p">
+          This gap is not primarily about awareness. As the <a href="/dzaleka-wellbeing/structural-causes" class="wbs-link">structural causes page</a> explains, the barriers include language (clinicians speaking English or Chichewa; patients speaking Kinyarwanda, Kirundi, or Swahili), somatic presentation (distress expressed as headache or fatigue rather than "depression"), stigma, and a simple lack of trained staff.
+        </p>
+      </section>
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Supporting references</h2>
+        <div class="space-y-4">
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Primary source</p>
+            <p>Damiano RF, Borges SAM, Jarreta RL, Pereira RAR, Lucchetti G. "It is time to think about refugees' mental health: The case of Dzaleka Refugee Camp — Malawi." <em>Psychiatry Research</em>, 316, 114783 (2022).</p>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="wbs-link">PubMed →</a>
+            <a href="https://doi.org/10.1016/j.psychres.2022.114783" target="_blank" rel="noopener noreferrer" class="wbs-link ml-4">Full text (Elsevier) →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Population data</p>
+            <p>UNHCR Malawi Fact Sheet, August 2024. Camp population: 56,212 as of 31 October 2024.</p>
+            <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="wbs-link">PDF →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Global depression prevalence</p>
+            <p>WHO. "Depressive disorder (depression)." Fact sheet, March 2023. Estimated global prevalence: 3.8%.</p>
+            <a href="https://www.who.int/news-room/fact-sheets/detail/depression" target="_blank" rel="noopener noreferrer" class="wbs-link">WHO →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">IATI programme data</p>
+            <p>Community-based mental health and psychosocial support in Malawi.</p>
+            <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" target="_blank" rel="noopener noreferrer" class="wbs-link">IATI →</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+        <p class="text-sm text-slate-600">
+          <strong>Help us keep this page accurate.</strong> We strive to provide reliable and up-to-date information for the community. If you notice any incorrect details, outdated services, or missing context, please <a href="/contact" class="font-semibold text-slate-900 underline hover:text-slate-700">contact us to suggest an update</a>.
+        </p>
+      </section>
+
+      <nav class="mt-12 flex flex-wrap gap-4 border-t border-slate-200 pt-8">
+        <a href="/dzaleka-wellbeing" class="wbs-nav-link">← Dzaleka Wellbeing</a>
+        <a href="/dzaleka-wellbeing/structural-causes" class="wbs-nav-link">Structural causes →</a>
+        <a href="/get-help-now" class="wbs-nav-link wbs-nav-link--urgent">Get help now</a>
+      </nav>
+
+    </article>
+  </main>
+</MainLayout>
+
+<style>
+  .wbs-page { background: #f8fafc; }
+
+  .wbs-crisis-strip { background: #0f172a; position: sticky; top: 0; z-index: 50; }
+  .wbs-crisis-btn {
+    display: inline-flex; align-items: center; border-radius: 6px;
+    background: #dc2626; padding: 6px 14px; font-size: 13px; font-weight: 700;
+    color: #fff; transition: background 0.15s;
+  }
+  .wbs-crisis-btn:hover { background: #b91c1c; }
+
+  .wbs-section { margin-top: 3rem; }
+  .wbs-h2 { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem; }
+  .wbs-p { font-size: 0.9375rem; line-height: 1.85; color: #334155; margin-bottom: 1rem; }
+  .wbs-link { color: #0f172a; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .wbs-link:hover { color: #1e293b; }
+
+  .wbs-meta-grid {
+    display: grid; gap: 1px; background: #e2e8f0; border-radius: 12px; overflow: hidden;
+    border: 1px solid #e2e8f0;
+  }
+  .wbs-meta-grid > div { background: #fff; padding: 1rem 1.25rem; }
+  .wbs-meta-grid dt { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; }
+  .wbs-meta-grid dd { margin-top: 4px; font-size: 0.9375rem; color: #0f172a; }
+
+  .wbs-stat { background: #fff; padding: 1.5rem; }
+  .wbs-stat-value { font-size: 2.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; }
+  .wbs-stat-label { margin-top: 0.25rem; font-size: 0.9375rem; font-weight: 600; color: #0f172a; }
+  .wbs-stat-detail { margin-top: 0.5rem; font-size: 0.8125rem; line-height: 1.7; color: #64748b; }
+
+  .wbs-list { list-style: none; padding: 0; margin: 0; }
+  .wbs-list li {
+    padding: 1rem 1.25rem; margin-bottom: 0.5rem; background: #fff;
+    border: 1px solid #e2e8f0; border-radius: 12px; font-size: 0.9375rem;
+    line-height: 1.7; color: #334155;
+  }
+
+  .wbs-ref {
+    padding: 1.25rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+    font-size: 0.875rem; line-height: 1.7; color: #334155;
+  }
+  .wbs-ref-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 4px; }
+
+  .wbs-nav-link {
+    display: inline-flex; align-items: center; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155;
+    transition: all 0.15s;
+  }
+  .wbs-nav-link:hover { border-color: #94a3b8; background: #f8fafc; }
+  .wbs-nav-link--urgent { background: #0f172a; border-color: #0f172a; color: #fff; }
+  .wbs-nav-link--urgent:hover { background: #1e293b; }
+</style>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Radar } from 'react-chartjs-2';
 import '../chartConfig';
 
@@ -94,7 +93,7 @@ export function EconomicSection() {
   return (
     <div className="space-y-8">
       <div className="flex justify-center">
-        <div className="h-[400px] w-[600px]">
+        <div className="h-[320px] w-full max-w-3xl sm:h-[400px]">
           <Radar options={chartOptions} data={chartData} />
         </div>
       </div>

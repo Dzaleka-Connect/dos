@@ -6,6 +6,7 @@ import {
   API_STATUS_PATH,
   discoveryLinks,
 } from '../data/agentDiscovery';
+import { MCP_SERVER_CARD_PATH } from '../data/mcpServerCard';
 
 const siteUrl = 'https://services.dzaleka.com';
 const baseApiUrl = `${siteUrl}/api`;
@@ -169,6 +170,13 @@ const discoveryEndpoints = [
     contentType: 'application/linkset+json',
   },
   {
+    name: 'MCP server card',
+    path: MCP_SERVER_CARD_PATH,
+    description:
+      'SEP-1649-style discovery document describing the browser-side WebMCP tool surface and where to learn more about it.',
+    contentType: 'application/json',
+  },
+  {
     name: 'OpenAPI description',
     path: OPENAPI_PATH,
     description: 'Machine-readable OpenAPI 3.1 document for the public API.',
@@ -271,7 +279,7 @@ const linkHeaderExample = discoveryLinks
             <div class="max-w-3xl">
               <h2 class="text-2xl font-semibold text-gray-900">Discovery</h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
-                Agents can discover this API from Link response headers on HTML pages, the API catalog at <code>/.well-known/api-catalog</code>, and the OpenAPI document below.
+                Agents can discover this API from Link response headers on HTML pages, the API catalog at <code>/.well-known/api-catalog</code>, the browser tool server card at <code>{MCP_SERVER_CARD_PATH}</code>, and the OpenAPI document below.
               </p>
             </div>
 
@@ -300,7 +308,7 @@ const linkHeaderExample = discoveryLinks
               <div>
                 <h3 class="text-lg font-medium text-gray-900">Browser agent tools</h3>
                 <p class="mt-2 text-sm leading-6 text-gray-600">
-                  On supported browsers, site pages also publish read-only WebMCP tools for search, services search, weather summary, urgent help contacts, language support routes, and newcomer first steps. Published agent skills are available at <code>/.well-known/agent-skills/index.json</code>.
+                  On supported browsers, site pages also publish read-only WebMCP tools for search, services search, weather summary, urgent help contacts, language support routes, and newcomer first steps. The published server card lives at <code>{MCP_SERVER_CARD_PATH}</code>, and published agent skills are available at <code>/.well-known/agent-skills/index.json</code>.
                 </p>
               </div>
             </div>

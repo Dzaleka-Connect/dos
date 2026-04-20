@@ -3,7 +3,7 @@ title: Agent Access
 slug: agent-access-guide
 description: Builder guide for discovering the public API, requesting markdown, loading agent skills, and using browser tools
 section: developers
-lastUpdated: 2026-04-18
+lastUpdated: 2026-04-19
 ---
 
 # Agent Access
@@ -18,6 +18,7 @@ This guide explains the public machine-readable surface, what is safe to build a
 - Fetch published content as JSON through the public API.
 - Request markdown instead of HTML when an agent needs cleaner page text.
 - Discover the API from well-known documents and `Link` response headers.
+- Discover the browser-side WebMCP tool surface from an MCP Server Card.
 - Load published agent skills from a machine-readable index.
 - Use read-only WebMCP browser tools on supported browsers.
 
@@ -32,6 +33,7 @@ This guide explains the public machine-readable surface, what is safe to build a
 Use the discovery documents first instead of hardcoding route assumptions:
 
 - `/.well-known/api-catalog`
+- `/.well-known/mcp/server-card.json`
 - `/api/openapi.json`
 - `/api/status`
 - `/api-docs`
@@ -65,6 +67,10 @@ Choose this path for RAG pipelines, citation-friendly crawlers, or agents that n
 ### Use the skills index when your agent supports Agent Skills
 
 Choose this path when you want published instructions that help an agent route to the right pages, use the public API safely, or prioritize urgent support flows.
+
+### Use the MCP Server Card when your runtime supports server discovery
+
+Choose this path when the runtime wants to detect the site's read-only browser WebMCP surface before opening the page and registering tools.
 
 ### Use WebMCP when the agent is running inside the browser
 
@@ -258,6 +264,8 @@ Current skill coverage includes:
 ## WebMCP browser tools
 
 On supported browsers, the site exposes read-only WebMCP tools when the page is open in a secure top-level context.
+
+The corresponding MCP Server Card is published at `/.well-known/mcp/server-card.json`.
 
 Current tool names:
 

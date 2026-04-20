@@ -24,10 +24,16 @@ export const docsGroups = [
     items: ['support', 'search', 'faq'],
   },
   {
+    id: 'platform',
+    title: 'Platform & Builders',
+    description: 'How the platform is structured and how developers, agents, and integrators should approach it.',
+    items: ['documentation-roadmap', 'platform-principles', 'api-reference', 'agent-access-guide', 'dzdk-cli'],
+  },
+  {
     id: 'policies',
-    title: 'Policies & Reference',
-    description: 'Privacy, contribution guidance, and technical reference.',
-    items: ['privacy-terms', 'privacy-guidelines', 'contribute', 'api-reference', 'agent-access-guide', 'dzdk-cli', 'photo-gallery'],
+    title: 'Policies & Contribution',
+    description: 'Privacy, publishing expectations, and how to maintain documentation.',
+    items: ['privacy-terms', 'privacy-guidelines', 'contribute', 'documentation-contributions', 'photo-gallery'],
   },
 ] as const;
 

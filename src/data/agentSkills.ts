@@ -56,27 +56,35 @@ const skillSources: AgentSkillSource[] = [
   {
     name: 'dzaleka-help-and-safety',
     description:
-      'Route urgent help, protection, rights, and newcomer support requests to the right Dzaleka pages and verified public contacts.',
+      'Use this skill when a user needs urgent safety, protection, legal-help, medical-support, or newcomer triage for Dzaleka, even if they only describe danger, abuse, detention, missing contacts, or a crisis that cannot wait.',
     compatibility:
       'HTTPS access to services.dzaleka.com. Designed for public web agents and assistants handling safety or support questions.',
     body: `
 # Dzaleka Help And Safety
 
-Use this skill when a user needs urgent help, safety guidance, support contacts, rights reporting, or first-step guidance after arriving in Dzaleka.
+Use this skill when a user needs the safest next step, the fastest verified contact, or the right crisis-support route in Dzaleka.
 
-## When To Use This Skill
+## Use This Skill When
 
 - Use this skill when the user says the problem is urgent, unsafe, or cannot wait.
 - Use this skill when the user asks about violence, abuse, trafficking, child risk, arrest, detention, legal trouble, urgent medical care, or missing support contacts.
-- Use this skill when a newcomer needs the safest first step, not a long explanation.
+- Use this skill when a newcomer needs the safest first step rather than a broad orientation answer.
+- Use this skill when the agent should prioritise handoff and routing over background explanation.
 
-## Do Not Use This Skill
+## Do Not Use This Skill When
 
 - Do not use this skill for general site browsing or for non-urgent content discovery.
 - Do not use this skill when the user wants structured API data.
 - Do not improvise legal or medical advice beyond routing and page-based guidance.
 
-## Response Order
+## Example Requests
+
+- "I need help right now. Someone is threatening me."
+- "Who can help with GBV, trafficking, or forced marriage in Dzaleka?"
+- "I was arrested and I do not know who to contact."
+- "I just arrived. What should I do first if I need help?"
+
+## First Response Playbook
 
 1. If there is immediate danger, lead with ${SITE_URL}/get-help-now/ and the fastest available hotline or emergency route from that page.
 2. If the issue involves protection, abuse, trafficking, threats, or rights violations, use ${SITE_URL}/rights-navigator/ and the reporting routes under it.
@@ -84,7 +92,7 @@ Use this skill when a user needs urgent help, safety guidance, support contacts,
 4. If the issue is medical, route to the clinic or health page first.
 5. If the user is new and the situation is not an active crisis, add ${SITE_URL}/new-to-dzaleka/ as the next page.
 
-## Route Map
+## Primary Routes
 
 - Immediate crisis or urgent help: ${SITE_URL}/get-help-now/
 - Rights guidance and reporting: ${SITE_URL}/rights-navigator/
@@ -102,6 +110,7 @@ Use this skill when a user needs urgent help, safety guidance, support contacts,
 - Keep the answer short and operational.
 - If you include a phone number or office contact, copy it exactly from the live page, not memory.
 - If the user sounds overwhelmed, offer one primary route and one backup route only.
+- If the user is in crisis, avoid long menus and avoid historical or legal background unless it changes the next step.
 
 ## Guardrails
 
@@ -114,33 +123,42 @@ Use this skill when a user needs urgent help, safety guidance, support contacts,
   {
     name: 'dzaleka-public-api',
     description:
-      'Discover and use the Dzaleka public JSON API, status endpoint, and API documentation instead of scraping public HTML pages.',
+      'Use this skill when the user needs structured data, endpoint discovery, machine-readable status, or bulk records from services.dzaleka.com, even if they ask in plain language without naming the API.',
     compatibility:
       'HTTPS access to services.dzaleka.com with standard JSON and markdown fetch support. No authentication required for public endpoints.',
     body: `
 # Dzaleka Public API
 
-Use this skill when you need structured data from services.dzaleka.com instead of scraping cards, lists, or article pages.
+Use this skill when structured JSON, stable endpoint discovery, or machine-readable status is a better fit than scraping page cards or article HTML.
 
-## When To Use This Skill
+## Use This Skill When
 
 - Use this skill when the user needs JSON records, endpoint discovery, or machine-readable status.
 - Use this skill when the task is better served by a public API response than by reading HTML.
 - Use this skill when you need to verify what the site exposes before scraping or indexing it.
+- Use this skill when the user wants counts, exports, grouped search results, or cross-collection lookups.
 
-## Do Not Use This Skill
+## Do Not Use This Skill When
 
 - Do not use this skill when the user simply needs a public page to click and read.
 - Do not describe undocumented filters, pagination, or fields as if they are guaranteed.
 - Do not scrape HTML when a matching API endpoint already exists.
 
-## Working Sequence
+## Example Requests
+
+- "Can you list education-related services as JSON?"
+- "What API endpoint should I use for jobs or events?"
+- "Search the public records for legal aid and give me the matching routes."
+- "I need a machine-readable health check for the site."
+
+## Preferred Workflow
 
 1. Check ${SITE_URL}/api/status if the task depends on live API availability.
 2. Use ${SITE_URL}/.well-known/api-catalog to discover the service description, service docs, and status endpoint.
 3. Read ${SITE_URL}/api/openapi.json or ${SITE_URL}/api-docs/ before claiming an endpoint shape.
 4. Choose the narrowest matching endpoint.
 5. Use ${SITE_URL}/api/search when the user does not yet know which collection they need.
+6. If the task needs readable page text instead of structured records, prefer markdown negotiation on the HTML page rather than forcing JSON.
 
 ## Core Endpoints
 
@@ -155,12 +173,14 @@ Use this skill when you need structured data from services.dzaleka.com instead o
 - Search across collections: ${SITE_URL}/api/search?q=education&collections=services,events&limit=5
 - Search index snapshot: ${SITE_URL}/api/search-index.json
 - Bulk export: ${SITE_URL}/api/export
+- Service health and discovery: ${SITE_URL}/api/status
 
 ## Response Style
 
 - Name the exact endpoint you used.
 - If the user asked for data, summarise the result and keep the endpoint available as a reference.
 - If the API is not the best interface for the user, route them back to the matching public page.
+- Distinguish documented behavior from inferred behavior when an endpoint shape is unclear.
 
 ## Guardrails
 
@@ -168,30 +188,39 @@ Use this skill when you need structured data from services.dzaleka.com instead o
 - Use only documented query parameters and fields.
 - Use ${SITE_URL}/api/pages only for published markdown reference pages, not as an inventory of every Astro route.
 - If the API docs and the live response disagree, trust the live response and note the mismatch.
+- Do not imply authentication, write support, or partner-only capabilities that the public API does not document.
 `,
   },
   {
     name: 'dzaleka-site-navigation',
     description:
-      'Find the right public Dzaleka page for services, stories, weather, updates, language access, and Easy Read guidance.',
+      'Use this skill when the user needs the best human-facing Dzaleka page for support, services, language help, Easy Read guidance, stories, weather, or updates, especially when they do not know the section name to ask for.',
     compatibility:
       'Public web browsing on services.dzaleka.com. Best for agents helping users reach the right human-facing page quickly.',
     body: `
 # Dzaleka Site Navigation
 
-Use this skill when the user needs to reach the right public page quickly and the correct route is more important than a long explanation.
+Use this skill when the best answer is a route recommendation or a handoff to the right public page, not a long explanation.
 
-## When To Use This Skill
+## Use This Skill When
 
 - Use this skill when the user asks where to find something on the site.
 - Use this skill when the best answer is a route recommendation, not a detailed explanation.
 - Use this skill when the user is new, needs simpler wording, or does not know which section to open.
+- Use this skill when the user asks for a public page in plain language rather than naming the exact route.
 
-## Do Not Use This Skill
+## Do Not Use This Skill When
 
 - Do not use this skill when the user explicitly needs API output or structured records.
 - Do not answer an urgent safety question with a broad navigation menu.
 - Do not claim a page is translated unless the page itself says so.
+
+## Example Requests
+
+- "Where can I find help for new arrivals?"
+- "Which page should I open for language support?"
+- "I just need the right page for weather or updates."
+- "Where on the site do I look for services or community stories?"
 
 ## Intent Map
 
@@ -207,19 +236,21 @@ Use this skill when the user needs to reach the right public page quickly and th
 - Site and product updates: ${SITE_URL}/updates/
 - If the section is still unclear: ${SITE_URL}/search/
 
-## Routing Rules
+## Routing Order
 
 - If the request sounds urgent, always lead with ${SITE_URL}/get-help-now/.
 - If the user is new to the camp or new to the site, start with ${SITE_URL}/new-to-dzaleka/ or ${SITE_URL}/start-here/.
 - If the user struggles with long or complex wording, pair the main route with ${SITE_URL}/easy-read/.
 - If the user asks for services, give ${SITE_URL}/services/ before suggesting search.
 - Use ${SITE_URL}/search/ only when a more direct section is not obvious.
+- If the request is about structured records or integrations, hand off to the public API skill instead of this one.
 
 ## Response Style
 
 - Lead with one best page and one sentence explaining why it fits.
 - Add one backup page only if it genuinely helps.
 - Keep route names plain and user-facing.
+- Prefer direct page URLs over broad category descriptions.
 
 ## Guardrails
 

@@ -61,6 +61,8 @@ The site now includes clearer entry routes for common public needs:
 - [API Docs](/api-docs)
 - [API Documentation](/docs/api-reference)
 - [Agent Access](/docs/agent-access-guide)
+- [Platform Principles](/docs/platform-principles)
+- [Documentation Roadmap](/docs/documentation-roadmap)
 
 ## Need help?
 

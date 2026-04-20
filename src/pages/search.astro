@@ -1,114 +1,147 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 
-const pageTitle = "Search | Dzaleka Online Services";
-const pageDescription = "Search for services, events, resources, and community stories in Dzaleka.";
+const pageTitle = 'Search | Dzaleka Online Services';
+const pageDescription = 'Search for services, events, resources, and community stories in Dzaleka Refugee Camp.';
+const canonical = 'https://services.dzaleka.com/search';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'SearchResultsPage',
+  name: 'Search Dzaleka Online Services',
+  description: pageDescription,
+  url: canonical,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://services.dzaleka.com/search?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
-<MainLayout title={pageTitle} description={pageDescription}>
-  <main class="container mx-auto px-4 py-12 min-h-screen">
-    <div class="max-w-4xl mx-auto">
-      {/* Hero Section */}
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Search Dzaleka Online Services</h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Find services, events, resources, and more from the Dzaleka Refugee Camp community
-        </p>
+<MainLayout title={pageTitle} description={pageDescription} canonical={canonical} schema={schema}>
+  <main class="min-h-screen bg-gray-50 pb-12">
+    <div class="border-b border-gray-200 bg-white py-12 lg:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+          <div class="inline-flex items-center space-x-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-2 mb-6">
+            <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+            <span class="text-sm font-medium text-slate-700">Platform Search</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+            Search Dzaleka Services
+          </h1>
+          <p class="text-lg text-gray-600">
+            Find services, events, resources, and more from the Dzaleka community.
+          </p>
+        </div>
       </div>
-      
-      {/* Search Section */}
-      <div class="mb-12 relative z-20">
-        <div class="relative max-w-2xl mx-auto">
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 relative -mt-8 z-20">
+      <div class="mb-12 relative shadow-lg rounded-xl bg-white border border-gray-200 p-2">
+        <div class="relative w-full">
           <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <svg class="w-6 h-6 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
           </div>
           <input
             type="text"
             id="search-input"
-            class="block w-full p-4 pl-12 text-base text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 shadow-sm transition-shadow"
+            class="block w-full p-4 pl-14 text-lg text-gray-900 border-none rounded-lg bg-transparent focus:ring-0 focus:outline-none placeholder-gray-400"
             placeholder="Search for services, resources, events..."
             autocomplete="off"
           />
           <div id="loading-indicator" class="absolute right-4 top-4 hidden">
-            <svg class="animate-spin h-5 w-5 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin h-6 w-6 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
         </div>
+      </div>
 
-        {/* Popular Searches */}
-        <div id="popular-searches-container" class="mt-6 text-center">
-          <h3 class="text-sm font-medium text-gray-600 mb-3">Popular Searches</h3>
-          <div class="flex flex-wrap justify-center gap-2">
-            {['Community Services', 'Education', 'Health', 'Events', 'Jobs'].map(term => (
-              <button
-                class="popular-term-btn px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors border border-gray-200"
-                data-term={term}
-              >
-                {term}
-              </button>
-            ))}
-          </div>
+      <div id="popular-searches-container" class="mb-12 text-center">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Popular Searches</h3>
+        <div class="flex flex-wrap justify-center gap-2">
+          {['Community Services', 'Education', 'Health', 'Events', 'Jobs'].map(term => (
+            <button
+              class="popular-term-btn px-5 py-2.5 text-sm font-medium bg-white text-slate-700 rounded-full hover:bg-slate-50 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm"
+              data-term={term}
+            >
+              {term}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Results Section */}
       <div id="search-results" class="space-y-8 hidden">
-        <!-- Results will be injected here -->
       </div>
 
-      {/* No Results State */}
-      <div id="no-results" class="hidden text-center py-12">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div id="no-results" class="hidden text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-50 rounded-full mb-4 border border-slate-100">
+          <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No results found</h3>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">No results found</h3>
         <p class="text-gray-600">Try adjusting your search terms or browse our categories below.</p>
       </div>
 
-      {/* Default Content (Quick Access) - Hidden when searching */}
       <div id="default-content">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Quick Access</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="flex items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Quick Access</h2>
+          <div class="h-px bg-gray-200 flex-grow ml-4"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <a href="/community-voice" class="block group">
-            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
-              <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
-                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            <div class="bg-white rounded-xl p-6 border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center group-hover:bg-slate-100 transition-colors">
+                  <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-800">Community Voice</h3>
               </div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600">Community Voice</h3>
-              <p class="text-sm text-gray-600">Share your story and experiences</p>
+              <p class="text-sm text-gray-600 leading-relaxed">Share your story, listen to neighbors, and document your experiences in Dzaleka.</p>
             </div>
           </a>
+          
           <a href="/services" class="block group">
-            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
-              <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            <div class="bg-white rounded-xl p-6 border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center group-hover:bg-slate-100 transition-colors">
+                  <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-800">Services</h3>
               </div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600">Services</h3>
-              <p class="text-sm text-gray-600">Find local businesses and services</p>
+              <p class="text-sm text-gray-600 leading-relaxed">Find local businesses, informal trade, and official services running inside the camp.</p>
             </div>
           </a>
+          
           <a href="/events" class="block group">
-            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
-              <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-100 transition-colors">
-                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <div class="bg-white rounded-xl p-6 border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center group-hover:bg-slate-100 transition-colors">
+                  <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-800">Events</h3>
               </div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-600">Events</h3>
-              <p class="text-sm text-gray-600">Discover upcoming community events</p>
+              <p class="text-sm text-gray-600 leading-relaxed">Discover upcoming community events, cultural showcases, and group learning sessions.</p>
             </div>
           </a>
+          
           <a href="/resources" class="block group">
-            <div class="bg-white rounded-xl p-6 border border-gray-100 hover:border-primary-200 transition-colors h-full">
-              <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors">
-                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+            <div class="bg-white rounded-xl p-6 border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center group-hover:bg-slate-100 transition-colors">
+                  <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-800">Resources</h3>
               </div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-600">Resources</h3>
-              <p class="text-sm text-gray-600">Access guides and documents</p>
+              <p class="text-sm text-gray-600 leading-relaxed">Access educational guides, open datasets, and downloadable documents for the community.</p>
             </div>
           </a>
         </div>
@@ -121,7 +154,6 @@ const pageDescription = "Search for services, events, resources, and community s
   let searchIndex = [];
   let isLoading = false;
 
-  // Fetch search index on load
   async function loadSearchIndex() {
     try {
       const response = await fetch('/api/search-index.json');
@@ -131,7 +163,6 @@ const pageDescription = "Search for services, events, resources, and community s
     }
   }
 
-  // Initialize
   loadSearchIndex();
 
   const searchInput = document.getElementById('search-input');
@@ -141,7 +172,6 @@ const pageDescription = "Search for services, events, resources, and community s
   const loadingIndicator = document.getElementById('loading-indicator');
   const popularSearchesContainer = document.getElementById('popular-searches-container');
 
-  // Debounce function
   function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -154,7 +184,6 @@ const pageDescription = "Search for services, events, resources, and community s
     };
   }
 
-  // Search logic
   function performSearch(query) {
     if (!query.trim()) {
       resultsContainer.classList.add('hidden');
@@ -170,7 +199,6 @@ const pageDescription = "Search for services, events, resources, and community s
 
     const normalizedQuery = query.toLowerCase();
     
-    // Simple fuzzy search
     const results = searchIndex.filter(item => {
       const titleMatch = item.title?.toLowerCase().includes(normalizedQuery);
       const descMatch = item.description?.toLowerCase().includes(normalizedQuery);
@@ -180,7 +208,6 @@ const pageDescription = "Search for services, events, resources, and community s
       return titleMatch || descMatch || tagMatch || typeMatch;
     });
 
-    // Render results
     if (results.length > 0) {
       const groupedResults = results.reduce((acc, item) => {
         if (!acc[item.type]) acc[item.type] = [];
@@ -240,12 +267,10 @@ const pageDescription = "Search for services, events, resources, and community s
     loadingIndicator.classList.add('hidden');
   }
 
-  // Event listeners
   searchInput.addEventListener('input', debounce((e) => {
     performSearch(e.target.value);
   }, 300));
 
-  // Popular search buttons
   document.querySelectorAll('.popular-term-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const term = btn.dataset.term;

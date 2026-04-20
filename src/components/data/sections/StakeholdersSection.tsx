@@ -1,4 +1,3 @@
-import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import '../chartConfig';
 
@@ -104,8 +103,8 @@ const chartOptions = {
 export function StakeholdersSection() {
   return (
     <div className="space-y-8">
-      <div className="flex justify-center mb-8">
-        <div className="h-[300px] w-[700px]">
+      <div className="mb-8 flex justify-center">
+        <div className="h-[280px] w-full max-w-4xl sm:h-[320px]">
           <Doughnut options={chartOptions} data={chartData} />
         </div>
       </div>

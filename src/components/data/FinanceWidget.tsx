@@ -67,7 +67,7 @@ export function FinanceWidget() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap items-start justify-between gap-2">
         <h3 className="font-semibold text-gray-900">UNHCR Funding 2025</h3>
         <a
           href={data.source}

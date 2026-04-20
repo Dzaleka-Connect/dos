@@ -57,44 +57,39 @@ export function TimelineSection() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Camp History Timeline</h2>
-      
-      <div className="relative">
-        {/* Timeline line */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200"></div>
-        
-        {/* Timeline events */}
-        <div className="space-y-8">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Camp History Timeline</h3>
+
+      <div className="relative pl-8 md:pl-0">
+        <div className="absolute left-3 top-2 h-[calc(100%-1rem)] w-px bg-gray-200 md:left-1/2 md:-translate-x-1/2"></div>
+        <div className="space-y-6 md:space-y-8">
           {timelineEvents.map((event, index) => (
-            <div 
+            <div
               key={index}
-              className={`relative flex items-center ${
-                index % 2 === 0 ? 'justify-start' : 'justify-end'
+              className={`relative flex md:items-center ${
+                index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
               }`}
             >
-              {/* Year marker */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-24 text-center">
+              <div className="absolute left-0 top-5 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-24 md:text-center">
                 <span className="inline-block px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
                   {event.year}
                 </span>
               </div>
-              
-              {/* Event card */}
-              <div 
-                className={`w-5/12 p-4 bg-white rounded-lg shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow ${
+
+              <button
+                type="button"
+                className={`ml-10 w-full rounded-lg border border-gray-100 bg-white p-4 text-left shadow-sm transition-shadow hover:shadow-md md:ml-0 md:w-[calc(50%-2.5rem)] ${
                   selectedEvent?.year === event.year ? 'ring-2 ring-primary-500' : ''
                 }`}
                 onClick={() => setSelectedEvent(event)}
               >
                 <h3 className="text-lg font-medium text-gray-900">{event.title}</h3>
                 <p className="text-sm text-gray-600 mt-1">{event.description}</p>
-              </div>
+              </button>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Selected event details */}
       {selectedEvent && (
         <div className="mt-8 p-6 bg-gray-50 rounded-lg">
           <div className="flex items-center justify-between mb-4">

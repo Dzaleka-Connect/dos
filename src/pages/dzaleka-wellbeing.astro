@@ -1,0 +1,890 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../layouts/MainLayout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import NewsCard from '../components/NewsCard.astro';
+
+const pageTitle = 'Dzaleka Wellbeing';
+const description =
+  'Mental health and wellbeing support for the Dzaleka community. Talk to someone, find services, learn about mental health, or explore ways to stay well.';
+const canonical = 'https://services.dzaleka.com/dzaleka-wellbeing';
+
+const allServices = await getCollection('services');
+const serviceIds = [
+  'jrs-malawi', 'dzaleka-health-centre', 'dzaleka-home-based-care',
+  'iafr', 'fountain-of-hope-africa', 'there-is-hope-malawi',
+  'dzaleka-dojo', 'psychological-and-reflexology-reception-center',
+];
+const services = serviceIds
+  .map((id) => allServices.find((s) => s.id === id))
+  .filter(Boolean);
+
+const primaryIds = new Set(['jrs-malawi', 'dzaleka-health-centre', 'dzaleka-home-based-care']);
+const primarySupport = services.filter((s) => primaryIds.has(s!.id));
+const communitySupport = services.filter((s) => !primaryIds.has(s!.id));
+
+const allNews = await getCollection('news');
+const wellbeingResources = allNews
+  .filter(post => {
+    const tags = post.data.tags || [];
+    return tags.some(tag => ['mental health', 'wellbeing', 'health', 'healthcare'].includes(tag.toLowerCase()));
+  })
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+function cleanPhone(phone?: string) {
+  return phone ? phone.replace(/[^\d+]/g, '') : null;
+}
+function isExternal(url?: string) {
+  return Boolean(url && (url.startsWith('http://') || url.startsWith('https://')));
+}
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'MedicalWebPage',
+      name: pageTitle,
+      description,
+      url: canonical,
+      inLanguage: 'en',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Dzaleka Online Services',
+        url: 'https://services.dzaleka.com',
+      },
+      about: {
+        '@type': 'MedicalCondition',
+        name: 'Depression in refugee populations',
+        associatedAnatomy: { '@type': 'AnatomicalStructure', name: 'Brain' },
+      },
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['.wb-hero-title', '.wb-section-title', '.wb-topic-title'],
+      },
+      lastReviewed: '2026-04-20',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Dzaleka Wellbeing', item: canonical },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'What is the depression rate in Dzaleka Refugee Camp?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A 2022 study published in Psychiatry Research found a probable depression rate of 78% among the assessed sample in Dzaleka.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Where can I get mental health support in Dzaleka?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'JRS Malawi, Dzaleka Health Centre, IAFR, and several community organisations offer psychosocial support and counseling inside the camp.',
+          },
+        },
+      ],
+    },
+  ],
+};
+
+const keywords = 'Dzaleka mental health, refugee wellbeing, depression Dzaleka, psychosocial support Malawi, JRS counseling, refugee camp mental health, Dzaleka Refugee Camp, MHPSS';
+
+const openGraph = {
+  title: 'Dzaleka Wellbeing — Mental Health Support & Resources',
+  description,
+  type: 'website',
+  url: canonical,
+  site_name: 'Dzaleka Online Services',
+  locale: 'en_US',
+};
+
+const twitter = {
+  card: 'summary_large_image' as const,
+  title: 'Dzaleka Wellbeing — Mental Health Support & Resources',
+  description,
+};
+---
+
+<MainLayout
+  title={`${pageTitle} | Dzaleka Online Services`}
+  description={description}
+  canonical={canonical}
+  schema={schema}
+  keywords={keywords}
+  openGraph={openGraph}
+  twitter={twitter}
+>
+
+  <div class="wb-crisis-strip" role="alert">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
+      <p class="text-sm text-white">
+        <strong>Need urgent help?</strong> If you or someone you know is in immediate danger or at risk of suicide, please act now.
+      </p>
+      <div class="flex gap-2">
+        <a href="/get-help-now" class="wb-crisis-btn">Get help now</a>
+        <a href="/easy-read/getting-help" class="wb-crisis-btn-alt">Easy read version</a>
+      </div>
+    </div>
+  </div>
+
+
+  <main class="wb-page">
+
+    <section class="wb-hero">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="py-6">
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Dzaleka Wellbeing' },
+          ]} />
+        </div>
+
+        <div class="pb-16 pt-4 text-center">
+          <h1 class="wb-hero-title">
+            What can we help you<br class="hidden sm:inline" /> with today?
+          </h1>
+          <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+            Whether you need someone to talk to, want to understand how you're feeling,
+            or are here to support someone else — we're here for you.
+          </p>
+        </div>
+
+        <div class="wb-audience-selector" id="audience-tabs" role="tablist">
+          <button class="wb-audience-tab wb-audience-tab--active" data-tab="myself" role="tab" aria-selected="true">
+            I need support for myself
+          </button>
+          <button class="wb-audience-tab" data-tab="someone" role="tab" aria-selected="false">
+            I'm supporting someone else
+          </button>
+          <button class="wb-audience-tab" data-tab="understand" role="tab" aria-selected="false">
+            I want to understand the context
+          </button>
+        </div>
+
+        <div class="wb-tab-panel wb-tab-panel--active" id="panel-myself">
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <a href="/get-help-now" class="wb-pathway-card wb-pathway-card--urgent">
+              <div class="wb-pathway-icon wb-pathway-icon--urgent">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">I need urgent help</h3>
+              <p class="wb-pathway-desc">Crisis contacts, hotlines, and what to do if you or someone is in immediate danger.</p>
+            </a>
+
+            <a href="#find-support" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Talk to someone</h3>
+              <p class="wb-pathway-desc">Connect with JRS counseling, IAFR, the health centre, or a trusted community support provider.</p>
+            </a>
+
+            <a href="#learn" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Learn about mental health</h3>
+              <p class="wb-pathway-desc">Understand depression, trauma, anxiety, grief, and what they feel like in the Dzaleka context.</p>
+            </a>
+
+            <a href="#stay-well" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Look after your wellbeing</h3>
+              <p class="wb-pathway-desc">Practical things you can do today — faith, sport, creative work, community connection, and daily habits.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="wb-tab-panel" id="panel-someone">
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="#practical-guide" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Practical guide</h3>
+              <p class="wb-pathway-desc">What to say, what not to say, and concrete steps you can take when someone you care about is struggling.</p>
+            </a>
+
+            <a href="#youth" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Supporting a young person</h3>
+              <p class="wb-pathway-desc">Youth-specific guidance for parents, caregivers, teachers, mentors, and friends.</p>
+            </a>
+
+            <a href="/get-help-now" class="wb-pathway-card wb-pathway-card--urgent">
+              <div class="wb-pathway-icon wb-pathway-icon--urgent">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">If someone is in danger</h3>
+              <p class="wb-pathway-desc">Go to the urgent help page immediately. Do not leave them alone if possible.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="wb-tab-panel" id="panel-understand">
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="#the-situation" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">The mental health situation</h3>
+              <p class="wb-pathway-desc">Key data, research findings, and what the numbers actually mean for daily life in Dzaleka.</p>
+            </a>
+
+            <a href="#why-it-happens" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Why it's happening</h3>
+              <p class="wb-pathway-desc">Structural root causes: encampment, overcrowding, funding cuts, blocked livelihoods, and policy.</p>
+            </a>
+
+            <a href="#evidence-base" class="wb-pathway-card">
+              <div class="wb-pathway-icon">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              </div>
+              <h3 class="wb-pathway-title">Evidence and sources</h3>
+              <p class="wb-pathway-desc">Peer-reviewed research, UNHCR data, and the full reference trail behind this page.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="find-support" class="wb-section">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="wb-section-header">
+          <h2 class="wb-section-title">Find support in Dzaleka</h2>
+          <p class="wb-section-desc">
+            We all have hard days. Sometimes things feel impossible. Having someone to talk to
+            — someone who listens without judgment — can make a real difference. These services
+            are available inside Dzaleka Camp.
+          </p>
+        </div>
+
+        <h3 class="wb-subsection-title">Start here</h3>
+        <div class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {primarySupport.map((s) => (
+            <article class="wb-service-card wb-service-card--primary">
+              <p class="wb-service-category">{s!.data.category}</p>
+              <h4 class="wb-service-name">{s!.data.title}</h4>
+              {s!.data.verified && <span class="wb-badge wb-badge--verified">Verified</span>}
+              <p class="mt-3 text-sm leading-7 text-slate-600">{s!.data.description}</p>
+              <dl class="mt-4 space-y-1.5 text-sm">
+                {s!.data.contact?.phone && (
+                  <div><dt class="inline font-semibold text-slate-900">Phone: </dt><dd class="inline text-slate-600">{s!.data.contact.phone}</dd></div>
+                )}
+                {s!.data.contact?.hours && (
+                  <div><dt class="inline font-semibold text-slate-900">Hours: </dt><dd class="inline text-slate-600">{s!.data.contact.hours}</dd></div>
+                )}
+                {s!.data.location?.address && (
+                  <div><dt class="inline font-semibold text-slate-900">Location: </dt><dd class="inline text-slate-600">{s!.data.location.address}</dd></div>
+                )}
+              </dl>
+              <div class="mt-5 flex flex-wrap gap-3">
+                <a href={`/services/${s!.id}`} class="wb-btn-primary">Open service page</a>
+                {cleanPhone(s!.data.contact?.phone) && (
+                  <a href={`tel:${cleanPhone(s!.data.contact?.phone)}`} class="wb-btn-secondary">Call</a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <h3 class="wb-subsection-title mt-12">Community and wellbeing support</h3>
+        <div class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {communitySupport.map((s) => (
+            <article class="wb-service-card">
+              <p class="wb-service-category">{s!.data.category}</p>
+              <h4 class="wb-service-name">{s!.data.title}</h4>
+              <p class="mt-3 text-sm leading-7 text-slate-600">{s!.data.description}</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                {s!.data.contact?.phone && <span class="wb-contact-pill">{s!.data.contact.phone}</span>}
+                {s!.data.contact?.email && <span class="wb-contact-pill">{s!.data.contact.email}</span>}
+              </div>
+              <div class="mt-5 flex flex-wrap gap-3">
+                <a href={`/services/${s!.id}`} class="wb-btn-secondary">Open service page</a>
+                {s!.data.socialMedia?.website && (
+                  <a href={s!.data.socialMedia.website} target="_blank" rel="noopener noreferrer" class="wb-btn-secondary">Visit website</a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p class="mt-8 text-sm text-slate-500">
+          Contact details can change. Treat these as a starting point and confirm before traveling if you can.
+          <a href="/services" class="ml-1 font-semibold text-slate-700 underline hover:text-slate-900">Browse all services →</a>
+        </p>
+      </div>
+    </section>
+
+
+    <section id="learn" class="wb-section wb-section--alt">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="wb-section-header">
+          <h2 class="wb-section-title">Learn about mental health</h2>
+          <p class="wb-section-desc">
+            Understanding what you're feeling is a powerful step. Mental health is not something that happens to "other people" — in Dzaleka, the research shows it affects nearly everyone. Here's what to know.
+          </p>
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="wb-topic-card flex flex-col">
+            <h3 class="wb-topic-title">Depression</h3>
+            <p class="wb-topic-label">78% probable rate in the 2022 study</p>
+            <p class="wb-topic-desc flex-grow">
+              More than just feeling sad. Depression in Dzaleka often looks like exhaustion, losing interest in things, feeling nothing, sleeping too much or too little, or not caring about the future. It is not a weakness — it is a response to impossible conditions.
+            </p>
+            <a href="/dzaleka-wellbeing/the-research" class="mt-4 font-semibold text-slate-900 underline hover:text-slate-700">Read the research →</a>
+          </article>
+
+          <article class="wb-topic-card">
+            <h3 class="wb-topic-title">Trauma and PTSD</h3>
+            <p class="wb-topic-label">Many residents carry pre-migration trauma</p>
+            <p class="wb-topic-desc">
+              Flashbacks, nightmares, being easily startled, avoiding places or people — these can be signs of unprocessed trauma from violence, displacement, or loss. The body remembers what the mind tries to forget.
+            </p>
+          </article>
+
+          <article class="wb-topic-card">
+            <h3 class="wb-topic-title">Anxiety and constant worry</h3>
+            <p class="wb-topic-label">"Msongo wa mawazo" — too many thoughts</p>
+            <p class="wb-topic-desc">
+              A racing mind that won't stop. Worrying about food, safety, family, resettlement, documents. In Swahili it's often called <em>msongo wa mawazo</em> — when thoughts pile up and the body starts showing it through headaches, chest pain, or stomach problems.
+            </p>
+          </article>
+
+          <article class="wb-topic-card">
+            <h3 class="wb-topic-title">Grief and loss</h3>
+            <p class="wb-topic-label">"Huzuni" — deep, abiding sadness</p>
+            <p class="wb-topic-desc">
+              Losing a home, a country, a parent, a child, a language, a sense of who you are. Grief in Dzaleka is rarely about one event — it is ongoing, because the loss doesn't end. Many people carry it silently for years.
+            </p>
+          </article>
+
+          <article class="wb-topic-card">
+            <h3 class="wb-topic-title">Suicidal thoughts</h3>
+            <p class="wb-topic-label">25.5% reported formulating a plan</p>
+            <p class="wb-topic-desc">
+              If you are having thoughts of ending your life, please know: you are not alone, this is not your fault, and help exists. Go to <a href="/get-help-now" class="font-semibold text-slate-900 underline">Get help now</a> or talk to someone you trust today.
+            </p>
+          </article>
+
+          <article class="wb-topic-card flex flex-col">
+            <h3 class="wb-topic-title">The "waiting room" feeling</h3>
+            <p class="wb-topic-label">Learned helplessness from indefinite encampment</p>
+            <p class="wb-topic-desc flex-grow">
+              Waking up with nothing to do, nowhere to go, no rights to work, and no timeline for anything to change. This isn't laziness — it's what happens when the human need for purpose and progress is systematically blocked.
+            </p>
+            <a href="/dzaleka-wellbeing/structural-causes" class="mt-4 font-semibold text-slate-900 underline hover:text-slate-700">Read about structural causes →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="stay-well" class="wb-section">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="wb-section-header">
+          <h2 class="wb-section-title">Look after your wellbeing</h2>
+          <p class="wb-section-desc">
+            You don't have to wait until things are bad to start looking after yourself. Even small things — done regularly — can make a difference.
+          </p>
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="wb-wellbeing-card">
+            <span class="wb-wellbeing-number">01</span>
+            <h3 class="wb-wellbeing-title">Break the stigma</h3>
+            <p class="wb-wellbeing-desc">Mental health is health. Naming trauma, exhaustion, fear, and hopelessness without shame is often the first step toward care.</p>
+          </div>
+          <div class="wb-wellbeing-card">
+            <span class="wb-wellbeing-number">02</span>
+            <h3 class="wb-wellbeing-title">Seek counseling</h3>
+            <p class="wb-wellbeing-desc">Use JRS, IAFR, the health centre, or a trusted referral partner. You do not need to be "crazy" to ask for help. Most people who seek support look and function like everyone else.</p>
+          </div>
+          <div class="wb-wellbeing-card">
+            <span class="wb-wellbeing-number">03</span>
+            <h3 class="wb-wellbeing-title">Build skills and purpose</h3>
+            <p class="wb-wellbeing-desc">Futurelessness deepens distress. Even small projects — <a href="/e-learning" class="underline">learning</a>, <a href="/skills-exchange" class="underline">teaching someone else</a>, creating — can help restore momentum.</p>
+          </div>
+          <div class="wb-wellbeing-card">
+            <span class="wb-wellbeing-number">04</span>
+            <h3 class="wb-wellbeing-title">Stay connected</h3>
+            <p class="wb-wellbeing-desc">Faith groups, sports, art, peer support, and events like the <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="underline">Tumaini Festival</a> reduce isolation and strengthen everyday resilience.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="youth" class="wb-section-dark">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-400">Focus area</p>
+            <h2 class="mt-3 text-3xl font-bold tracking-tight text-white">Supporting young people</h2>
+            <p class="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+              Youth disenfranchisement is one of the sharpest wellbeing challenges in Dzaleka. When education no longer opens a believable future, emotional strain deepens. If you're a parent, caregiver, teacher, sibling, or mentor — there are things you can do.
+            </p>
+            <div class="mt-8 space-y-4 text-sm leading-7 text-slate-300">
+              <p><strong class="text-white">Listen without judgment.</strong> Ask open questions. Don't tell them to "be strong" or "think positive" — just be present.</p>
+              <p><strong class="text-white">Watch for changes.</strong> Withdrawal, anger, substance use, loss of interest, giving away possessions, or talking about being a burden can be signs of serious distress.</p>
+              <p><strong class="text-white">Help them take the next step.</strong> Walk with them to JRS, the health centre, or a trusted adult. Don't leave a young person in crisis alone.</p>
+              <p><strong class="text-white">Take care of yourself too.</strong> Supporting someone in pain is exhausting. You need your own support network.</p>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="/dzaleka-wellbeing/supporting-someone" class="wb-btn-primary bg-white text-slate-900 hover:bg-slate-100">Read the caregiver guide</a>
+              <a href="/e-learning" class="wb-btn-secondary border-slate-600 text-white hover:bg-slate-800">Explore learning pathways</a>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="rounded-xl border border-white/10 bg-white/5 p-6">
+              <p class="text-3xl font-bold text-white">78%</p>
+              <p class="mt-2 text-sm font-semibold text-slate-300">Depression rate in study sample</p>
+              <p class="mt-2 text-xs text-slate-400">A serious research signal from the 2022 Psychiatry Research paper.</p>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-white/5 p-6">
+              <p class="text-3xl font-bold text-white">53%</p>
+              <p class="mt-2 text-sm font-semibold text-slate-300">Report frequent thoughts of death</p>
+              <p class="mt-2 text-xs text-slate-400">More than half of assessed individuals.</p>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-white/5 p-6">
+              <p class="text-3xl font-bold text-white">478%</p>
+              <p class="mt-2 text-sm font-semibold text-slate-300">Camp overcrowding factor</p>
+              <p class="mt-2 text-xs text-slate-400">57,000+ people in a space designed for 12,000.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="practical-guide" class="wb-section wb-section--alt">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <div class="wb-section-header" style="text-align: left;">
+              <h2 class="wb-section-title">Practical next steps</h2>
+              <p class="wb-section-desc">
+                Whether you need support for yourself or you're helping someone else — these are concrete things you can do today.
+              </p>
+            </div>
+
+            <ol class="mt-8 space-y-4">
+              <li class="wb-step-item">
+                <span class="wb-step-bullet">1</span>
+                <span>If you feel unsafe or have thoughts of self-harm, start with <a href="/get-help-now" class="font-semibold underline">Get help now</a> and seek in-person support as quickly as possible.</span>
+              </li>
+              <li class="wb-step-item">
+                <span class="wb-step-bullet">2</span>
+                <span>Do not wait for the problem to become unbearable. Many people describe distress as tiredness, pain, fear, "too many thoughts", or a feeling of having no future.</span>
+              </li>
+              <li class="wb-step-item">
+                <span class="wb-step-bullet">3</span>
+                <span>If language is a barrier, tell the person helping you which language you need. Ask them to help you find someone who speaks it.</span>
+              </li>
+              <li class="wb-step-item">
+                <span class="wb-step-bullet">4</span>
+                <span>If formal counseling feels too big a step, start with a church leader, home-based care team, sport group, or health worker you trust.</span>
+              </li>
+              <li class="wb-step-item">
+                <span class="wb-step-bullet">5</span>
+                <span>If you are helping someone else: stay calm, listen, avoid judgment, and help them move toward in-person care. Do not leave someone in crisis alone.</span>
+              </li>
+            </ol>
+          </div>
+
+          <aside class="space-y-6">
+            <div class="wb-info-box">
+              <h3 class="wb-info-title">This page is a guide, not a diagnosis</h3>
+              <p class="wb-info-desc">It helps people find support pathways and understand the context. It does not replace medical care, crisis intervention, or professional assessment.</p>
+            </div>
+            <div class="wb-info-box">
+              <h3 class="wb-info-title">Need it in simpler language?</h3>
+              <p class="wb-info-desc">The <a href="/easy-read/getting-help" class="font-semibold underline">Easy Read: Getting Help</a> page covers the most important steps in clear, short sentences.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="the-situation" class="wb-section">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="wb-section-header">
+          <h2 class="wb-section-title">The mental health situation in Dzaleka</h2>
+          <p class="wb-section-desc">
+            This is not a normal camp, and these are not normal numbers. The research shows a community where depression, suicidal thinking, and trauma are closer to universal than exceptional.
+          </p>
+        </div>
+
+        <div class="grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="wb-stat-cell">
+            <p class="wb-stat-value">78%</p>
+            <p class="wb-stat-label">Probable depression</p>
+            <p class="wb-stat-note">Global average: ~3.8%</p>
+          </div>
+          <div class="wb-stat-cell">
+            <p class="wb-stat-value">53%</p>
+            <p class="wb-stat-label">Thoughts of death</p>
+            <p class="wb-stat-note">More than half of assessed individuals</p>
+          </div>
+          <div class="wb-stat-cell">
+            <p class="wb-stat-value">25.5%</p>
+            <p class="wb-stat-label">Suicidal planning</p>
+            <p class="wb-stat-note">1 in 4 formulated a plan</p>
+          </div>
+          <div class="wb-stat-cell">
+            <p class="wb-stat-value">15%</p>
+            <p class="wb-stat-label">Suicide attempts</p>
+            <p class="wb-stat-note">In the 12 months prior to study</p>
+          </div>
+        </div>
+        <p class="mt-3 text-center text-xs text-slate-500">
+          Source: <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="underline">Psychiatry Research, 2022</a> (study sample, not full census). <a href="/dzaleka-wellbeing/the-research" class="ml-1 font-semibold text-slate-700 hover:text-slate-900 underline">Read our research summary →</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="why-it-happens" class="wb-section wb-section--alt">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="wb-section-header">
+          <h2 class="wb-section-title">Why it's happening</h2>
+          <p class="wb-section-desc">
+            The mental health crisis in Dzaleka is structural, not just clinical. Understanding the root causes matters — especially if you are an advocate, researcher, or policy maker.
+          </p>
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <article class="wb-context-card">
+            <h3 class="wb-context-title">Encampment policy</h3>
+            <p class="wb-context-desc">The strict encampment policy restricts refugees from seeking employment outside the camp, forcing reliance on dwindling food rations. This loss of agency is a textbook precursor to "learned helplessness."</p>
+          </article>
+          <article class="wb-context-card">
+            <h3 class="wb-context-title">Overcrowding</h3>
+            <p class="wb-context-desc">Originally built for 12,000 people, the camp now hosts over 57,000. Large families crammed into single rooms, 324 communal latrines, zero privacy. The physical environment is a stressor.</p>
+          </article>
+          <article class="wb-context-card">
+            <h3 class="wb-context-title">Funding collapse</h3>
+            <p class="wb-context-desc">UNHCR has secured only 12–18% of required funding. WFP rations cut to 75%. Plan International withdrew. Health staff unpaid for months. The safety net has been stripped away.</p>
+          </article>
+          <article class="wb-context-card">
+            <h3 class="wb-context-title">The treatment gap</h3>
+            <p class="wb-context-desc">Severe distress remains untreated because people present with headaches, fatigue, or "too many thoughts" — not "depression." 78% prevalence, 2–3% service utilization.</p>
+          </article>
+          <article class="wb-context-card">
+            <h3 class="wb-context-title">Language barriers</h3>
+            <p class="wb-context-desc">Patients speak Kinyarwanda, Kirundi, Swahili, Somali, or Oromo. Clinicians often speak only English or Chichewa. Nuanced descriptions of emotional pain are lost in translation.</p>
+          </article>
+          <article class="wb-context-card">
+            <h3 class="wb-context-title">Blocked futures</h3>
+            <p class="wb-context-desc">Repatriation impossible. Local integration legally barred. Resettlement won by less than 1% annually. Young adults who finish education find themselves with nothing to do, nowhere to go.</p>
+          </article>
+        </div>
+        
+        <div class="mt-8 text-center">
+          <a href="/dzaleka-wellbeing/structural-causes" class="wb-btn-secondary">Read the full structural deep-dive →</a>
+        </div>
+      </div>
+    </section>
+
+    {wellbeingResources.length > 0 && (
+      <section id="resources" class="wb-section">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="wb-section-header">
+            <h2 class="wb-section-title">Helpful resources and updates</h2>
+            <p class="wb-section-desc">
+              Community news, programmatic updates, and new resources related to mental health and wellbeing in Dzaleka.
+            </p>
+          </div>
+          
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {wellbeingResources.map(resource => (
+              <NewsCard news={resource} />
+            ))}
+          </div>
+          
+          <div class="mt-8 text-center border-t border-slate-200 pt-8">
+            <a href="/news" class="wb-btn-secondary border-slate-300">View all news</a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section id="evidence-base" class="wb-section-dark">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="wb-section-header">
+          <h2 class="wb-section-title text-white">Sources and evidence</h2>
+          <p class="wb-section-desc text-slate-300">
+            This page draws on peer-reviewed research, UNHCR operational data, and reporting from the humanitarian sector. We distinguish between evidence that makes clinical claims and contextual sources that provide background.
+          </p>
+        </div>
+
+        <div class="grid gap-6 xl:grid-cols-3">
+          <div class="wb-source-group">
+            <h3 class="text-lg font-bold text-white">Core evidence</h3>
+            <p class="mt-2 text-sm text-slate-400">Peer-reviewed and official data behind the numbers on this page.</p>
+            <div class="mt-5 space-y-3">
+              <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>PubMed: Refugees' mental health — Dzaleka</strong>
+                <span>Primary abstract for the 2022 Psychiatry Research paper.</span>
+              </a>
+              <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>UNHCR Malawi Fact Sheet (August 2024)</strong>
+                <span>Official population data for Dzaleka.</span>
+              </a>
+              <a href="https://www.unhcr.org/sites/default/files/2025-06/Malawi%20ARR%202024.pdf" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>UNHCR Annual Results Report 2024</strong>
+                <span>Operational context for the Malawi refugee response.</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="wb-source-group">
+            <h3 class="text-lg font-bold text-white">Operational & advocacy</h3>
+            <p class="mt-2 text-sm text-slate-400">Why wellbeing is inseparable from funding, rights, and policy.</p>
+            <div class="mt-5 space-y-3">
+              <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>Funding cuts push Dzaleka to the brink</strong>
+                <span>FairPlanet reporting on shrinking humanitarian support.</span>
+              </a>
+              <a href="https://www.hrw.org/world-report/2024/country-chapters/malawi" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>World Report 2024: Malawi — HRW</strong>
+                <span>Rights environment including refugee policy context.</span>
+              </a>
+              <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>Community-based mental health support (IATI)</strong>
+                <span>Programme-level activity data for MHPSS.</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="wb-source-group">
+            <h3 class="text-lg font-bold text-white">Community resilience</h3>
+            <p class="mt-2 text-sm text-slate-400">Service models, community examples, and further reading.</p>
+            <div class="mt-5 space-y-3">
+              <a href="https://apr.jrs.net/en/programme/mental-health-and-psychosocial-support-mhpss/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>JRS: MHPSS Programme</strong>
+                <span>The psychosocial accompaniment model used by JRS.</span>
+              </a>
+              <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>Tumaini Festival</strong>
+                <span>Refugee-led cultural work that supports dignity and wellbeing.</span>
+              </a>
+              <a href="https://match-foundation.com/2025/03/20/mental-health-through-sports-at-dzaleka-camp/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>Mental Health Through Sports</strong>
+                <span>Sports-based wellbeing support for youth.</span>
+              </a>
+              <a href="https://reframe.network/rlo/art-for-hope" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+                <strong>Art for Hope</strong>
+                <span>Arts-based community wellbeing work.</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="border-t border-slate-200 bg-white py-8 mt-12">
+      <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="text-sm text-slate-600">
+          <strong>Help us keep this page accurate.</strong> We strive to provide reliable and up-to-date information for the community. If you notice any incorrect details, outdated services, or missing context, please <a href="/contact" class="font-semibold text-slate-900 underline hover:text-slate-700">contact us to suggest an update</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</MainLayout>
+
+
+<style>
+
+  .wb-page { background: #f8fafc; }
+
+  .wb-crisis-strip { background: #0f172a; position: sticky; top: 0; z-index: 50; }
+  .wb-crisis-btn {
+    display: inline-flex; align-items: center; border-radius: 6px;
+    background: #dc2626; padding: 6px 14px; font-size: 13px; font-weight: 700;
+    color: #fff; transition: background 0.15s;
+  }
+  .wb-crisis-btn:hover { background: #b91c1c; }
+  .wb-crisis-btn-alt {
+    display: inline-flex; align-items: center; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px;
+    font-size: 13px; font-weight: 600; color: #fff; transition: all 0.15s;
+  }
+  .wb-crisis-btn-alt:hover { border-color: rgba(255,255,255,0.5); }
+
+  .wb-hero { background: #fff; border-bottom: 1px solid #e2e8f0; padding-bottom: 3rem; }
+  .wb-hero-title {
+    font-size: 2.5rem; font-weight: 800; letter-spacing: -0.025em;
+    color: #0f172a; line-height: 1.15;
+  }
+  @media (min-width: 640px) { .wb-hero-title { font-size: 3.25rem; } }
+
+  .wb-audience-selector {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
+    background: #f1f5f9; border-radius: 12px; padding: 4px;
+    margin-bottom: 2rem; max-width: 720px; margin-left: auto; margin-right: auto;
+  }
+  .wb-audience-tab {
+    padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    color: #64748b; background: transparent; border: none; cursor: pointer;
+    transition: all 0.15s; flex: 1; min-width: 180px; text-align: center;
+  }
+  .wb-audience-tab:hover { color: #334155; }
+  .wb-audience-tab--active { background: #fff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+  .wb-tab-panel { display: none; padding-bottom: 1rem; }
+  .wb-tab-panel--active { display: block; }
+
+  .wb-pathway-card {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; background: #fff; border: 1px solid #e2e8f0;
+    border-radius: 12px; padding: 2rem 1.5rem; transition: all 0.15s;
+  }
+  .wb-pathway-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
+  .wb-pathway-card--urgent { border-color: #fecaca; background: #fef2f2; }
+  .wb-pathway-card--urgent:hover { border-color: #fca5a5; }
+
+  .wb-pathway-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 56px; height: 56px; border-radius: 50%; background: #f1f5f9;
+    color: #334155; margin-bottom: 1rem;
+  }
+  .wb-pathway-icon--urgent { background: #fee2e2; color: #991b1b; }
+
+  .wb-pathway-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
+  .wb-pathway-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.7; color: #64748b; }
+
+  .wb-section { padding: 4rem 0; }
+  .wb-section--alt { background: #fff; }
+  .wb-section-dark { background: #0f172a; color: #fff; }
+
+  .wb-section-header { max-width: 640px; margin-bottom: 2.5rem; }
+  .wb-section-title { font-size: 1.875rem; font-weight: 800; color: #0f172a; letter-spacing: -0.015em; }
+  .wb-section-desc { margin-top: 1rem; font-size: 1rem; line-height: 1.75; color: #64748b; }
+  .wb-subsection-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; }
+
+  .wb-btn-primary {
+    display: inline-flex; align-items: center; border-radius: 8px; background: #0f172a;
+    padding: 10px 20px; font-size: 14px; font-weight: 600; color: #fff; transition: background 0.15s;
+  }
+  .wb-btn-primary:hover { background: #1e293b; }
+  .wb-btn-secondary {
+    display: inline-flex; align-items: center; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155; transition: all 0.15s;
+  }
+  .wb-btn-secondary:hover { border-color: #94a3b8; background: #f8fafc; }
+
+  .wb-service-card {
+    display: flex; flex-direction: column; background: #fff; border: 1px solid #e2e8f0;
+    border-radius: 12px; padding: 1.5rem; transition: box-shadow 0.15s;
+  }
+  .wb-service-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .wb-service-card--primary { background: #f0fdf4; border-color: #bbf7d0; }
+  .wb-service-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; }
+  .wb-service-name { margin-top: 6px; font-size: 1.125rem; font-weight: 700; color: #0f172a; }
+  .wb-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px; position: absolute; top: 1.5rem; right: 1.5rem; }
+  .wb-badge--verified { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+  .wb-contact-pill { background: #f1f5f9; border-radius: 100px; padding:  3px 12px; font-size: 12px; color: #475569; }
+
+  .wb-topic-card {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
+    transition: all 0.15s;
+  }
+  .wb-topic-card:hover { background: #fff; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  .wb-topic-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+  .wb-topic-label { margin-top: 4px; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+  .wb-topic-desc { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.75; color: #475569; }
+
+  .wb-wellbeing-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
+    transition: box-shadow 0.15s;
+  }
+  .wb-wellbeing-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .wb-wellbeing-number { font-size: 13px; font-weight: 800; color: #94a3b8; }
+  .wb-wellbeing-title { margin-top: 0.5rem; font-size: 1.125rem; font-weight: 700; color: #0f172a; }
+  .wb-wellbeing-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.75; color: #64748b; }
+
+  .wb-step-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem;
+    font-size: 0.875rem; line-height: 1.75; color: #334155;
+  }
+  .wb-step-bullet {
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 50%; background: #0f172a;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+
+  .wb-info-box {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
+  }
+  .wb-info-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
+  .wb-info-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.75; color: #64748b; }
+
+  .wb-context-card {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
+    transition: all 0.15s;
+  }
+  .wb-context-card:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  .wb-context-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
+  .wb-context-desc { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.75; color: #475569; }
+
+  .wb-stat-cell { background: #fff; padding: 1.5rem; text-align: center; }
+  .wb-stat-value { font-size: 2.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; }
+  .wb-stat-label { margin-top: 0.25rem; font-size: 0.875rem; font-weight: 600; color: #0f172a; }
+  .wb-stat-note { margin-top: 0.25rem; font-size: 0.75rem; color: #94a3b8; }
+
+  .wb-source-group { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; }
+  .wb-source-link {
+    display: block; padding: 1rem; border-radius: 8px; background: rgba(15,23,42,0.5);
+    border: 1px solid rgba(255,255,255,0.06); transition: all 0.15s;
+  }
+  .wb-source-link:hover { border-color: rgba(255,255,255,0.2); background: rgba(15,23,42,0.7); }
+  .wb-source-link strong { display: block; font-size: 13px; color: #fff; }
+  .wb-source-link span { display: block; margin-top: 4px; font-size: 12px; color: #94a3b8; line-height: 1.5; }
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.wb-audience-tab');
+    const panels = document.querySelectorAll('.wb-tab-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-tab');
+
+        tabs.forEach(t => {
+          t.classList.remove('wb-audience-tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('wb-audience-tab--active');
+        tab.setAttribute('aria-selected', 'true');
+
+        panels.forEach(p => {
+          p.classList.remove('wb-tab-panel--active');
+          if (p.id === `panel-${target}`) {
+            p.classList.add('wb-tab-panel--active');
+          }
+        });
+      });
+    });
+  });
+</script>

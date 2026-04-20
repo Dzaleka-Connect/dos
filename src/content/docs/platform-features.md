@@ -63,4 +63,6 @@ Dzaleka Online Services is not one tool. It is a public site made up of support 
 
 - [Getting Started](/docs/getting-started)
 - [About Dzaleka Online Services](/docs/about)
+- [Platform Principles](/docs/platform-principles)
+- [Documentation Roadmap](/docs/documentation-roadmap)
 - [Agent Access](/docs/agent-access-guide)

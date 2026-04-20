@@ -2,7 +2,7 @@
 title: API Documentation
 description: Public API, discovery endpoints, and agent access notes for Dzaleka Online Services
 section: developers
-lastUpdated: 2026-04-18
+lastUpdated: 2026-04-19
 ---
 
 # Dzaleka Online Services API
@@ -17,6 +17,7 @@ Use this page when you need the stable routes and request patterns. Use the live
 - API base: `https://services.dzaleka.com/api`
 - OpenAPI: `https://services.dzaleka.com/api/openapi.json`
 - API catalog: `https://services.dzaleka.com/.well-known/api-catalog`
+- MCP Server Card: `https://services.dzaleka.com/.well-known/mcp/server-card.json`
 - Status: `https://services.dzaleka.com/api/status`
 
 ## Authentication and limits
@@ -162,6 +163,7 @@ These expect JSON request bodies and are tied to specific public workflows.
 For automated API discovery, use:
 
 - `/.well-known/api-catalog`
+- `/.well-known/mcp/server-card.json`
 - `/api/openapi.json`
 - `/api/status`
 
@@ -177,7 +179,11 @@ The browser default remains HTML.
 
 On supported browsers, the site also exposes read-only WebMCP tools for search, services search, weather summary, urgent help contacts, language support routes, and newcomer first steps.
 
+The MCP Server Card describes that browser-side tool surface and is published at `/.well-known/mcp/server-card.json`.
+
 ## Related pages
 
 - [API Docs](/api-docs)
 - [Agent Access](/docs/agent-access-guide)
+- [Platform Principles](/docs/platform-principles)
+- [Documentation Roadmap](/docs/documentation-roadmap)

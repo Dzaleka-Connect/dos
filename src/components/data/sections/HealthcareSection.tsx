@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import '../chartConfig';
 
@@ -138,7 +137,7 @@ export function HealthcareSection() {
   return (
     <div className="space-y-8">
       <div className="flex justify-center">
-        <div className="h-[400px] w-[600px]">
+        <div className="h-[320px] w-full max-w-3xl sm:h-[400px]">
           <Bar options={chartOptions} data={chartData} />
         </div>
       </div>

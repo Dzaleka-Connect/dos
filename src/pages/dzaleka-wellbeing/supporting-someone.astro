@@ -1,0 +1,314 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const pageTitle = 'Supporting Someone — Dzaleka Wellbeing';
+const description =
+  'A practical guide for parents, caregivers, teachers, mentors, and friends supporting someone with mental health challenges in Dzaleka Refugee Camp.';
+const canonical = 'https://services.dzaleka.com/dzaleka-wellbeing/supporting-someone';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'HowTo',
+      name: 'How to support someone with mental health challenges in Dzaleka',
+      description,
+      url: canonical,
+      step: [
+        { '@type': 'HowToStep', text: 'Start a conversation without judgment.' },
+        { '@type': 'HowToStep', text: 'Watch for warning signs like withdrawal, anger, or substance use.' },
+        { '@type': 'HowToStep', text: 'Help them connect with a trusted service like JRS or Dzaleka Health Centre.' },
+        { '@type': 'HowToStep', text: 'Look after your own wellbeing as a supporter.' },
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Dzaleka Wellbeing', item: 'https://services.dzaleka.com/dzaleka-wellbeing' },
+        { '@type': 'ListItem', position: 3, name: 'Supporting Someone', item: canonical },
+      ],
+    },
+  ],
+};
+
+const keywords = 'supporting someone mental health, refugee caregiver guide, Dzaleka mental health support, how to help someone depressed, youth mental health Dzaleka';
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema} keywords={keywords}>
+
+  <div class="wbs-crisis-strip" role="alert">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
+      <p class="text-sm text-white">
+        <strong>Need urgent help?</strong> If someone is in immediate danger or at risk of suicide, please act now.
+      </p>
+      <a href="/get-help-now" class="wbs-crisis-btn">Get help now</a>
+    </div>
+  </div>
+
+  <main class="wbs-page">
+    <div class="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Dzaleka Wellbeing', href: '/dzaleka-wellbeing' },
+        { label: 'Supporting Someone' },
+      ]} />
+    </div>
+
+    <article class="mx-auto max-w-4xl px-4 pb-20 sm:px-6 lg:px-8">
+
+      <header class="mb-12">
+        <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Support guide</p>
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          Supporting someone who is struggling
+        </h1>
+        <p class="mt-4 text-lg leading-8 text-slate-600">
+          You don't need to be a trained counselor to make a difference. If someone you care about is struggling — a child, a friend, a neighbour, a student — there are practical things you can do. This guide is for parents, caregivers, teachers, mentors, and anyone who has noticed that someone in their life isn't okay.
+        </p>
+      </header>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">How to start a conversation</h2>
+        <p class="wbs-p">
+          The hardest part is often the first sentence. Many people worry about saying the wrong thing, so they say nothing at all. But silence is usually worse than an imperfect conversation.
+        </p>
+
+        <div class="grid gap-5 sm:grid-cols-2 mt-6">
+          <div class="wbs-card wbs-card--green">
+            <h3 class="wbs-card-title">Things you can say</h3>
+            <ul class="wbs-simple-list">
+              <li>"I've noticed you seem different lately. I'm here if you want to talk."</li>
+              <li>"You don't have to explain everything. I just want you to know I care."</li>
+              <li>"Is there something on your mind? I have time."</li>
+              <li>"That sounds really hard. I'm glad you told me."</li>
+              <li>"Would it help to go to JRS or the health centre together?"</li>
+            </ul>
+          </div>
+          <div class="wbs-card wbs-card--red">
+            <h3 class="wbs-card-title">Things to avoid saying</h3>
+            <ul class="wbs-simple-list">
+              <li>"Be strong" or "You need to be brave."</li>
+              <li>"Other people have it worse."</li>
+              <li>"Just pray about it." (Faith matters, but dismissing distress with prayer alone can harm.)</li>
+              <li>"You'll get over it" or "Time heals everything."</li>
+              <li>"What's wrong with you?" (Try "What's happening for you?" instead.)</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="wbs-p mt-6">
+          Choose a private, calm moment. Don't force the conversation in front of others. If they don't want to talk, say: "That's okay. I'm here whenever you're ready." And mean it.
+        </p>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Signs to watch for</h2>
+        <p class="wbs-p">
+          People in distress don't always say they're struggling. Often the signs are behavioural. Here's what to look for in different groups.
+        </p>
+
+        <h3 class="wbs-h3">In young people</h3>
+        <ul class="wbs-list">
+          <li><strong>Withdrawal.</strong> Pulling away from friends, family, church, school, or activities they used to enjoy.</li>
+          <li><strong>Anger or irritability.</strong> Sudden outbursts, fighting, or hostility — especially when it's out of character.</li>
+          <li><strong>Substance use.</strong> Increased use of alcohol, drugs, or inhalants.</li>
+          <li><strong>Declining performance.</strong> Stopping homework, quitting school, losing interest in learning.</li>
+          <li><strong>Giving away possessions.</strong> A serious warning sign — especially if combined with talk about being a burden.</li>
+          <li><strong>Talk about death or hopelessness.</strong> "There's no point", "Nobody would miss me", "I want to sleep and not wake up."</li>
+        </ul>
+
+        <h3 class="wbs-h3">In adults</h3>
+        <ul class="wbs-list">
+          <li><strong>Somatic complaints.</strong> Persistent headaches, chest pain, stomach pain, fatigue — that don't respond to medical treatment. In Swahili this is sometimes described as <em>msongo wa mawazo</em> ("too many thoughts").</li>
+          <li><strong>Isolation.</strong> Staying inside, refusing visits, dropping out of faith groups, stopping market activity.</li>
+          <li><strong>Sleep changes.</strong> Sleeping much more than usual or not sleeping at all.</li>
+          <li><strong>Neglecting children or responsibilities.</strong> Not a moral failing — it's a sign the person has exhausted their capacity.</li>
+          <li><strong>Hopelessness about resettlement or the future.</strong> Expressed as "Nothing will change", "We are forgotten."</li>
+        </ul>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Practical steps</h2>
+        <ol class="wbs-numbered-list">
+          <li>
+            <span class="wbs-step-num">1</span>
+            <div>
+              <strong>If someone is in immediate danger</strong> — acting on suicidal thoughts, self-harming, or in a violent situation — go directly to <a href="/get-help-now" class="wbs-link">Get help now</a>. Do not leave them alone if you can safely stay.
+            </div>
+          </li>
+          <li>
+            <span class="wbs-step-num">2</span>
+            <div>
+              <strong>Offer to accompany them.</strong> Walking with someone to JRS, the health centre, or IAFR is one of the most effective things you can do. The barrier is often not willingness but fear of going alone.
+            </div>
+          </li>
+          <li>
+            <span class="wbs-step-num">3</span>
+            <div>
+              <strong>Help with language.</strong> If they speak Kinyarwanda, Kirundi, or Somali and the counselor speaks English or Chichewa, help them find an interpreter or a service provider who shares their language.
+            </div>
+          </li>
+          <li>
+            <span class="wbs-step-num">4</span>
+            <div>
+              <strong>Reduce shame.</strong> Remind them that mental health is health. Most people who seek counseling look and function like everyone else. They don't need to be "crazy" to ask for help.
+            </div>
+          </li>
+          <li>
+            <span class="wbs-step-num">5</span>
+            <div>
+              <strong>If formal counseling feels too big</strong>, start smaller. A church leader, home-based care worker, peer group, sports team, or art group can all be a first step toward connection.
+            </div>
+          </li>
+          <li>
+            <span class="wbs-step-num">6</span>
+            <div>
+              <strong>Follow up.</strong> Don't let a single conversation be the end. Check in again in a few days. Consistency matters more than perfection.
+            </div>
+          </li>
+        </ol>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Looking after yourself</h2>
+        <p class="wbs-p">
+          Supporting someone in distress is emotionally demanding. If you're regularly absorbing someone else's pain — as a parent, as a teacher, as a friend — you need your own support.
+        </p>
+        <ul class="wbs-list">
+          <li><strong>You are not their therapist.</strong> Your role is to listen, to care, and to connect them with help. You are not responsible for fixing their mental health.</li>
+          <li><strong>Talk to someone you trust.</strong> You can share that you're finding it hard without breaking the other person's confidence. "I've been supporting someone going through a tough time and it's weighing on me" is enough.</li>
+          <li><strong>Set limits.</strong> It's okay to say "I want to help, but I need to rest today. Can we continue tomorrow?"</li>
+          <li><strong>Use the same services.</strong> JRS, IAFR, and faith-based groups are available to supporters too. You don't have to be in crisis to access them.</li>
+        </ul>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Where to refer someone</h2>
+        <div class="grid gap-4 sm:grid-cols-2 mt-4">
+          <div class="wbs-ref-card">
+            <h3 class="wbs-ref-card-title">JRS Malawi</h3>
+            <p>Psychosocial accompaniment, counseling, and referral. The primary MHPSS provider in the camp.</p>
+            <a href="/services/jrs-malawi" class="wbs-link">Service page →</a>
+          </div>
+          <div class="wbs-ref-card">
+            <h3 class="wbs-ref-card-title">Dzaleka Health Centre</h3>
+            <p>General health and can refer to mental health support. Also handles somatic presentations.</p>
+            <a href="/services/dzaleka-health-centre" class="wbs-link">Service page →</a>
+          </div>
+          <div class="wbs-ref-card">
+            <h3 class="wbs-ref-card-title">IAFR</h3>
+            <p>International Association for Refugees. Faith-based psychosocial support.</p>
+            <a href="/services/iafr" class="wbs-link">Service page →</a>
+          </div>
+          <div class="wbs-ref-card">
+            <h3 class="wbs-ref-card-title">Get help now</h3>
+            <p>Crisis contacts, hotlines, and what to do if someone is in immediate danger.</p>
+            <a href="/get-help-now" class="wbs-link">Open page →</a>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="wbs-section">
+        <div class="wbs-callout">
+          <h2 class="text-lg font-bold text-slate-900">This page is a guide, not a substitute for professional help</h2>
+          <p class="mt-2 text-sm leading-7 text-slate-600">
+            It draws on best practices from mental health first aid and psychosocial support in humanitarian settings. It does not replace clinical assessment or professional crisis intervention. If someone is in danger, go to <a href="/get-help-now" class="wbs-link">Get help now</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+        <p class="text-sm text-slate-600">
+          <strong>Help us keep this page accurate.</strong> We strive to provide reliable and up-to-date information for the community. If you notice any incorrect details, outdated services, or missing context, please <a href="/contact" class="font-semibold text-slate-900 underline hover:text-slate-700">contact us to suggest an update</a>.
+        </p>
+      </section>
+
+      <nav class="mt-12 flex flex-wrap gap-4 border-t border-slate-200 pt-8">
+        <a href="/dzaleka-wellbeing" class="wbs-nav-link">← Dzaleka Wellbeing</a>
+        <a href="/dzaleka-wellbeing/structural-causes" class="wbs-nav-link">Structural causes →</a>
+        <a href="/get-help-now" class="wbs-nav-link wbs-nav-link--urgent">Get help now</a>
+      </nav>
+
+    </article>
+  </main>
+</MainLayout>
+
+<style>
+  .wbs-page { background: #f8fafc; }
+
+  .wbs-crisis-strip { background: #0f172a; position: sticky; top: 0; z-index: 50; }
+  .wbs-crisis-btn {
+    display: inline-flex; align-items: center; border-radius: 6px;
+    background: #dc2626; padding: 6px 14px; font-size: 13px; font-weight: 700;
+    color: #fff; transition: background 0.15s;
+  }
+  .wbs-crisis-btn:hover { background: #b91c1c; }
+
+  .wbs-section { margin-top: 3rem; }
+  .wbs-h2 { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem; }
+  .wbs-h3 { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+  .wbs-p { font-size: 0.9375rem; line-height: 1.85; color: #334155; margin-bottom: 1rem; }
+  .wbs-link { color: #0f172a; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .wbs-link:hover { color: #1e293b; }
+
+  .wbs-card {
+    padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0;
+  }
+  .wbs-card--green { background: #f0fdf4; border-color: #bbf7d0; }
+  .wbs-card--red { background: #fef2f2; border-color: #fecaca; }
+  .wbs-card-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
+
+  .wbs-simple-list { list-style: none; padding: 0; margin: 0; }
+  .wbs-simple-list li {
+    padding: 0.5rem 0; font-size: 0.875rem; line-height: 1.7; color: #334155;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .wbs-simple-list li:last-child { border-bottom: none; }
+
+  .wbs-list { list-style: none; padding: 0; margin: 0 0 1rem 0; }
+  .wbs-list li {
+    padding: 1rem 1.25rem; margin-bottom: 0.5rem; background: #fff;
+    border: 1px solid #e2e8f0; border-radius: 12px; font-size: 0.9375rem;
+    line-height: 1.7; color: #334155;
+  }
+
+  .wbs-numbered-list { list-style: none; padding: 0; margin: 0; }
+  .wbs-numbered-list li {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.25rem; margin-bottom: 0.5rem; background: #fff;
+    border: 1px solid #e2e8f0; border-radius: 12px;
+    font-size: 0.9375rem; line-height: 1.7; color: #334155;
+  }
+  .wbs-step-num {
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 50%; background: #0f172a;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+
+  .wbs-ref-card {
+    padding: 1.25rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+    font-size: 0.875rem; line-height: 1.7; color: #475569;
+  }
+  .wbs-ref-card-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem; }
+
+  .wbs-callout {
+    padding: 1.5rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+    border-left: 3px solid #94a3b8;
+  }
+
+  .wbs-nav-link {
+    display: inline-flex; align-items: center; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155;
+    transition: all 0.15s;
+  }
+  .wbs-nav-link:hover { border-color: #94a3b8; background: #f8fafc; }
+  .wbs-nav-link--urgent { background: #0f172a; border-color: #0f172a; color: #fff; }
+  .wbs-nav-link--urgent:hover { background: #1e293b; }
+</style>

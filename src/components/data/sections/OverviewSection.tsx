@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import '../chartConfig';
 
@@ -68,10 +67,10 @@ const chartOptions = {
 export function OverviewSection() {
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">{overviewData.title}</h2>
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">{overviewData.title}</h3>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="h-[400px]">
+        <div className="h-[320px] sm:h-[400px]">
           <Bar options={chartOptions} data={chartData} />
         </div>
         
@@ -81,7 +80,7 @@ export function OverviewSection() {
               {text}
             </p>
           ))}
-          <p className="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-100 italic">
+          <p className="text-sm text-gray-500 mt-4 border-t border-gray-100 pt-4 italic">
             Source: {overviewData.source}
           </p>
         </div>

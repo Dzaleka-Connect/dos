@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import '../chartConfig';
 
@@ -94,10 +93,8 @@ const chartOptions = {
 export function DemographicsSection() {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Camp Demographics</h2>
-      
       <div className="flex justify-center">
-        <div className="h-[500px] w-[700px]">
+        <div className="h-[320px] w-full max-w-4xl sm:h-[420px]">
           <Pie options={chartOptions} data={chartData} />
         </div>
       </div>

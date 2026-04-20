@@ -1,5 +1,10 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import { getDatasetCatalog, getDatasetStats } from '../data/datasets';
+
+const datasets = await getDatasetCatalog();
+const featuredDatasets = datasets.filter((dataset) => dataset.featured).slice(0, 3);
+const datasetStats = getDatasetStats(datasets);
 
 const seo = {
   title: "Open Data Platform",
@@ -42,34 +47,34 @@ const seo = {
     <meta name="geo.placename" content="Dzaleka Refugee Camp" />
   </Fragment>
 
-  <!-- Hero Section with Image -->
-  <div class="relative">
-    <!-- Hero Image -->
+  <!-- Hero -->
+  <div class="relative overflow-hidden">
     <div class="absolute inset-0">
-      <img 
-        src="/images/dzaleka-hero.jpeg" 
-        alt="Dzaleka Cultural Heritage" 
-        class="w-full h-full object-cover"
+      <img
+        src="/images/dzaleka-hero.jpeg"
+        alt="Dzaleka Cultural Heritage"
+        class="w-full h-full object-cover object-center"
       />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50"></div>
+      <div class="absolute inset-0 bg-gray-900/70"></div>
     </div>
-
-    <!-- Hero Content -->
     <div class="relative min-h-[50vh] flex items-center">
-      <div class="container mx-auto px-4 py-12">
-        <div class="max-w-3xl">
-          <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+      <div class="container mx-auto px-6 py-12">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
             Open Data Platform
           </h1>
-          <p class="text-lg md:text-xl text-white mb-6">
-            Supporting community-led storytelling, research, and heritage preservation in Dzaleka Refugee Camp
+          <p class="text-lg text-white/90 leading-relaxed mb-8 mx-auto max-w-2xl">
+            {datasetStats.totalDatasets} datasets supporting community-led storytelling, research, and heritage preservation in Dzaleka Refugee Camp
           </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a 
-              href="#platform-components" 
-              class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+          <div class="flex justify-center">
+            <a
+              href="/datasets"
+              class="inline-flex items-center px-6 py-3 bg-white text-slate-700 rounded-full hover:bg-slate-50 transition-colors duration-300 font-medium"
             >
-              Explore Platform
+              Browse datasets
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
             </a>
           </div>
         </div>
@@ -77,120 +82,182 @@ const seo = {
     </div>
   </div>
 
-  <main class="min-h-screen bg-gray-50">
-    <div class="container mx-auto px-4 py-8">
-      <div class="max-w-4xl mx-auto">
-        <!-- Introduction -->
-        <section class="bg-white rounded-xl shadow-sm p-8 mb-8">
-          <div class="prose prose-lg">
-            <p class="text-lg text-gray-700">
-              Our open data platform is designed to support community-led storytelling, research, and heritage preservation in Dzaleka Refugee Camp. Built with flexibility and transparency in mind, it allows us to collect, manage, and visualise cultural, social, and historical data that reflect life in Dzaleka.
-            </p>
-            <p class="text-lg text-gray-700">
-              This platform is central to our mission: to make Dzaleka's narratives accessible, secure, and community-owned — not hidden in private archives or scattered across the internet.
-            </p>
-          </div>
-        </section>
+  <!-- Featured Datasets -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="text-slate-700 font-semibold text-sm uppercase tracking-wider">Featured Datasets</span>
+        <h2 class="text-3xl font-bold text-gray-900 mt-4">Start here</h2>
+        <p class="text-lg text-gray-600 mt-4">
+          The most-used public datasets — good starting points for research, integration, or exploration.
+        </p>
+      </div>
 
-        <!-- Platform Components -->
-        <section id="platform-components" class="bg-white rounded-xl shadow-sm p-8 mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-8">Platform Components</h2>
-          
-          <!-- Collection -->
-          <div class="mb-12">
-            <div class="flex items-center mb-6">
-              <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
-                <span class="text-primary-600 font-bold text-xl">1</span>
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3 max-w-7xl mx-auto">
+        {featuredDatasets.map((dataset) => (
+          <article class="bg-white rounded-xl border border-gray-200 hover:border-slate-400 transition-colors duration-300 overflow-hidden">
+            <div class="p-6">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                  {dataset.theme}
+                </span>
+                <span class="text-sm text-gray-500">{dataset.lastUpdatedDisplay}</span>
               </div>
-              <h3 class="text-xl font-semibold text-gray-900">Collection</h3>
-            </div>
-            <p class="text-gray-700 mb-6">We collect data in two core ways:</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-                <h4 class="font-semibold text-gray-900 mb-3">Story-Based Inputs</h4>
-                <p class="text-gray-700">Oral histories, photos, documents, and reflections submitted by residents and researchers.</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">
+                <a href={`/datasets/${dataset.slug}`} class="hover:text-primary-700">
+                  {dataset.title}
+                </a>
+              </h3>
+              <p class="text-gray-600 mb-4 text-sm leading-relaxed">{dataset.summary}</p>
+              <div class="flex items-center gap-4 text-sm text-gray-500 mb-5">
+                <span>{dataset.recordDisplay} {dataset.recordLabel.toLowerCase()}</span>
+                <span>·</span>
+                <span>{dataset.distributionCount} resources</span>
               </div>
-              <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-                <h4 class="font-semibold text-gray-900 mb-3">Event-Based Inputs</h4>
-                <p class="text-gray-700">Cultural events, community projects, and notable moments, documented consistently using shared formats for easy comparison.</p>
-              </div>
+              <a
+                href={`/datasets/${dataset.slug}`}
+                class="inline-flex items-center text-slate-700 hover:text-slate-900 font-medium text-sm"
+              >
+                View dataset
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </a>
             </div>
-            <div class="mt-6 bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <h4 class="font-semibold text-gray-900 mb-3">News Stories & Announcements</h4>
-              <p class="text-gray-700">Community-led journalism, camp updates, and local news written by contributors within or connected to Dzaleka. These stories capture the pulse of everyday life and offer timely insight into issues affecting the community.</p>
-            </div>
-          </div>
+          </article>
+        ))}
+      </div>
 
-          <!-- Aggregation -->
-          <div class="mb-12">
-            <div class="flex items-center mb-6">
-              <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
-                <span class="text-primary-600 font-bold text-xl">2</span>
-              </div>
-              <h3 class="text-xl font-semibold text-gray-900">Aggregation</h3>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <p class="text-gray-700">All collected content is stored in a central, secure, and searchable database. This allows for structured archiving, reliable referencing, and long-term preservation of Dzaleka's cultural memory.</p>
-            </div>
-          </div>
-
-          <!-- Visualisation -->
-          <div>
-            <div class="flex items-center mb-6">
-              <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
-                <span class="text-primary-600 font-bold text-xl">3</span>
-              </div>
-              <h3 class="text-xl font-semibold text-gray-900">Visualisation</h3>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <p class="text-gray-700">Our platform presents data through maps, timelines, and thematic galleries — making it easier for researchers, community members, and the public to explore Dzaleka's past and present through visuals and insights.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Guiding Principles -->
-        <section class="bg-white rounded-xl shadow-sm p-8 mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-8">Guiding Principles</h2>
-          
-          <div class="grid md:grid-cols-2 gap-6">
-            <!-- Evidence-Informed Storytelling -->
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Evidence-Informed Storytelling</h3>
-              <p class="text-gray-700">We believe data should support local narratives, not distort them. Our platform makes information accessible so that content creators, researchers, and educators can make informed, grounded decisions about how to tell Dzaleka's story.</p>
-            </div>
-
-            <!-- Ethical Data Stewardship -->
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Ethical Data Stewardship</h3>
-              <p class="text-gray-700">We handle all data with care. Consent, privacy, and clarity are central to how we collect and publish stories. Contributors know how their information will be used — and we ensure it's done with dignity and respect.</p>
-            </div>
-
-            <!-- Trust and Accountability -->
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Trust and Accountability</h3>
-              <p class="text-gray-700">We are building a platform where transparency is non-negotiable. Every dataset, story, or record we publish is part of a bigger commitment to accuracy, representation, and public trust in digital heritage.</p>
-            </div>
-
-            <!-- Community of Practice -->
-            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Community of Practice</h3>
-              <p class="text-gray-700">Dzaleka Online Services is shaped by the people who contribute to it. We work hand-in-hand with writers, archivists, community leaders, and youth to ensure the platform reflects the lived experiences of Dzaleka. Active use and feedback help us improve the platform, identify gaps, and stay responsive to community needs.</p>
-            </div>
-          </div>
-        </section>
+      <div class="mt-8 text-center">
+        <a href="/datasets" class="text-sm font-semibold text-primary-700 hover:text-primary-800">
+          See all {datasetStats.totalDatasets} datasets →
+        </a>
       </div>
     </div>
-  </main>
-</MainLayout>
+  </section>
 
-<style>
-  .prose a {
-    @apply text-primary-600 hover:text-primary-700;
-  }
-  .prose ul {
-    @apply list-disc pl-6 mb-4;
-  }
-  .prose li {
-    @apply text-gray-700;
-  }
-</style> 
+  <!-- How the platform works -->
+  <section id="platform-components" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="text-slate-700 font-semibold text-sm uppercase tracking-wider">How it works</span>
+        <h2 class="text-3xl font-bold text-gray-900 mt-4">From community stories to open data</h2>
+        <p class="text-lg text-gray-600 mt-4">
+          We collect, organise, and publish data that reflects life in Dzaleka — making community narratives accessible, secure, and community-owned.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <!-- Collect -->
+        <div class="bg-white rounded-xl p-8 border border-gray-200">
+          <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Collect</h3>
+          <ul class="space-y-2 text-gray-600 text-sm">
+            <li>Oral histories, photos, and documents from residents</li>
+            <li>Cultural events and community project records</li>
+            <li>Community-led news stories and camp updates</li>
+          </ul>
+        </div>
+
+        <!-- Organise -->
+        <div class="bg-white rounded-xl p-8 border border-gray-200">
+          <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Organise</h3>
+          <p class="text-gray-600 text-sm">
+            All content is stored in a central, searchable archive — structured for reliable referencing and long-term preservation of Dzaleka's cultural memory.
+          </p>
+        </div>
+
+        <!-- Publish -->
+        <div class="bg-white rounded-xl p-8 border border-gray-200">
+          <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Publish</h3>
+          <p class="text-gray-600 text-sm">
+            Data is presented through browsable pages, API endpoints, and thematic galleries — making it usable for researchers, builders, and the community alike.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="text-slate-700 font-semibold text-sm uppercase tracking-wider">Our approach</span>
+        <h2 class="text-3xl font-bold text-gray-900 mt-4">Guiding Principles</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div class="border-l-2 border-slate-300 pl-6 py-2">
+          <h3 class="font-bold text-gray-900 mb-2">Evidence-informed storytelling</h3>
+          <p class="text-gray-600 text-sm">Data supports local narratives — it doesn't replace them. We make information accessible so creators and researchers can tell Dzaleka's story with confidence.</p>
+        </div>
+
+        <div class="border-l-2 border-slate-300 pl-6 py-2">
+          <h3 class="font-bold text-gray-900 mb-2">Ethical data stewardship</h3>
+          <p class="text-gray-600 text-sm">Consent, privacy, and clarity are central to how we collect and publish. Contributors know how their information will be used.</p>
+        </div>
+
+        <div class="border-l-2 border-slate-300 pl-6 py-2">
+          <h3 class="font-bold text-gray-900 mb-2">Trust and accountability</h3>
+          <p class="text-gray-600 text-sm">Every dataset we publish is part of a commitment to accuracy, representation, and public trust in digital heritage.</p>
+        </div>
+
+        <div class="border-l-2 border-slate-300 pl-6 py-2">
+          <h3 class="font-bold text-gray-900 mb-2">Community of practice</h3>
+          <p class="text-gray-600 text-sm">We work with writers, archivists, community leaders, and youth. Active use and feedback help us improve and stay responsive to community needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <section class="relative py-20 overflow-hidden bg-gray-900 border-t border-gray-800">
+    <div class="relative container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <span class="inline-block px-4 py-2 bg-gray-800 text-white/90 rounded-full text-sm font-medium mb-4 border border-gray-700">
+          Get started
+        </span>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+          Explore, build, and contribute
+        </h2>
+        <p class="text-lg text-white/80 mb-10 max-w-2xl mx-auto">
+          Browse the dataset catalog, read the API docs, or explore the data hub.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a
+            href="/datasets"
+            class="inline-flex items-center px-6 py-3 bg-white text-slate-900 rounded-full hover:bg-slate-50 transition-colors duration-300 font-medium"
+          >
+            Browse datasets
+          </a>
+          <a
+            href="/api-docs"
+            class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition-colors duration-300 font-medium border border-gray-700"
+          >
+            API docs
+          </a>
+          <a
+            href="/data"
+            class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition-colors duration-300 font-medium border border-gray-700"
+          >
+            Data hub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

@@ -17,6 +17,7 @@ Dzaleka Online Services exposes a public API and a small set of agent-friendly d
 ## Discovery routes
 
 - `/.well-known/api-catalog`
+- `/.well-known/mcp/server-card.json`
 - `/api/openapi.json`
 - `/api/status`
 - `/.well-known/agent-skills/index.json`

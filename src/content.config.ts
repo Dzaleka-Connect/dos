@@ -208,6 +208,59 @@ const docsSchema = z.object({
   lastUpdated: z.date().optional(),
 });
 
+const datasetPageSchema = z.object({
+  slug: z.string().optional(),
+  title: z.string(),
+  summary: z.string(),
+  description: z.array(z.string()).optional(),
+  theme: z.string(),
+  publisher: z.string(),
+  coverage: z.string(),
+  updateCadence: z.string(),
+  featured: z.boolean().optional(),
+  tags: z.array(z.string()),
+  highlights: z.array(z.string()),
+  distributions: z.array(
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      href: z.string(),
+      format: z.string(),
+      access: z.enum(['API', 'Page', 'Docs', 'Download', 'External']),
+    })
+  ),
+  collection: z.enum([
+    'services',
+    'resources',
+    'events',
+    'jobs',
+    'community-voices',
+    'artworks',
+    'marketplace',
+    'rights',
+    'docs',
+    'courses',
+  ]).optional(),
+  recordCount: z.number().optional(),
+  recordMode: z.string().optional(),
+  lastUpdated: z.coerce.date().optional(),
+  lastUpdatedFallback: z.string().optional(),
+  sourceNote: z.string(),
+  license: z.string().optional(),
+  maintainer: z.string().optional(),
+  sourceUrl: z.string().url().optional(),
+  temporalCoverage: z.string().optional(),
+  methodology: z.array(z.string()).optional(),
+  references: z.array(
+    z.object({
+      title: z.string(),
+      href: z.string(),
+      note: z.string().optional(),
+    })
+  ).optional(),
+  researchStatus: z.enum(['draft', 'reviewed', 'monitored']).optional(),
+});
+
 // Define the talents schema
 const talentSchema = z.object({
   name: z.string(),
@@ -409,6 +462,11 @@ const communityVoicesCollection = defineCollection({
 const docsCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/docs" }),
   schema: docsSchema,
+});
+
+const datasetsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/datasets" }),
+  schema: datasetPageSchema,
 });
 
 const jobsCollection = defineCollection({
@@ -754,6 +812,7 @@ export const collections = {
   talents: talentsCollection,
   'community-voices': communityVoicesCollection,
   docs: docsCollection,
+  datasets: datasetsCollection,
   rights: rightsCollection,
   jobs: jobsCollection,
   photos: photosCollection,

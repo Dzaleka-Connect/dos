@@ -160,8 +160,8 @@ export function PopulationChart() {
         </p>
       </div>
 
-      <div className="flex justify-center items-center">
-        <div className="h-[350px] w-full max-w-[500px]">
+      <div className="flex items-center justify-center">
+        <div className="h-[320px] w-full max-w-[500px] sm:h-[350px]">
           <Doughnut data={chartData} options={chartOptions} />
         </div>
       </div>

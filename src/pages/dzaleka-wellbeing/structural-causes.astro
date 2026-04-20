@@ -1,0 +1,275 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const pageTitle = 'Structural Causes — Dzaleka Wellbeing';
+const description =
+  'Why mental health in Dzaleka Refugee Camp is a structural crisis, not just a clinical one. Encampment policy, overcrowding, funding collapse, blocked futures, and the treatment gap explained.';
+const canonical = 'https://services.dzaleka.com/dzaleka-wellbeing/structural-causes';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: pageTitle,
+      description,
+      url: canonical,
+      inLanguage: 'en',
+      lastReviewed: '2026-04-20',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Dzaleka Online Services',
+        url: 'https://services.dzaleka.com',
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Dzaleka Wellbeing', item: 'https://services.dzaleka.com/dzaleka-wellbeing' },
+        { '@type': 'ListItem', position: 3, name: 'Structural Causes', item: canonical },
+      ],
+    },
+  ],
+};
+
+const keywords = 'Dzaleka encampment policy, refugee camp overcrowding, UNHCR funding cuts Malawi, Dzaleka structural causes, refugee mental health barriers';
+---
+
+<MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema} keywords={keywords}>
+
+  <div class="wbs-crisis-strip" role="alert">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
+      <p class="text-sm text-white">
+        <strong>Need urgent help?</strong> If you or someone you know is in immediate danger, please act now.
+      </p>
+      <a href="/get-help-now" class="wbs-crisis-btn">Get help now</a>
+    </div>
+  </div>
+
+  <main class="wbs-page">
+    <div class="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Dzaleka Wellbeing', href: '/dzaleka-wellbeing' },
+        { label: 'Structural Causes' },
+      ]} />
+    </div>
+
+    <article class="mx-auto max-w-4xl px-4 pb-20 sm:px-6 lg:px-8">
+
+      <header class="mb-12">
+        <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Context</p>
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          Why it's happening
+        </h1>
+        <p class="mt-4 text-lg leading-8 text-slate-600">
+          The mental health crisis in Dzaleka is not a mystery. It is the predictable outcome of specific, identifiable conditions — overcrowding, confinement, funding withdrawal, and blocked futures. This page explains the structural roots.
+        </p>
+      </header>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Encampment policy</h2>
+        <p class="wbs-p">
+          Malawi operates a strict encampment policy: refugees are legally required to live inside Dzaleka and are not permitted to settle, work, or conduct business outside the camp. This means that even refugees with university degrees, trade skills, or established businesses are confined to a single overcrowded facility.
+        </p>
+        <p class="wbs-p">
+          Between May and October 2023, the government undertook a <a href="https://www.fairplanet.org/story/malawi-escalates-its-crackdown-on-refugees/" target="_blank" rel="noopener noreferrer" class="wbs-link">heavily criticised operation</a> in which refugees found living outside the camp were detained and forcibly returned. Ivy Chihana, deputy commissioner for refugees, told local media in May 2025 that the government <em>might</em> consider reviewing the encampment policy — but said "such a shift in policy would take time."
+        </p>
+        <p class="wbs-p">
+          The psychological effect is documented: indefinite confinement with no legal right to self-sufficiency produces what psychologists call <strong>learned helplessness</strong> — a state where individuals stop trying to improve their situation because they have no evidence that effort produces results.
+        </p>
+        <div class="wbs-quote">
+          "I have a degree, but I'm not allowed to work in Malawi. I can't do business outside. Here we are watching interventions that have supported us all along collapsing on us. Yet we can't escape."
+          <cite>— Eliane (alias), Dzaleka resident, via <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="wbs-link">FairPlanet</a></cite>
+        </div>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Overcrowding</h2>
+        <p class="wbs-p">
+          Dzaleka was established in 1994 on the grounds of a former political prison and was designed to accommodate between 10,000 and 12,000 people. As of October 2024, the camp housed <strong>56,212 individuals</strong> across 15,585 households — a population roughly 478% over capacity.
+        </p>
+        <p class="wbs-p">
+          UNHCR projects this will rise to 59,564 in 2025 and 63,028 in 2026, driven by new arrivals and births. The population is predominantly Congolese (36,469), Burundian (12,291), and Rwandan (7,019), with smaller Ethiopian and Somali communities.
+        </p>
+        <p class="wbs-p">
+          The physical consequences are direct: large families crammed into single rooms, 324 communal latrines for 57,000+ people, zero private space. Overcrowding is not just an infrastructure problem — it is a mental health stressor. Lack of privacy, constant noise, and absence of personal space degrade the ability to rest, recover, or process distressing experiences.
+        </p>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Funding collapse</h2>
+        <p class="wbs-p">
+          UNHCR has been the backbone of the camp since 1994, but its financial position has deteriorated sharply. According to a <a href="https://www.unhcr.org/media/malawi-funding-update-2025" target="_blank" rel="noopener noreferrer" class="wbs-link">July 2025 funding update</a>, UNHCR Malawi's financial requirement for 2025 was $26.3 million. As of 31 July 2025, only <strong>18% of that budget had been funded</strong>.
+        </p>
+        <p class="wbs-p">
+          Rebecca Adda-Dontoh, UN Resident Coordinator for Malawi, confirmed to <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="wbs-link">FairPlanet</a> that the global reduction in UNHCR spending authority was nearly one-third compared to 2024 — translating to a <strong>40% reduction in Malawi specifically</strong>.
+        </p>
+        <p class="wbs-p">The consequences have been immediate and visible:</p>
+        <ul class="wbs-list">
+          <li>Health workers at Dzaleka Health Centre put down their tools in August 2025 after going <strong>three months without pay</strong>.</li>
+          <li>General non-food distributions have been <strong>stopped entirely</strong>.</li>
+          <li>Gender-based violence (GBV) protection responses have been <strong>reduced</strong>.</li>
+          <li>Key protection staff including paralegals have been <strong>laid off</strong>.</li>
+          <li>Youth volunteers who served as interpreters and security assistants have been <strong>withdrawn</strong>.</li>
+          <li>WFP currently allocates only <strong>US$5 per person per month</strong>.</li>
+        </ul>
+        <p class="wbs-p">
+          Plan International, one of the largest implementing partners, has already left. Several health staff contracts are scheduled not to be renewed.
+        </p>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">The treatment gap</h2>
+        <p class="wbs-p">
+          The <a href="/dzaleka-wellbeing/the-research" class="wbs-link">2022 study</a> found 78% probable depression in its sample. Meanwhile, estimated utilization of psychosocial services in Dzaleka sits at roughly 2–3% of the camp population. This means the overwhelming majority of severe distress goes untreated.
+        </p>
+        <p class="wbs-p">The gap is driven by multiple reinforcing factors:</p>
+        <ul class="wbs-list">
+          <li><strong>Language barriers.</strong> Patients speak Kinyarwanda, Kirundi, Swahili, Somali, or Oromo. Clinicians often speak only English or Chichewa. Nuanced descriptions of emotional pain — the difference between sadness and hopelessness, between anxiety and terror — are lost in translation.</li>
+          <li><strong>Somatic presentation.</strong> In many Central and East African cultures, distress is expressed physically. People present to the health centre with headaches, chest pain, stomach problems, or exhaustion — not "depression." Without training in somatic presentation, clinical staff treat the symptom and miss the cause.</li>
+          <li><strong>Stigma.</strong> The phrase "mental health" carries significant stigma. Many residents associate it with severe psychiatric illness ("being crazy") rather than the spectrum of emotional distress. The Swahili term <em>msongo wa mawazo</em> — "too many thoughts" — is more commonly used, but is not recognized as a clinical concept.</li>
+          <li><strong>Staffing shortage.</strong> Even before the 2025 funding cuts, there were too few trained mental health workers for a community of 57,000+. JRS and a handful of community organisations carry the entire psychosocial caseload.</li>
+        </ul>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Blocked futures</h2>
+        <p class="wbs-p">
+          For refugees in Dzaleka, the three traditional "durable solutions" — repatriation, local integration, and resettlement — are effectively unavailable.
+        </p>
+        <ul class="wbs-list">
+          <li><strong>Repatriation</strong> is impossible for most. The majority have fled active conflict or political persecution in the DRC, Burundi, or Rwanda, which persist.</li>
+          <li><strong>Local integration</strong> is legally barred by the encampment policy.</li>
+          <li><strong>Resettlement</strong> to a third country is won by fewer than 1% of refugees annually, and the process can take years.</li>
+        </ul>
+        <p class="wbs-p">
+          This leaves an entire generation — many of whom were born in the camp — in a permanent state of suspension. Young adults who complete secondary or even university education find themselves with credentials but no legal right to use them. The psychological term is <strong>futurelessness</strong>: the absence of a believable path forward. It is one of the strongest predictors of depression and suicidal thinking.
+        </p>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Worsening risks</h2>
+        <p class="wbs-p">
+          As conditions deteriorate, secondary risks increase. Innocent Magambi, CEO of <a href="https://inuaadvocacy.org/" target="_blank" rel="noopener noreferrer" class="wbs-link">Inua Advocacy</a> and a former Dzaleka refugee, described the situation to FairPlanet:
+        </p>
+        <div class="wbs-quote">
+          "When people lose hope that their basic needs will be met, they are more vulnerable to all sorts of exploitation. The risk is that as needs grow and support shrinks, we will see more unrest, crime and greater human suffering."
+          <cite>— Innocent Magambi, Inua Advocacy</cite>
+        </div>
+        <p class="wbs-p">
+          Previous UN investigations have <a href="https://news.un.org/en/story/2022/06/1119612" target="_blank" rel="noopener noreferrer" class="wbs-link">uncovered widespread exploitation</a> of men, women, and children in the camp, and exposed international human trafficking networks operating from Dzaleka. Reduced oversight and worsening desperation make these risks more acute.
+        </p>
+      </section>
+
+
+      <section class="wbs-section">
+        <h2 class="wbs-h2">Sources</h2>
+        <div class="space-y-3">
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Primary reporting</p>
+            <p>Mpaka C. "Funding cuts push Malawi's Dzaleka Refugee Camp to the brink." FairPlanet, August 2025.</p>
+            <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="wbs-link">FairPlanet →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Rights context</p>
+            <p>Human Rights Watch, World Report 2024: Malawi chapter.</p>
+            <a href="https://www.hrw.org/world-report/2024/country-chapters/malawi" target="_blank" rel="noopener noreferrer" class="wbs-link">HRW →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Population data</p>
+            <p>UNHCR Malawi Fact Sheet, August 2024.</p>
+            <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="wbs-link">PDF →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Operational context</p>
+            <p>UNHCR Annual Results Report 2024 — Malawi.</p>
+            <a href="https://www.unhcr.org/sites/default/files/2025-06/Malawi%20ARR%202024.pdf" target="_blank" rel="noopener noreferrer" class="wbs-link">PDF →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">Community perspective</p>
+            <p>Inua Advocacy. "A Glimpse into life at Dzaleka Refugee Camp." March 2024.</p>
+            <a href="https://inuaadvocacy.org/2024/03/a-glimpse-into-life-at-dzaleka-refugee-camp/" target="_blank" rel="noopener noreferrer" class="wbs-link">Inua Advocacy →</a>
+          </div>
+          <div class="wbs-ref">
+            <p class="wbs-ref-title">2023 crackdown</p>
+            <p>FairPlanet. "Malawi escalates its crackdown on refugees."</p>
+            <a href="https://www.fairplanet.org/story/malawi-escalates-its-crackdown-on-refugees/" target="_blank" rel="noopener noreferrer" class="wbs-link">FairPlanet →</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+        <p class="text-sm text-slate-600">
+          <strong>Help us keep this page accurate.</strong> We strive to provide reliable and up-to-date information for the community. If you notice any incorrect details, outdated services, or missing context, please <a href="/contact" class="font-semibold text-slate-900 underline hover:text-slate-700">contact us to suggest an update</a>.
+        </p>
+      </section>
+
+      <nav class="mt-12 flex flex-wrap gap-4 border-t border-slate-200 pt-8">
+        <a href="/dzaleka-wellbeing" class="wbs-nav-link">← Dzaleka Wellbeing</a>
+        <a href="/dzaleka-wellbeing/the-research" class="wbs-nav-link">The research →</a>
+        <a href="/dzaleka-wellbeing/supporting-someone" class="wbs-nav-link">Supporting someone →</a>
+        <a href="/get-help-now" class="wbs-nav-link wbs-nav-link--urgent">Get help now</a>
+      </nav>
+
+    </article>
+  </main>
+</MainLayout>
+
+<style>
+  .wbs-page { background: #f8fafc; }
+
+  .wbs-crisis-strip { background: #0f172a; position: sticky; top: 0; z-index: 50; }
+  .wbs-crisis-btn {
+    display: inline-flex; align-items: center; border-radius: 6px;
+    background: #dc2626; padding: 6px 14px; font-size: 13px; font-weight: 700;
+    color: #fff; transition: background 0.15s;
+  }
+  .wbs-crisis-btn:hover { background: #b91c1c; }
+
+  .wbs-section { margin-top: 3rem; }
+  .wbs-h2 { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem; }
+  .wbs-p { font-size: 0.9375rem; line-height: 1.85; color: #334155; margin-bottom: 1rem; }
+  .wbs-link { color: #0f172a; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .wbs-link:hover { color: #1e293b; }
+
+  .wbs-list { list-style: none; padding: 0; margin: 0 0 1rem 0; }
+  .wbs-list li {
+    padding: 1rem 1.25rem; margin-bottom: 0.5rem; background: #fff;
+    border: 1px solid #e2e8f0; border-radius: 12px; font-size: 0.9375rem;
+    line-height: 1.7; color: #334155;
+  }
+
+  .wbs-quote {
+    border-left: 3px solid #cbd5e1; padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+    background: #fff; border-radius: 0 12px 12px 0;
+    font-size: 0.9375rem; line-height: 1.8; color: #334155; font-style: italic;
+  }
+  .wbs-quote cite {
+    display: block; margin-top: 0.75rem; font-size: 0.8125rem; font-style: normal;
+    color: #64748b; font-weight: 600;
+  }
+
+  .wbs-ref {
+    padding: 1.25rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+    font-size: 0.875rem; line-height: 1.7; color: #334155;
+  }
+  .wbs-ref-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 4px; }
+
+  .wbs-nav-link {
+    display: inline-flex; align-items: center; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155;
+    transition: all 0.15s;
+  }
+  .wbs-nav-link:hover { border-color: #94a3b8; background: #f8fafc; }
+  .wbs-nav-link--urgent { background: #0f172a; border-color: #0f172a; color: #fff; }
+  .wbs-nav-link--urgent:hover { background: #1e293b; }
+</style>

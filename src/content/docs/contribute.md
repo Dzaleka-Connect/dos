@@ -50,6 +50,13 @@ You can help keep Dzaleka Online Services useful by sharing accurate, community-
 - Mention whether something is ongoing, open now, or already closed.
 - Include a real contact method if people may need to follow up.
 
+## Updating the documentation itself
+
+If you are changing the site's help guides, technical reference, or docs navigation, use the dedicated maintainer workflow instead of the public submission routes.
+
+- [Documentation Contributions](/docs/documentation-contributions)
+- [Documentation Roadmap](/docs/documentation-roadmap)
+
 ## If you are not sure where something belongs
 
 - Services and organisations: [Register a service](/services/register)

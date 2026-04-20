@@ -1,0 +1,378 @@
+---
+import { render } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { getDatasetBySlug, getDatasetCatalog, getDatasetDistributionUrl, getRelatedDatasets } from '../../data/datasets';
+
+export async function getStaticPaths() {
+  const datasets = await getDatasetCatalog();
+
+  return datasets.map((dataset) => ({
+    params: { slug: dataset.slug },
+  }));
+}
+
+const dataset = await getDatasetBySlug(Astro.params.slug || '');
+
+if (!dataset) {
+  throw new Error(`Dataset not found for slug: ${Astro.params.slug}`);
+}
+
+const renderedContent = dataset.contentEntry ? await render(dataset.contentEntry) : null;
+const Content = renderedContent?.Content;
+const relatedDatasets = await getRelatedDatasets(dataset, 3);
+
+const pageTitle = `${dataset.title} - Dzaleka Dataset`;
+const seo = {
+  title: pageTitle,
+  description: dataset.summary,
+  canonical: dataset.canonicalUrl,
+  type: 'website',
+  openGraph: {
+    title: pageTitle,
+    description: dataset.summary,
+    type: 'article',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: dataset.canonicalUrl,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: pageTitle,
+    description: dataset.summary,
+  },
+};
+
+const datasetStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: dataset.title,
+  description: dataset.summary,
+  url: dataset.canonicalUrl,
+  keywords: dataset.tags,
+  creator: {
+    '@type': 'Organization',
+    name: dataset.publisher,
+  },
+  dateModified: dataset.lastUpdated ? dataset.lastUpdated.toISOString() : undefined,
+  license: dataset.license,
+  spatialCoverage: {
+    '@type': 'Place',
+    name: dataset.coverage,
+  },
+  distribution: dataset.distributions.map((distribution) => ({
+    '@type': 'DataDownload',
+    name: distribution.title,
+    description: distribution.description,
+    encodingFormat: distribution.format,
+    contentUrl: getDatasetDistributionUrl(distribution),
+  })),
+};
+
+function isExternalHref(href: string) {
+  return href.startsWith('http://') || href.startsWith('https://');
+}
+
+function formatResearchStatus(status: 'draft' | 'reviewed' | 'monitored') {
+  return status.charAt(0).toUpperCase() + status.slice(1);
+}
+---
+
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  type={seo.type}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(datasetStructuredData)} />
+
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <section class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Open data platform', href: '/open-data-platform' },
+            { label: 'Datasets', href: '/datasets' },
+            { label: dataset.title },
+          ]}
+        />
+
+        <div class="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)] lg:items-start">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                {dataset.theme}
+              </span>
+              {dataset.researchStatus && (
+                <span class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                  {formatResearchStatus(dataset.researchStatus)}
+                </span>
+              )}
+            </div>
+
+            <h1 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              {dataset.title}
+            </h1>
+            <p class="mt-4 max-w-3xl text-base leading-7 text-gray-600">
+              {dataset.summary}
+            </p>
+
+            <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500">
+              <span><strong class="font-medium text-gray-900">{dataset.recordDisplay}</strong> {dataset.recordLabel.toLowerCase()}</span>
+              <span><strong class="font-medium text-gray-900">{dataset.distributionCount}</strong> resources</span>
+              <span>{dataset.coverage}</span>
+              <span>Updated {dataset.lastUpdatedDisplay}</span>
+            </div>
+          </div>
+
+          <!-- Quick access sidebar -->
+          <aside class="rounded-xl border border-gray-200 bg-white p-5">
+            <h2 class="text-base font-bold text-gray-900 mb-4">Quick access</h2>
+            <div class="space-y-2">
+              {dataset.distributions.map((distribution) => (
+                <a
+                  href={distribution.href}
+                  class="flex items-start justify-between gap-3 rounded-lg border border-gray-200 px-4 py-3 hover:bg-gray-50 transition-colors"
+                  target={isExternalHref(distribution.href) ? '_blank' : undefined}
+                  rel={isExternalHref(distribution.href) ? 'noopener noreferrer' : undefined}
+                >
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">{distribution.title}</p>
+                    <p class="mt-0.5 text-xs text-gray-500">{distribution.description}</p>
+                  </div>
+                  <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600 whitespace-nowrap">
+                    {distribution.format}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Body -->
+    <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
+        <div class="space-y-8">
+          <!-- About -->
+          <article class="rounded-xl border border-gray-200 bg-white p-6">
+            <h2 class="text-xl font-bold text-gray-900">About this dataset</h2>
+            {dataset.description.length > 0 && (
+              <div class="mt-4 space-y-3 text-sm leading-7 text-gray-700">
+                {dataset.description.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            )}
+            {Content && (
+              <div class="dataset-prose prose prose-sm prose-slate mt-5 max-w-none">
+                <Content />
+              </div>
+            )}
+          </article>
+
+          <!-- Highlights -->
+          <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <h2 class="text-xl font-bold text-gray-900">What it includes</h2>
+            <ul class="mt-4 space-y-2">
+              {dataset.highlights.map((highlight) => (
+                <li class="flex items-start gap-2 text-sm text-gray-700">
+                  <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-gray-400 shrink-0"></span>
+                  {highlight}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <!-- Resources -->
+          <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <h2 class="text-xl font-bold text-gray-900">Resources</h2>
+            <p class="mt-2 text-sm text-gray-600">
+              Public routes, downloadable files, or external sources you can use directly.
+            </p>
+
+            <div class="mt-5 divide-y divide-gray-200">
+              {dataset.distributions.map((distribution) => (
+                <div class="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="rounded bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">{distribution.access}</span>
+                      <span class="rounded bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700">{distribution.format}</span>
+                    </div>
+                    <p class="text-sm font-medium text-gray-900">{distribution.title}</p>
+                    <p class="text-xs text-gray-500 mt-0.5">{distribution.description}</p>
+                    <p class="text-xs text-gray-400 mt-1 truncate">{distribution.href}</p>
+                  </div>
+                  <a
+                    href={distribution.href}
+                    class="shrink-0 inline-flex items-center rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                    target={isExternalHref(distribution.href) ? '_blank' : undefined}
+                    rel={isExternalHref(distribution.href) ? 'noopener noreferrer' : undefined}
+                  >
+                    Open
+                  </a>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <!-- Methodology -->
+          {dataset.methodology && dataset.methodology.length > 0 && (
+            <section class="rounded-xl border border-gray-200 bg-white p-6">
+              <h2 class="text-xl font-bold text-gray-900">Methodology and curation notes</h2>
+              <ul class="mt-4 space-y-2">
+                {dataset.methodology.map((item) => (
+                  <li class="flex items-start gap-2 text-sm text-gray-700">
+                    <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-gray-400 shrink-0"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <!-- References -->
+          {dataset.references && dataset.references.length > 0 && (
+            <section class="rounded-xl border border-gray-200 bg-white p-6">
+              <h2 class="text-xl font-bold text-gray-900">Research references</h2>
+              <div class="mt-4 divide-y divide-gray-200">
+                {dataset.references.map((reference) => (
+                  <a
+                    href={reference.href}
+                    class="block py-4 first:pt-0 last:pb-0 hover:text-primary-700 transition-colors"
+                    target={isExternalHref(reference.href) ? '_blank' : undefined}
+                    rel={isExternalHref(reference.href) ? 'noopener noreferrer' : undefined}
+                  >
+                    <p class="text-sm font-medium text-gray-900">{reference.title}</p>
+                    {reference.note && <p class="mt-1 text-xs text-gray-500">{reference.note}</p>}
+                    <p class="mt-1 text-xs text-gray-400 truncate">{reference.href}</p>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <!-- Related -->
+          {relatedDatasets.length > 0 && (
+            <section class="rounded-xl border border-gray-200 bg-white p-6">
+              <h2 class="text-xl font-bold text-gray-900">Related datasets</h2>
+              <div class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {relatedDatasets.map((entry) => (
+                  <a
+                    href={`/datasets/${entry.slug}`}
+                    class="rounded-xl border border-gray-200 p-4 transition hover:border-gray-400"
+                  >
+                    <span class="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700">
+                      {entry.theme}
+                    </span>
+                    <h3 class="mt-3 text-sm font-bold text-gray-900">{entry.title}</h3>
+                    <p class="mt-1.5 text-xs leading-5 text-gray-600 line-clamp-2">{entry.summary}</p>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-5">
+          <section class="rounded-xl border border-gray-200 bg-white p-5">
+            <h2 class="text-base font-bold text-gray-900">Metadata</h2>
+            <dl class="mt-4 space-y-3 text-sm">
+              <div>
+                <dt class="text-gray-500">Publisher</dt>
+                <dd class="mt-0.5 font-medium text-gray-900">{dataset.publisher}</dd>
+              </div>
+              <div>
+                <dt class="text-gray-500">Coverage</dt>
+                <dd class="mt-0.5 font-medium text-gray-900">{dataset.coverage}</dd>
+              </div>
+              <div>
+                <dt class="text-gray-500">Update cadence</dt>
+                <dd class="mt-0.5 font-medium text-gray-900">{dataset.updateCadence}</dd>
+              </div>
+              {dataset.temporalCoverage && (
+                <div>
+                  <dt class="text-gray-500">Temporal coverage</dt>
+                  <dd class="mt-0.5 font-medium text-gray-900">{dataset.temporalCoverage}</dd>
+                </div>
+              )}
+              {dataset.license && (
+                <div>
+                  <dt class="text-gray-500">License</dt>
+                  <dd class="mt-0.5 font-medium text-gray-900">{dataset.license}</dd>
+                </div>
+              )}
+              {dataset.maintainer && (
+                <div>
+                  <dt class="text-gray-500">Maintainer</dt>
+                  <dd class="mt-0.5 font-medium text-gray-900">{dataset.maintainer}</dd>
+                </div>
+              )}
+              <div>
+                <dt class="text-gray-500">Last updated</dt>
+                <dd class="mt-0.5 font-medium text-gray-900">{dataset.lastUpdatedDisplay}</dd>
+              </div>
+              <div>
+                <dt class="text-gray-500">Resources</dt>
+                <dd class="mt-0.5 font-medium text-gray-900">{dataset.distributionCount}</dd>
+              </div>
+              {dataset.sourceUrl && (
+                <div>
+                  <dt class="text-gray-500">Primary source</dt>
+                  <dd class="mt-0.5 break-all text-sm">
+                    <a
+                      href={dataset.sourceUrl}
+                      class="font-medium text-primary-700 hover:text-primary-800"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {dataset.sourceUrl}
+                    </a>
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </section>
+
+          <section class="rounded-xl border border-gray-200 bg-white p-5">
+            <h2 class="text-base font-bold text-gray-900">Usage notes</h2>
+            <p class="mt-3 text-sm leading-6 text-gray-600">
+              {dataset.sourceNote}
+            </p>
+            <p class="mt-3 text-sm leading-6 text-gray-600">
+              For contract details, pair with <a href="/api-docs" class="font-medium text-primary-700 hover:text-primary-800">API docs</a> and the <a href="/docs/agent-access-guide" class="font-medium text-primary-700 hover:text-primary-800">Agent Access guide</a>.
+            </p>
+          </section>
+
+          <section class="rounded-xl border border-gray-200 bg-white p-5">
+            <h2 class="text-base font-bold text-gray-900">Tags</h2>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              {dataset.tags.map((tag) => (
+                <span class="rounded-full border border-gray-200 px-2.5 py-0.5 text-xs text-gray-600">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </div>
+</MainLayout>
+
+<style>
+  .dataset-prose :global(a) {
+    color: rgb(29 78 216);
+    font-weight: 500;
+  }
+
+  .dataset-prose :global(a:hover) {
+    color: rgb(30 64 175);
+  }
+</style>
