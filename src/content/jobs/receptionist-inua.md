@@ -6,7 +6,7 @@ type: full-time
 category: services
 posted: 2024-12-06
 deadline: 2025-01-15
-status: open
+status: closed
 featured: false
 skills:
   - Client Relations

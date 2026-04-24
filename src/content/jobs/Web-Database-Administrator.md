@@ -6,7 +6,7 @@ type: "full-time"
 category: technology
 posted: "2025-03-12"
 deadline: "2025-06-12"
-status: open
+status: closed
 featured: false
 skills:
   - Web Development

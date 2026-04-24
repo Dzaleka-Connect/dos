@@ -9,7 +9,7 @@ featured: true
 image: "https://thehub.nmu.edu/upload/nmu/2023/r3_image_upload_1573764_190611_On_Campus_Drone_Stock6jpg_7149514.jpeg"
 organizer: "Refugee Outreach Collective"
 organizerUrl: "https://thehub.nmu.edu/roc/"
-status: "upcoming"
+status: "past"
 contact:
   email: "chairsto@nmu.edu"
   address: "1401 Presque Isle Ave, Marquette, MI 49855"

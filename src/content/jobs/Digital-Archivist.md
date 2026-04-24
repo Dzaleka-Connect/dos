@@ -6,7 +6,7 @@ type: "part-time"
 category: business
 posted: 2025-03-12
 deadline: 2025-05-20
-status: open
+status: closed
 featured: false
 skills:
   - Digital Archiving
