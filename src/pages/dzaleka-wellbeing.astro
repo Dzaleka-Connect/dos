@@ -128,7 +128,7 @@ const twitter = {
       <p class="text-sm text-white">
         <strong>Need urgent help?</strong> If you or someone you know is in immediate danger or at risk of suicide, please act now.
       </p>
-      <div class="flex gap-2">
+      <div class="flex flex-wrap gap-2">
         <a href="/get-help-now" class="wb-crisis-btn">Get help now</a>
         <a href="/easy-read/getting-help" class="wb-crisis-btn-alt">Easy read version</a>
       </div>
@@ -153,7 +153,7 @@ const twitter = {
           </h1>
           <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
             Whether you need someone to talk to, want to understand how you're feeling,
-            or are here to support someone else — we're here for you.
+            or are supporting someone else, this page points you to practical next steps.
           </p>
         </div>
 
@@ -338,7 +338,7 @@ const twitter = {
         <div class="wb-section-header">
           <h2 class="wb-section-title">Learn about mental health</h2>
           <p class="wb-section-desc">
-            Understanding what you're feeling is a powerful step. Mental health is not something that happens to "other people" — in Dzaleka, the research shows it affects nearly everyone. Here's what to know.
+            Understanding common signs can make it easier to ask for help. Mental health concerns are common in displacement settings, and Dzaleka has documented pressures that can affect daily life.
           </p>
         </div>
 
@@ -347,7 +347,7 @@ const twitter = {
             <h3 class="wb-topic-title">Depression</h3>
             <p class="wb-topic-label">78% probable rate in the 2022 study</p>
             <p class="wb-topic-desc flex-grow">
-              More than just feeling sad. Depression in Dzaleka often looks like exhaustion, losing interest in things, feeling nothing, sleeping too much or too little, or not caring about the future. It is not a weakness — it is a response to impossible conditions.
+              More than just feeling sad. Depression in Dzaleka often looks like exhaustion, losing interest in things, feeling nothing, sleeping too much or too little, or not caring about the future. It is not a weakness, and it can be a response to long stress, uncertainty, and loss.
             </p>
             <a href="/dzaleka-wellbeing/the-research" class="mt-4 font-semibold text-slate-900 underline hover:text-slate-700">Read the research →</a>
           </article>
@@ -388,7 +388,7 @@ const twitter = {
             <h3 class="wb-topic-title">The "waiting room" feeling</h3>
             <p class="wb-topic-label">Learned helplessness from indefinite encampment</p>
             <p class="wb-topic-desc flex-grow">
-              Waking up with nothing to do, nowhere to go, no rights to work, and no timeline for anything to change. This isn't laziness — it's what happens when the human need for purpose and progress is systematically blocked.
+              Waking up with little control over work, movement, or timelines can wear people down. This is not laziness; it can happen when purpose and progress are blocked for a long time.
             </p>
             <a href="/dzaleka-wellbeing/structural-causes" class="mt-4 font-semibold text-slate-900 underline hover:text-slate-700">Read about structural causes →</a>
           </article>
@@ -529,7 +529,7 @@ const twitter = {
         <div class="wb-section-header">
           <h2 class="wb-section-title">The mental health situation in Dzaleka</h2>
           <p class="wb-section-desc">
-            This is not a normal camp, and these are not normal numbers. The research shows a community where depression, suicidal thinking, and trauma are closer to universal than exceptional.
+            These figures are serious and should be read with care. The research shows high levels of depression, suicidal thinking, and trauma symptoms in the assessed sample.
           </p>
         </div>
 
@@ -573,15 +573,15 @@ const twitter = {
         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <article class="wb-context-card">
             <h3 class="wb-context-title">Encampment policy</h3>
-            <p class="wb-context-desc">The strict encampment policy restricts refugees from seeking employment outside the camp, forcing reliance on dwindling food rations. This loss of agency is a textbook precursor to "learned helplessness."</p>
+            <p class="wb-context-desc">The strict encampment policy restricts refugees from seeking employment outside the camp and increases reliance on shrinking food assistance. Loss of agency can contribute to learned helplessness.</p>
           </article>
           <article class="wb-context-card">
             <h3 class="wb-context-title">Overcrowding</h3>
-            <p class="wb-context-desc">Originally built for 12,000 people, the camp now hosts over 57,000. Large families crammed into single rooms, 324 communal latrines, zero privacy. The physical environment is a stressor.</p>
+            <p class="wb-context-desc">Originally built for 12,000 people, the camp now hosts over 57,000. Crowded rooms, shared latrines, and limited privacy make the physical environment a daily stressor.</p>
           </article>
           <article class="wb-context-card">
             <h3 class="wb-context-title">Funding collapse</h3>
-            <p class="wb-context-desc">UNHCR has secured only 12–18% of required funding. WFP rations cut to 75%. Plan International withdrew. Health staff unpaid for months. The safety net has been stripped away.</p>
+            <p class="wb-context-desc">UNHCR has secured only 12-18% of required funding. WFP rations have been cut to 75%, Plan International withdrew, and health staff have faced unpaid months. The safety net has weakened.</p>
           </article>
           <article class="wb-context-card">
             <h3 class="wb-context-title">The treatment gap</h3>
@@ -593,7 +593,7 @@ const twitter = {
           </article>
           <article class="wb-context-card">
             <h3 class="wb-context-title">Blocked futures</h3>
-            <p class="wb-context-desc">Repatriation impossible. Local integration legally barred. Resettlement won by less than 1% annually. Young adults who finish education find themselves with nothing to do, nowhere to go.</p>
+            <p class="wb-context-desc">Repatriation is not viable for many people, local integration remains restricted, and resettlement reaches very few residents each year. Young adults can finish education and still face no clear next step.</p>
           </article>
         </div>
         
@@ -715,17 +715,19 @@ const twitter = {
 
   .wb-page { background: #f8fafc; }
 
-  .wb-crisis-strip { background: #0f172a; position: sticky; top: 0; z-index: 50; }
+  .wb-crisis-strip { background: #0f172a; position: relative; z-index: 1; }
   .wb-crisis-btn {
-    display: inline-flex; align-items: center; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;
     background: #dc2626; padding: 6px 14px; font-size: 13px; font-weight: 700;
-    color: #fff; transition: background 0.15s;
+    color: #fff; text-align: center; transition: background 0.15s;
+    width: fit-content; max-width: 100%;
   }
   .wb-crisis-btn:hover { background: #b91c1c; }
   .wb-crisis-btn-alt {
-    display: inline-flex; align-items: center; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;
     border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px;
-    font-size: 13px; font-weight: 600; color: #fff; transition: all 0.15s;
+    font-size: 13px; font-weight: 600; color: #fff; text-align: center; transition: all 0.15s;
+    width: fit-content; max-width: 100%;
   }
   .wb-crisis-btn-alt:hover { border-color: rgba(255,255,255,0.5); }
 
@@ -737,14 +739,14 @@ const twitter = {
   @media (min-width: 640px) { .wb-hero-title { font-size: 3.25rem; } }
 
   .wb-audience-selector {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
+    display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 4px;
     background: #f1f5f9; border-radius: 12px; padding: 4px;
     margin-bottom: 2rem; max-width: 720px; margin-left: auto; margin-right: auto;
   }
   .wb-audience-tab {
     padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
     color: #64748b; background: transparent; border: none; cursor: pointer;
-    transition: all 0.15s; flex: 1; min-width: 180px; text-align: center;
+    transition: all 0.15s; flex: 0 1 220px; max-width: 100%; text-align: center;
   }
   .wb-audience-tab:hover { color: #334155; }
   .wb-audience-tab--active { background: #fff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
@@ -756,6 +758,7 @@ const twitter = {
     display: flex; flex-direction: column; align-items: center;
     text-align: center; background: #fff; border: 1px solid #e2e8f0;
     border-radius: 12px; padding: 2rem 1.5rem; transition: all 0.15s;
+    min-width: 0; overflow-wrap: anywhere;
   }
   .wb-pathway-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
   .wb-pathway-card--urgent { border-color: #fecaca; background: #fef2f2; }
@@ -781,31 +784,41 @@ const twitter = {
   .wb-subsection-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; }
 
   .wb-btn-primary {
-    display: inline-flex; align-items: center; border-radius: 8px; background: #0f172a;
-    padding: 10px 20px; font-size: 14px; font-weight: 600; color: #fff; transition: background 0.15s;
+    display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; background: #0f172a;
+    padding: 10px 20px; font-size: 14px; font-weight: 600; color: #fff; text-align: center; transition: background 0.15s;
+    width: fit-content; max-width: 100%;
   }
   .wb-btn-primary:hover { background: #1e293b; }
   .wb-btn-secondary {
-    display: inline-flex; align-items: center; border-radius: 8px; border: 1px solid #e2e8f0;
-    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155; transition: all 0.15s;
+    display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155; text-align: center; transition: all 0.15s;
+    width: fit-content; max-width: 100%;
   }
   .wb-btn-secondary:hover { border-color: #94a3b8; background: #f8fafc; }
 
   .wb-service-card {
     display: flex; flex-direction: column; background: #fff; border: 1px solid #e2e8f0;
     border-radius: 12px; padding: 1.5rem; transition: box-shadow 0.15s;
+    min-width: 0; overflow-wrap: anywhere;
   }
   .wb-service-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
   .wb-service-card--primary { background: #f0fdf4; border-color: #bbf7d0; }
   .wb-service-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; }
-  .wb-service-name { margin-top: 6px; font-size: 1.125rem; font-weight: 700; color: #0f172a; }
-  .wb-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px; position: absolute; top: 1.5rem; right: 1.5rem; }
+  .wb-service-name { margin-top: 6px; font-size: 1.125rem; font-weight: 700; color: #0f172a; overflow-wrap: anywhere; }
+  .wb-badge {
+    display: inline-flex; width: fit-content; max-width: 100%; margin-top: 0.75rem;
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px;
+  }
   .wb-badge--verified { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-  .wb-contact-pill { background: #f1f5f9; border-radius: 100px; padding:  3px 12px; font-size: 12px; color: #475569; }
+  .wb-contact-pill {
+    display: inline-flex; width: fit-content; max-width: 100%;
+    background: #f1f5f9; border-radius: 100px; padding: 3px 12px;
+    font-size: 12px; color: #475569; overflow-wrap: anywhere;
+  }
 
   .wb-topic-card {
     background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    transition: all 0.15s;
+    transition: all 0.15s; min-width: 0; overflow-wrap: anywhere;
   }
   .wb-topic-card:hover { background: #fff; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
   .wb-topic-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
@@ -814,7 +827,7 @@ const twitter = {
 
   .wb-wellbeing-card {
     background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    transition: box-shadow 0.15s;
+    transition: box-shadow 0.15s; min-width: 0; overflow-wrap: anywhere;
   }
   .wb-wellbeing-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
   .wb-wellbeing-number { font-size: 13px; font-weight: 800; color: #94a3b8; }
@@ -825,6 +838,7 @@ const twitter = {
     display: flex; gap: 1rem; align-items: flex-start;
     background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem;
     font-size: 0.875rem; line-height: 1.75; color: #334155;
+    min-width: 0; overflow-wrap: anywhere;
   }
   .wb-step-bullet {
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -834,13 +848,14 @@ const twitter = {
 
   .wb-info-box {
     background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
+    min-width: 0; overflow-wrap: anywhere;
   }
   .wb-info-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
   .wb-info-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.75; color: #64748b; }
 
   .wb-context-card {
     background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    transition: all 0.15s;
+    transition: all 0.15s; min-width: 0; overflow-wrap: anywhere;
   }
   .wb-context-card:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
   .wb-context-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
@@ -851,14 +866,23 @@ const twitter = {
   .wb-stat-label { margin-top: 0.25rem; font-size: 0.875rem; font-weight: 600; color: #0f172a; }
   .wb-stat-note { margin-top: 0.25rem; font-size: 0.75rem; color: #94a3b8; }
 
-  .wb-source-group { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; }
+  .wb-source-group {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 1.5rem; min-width: 0; overflow-wrap: anywhere;
+  }
   .wb-source-link {
     display: block; padding: 1rem; border-radius: 8px; background: rgba(15,23,42,0.5);
     border: 1px solid rgba(255,255,255,0.06); transition: all 0.15s;
   }
   .wb-source-link:hover { border-color: rgba(255,255,255,0.2); background: rgba(15,23,42,0.7); }
-  .wb-source-link strong { display: block; font-size: 13px; color: #fff; }
-  .wb-source-link span { display: block; margin-top: 4px; font-size: 12px; color: #94a3b8; line-height: 1.5; }
+  .wb-source-link strong { display: block; font-size: 13px; color: #fff; overflow-wrap: anywhere; }
+  .wb-source-link span { display: block; margin-top: 4px; font-size: 12px; color: #94a3b8; line-height: 1.5; overflow-wrap: anywhere; }
+
+  @media (max-width: 639px) {
+    .wb-hero-title { font-size: 2rem; }
+    .wb-section { padding: 3rem 0; }
+    .wb-step-item { gap: 0.75rem; padding: 1rem; }
+  }
 </style>
 
 

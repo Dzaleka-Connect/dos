@@ -1,13 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import MainLayout from '../layouts/MainLayout.astro';
 
-const title = "Dzaleka Public Art & Visual Culture";
-const description = "Explore and celebrate public artworks, visual media, and cultural expressions in Dzaleka Refugee Camp. Discover the stories behind murals, sculptures, installations, and visual content created by talented artists who call Dzaleka home.";
+export const prerender = false;
+
+const title = "Dzaleka Public Art Catalogue | Dzaleka Online Services";
+const description = "Browse public artworks, murals, visual records, artists, and cultural documentation from Dzaleka Refugee Camp.";
 
 // Pagination settings
 const itemsPerPage = 9; // Show 9 items per page (3x3 grid)
-const currentPage = 1; // Default to first page
+const requestedPage = Number.parseInt(Astro.url.searchParams.get('page') || '1', 10);
 
 // Dynamically import all artwork content
 let artworks = [];
@@ -39,7 +40,10 @@ artworks.sort((a, b) => {
 
 // Calculate pagination
 const totalItems = artworks.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
+const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+const currentPage = Number.isFinite(requestedPage)
+  ? Math.min(Math.max(requestedPage, 1), totalPages)
+  : 1;
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 const currentArtworks = artworks.slice(startIndex, endIndex);
@@ -59,27 +63,26 @@ const pagination = {
 ---
 
 <MainLayout title={title} description={description}>
-  <Layout>
     <!-- Hero Section -->
     <section class="border-b border-gray-200 bg-white mb-12">
       <div class="container mx-auto px-4 py-12 lg:py-16">
         <div class="max-w-4xl mx-auto text-center">
           <div class="inline-block mb-6">
-            <span class="px-4 py-1.5 bg-slate-100 text-slate-700 rounded-full text-sm font-medium border border-slate-200">
-              Public Art & Visual Culture
+            <span class="inline-flex w-fit px-4 py-1.5 bg-slate-100 text-slate-700 rounded-full text-sm font-medium border border-slate-200">
+              Public art records
             </span>
           </div>
 
           <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Dzaleka Art Catalogue
+            Dzaleka Public Art Catalogue
           </h1>
           <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Celebrating creativity and cultural expression through public art and visual media in Dzaleka
+            Browse documented murals, visual works, artists, locations, and public art records from Dzaleka.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#artworks" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
-              View Artworks
+              Browse artworks
             </a>
             <a href="/public-art-catalogue/submit" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-gray-900 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
               Submit Artwork
@@ -93,15 +96,15 @@ const pagination = {
     <section id="artworks" class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Artworks & Visual Content</h2>
-          <p class="text-lg text-gray-600">Discover the creativity and talent of Dzaleka's artists and visual creators</p>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Artwork Records</h2>
+          <p class="text-lg text-gray-600">Documented public art and visual culture records from Dzaleka</p>
         </div>
 
         <!-- Dynamic artwork listings -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentArtworks.length > 0 ? (
             currentArtworks.map((artwork) => (
-              <div class="bg-white border border-gray-200 rounded-xl hover:border-slate-400 transition-colors duration-300 group overflow-hidden">
+              <article class="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors duration-300 hover:border-slate-400">
                 <div class="relative h-64 bg-gray-100">
                   {artwork.frontmatter.image ? (
                     <img src={artwork.frontmatter.image} alt={artwork.frontmatter.title} class="w-full h-full object-cover transition-opacity duration-700" />
@@ -113,8 +116,8 @@ const pagination = {
                     </div>
                   )}
                   <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div class="absolute top-4 left-4">
-                    <span class="bg-white/90 backdrop-blur-sm text-slate-700 px-3 py-1 rounded-full text-xs font-medium shadow-sm border border-slate-200">
+                  <div class="absolute top-4 left-4 max-w-[calc(100%-2rem)]">
+                    <span class="inline-flex w-fit max-w-full truncate bg-white/90 backdrop-blur-sm text-slate-700 px-3 py-1 rounded-full text-xs font-medium shadow-sm border border-slate-200">
                       {artwork.frontmatter.category}
                     </span>
                   </div>
@@ -126,24 +129,24 @@ const pagination = {
                     </div>
                   )}
                 </div>
-                <div class="p-6">
+                <div class="flex flex-grow flex-col p-6">
                   <div class="mb-4">
-                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-700 transition-colors mb-1">
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-700 transition-colors mb-1 line-clamp-2 break-words">
                       {artwork.frontmatter.title}
                     </h3>
-                    <p class="text-sm text-gray-500 mb-2">by <span class="font-medium text-gray-700">{artwork.frontmatter.artistName}</span></p>
-                    <div class="flex items-center text-xs text-gray-500 mb-3">
-                      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <p class="text-sm text-gray-500 mb-2 break-words">by <span class="font-medium text-gray-700">{artwork.frontmatter.artistName}</span></p>
+                    <div class="flex min-w-0 items-center text-xs text-gray-500 mb-3">
+                      <svg class="w-3 h-3 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      {artwork.frontmatter.campZone}
+                      <span class="min-w-0 truncate">{artwork.frontmatter.campZone}</span>
                     </div>
                   </div>
-                  <p class="text-gray-600 mb-6 line-clamp-2 text-sm leading-relaxed">
-                    {artwork.frontmatter.description || 'Experience the creativity and cultural expression of this remarkable artwork...'}
+                  <p class="text-gray-600 mb-6 line-clamp-2 text-sm leading-relaxed break-words">
+                    {artwork.frontmatter.description || 'A documented public artwork record from the Dzaleka catalogue.'}
                   </p>
-                  <div class="pt-4 border-t border-gray-50">
+                  <div class="mt-auto pt-4 border-t border-gray-50">
                     <a href={`/public-art-catalogue/${artwork.file.split('/').pop().replace('.md', '')}`} class="inline-flex items-center text-slate-700 font-medium hover:text-slate-900 text-sm">
                       View Details
                       <svg class="w-4 h-4 ml-1 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +155,7 @@ const pagination = {
                     </a>
                   </div>
                 </div>
-              </div>
+              </article>
             ))
           ) : (
             <div class="col-span-full text-center py-16">
@@ -163,7 +166,7 @@ const pagination = {
                   </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">No Artworks Yet</h3>
-                <p class="text-gray-600 mb-6">Be the first to submit a public artwork to our catalogue!</p>
+                <p class="text-gray-600 mb-6">Submit the first public artwork, mural, artist profile, or visual record.</p>
                 <a href="/public-art-catalogue/submit" class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
                   Submit First Artwork
                   <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,14 +181,14 @@ const pagination = {
         {/* Pagination Controls */}
         {totalPages > 1 && (
           <div class="mt-12">
-            <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+            <div class="flex flex-col gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
               {/* Results info */}
               <div class="text-sm text-gray-500">
                 Showing <span class="font-medium text-gray-900">{pagination.startItem}</span> to <span class="font-medium text-gray-900">{pagination.endItem}</span> of <span class="font-medium text-gray-900">{pagination.totalItems}</span> results
               </div>
-              
+
               {/* Pagination buttons */}
-              <div class="flex items-center space-x-2">
+              <div class="flex flex-wrap items-center gap-2">
                 {/* Previous button */}
                 {pagination.hasPrevPage ? (
                   <a href={`/public-art-catalogue?page=${pagination.prevPage}`} class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
@@ -204,7 +207,7 @@ const pagination = {
                 )}
                 
                 {/* Page numbers */}
-                <div class="hidden md:flex items-center space-x-1">
+                <div class="hidden md:flex flex-wrap items-center gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                     pageNum === currentPage ? (
                       <span class="inline-flex items-center px-3 py-2 border border-slate-500 rounded-md text-sm font-medium text-slate-700 bg-slate-50">
@@ -252,7 +255,7 @@ const pagination = {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold text-gray-900 mb-4">Artist Spotlight</h2>
-          <p class="text-lg text-gray-600 mb-6">Meet the talented artists and visual creators behind Dzaleka's public art and visual culture</p>
+          <p class="text-lg text-gray-600 mb-6">Artists and visual creators with documented public art records</p>
           <a href="/public-art-catalogue/visual-arts-community" class="inline-flex items-center text-slate-700 hover:text-slate-900 font-medium text-sm">
             View All Visual Artists
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -264,7 +267,7 @@ const pagination = {
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {spotlightArtists.length > 0 ? (
             spotlightArtists.map((artist) => (
-              <div class="bg-white border border-gray-200 rounded-xl hover:border-slate-400 transition-colors duration-300 group overflow-hidden">
+              <article class="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors duration-300 hover:border-slate-400">
                 <div class="relative h-48 bg-gray-100">
                   {artist.frontmatter.image ? (
                     <img src={artist.frontmatter.image} alt={artist.frontmatter.artistName} class="w-full h-full object-cover transition-opacity duration-700" />
@@ -276,28 +279,28 @@ const pagination = {
                     </div>
                   )}
                   <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div class="absolute top-3 left-3">
-                    <span class="bg-white/90 backdrop-blur-sm text-slate-700 px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm">
+                  <div class="absolute top-3 left-3 max-w-[calc(100%-1.5rem)]">
+                    <span class="inline-flex w-fit max-w-full truncate bg-white/90 backdrop-blur-sm text-slate-700 px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm">
                       {artist.frontmatter.medium}
                     </span>
                   </div>
                 </div>
-                <div class="p-4">
+                <div class="flex flex-grow flex-col p-4">
                   <div class="mb-3">
-                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-700 transition-colors mb-1">
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-700 transition-colors mb-1 line-clamp-2 break-words">
                       {artist.frontmatter.artistName}
                     </h3>
-                    <div class="flex items-center text-xs text-gray-500 mb-2">
-                      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex min-w-0 items-center text-xs text-gray-500 mb-2">
+                      <svg class="w-3 h-3 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      {artist.frontmatter.nationality}
+                      <span class="min-w-0 truncate">{artist.frontmatter.nationality}</span>
                     </div>
                   </div>
-                  <p class="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed">
+                  <p class="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed break-words">
                     {artist.frontmatter.bio}
                   </p>
-                  <div class="pt-3 border-t border-gray-50">
+                  <div class="mt-auto pt-3 border-t border-gray-50">
                     <a href={`/public-art-catalogue/artist/${artist.file.split('/').pop().replace('.md', '')}`} class="inline-flex items-center text-slate-700 font-medium hover:text-slate-900 text-sm">
                       View Profile
                       <svg class="w-3 h-3 ml-1 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -306,7 +309,7 @@ const pagination = {
                     </a>
                   </div>
                 </div>
-              </div>
+              </article>
             ))
           ) : (
             <div class="col-span-full text-center py-16">
@@ -317,7 +320,7 @@ const pagination = {
                   </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">No Featured Artists Yet</h3>
-                <p class="text-gray-600 mb-6">Be the first artist to be featured in our spotlight!</p>
+                <p class="text-gray-600 mb-6">Submit an artist profile or public art record for review.</p>
                 <a href="/public-art-catalogue/submit" class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
                   Submit Your Artwork
                   <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -335,8 +338,8 @@ const pagination = {
     <section class="py-16 border-t border-gray-100">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Contribute to the Archive</h2>
-        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Help us document Dzaleka's vibrant visual culture. Submit your own artwork or share photos of public art you've discovered.</p>
-        
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Submit a public artwork, artist profile, correction, location detail, or photo record.</p>
+
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/public-art-catalogue/submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors">
             Submit Artwork
@@ -347,5 +350,4 @@ const pagination = {
         </div>
       </div>
     </section>
-  </Layout>
 </MainLayout>

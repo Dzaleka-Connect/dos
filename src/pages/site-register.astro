@@ -1,13 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import MainLayout from '../layouts/MainLayout.astro';
 
-const title = "Dzaleka Online Services";
-const description = "Explore important cultural, historical, and community locations in and around Dzaleka Refugee Camp. Discover the rich heritage and significance of these sites through detailed documentation, photos, and stories.";
+export const prerender = false;
+
+const title = "Dzaleka Site Register | Dzaleka Online Services";
+const description = "Browse documented landmarks, gathering places, service locations, and cultural sites in and around Dzaleka Refugee Camp.";
 
 // Pagination settings
 const itemsPerPage = 9; // Show 9 items per page (3x3 grid)
-const currentPage = 1; // Default to first page
+const requestedPage = Number.parseInt(Astro.url.searchParams.get('page') || '1', 10);
 
 // Dynamically import all site content
 let sites = [];
@@ -27,7 +28,10 @@ sites.sort((a, b) => {
 
 // Calculate pagination
 const totalItems = sites.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
+const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+const currentPage = Number.isFinite(requestedPage)
+  ? Math.min(Math.max(requestedPage, 1), totalPages)
+  : 1;
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 const currentSites = sites.slice(startIndex, endIndex);
@@ -47,14 +51,13 @@ const pagination = {
 ---
 
 <MainLayout title={title} description={description}>
-  <Layout>
     <!-- Hero Section -->
     <section class="border-b border-gray-200 bg-white mb-12">
       <div class="container mx-auto px-4 py-12 lg:py-16">
         <div class="max-w-4xl mx-auto text-center">
           <div class="inline-block mb-6">
-            <span class="px-4 py-1.5 bg-slate-100 text-slate-700 rounded-full text-sm font-medium border border-slate-200">
-              Cultural Heritage
+            <span class="inline-flex w-fit px-4 py-1.5 bg-slate-100 text-slate-700 rounded-full text-sm font-medium border border-slate-200">
+              Place records
             </span>
           </div>
 
@@ -62,12 +65,12 @@ const pagination = {
             Dzaleka Site Register
           </h1>
           <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Discover and explore the cultural, historical, and community locations that shape the identity of Dzaleka Refugee Camp
+            Browse documented places in Dzaleka, including landmarks, service locations, gathering spaces, and cultural sites.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#sites" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
-              Explore Sites
+              Browse sites
             </a>
             <a href="/site-register/submit" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-gray-900 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
               Submit a Site
@@ -81,15 +84,15 @@ const pagination = {
     <section id="sites" class="py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold text-gray-900 mb-3">Featured Sites</h2>
-          <p class="text-lg text-gray-600">Explore significant locations in Dzaleka</p>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">Site Records</h2>
+          <p class="text-lg text-gray-600">Documented places from the Dzaleka site register</p>
         </div>
 
         <!-- Dynamic site listings -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentSites.length > 0 ? (
             currentSites.map((site) => (
-              <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-slate-300 flex flex-col">
+              <article class="flex min-w-0 flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition-all duration-200 hover:border-slate-300 hover:shadow-md">
                 <div class="relative h-48 bg-gray-100">
                   {site.frontmatter.image ? (
                     <img src={site.frontmatter.image} alt={site.frontmatter.title} class="w-full h-full object-cover" />
@@ -100,8 +103,8 @@ const pagination = {
                       </svg>
                     </div>
                   )}
-                  <div class="absolute top-3 left-3">
-                    <span class="bg-slate-700 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <div class="absolute top-3 left-3 max-w-[calc(100%-1.5rem)]">
+                    <span class="inline-flex w-fit max-w-full truncate bg-slate-700 text-white px-3 py-1 rounded-full text-xs font-semibold">
                       {site.frontmatter.category}
                     </span>
                   </div>
@@ -114,18 +117,18 @@ const pagination = {
                   )}
                 </div>
                 <div class="p-5 flex-grow flex flex-col">
-                  <h3 class="text-lg font-bold text-gray-900 mb-2">
+                  <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 break-words">
                     {site.frontmatter.title}
                   </h3>
-                  <div class="flex items-center text-sm text-gray-500 mb-3">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="flex min-w-0 items-center text-sm text-gray-500 mb-3">
+                    <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span>{site.frontmatter.campZone}</span>
+                    <span class="min-w-0 truncate">{site.frontmatter.campZone}</span>
                   </div>
-                  <p class="text-gray-600 mb-4 line-clamp-3 text-sm flex-grow">
-                    {site.frontmatter.description || 'Discover the cultural and historical significance of this important site in Dzaleka...'}
+                  <p class="text-gray-600 mb-4 line-clamp-3 text-sm flex-grow break-words">
+                    {site.frontmatter.description || 'A documented place record from the Dzaleka Site Register.'}
                   </p>
                   <a href={`/site-register/${site.file.split('/').pop().replace('.md', '')}`} class="inline-flex items-center justify-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium mt-auto">
                     View Details
@@ -134,7 +137,7 @@ const pagination = {
                     </svg>
                   </a>
                 </div>
-              </div>
+              </article>
             ))
           ) : (
             <div class="col-span-full text-center py-16">
@@ -145,7 +148,7 @@ const pagination = {
                   </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">No Sites Yet</h3>
-                <p class="text-gray-600 mb-6">Be the first to submit a cultural, historical, or community site!</p>
+                <p class="text-gray-600 mb-6">Submit the first landmark, gathering place, service location, or cultural site.</p>
                 <a href="/site-register/submit" class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
                   Submit First Site
                   <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,12 +163,12 @@ const pagination = {
         {/* Pagination Controls */}
         {totalPages > 1 && (
           <div class="mt-12">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div class="text-sm text-gray-600">
                 Showing {pagination.startItem} to {pagination.endItem} of {pagination.totalItems} sites
               </div>
-              
-              <div class="flex items-center space-x-2">
+
+              <div class="flex flex-wrap items-center gap-2">
                 {pagination.hasPrevPage ? (
                   <a href={`/site-register?page=${pagination.prevPage}`} class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +185,7 @@ const pagination = {
                   </button>
                 )}
                 
-                <div class="flex items-center space-x-1">
+                <div class="flex flex-wrap items-center gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                     pageNum === currentPage ? (
                       <span class="inline-flex items-center px-3 py-2 border-2 border-slate-700 rounded-lg text-sm font-medium text-slate-700 bg-slate-50">
@@ -221,12 +224,11 @@ const pagination = {
     <!-- Footer CTA -->
     <section class="py-12 bg-gray-50">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-2xl font-bold text-gray-900 mb-3">Help Document Dzaleka's Heritage</h2>
-        <p class="text-gray-600 mb-6">Share information about cultural, historical, or community sites</p>
+        <h2 class="text-2xl font-bold text-gray-900 mb-3">Help update the site register</h2>
+        <p class="text-gray-600 mb-6">Share a place record, correction, photo, or missing location.</p>
         <a href="/site-register/submit" class="inline-flex items-center justify-center px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">
           Submit a New Site
         </a>
       </div>
     </section>
-  </Layout>
 </MainLayout>

@@ -19,19 +19,19 @@ function isUpcoming(date: Date) {
 }
 
 // Function to check if event is TBA
-function isTBA(title: string) {
-  return title.toLowerCase().includes('tba');
+function isEventTBA(event: any) {
+  return Boolean(event.data.isTBA) || event.data.title.toLowerCase().includes('tba');
 }
 
 // Filter and sort upcoming events
 const allUpcomingEvents = events
-  .filter(event => isUpcoming(event.data.date))
+  .filter(event => isEventTBA(event) || isUpcoming(event.data.date))
   .map(event => ({
     ...event,
     data: { 
       ...event.data, 
       status: 'upcoming',
-      isTBA: isTBA(event.data.title)
+      isTBA: isEventTBA(event)
     }
   }))
   .sort((a, b) => {
@@ -43,16 +43,16 @@ const allUpcomingEvents = events
 
 // Filter and sort past events
 const allPastEvents = events
-  .filter(event => !isUpcoming(event.data.date))
+  .filter(event => !isEventTBA(event) && !isUpcoming(event.data.date))
   .map(event => ({
     ...event,
     data: { 
       ...event.data, 
       status: 'past',
-      isTBA: isTBA(event.data.title)
+      isTBA: false
     }
   }))
-  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 // Get first 4 events of each type
 const upcomingEvents = allUpcomingEvents.slice(0, 4);
@@ -204,7 +204,7 @@ const eventsStructuredData = {
             What's On in Dzaleka
           </h1>
           <p class="text-lg leading-8 text-slate-600 mb-8 max-w-2xl">
-            Cultural festivals, performances, webinars, workshops, and community gatherings — discover the vibrant spirit of our community.
+            Cultural festivals, performances, webinars, workshops, and community gatherings in and beyond Dzaleka.
           </p>
 
           <a
@@ -225,7 +225,7 @@ const eventsStructuredData = {
     <section class="mb-20">
       <div class="mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">Upcoming Events</h2>
-        <p class="text-lg text-gray-600 text-center">Discover what's happening next in our community</p>
+        <p class="text-lg text-gray-600 text-center">Dates, venues, organizers, and registration links where available</p>
       </div>
 
       {allUpcomingEvents.length > 0 ? (
@@ -259,7 +259,7 @@ const eventsStructuredData = {
       <div class="max-w-6xl mx-auto">
         <div class="mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">Past Events</h2>
-          <p class="text-lg text-gray-600 text-center">Relive the memories of our previous community gatherings</p>
+          <p class="text-lg text-gray-600 text-center">Recent gatherings, talks, festivals, performances, and community meetings</p>
         </div>
         {allPastEvents.length > 0 ? (
           <div>

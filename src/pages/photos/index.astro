@@ -34,7 +34,7 @@ const toAbsoluteUrl = (value?: string) => {
 // Sort photos within each year and get top 3
 const previewPhotosByYear = years.reduce((acc, year) => {
   // Sort photos for this year
-  const yearPhotos = photosByYear[year].sort((a, b) => 
+  const yearPhotos = photosByYear[year].sort((a, b) =>
     new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
   );
 
@@ -44,9 +44,9 @@ const previewPhotosByYear = years.reduce((acc, year) => {
   };
 
   return acc;
-}, {} as Record<number, { 
-  photos: typeof photos, 
-  totalPhotos: number 
+}, {} as Record<number, {
+  photos: typeof photos,
+  totalPhotos: number
 }>);
 
 // Function to generate pagination URL
@@ -58,13 +58,13 @@ function getPaginationUrl(year: number, page: number) {
 
 // Create SEO metadata
 const seo = {
-  title: "Photo Gallery | Dzaleka Online Services",
-  description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
+  title: "Photo Archive | Dzaleka Online Services",
+  description: "Browse photographs documenting daily life, work, culture, events, and community memory in Dzaleka Refugee Camp.",
   type: "website",
   canonical: "https://services.dzaleka.com/photos",
   openGraph: {
-    title: "Dzaleka Photo Gallery",
-    description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
+    title: "Dzaleka Photo Archive",
+    description: "Browse photographs documenting daily life, work, culture, events, and community memory in Dzaleka Refugee Camp.",
     type: "website",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
@@ -73,14 +73,14 @@ const seo = {
       url: toAbsoluteUrl(photos[0]?.data.image),
       width: 1200,
       height: 630,
-      alt: "Dzaleka Photo Gallery",
+      alt: "Dzaleka Photo Archive",
       type: "image/jpeg"
     }
   },
   twitter: {
     card: "summary_large_image",
-    title: "Photo Gallery | Dzaleka Online Services",
-    description: "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp. Browse photos by year and discover the rich visual heritage of our community.",
+    title: "Photo Archive | Dzaleka Online Services",
+    description: "Browse photographs documenting daily life, work, culture, events, and community memory in Dzaleka Refugee Camp.",
     image: toAbsoluteUrl(photos[0]?.data.image)
   }
 };
@@ -89,8 +89,8 @@ const seo = {
 const galleryStructuredData = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "Photo Gallery | Dzaleka Online Services",
-  "description": "Explore our collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp.",
+  "name": "Photo Archive | Dzaleka Online Services",
+  "description": "Photographs documenting daily life, work, culture, events, and community memory in Dzaleka Refugee Camp.",
   "url": "https://services.dzaleka.com/photos",
   "breadcrumb": {
     "@type": "BreadcrumbList",
@@ -104,15 +104,15 @@ const galleryStructuredData = {
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Photo Gallery",
+        "name": "Photo Archive",
         "item": "https://services.dzaleka.com/photos"
       }
     ]
   },
   "mainEntity": {
     "@type": "ImageGallery",
-    "name": "Dzaleka Photo Gallery",
-    "description": "A collection of photographs documenting life, culture, and stories from Dzaleka Refugee Camp",
+    "name": "Dzaleka Photo Archive",
+    "description": "A collection of photographs documenting daily life, work, culture, events, and community memory in Dzaleka Refugee Camp",
     "numberOfItems": photos.length,
     "itemListElement": years.map((year, yearIndex) => ({
       "@type": "ListItem",
@@ -148,26 +148,26 @@ const galleryStructuredData = {
 };
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(galleryStructuredData)} />
-  
+
   <main class="min-h-screen">
     <!-- Hero Section -->
     <div class="bg-white border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 tracking-tight">
-            Photo Gallery
+            Photo Archive
           </h1>
           <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Visual stories from Dzaleka — moments of joy, resilience, and everyday life captured by our community
+            Photographs by year, with dates, photographers, tags, captions, and stories where available.
           </p>
 
           {/* Submit Photo Button */}
@@ -178,24 +178,24 @@ const galleryStructuredData = {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            Share Your Story
+            Submit a photo record
           </a>
         </div>
       </div>
     </div>
 
     <div class="container mx-auto px-4 py-16">
-    
+
     {years.map(year => {
       const { photos, totalPhotos } = previewPhotosByYear[year];
       return (
         <div class="mb-20 scroll-reveal" id={year.toString()}>
-          <div class="flex items-center justify-between mb-8">
+          <div class="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 class="font-heading text-4xl font-bold text-gray-900 flex items-center gap-4">
                 {year}
               </h2>
-              <p class="font-body text-lg text-gray-600 mt-2">{totalPhotos} photographs preserving our heritage</p>
+              <p class="font-body text-lg text-gray-600 mt-2">{totalPhotos} photographs in the archive</p>
             </div>
           </div>
 
@@ -205,7 +205,7 @@ const galleryStructuredData = {
               return (
                 <a
                   href={`/photos/${photo.id}`}
-                  class="group block bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-sm transition-colors"
+                  class="group block min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors hover:border-gray-300 hover:shadow-sm"
                 >
                   <div class="relative flex-shrink-0 border-b border-gray-100">
                     {/* Main Image Container */}
@@ -216,7 +216,7 @@ const galleryStructuredData = {
                         class="w-full h-full object-cover"
                       />
                     </div>
-                    
+
                     {/* Gallery Indicator Badge */}
                     {isGallery && (
                       <div class="absolute top-3 right-3 z-20">
@@ -231,24 +231,26 @@ const galleryStructuredData = {
                   </div>
 
                   <div class="p-5">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight line-clamp-2">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight line-clamp-2 break-words">
                       {photo.data.title}
                     </h3>
-                    <div class="mt-2 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                    <div class="mt-2 flex min-w-0 flex-wrap items-center gap-3 text-sm text-gray-500">
                       <span>{format(new Date(photo.data.date), 'MMMM d, yyyy')}</span>
                       {photo.data.photographer && (
-                        <span class="flex items-center gap-1">
+                        <span class="flex min-w-0 items-center gap-1">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
-                          {typeof photo.data.photographer === 'string' 
-                            ? photo.data.photographer 
-                            : photo.data.photographer.name}
+                          <span class="min-w-0 truncate">
+                            {typeof photo.data.photographer === 'string'
+                              ? photo.data.photographer
+                              : photo.data.photographer.name}
+                          </span>
                         </span>
                       )}
                     </div>
-                    <p class="mt-3 text-sm text-gray-600 line-clamp-2 leading-relaxed">
+                    <p class="mt-3 text-sm text-gray-600 line-clamp-2 leading-relaxed break-words">
                       {photo.data.description}
                     </p>
                     {photo.data.tags && (

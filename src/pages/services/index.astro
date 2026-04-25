@@ -27,7 +27,6 @@ const endIndex = Math.min(itemsPerPage, totalItems);
 const paginatedServices = sortedServices.slice(startIndex, endIndex);
 
 // Preserve query parameters for pagination links
-// Preserve query parameters for pagination links
 const baseUrl = '/services';
 
 // Group services by category
@@ -45,8 +44,8 @@ const sortedCategories = Object.keys(servicesByCategory).sort();
 
 // SEO metadata
 const seo = {
-  title: 'Services Directory - Dzaleka Online Services',
-  description: 'Connect with 100+ verified organizations providing healthcare, education, legal support, and business services in Dzaleka Refugee Camp. Find trusted local services from healthcare clinics to educational programs and community support.',
+  title: 'Find Services in Dzaleka - Dzaleka Online Services',
+  description: 'Search organizations, clinics, schools, community groups, businesses, and support programs working in and around Dzaleka Refugee Camp.',
   image: '/images/services-directory.jpg',
   keywords: [
     'Dzaleka Services',
@@ -65,7 +64,7 @@ const seo = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Dzaleka Services Directory",
-    "description": "A carousel of verified services and organizations in Dzaleka Refugee Camp.",
+    "description": "A searchable list of services and organizations in Dzaleka Refugee Camp.",
     "itemListElement": paginatedServices.map((service, idx) => ({
       "@type": "ListItem",
       "position": idx + 1,
@@ -75,7 +74,7 @@ const seo = {
   })}
 />
 
-<MainLayout 
+<MainLayout
   title={seo.title}
   description={seo.description}
   image={seo.image}
@@ -100,12 +99,12 @@ const seo = {
             light={true}
           />
         </div>
-        
+
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
-          Services Directory
+          Find a service in Dzaleka
         </h1>
         <p class="text-lg text-gray-200 mb-8 leading-relaxed">
-          {totalItems} organizations in Dzaleka — healthcare, education, legal aid, and more
+          Search {totalItems} organization and service listings, then use category pages to narrow by need.
         </p>
 
         <!-- Search and Filter Row -->
@@ -116,7 +115,7 @@ const seo = {
               <input
                 type="text"
                 id="serviceSearch"
-                placeholder="Search services..."
+                placeholder="Search by name or keyword..."
                 class="w-full px-4 py-3 pl-11 rounded-lg border-0 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:outline-none transition-colors"
               />
               <svg class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,10 +168,10 @@ const seo = {
       <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
         <div>
           <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-            {totalItems} Services Available
+            Service listings
           </h2>
           <p class="text-sm sm:text-base text-gray-600">
-            Showing {startIndex + 1}-{endIndex} of {totalItems} services
+            Showing {startIndex + 1}-{endIndex} of {totalItems}, with featured and recently updated listings first.
           </p>
         </div>
 
@@ -194,7 +193,7 @@ const seo = {
 
         return (
           <div class="service-card" data-category={service.data.category} data-title={service.data.title.toLowerCase()}>
-            <ServiceCard 
+            <ServiceCard
               title={service.data.title}
               description={service.data.description}
               category={service.data.category}
@@ -243,7 +242,7 @@ const seo = {
         {sortedCategories.map(category => {
           const categoryServices = allServices.filter(service => service.data.category === category);
           const categorySlug = category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-          
+
           // Get category icon
           const getCategoryIcon = (cat) => {
             const icons = {
@@ -258,27 +257,27 @@ const seo = {
             };
             return icons[cat] || 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10';
           };
-          
+
           return (
-            <a 
+            <a
               href={`/services/category/${categorySlug}`}
-              class="group bg-white rounded-lg p-4 border border-gray-200 hover:border-primary-300 hover:shadow-sm transition-all duration-200"
+              class="group block min-w-0 rounded-lg border border-gray-200 bg-white p-4 transition-all duration-200 hover:border-primary-300 hover:shadow-sm"
             >
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+              <div class="flex min-w-0 items-center justify-between gap-3">
+                <div class="flex min-w-0 items-center gap-3">
+                  <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary-100 transition-colors group-hover:bg-primary-200">
                     <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={getCategoryIcon(category)} />
                     </svg>
                   </div>
-                  <div>
-                    <h3 class="font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
+                  <div class="min-w-0">
+                    <h3 class="font-medium text-gray-900 group-hover:text-primary-600 transition-colors break-words">
                       {category}
                     </h3>
                     <p class="text-sm text-gray-500">{categoryServices.length} services</p>
                   </div>
                 </div>
-                <svg class="w-4 h-4 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-4 w-4 flex-shrink-0 text-gray-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -292,9 +291,9 @@ const seo = {
 
     <!-- Register CTA -->
     <div class="mt-12 border border-gray-200 rounded-lg p-6 text-center">
-      <h3 class="text-lg font-semibold text-gray-900 mb-2">Provide a service in Dzaleka?</h3>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Run a service, program, or organization in Dzaleka?</h3>
       <p class="text-gray-600 mb-4 text-sm">
-        Add your organization to the directory.
+        Add a new listing or help keep an existing one accurate.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
         <Button href="/services/register" size="sm">
@@ -369,8 +368,8 @@ const seo = {
       // Update clear button visibility
       updateClearButtonVisibility();
     }
-    
-    
+
+
     // Clear filters functionality
     clearFiltersBtn?.addEventListener('click', () => {
       // Reset search input
@@ -449,7 +448,7 @@ const seo = {
     from { opacity: 0; transform: scale(1.05); }
     to { opacity: 1; transform: scale(1); }
   }
-  
+
   .animate-fade-in {
     animation: fadeIn 2s ease-out forwards;
   }

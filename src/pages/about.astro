@@ -1,14 +1,13 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import PageHeader from '../components/ui/PageHeader.astro';
 
 // Create SEO metadata
 const seo = {
-  description: "Discover how Dzaleka Online Services empowers 57,000+ refugees through digital connectivity, cultural preservation, and community support. Learn about our mission to bridge digital divides and preserve heritage in Malawi's largest refugee camp.",
+  description: "Learn how Dzaleka Online Services maintains practical service information, public resources, community records, and cultural archives for people connected to Dzaleka Refugee Camp.",
   type: "website",
   canonical: "https://services.dzaleka.com/about",
   openGraph: {
-    description: "Discover how Dzaleka Online Services empowers 57,000+ refugees through digital connectivity, cultural preservation, and community support. Learn about our mission to bridge digital divides and preserve heritage in Malawi's largest refugee camp.",
+    description: "Learn how Dzaleka Online Services maintains practical service information, public resources, community records, and cultural archives for people connected to Dzaleka Refugee Camp.",
     type: "website",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
@@ -16,7 +15,7 @@ const seo = {
   },
   twitter: {
     card: "summary",
-    description: "Discover how Dzaleka Online Services empowers 57,000+ refugees through digital connectivity, cultural preservation, and community support. Learn about our mission to bridge digital divides and preserve heritage in Malawi's largest refugee camp."
+    description: "Learn how Dzaleka Online Services maintains practical service information, public resources, community records, and cultural archives for people connected to Dzaleka Refugee Camp."
   }
 };
 
@@ -25,7 +24,7 @@ const aboutStructuredData = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   "name": "About Dzaleka Online Services",
-  "description": "Learn about Dzaleka Online Services, our mission to empower refugees through digital connectivity.",
+  "description": "Learn about Dzaleka Online Services and how the site maintains practical information and public records for Dzaleka.",
   "url": "https://services.dzaleka.com/about",
   "breadcrumb": {
     "@type": "BreadcrumbList",
@@ -47,7 +46,7 @@ const aboutStructuredData = {
   "mainEntity": {
     "@type": "Organization",
     "name": "Dzaleka Online Services",
-    "description": "A digital platform empowering refugees through service accessibility and community connections.",
+    "description": "A community-maintained website for services, public resources, events, jobs, data, and cultural records connected to Dzaleka.",
     "url": "https://services.dzaleka.com",
     "sameAs": [
       "https://services.dzaleka.com"
@@ -59,78 +58,78 @@ const partners = [
   {
     name: 'UNHCR',
     description: 'United Nations High Commissioner for Refugees',
-    icon: '🌐'
+    iconPath: 'M12 3a9 9 0 100 18 9 9 0 000-18zm0 0c2.5 2.4 3.75 5.4 3.75 9S14.5 18.6 12 21m0-18C9.5 5.4 8.25 8.4 8.25 12S9.5 18.6 12 21M3.6 9h16.8M3.6 15h16.8'
   },
   {
     name: 'Community Organizations',
     description: 'Local organizations supporting refugee communities',
-    icon: '🤝'
+    iconPath: 'M17 20h5v-2a4 4 0 00-4-4h-1M7 20H2v-2a4 4 0 014-4h1m0-4a4 4 0 118 0 4 4 0 01-8 0zm10 0a3 3 0 116 0 3 3 0 01-6 0z'
   }
 ];
 
 const services = [
   {
     title: 'Skills Exchange',
-    description: 'A community-driven platform where members share expertise, earn income, and help others develop new skills. From photography to music, languages to crafts - every skill has value.',
-    icon: '🤝',
+    description: 'A place for people to list skills, request help, teach, learn, and connect practical knowledge to income opportunities.',
+    iconPath: 'M16 11c1.657 0 3-1.12 3-2.5S17.657 6 16 6s-3 1.12-3 2.5S14.343 11 16 11zM8 11c1.657 0 3-1.12 3-2.5S9.657 6 8 6 5 7.12 5 8.5 6.343 11 8 11zm0 2c-2.761 0-5 1.343-5 3v1h10v-1c0-1.657-2.239-3-5-3zm8 0c-.71 0-1.39.09-2 .26 1.2.73 2 1.69 2 2.74v1h5v-1c0-1.657-2.239-3-5-3z',
     url: '/skills-exchange'
   },
   {
     title: 'Site Register',
-    description: 'Documenting and preserving important community sites, landmarks, and cultural spaces within Dzaleka. A digital archive of our community\'s physical heritage.',
-    icon: '🏛️',
+    description: 'A public record of landmarks, gathering places, services, and cultural spaces within Dzaleka.',
+    iconPath: 'M3 21h18M5 21V9m14 12V9M4 9l8-5 8 5M8 21v-7m4 7v-7m4 7v-7',
     url: '/site-register'
   },
   {
     title: 'Public Art Catalogue',
-    description: 'Showcasing the vibrant visual arts community and public artworks that tell our stories. From murals to sculptures, celebrating creativity and cultural expression.',
-    icon: '🎨',
+    description: 'A catalogue of murals, artworks, artists, and visual records that document public culture in the camp.',
+    iconPath: 'M12 3a9 9 0 00-9 9 7 7 0 007 7h1.5a1.5 1.5 0 000-3H11a2 2 0 010-4h1a9 9 0 000-18zm-4 8h.01M9 7h.01M15 7h.01M17 11h.01',
     url: '/public-art-catalogue'
   },
   {
-    title: 'Photo Gallery',
-    description: 'Explore and contribute to our growing collection of photos, videos, and stories that document life in Dzaleka. Help preserve our cultural heritage for future generations.',
-    icon: '📷',
+    title: 'Photo Archive',
+    description: 'A growing collection of photographs and stories documenting daily life, events, work, creativity, and memory.',
+    iconPath: 'M3 8a2 2 0 012-2h2l1.5-2h7L17 6h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm9 9a4 4 0 100-8 4 4 0 000 8z',
     url: '/photos'
   },
   {
     title: 'Community Directory',
-    description: 'Find and connect with local organizations, businesses, and services within Dzaleka. A comprehensive database of community resources at your fingertips.',
-    icon: '🔍',
+    description: 'A searchable directory of organizations, businesses, schools, clinics, programs, and community services.',
+    iconPath: 'M21 21l-5.2-5.2M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z',
     url: '/services'
   },
   {
     title: 'Online Services',
-    description: 'Access essential services digitally - from permit applications to community program registrations. Making administrative tasks more accessible.',
-    icon: '💻',
+    description: 'Forms and workflows for service updates, submissions, registrations, reporting, and community support requests.',
+    iconPath: 'M4 5h16v10H4V5zm-1 14h18M8 19h8',
     url: '/applications'
   }
 ];
 
 const goals = [
   {
-    title: 'Economic Empowerment',
-    description: 'Creating opportunities for community members to earn income through their skills and knowledge.'
+    title: 'Practical access',
+    description: 'Make it easier to find services, contacts, forms, and next steps without asking in many different places.'
   },
   {
-    title: 'Digital Inclusion',
-    description: 'Making services accessible to all community members through digital platforms.'
+    title: 'Accurate records',
+    description: 'Keep public information clear, dated, sourced where possible, and open to corrections from the community.'
   },
   {
-    title: 'Community Empowerment',
-    description: 'Providing tools and resources for self-sufficiency and growth.'
+    title: 'Community publishing',
+    description: 'Give residents, organizations, artists, educators, traders, and visitors routes to add or update information.'
   },
   {
     title: 'Cultural Preservation',
-    description: 'Documenting and preserving our rich cultural heritage for future generations.'
+    description: 'Document photos, places, public art, stories, events, and creative work as part of Dzaleka\'s shared memory.'
   },
   {
-    title: 'Skills Development',
-    description: 'Fostering a learning environment where knowledge flows freely and skills are valued.'
+    title: 'Opportunities and learning',
+    description: 'Connect people to jobs, courses, grants, tools, skills exchange, and business visibility.'
   },
   {
-    title: 'Service Integration',
-    description: 'Streamlining access to essential services and support programs.'
+    title: 'Responsible growth',
+    description: 'Improve the site in ways that remain mobile-friendly, readable, privacy-aware, and useful for first-time visitors.'
   }
 ];
 
@@ -160,17 +159,17 @@ const serviceList = [
 ];
 ---
 
-<MainLayout 
-  title="About Dzaleka Online Services - Our Mission & Community Impact"
-  description="Discover how Dzaleka Online Services empowers 57,000+ refugees through digital connectivity, cultural preservation, and community support. Learn about our mission to bridge digital divides and preserve heritage in Malawi's largest refugee camp."
-  keywords="Dzaleka refugee camp, Malawi refugees, digital heritage, cultural preservation, community support, refugee empowerment, humanitarian aid, refugee services, community development"
+<MainLayout
+  title="About Dzaleka Online Services - Community information and public records"
+  description="Learn how Dzaleka Online Services maintains practical service information, public resources, community records, and cultural archives for people connected to Dzaleka Refugee Camp."
+  keywords="Dzaleka refugee camp, Malawi refugees, digital heritage, cultural records, community support, humanitarian aid, refugee services, community information"
   canonical="https://services.dzaleka.com/about"
   ogType="website"
   ogImage="/images/about-hero.jpg"
   twitterCard="summary_large_image"
 >
   <script type="application/ld+json" set:html={JSON.stringify(aboutStructuredData)} />
-  
+
   <main class="min-h-screen">
     <!-- Hero Section -->
     <div class="border-b border-slate-200 bg-white">
@@ -179,7 +178,7 @@ const serviceList = [
           About Dzaleka Online Services
         </h1>
         <p class="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Empowering our community through digital connectivity and service accessibility
+          Practical information, public records, and community archives for people connected to Dzaleka
         </p>
       </div>
     </div>
@@ -193,24 +192,24 @@ const serviceList = [
         </div>
         <div class="prose prose-lg prose-blue mx-auto text-gray-600">
           <p class="lead text-xl text-gray-700 mb-8 text-center">
-            Dzaleka Online Services is dedicated to enhancing the lives of refugees and community members 
-            by providing easy access to essential services, preserving our cultural heritage, and fostering 
-            community connections through digital solutions.
+            Dzaleka Online Services helps people find the right service, contact, document, event,
+            job, or community record without guessing where to begin.
           </p>
           <p>
-            Our platform includes the Skills Exchange initiative, where community members like Philemon Kasaro 
-            (photographer earning 300,000 Kwacha monthly), Muenyemali Mutewa Tresort (filmmaker and teacher), 
-            and many others share their expertise to help others while earning income.
+            The site brings together directories, urgent help pages, public resources, events, jobs,
+            marketplace listings, open data, and cultural archives. Each section is meant to answer a
+            practical question: where to go, who to contact, what to bring, what is happening, or how to
+            contribute a correction.
           </p>
           <p>
-            We also feature the Site Register documenting our community's important landmarks and cultural spaces, 
-            and the Public Art Catalogue showcasing our vibrant visual arts community with artists like Jacqueline 
-            Nyanduhuro, Paulin Engambee, and many others who express our stories through murals, sculptures, and paintings.
+            The cultural side of the site includes the Site Register, Photo Archive, Public Art Catalogue,
+            dancers, poets, artists, and community voices. These records name people, places, and creative
+            work that can otherwise disappear from public memory.
           </p>
           <p>
-            We strive to create a platform that empowers our community members to access resources, 
-            submit applications, share their stories, participate in community events, and develop 
-            economic self-reliance through skills sharing.
+            We also maintain contribution routes so residents, organizations, traders, artists, educators,
+            and visitors can submit updates, add records, report issues, and keep the information useful
+            for the next person who needs it.
           </p>
         </div>
       </section>
@@ -220,7 +219,7 @@ const serviceList = [
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What We Offer</h2>
           <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive digital solutions designed to serve, connect, and empower our community.
+            The main sections of the site, grouped by what people usually need to do.
           </p>
         </div>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -230,12 +229,16 @@ const serviceList = [
               class="group bg-white p-8 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors block"
             >
               <div class="flex items-center mb-6">
-                <span class="text-4xl mr-4">{service.icon}</span>
-                <h3 class="text-xl font-bold text-gray-900 group-hover:text-slate-700 transition-colors">
+                <span class="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700">
+                  <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d={service.iconPath} />
+                  </svg>
+                </span>
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-slate-700 transition-colors break-words">
                   {service.title}
                 </h3>
               </div>
-              <p class="text-gray-600 leading-relaxed mb-6">
+              <p class="text-gray-600 leading-relaxed mb-6 break-words">
                 {service.description}
               </p>
               <div class="mt-auto flex items-center text-slate-700 font-medium">
@@ -255,7 +258,7 @@ const serviceList = [
           <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Goals</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-              Working towards a more connected, empowered, and self-sufficient community.
+              A clearer, more maintainable public information system for Dzaleka.
             </p>
           </div>
           <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -301,9 +304,13 @@ const serviceList = [
         <div class="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
           {partners.map(partner => (
             <div class="bg-white p-8 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors flex items-start">
-              <div class="text-4xl mr-6 bg-gray-50 p-4 rounded-lg">{partner.icon}</div>
-              <div>
-                <h3 class="text-xl font-bold mb-2 text-gray-900">{partner.name}</h3>
+              <div class="mr-6 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-gray-50 text-slate-700">
+                <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d={partner.iconPath} />
+                </svg>
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-xl font-bold mb-2 text-gray-900 break-words">{partner.name}</h3>
                 <p class="text-gray-600 leading-relaxed">{partner.description}</p>
               </div>
             </div>
@@ -315,8 +322,8 @@ const serviceList = [
       <section class="max-w-4xl mx-auto text-center bg-gray-900 rounded-xl p-12 sm:p-16 text-white">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">Get Involved</h2>
         <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-          We welcome community participation and feedback. Whether you want to share your skills,
-          learn from others, or contribute to our mission.
+          We welcome corrections, new listings, photos, stories, services, and feedback from people
+          who know Dzaleka directly.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a

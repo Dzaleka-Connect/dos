@@ -5,37 +5,37 @@ import Breadcrumb from '../components/ui/Breadcrumb.astro';
 
 const supportCategories = [
   {
-    title: 'Application Support',
-    description: 'Help with submitting and tracking applications'
+    title: 'Forms and submissions',
+    description: 'Help with service listings, updates, applications, and content submissions'
   },
   {
-    title: 'Technical Support',
-    description: 'Help with platform access and technical issues'
+    title: 'Site access',
+    description: 'Report broken links, loading problems, search issues, or missing pages'
   },
   {
-    title: 'Content Support',
-    description: 'Help with submitting resources and photos'
+    title: 'Corrections',
+    description: 'Send updates for services, resources, events, photos, or public records'
   },
   {
-    title: 'Community Support',
-    description: 'Help with events and community engagement'
+    title: 'Finding the right route',
+    description: 'Ask where to start when your question does not fit one page'
   }
 ];
 
 const quickLinks = [
   {
     title: 'Resources',
-    description: 'Access community resources and guides',
+    description: 'Reports, legal materials, guides, and public documents',
     href: '/resources'
   },
   {
     title: 'Applications',
-    description: 'Submit and track your applications',
+    description: 'Internal support forms and request pathways',
     href: '/applications'
   },
   {
-    title: 'Photo Gallery',
-    description: 'Browse community photos and memories',
+    title: 'Photo Archive',
+    description: 'Browse or submit photo records',
     href: '/photos'
   },
   {
@@ -63,9 +63,9 @@ const quickLinks = [
         </div>
 
         <div class="max-w-3xl mx-auto text-center">
-          <h1 class="text-4xl font-bold mb-4">How Can We Help You?</h1>
-          <p class="text-xl text-white">
-            Find answers, submit requests, and get the support you need
+          <h1 class="text-3xl font-bold mb-4 sm:text-4xl">Support and site help</h1>
+          <p class="text-lg text-white sm:text-xl">
+            Report a problem, ask for a correction, or get routed to the right page
           </p>
         </div>
       </div>
@@ -76,9 +76,9 @@ const quickLinks = [
         <!-- Support Categories -->
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
           {supportCategories.map(category => (
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
-              <h2 class="text-xl font-bold text-gray-900 mb-2">{category.title}</h2>
-              <p class="text-gray-600">{category.description}</p>
+            <div class="min-w-0 rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
+              <h2 class="text-xl font-bold text-gray-900 mb-2 break-words">{category.title}</h2>
+              <p class="text-gray-600 break-words">{category.description}</p>
             </div>
           ))}
         </div>
@@ -90,12 +90,12 @@ const quickLinks = [
             {quickLinks.map(link => (
               <a
                 href={link.href}
-                class="block p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+                class="group block min-w-0 rounded-xl bg-gray-50 p-6 transition-colors hover:bg-gray-100"
               >
-                <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 mb-1">
+                <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 mb-1 break-words">
                   {link.title}
                 </h3>
-                <p class="text-sm text-gray-600">{link.description}</p>
+                <p class="text-sm text-gray-600 break-words">{link.description}</p>
               </a>
             ))}
           </div>
@@ -108,10 +108,10 @@ const quickLinks = [
         </section>
 
         <!-- Support Form -->
-        <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">Still Need Help?</h2>
+        <section class="bg-white rounded-xl shadow-sm p-6 sm:p-8 border border-gray-100">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Still need help?</h2>
           <p class="text-gray-600 mb-8">
-            Can't find what you're looking for? Send us a message and we'll get back to you as soon as possible.
+            Send a clear message with the page, service, or issue you are asking about. If the situation is urgent, use <a href="/get-help-now" class="font-medium text-primary-700 underline">Get help now</a> first.
           </p>
 
           <form id="supportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
@@ -193,7 +193,7 @@ const quickLinks = [
               <button
                 type="submit"
                 id="submitButton"
-                class="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                class="inline-flex w-full items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto"
               >
                 <span id="submitText">Send Message</span>
                 <svg
@@ -235,7 +235,7 @@ const quickLinks = [
   if (form && submitButton && submitText && submitSpinner) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       // Disable button and show spinner
       submitButton.disabled = true;
       submitText.textContent = 'Sending...';
