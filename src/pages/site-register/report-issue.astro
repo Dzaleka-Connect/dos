@@ -2,6 +2,15 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
+// Fetch all existing sites for the dropdown
+let sites = [];
+try {
+  sites = await Astro.glob('../../content/sites/*.md');
+  sites.sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+} catch (error) {
+  console.error("Error loading sites for report form:", error);
+}
+
 const seo = {
   title: "Report Issue - Dzaleka Online Services",
   description: "Report damage, maintenance needs, or other issues with heritage sites in Dzaleka Refugee Camp. Help us preserve and maintain important cultural and historical locations.",
@@ -26,8 +35,8 @@ const seo = {
   openGraph={seo.openGraph}
 >
   <section class="border-b border-slate-200 bg-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="mb-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="mb-6">
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -37,23 +46,11 @@ const seo = {
         />
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Problem report</p>
-          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Report an issue</h1>
-          <p class="mt-4 text-lg leading-8 text-slate-600">
-            Report damage, access problems, maintenance concerns, or incorrect information related to a site.
-          </p>
-        </div>
-
-        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
-          <h2 class="text-lg font-semibold text-slate-900">Before you report</h2>
-          <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-            <li>Use the site name and exact location if you know them.</li>
-            <li>Explain the issue clearly and include urgency where relevant.</li>
-            <li>Leave contact details if you want follow-up questions.</li>
-          </ul>
-        </div>
+      <div class="max-w-2xl">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Report an issue</h1>
+        <p class="mt-4 text-base leading-7 text-slate-600">
+          Report damage, access problems, maintenance concerns, or incorrect information related to a site. Include the site name and location if you know them.
+        </p>
       </div>
     </div>
   </section>
@@ -67,11 +64,30 @@ const seo = {
             <label for="site-name" class="block text-sm font-medium text-gray-700 mb-2">
               Site Name *
             </label>
-            <input
-              type="text"
+            <select
               id="site-name"
               name="siteName"
               required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
+            >
+              <option value="">Select a registered site...</option>
+              {sites.map(site => (
+                <option value={site.frontmatter.title} data-location={site.frontmatter.campZone || ''} data-condition={site.frontmatter.condition || ''}>
+                  {site.frontmatter.title}
+                </option>
+              ))}
+              <option value="other">Other (Not yet registered)</option>
+            </select>
+          </div>
+
+          <div id="other-site-container" class="hidden">
+            <label for="other-site-name" class="block text-sm font-medium text-gray-700 mb-2">
+              Specify Site Name *
+            </label>
+            <input
+              type="text"
+              id="other-site-name"
+              name="otherSiteName"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               placeholder="Enter the name of the site"
             />
@@ -126,6 +142,26 @@ const seo = {
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               placeholder="Camp zone, block number, or specific location details"
             />
+          </div>
+
+          <!-- Current Condition -->
+          <div>
+            <label for="condition" class="block text-sm font-medium text-gray-700 mb-2">
+              Observed Condition *
+            </label>
+            <select
+              id="condition"
+              name="condition"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
+            >
+              <option value="">Select observed condition</option>
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+              <option value="poor">Poor</option>
+              <option value="ruins">Ruins</option>
+            </select>
           </div>
 
           <!-- Urgency Level -->
@@ -324,5 +360,42 @@ const seo = {
         }
       });
     }
+
+    // Handle site selection repopulation
+    const siteSelect = document.getElementById('site-name') as HTMLSelectElement;
+    const otherSiteContainer = document.getElementById('other-site-container');
+    const otherSiteInput = document.getElementById('other-site-name') as HTMLInputElement;
+    const locationInput = document.getElementById('location') as HTMLInputElement;
+    const conditionSelect = document.getElementById('condition') as HTMLSelectElement;
+
+    siteSelect?.addEventListener('change', (e) => {
+      const select = e.target as HTMLSelectElement;
+      const selectedOption = select.options[select.selectedIndex];
+      
+      if (select.value === 'other') {
+        otherSiteContainer?.classList.remove('hidden');
+        if (otherSiteInput) otherSiteInput.required = true;
+        if (locationInput) locationInput.value = '';
+        if (conditionSelect) conditionSelect.value = '';
+      } else {
+        otherSiteContainer?.classList.add('hidden');
+        if (otherSiteInput) {
+          otherSiteInput.required = false;
+          otherSiteInput.value = '';
+        }
+        
+        // Auto-populate location if available
+        const location = selectedOption.getAttribute('data-location');
+        if (locationInput) {
+          locationInput.value = location || '';
+        }
+
+        // Auto-populate condition if available
+        const condition = selectedOption.getAttribute('data-condition');
+        if (conditionSelect) {
+          conditionSelect.value = condition || '';
+        }
+      }
+    });
   </script>
 </MainLayout>

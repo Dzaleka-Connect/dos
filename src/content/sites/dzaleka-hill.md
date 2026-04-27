@@ -7,6 +7,13 @@ legalStatus: "Natural Landmark"
 category: "Natural Landmark"
 featured: true
 image: "/images/sites/dzaleka-hill.jpg"
+referenceId: "DZK-004"
+significanceCriteria:
+  - "Natural Heritage"
+  - "Community Memory"
+  - "Environmental Conservation"
+condition: "good"
+inscriptionDate: 2025-01-15
 educationalResources:
   - title: "Visit Dzaleka - Guided Tours"
     description: "Official walking tours of the camp, including the historical context of the hill and the settlement."

@@ -7,6 +7,13 @@ legalStatus: "Informal Weekly Marketplace"
 category: "Marketplace"
 featured: true
 image: "/images/sites/mardi-marche.jpg"
+referenceId: "DZK-003"
+significanceCriteria:
+  - "Living Tradition"
+  - "Economic Resilience"
+  - "Cultural Exchange"
+condition: "good"
+inscriptionDate: 2025-01-15
 educationalResources:
   - title: "Instagram - Dzaleka Market"
     description: "Dzaleka Tuesday Market is buzzing with energy—busier and more vibrant than ever!"

@@ -89,7 +89,19 @@ const images = [
       )}
       
       {frontmatter.legalStatus && (
-        <p class="site-status"><strong>Legal Status:</strong> {frontmatter.legalStatus}</p>
+        <p class="site-status"><strong>Legal Status:</strong> <span style="text-transform: capitalize;">{frontmatter.legalStatus}</span></p>
+      )}
+
+      {frontmatter.alternativeNames && (
+        <p class="site-status"><strong>Alternative Names:</strong> {frontmatter.alternativeNames}</p>
+      )}
+      
+      {frontmatter.referenceId && (
+        <p class="site-status"><strong>Reference ID:</strong> {frontmatter.referenceId}</p>
+      )}
+      
+      {frontmatter.inscriptionDate && (
+        <p class="site-status"><strong>Inscription Date:</strong> {new Date(frontmatter.inscriptionDate).toLocaleDateString()}</p>
       )}
 
       {frontmatter.description && (
@@ -99,17 +111,14 @@ const images = [
         </div>
       )}
 
-      {frontmatter.significance && (
+      {frontmatter.significanceCriteria && frontmatter.significanceCriteria.length > 0 && (
         <div class="site-significance">
-          <h2>Statement of Significance</h2>
-          <p>{frontmatter.significance}</p>
-        </div>
-      )}
-
-      {frontmatter.history && (
-        <div class="site-history">
-          <h2>History & Background</h2>
-          <p>{frontmatter.history}</p>
+          <h2>Significance Criteria</h2>
+          <ul>
+            {frontmatter.significanceCriteria.map((criterion) => (
+              <li>{criterion}</li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -120,17 +129,27 @@ const images = [
         </div>
       )}
 
-      {frontmatter.condition && (
+      {(frontmatter.condition || frontmatter.integrity || frontmatter.authenticity) && (
         <div class="site-condition">
-          <h2>Condition & Preservation</h2>
-          <p>{frontmatter.condition}</p>
+          <h2>Condition & Heritage Value</h2>
+          {frontmatter.condition && <p><strong>Condition:</strong> <span style="text-transform: capitalize;">{frontmatter.condition}</span></p>}
+          {frontmatter.integrity && <p><strong>Integrity:</strong> {frontmatter.integrity}</p>}
+          {frontmatter.authenticity && <p><strong>Authenticity:</strong> {frontmatter.authenticity}</p>}
         </div>
       )}
 
-      {frontmatter.linkedResources && (
+      {frontmatter.educationalResources && frontmatter.educationalResources.length > 0 && (
         <div class="site-resources">
-          <h2>Related Resources</h2>
-          <p class="resource-link">{frontmatter.linkedResources}</p>
+          <h2>Educational Resources</h2>
+          <ul style="list-style-type: none; padding-left: 0;">
+            {frontmatter.educationalResources.map((resource) => (
+              <li style="margin-bottom: 15px;">
+                <strong>{resource.title}</strong>
+                {resource.description && <p style="margin: 2px 0; font-size: 0.9em; color: #4b5563;">{resource.description}</p>}
+                {resource.url && <p class="resource-link" style="margin-top: 5px;">{resource.url}</p>}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

@@ -8,6 +8,13 @@ legalStatus: "Public"
 category: "Healthcare"
 featured: true
 image: "/images/Dzaleka Health Centre.jpg"
+referenceId: "DZK-002"
+significanceCriteria:
+  - "Living Heritage"
+  - "Community Lifeline"
+  - "Host-Refugee Integration"
+condition: "excellent"
+inscriptionDate: 2025-01-15
 additionalImages: 
   - "/images/Inside_dzaleka.jpg"
   - "/images/dzaleka-hero.jpeg"

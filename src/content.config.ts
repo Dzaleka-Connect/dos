@@ -741,6 +741,14 @@ const siteSchema = z.object({
     description: z.string().optional(),
     url: z.string().optional(),
   })).optional(),
+  // Heritage register fields (UNESCO-inspired)
+  significanceCriteria: z.array(z.string()).optional(),
+  inscriptionDate: z.coerce.date().optional(),
+  referenceId: z.string().optional(),
+  condition: z.enum(['excellent', 'good', 'fair', 'poor', 'ruins']).optional(),
+  integrity: z.string().optional(),
+  authenticity: z.string().optional(),
+  associatedEvents: z.string().optional(),
 });
 
 // Define collections for previously auto-generated folders

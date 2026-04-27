@@ -1,0 +1,696 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import { communitiesHeroImage, communityGroups, mainCommunity } from '../data/communities';
+
+const canonicalUrl = 'https://services.dzaleka.com/communities';
+const pageTitle = 'Dzaleka Communities of Practice | Dzaleka Online Services';
+const pageDescription =
+  'Join Dzaleka Communities of Practice on WhatsApp for peer learning, local announcements, sector meetups, and practical support.';
+
+const sectorCommunities = communityGroups.filter((community) => !community.isMain);
+const categoryFilters = ['All', ...new Set(sectorCommunities.map((community) => community.category))];
+
+const effectiveUseCards = [
+  {
+    title: 'Ask useful questions',
+    description:
+      'Good questions help the right people answer quickly. Give context, say what you tried, and name the decision or help you need.',
+  },
+  {
+    title: 'Share back what worked',
+    description:
+      'When a solution helps you, return with the result. A short summary can become the answer another member needs next week.',
+  },
+  {
+    title: 'Use the right space',
+    description:
+      'Keep the Main Group for orientation and announcements. Use sector groups for specific practice questions, and contact Admins for private concerns.',
+  },
+  {
+    title: 'Turn chat into resources',
+    description:
+      'Strong communities do more than talk. Save useful templates, guides, links, job posts, event notes, and summaries so knowledge does not disappear.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Who can join a Dzaleka Online Services Community?',
+    answer:
+      'Membership is open to any Dzaleka resident, camp worker, or local partner. Whether you are an expert or a beginner, there is a place for you.',
+  },
+  {
+    question: 'How many Communities can I join?',
+    answer:
+      'You can join as many as you like. We recommend focusing on two or three groups that match your daily work or career goals so you can stay active in the discussions.',
+  },
+  {
+    question: 'How often do Communities meet and what platforms do they use?',
+    answer:
+      'WhatsApp is the main home for daily questions and real-time updates. Communities may also hold periodic workshops through Zoom or Google Meet and casual in-person meetups across Dzaleka.',
+  },
+  {
+    question: 'Are Community chats confidential?',
+    answer:
+      'Communities follow a Community Trust policy. WhatsApp is still a social space: members in the same sub-group may see your phone number, and people can screenshot or forward messages. Do not post sensitive information unless you are comfortable with the group seeing it.',
+  },
+  {
+    question: 'I have forgotten which Community I joined. What should I do?',
+    answer:
+      'Check the Communities tab in WhatsApp. If you changed phones or left a group, return to this page and open the relevant Community page again.',
+  },
+  {
+    question: 'What happens if I leave a WhatsApp Community?',
+    answer:
+      'If you leave a WhatsApp Community, WhatsApp says you also leave the groups you are in that are part of that Community. If you only want to hide it from Chats, archive it instead. If you choose exit and delete, the community chats are deleted from your device.',
+  },
+  {
+    question: 'How do I find meeting dates?',
+    answer:
+      'Key dates for workshops and meetups are posted in the WhatsApp Group Description and pinned in the Announcements channel of each group.',
+  },
+  {
+    question: 'How do I report spam or unsafe behaviour?',
+    answer:
+      'Contact Community Chairs first for local moderation. You can also use WhatsApp report and block tools. When a group is reported, WhatsApp may receive recent messages and group details, so avoid sharing sensitive information unless needed.',
+  },
+  {
+    question: 'How do I contact the Chairs of my Community?',
+    answer:
+      'Each group is moderated by Admins, also called Community Chairs. Tap the group name to see Admins, tag @admin for general assistance, or use the Contact page for private inquiries.',
+  },
+];
+
+const communitySteps = [
+  'Join the Main Group first if you are unsure where to begin.',
+  'Open any sector group that matches your work, interests, or professional goals.',
+  'Keep announcements on, and mute busy sub-groups when needed.',
+  'Use @admin when you need help from a Community Chair.',
+];
+
+const charterPrinciples = [
+  {
+    title: 'Share for community benefit',
+    body:
+      'Stories, templates, links, examples, and experience should support peer help, professional development, and collective problem-solving.',
+  },
+  {
+    title: 'Respect sharing boundaries',
+    body:
+      'Use ideas and solutions you receive, but respect any Amber or Red boundary and do not reveal who shared sensitive information without permission.',
+  },
+  {
+    title: 'No spam or hard selling',
+    body:
+      'Discuss products, services, and vendors professionally. Repeated advertising and pressure selling are not allowed.',
+  },
+  {
+    title: 'Stay respectful and on topic',
+    body:
+      'Respect Dzaleka\'s multicultural community. Harassment, discrimination, hate speech, chain posts, and noisy off-topic posts are not welcome.',
+  },
+  {
+    title: 'Credit shared resources',
+    body:
+      'Do not claim ownership of another member\'s template, guide, document, or creative work.',
+  },
+  {
+    title: 'Use the right channel',
+    body:
+      'Post questions that benefit the group in the group chat. Send private, personal, or high-risk issues directly to Admins or the DOS Contact page.',
+  },
+];
+
+const confidentialityLevels = [
+  {
+    level: 'Green',
+    label: 'General knowledge',
+    description: 'Can be shared anywhere.',
+    classes: 'border-emerald-200 bg-emerald-50 text-emerald-900',
+  },
+  {
+    level: 'Amber',
+    label: 'Community-only',
+    description: 'Share within the group, but keep names private.',
+    classes: 'border-amber-200 bg-amber-50 text-amber-900',
+  },
+  {
+    level: 'Red',
+    label: 'Highly sensitive',
+    description: 'Do not share outside the specific discussion thread.',
+    classes: 'border-rose-200 bg-rose-50 text-rose-900',
+  },
+];
+
+const faqStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+
+const communityDirectoryStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: pageTitle,
+      description: pageDescription,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Dzaleka Online Services',
+        url: 'https://services.dzaleka.com',
+      },
+      about: {
+        '@type': 'Thing',
+        name: 'Dzaleka Communities of Practice',
+      },
+      mainEntity: {
+        '@id': `${canonicalUrl}#community-list`,
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://services.dzaleka.com/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Communities',
+          item: canonicalUrl,
+        },
+      ],
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${canonicalUrl}#community-list`,
+      name: 'Dzaleka Online Services Communities of Practice',
+      numberOfItems: communityGroups.length,
+      itemListElement: communityGroups.map((community, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: community.title,
+        description: community.description,
+        url: `${canonicalUrl}/${community.slug}`,
+      })),
+    },
+  ],
+};
+---
+
+<MainLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonicalUrl}
+  schema={communityDirectoryStructuredData}
+  openGraph={{
+    title: pageTitle,
+    description: pageDescription,
+    type: 'website',
+    image: {
+      url: communitiesHeroImage.seoUrl,
+      width: communitiesHeroImage.width,
+      height: communitiesHeroImage.height,
+      alt: communitiesHeroImage.alt,
+      type: communitiesHeroImage.type,
+    },
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: canonicalUrl,
+  }}
+  twitter={{
+    card: 'summary_large_image',
+    title: pageTitle,
+    description: pageDescription,
+    image: communitiesHeroImage.seoUrl,
+  }}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData)} />
+
+  <section class="relative overflow-hidden bg-slate-950 text-white">
+    <div class="absolute inset-0">
+      <img
+        src={communitiesHeroImage.src}
+        alt={communitiesHeroImage.alt}
+        class="h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 bg-slate-950/65"></div>
+      <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+    </div>
+
+    <div class="relative mx-auto flex min-h-[620px] max-w-6xl flex-col justify-between px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <Breadcrumb
+        light
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Communities' },
+        ]}
+      />
+
+      <div class="max-w-4xl pb-8 pt-10">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-sky-200">Dzaleka Online Services</p>
+        <h1 class="mt-4 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+          Communities
+        </h1>
+        <p class="mt-5 max-w-3xl text-2xl font-semibold leading-9 text-white sm:text-3xl">
+          Find your people, solve common problems.
+        </p>
+        <p class="mt-5 max-w-2xl text-base leading-8 text-slate-100 sm:text-lg">
+          Join DOS Communities on WhatsApp to ask questions, exchange experience, share resources, and stay close to practical updates in Dzaleka.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href={mainCommunity.joinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-community-join
+            data-community-slug={mainCommunity.slug}
+            data-community-name={mainCommunity.title}
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10 2a8 8 0 00-6.98 11.9L2 18l4.2-1A8 8 0 1010 2zm3.7 11.4c-.16.45-.92.82-1.28.87-.33.05-.74.07-1.2-.08-.27-.09-.63-.2-1.08-.39-1.9-.82-3.13-2.72-3.23-2.85-.1-.13-.77-1.03-.77-1.96 0-.93.49-1.39.66-1.58.17-.19.38-.24.5-.24h.36c.11 0 .27-.04.42.32.16.39.54 1.33.59 1.43.05.1.08.21.02.34-.06.13-.09.21-.18.33-.09.11-.19.25-.27.34-.09.09-.18.19-.08.38.1.19.45.74.96 1.2.66.59 1.22.77 1.41.87.19.1.3.08.41-.05.13-.15.47-.55.6-.74.13-.19.25-.16.42-.1.18.06 1.12.53 1.31.62.19.09.32.14.37.22.05.08.05.48-.11.93z" />
+            </svg>
+            Join Main Group
+          </a>
+          <a
+            href="#find-your-community"
+            class="inline-flex items-center justify-center rounded-lg border border-white/50 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Browse sector groups
+          </a>
+        </div>
+      </div>
+
+      <div class="grid gap-4 border-t border-white/25 pt-6 text-sm text-slate-100 sm:grid-cols-3">
+        <div>
+          <div class="text-2xl font-bold text-white">{communityGroups.length}</div>
+          <p class="mt-1 leading-6">WhatsApp Communities ready to join.</p>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-white">Open</div>
+          <p class="mt-1 leading-6">For residents, workers, leaders, and local partners.</p>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-white">Peer-led</div>
+          <p class="mt-1 leading-6">Built around practical questions and shared solutions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-slate-200 bg-white">
+    <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:px-8">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">Start here</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Join in a few steps</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">
+          Start with the main group for orientation, then choose the sector spaces that fit your work or goals.
+        </p>
+      </div>
+
+      <ol class="overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+        {communitySteps.map((step, index) => (
+          <li class:list={['flex gap-4 p-5', index > 0 && 'border-t border-slate-200']}>
+            <span class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">
+              {index + 1}
+            </span>
+            <p class="text-sm leading-7 text-slate-700">{step}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">Use Communities well</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Simple habits for better groups</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600">
+            The groups work best when members ask clearly, share what worked, and protect private details. Keep it practical and useful for the next person.
+          </p>
+          <a href="#find-your-community" class="mt-5 inline-flex text-sm font-semibold text-primary-700 hover:text-primary-800">
+            Choose a group
+          </a>
+        </div>
+
+        <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
+          {effectiveUseCards.map((item) => (
+            <article class="grid gap-3 border-b border-slate-200 p-5 last:border-b-0 md:grid-cols-[180px_minmax(0,1fr)]">
+              <h3 class="text-base font-semibold text-slate-950">{item.title}</h3>
+              <div>
+                <p class="text-sm leading-6 text-slate-600">{item.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="find-your-community" class="bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-5 border-b border-slate-200 pb-6 md:flex-row md:items-end md:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">Find your Community</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Choose a WhatsApp group</h2>
+          <p class="mt-3 text-base leading-7 text-slate-600">
+            Join the Main Group for orientation, or go directly to the sector group that matches your work, interests, or goals.
+          </p>
+        </div>
+        <a href="#community-charter" class="text-sm font-semibold text-primary-700 hover:text-primary-800">
+          Review the charter
+        </a>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-2" aria-label="Filter Communities by category">
+        {categoryFilters.map((category, index) => (
+          <button
+            type="button"
+            data-community-filter={category}
+            class:list={[
+              'rounded-full border px-4 py-2 text-sm font-semibold transition',
+              index === 0
+                ? 'border-slate-900 bg-slate-900 text-white'
+                : 'border-slate-300 bg-white text-slate-700 hover:border-primary-300 hover:text-primary-700'
+            ]}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      <article class="mt-8 grid gap-6 rounded-lg border border-emerald-200 bg-emerald-50 p-6 md:grid-cols-[minmax(0,1fr)_220px] md:items-center">
+        <div>
+          <div class="inline-flex rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-emerald-700 ring-1 ring-emerald-200">
+            Recommended first
+          </div>
+          <h3 class="mt-4 text-2xl font-bold text-emerald-950">{mainCommunity.title}</h3>
+          <p class="mt-2 text-sm leading-7 text-emerald-900">{mainCommunity.description}</p>
+        </div>
+        <div class="flex flex-col gap-3">
+          <a
+            href={mainCommunity.joinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-community-join
+            data-community-slug={mainCommunity.slug}
+            data-community-name={mainCommunity.title}
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700"
+          >
+            Join Main Group
+          </a>
+          <a
+            href={`/communities/${mainCommunity.slug}`}
+            class="inline-flex items-center justify-center rounded-lg border border-emerald-300 bg-white px-4 py-3 text-sm font-semibold text-emerald-800 hover:bg-emerald-100"
+          >
+            View details
+          </a>
+        </div>
+      </article>
+
+      <p class="mt-5 text-sm leading-6 text-slate-500">
+        WhatsApp opens in a new tab. Please review the Community Charter before joining and keep shared discussions respectful.
+      </p>
+
+      <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3" id="community-grid">
+        {sectorCommunities.map((community) => (
+          <article
+            class="flex h-full flex-col rounded-lg border border-slate-200 bg-white p-5 transition hover:border-primary-300 hover:shadow-md"
+            data-community-card
+            data-category={community.category}
+          >
+            <div class="flex items-start justify-between gap-3">
+              <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{community.category}</span>
+              <span class="text-xs font-semibold text-emerald-700">WhatsApp</span>
+            </div>
+
+            <div class="mt-4 flex-1">
+              <h3 class="text-xl font-bold leading-7 text-slate-950">{community.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{community.tagline}</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                {community.topics.slice(0, 2).map((topic) => (
+                  <span class="rounded-full border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600">{topic}</span>
+                ))}
+              </div>
+            </div>
+
+            <div class="mt-5 grid gap-2 border-t border-slate-100 pt-4 sm:grid-cols-2">
+              <a
+                href={community.joinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-community-join
+                data-community-slug={community.slug}
+                data-community-name={community.title}
+                class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700"
+              >
+                Join
+              </a>
+              <a
+                href={`/communities/${community.slug}`}
+                class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-primary-300 hover:text-primary-700"
+              >
+                Details
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div id="community-empty-state" class="mt-6 hidden rounded-lg border border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
+        No Communities match this category yet.
+      </div>
+
+      <div class="mt-8 rounded-lg border border-primary-200 bg-primary-50 p-5">
+        <div class="flex gap-3">
+          <div class="mt-1 flex h-5 w-5 flex-none items-center justify-center rounded border border-primary-300 bg-white">
+            <svg class="h-3.5 w-3.5 text-primary-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 010 1.415l-7.25 7.25a1 1 0 01-1.415 0l-3.25-3.25a1 1 0 011.415-1.415l2.542 2.543 6.543-6.543a1 1 0 011.415 0z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <p class="text-sm leading-6 text-primary-950">
+            By joining a DOS Community, you agree to follow the
+            <a href="#community-charter" class="font-semibold underline decoration-primary-300 underline-offset-4 hover:text-primary-800">
+              Community Charter and Sharing Policy
+            </a>.
+            Help keep the groups safe, focused, and professional.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">WhatsApp setup</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Use the Community features well</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600">
+            A WhatsApp Community can include an announcement space plus related groups. Keep important announcements on, and mute specific chats if they become busy.
+          </p>
+          <div class="mt-5 flex flex-col gap-2">
+            <a
+              href="https://faq.whatsapp.com/495856382464992"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm font-semibold text-primary-700 hover:text-primary-800"
+            >
+              About WhatsApp Communities
+            </a>
+            <a
+              href="https://faq.whatsapp.com/768544097924262"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm font-semibold text-primary-700 hover:text-primary-800"
+            >
+              WhatsApp Communities Help
+            </a>
+            <a
+              href="https://faq.whatsapp.com/1003616827680090"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm font-semibold text-primary-700 hover:text-primary-800"
+            >
+              Group and community safety
+            </a>
+            <a
+              href="https://faq.whatsapp.com/1312647189536807/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm font-semibold text-primary-700 hover:text-primary-800"
+            >
+              Leaving a WhatsApp Community
+            </a>
+          </div>
+        </div>
+
+        <dl class="grid gap-x-8 gap-y-6 border-t border-slate-200 pt-1 md:grid-cols-2 lg:border-t-0 lg:pt-0">
+          <div class="border-t border-slate-200 pt-5 lg:border-t-0 lg:pt-0">
+            <dt class="text-base font-semibold text-slate-950">Privacy</dt>
+            <dd class="mt-2 text-sm leading-6 text-slate-600">
+              Phone numbers are generally hidden from the full Community list and announcement space, but are usually visible to Admins and members of any specific sub-group you join.
+            </dd>
+          </div>
+          <div class="border-t border-slate-200 pt-5 lg:border-t-0 lg:pt-0">
+            <dt class="text-base font-semibold text-slate-950">Notifications</dt>
+            <dd class="mt-2 text-sm leading-6 text-slate-600">
+              Keep announcement notifications on for training, meeting, job, or opportunity alerts. Mute individual groups when needed.
+            </dd>
+          </div>
+          <div class="border-t border-slate-200 pt-5">
+            <dt class="text-base font-semibold text-slate-950">Admin help</dt>
+            <dd class="mt-2 text-sm leading-6 text-slate-600">
+              Tap the group name to see Admins, or type @admin in the chat when you need help. Use WhatsApp report or block tools for spam, scams, or unsafe behaviour.
+            </dd>
+          </div>
+          <div class="border-t border-slate-200 pt-5">
+            <dt class="text-base font-semibold text-slate-950">Changing groups</dt>
+            <dd class="mt-2 text-sm leading-6 text-slate-600">
+              You can leave a specific group without leaving the full Community. If you exit the Community, WhatsApp says you also leave its groups. Archive instead if you only want it hidden from Chats.
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="community-faqs" class="bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">Community FAQs</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Common questions before you join</h2>
+      </div>
+
+      <div class="mt-8 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
+        {faqItems.map((item) => (
+          <details class="group p-5 open:bg-slate-50">
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-4 text-left text-base font-semibold text-slate-950">
+              <span>{item.question}</span>
+              <span class="mt-1 rounded-full border border-slate-300 p-1 text-slate-500 transition group-open:rotate-45">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 max-w-3xl text-sm leading-7 text-slate-600">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="community-charter" class="border-t border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary-700">Community Charter</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Sharing Policy</h2>
+          <p class="mt-3 text-base leading-7 text-slate-600">
+            DOS Communities are for practical support, trust, and professional growth. These principles apply when you join a WhatsApp group or attend a community event.
+          </p>
+
+          <ul class="mt-7 grid gap-x-8 gap-y-5 md:grid-cols-2">
+            {charterPrinciples.map((principle) => (
+              <li class="border-t border-slate-200 pt-4">
+                <h3 class="text-base font-semibold text-slate-950">{principle.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">{principle.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <aside class="space-y-5">
+          <div class="rounded-lg border border-slate-200 bg-white p-5">
+            <h3 class="text-lg font-semibold text-slate-950">Confidentiality levels</h3>
+            <div class="mt-4 space-y-3">
+              {confidentialityLevels.map((item) => (
+                <div class={`rounded-lg border p-4 ${item.classes}`}>
+                  <div class="text-sm font-bold">{item.level}: {item.label}</div>
+                  <p class="mt-1 text-sm leading-6">{item.description}</p>
+                </div>
+              ))}
+            </div>
+            <p class="mt-4 text-sm leading-6 text-slate-600">
+              When in doubt, treat names, phone numbers, donor details, photos, business plans, personal stories, and local protection concerns as Amber or Red until the person says otherwise.
+            </p>
+          </div>
+
+          <div class="rounded-lg border border-rose-200 bg-rose-50 p-5">
+            <h3 class="text-lg font-semibold text-rose-950">Failure to comply</h3>
+            <p class="mt-2 text-sm leading-7 text-rose-900">
+              Community Chairs may issue warnings, temporarily remove members, or permanently ban users who repeatedly break the Safe Space or No Spam rules.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<script>
+  const filterButtons = Array.from(document.querySelectorAll('[data-community-filter]'));
+  const communityCards = Array.from(document.querySelectorAll('[data-community-card]'));
+  const emptyState = document.getElementById('community-empty-state');
+
+  const setFilter = (category: string) => {
+    let visibleCount = 0;
+
+    communityCards.forEach((card) => {
+      const isVisible = category === 'All' || card.getAttribute('data-category') === category;
+      card.classList.toggle('hidden', !isVisible);
+      if (isVisible) visibleCount += 1;
+    });
+
+    filterButtons.forEach((button) => {
+      const isActive = button.getAttribute('data-community-filter') === category;
+      button.classList.toggle('border-slate-900', isActive);
+      button.classList.toggle('bg-slate-900', isActive);
+      button.classList.toggle('text-white', isActive);
+      button.classList.toggle('border-slate-300', !isActive);
+      button.classList.toggle('bg-white', !isActive);
+      button.classList.toggle('text-slate-700', !isActive);
+    });
+
+    if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
+  };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      setFilter(button.getAttribute('data-community-filter') || 'All');
+    });
+  });
+
+  document.querySelectorAll('[data-community-join]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const analytics = window as typeof window & {
+        gtag?: (eventType: string, eventName: string, parameters: Record<string, string | null>) => void;
+      };
+
+      analytics.gtag?.('event', 'community_join_click', {
+        community_slug: link.getAttribute('data-community-slug'),
+        community_name: link.getAttribute('data-community-name'),
+        link_url: link.getAttribute('href'),
+      });
+    });
+  });
+</script>

@@ -8,6 +8,13 @@ legalStatus: "Former Prison / Historical Site"
 category: "Historical Site"
 featured: true
 image: "/images/6976810_orig.jpg"
+referenceId: "DZK-001"
+significanceCriteria:
+  - "Historical Witness"
+  - "Community Memory"
+  - "Political Heritage"
+condition: "fair"
+inscriptionDate: 2025-01-15
 educationalResources:
   - title: "HRW Report on Political Prisoners in Malawi"
     description: "Historical documentation regarding the detention of political dissidents and Jehovah's Witnesses during the Banda era."

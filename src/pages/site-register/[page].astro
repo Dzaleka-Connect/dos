@@ -17,7 +17,7 @@ export async function getStaticPaths() {
     return a.frontmatter.title.localeCompare(b.frontmatter.title);
   });
 
-  const itemsPerPage = 9;
+  const itemsPerPage = 6;
   const totalPages = Math.ceil(sites.length / itemsPerPage);
 
   return Array.from({ length: totalPages }, (_, index) => ({
@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 
 const { page } = Astro.params;
 const currentPage = parseInt(page) || 1;
-const itemsPerPage = 9;
+const itemsPerPage = 6;
 
 let sites = [];
 try {
@@ -36,6 +36,8 @@ try {
   console.error('Error loading sites:', error);
   sites = [];
 }
+
+const categories = [...new Set(sites.map(site => site.frontmatter.category).filter(Boolean))].sort();
 
 sites.sort((a, b) => {
   if (a.frontmatter.featured && !b.frontmatter.featured) return -1;
@@ -61,60 +63,41 @@ const pagination = {
   endItem: Math.min(endIndex, totalItems)
 };
 
-const title = currentPage === 1 ? 'Dzaleka Site Register' : `Dzaleka Site Register - Page ${currentPage}`;
-const description = 'Explore cultural, historical, and community locations documented across Dzaleka Refugee Camp.';
-
-const summaryStats = [
-  { label: 'Documented sites', value: totalItems },
-  { label: 'Current page', value: currentPage },
-  { label: 'Featured on this page', value: currentSites.filter((site) => site.frontmatter.featured).length }
-];
+const title = currentPage === 1 ? 'Dzaleka Heritage Site Register' : `Dzaleka Heritage Site Register - Page ${currentPage}`;
+const description = 'The official record of cultural, historical, and natural heritage sites within the Dzaleka community.';
 
 const getPageHref = (pageNumber) => pageNumber === 1 ? '/site-register' : `/site-register/${pageNumber}`;
+
 ---
 
 <MainLayout title={title} description={description}>
   <section class="border-b border-slate-200 bg-white">
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div class="mb-8">
+      <div class="mb-6">
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Site Register' }
+            { label: 'Site Register', href: '/site-register' },
+            { label: `Page ${currentPage}` }
           ]}
         />
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Community places</p>
-          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Dzaleka Site Register</h1>
-          <p class="mt-4 text-lg leading-8 text-slate-600">
-            Browse important cultural, historical, and community locations documented by the community.
-          </p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="/site-register/submit" class="inline-flex items-center rounded-lg bg-gray-900 px-5 py-3 text-sm font-medium text-white hover:bg-gray-800">
-              Submit a site
-            </a>
-            <a href="/site-register/about" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
-              About the register
-            </a>
-          </div>
-        </div>
-
-        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
-          <h2 class="text-lg font-semibold text-slate-900">Independent project</h2>
-          <p class="mt-3 text-sm leading-6 text-slate-600">
-            This is an independent public record of places that matter to the Dzaleka community. It is not an official authority list.
-          </p>
-          <div class="mt-5 grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-            {summaryStats.map((stat) => (
-              <div class="rounded-lg border border-slate-200 bg-white px-4 py-4">
-                <div class="text-sm text-slate-500">{stat.label}</div>
-                <div class="mt-1 text-2xl font-semibold text-slate-900">{stat.value}</div>
-              </div>
-            ))}
-          </div>
+      <div class="max-w-2xl">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Dzaleka Site Register</h1>
+        <p class="mt-4 text-base leading-7 text-slate-600">
+          Browse important cultural, historical, and community locations documented by the community.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/site-register/submit" class="inline-flex items-center rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition-colors">
+            Submit a site
+          </a>
+          <a href="/site-register/about" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors">
+            About the register
+          </a>
+          <a href="/site-register/license" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors">
+            License & usage
+          </a>
         </div>
       </div>
     </div>
@@ -132,49 +115,67 @@ const getPageHref = (pageNumber) => pageNumber === 1 ? '/site-register' : `/site
         </p>
       </div>
 
+      <!-- Sites Grid -->
       {currentSites.length > 0 ? (
         <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {currentSites.map((site) => {
             const slug = site.file.split('/').pop().replace('.md', '');
             return (
-              <article class="rounded-lg border border-slate-200 bg-white">
-                <div class="aspect-[4/3] overflow-hidden border-b border-slate-200 bg-slate-100">
+              <article class="flex flex-col rounded-lg border border-slate-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
+                <a href={`/site-register/${slug}`} class="aspect-[4/3] overflow-hidden border-b border-slate-200 bg-slate-100 block relative">
                   {site.frontmatter.image ? (
                     <img src={site.frontmatter.image} alt={site.frontmatter.title} class="h-full w-full object-cover" />
                   ) : (
                     <div class="flex h-full items-center justify-center text-slate-400">
                       <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                     </div>
                   )}
-                </div>
+                  {site.frontmatter.featured && (
+                    <div class="absolute top-3 right-3 rounded-full bg-slate-900 text-white p-1.5 shadow-sm" title="Featured Heritage Site">
+                      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    </div>
+                  )}
+                </a>
 
-                <div class="p-5">
-                  <div class="flex flex-wrap items-center gap-2">
+                <div class="p-5 flex flex-col flex-grow">
+                  <div class="flex flex-wrap items-center gap-2 mb-3">
                     {site.frontmatter.category && (
-                      <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700">
+                      <span class="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700">
                         {site.frontmatter.category}
                       </span>
                     )}
-                    {site.frontmatter.featured && (
-                      <span class="rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
-                        Featured
+                    {site.frontmatter.referenceId && (
+                      <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-mono text-slate-500">
+                        {site.frontmatter.referenceId}
                       </span>
                     )}
                   </div>
 
-                  <h3 class="mt-4 text-lg font-semibold text-slate-900">{site.frontmatter.title}</h3>
+                  <a href={`/site-register/${slug}`}>
+                    <h3 class="text-lg font-semibold text-slate-900 group-hover:text-slate-700">{site.frontmatter.title}</h3>
+                  </a>
+                  
                   {site.frontmatter.campZone && (
-                    <p class="mt-2 text-sm text-slate-500">{site.frontmatter.campZone}</p>
+                    <p class="mt-1.5 text-sm text-slate-500 flex items-center">
+                      <svg class="w-3.5 h-3.5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      {site.frontmatter.campZone}
+                    </p>
                   )}
-                  <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                  
+                  <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 flex-grow">
                     {site.frontmatter.description || 'Description not yet available.'}
                   </p>
 
-                  <div class="mt-5">
-                    <a href={`/site-register/${slug}`} class="text-sm font-medium text-slate-700 hover:text-slate-900">
-                      View site
+                  <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <a href={`/site-register/${slug}`} class="text-sm font-medium text-slate-900 hover:text-slate-700">
+                      View site details &rarr;
                     </a>
                   </div>
                 </div>
@@ -192,6 +193,7 @@ const getPageHref = (pageNumber) => pageNumber === 1 ? '/site-register' : `/site
       )}
     </section>
 
+    <!-- Pagination Controls -->
     {totalPages > 1 && (
       <section class="mt-10 rounded-lg border border-slate-200 bg-white p-5">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -232,22 +234,22 @@ const getPageHref = (pageNumber) => pageNumber === 1 ? '/site-register' : `/site
 
     <section class="mt-10 grid gap-5 lg:grid-cols-2">
       <div class="rounded-lg border border-slate-200 bg-white p-6">
-        <h2 class="text-xl font-semibold text-slate-900">Submit a site</h2>
+        <h2 class="text-xl font-semibold text-slate-900">Nominate a site</h2>
         <p class="mt-3 text-sm leading-6 text-slate-600">
-          Share information about a place that should be documented in the register.
+          Share information about a place that should be documented in the register. Help preserve community memory.
         </p>
-        <a href="/site-register/submit" class="mt-5 inline-block text-sm font-medium text-slate-700 hover:text-slate-900">
-          Submit now
+        <a href="/site-register/submit" class="mt-5 inline-block text-sm font-medium text-slate-900 hover:text-slate-700">
+          Start nomination &rarr;
         </a>
       </div>
 
       <div class="rounded-lg border border-slate-200 bg-white p-6">
         <h2 class="text-xl font-semibold text-slate-900">Report an issue</h2>
         <p class="mt-3 text-sm leading-6 text-slate-600">
-          Send corrections or flag problems with an existing site listing.
+          Send corrections or flag problems with an existing site listing to help keep the archive accurate.
         </p>
-        <a href="/site-register/report-issue" class="mt-5 inline-block text-sm font-medium text-slate-700 hover:text-slate-900">
-          Report now
+        <a href="/site-register/report-issue" class="mt-5 inline-block text-sm font-medium text-slate-900 hover:text-slate-700">
+          Report now &rarr;
         </a>
       </div>
     </section>
