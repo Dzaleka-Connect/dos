@@ -8,9 +8,37 @@ const document = {
         appIDs: ["CUV78PLLP3.com.dzaleka.online"],
         components: [
           {
-            "/": "/open/article",
+            "/": "/open/article*",
             comment: "Opens article links natively through the Dzaleka Online bridge."
+          },
+          {
+            "/": "/open/events*",
+            comment: "Opens community event links natively in Dzaleka Online."
+          },
+          {
+            "/": "/open/jobs*",
+            comment: "Opens job links natively in Dzaleka Online."
+          },
+          {
+            "/": "/open/services*",
+            comment: "Opens service links natively in Dzaleka Online."
+          },
+          {
+            "/": "/open/watch*",
+            comment: "Opens Watch links natively in Dzaleka Online."
+          },
+          {
+            "/": "/open/latest*",
+            comment: "Opens the latest news feed natively in Dzaleka Online."
           }
+        ],
+        paths: [
+          "/open/article*",
+          "/open/events*",
+          "/open/jobs*",
+          "/open/services*",
+          "/open/watch*",
+          "/open/latest*"
         ]
       }
     ]
