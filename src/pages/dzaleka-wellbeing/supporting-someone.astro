@@ -38,16 +38,8 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
 
 <MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema} keywords={keywords}>
 
-  <div class="sticky top-0 z-50 bg-slate-900" role="alert">
-    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
-      <p class="text-sm text-white">
-        <strong>Need urgent help?</strong> If someone is in immediate danger or at risk of suicide, please act now.
-      </p>
-      <a href="/get-help-now" class="inline-flex items-center rounded-md bg-red-600 px-3.5 py-1.5 text-[13px] font-bold text-white transition hover:bg-red-700">Get help now</a>
-    </div>
-  </div>
 
-  <main class="bg-slate-50">
+  <main class="bg-white">
     <div class="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
       <Breadcrumb items={[
         { label: 'Home', href: '/' },
@@ -68,17 +60,36 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
         </p>
       </header>
 
+      <div class="mt-2 border-l-4 border-red-600 bg-red-50 px-5 py-4" role="alert">
+        <p class="text-[0.9375rem] leading-7 text-slate-700">
+          <strong class="text-slate-900">Need urgent help?</strong>
+          If you or someone you know is in immediate danger, <a href="/get-help-now" class="font-bold text-red-700 underline underline-offset-[3px] hover:text-red-800">get help now</a>.
+        </p>
+      </div>
 
-      <section class="mt-12">
+      <nav class="mt-10" aria-label="Contents">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">On this page</h2>
+        <ul class="mt-3 space-y-2 text-[0.9375rem]">
+          <li><a href="#how-to-start-a-conversation" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">How to start a conversation</a></li>
+          <li><a href="#signs-to-watch-for" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Signs to watch for</a></li>
+          <li><a href="#practical-steps" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Practical steps</a></li>
+          <li><a href="#looking-after-yourself" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Looking after yourself</a></li>
+          <li><a href="#where-to-refer-someone" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Where to refer someone</a></li>
+        </ul>
+      </nav>
+
+
+
+      <section id="how-to-start-a-conversation" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">How to start a conversation</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">
           The hardest part is often the first sentence. Many people worry about saying the wrong thing, so they say nothing at all. But silence is usually worse than an imperfect conversation.
         </p>
 
         <div class="grid gap-5 sm:grid-cols-2 mt-6">
-          <div class="rounded-xl border border-green-200 bg-green-50 p-6">
+          <div class="border-l-4 border-green-600 pl-5">
             <h3 class="mb-3 text-base font-bold text-slate-900">Things you can say</h3>
-            <ul class="list-none p-0 [&>li]:border-b [&>li]:border-black/5 [&>li]:py-2 [&>li]:text-sm [&>li]:leading-7 [&>li]:text-slate-700 [&>li:last-child]:border-b-0">
+            <ul class="list-disc space-y-2 pl-5 text-sm leading-7 text-slate-700 marker:text-slate-400">
               <li>"I've noticed you seem different lately. I'm here if you want to talk."</li>
               <li>"You don't have to explain everything. I just want you to know I care."</li>
               <li>"Is there something on your mind? I have time."</li>
@@ -86,9 +97,9 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
               <li>"Would it help to go to JRS or the health centre together?"</li>
             </ul>
           </div>
-          <div class="rounded-xl border border-red-200 bg-red-50 p-6">
+          <div class="border-l-4 border-red-600 pl-5">
             <h3 class="mb-3 text-base font-bold text-slate-900">Things to avoid saying</h3>
-            <ul class="list-none p-0 [&>li]:border-b [&>li]:border-black/5 [&>li]:py-2 [&>li]:text-sm [&>li]:leading-7 [&>li]:text-slate-700 [&>li:last-child]:border-b-0">
+            <ul class="list-disc space-y-2 pl-5 text-sm leading-7 text-slate-700 marker:text-slate-400">
               <li>"Be strong" or "You need to be brave."</li>
               <li>"Other people have it worse."</li>
               <li>"Just pray about it." (Faith matters, but dismissing distress with prayer alone can harm.)</li>
@@ -104,14 +115,14 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
       </section>
 
 
-      <section class="mt-12">
+      <section id="signs-to-watch-for" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">Signs to watch for</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">
           People in distress don't always say they're struggling. Often the signs are behavioural. Here's what to look for in different groups.
         </p>
 
         <h3 class="mb-3 mt-6 text-lg font-bold text-slate-900">In young people</h3>
-        <ul class="mb-4 list-none space-y-2 p-0 [&>li]:rounded-xl [&>li]:border [&>li]:border-slate-200 [&>li]:bg-white [&>li]:px-5 [&>li]:py-4 [&>li]:text-[0.9375rem] [&>li]:leading-7 [&>li]:text-slate-700">
+        <ul class="mb-4 list-disc space-y-3 pl-5 text-[0.9375rem] leading-[1.85] text-slate-700 marker:text-slate-400">
           <li><strong>Withdrawal.</strong> Pulling away from friends, family, church, school, or activities they used to enjoy.</li>
           <li><strong>Anger or irritability.</strong> Sudden outbursts, fighting, or hostility — especially when it's out of character.</li>
           <li><strong>Substance use.</strong> Increased use of alcohol, drugs, or inhalants.</li>
@@ -121,7 +132,7 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
         </ul>
 
         <h3 class="mb-3 mt-6 text-lg font-bold text-slate-900">In adults</h3>
-        <ul class="mb-4 list-none space-y-2 p-0 [&>li]:rounded-xl [&>li]:border [&>li]:border-slate-200 [&>li]:bg-white [&>li]:px-5 [&>li]:py-4 [&>li]:text-[0.9375rem] [&>li]:leading-7 [&>li]:text-slate-700">
+        <ul class="mb-4 list-disc space-y-3 pl-5 text-[0.9375rem] leading-[1.85] text-slate-700 marker:text-slate-400">
           <li><strong>Somatic complaints.</strong> Persistent headaches, chest pain, stomach pain, fatigue — that don't respond to medical treatment. In Swahili this is sometimes described as <em>msongo wa mawazo</em> ("too many thoughts").</li>
           <li><strong>Isolation.</strong> Staying inside, refusing visits, dropping out of faith groups, stopping market activity.</li>
           <li><strong>Sleep changes.</strong> Sleeping much more than usual or not sleeping at all.</li>
@@ -131,41 +142,35 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
       </section>
 
 
-      <section class="mt-12">
+      <section id="practical-steps" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">Practical steps</h2>
-        <ol class="list-none space-y-2 p-0 [&>li]:flex [&>li]:items-start [&>li]:gap-4 [&>li]:rounded-xl [&>li]:border [&>li]:border-slate-200 [&>li]:bg-white [&>li]:p-5 [&>li]:text-[0.9375rem] [&>li]:leading-7 [&>li]:text-slate-700">
+        <ol class="list-decimal space-y-4 pl-5 text-[0.9375rem] leading-7 text-slate-700 marker:font-bold marker:text-slate-400">
           <li>
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">1</span>
             <div>
               <strong>If someone is in immediate danger</strong> — acting on suicidal thoughts, self-harming, or in a violent situation — go directly to <a href="/get-help-now" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Get help now</a>. Do not leave them alone if you can safely stay.
             </div>
           </li>
           <li>
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">2</span>
             <div>
               <strong>Offer to accompany them.</strong> Walking with someone to JRS, the health centre, or IAFR is one of the most effective things you can do. The barrier is often not willingness but fear of going alone.
             </div>
           </li>
           <li>
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">3</span>
             <div>
               <strong>Help with language.</strong> If they speak Kinyarwanda, Kirundi, or Somali and the counselor speaks English or Chichewa, help them find an interpreter or a service provider who shares their language.
             </div>
           </li>
           <li>
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">4</span>
             <div>
               <strong>Reduce shame.</strong> Remind them that mental health is health. Most people who seek counseling look and function like everyone else. They don't need to be "crazy" to ask for help.
             </div>
           </li>
           <li>
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">5</span>
             <div>
               <strong>If formal counseling feels too big</strong>, start smaller. A church leader, home-based care worker, peer group, sports team, or art group can all be a first step toward connection.
             </div>
           </li>
           <li>
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">6</span>
             <div>
               <strong>Follow up.</strong> Don't let a single conversation be the end. Check in again in a few days. Consistency matters more than perfection.
             </div>
@@ -174,12 +179,12 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
       </section>
 
 
-      <section class="mt-12">
+      <section id="looking-after-yourself" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">Looking after yourself</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">
           Supporting someone in distress is emotionally demanding. If you're regularly absorbing someone else's pain — as a parent, as a teacher, as a friend — you need your own support.
         </p>
-        <ul class="mb-4 list-none space-y-2 p-0 [&>li]:rounded-xl [&>li]:border [&>li]:border-slate-200 [&>li]:bg-white [&>li]:px-5 [&>li]:py-4 [&>li]:text-[0.9375rem] [&>li]:leading-7 [&>li]:text-slate-700">
+        <ul class="mb-4 list-disc space-y-3 pl-5 text-[0.9375rem] leading-[1.85] text-slate-700 marker:text-slate-400">
           <li><strong>You are not their therapist.</strong> Your role is to listen, to care, and to connect them with help. You are not responsible for fixing their mental health.</li>
           <li><strong>Talk to someone you trust.</strong> You can share that you're finding it hard without breaking the other person's confidence. "I've been supporting someone going through a tough time and it's weighing on me" is enough.</li>
           <li><strong>Set limits.</strong> It's okay to say "I want to help, but I need to rest today. Can we continue tomorrow?"</li>
@@ -188,25 +193,25 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
       </section>
 
 
-      <section class="mt-12">
+      <section id="where-to-refer-someone" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">Where to refer someone</h2>
-        <div class="grid gap-4 sm:grid-cols-2 mt-4">
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600">
+        <div class="mt-4 divide-y divide-slate-200 border-y border-slate-200">
+          <div class="py-4 text-sm leading-7 text-slate-600">
             <h3 class="mb-2 text-base font-bold text-slate-900">JRS Malawi</h3>
             <p>Psychosocial accompaniment, counseling, and referral. The primary MHPSS provider in the camp.</p>
             <a href="/services/jrs-malawi" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Service page →</a>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600">
+          <div class="py-4 text-sm leading-7 text-slate-600">
             <h3 class="mb-2 text-base font-bold text-slate-900">Dzaleka Health Centre</h3>
             <p>General health and can refer to mental health support. Also handles somatic presentations.</p>
             <a href="/services/dzaleka-health-centre" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Service page →</a>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600">
+          <div class="py-4 text-sm leading-7 text-slate-600">
             <h3 class="mb-2 text-base font-bold text-slate-900">IAFR</h3>
             <p>International Association for Refugees. Faith-based psychosocial support.</p>
             <a href="/services/iafr" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Service page →</a>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600">
+          <div class="py-4 text-sm leading-7 text-slate-600">
             <h3 class="mb-2 text-base font-bold text-slate-900">Get help now</h3>
             <p>Crisis contacts, hotlines, and what to do if someone is in immediate danger.</p>
             <a href="/get-help-now" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Open page →</a>
@@ -216,7 +221,7 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
 
 
       <section class="mt-12">
-        <div class="rounded-xl border border-slate-200 border-l-[3px] border-l-slate-400 bg-white p-6">
+        <div class="border-l-4 border-slate-300 pl-5">
           <h2 class="text-lg font-bold text-slate-900">This page is a guide, not a substitute for professional help</h2>
           <p class="mt-2 text-sm leading-7 text-slate-600">
             It draws on best practices from mental health first aid and psychosocial support in humanitarian settings. It does not replace clinical assessment or professional crisis intervention. If someone is in danger, go to <a href="/get-help-now" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Get help now</a>.
@@ -224,16 +229,16 @@ const keywords = 'supporting someone mental health, refugee caregiver guide, Dza
         </div>
       </section>
 
-      <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+      <section class="mt-12 border-l-4 border-slate-300 pl-5">
         <p class="text-sm text-slate-600">
           <strong>Help us keep this page accurate.</strong> We strive to provide reliable and up-to-date information for the community. If you notice any incorrect details, outdated services, or missing context, please <a href="/contact" class="font-semibold text-slate-900 underline hover:text-slate-700">contact us to suggest an update</a>.
         </p>
       </section>
 
-      <nav class="mt-12 flex flex-wrap gap-4 border-t border-slate-200 pt-8">
-        <a href="/dzaleka-wellbeing" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">← Dzaleka Wellbeing</a>
-        <a href="/dzaleka-wellbeing/structural-causes" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Structural causes →</a>
-        <a href="/get-help-now" class="inline-flex items-center rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">Get help now</a>
+      <nav class="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-slate-200 pt-8">
+        <a href="/dzaleka-wellbeing" class="text-[0.9375rem] font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">← Dzaleka Wellbeing</a>
+        <a href="/dzaleka-wellbeing/structural-causes" class="text-[0.9375rem] font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Structural causes →</a>
+        <a href="/get-help-now" class="text-[0.9375rem] font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Get help now</a>
       </nav>
 
     </article>

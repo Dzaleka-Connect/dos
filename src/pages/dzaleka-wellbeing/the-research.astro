@@ -42,16 +42,8 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
 
 <MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema} keywords={keywords}>
 
-  <div class="sticky top-0 z-50 bg-slate-900" role="alert">
-    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
-      <p class="text-sm text-white">
-        <strong>Need urgent help?</strong> If you or someone you know is in immediate danger, please act now.
-      </p>
-      <a href="/get-help-now" class="inline-flex items-center rounded-md bg-red-600 px-3.5 py-1.5 text-[13px] font-bold text-white transition hover:bg-red-700">Get help now</a>
-    </div>
-  </div>
 
-  <main class="bg-slate-50">
+  <main class="bg-white">
     <div class="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
       <Breadcrumb items={[
         { label: 'Home', href: '/' },
@@ -72,9 +64,30 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </p>
       </header>
 
-      <section class="mt-12">
+      <div class="mt-2 border-l-4 border-red-600 bg-red-50 px-5 py-4" role="alert">
+        <p class="text-[0.9375rem] leading-7 text-slate-700">
+          <strong class="text-slate-900">Need urgent help?</strong>
+          If you or someone you know is in immediate danger, <a href="/get-help-now" class="font-bold text-red-700 underline underline-offset-[3px] hover:text-red-800">get help now</a>.
+        </p>
+      </div>
+
+      <nav class="mt-10" aria-label="Contents">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">On this page</h2>
+        <ul class="mt-3 space-y-2 text-[0.9375rem]">
+          <li><a href="#the-study" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">The study</a></li>
+          <li><a href="#what-they-did" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">What they did</a></li>
+          <li><a href="#the-headline-numbers" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">The headline numbers</a></li>
+          <li><a href="#what-probable-depression-means-and-what-it-doesn-t" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">What "probable depression" means — and what it doesn't</a></li>
+          <li><a href="#study-limitations" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Study limitations</a></li>
+          <li><a href="#the-treatment-gap" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">The treatment gap</a></li>
+          <li><a href="#supporting-references" class="font-medium text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Supporting references</a></li>
+        </ul>
+      </nav>
+
+
+      <section id="the-study" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">The study</h2>
-        <dl class="grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 [&>div]:bg-white [&>div]:px-5 [&>div]:py-4 [&_dt]:text-xs [&_dt]:font-bold [&_dt]:uppercase [&_dt]:tracking-[0.06em] [&_dt]:text-slate-500 [&_dd]:mt-1 [&_dd]:text-[0.9375rem] [&_dd]:text-slate-900">
+        <dl class="divide-y divide-slate-200 border-y border-slate-200 [&>div]:py-3 [&_dt]:text-xs [&_dt]:font-bold [&_dt]:uppercase [&_dt]:tracking-[0.06em] [&_dt]:text-slate-500 [&_dd]:mt-1 [&_dd]:text-[0.9375rem] [&_dd]:text-slate-900">
           <div>
             <dt>Title</dt>
             <dd>It is time to think about refugees' mental health: The case of Dzaleka Refugee Camp — Malawi</dd>
@@ -102,7 +115,7 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </dl>
       </section>
 
-      <section class="mt-12">
+      <section id="what-they-did" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">What they did</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">
           The researchers assessed 102 individuals living in Dzaleka Refugee Camp using the <strong>PHQ-9</strong> (Patient Health Questionnaire-9), a widely used screening tool for depression. The PHQ-9 asks nine questions about symptoms experienced over the past two weeks — things like loss of interest, fatigue, difficulty concentrating, and thoughts of death.
@@ -112,25 +125,25 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </p>
       </section>
 
-      <section class="mt-12">
+      <section id="the-headline-numbers" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">The headline numbers</h2>
-        <div class="grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 sm:grid-cols-2">
-          <div class="bg-white p-6">
+        <div class="divide-y divide-slate-200 border-y border-slate-200">
+          <div class="py-5">
             <p class="text-4xl font-extrabold tracking-tight text-slate-900">78%</p>
             <p class="mt-1 text-[0.9375rem] font-semibold text-slate-900">Probable depression</p>
             <p class="mt-2 text-[13px] leading-7 text-slate-500">Scored 10 or above on the PHQ-9. For reference, the global average for clinically significant depression is approximately 3.8% (WHO, 2023). This number is roughly 20 times higher.</p>
           </div>
-          <div class="bg-white p-6">
+          <div class="py-5">
             <p class="text-4xl font-extrabold tracking-tight text-slate-900">53%</p>
             <p class="mt-1 text-[0.9375rem] font-semibold text-slate-900">Thoughts of death</p>
             <p class="mt-2 text-[13px] leading-7 text-slate-500">More than half of the assessed individuals reported frequent thoughts about being better off dead or of hurting themselves. This corresponds to item 9 of the PHQ-9.</p>
           </div>
-          <div class="bg-white p-6">
+          <div class="py-5">
             <p class="text-4xl font-extrabold tracking-tight text-slate-900">25.5%</p>
             <p class="mt-1 text-[0.9375rem] font-semibold text-slate-900">Formulated a suicide plan</p>
             <p class="mt-2 text-[13px] leading-7 text-slate-500">One in four people assessed had moved beyond ideation to actively planning how they might end their life.</p>
           </div>
-          <div class="bg-white p-6">
+          <div class="py-5">
             <p class="text-4xl font-extrabold tracking-tight text-slate-900">15%</p>
             <p class="mt-1 text-[0.9375rem] font-semibold text-slate-900">Attempted suicide</p>
             <p class="mt-2 text-[13px] leading-7 text-slate-500">In the 12 months before the study. For context, the global annual rate of suicide attempts is estimated at roughly 0.4%.</p>
@@ -138,7 +151,7 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </div>
       </section>
 
-      <section class="mt-12">
+      <section id="what-probable-depression-means-and-what-it-doesn-t" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">What "probable depression" means — and what it doesn't</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">
           The PHQ-9 is a screening tool, not a clinical diagnosis. A score of 10+ means the individual <em>probably</em> meets diagnostic criteria for major depressive disorder, but a formal diagnosis requires assessment by a trained clinician. In many refugee camps — including Dzaleka — there is no access to such clinicians, which means we use screening tools as the best available proxy.
@@ -148,10 +161,10 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </p>
       </section>
 
-      <section class="mt-12">
+      <section id="study-limitations" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">Study limitations</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">This study is the best available evidence for mental health in Dzaleka, but it has significant constraints.</p>
-        <ul class="mb-4 list-none space-y-2 p-0 [&>li]:rounded-xl [&>li]:border [&>li]:border-slate-200 [&>li]:bg-white [&>li]:px-5 [&>li]:py-4 [&>li]:text-[0.9375rem] [&>li]:leading-7 [&>li]:text-slate-700">
+        <ul class="mb-4 list-disc space-y-3 pl-5 text-[0.9375rem] leading-[1.85] text-slate-700 marker:text-slate-400">
           <li><strong>Small sample size.</strong> 102 individuals from a camp of 57,000+. The sample may not be representative of the full population.</li>
           <li><strong>Cross-sectional design.</strong> A single snapshot in time. It cannot tell us whether things are getting better, worse, or how long these conditions have persisted.</li>
           <li><strong>Selection bias.</strong> The study does not describe its sampling strategy in detail. People who volunteered to be assessed may differ systematically from those who did not.</li>
@@ -160,7 +173,7 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </ul>
       </section>
 
-      <section class="mt-12">
+      <section id="the-treatment-gap" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">The treatment gap</h2>
         <p class="mb-4 text-[0.9375rem] leading-[1.85] text-slate-700">
           Perhaps the most important implication of this study is what it says about the gap between need and access. If 78% of assessed individuals show probable depression, and only an estimated 2–3% of the camp population accesses any form of psychosocial support, the vast majority of severe distress goes completely untreated.
@@ -170,26 +183,26 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </p>
       </section>
 
-      <section class="mt-12">
+      <section id="supporting-references" class="mt-12 border-t border-slate-200 pt-10">
         <h2 class="mb-4 text-2xl font-bold text-slate-900">Supporting references</h2>
-        <div class="space-y-4">
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700">
+        <div class="divide-y divide-slate-200 border-y border-slate-200">
+          <div class="py-4 text-sm leading-7 text-slate-700">
             <p class="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-400">Primary source</p>
             <p>Damiano RF, Borges SAM, Jarreta RL, Pereira RAR, Lucchetti G. "It is time to think about refugees' mental health: The case of Dzaleka Refugee Camp — Malawi." <em>Psychiatry Research</em>, 316, 114783 (2022).</p>
             <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">PubMed →</a>
             <a href="https://doi.org/10.1016/j.psychres.2022.114783" target="_blank" rel="noopener noreferrer" class="ml-4 font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">Full text (Elsevier) →</a>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700">
+          <div class="py-4 text-sm leading-7 text-slate-700">
             <p class="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-400">Population data</p>
             <p>UNHCR Malawi Fact Sheet, August 2024. Camp population: 56,212 as of 31 October 2024.</p>
             <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">PDF →</a>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700">
+          <div class="py-4 text-sm leading-7 text-slate-700">
             <p class="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-400">Global depression prevalence</p>
             <p>WHO. "Depressive disorder (depression)." Fact sheet, March 2023. Estimated global prevalence: 3.8%.</p>
             <a href="https://www.who.int/news-room/fact-sheets/detail/depression" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">WHO →</a>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-700">
+          <div class="py-4 text-sm leading-7 text-slate-700">
             <p class="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-400">IATI programme data</p>
             <p>Community-based mental health and psychosocial support in Malawi.</p>
             <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-800">IATI →</a>
@@ -197,16 +210,16 @@ const keywords = 'Dzaleka mental health research, PHQ-9 depression screening, re
         </div>
       </section>
 
-      <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+      <section class="mt-12 border-l-4 border-slate-300 pl-5">
         <p class="text-sm text-slate-600">
           <strong>Help us keep this page accurate.</strong> We strive to provide reliable and up-to-date information for the community. If you notice any incorrect details, outdated services, or missing context, please <a href="/contact" class="font-semibold text-slate-900 underline hover:text-slate-700">contact us to suggest an update</a>.
         </p>
       </section>
 
-      <nav class="mt-12 flex flex-wrap gap-4 border-t border-slate-200 pt-8">
-        <a href="/dzaleka-wellbeing" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">← Dzaleka Wellbeing</a>
-        <a href="/dzaleka-wellbeing/structural-causes" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Structural causes →</a>
-        <a href="/get-help-now" class="inline-flex items-center rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">Get help now</a>
+      <nav class="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-slate-200 pt-8">
+        <a href="/dzaleka-wellbeing" class="text-[0.9375rem] font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">← Dzaleka Wellbeing</a>
+        <a href="/dzaleka-wellbeing/structural-causes" class="text-[0.9375rem] font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Structural causes →</a>
+        <a href="/get-help-now" class="text-[0.9375rem] font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Get help now</a>
       </nav>
 
     </article>

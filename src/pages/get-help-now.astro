@@ -162,164 +162,115 @@ const schema = {
 ---
 
 <MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
-  <main class="bg-slate-50">
-    <section class="border-b border-slate-200 bg-white">
-      <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
-        <div class="max-w-3xl">
-          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">Urgent help</p>
-          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            Get help now
-          </h1>
-          <p class="mt-4 text-lg leading-8 text-slate-600">
-            Use this page when your problem cannot wait. It brings together the quickest routes for
-            safety, protection, legal, health, and essential support.
-          </p>
-        </div>
+  <main class="bg-white">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
 
-        <section class="mt-8 rounded-2xl border border-red-200 bg-red-50 px-6 py-6 sm:px-8">
-          <h2 class="text-2xl font-semibold text-slate-900">If the situation is urgent</h2>
-          <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
-            {immediateSteps.map((step) => (
-              <li class="flex gap-3">
-                <span class="mt-2 h-2.5 w-2.5 flex-none rounded-full bg-red-500"></span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+      <header class="pb-8 pt-12">
+        <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Urgent help</p>
+        <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+          Get help now
+        </h1>
+        <p class="mt-5 text-xl leading-9 text-slate-600">
+          Use this page when your problem cannot wait. It brings together the quickest routes for
+          safety, protection, legal, health, and essential support.
+        </p>
+        <p class="mt-5 text-sm text-slate-500">Contacts checked: {checkedDate}</p>
+      </header>
+
+      <div class="border-l-4 border-red-600 bg-red-50 px-5 py-5" role="alert">
+        <h2 class="text-lg font-bold text-slate-900">If the situation is urgent</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-[0.9375rem] leading-7 text-slate-700 marker:text-red-600">
+          {immediateSteps.map((step) => <li>{step}</li>)}
+        </ul>
       </div>
-    </section>
 
-    <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
-        <div class="space-y-8">
-          <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-            <div class="flex items-center justify-between gap-4">
-              <div>
-                <h2 class="text-2xl font-semibold text-slate-900">Call or email now</h2>
-                <p class="mt-2 text-base leading-7 text-slate-600">
-                  Start with the most direct contact for your situation.
-                </p>
-              </div>
+      <section class="mt-12 border-t border-slate-200 pt-10">
+        <h2 class="text-2xl font-bold text-slate-900">Call or email now</h2>
+        <p class="mt-4 text-[0.9375rem] leading-[1.85] text-slate-700">
+          Start with the most direct contact for your situation.
+        </p>
+        <div class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+          {hotlines.map((hotline) => (
+            <div class="py-6">
+              <h3 class="text-base font-bold text-slate-900">{hotline.title}</h3>
+              <p class="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+                <a href={hotline.href} class="underline underline-offset-4 hover:text-slate-600">{hotline.value}</a>
+              </p>
+              <p class="mt-2 text-[0.9375rem] leading-7 text-slate-700">{hotline.detail}</p>
+              <p class="mt-1 text-sm text-slate-500">{hotline.availability}</p>
             </div>
-
-            <div class="mt-6 grid gap-4">
-              {hotlines.map((hotline) => (
-                <a
-                  href={hotline.href}
-                  class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 transition-colors hover:border-slate-300 hover:bg-white"
-                >
-                  <div class="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 class="text-base font-semibold text-slate-900">{hotline.title}</h3>
-                      <p class="mt-1 text-2xl font-bold tracking-tight text-slate-900">{hotline.value}</p>
-                      <p class="mt-2 text-sm leading-6 text-slate-600">{hotline.detail}</p>
-                    </div>
-                    <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                      {hotline.availability}
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            <div class="mt-6 grid gap-4 md:grid-cols-2">
-              {officeContacts.map((contact) => (
-                <a
-                  href={contact.href}
-                  class="rounded-xl border border-slate-200 bg-white px-5 py-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
-                >
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
-                    {contact.title}
-                  </h3>
-                  <p class="mt-2 text-lg font-semibold text-slate-900">{contact.value}</p>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">{contact.detail}</p>
-                  <p class="mt-3 text-xs font-medium text-slate-500">{contact.availability}</p>
-                </a>
-              ))}
-            </div>
-          </section>
-
-          <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-            <h2 class="text-2xl font-semibold text-slate-900">Choose the right route</h2>
-            <div class="mt-6 grid gap-4">
-              {helpRoutes.map((route) => (
-                <article class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-5">
-                  <h3 class="text-lg font-semibold text-slate-900">{route.title}</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">{route.description}</p>
-                  <div class="mt-4 flex flex-wrap gap-3">
-                    {route.links.map((link) => (
-                      <a
-                        href={link.href}
-                        class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                      >
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
+          ))}
         </div>
 
-        <div class="space-y-6">
-          <section class="rounded-2xl border border-slate-200 bg-white p-6">
-            <h2 class="text-xl font-semibold text-slate-900">Before you call or write</h2>
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              If it is safe to do so, prepare these details first.
-            </p>
-            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-700">
-              {beforeYouCall.map((item) => (
-                <li class="flex gap-3">
-                  <span class="mt-2 h-2 w-2 flex-none rounded-full bg-slate-400"></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section class="rounded-2xl border border-slate-200 bg-white p-6">
-            <h2 class="text-xl font-semibold text-slate-900">Not sure which page to use?</h2>
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              If your situation is urgent but you are not sure where it fits, start with support and
-              ask to be routed to the right team.
-            </p>
-            <div class="mt-4 flex flex-col gap-3">
-              <a
-                href="/help-desk"
-                class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
-              >
-                Open Help Desk
-              </a>
-              <a
-                href="/start-here"
-                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Go to Start Here
-              </a>
+        <h3 class="mt-10 text-lg font-bold text-slate-900">Offices and online help</h3>
+        <div class="mt-2 divide-y divide-slate-200 border-y border-slate-200">
+          {officeContacts.map((contact) => (
+            <div class="py-5">
+              <h4 class="text-base font-bold text-slate-900">{contact.title}</h4>
+              <p class="mt-1 text-lg font-semibold text-slate-900">
+                <a href={contact.href} class="underline underline-offset-[3px] hover:text-slate-600">{contact.value}</a>
+              </p>
+              <p class="mt-2 text-[0.9375rem] leading-7 text-slate-700">{contact.detail}</p>
+              <p class="mt-1 text-sm text-slate-500">{contact.availability}</p>
             </div>
-          </section>
-
-          <section class="rounded-2xl border border-slate-200 bg-white p-6">
-            <h2 class="text-xl font-semibold text-slate-900">Where these contacts came from</h2>
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              Checked on {checkedDate}. Hotline and office details on this page came from the
-              sources below.
-            </p>
-            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-700">
-              {sourceLinks.map((source) => (
-                <li>
-                  <a href={source.href} class="font-medium text-slate-900 underline hover:text-slate-700">
-                    {source.label}
-                  </a>
-                  <p class="mt-1 text-slate-600">{source.note}</p>
-                </li>
-              ))}
-            </ul>
-          </section>
+          ))}
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section class="mt-12 border-t border-slate-200 pt-10">
+        <h2 class="text-2xl font-bold text-slate-900">Before you call or write</h2>
+        <p class="mt-4 text-[0.9375rem] leading-[1.85] text-slate-700">
+          If it is safe to do so, prepare these details first.
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-5 text-[0.9375rem] leading-7 text-slate-700 marker:text-slate-400">
+          {beforeYouCall.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+
+      <section class="mt-12 border-t border-slate-200 pt-10">
+        <h2 class="text-2xl font-bold text-slate-900">Choose the right route</h2>
+        <div class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+          {helpRoutes.map((route) => (
+            <div class="py-6">
+              <h3 class="text-lg font-bold text-slate-900">{route.title}</h3>
+              <p class="mt-2 text-[0.9375rem] leading-7 text-slate-700">{route.description}</p>
+              <p class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-[0.9375rem]">
+                {route.links.map((link) => (
+                  <a href={link.href} class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">{link.label}</a>
+                ))}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="mt-12 border-t border-slate-200 pt-10">
+        <h2 class="text-2xl font-bold text-slate-900">Not sure which page to use?</h2>
+        <p class="mt-4 text-[0.9375rem] leading-[1.85] text-slate-700">
+          If your situation is urgent but you are not sure where it fits, start with support and
+          ask to be routed to the right team.
+        </p>
+        <p class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-[0.9375rem]">
+          <a href="/help-desk" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Open Help Desk</a>
+          <a href="/start-here" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Go to Start Here</a>
+        </p>
+      </section>
+
+      <section class="mb-16 mt-12 border-t border-slate-200 pt-10">
+        <h2 class="text-2xl font-bold text-slate-900">Where these contacts came from</h2>
+        <p class="mt-4 text-[0.9375rem] leading-[1.85] text-slate-700">
+          Checked on {checkedDate}. Hotline and office details on this page came from the sources below.
+        </p>
+        <ul class="mt-4 space-y-4 text-[0.9375rem] leading-7 text-slate-700">
+          {sourceLinks.map((source) => (
+            <li>
+              <a href={source.href} class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">{source.label}</a>
+              <span class="block text-sm text-slate-600">{source.note}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+    </div>
   </main>
 </MainLayout>
