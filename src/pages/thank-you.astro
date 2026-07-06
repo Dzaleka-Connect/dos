@@ -118,14 +118,8 @@ const currentMessage = messages[formType] || messages.default;
   <script id="thank-you-messages" type="application/json" set:html={JSON.stringify(messages)}></script>
   
   <main class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
-    <!-- Background decoration -->
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-       <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-       <div class="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
-    </div>
-
     <div class="max-w-3xl w-full mx-auto relative z-10">
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-12 border border-white/20">
+      <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12 border border-gray-200">
         {/* Success Icon with Animation */}
         <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-8 animate-bounce-slow">
           <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,18 +241,6 @@ const currentMessage = messages[formType] || messages.default;
 </script>
 
 <style>
-  @keyframes blob {
-    0% { transform: translate(0px, 0px) scale(1); }
-    33% { transform: translate(30px, -50px) scale(1.1); }
-    66% { transform: translate(-20px, 20px) scale(0.9); }
-    100% { transform: translate(0px, 0px) scale(1); }
-  }
-  .animate-blob {
-    animation: blob 7s infinite;
-  }
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
   .animate-bounce-slow {
     animation: bounce 3s infinite;
   }
