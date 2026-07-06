@@ -38,20 +38,3 @@ distributions:
 collection: jobs
 sourceNote: Built from the public jobs collection maintained on the site.
 ---
-
-## Maintainer notes
-
-This dataset exposes the public jobs collection used on the site. It is useful for opportunity boards, alert digests, and lightweight labor-market snapshots.
-
-Records include public metadata such as organization, role type, deadline, and route path.
-
-## Suggested uses
-
-- Public job postings and deadlines
-- Organization and role metadata
-- Useful for job alerts and opportunity indexes
-- Links back to detailed job pages
-
-## Source note
-
-Built from the public jobs collection maintained on the site.

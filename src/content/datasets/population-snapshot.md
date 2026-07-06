@@ -40,20 +40,3 @@ recordMode: Live API
 lastUpdatedFallback: Live snapshot
 sourceNote: Served as a live public endpoint used by the site’s data views and summaries.
 ---
-
-## Maintainer notes
-
-This dataset represents the public population snapshot served by the site for data pages, reference views, and quick statistics.
-
-It is best for current-reference use and public context rather than historical time-series analysis.
-
-## Suggested uses
-
-- Current public population figures
-- Useful for quick reference and dashboard summaries
-- Pairs with the public data page for human-readable context
-- Exposed as a lightweight JSON endpoint
-
-## Source note
-
-Served as a live public endpoint used by the site’s data views and summaries.

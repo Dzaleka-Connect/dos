@@ -4,6 +4,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import JobCard from '../../components/jobs/JobCard.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { isJobExpired } from '../../utils/dateHelpers';
+import { getPaginationData } from '../../utils/pagination';
 // Get URL parameters
 const currentSort = Astro.url.searchParams.get('sort') || 'recent';
 
@@ -32,11 +33,12 @@ paginatedJobs = paginatedJobs.sort((a, b) => {
 
 // Pagination
 const jobsPerPage = 6;
-const currentPage = Number(Astro.params.page) || 1;
-const start = (currentPage - 1) * jobsPerPage;
-const end = start + jobsPerPage;
-paginatedJobs = paginatedJobs.slice(start, end);
-const totalPages = Math.ceil(allJobs.length / jobsPerPage);
+const { currentPage, totalPages, startIndex, endIndex } = getPaginationData(
+  Number(Astro.params.page) || 1,
+  allJobs.length,
+  jobsPerPage
+);
+paginatedJobs = paginatedJobs.slice(startIndex, endIndex);
 
 // Generate pagination URLs
 function getPaginationUrl(page: number) {
@@ -189,7 +191,7 @@ const jobsStructuredData = {
       {featuredJobs.length > 0 && (
         <div class="space-y-4">
           <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Featured</h3>
-          <div class="flex flex-col">
+          <div class="flex flex-col gap-4">
             {featuredJobs.map(job => (
               <JobCard
                 job={job}
@@ -206,7 +208,7 @@ const jobsStructuredData = {
         {featuredJobs.length > 0 && <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">All Jobs</h3>}
         
         {paginatedJobs.length > 0 ? (
-          <div class="flex flex-col">
+          <div class="flex flex-col gap-4">
             {paginatedJobs.map(job => (
               <JobCard
                 job={job}
@@ -231,7 +233,7 @@ const jobsStructuredData = {
           <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
               <p class="text-sm text-gray-700">
-                Showing <span class="font-medium">{start + 1}</span> to <span class="font-medium">{Math.min(end, allJobs.length)}</span> of{' '}
+                Showing <span class="font-medium">{startIndex + 1}</span> to <span class="font-medium">{endIndex}</span> of{' '}
                 <span class="font-medium">{allJobs.length}</span> results
               </p>
             </div>

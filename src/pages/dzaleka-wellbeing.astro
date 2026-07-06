@@ -9,7 +9,10 @@ const description =
   'Mental health and wellbeing support for the Dzaleka community. Talk to someone, find services, learn about mental health, or explore ways to stay well.';
 const canonical = 'https://services.dzaleka.com/dzaleka-wellbeing';
 
-const allServices = await getCollection('services');
+const [allServices, allNews] = await Promise.all([
+  getCollection('services'),
+  getCollection('news'),
+]);
 const serviceIds = [
   'jrs-malawi', 'dzaleka-health-centre', 'dzaleka-home-based-care',
   'iafr', 'fountain-of-hope-africa', 'there-is-hope-malawi',
@@ -23,7 +26,6 @@ const primaryIds = new Set(['jrs-malawi', 'dzaleka-health-centre', 'dzaleka-home
 const primarySupport = services.filter((s) => primaryIds.has(s!.id));
 const communitySupport = services.filter((s) => !primaryIds.has(s!.id));
 
-const allNews = await getCollection('news');
 const wellbeingResources = allNews
   .filter(post => {
     const tags = post.data.tags || [];
@@ -60,7 +62,7 @@ const schema = {
       },
       speakable: {
         '@type': 'SpeakableSpecification',
-        cssSelector: ['.wb-hero-title', '.wb-section-title', '.wb-topic-title'],
+        cssSelector: ['h1', 'h2'],
       },
       lastReviewed: '2026-04-20',
     },
@@ -123,22 +125,22 @@ const twitter = {
   twitter={twitter}
 >
 
-  <div class="wb-crisis-strip" role="alert">
+  <div class="relative z-10 bg-slate-900" role="alert">
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
       <p class="text-sm text-white">
         <strong>Need urgent help?</strong> If you or someone you know is in immediate danger or at risk of suicide, please act now.
       </p>
       <div class="flex flex-wrap gap-2">
-        <a href="/get-help-now" class="wb-crisis-btn">Get help now</a>
-        <a href="/easy-read/getting-help" class="wb-crisis-btn-alt">Easy read version</a>
+        <a href="/get-help-now" class="inline-flex w-fit max-w-full items-center justify-center rounded-md bg-red-600 px-3.5 py-1.5 text-center text-[13px] font-bold text-white transition hover:bg-red-700">Get help now</a>
+        <a href="/easy-read/getting-help" class="inline-flex w-fit max-w-full items-center justify-center rounded-md border border-white/20 px-3.5 py-1.5 text-center text-[13px] font-semibold text-white transition hover:border-white/50">Easy read version</a>
       </div>
     </div>
   </div>
 
 
-  <main class="wb-page">
+  <main class="bg-slate-50">
 
-    <section class="wb-hero">
+    <section class="border-b border-slate-200 bg-white pb-12">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="py-6">
           <Breadcrumb items={[
@@ -148,7 +150,7 @@ const twitter = {
         </div>
 
         <div class="pb-16 pt-4 text-center">
-          <h1 class="wb-hero-title">
+          <h1 class="text-[2rem] font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-[3.25rem]">
             What can we help you<br class="hidden sm:inline" /> with today?
           </h1>
           <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
@@ -157,106 +159,106 @@ const twitter = {
           </p>
         </div>
 
-        <div class="wb-audience-selector" id="audience-tabs" role="tablist">
-          <button class="wb-audience-tab wb-audience-tab--active" data-tab="myself" role="tab" aria-selected="true">
+        <div class="mx-auto mb-8 flex max-w-[720px] flex-wrap items-stretch justify-center gap-1 rounded-xl bg-slate-100 p-1" id="audience-tabs" role="tablist">
+          <button class="max-w-full flex-[0_1_220px] cursor-pointer rounded-lg px-5 py-2.5 text-center text-sm font-semibold text-slate-500 transition hover:text-slate-700 aria-selected:bg-white aria-selected:text-slate-900 aria-selected:shadow" data-tab="myself" role="tab" aria-selected="true">
             I need support for myself
           </button>
-          <button class="wb-audience-tab" data-tab="someone" role="tab" aria-selected="false">
+          <button class="max-w-full flex-[0_1_220px] cursor-pointer rounded-lg px-5 py-2.5 text-center text-sm font-semibold text-slate-500 transition hover:text-slate-700 aria-selected:bg-white aria-selected:text-slate-900 aria-selected:shadow" data-tab="someone" role="tab" aria-selected="false">
             I'm supporting someone else
           </button>
-          <button class="wb-audience-tab" data-tab="understand" role="tab" aria-selected="false">
+          <button class="max-w-full flex-[0_1_220px] cursor-pointer rounded-lg px-5 py-2.5 text-center text-sm font-semibold text-slate-500 transition hover:text-slate-700 aria-selected:bg-white aria-selected:text-slate-900 aria-selected:shadow" data-tab="understand" role="tab" aria-selected="false">
             I want to understand the context
           </button>
         </div>
 
-        <div class="wb-tab-panel wb-tab-panel--active" id="panel-myself">
+        <div class="pb-4" data-tab-panel id="panel-myself">
           <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <a href="/get-help-now" class="wb-pathway-card wb-pathway-card--urgent">
-              <div class="wb-pathway-icon wb-pathway-icon--urgent">
+            <a href="/get-help-now" class="flex min-w-0 flex-col items-center rounded-xl border border-red-200 bg-red-50 px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-red-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-800">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">I need urgent help</h3>
-              <p class="wb-pathway-desc">Crisis contacts, hotlines, and what to do if you or someone is in immediate danger.</p>
+              <h3 class="text-lg font-bold text-slate-900">I need urgent help</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Crisis contacts, hotlines, and what to do if you or someone is in immediate danger.</p>
             </a>
 
-            <a href="#find-support" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#find-support" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Talk to someone</h3>
-              <p class="wb-pathway-desc">Connect with JRS counseling, IAFR, the health centre, or a trusted community support provider.</p>
+              <h3 class="text-lg font-bold text-slate-900">Talk to someone</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Connect with JRS counseling, IAFR, the health centre, or a trusted community support provider.</p>
             </a>
 
-            <a href="#learn" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#learn" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Learn about mental health</h3>
-              <p class="wb-pathway-desc">Understand depression, trauma, anxiety, grief, and what they feel like in the Dzaleka context.</p>
+              <h3 class="text-lg font-bold text-slate-900">Learn about mental health</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Understand depression, trauma, anxiety, grief, and what they feel like in the Dzaleka context.</p>
             </a>
 
-            <a href="#stay-well" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#stay-well" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Look after your wellbeing</h3>
-              <p class="wb-pathway-desc">Practical things you can do today — faith, sport, creative work, community connection, and daily habits.</p>
+              <h3 class="text-lg font-bold text-slate-900">Look after your wellbeing</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Practical things you can do today — faith, sport, creative work, community connection, and daily habits.</p>
             </a>
           </div>
         </div>
 
-        <div class="wb-tab-panel" id="panel-someone">
+        <div class="hidden pb-4" data-tab-panel id="panel-someone">
           <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <a href="#practical-guide" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#practical-guide" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Practical guide</h3>
-              <p class="wb-pathway-desc">What to say, what not to say, and concrete steps you can take when someone you care about is struggling.</p>
+              <h3 class="text-lg font-bold text-slate-900">Practical guide</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">What to say, what not to say, and concrete steps you can take when someone you care about is struggling.</p>
             </a>
 
-            <a href="#youth" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#youth" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Supporting a young person</h3>
-              <p class="wb-pathway-desc">Youth-specific guidance for parents, caregivers, teachers, mentors, and friends.</p>
+              <h3 class="text-lg font-bold text-slate-900">Supporting a young person</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Youth-specific guidance for parents, caregivers, teachers, mentors, and friends.</p>
             </a>
 
-            <a href="/get-help-now" class="wb-pathway-card wb-pathway-card--urgent">
-              <div class="wb-pathway-icon wb-pathway-icon--urgent">
+            <a href="/get-help-now" class="flex min-w-0 flex-col items-center rounded-xl border border-red-200 bg-red-50 px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-red-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-800">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">If someone is in danger</h3>
-              <p class="wb-pathway-desc">Go to the urgent help page immediately. Do not leave them alone if possible.</p>
+              <h3 class="text-lg font-bold text-slate-900">If someone is in danger</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Go to the urgent help page immediately. Do not leave them alone if possible.</p>
             </a>
           </div>
         </div>
 
-        <div class="wb-tab-panel" id="panel-understand">
+        <div class="hidden pb-4" data-tab-panel id="panel-understand">
           <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <a href="#the-situation" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#the-situation" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">The mental health situation</h3>
-              <p class="wb-pathway-desc">Key data, research findings, and what the numbers actually mean for daily life in Dzaleka.</p>
+              <h3 class="text-lg font-bold text-slate-900">The mental health situation</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Key data, research findings, and what the numbers actually mean for daily life in Dzaleka.</p>
             </a>
 
-            <a href="#why-it-happens" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#why-it-happens" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Why it's happening</h3>
-              <p class="wb-pathway-desc">Structural root causes: encampment, overcrowding, funding cuts, blocked livelihoods, and policy.</p>
+              <h3 class="text-lg font-bold text-slate-900">Why it's happening</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Structural root causes: encampment, overcrowding, funding cuts, blocked livelihoods, and policy.</p>
             </a>
 
-            <a href="#evidence-base" class="wb-pathway-card">
-              <div class="wb-pathway-icon">
+            <a href="#evidence-base" class="flex min-w-0 flex-col items-center rounded-xl border border-slate-200 bg-white px-6 py-8 text-center transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md [overflow-wrap:anywhere]">
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
               </div>
-              <h3 class="wb-pathway-title">Evidence and sources</h3>
-              <p class="wb-pathway-desc">Peer-reviewed research, UNHCR data, and the full reference trail behind this page.</p>
+              <h3 class="text-lg font-bold text-slate-900">Evidence and sources</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">Peer-reviewed research, UNHCR data, and the full reference trail behind this page.</p>
             </a>
           </div>
         </div>
@@ -264,24 +266,24 @@ const twitter = {
     </section>
 
 
-    <section id="find-support" class="wb-section">
+    <section id="find-support" class="py-12 sm:py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="wb-section-header">
-          <h2 class="wb-section-title">Find support in Dzaleka</h2>
-          <p class="wb-section-desc">
+        <div class="mb-10 max-w-[640px]">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Find support in Dzaleka</h2>
+          <p class="mt-4 text-base leading-7 text-slate-500">
             We all have hard days. Sometimes things feel impossible. Having someone to talk to
             — someone who listens without judgment — can make a real difference. These services
             are available inside Dzaleka Camp.
           </p>
         </div>
 
-        <h3 class="wb-subsection-title">Start here</h3>
+        <h3 class="border-b border-slate-200 pb-3 text-lg font-bold text-slate-900">Start here</h3>
         <div class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {primarySupport.map((s) => (
-            <article class="wb-service-card wb-service-card--primary">
-              <p class="wb-service-category">{s!.data.category}</p>
-              <h4 class="wb-service-name">{s!.data.title}</h4>
-              {s!.data.verified && <span class="wb-badge wb-badge--verified">Verified</span>}
+            <article class="flex min-w-0 flex-col rounded-xl border border-green-200 bg-green-50 p-6 transition hover:shadow-md [overflow-wrap:anywhere]">
+              <p class="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">{s!.data.category}</p>
+              <h4 class="mt-1.5 text-lg font-bold text-slate-900 [overflow-wrap:anywhere]">{s!.data.title}</h4>
+              {s!.data.verified && <span class="mt-3 inline-flex w-fit max-w-full rounded-full border border-green-200 bg-green-100 px-2.5 py-[3px] text-[11px] font-semibold text-green-800">Verified</span>}
               <p class="mt-3 text-sm leading-7 text-slate-600">{s!.data.description}</p>
               <dl class="mt-4 space-y-1.5 text-sm">
                 {s!.data.contact?.phone && (
@@ -295,30 +297,30 @@ const twitter = {
                 )}
               </dl>
               <div class="mt-5 flex flex-wrap gap-3">
-                <a href={`/services/${s!.id}`} class="wb-btn-primary">Open service page</a>
+                <a href={`/services/${s!.id}`} class="inline-flex w-fit max-w-full items-center justify-center rounded-lg bg-slate-900 px-5 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-slate-800">Open service page</a>
                 {cleanPhone(s!.data.contact?.phone) && (
-                  <a href={`tel:${cleanPhone(s!.data.contact?.phone)}`} class="wb-btn-secondary">Call</a>
+                  <a href={`tel:${cleanPhone(s!.data.contact?.phone)}`} class="inline-flex w-fit max-w-full items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Call</a>
                 )}
               </div>
             </article>
           ))}
         </div>
 
-        <h3 class="wb-subsection-title mt-12">Community and wellbeing support</h3>
+        <h3 class="mt-12 border-b border-slate-200 pb-3 text-lg font-bold text-slate-900">Community and wellbeing support</h3>
         <div class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {communitySupport.map((s) => (
-            <article class="wb-service-card">
-              <p class="wb-service-category">{s!.data.category}</p>
-              <h4 class="wb-service-name">{s!.data.title}</h4>
+            <article class="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-6 transition hover:shadow-md [overflow-wrap:anywhere]">
+              <p class="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">{s!.data.category}</p>
+              <h4 class="mt-1.5 text-lg font-bold text-slate-900 [overflow-wrap:anywhere]">{s!.data.title}</h4>
               <p class="mt-3 text-sm leading-7 text-slate-600">{s!.data.description}</p>
               <div class="mt-4 flex flex-wrap gap-2">
-                {s!.data.contact?.phone && <span class="wb-contact-pill">{s!.data.contact.phone}</span>}
-                {s!.data.contact?.email && <span class="wb-contact-pill">{s!.data.contact.email}</span>}
+                {s!.data.contact?.phone && <span class="inline-flex w-fit max-w-full rounded-full bg-slate-100 px-3 py-[3px] text-xs text-slate-600 [overflow-wrap:anywhere]">{s!.data.contact.phone}</span>}
+                {s!.data.contact?.email && <span class="inline-flex w-fit max-w-full rounded-full bg-slate-100 px-3 py-[3px] text-xs text-slate-600 [overflow-wrap:anywhere]">{s!.data.contact.email}</span>}
               </div>
               <div class="mt-5 flex flex-wrap gap-3">
-                <a href={`/services/${s!.id}`} class="wb-btn-secondary">Open service page</a>
+                <a href={`/services/${s!.id}`} class="inline-flex w-fit max-w-full items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Open service page</a>
                 {s!.data.socialMedia?.website && (
-                  <a href={s!.data.socialMedia.website} target="_blank" rel="noopener noreferrer" class="wb-btn-secondary">Visit website</a>
+                  <a href={s!.data.socialMedia.website} target="_blank" rel="noopener noreferrer" class="inline-flex w-fit max-w-full items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Visit website</a>
                 )}
               </div>
             </article>
@@ -333,61 +335,61 @@ const twitter = {
     </section>
 
 
-    <section id="learn" class="wb-section wb-section--alt">
+    <section id="learn" class="bg-white py-12 sm:py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="wb-section-header">
-          <h2 class="wb-section-title">Learn about mental health</h2>
-          <p class="wb-section-desc">
+        <div class="mb-10 max-w-[640px]">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Learn about mental health</h2>
+          <p class="mt-4 text-base leading-7 text-slate-500">
             Understanding common signs can make it easier to ask for help. Mental health concerns are common in displacement settings, and Dzaleka has documented pressures that can affect daily life.
           </p>
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <article class="wb-topic-card flex flex-col">
-            <h3 class="wb-topic-title">Depression</h3>
-            <p class="wb-topic-label">78% probable rate in the 2022 study</p>
-            <p class="wb-topic-desc flex-grow">
+          <article class="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-xl font-bold text-slate-900">Depression</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">78% probable rate in the 2022 study</p>
+            <p class="mt-3 flex-grow text-sm leading-7 text-slate-600">
               More than just feeling sad. Depression in Dzaleka often looks like exhaustion, losing interest in things, feeling nothing, sleeping too much or too little, or not caring about the future. It is not a weakness, and it can be a response to long stress, uncertainty, and loss.
             </p>
             <a href="/dzaleka-wellbeing/the-research" class="mt-4 font-semibold text-slate-900 underline hover:text-slate-700">Read the research →</a>
           </article>
 
-          <article class="wb-topic-card">
-            <h3 class="wb-topic-title">Trauma and PTSD</h3>
-            <p class="wb-topic-label">Many residents carry pre-migration trauma</p>
-            <p class="wb-topic-desc">
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-xl font-bold text-slate-900">Trauma and PTSD</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">Many residents carry pre-migration trauma</p>
+            <p class="mt-3 text-sm leading-7 text-slate-600">
               Flashbacks, nightmares, being easily startled, avoiding places or people — these can be signs of unprocessed trauma from violence, displacement, or loss. The body remembers what the mind tries to forget.
             </p>
           </article>
 
-          <article class="wb-topic-card">
-            <h3 class="wb-topic-title">Anxiety and constant worry</h3>
-            <p class="wb-topic-label">"Msongo wa mawazo" — too many thoughts</p>
-            <p class="wb-topic-desc">
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-xl font-bold text-slate-900">Anxiety and constant worry</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">"Msongo wa mawazo" — too many thoughts</p>
+            <p class="mt-3 text-sm leading-7 text-slate-600">
               A racing mind that won't stop. Worrying about food, safety, family, resettlement, documents. In Swahili it's often called <em>msongo wa mawazo</em> — when thoughts pile up and the body starts showing it through headaches, chest pain, or stomach problems.
             </p>
           </article>
 
-          <article class="wb-topic-card">
-            <h3 class="wb-topic-title">Grief and loss</h3>
-            <p class="wb-topic-label">"Huzuni" — deep, abiding sadness</p>
-            <p class="wb-topic-desc">
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-xl font-bold text-slate-900">Grief and loss</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">"Huzuni" — deep, abiding sadness</p>
+            <p class="mt-3 text-sm leading-7 text-slate-600">
               Losing a home, a country, a parent, a child, a language, a sense of who you are. Grief in Dzaleka is rarely about one event — it is ongoing, because the loss doesn't end. Many people carry it silently for years.
             </p>
           </article>
 
-          <article class="wb-topic-card">
-            <h3 class="wb-topic-title">Suicidal thoughts</h3>
-            <p class="wb-topic-label">25.5% reported formulating a plan</p>
-            <p class="wb-topic-desc">
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-xl font-bold text-slate-900">Suicidal thoughts</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">25.5% reported formulating a plan</p>
+            <p class="mt-3 text-sm leading-7 text-slate-600">
               If you are having thoughts of ending your life, please know: you are not alone, this is not your fault, and help exists. Go to <a href="/get-help-now" class="font-semibold text-slate-900 underline">Get help now</a> or talk to someone you trust today.
             </p>
           </article>
 
-          <article class="wb-topic-card flex flex-col">
-            <h3 class="wb-topic-title">The "waiting room" feeling</h3>
-            <p class="wb-topic-label">Learned helplessness from indefinite encampment</p>
-            <p class="wb-topic-desc flex-grow">
+          <article class="flex min-w-0 flex-col rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-xl font-bold text-slate-900">The "waiting room" feeling</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">Learned helplessness from indefinite encampment</p>
+            <p class="mt-3 flex-grow text-sm leading-7 text-slate-600">
               Waking up with little control over work, movement, or timelines can wear people down. This is not laziness; it can happen when purpose and progress are blocked for a long time.
             </p>
             <a href="/dzaleka-wellbeing/structural-causes" class="mt-4 font-semibold text-slate-900 underline hover:text-slate-700">Read about structural causes →</a>
@@ -397,42 +399,42 @@ const twitter = {
     </section>
 
 
-    <section id="stay-well" class="wb-section">
+    <section id="stay-well" class="py-12 sm:py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="wb-section-header">
-          <h2 class="wb-section-title">Look after your wellbeing</h2>
-          <p class="wb-section-desc">
+        <div class="mb-10 max-w-[640px]">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Look after your wellbeing</h2>
+          <p class="mt-4 text-base leading-7 text-slate-500">
             You don't have to wait until things are bad to start looking after yourself. Even small things — done regularly — can make a difference.
           </p>
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div class="wb-wellbeing-card">
-            <span class="wb-wellbeing-number">01</span>
-            <h3 class="wb-wellbeing-title">Break the stigma</h3>
-            <p class="wb-wellbeing-desc">Mental health is health. Naming trauma, exhaustion, fear, and hopelessness without shame is often the first step toward care.</p>
+          <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-6 transition hover:shadow-md [overflow-wrap:anywhere]">
+            <span class="text-[13px] font-extrabold text-slate-400">01</span>
+            <h3 class="mt-2 text-lg font-bold text-slate-900">Break the stigma</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-500">Mental health is health. Naming trauma, exhaustion, fear, and hopelessness without shame is often the first step toward care.</p>
           </div>
-          <div class="wb-wellbeing-card">
-            <span class="wb-wellbeing-number">02</span>
-            <h3 class="wb-wellbeing-title">Seek counseling</h3>
-            <p class="wb-wellbeing-desc">Use JRS, IAFR, the health centre, or a trusted referral partner. You do not need to be "crazy" to ask for help. Most people who seek support look and function like everyone else.</p>
+          <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-6 transition hover:shadow-md [overflow-wrap:anywhere]">
+            <span class="text-[13px] font-extrabold text-slate-400">02</span>
+            <h3 class="mt-2 text-lg font-bold text-slate-900">Seek counseling</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-500">Use JRS, IAFR, the health centre, or a trusted referral partner. You do not need to be "crazy" to ask for help. Most people who seek support look and function like everyone else.</p>
           </div>
-          <div class="wb-wellbeing-card">
-            <span class="wb-wellbeing-number">03</span>
-            <h3 class="wb-wellbeing-title">Build skills and purpose</h3>
-            <p class="wb-wellbeing-desc">Futurelessness deepens distress. Even small projects — <a href="/e-learning" class="underline">learning</a>, <a href="/skills-exchange" class="underline">teaching someone else</a>, creating — can help restore momentum.</p>
+          <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-6 transition hover:shadow-md [overflow-wrap:anywhere]">
+            <span class="text-[13px] font-extrabold text-slate-400">03</span>
+            <h3 class="mt-2 text-lg font-bold text-slate-900">Build skills and purpose</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-500">Futurelessness deepens distress. Even small projects — <a href="/e-learning" class="underline">learning</a>, <a href="/skills-exchange" class="underline">teaching someone else</a>, creating — can help restore momentum.</p>
           </div>
-          <div class="wb-wellbeing-card">
-            <span class="wb-wellbeing-number">04</span>
-            <h3 class="wb-wellbeing-title">Stay connected</h3>
-            <p class="wb-wellbeing-desc">Faith groups, sports, art, peer support, and events like the <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="underline">Tumaini Festival</a> reduce isolation and strengthen everyday resilience.</p>
+          <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-6 transition hover:shadow-md [overflow-wrap:anywhere]">
+            <span class="text-[13px] font-extrabold text-slate-400">04</span>
+            <h3 class="mt-2 text-lg font-bold text-slate-900">Stay connected</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-500">Faith groups, sports, art, peer support, and events like the <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="underline">Tumaini Festival</a> reduce isolation and strengthen everyday resilience.</p>
           </div>
         </div>
       </div>
     </section>
 
 
-    <section id="youth" class="wb-section-dark">
+    <section id="youth" class="bg-slate-900 text-white">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
           <div>
@@ -448,8 +450,8 @@ const twitter = {
               <p><strong class="text-white">Take care of yourself too.</strong> Supporting someone in pain is exhausting. You need your own support network.</p>
             </div>
             <div class="mt-8 flex flex-wrap gap-3">
-              <a href="/dzaleka-wellbeing/supporting-someone" class="wb-btn-primary bg-white text-slate-900 hover:bg-slate-100">Read the caregiver guide</a>
-              <a href="/e-learning" class="wb-btn-secondary border-slate-600 text-white hover:bg-slate-800">Explore learning pathways</a>
+              <a href="/dzaleka-wellbeing/supporting-someone" class="inline-flex w-fit max-w-full items-center justify-center rounded-lg bg-white px-5 py-2.5 text-center text-sm font-semibold text-slate-900 transition hover:bg-slate-100">Read the caregiver guide</a>
+              <a href="/e-learning" class="inline-flex w-fit max-w-full items-center justify-center rounded-lg border border-slate-600 px-5 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-slate-800">Explore learning pathways</a>
             </div>
           </div>
           <div class="space-y-4">
@@ -474,49 +476,49 @@ const twitter = {
     </section>
 
 
-    <section id="practical-guide" class="wb-section wb-section--alt">
+    <section id="practical-guide" class="bg-white py-12 sm:py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <div class="wb-section-header" style="text-align: left;">
-              <h2 class="wb-section-title">Practical next steps</h2>
-              <p class="wb-section-desc">
+            <div class="mb-10 max-w-[640px]" style="text-align: left;">
+              <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Practical next steps</h2>
+              <p class="mt-4 text-base leading-7 text-slate-500">
                 Whether you need support for yourself or you're helping someone else — these are concrete things you can do today.
               </p>
             </div>
 
             <ol class="mt-8 space-y-4">
-              <li class="wb-step-item">
-                <span class="wb-step-bullet">1</span>
+              <li class="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 sm:gap-4 sm:p-5 [overflow-wrap:anywhere]">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">1</span>
                 <span>If you feel unsafe or have thoughts of self-harm, start with <a href="/get-help-now" class="font-semibold underline">Get help now</a> and seek in-person support as quickly as possible.</span>
               </li>
-              <li class="wb-step-item">
-                <span class="wb-step-bullet">2</span>
+              <li class="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 sm:gap-4 sm:p-5 [overflow-wrap:anywhere]">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">2</span>
                 <span>Do not wait for the problem to become unbearable. Many people describe distress as tiredness, pain, fear, "too many thoughts", or a feeling of having no future.</span>
               </li>
-              <li class="wb-step-item">
-                <span class="wb-step-bullet">3</span>
+              <li class="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 sm:gap-4 sm:p-5 [overflow-wrap:anywhere]">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">3</span>
                 <span>If language is a barrier, tell the person helping you which language you need. Ask them to help you find someone who speaks it.</span>
               </li>
-              <li class="wb-step-item">
-                <span class="wb-step-bullet">4</span>
+              <li class="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 sm:gap-4 sm:p-5 [overflow-wrap:anywhere]">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">4</span>
                 <span>If formal counseling feels too big a step, start with a church leader, home-based care team, sport group, or health worker you trust.</span>
               </li>
-              <li class="wb-step-item">
-                <span class="wb-step-bullet">5</span>
+              <li class="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 sm:gap-4 sm:p-5 [overflow-wrap:anywhere]">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">5</span>
                 <span>If you are helping someone else: stay calm, listen, avoid judgment, and help them move toward in-person care. Do not leave someone in crisis alone.</span>
               </li>
             </ol>
           </div>
 
           <aside class="space-y-6">
-            <div class="wb-info-box">
-              <h3 class="wb-info-title">This page is a guide, not a diagnosis</h3>
-              <p class="wb-info-desc">It helps people find support pathways and understand the context. It does not replace medical care, crisis intervention, or professional assessment.</p>
+            <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-6 [overflow-wrap:anywhere]">
+              <h3 class="text-lg font-bold text-slate-900">This page is a guide, not a diagnosis</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">It helps people find support pathways and understand the context. It does not replace medical care, crisis intervention, or professional assessment.</p>
             </div>
-            <div class="wb-info-box">
-              <h3 class="wb-info-title">Need it in simpler language?</h3>
-              <p class="wb-info-desc">The <a href="/easy-read/getting-help" class="font-semibold underline">Easy Read: Getting Help</a> page covers the most important steps in clear, short sentences.</p>
+            <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-6 [overflow-wrap:anywhere]">
+              <h3 class="text-lg font-bold text-slate-900">Need it in simpler language?</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">The <a href="/easy-read/getting-help" class="font-semibold underline">Easy Read: Getting Help</a> page covers the most important steps in clear, short sentences.</p>
             </div>
           </aside>
         </div>
@@ -524,35 +526,35 @@ const twitter = {
     </section>
 
 
-    <section id="the-situation" class="wb-section">
+    <section id="the-situation" class="py-12 sm:py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="wb-section-header">
-          <h2 class="wb-section-title">The mental health situation in Dzaleka</h2>
-          <p class="wb-section-desc">
+        <div class="mb-10 max-w-[640px]">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">The mental health situation in Dzaleka</h2>
+          <p class="mt-4 text-base leading-7 text-slate-500">
             These figures are serious and should be read with care. The research shows high levels of depression, suicidal thinking, and trauma symptoms in the assessed sample.
           </p>
         </div>
 
         <div class="grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">
-          <div class="wb-stat-cell">
-            <p class="wb-stat-value">78%</p>
-            <p class="wb-stat-label">Probable depression</p>
-            <p class="wb-stat-note">Global average: ~3.8%</p>
+          <div class="bg-white p-6 text-center">
+            <p class="text-4xl font-extrabold tracking-tight text-slate-900">78%</p>
+            <p class="mt-1 text-sm font-semibold text-slate-900">Probable depression</p>
+            <p class="mt-1 text-xs text-slate-400">Global average: ~3.8%</p>
           </div>
-          <div class="wb-stat-cell">
-            <p class="wb-stat-value">53%</p>
-            <p class="wb-stat-label">Thoughts of death</p>
-            <p class="wb-stat-note">More than half of assessed individuals</p>
+          <div class="bg-white p-6 text-center">
+            <p class="text-4xl font-extrabold tracking-tight text-slate-900">53%</p>
+            <p class="mt-1 text-sm font-semibold text-slate-900">Thoughts of death</p>
+            <p class="mt-1 text-xs text-slate-400">More than half of assessed individuals</p>
           </div>
-          <div class="wb-stat-cell">
-            <p class="wb-stat-value">25.5%</p>
-            <p class="wb-stat-label">Suicidal planning</p>
-            <p class="wb-stat-note">1 in 4 formulated a plan</p>
+          <div class="bg-white p-6 text-center">
+            <p class="text-4xl font-extrabold tracking-tight text-slate-900">25.5%</p>
+            <p class="mt-1 text-sm font-semibold text-slate-900">Suicidal planning</p>
+            <p class="mt-1 text-xs text-slate-400">1 in 4 formulated a plan</p>
           </div>
-          <div class="wb-stat-cell">
-            <p class="wb-stat-value">15%</p>
-            <p class="wb-stat-label">Suicide attempts</p>
-            <p class="wb-stat-note">In the 12 months prior to study</p>
+          <div class="bg-white p-6 text-center">
+            <p class="text-4xl font-extrabold tracking-tight text-slate-900">15%</p>
+            <p class="mt-1 text-sm font-semibold text-slate-900">Suicide attempts</p>
+            <p class="mt-1 text-xs text-slate-400">In the 12 months prior to study</p>
           </div>
         </div>
         <p class="mt-3 text-center text-xs text-slate-500">
@@ -561,54 +563,54 @@ const twitter = {
       </div>
     </section>
 
-    <section id="why-it-happens" class="wb-section wb-section--alt">
+    <section id="why-it-happens" class="bg-white py-12 sm:py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="wb-section-header">
-          <h2 class="wb-section-title">Why it's happening</h2>
-          <p class="wb-section-desc">
+        <div class="mb-10 max-w-[640px]">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Why it's happening</h2>
+          <p class="mt-4 text-base leading-7 text-slate-500">
             The mental health crisis in Dzaleka is structural, not just clinical. Understanding the root causes matters — especially if you are an advocate, researcher, or policy maker.
           </p>
         </div>
 
         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          <article class="wb-context-card">
-            <h3 class="wb-context-title">Encampment policy</h3>
-            <p class="wb-context-desc">The strict encampment policy restricts refugees from seeking employment outside the camp and increases reliance on shrinking food assistance. Loss of agency can contribute to learned helplessness.</p>
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-lg font-bold text-slate-900">Encampment policy</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">The strict encampment policy restricts refugees from seeking employment outside the camp and increases reliance on shrinking food assistance. Loss of agency can contribute to learned helplessness.</p>
           </article>
-          <article class="wb-context-card">
-            <h3 class="wb-context-title">Overcrowding</h3>
-            <p class="wb-context-desc">Originally built for 12,000 people, the camp now hosts over 57,000. Crowded rooms, shared latrines, and limited privacy make the physical environment a daily stressor.</p>
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-lg font-bold text-slate-900">Overcrowding</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">Originally built for 12,000 people, the camp now hosts over 57,000. Crowded rooms, shared latrines, and limited privacy make the physical environment a daily stressor.</p>
           </article>
-          <article class="wb-context-card">
-            <h3 class="wb-context-title">Funding collapse</h3>
-            <p class="wb-context-desc">UNHCR has secured only 12-18% of required funding. WFP rations have been cut to 75%, Plan International withdrew, and health staff have faced unpaid months. The safety net has weakened.</p>
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-lg font-bold text-slate-900">Funding collapse</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">UNHCR has secured only 12-18% of required funding. WFP rations have been cut to 75%, Plan International withdrew, and health staff have faced unpaid months. The safety net has weakened.</p>
           </article>
-          <article class="wb-context-card">
-            <h3 class="wb-context-title">The treatment gap</h3>
-            <p class="wb-context-desc">Severe distress remains untreated because people present with headaches, fatigue, or "too many thoughts" — not "depression." 78% prevalence, 2–3% service utilization.</p>
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-lg font-bold text-slate-900">The treatment gap</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">Severe distress remains untreated because people present with headaches, fatigue, or "too many thoughts" — not "depression." 78% prevalence, 2–3% service utilization.</p>
           </article>
-          <article class="wb-context-card">
-            <h3 class="wb-context-title">Language barriers</h3>
-            <p class="wb-context-desc">Patients speak Kinyarwanda, Kirundi, Swahili, Somali, or Oromo. Clinicians often speak only English or Chichewa. Nuanced descriptions of emotional pain are lost in translation.</p>
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-lg font-bold text-slate-900">Language barriers</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">Patients speak Kinyarwanda, Kirundi, Swahili, Somali, or Oromo. Clinicians often speak only English or Chichewa. Nuanced descriptions of emotional pain are lost in translation.</p>
           </article>
-          <article class="wb-context-card">
-            <h3 class="wb-context-title">Blocked futures</h3>
-            <p class="wb-context-desc">Repatriation is not viable for many people, local integration remains restricted, and resettlement reaches very few residents each year. Young adults can finish education and still face no clear next step.</p>
+          <article class="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-6 transition hover:bg-white hover:shadow [overflow-wrap:anywhere]">
+            <h3 class="text-lg font-bold text-slate-900">Blocked futures</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600">Repatriation is not viable for many people, local integration remains restricted, and resettlement reaches very few residents each year. Young adults can finish education and still face no clear next step.</p>
           </article>
         </div>
         
         <div class="mt-8 text-center">
-          <a href="/dzaleka-wellbeing/structural-causes" class="wb-btn-secondary">Read the full structural deep-dive →</a>
+          <a href="/dzaleka-wellbeing/structural-causes" class="inline-flex w-fit max-w-full items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Read the full structural deep-dive →</a>
         </div>
       </div>
     </section>
 
     {wellbeingResources.length > 0 && (
-      <section id="resources" class="wb-section">
+      <section id="resources" class="py-12 sm:py-16">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="wb-section-header">
-            <h2 class="wb-section-title">Helpful resources and updates</h2>
-            <p class="wb-section-desc">
+          <div class="mb-10 max-w-[640px]">
+            <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Helpful resources and updates</h2>
+            <p class="mt-4 text-base leading-7 text-slate-500">
               Community news, programmatic updates, and new resources related to mental health and wellbeing in Dzaleka.
             </p>
           </div>
@@ -620,77 +622,77 @@ const twitter = {
           </div>
           
           <div class="mt-8 text-center border-t border-slate-200 pt-8">
-            <a href="/news" class="wb-btn-secondary border-slate-300">View all news</a>
+            <a href="/news" class="inline-flex w-fit max-w-full items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">View all news</a>
           </div>
         </div>
       </section>
     )}
 
-    <section id="evidence-base" class="wb-section-dark">
+    <section id="evidence-base" class="bg-slate-900 text-white">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div class="wb-section-header">
-          <h2 class="wb-section-title text-white">Sources and evidence</h2>
-          <p class="wb-section-desc text-slate-300">
+        <div class="mb-10 max-w-[640px]">
+          <h2 class="text-3xl font-extrabold tracking-tight text-white">Sources and evidence</h2>
+          <p class="mt-4 text-base leading-7 text-slate-300">
             This page draws on peer-reviewed research, UNHCR operational data, and reporting from the humanitarian sector. We distinguish between evidence that makes clinical claims and contextual sources that provide background.
           </p>
         </div>
 
         <div class="grid gap-6 xl:grid-cols-3">
-          <div class="wb-source-group">
+          <div class="min-w-0 rounded-xl border border-white/10 bg-white/5 p-6 [overflow-wrap:anywhere]">
             <h3 class="text-lg font-bold text-white">Core evidence</h3>
             <p class="mt-2 text-sm text-slate-400">Peer-reviewed and official data behind the numbers on this page.</p>
             <div class="mt-5 space-y-3">
-              <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>PubMed: Refugees' mental health — Dzaleka</strong>
                 <span>Primary abstract for the 2022 Psychiatry Research paper.</span>
               </a>
-              <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>UNHCR Malawi Fact Sheet (August 2024)</strong>
                 <span>Official population data for Dzaleka.</span>
               </a>
-              <a href="https://www.unhcr.org/sites/default/files/2025-06/Malawi%20ARR%202024.pdf" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://www.unhcr.org/sites/default/files/2025-06/Malawi%20ARR%202024.pdf" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>UNHCR Annual Results Report 2024</strong>
                 <span>Operational context for the Malawi refugee response.</span>
               </a>
             </div>
           </div>
 
-          <div class="wb-source-group">
+          <div class="min-w-0 rounded-xl border border-white/10 bg-white/5 p-6 [overflow-wrap:anywhere]">
             <h3 class="text-lg font-bold text-white">Operational & advocacy</h3>
             <p class="mt-2 text-sm text-slate-400">Why wellbeing is inseparable from funding, rights, and policy.</p>
             <div class="mt-5 space-y-3">
-              <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>Funding cuts push Dzaleka to the brink</strong>
                 <span>FairPlanet reporting on shrinking humanitarian support.</span>
               </a>
-              <a href="https://www.hrw.org/world-report/2024/country-chapters/malawi" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://www.hrw.org/world-report/2024/country-chapters/malawi" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>World Report 2024: Malawi — HRW</strong>
                 <span>Rights environment including refugee policy context.</span>
               </a>
-              <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>Community-based mental health support (IATI)</strong>
                 <span>Programme-level activity data for MHPSS.</span>
               </a>
             </div>
           </div>
 
-          <div class="wb-source-group">
+          <div class="min-w-0 rounded-xl border border-white/10 bg-white/5 p-6 [overflow-wrap:anywhere]">
             <h3 class="text-lg font-bold text-white">Community resilience</h3>
             <p class="mt-2 text-sm text-slate-400">Service models, community examples, and further reading.</p>
             <div class="mt-5 space-y-3">
-              <a href="https://apr.jrs.net/en/programme/mental-health-and-psychosocial-support-mhpss/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://apr.jrs.net/en/programme/mental-health-and-psychosocial-support-mhpss/" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>JRS: MHPSS Programme</strong>
                 <span>The psychosocial accompaniment model used by JRS.</span>
               </a>
-              <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>Tumaini Festival</strong>
                 <span>Refugee-led cultural work that supports dignity and wellbeing.</span>
               </a>
-              <a href="https://match-foundation.com/2025/03/20/mental-health-through-sports-at-dzaleka-camp/" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://match-foundation.com/2025/03/20/mental-health-through-sports-at-dzaleka-camp/" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>Mental Health Through Sports</strong>
                 <span>Sports-based wellbeing support for youth.</span>
               </a>
-              <a href="https://reframe.network/rlo/art-for-hope" target="_blank" rel="noopener noreferrer" class="wb-source-link">
+              <a href="https://reframe.network/rlo/art-for-hope" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-white/10 bg-slate-900/50 p-4 transition hover:border-white/20 hover:bg-slate-900/70 [&_strong]:block [&_strong]:text-[13px] [&_strong]:text-white [&_strong]:[overflow-wrap:anywhere] [&_span]:mt-1 [&_span]:block [&_span]:text-xs [&_span]:leading-normal [&_span]:text-slate-400 [&_span]:[overflow-wrap:anywhere]">
                 <strong>Art for Hope</strong>
                 <span>Arts-based community wellbeing work.</span>
               </a>
@@ -711,203 +713,19 @@ const twitter = {
 </MainLayout>
 
 
-<style>
-
-  .wb-page { background: #f8fafc; }
-
-  .wb-crisis-strip { background: #0f172a; position: relative; z-index: 1; }
-  .wb-crisis-btn {
-    display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;
-    background: #dc2626; padding: 6px 14px; font-size: 13px; font-weight: 700;
-    color: #fff; text-align: center; transition: background 0.15s;
-    width: fit-content; max-width: 100%;
-  }
-  .wb-crisis-btn:hover { background: #b91c1c; }
-  .wb-crisis-btn-alt {
-    display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px;
-    font-size: 13px; font-weight: 600; color: #fff; text-align: center; transition: all 0.15s;
-    width: fit-content; max-width: 100%;
-  }
-  .wb-crisis-btn-alt:hover { border-color: rgba(255,255,255,0.5); }
-
-  .wb-hero { background: #fff; border-bottom: 1px solid #e2e8f0; padding-bottom: 3rem; }
-  .wb-hero-title {
-    font-size: 2.5rem; font-weight: 800; letter-spacing: -0.025em;
-    color: #0f172a; line-height: 1.15;
-  }
-  @media (min-width: 640px) { .wb-hero-title { font-size: 3.25rem; } }
-
-  .wb-audience-selector {
-    display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 4px;
-    background: #f1f5f9; border-radius: 12px; padding: 4px;
-    margin-bottom: 2rem; max-width: 720px; margin-left: auto; margin-right: auto;
-  }
-  .wb-audience-tab {
-    padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
-    color: #64748b; background: transparent; border: none; cursor: pointer;
-    transition: all 0.15s; flex: 0 1 220px; max-width: 100%; text-align: center;
-  }
-  .wb-audience-tab:hover { color: #334155; }
-  .wb-audience-tab--active { background: #fff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-
-  .wb-tab-panel { display: none; padding-bottom: 1rem; }
-  .wb-tab-panel--active { display: block; }
-
-  .wb-pathway-card {
-    display: flex; flex-direction: column; align-items: center;
-    text-align: center; background: #fff; border: 1px solid #e2e8f0;
-    border-radius: 12px; padding: 2rem 1.5rem; transition: all 0.15s;
-    min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-pathway-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
-  .wb-pathway-card--urgent { border-color: #fecaca; background: #fef2f2; }
-  .wb-pathway-card--urgent:hover { border-color: #fca5a5; }
-
-  .wb-pathway-icon {
-    display: flex; align-items: center; justify-content: center;
-    width: 56px; height: 56px; border-radius: 50%; background: #f1f5f9;
-    color: #334155; margin-bottom: 1rem;
-  }
-  .wb-pathway-icon--urgent { background: #fee2e2; color: #991b1b; }
-
-  .wb-pathway-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
-  .wb-pathway-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.7; color: #64748b; }
-
-  .wb-section { padding: 4rem 0; }
-  .wb-section--alt { background: #fff; }
-  .wb-section-dark { background: #0f172a; color: #fff; }
-
-  .wb-section-header { max-width: 640px; margin-bottom: 2.5rem; }
-  .wb-section-title { font-size: 1.875rem; font-weight: 800; color: #0f172a; letter-spacing: -0.015em; }
-  .wb-section-desc { margin-top: 1rem; font-size: 1rem; line-height: 1.75; color: #64748b; }
-  .wb-subsection-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; }
-
-  .wb-btn-primary {
-    display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; background: #0f172a;
-    padding: 10px 20px; font-size: 14px; font-weight: 600; color: #fff; text-align: center; transition: background 0.15s;
-    width: fit-content; max-width: 100%;
-  }
-  .wb-btn-primary:hover { background: #1e293b; }
-  .wb-btn-secondary {
-    display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #e2e8f0;
-    background: #fff; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #334155; text-align: center; transition: all 0.15s;
-    width: fit-content; max-width: 100%;
-  }
-  .wb-btn-secondary:hover { border-color: #94a3b8; background: #f8fafc; }
-
-  .wb-service-card {
-    display: flex; flex-direction: column; background: #fff; border: 1px solid #e2e8f0;
-    border-radius: 12px; padding: 1.5rem; transition: box-shadow 0.15s;
-    min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-service-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-  .wb-service-card--primary { background: #f0fdf4; border-color: #bbf7d0; }
-  .wb-service-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; }
-  .wb-service-name { margin-top: 6px; font-size: 1.125rem; font-weight: 700; color: #0f172a; overflow-wrap: anywhere; }
-  .wb-badge {
-    display: inline-flex; width: fit-content; max-width: 100%; margin-top: 0.75rem;
-    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px;
-  }
-  .wb-badge--verified { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-  .wb-contact-pill {
-    display: inline-flex; width: fit-content; max-width: 100%;
-    background: #f1f5f9; border-radius: 100px; padding: 3px 12px;
-    font-size: 12px; color: #475569; overflow-wrap: anywhere;
-  }
-
-  .wb-topic-card {
-    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    transition: all 0.15s; min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-topic-card:hover { background: #fff; border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-  .wb-topic-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
-  .wb-topic-label { margin-top: 4px; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
-  .wb-topic-desc { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.75; color: #475569; }
-
-  .wb-wellbeing-card {
-    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    transition: box-shadow 0.15s; min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-wellbeing-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-  .wb-wellbeing-number { font-size: 13px; font-weight: 800; color: #94a3b8; }
-  .wb-wellbeing-title { margin-top: 0.5rem; font-size: 1.125rem; font-weight: 700; color: #0f172a; }
-  .wb-wellbeing-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.75; color: #64748b; }
-
-  .wb-step-item {
-    display: flex; gap: 1rem; align-items: flex-start;
-    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem;
-    font-size: 0.875rem; line-height: 1.75; color: #334155;
-    min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-step-bullet {
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    width: 28px; height: 28px; border-radius: 50%; background: #0f172a;
-    font-size: 12px; font-weight: 700; color: #fff;
-  }
-
-  .wb-info-box {
-    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-info-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
-  .wb-info-desc { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.75; color: #64748b; }
-
-  .wb-context-card {
-    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;
-    transition: all 0.15s; min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-context-card:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-  .wb-context-title { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
-  .wb-context-desc { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.75; color: #475569; }
-
-  .wb-stat-cell { background: #fff; padding: 1.5rem; text-align: center; }
-  .wb-stat-value { font-size: 2.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; }
-  .wb-stat-label { margin-top: 0.25rem; font-size: 0.875rem; font-weight: 600; color: #0f172a; }
-  .wb-stat-note { margin-top: 0.25rem; font-size: 0.75rem; color: #94a3b8; }
-
-  .wb-source-group {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px; padding: 1.5rem; min-width: 0; overflow-wrap: anywhere;
-  }
-  .wb-source-link {
-    display: block; padding: 1rem; border-radius: 8px; background: rgba(15,23,42,0.5);
-    border: 1px solid rgba(255,255,255,0.06); transition: all 0.15s;
-  }
-  .wb-source-link:hover { border-color: rgba(255,255,255,0.2); background: rgba(15,23,42,0.7); }
-  .wb-source-link strong { display: block; font-size: 13px; color: #fff; overflow-wrap: anywhere; }
-  .wb-source-link span { display: block; margin-top: 4px; font-size: 12px; color: #94a3b8; line-height: 1.5; overflow-wrap: anywhere; }
-
-  @media (max-width: 639px) {
-    .wb-hero-title { font-size: 2rem; }
-    .wb-section { padding: 3rem 0; }
-    .wb-step-item { gap: 0.75rem; padding: 1rem; }
-  }
-</style>
 
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const tabs = document.querySelectorAll('.wb-audience-tab');
-    const panels = document.querySelectorAll('.wb-tab-panel');
+    const tabs = document.querySelectorAll('#audience-tabs [role="tab"]');
+    const panels = document.querySelectorAll('[data-tab-panel]');
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.getAttribute('data-tab');
 
-        tabs.forEach(t => {
-          t.classList.remove('wb-audience-tab--active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('wb-audience-tab--active');
-        tab.setAttribute('aria-selected', 'true');
-
-        panels.forEach(p => {
-          p.classList.remove('wb-tab-panel--active');
-          if (p.id === `panel-${target}`) {
-            p.classList.add('wb-tab-panel--active');
-          }
-        });
+        tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+        panels.forEach(p => p.classList.toggle('hidden', p.id !== `panel-${target}`));
       });
     });
   });

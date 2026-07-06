@@ -38,20 +38,3 @@ distributions:
 collection: artworks
 sourceNote: Built from the public artworks collection and the platform’s cultural archive pages.
 ---
-
-## Maintainer notes
-
-This dataset focuses on public artworks and their descriptive metadata, supporting cultural documentation and archive-led discovery.
-
-It is intended for cultural storytelling, public art browse views, and linked heritage pages.
-
-## Suggested uses
-
-- Artwork titles and descriptive metadata
-- Useful for cultural archive browsing
-- Links back to public art pages
-- Can support gallery-like or map-linked interfaces
-
-## Source note
-
-Built from the public artworks collection and the platform’s cultural archive pages.

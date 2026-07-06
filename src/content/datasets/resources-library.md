@@ -39,20 +39,3 @@ distributions:
 collection: resources
 sourceNote: Built from the published resources collection and exposed through the public resources endpoint.
 ---
-
-## Maintainer notes
-
-This dataset groups the public resources collection used across the site for research, policy, and practical guidance.
-
-Items can point to downloads, external source material, or internal reference pages, making this a strong starting point for document-oriented integrations.
-
-## Suggested uses
-
-- Reports, legal texts, and public guides
-- Links to source files and external archives where available
-- Structured metadata including category, author, and dates
-- Useful for citation, reading lists, and evidence gathering
-
-## Source note
-
-Built from the published resources collection and exposed through the public resources endpoint.

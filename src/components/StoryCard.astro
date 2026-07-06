@@ -1,6 +1,6 @@
 ---
-import { format } from 'date-fns';
 import { CloudinaryPresets, getPlaceholderUrl } from '../utils/cloudinary';
+import { formatDate } from '../utils/dateHelpers';
 
 interface Props {
   story: {
@@ -84,7 +84,7 @@ const placeholderImage = (originalImage && optimizedImage !== originalImage)
       </div>
 
       <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
-        <span>{format(new Date(date), 'MMMM d, yyyy')}</span>
+        <span>{formatDate(date)}</span>
         {photoCount > 0 && <span>{photoCount} photos</span>}
       </div>
 
@@ -103,6 +103,11 @@ const placeholderImage = (originalImage && optimizedImage !== originalImage)
               {tag}
             </span>
           ))}
+          {storyTags.length > displayTags.length && (
+            <span class="rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-500">
+              +{storyTags.length - displayTags.length} more
+            </span>
+          )}
         </div>
       )}
 

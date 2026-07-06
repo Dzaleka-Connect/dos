@@ -38,20 +38,3 @@ distributions:
 collection: marketplace
 sourceNote: Built from the marketplace collection and related public marketplace routes.
 ---
-
-## Maintainer notes
-
-This dataset exposes the marketplace listings collection used on Dzaleka Online Services.
-
-It supports browse experiences, maker spotlights, and structured access to public marketplace metadata.
-
-## Suggested uses
-
-- Public marketplace entries and summaries
-- Useful for product discovery and business spotlights
-- Links back to listing pages for human handoff
-- Structured JSON for browse experiences and indexes
-
-## Source note
-
-Built from the marketplace collection and related public marketplace routes.

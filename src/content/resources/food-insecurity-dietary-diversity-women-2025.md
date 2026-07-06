@@ -5,7 +5,7 @@ category: "Health"
 date: 2025-01-01
 author: "Mary O. Hearst, Sarah J. Hoffman, et al."
 fileType: "Academic Paper"
-resourceUrl: "https://pubmed.ncbi.nlm.nih.gov/?term=dzaleka+refugee+camp+food+insecurity"
+resourceUrl: "https://doi.org/10.1080/19320248.2025.2502534"
 lastUpdated: 2026-04-25
 languages: ["English"]
 featured: false
@@ -29,4 +29,4 @@ This data is crucial for humanitarian organizations and health providers working
 
 ## Citation
 
-Hearst, M. O., Hoffman, S. J., Gondwe, K., et al. (2025). Food insecurity and dietary diversity among women living in Dzaleka refugee camp, Malawi.
+Hearst, M. O., Hoffman, S. J., et al. (2025). Food insecurity and dietary diversity among women living in Dzaleka refugee camp, Malawi. *Journal of Hunger & Environmental Nutrition, 20*(6). https://doi.org/10.1080/19320248.2025.2502534

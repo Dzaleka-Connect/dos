@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { getPaginationData } from '../../utils/pagination';
 
 export async function getStaticPaths() {
   let sites = [];
@@ -37,8 +38,6 @@ try {
   sites = [];
 }
 
-const categories = [...new Set(sites.map(site => site.frontmatter.category).filter(Boolean))].sort();
-
 sites.sort((a, b) => {
   if (a.frontmatter.featured && !b.frontmatter.featured) return -1;
   if (!a.frontmatter.featured && b.frontmatter.featured) return 1;
@@ -46,21 +45,20 @@ sites.sort((a, b) => {
 });
 
 const totalItems = sites.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
+const { totalPages, startIndex, endIndex, hasNextPage, hasPrevPage } =
+  getPaginationData(currentPage, totalItems, itemsPerPage);
 const currentSites = sites.slice(startIndex, endIndex);
 
 const pagination = {
   currentPage,
   totalPages,
   totalItems,
-  hasNextPage: currentPage < totalPages,
-  hasPrevPage: currentPage > 1,
+  hasNextPage,
+  hasPrevPage,
   nextPage: currentPage + 1,
   prevPage: currentPage - 1,
   startItem: startIndex + 1,
-  endItem: Math.min(endIndex, totalItems)
+  endItem: endIndex
 };
 
 const title = currentPage === 1 ? 'Dzaleka Heritage Site Register' : `Dzaleka Heritage Site Register - Page ${currentPage}`;

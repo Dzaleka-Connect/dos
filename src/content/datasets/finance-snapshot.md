@@ -39,20 +39,3 @@ recordMode: Live API
 lastUpdatedFallback: Live snapshot
 sourceNote: Served as a live public endpoint used by the public finance widget and data views.
 ---
-
-## Maintainer notes
-
-This dataset packages the public finance snapshot served by the site for data views and operational context.
-
-It is intended for reference use, public transparency, and lightweight integrations that need current summary figures.
-
-## Suggested uses
-
-- Current public finance summary figures
-- Useful for dashboard modules and context pages
-- Exposed as a lightweight JSON endpoint
-- Can be paired with narrative and chart views on the data page
-
-## Source note
-
-Served as a live public endpoint used by the public finance widget and data views.

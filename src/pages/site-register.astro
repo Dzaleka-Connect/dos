@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import { formatDate } from '../utils/dateHelpers';
 
 const title = "Dzaleka Heritage Site Register | Dzaleka Online Services";
 const description = "The official record of cultural, historical, and natural heritage sites within the Dzaleka community.";
@@ -260,7 +261,7 @@ const atRiskCount = allSites.filter(s => s.frontmatter.condition === 'poor' || s
               const slug = item.file.split('/').pop().replace('.md', '');
               return (
                 <a href={`/news/${slug}`} class="group block border-l-2 border-slate-200 pl-4 hover:border-slate-900 transition-colors">
-                  <p class="text-xs text-slate-500 mb-1">{new Date(item.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                  <p class="text-xs text-slate-500 mb-1">{formatDate(item.frontmatter.date)}</p>
                   <h4 class="text-sm font-medium text-slate-900 group-hover:underline decoration-1 underline-offset-2">{item.frontmatter.title}</h4>
                 </a>
               );
@@ -279,7 +280,7 @@ const atRiskCount = allSites.filter(s => s.frontmatter.condition === 'poor' || s
               const slug = item.file.split('/').pop().replace('.md', '');
               return (
                 <a href={`/events/${slug}`} class="group block border-l-2 border-slate-200 pl-4 hover:border-slate-900 transition-colors">
-                  <p class="text-xs text-slate-500 mb-1">{new Date(item.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                  <p class="text-xs text-slate-500 mb-1">{formatDate(item.frontmatter.date)}</p>
                   <h4 class="text-sm font-medium text-slate-900 group-hover:underline decoration-1 underline-offset-2">{item.frontmatter.title}</h4>
                 </a>
               );

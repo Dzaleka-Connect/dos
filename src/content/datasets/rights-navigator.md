@@ -38,20 +38,3 @@ distributions:
 collection: rights
 sourceNote: Built from the rights collection used by the site’s legal and guidance experience.
 ---
-
-## Maintainer notes
-
-This dataset packages the rights collection used by the site’s Rights Navigator experience.
-
-It is useful for legal guidance routing, issue explainers, and public rights-reference interfaces.
-
-## Suggested uses
-
-- Legislation, analysis, and public guidance records
-- Useful for rights-focused navigation and search
-- Links back to Rights Navigator pages
-- Structured JSON for assistive interfaces and summaries
-
-## Source note
-
-Built from the rights collection used by the site’s legal and guidance experience.

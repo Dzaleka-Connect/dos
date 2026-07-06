@@ -38,20 +38,3 @@ distributions:
 collection: docs
 sourceNote: Built from the published docs collection and related technical reference pages.
 ---
-
-## Maintainer notes
-
-This dataset exposes the docs collection that powers the documentation section on the site.
-
-It is useful for search, agent routing, and integrations that need durable public guidance pages alongside the API surface.
-
-## Suggested uses
-
-- Published docs content served at stable routes
-- Useful for builder onboarding and help flows
-- Can be accessed as JSON or as rendered docs pages
-- Complements API docs and discovery endpoints
-
-## Source note
-
-Built from the published docs collection and related technical reference pages.

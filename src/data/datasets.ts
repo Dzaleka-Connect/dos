@@ -192,7 +192,16 @@ function sortDatasets(left: DatasetEntry, right: DatasetEntry) {
   return left.title.localeCompare(right.title);
 }
 
-export async function getDatasetCatalog(): Promise<DatasetEntry[]> {
+let catalogPromise: Promise<DatasetEntry[]> | null = null;
+
+export function getDatasetCatalog(): Promise<DatasetEntry[]> {
+  if (!catalogPromise) {
+    catalogPromise = buildDatasetCatalog();
+  }
+  return catalogPromise;
+}
+
+async function buildDatasetCatalog(): Promise<DatasetEntry[]> {
   const entries = await getCollection('datasets');
 
   const datasets = await Promise.all(

@@ -38,20 +38,3 @@ distributions:
 collection: events
 sourceNote: Built from the site’s published event listings and the matching public API endpoint.
 ---
-
-## Maintainer notes
-
-This dataset exposes published event records that power the public events pages on the site.
-
-It is suitable for calendar views, discovery tools, partner digests, and community programming summaries.
-
-## Suggested uses
-
-- Upcoming and past event records
-- Public event titles, dates, locations, and categories
-- Structured data for event discovery and digests
-- Links back to human-readable event pages
-
-## Source note
-
-Built from the site’s published event listings and the matching public API endpoint.

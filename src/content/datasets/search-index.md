@@ -39,20 +39,3 @@ recordMode: Build snapshot
 lastUpdatedFallback: Published content index
 sourceNote: Served as a public search snapshot and grouped search API for published site content.
 ---
-
-## Maintainer notes
-
-This dataset exposes the search snapshot used for cross-site discovery on Dzaleka Online Services.
-
-It is especially useful for clients that need a simple public index instead of fetching each collection independently.
-
-## Suggested uses
-
-- Flat search snapshot for indexing and reuse
-- Cross-site grouped search endpoint also available
-- Useful for discovery tools, RAG preparation, and search clients
-- Backed by published content only
-
-## Source note
-
-Served as a public search snapshot and grouped search API for published site content.

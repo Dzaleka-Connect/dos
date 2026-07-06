@@ -38,20 +38,3 @@ distributions:
 collection: courses
 sourceNote: "Built from the courses collection used on the public e-learning section."
 ---
-
-## Maintainer notes
-
-This dataset exposes the courses collection used by the public e-learning experience.
-
-It can support browsing, discovery, and lightweight learning program summaries for public users and partners.
-
-## Suggested uses
-
-- Course titles and public summaries
-- Useful for learning directories and partner handoff
-- Structured JSON for browse and search interfaces
-- Links back to the e-learning catalog
-
-## Source note
-
-Built from the courses collection used on the public e-learning section.

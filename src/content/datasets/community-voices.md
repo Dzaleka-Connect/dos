@@ -38,20 +38,3 @@ distributions:
 collection: "community-voices"
 sourceNote: Built from the community voices collection and the associated public submission workflow.
 ---
-
-## Maintainer notes
-
-This dataset captures published community voice entries that combine personal writing, commentary, and public reflection.
-
-It is best used for story discovery, public-interest reading lists, and editorial routing rather than purely statistical analysis.
-
-## Suggested uses
-
-- Published community voice entries
-- Public titles, excerpts, and categories
-- Useful for storytelling and editorial discovery
-- Links back to human-readable articles
-
-## Source note
-
-Built from the community voices collection and the associated public submission workflow.

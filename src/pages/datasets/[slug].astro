@@ -18,7 +18,7 @@ if (!dataset) {
   throw new Error(`Dataset not found for slug: ${Astro.params.slug}`);
 }
 
-const renderedContent = dataset.contentEntry ? await render(dataset.contentEntry) : null;
+const renderedContent = dataset.contentEntry?.body?.trim() ? await render(dataset.contentEntry) : null;
 const Content = renderedContent?.Content;
 const relatedDatasets = await getRelatedDatasets(dataset, 3);
 
