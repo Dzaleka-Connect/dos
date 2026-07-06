@@ -5,7 +5,7 @@ import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 // Fetch all existing sites for the dropdown
 let sites = [];
 try {
-  sites = await Astro.glob('../../content/sites/*.md');
+  sites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
   sites.sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
 } catch (error) {
   console.error("Error loading sites for report form:", error);

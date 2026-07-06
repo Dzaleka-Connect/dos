@@ -6,7 +6,7 @@ import { getPaginationData } from '../../utils/pagination';
 export async function getStaticPaths() {
   let sites = [];
   try {
-    sites = await Astro.glob('../../content/sites/*.md');
+    sites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
   } catch (error) {
     console.error('Error loading sites:', error);
     sites = [];
@@ -32,7 +32,7 @@ const itemsPerPage = 6;
 
 let sites = [];
 try {
-  sites = await Astro.glob('../../content/sites/*.md');
+  sites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
 } catch (error) {
   console.error('Error loading sites:', error);
   sites = [];

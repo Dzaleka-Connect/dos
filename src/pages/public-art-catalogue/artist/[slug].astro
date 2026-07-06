@@ -28,7 +28,7 @@ console.log('Artist props:', {
 });
 
 // Get related artworks by this artist
-const allArtworks = await Astro.glob('../../../content/artworks/*.md');
+const allArtworks = Object.values(import.meta.glob('../../../content/artworks/*.md', { eager: true }));
 const relatedArtworks = allArtworks
   .filter(artwork => 
     artwork.file !== artist.file && // Exclude current artist profile

@@ -13,7 +13,7 @@ const requestedPage = Number.parseInt(Astro.url.searchParams.get('page') || '1',
 // Dynamically import all artwork content
 let artworks = [];
 try {
-  artworks = await Astro.glob('../content/artworks/*.md');
+  artworks = Object.values(import.meta.glob('../content/artworks/*.md', { eager: true }));
 } catch (error) {
   console.error('Error loading artworks:', error);
   artworks = [];
@@ -22,7 +22,7 @@ try {
 // Load artist spotlight data
 let spotlightArtists = [];
 try {
-  const allArtists = await Astro.glob('../content/artists/*.md');
+  const allArtists = Object.values(import.meta.glob('../content/artists/*.md', { eager: true }));
   spotlightArtists = allArtists
     .filter(artist => artist.frontmatter.spotlight)
     .slice(0, 6); // Show up to 6 artists in spotlight

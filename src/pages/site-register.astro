@@ -13,15 +13,15 @@ let latestEvents = [];
 let latestResources = [];
 
 try {
-  allSites = await Astro.glob('../content/sites/*.md');
+  allSites = Object.values(import.meta.glob('../content/sites/*.md', { eager: true }));
   
-  const news = await Astro.glob('../content/news/*.md');
+  const news = Object.values(import.meta.glob('../content/news/*.md', { eager: true }));
   latestNews = news.sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()).slice(0, 3);
   
-  const events = await Astro.glob('../content/events/*.md');
+  const events = Object.values(import.meta.glob('../content/events/*.md', { eager: true }));
   latestEvents = events.sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()).slice(0, 3);
   
-  const resources = await Astro.glob('../content/resources/*.md');
+  const resources = Object.values(import.meta.glob('../content/resources/*.md', { eager: true }));
   latestResources = resources.sort((a, b) => {
     const dateA = new Date(a.frontmatter.date || a.frontmatter.lastUpdated || 0).valueOf();
     const dateB = new Date(b.frontmatter.date || b.frontmatter.lastUpdated || 0).valueOf();

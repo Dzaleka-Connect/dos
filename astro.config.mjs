@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import remarkToc from 'remark-toc';
 import remarkSlug from 'remark-slug';
@@ -20,7 +19,6 @@ export default defineConfig({
       mode: 'standalone'
     }),
   integrations: [
-    tailwind(),
     mdx(),
     react()
   ],

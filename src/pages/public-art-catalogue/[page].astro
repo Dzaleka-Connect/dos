@@ -5,7 +5,7 @@ import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 export async function getStaticPaths() {
   let artworks = [];
   try {
-    artworks = await Astro.glob('../../content/artworks/*.md');
+    artworks = Object.values(import.meta.glob('../../content/artworks/*.md', { eager: true }));
   } catch (error) {
     console.error('Error loading artworks:', error);
     artworks = [];
@@ -31,7 +31,7 @@ const itemsPerPage = 9;
 
 let artworks = [];
 try {
-  artworks = await Astro.glob('../../content/artworks/*.md');
+  artworks = Object.values(import.meta.glob('../../content/artworks/*.md', { eager: true }));
 } catch (error) {
   console.error('Error loading artworks:', error);
   artworks = [];
@@ -39,7 +39,7 @@ try {
 
 let spotlightArtists = [];
 try {
-  const allArtists = await Astro.glob('../../content/artists/*.md');
+  const allArtists = Object.values(import.meta.glob('../../content/artists/*.md', { eager: true }));
   spotlightArtists = allArtists.filter((artist) => artist.frontmatter.spotlight).slice(0, 6);
 } catch (error) {
   console.error('Error loading artist spotlight:', error);

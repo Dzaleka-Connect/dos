@@ -6,7 +6,7 @@ import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 export async function getStaticPaths() {
   let artworks = [];
   try {
-    artworks = await Astro.glob('../../content/artworks/*.md');
+    artworks = Object.values(import.meta.glob('../../content/artworks/*.md', { eager: true }));
   } catch (error) {
     console.error('Error loading artworks:', error);
     artworks = [];
@@ -30,7 +30,7 @@ const toAbsoluteUrl = (value?: string) => {
 };
 
 // Get related artworks based on category and location
-const allArtworks = await Astro.glob('../../content/artworks/*.md');
+const allArtworks = Object.values(import.meta.glob('../../content/artworks/*.md', { eager: true }));
 const relatedArtworks = allArtworks
   .filter(a => 
     a.file !== artwork.file && // Exclude current artwork

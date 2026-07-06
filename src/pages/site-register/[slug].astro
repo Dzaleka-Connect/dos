@@ -6,7 +6,7 @@ import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 export async function getStaticPaths() {
   let sites = [];
   try {
-    sites = await Astro.glob('../../content/sites/*.md');
+    sites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
   } catch (error) {
     console.error('Error loading sites:', error);
     sites = [];
@@ -25,7 +25,7 @@ const { site } = Astro.props;
 const { frontmatter, Content } = site;
 
 // Get related sites based on category and location
-const allSites = await Astro.glob('../../content/sites/*.md');
+const allSites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
 const relatedSites = allSites
   .filter(s => 
     s.file !== site.file && 
