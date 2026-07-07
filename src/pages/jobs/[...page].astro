@@ -7,8 +7,10 @@ import { isJobExpired } from '../../utils/dateHelpers';
 export async function getStaticPaths({ paginate }) {
   const allJobs = await getCollection('jobs');
   
-  // Sort jobs based on URL parameter
+  // Open listings first, closed after, each by most recent
+  const isOpen = (job: any) => job.data.status === 'open' && !isJobExpired(job.data.deadline);
   const sortedJobs = [...allJobs].sort((a, b) => {
+    if (isOpen(a) !== isOpen(b)) return isOpen(a) ? -1 : 1;
     return new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime();
   });
   
@@ -96,7 +98,8 @@ function getPaginationUrl(pageNum: number) {
     <!-- Filters and Stats Row -->
     <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-gray-200 pb-4">
       <h2 class="text-xl font-bold text-gray-900">
-        {activeJobs.length} Active Opportunities
+        Job listings
+        <span class="ml-2 text-sm font-medium text-gray-500">{activeJobs.length} active {activeJobs.length === 1 ? 'opportunity' : 'opportunities'}</span>
       </h2>
       
       <div class="flex items-center gap-3">
