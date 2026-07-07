@@ -18,11 +18,11 @@ const resourceTypes = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>`,
     categories: ["Legal", "Policy", "Guidelines"],
     // Styling
-    bgGradient: "from-earth-50/50",
-    borderColor: "border-earth-100 group-hover:border-earth-200",
-    textColor: "text-earth-700",
-    hoverTextColor: "group-hover:text-earth-800",
-    tagClass: "text-earth-800 border-earth-200 hover:bg-earth-50"
+    bgGradient: "from-slate-50",
+    borderColor: "border-slate-200 group-hover:border-slate-300",
+    textColor: "text-slate-700",
+    hoverTextColor: "group-hover:text-slate-900",
+    tagClass: "text-slate-800 border-slate-200 hover:bg-slate-50"
   },
   {
     title: "Situation Reports & Updates",
@@ -30,11 +30,11 @@ const resourceTypes = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`,
     categories: ["Report", "Situation Reports / Updates", "Brief"],
     // Styling
-    bgGradient: "from-ochre-50/50",
-    borderColor: "border-ochre-100 group-hover:border-ochre-200",
-    textColor: "text-ochre-700",
-    hoverTextColor: "group-hover:text-ochre-800",
-    tagClass: "text-ochre-800 border-ochre-200 hover:bg-ochre-50"
+    bgGradient: "from-amber-50",
+    borderColor: "border-amber-100 group-hover:border-amber-200",
+    textColor: "text-amber-700",
+    hoverTextColor: "group-hover:text-amber-800",
+    tagClass: "text-amber-800 border-amber-200 hover:bg-amber-50"
   },
   {
     title: "Research & Academic Studies",
@@ -54,11 +54,11 @@ const resourceTypes = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2M7 7h10"/></svg>`,
     categories: ["Story", "Insight & Analysis"],
     // Styling
-    bgGradient: "from-terracotta-50/50",
-    borderColor: "border-terracotta-100 group-hover:border-terracotta-200",
-    textColor: "text-terracotta-700",
-    hoverTextColor: "group-hover:text-terracotta-800",
-    tagClass: "text-terracotta-800 border-terracotta-100 hover:bg-terracotta-50"
+    bgGradient: "from-blue-50",
+    borderColor: "border-blue-100 group-hover:border-blue-200",
+    textColor: "text-blue-700",
+    hoverTextColor: "group-hover:text-blue-800",
+    tagClass: "text-blue-800 border-blue-100 hover:bg-blue-50"
   }
 ];
 
@@ -165,18 +165,18 @@ function buildPaginationUrl(pageNum: number) {
 
 // Category color mapping - matching detail page style
 const categoryColors = {
-  'Legal': 'bg-earth-100 text-earth-800 border-earth-200',
-  'Policy': 'bg-earth-100 text-earth-800 border-earth-200',
-  'Guidelines': 'bg-earth-100 text-earth-800 border-earth-200',
+  'Legal': 'bg-slate-100 text-slate-800 border-slate-200',
+  'Policy': 'bg-slate-100 text-slate-800 border-slate-200',
+  'Guidelines': 'bg-slate-100 text-slate-800 border-slate-200',
   'Report': 'bg-primary-100 text-primary-800 border-primary-200',
   'Research': 'bg-primary-100 text-primary-800 border-primary-200',
-  'Brief': 'bg-ochre-100 text-ochre-800 border-ochre-200',
-  'Story': 'bg-terracotta-100 text-terracotta-800 border-terracotta-200',
+  'Brief': 'bg-amber-100 text-amber-800 border-amber-200',
+  'Story': 'bg-blue-100 text-blue-800 border-blue-200',
   'Research article': 'bg-primary-100 text-primary-800 border-primary-200',
   'Research & Report': 'bg-primary-100 text-primary-800 border-primary-200',
-  'Situation Reports / Updates': 'bg-ochre-100 text-ochre-800 border-ochre-200',
-  'Insight & Analysis': 'bg-terracotta-100 text-terracotta-800 border-terracotta-200',
-  'default': 'bg-sand-100 text-gray-800 border-sand-200'
+  'Situation Reports / Updates': 'bg-amber-100 text-amber-800 border-amber-200',
+  'Insight & Analysis': 'bg-blue-100 text-blue-800 border-blue-200',
+  'default': 'bg-gray-100 text-gray-800 border-gray-200'
 };
 
 // Create enhanced SEO metadata
@@ -574,7 +574,7 @@ const paginationStructuredData = {
                         {resource.data.category}
                       </span>
                       {resource.data.featured && (
-                        <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase bg-ochre-50 text-ochre-700 border border-ochre-100">
+                        <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase bg-amber-50 text-amber-700 border border-amber-100">
                           Featured
                         </span>
                       )}

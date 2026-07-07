@@ -136,7 +136,7 @@ const articleStructuredData = {
   <main class="bg-gradient-to-b from-gray-50 to-white min-h-screen pb-16">
     <!-- Hero Section -->
     <div class="relative bg-gradient-to-br from-gray-900 to-gray-900 overflow-hidden">
-      <div class="absolute inset-0 bg-grid-white/[0.2] bg-[length:16px_16px] animate-pulse-slow"></div>
+      <div class="absolute inset-0 bg-grid-white/[0.2] bg-[length:16px_16px]"></div>
       {voice.data.image ? (
         <div class="relative h-[70vh] max-h-[800px]">
           <img 
@@ -193,7 +193,7 @@ const articleStructuredData = {
 
     <!-- Content -->
     <article class="max-w-4xl mx-auto px-4 py-12">
-      <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12 prose prose-primary prose-lg max-w-none">
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 md:p-12 prose prose-primary prose-lg max-w-none">
         <Content />
       </div>
 
@@ -216,13 +216,13 @@ const articleStructuredData = {
           {relatedStories.map(story => (
             <a 
               href={`/community-voices/${story.id}`}
-              class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              class="group bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden transition-colors duration-200 hover:border-gray-300"
             >
               <div class="aspect-w-16 aspect-h-9 bg-gray-200">
                 <img
                   src={story.data.image || '/images/placeholder-voice.jpg'}
                   alt={story.data.title}
-                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  class="w-full h-full object-cover"
                 />
               </div>
               <div class="p-6">
@@ -256,10 +256,6 @@ const articleStructuredData = {
   .bg-grid-white {
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .animate-fade-in {

@@ -30,12 +30,12 @@ const baseUrl = import.meta.env.SITE || 'https://dzaleka.org';
 // Function to get category color
 function getCategoryColor(category: string) {
   const colors = {
-    'Template': 'bg-blue-50 text-blue-700',
+    'Template': 'bg-primary-50 text-primary-700',
     'Guide': 'bg-green-50 text-green-700',
-    'Report': 'bg-purple-50 text-purple-700',
+    'Report': 'bg-primary-50 text-primary-700',
     'Document': 'bg-amber-50 text-amber-700',
-    'Media': 'bg-rose-50 text-rose-700',
-    'Research & Report': 'bg-purple-50 text-purple-700'
+    'Media': 'bg-blue-50 text-blue-700',
+    'Research & Report': 'bg-primary-50 text-primary-700'
   };
   return colors[category] || 'bg-gray-50 text-gray-700';
 }
@@ -45,14 +45,14 @@ function getFileTypeColor(fileType: string) {
   const colors = {
     'pdf': 'bg-red-50 text-red-700',
     'docx': 'bg-blue-50 text-blue-700',
-    'link': 'bg-yellow-50 text-yellow-700',
-    'zip': 'bg-black-50 text-white-700',
+    'link': 'bg-primary-50 text-primary-700',
+    'zip': 'bg-slate-100 text-slate-700',
     'xlsx': 'bg-green-50 text-green-700',
-    'pptx': 'bg-orange-50 text-orange-700',
-    'mp4': 'bg-purple-50 text-purple-700',
-    'mp3': 'bg-indigo-50 text-indigo-700',
-    'jpg': 'bg-pink-50 text-pink-700',
-    'png': 'bg-cyan-50 text-cyan-700'
+    'pptx': 'bg-amber-50 text-amber-700',
+    'mp4': 'bg-blue-50 text-blue-700',
+    'mp3': 'bg-slate-100 text-slate-700',
+    'jpg': 'bg-green-50 text-green-700',
+    'png': 'bg-blue-50 text-blue-700'
   };
   return colors[fileType?.toLowerCase()] || 'bg-gray-50 text-gray-700';
 }
@@ -110,18 +110,18 @@ function getDownloadUrl(resource: any) {
   {resources.map(resource => {
     const downloadUrl = getDownloadUrl(resource);
     return (
-    <article class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col border border-gray-100">
+    <article class="group bg-white rounded-xl shadow-sm transition-colors duration-200 overflow-hidden flex flex-col border border-gray-200 hover:border-gray-300">
       <div class="relative">
         {resource.data.thumbnail ? (
           <div class="aspect-video w-full overflow-hidden">
             <img 
               src={resource.data.thumbnail} 
               alt={resource.data.title}
-              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+              class="w-full h-full object-cover"
             />
           </div>
         ) : (
-          <div class="aspect-video w-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+          <div class="aspect-video w-full bg-gray-50 flex items-center justify-center">
             <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>

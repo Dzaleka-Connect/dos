@@ -25,11 +25,11 @@ const alertStyles = {
     meta: 'text-red-500',
   },
   warning: {
-    container: 'bg-yellow-50 border-yellow-200',
-    icon: 'text-yellow-600',
-    title: 'text-yellow-800',
-    body: 'text-yellow-700',
-    meta: 'text-yellow-500',
+    container: 'bg-amber-50 border-amber-200',
+    icon: 'text-amber-600',
+    title: 'text-amber-800',
+    body: 'text-amber-700',
+    meta: 'text-amber-500',
   },
   info: {
     container: 'bg-blue-50 border-blue-200',

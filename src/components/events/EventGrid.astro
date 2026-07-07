@@ -39,7 +39,7 @@ function formatDateInCAT(date: Date, formatString: string) {
           />
           {/* Category badge */}
           <div class="absolute bottom-3 right-3 z-10 max-w-[calc(100%-1.5rem)]">
-            <span class="inline-flex w-fit max-w-full truncate rounded-full border border-gray-200 bg-white/95 px-3 py-1 text-xs font-medium text-gray-800 shadow-sm backdrop-blur-sm">
+            <span class="inline-flex w-fit max-w-full truncate rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-800 shadow-sm">
               {event.data.category}
             </span>
           </div>
@@ -48,7 +48,7 @@ function formatDateInCAT(date: Date, formatString: string) {
           <div class="mb-3 flex min-w-0 flex-wrap items-center gap-2">
             <time datetime={event.data.date.toISOString()} class:list={[
               'inline-flex w-fit max-w-full flex-none items-center rounded-md bg-gray-50 px-2.5 py-1 text-sm font-body',
-              event.data.isTBA ? 'text-ochre font-medium' : 'text-gray-500'
+              event.data.isTBA ? 'text-amber-700 font-medium' : 'text-gray-500'
             ]}>
               <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -85,7 +85,7 @@ function formatDateInCAT(date: Date, formatString: string) {
               </svg>
               <time datetime={event.data.date.toISOString()} class:list={[
                 'text-sm font-body',
-                event.data.isTBA ? 'text-ochre font-medium' : ''
+                event.data.isTBA ? 'text-amber-700 font-medium' : ''
               ]}>
                 {event.data.isTBA ? 'Time TBA' : formatDateInCAT(event.data.date, 'h:mm a')}
               </time>

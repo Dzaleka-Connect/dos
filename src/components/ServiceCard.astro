@@ -58,20 +58,20 @@ const optimizedLogo = logo
     })
   : originalLogo;
 
-// Function to get category color - Cultural palette
+// Function to get category color
 function getCategoryColor(category: string) {
   const colors = {
-    'Cultural': 'bg-terracotta-50 text-terracotta-800 border-terracotta-200',
-    'Education': 'bg-ochre-50 text-ochre-800 border-ochre-200',
-    'Youth': 'bg-earth-50 text-earth-800 border-earth-200',
-    'Entrepreneurship': 'bg-terracotta-50 text-terracotta-800 border-terracotta-200',
-    'Health': 'bg-ochre-50 text-ochre-800 border-ochre-200',
-    'Humanitarian Aid': 'bg-earth-50 text-earth-800 border-earth-200',
-    'Advocacy': 'bg-terracotta-50 text-terracotta-800 border-terracotta-200',
-    'Non-profit Organizations': 'bg-ochre-50 text-ochre-800 border-ochre-200'
+    'Cultural': 'bg-blue-50 text-blue-800 border-blue-200',
+    'Education': 'bg-primary-50 text-primary-800 border-primary-200',
+    'Youth': 'bg-green-50 text-green-800 border-green-200',
+    'Entrepreneurship': 'bg-blue-50 text-blue-800 border-blue-200',
+    'Health': 'bg-green-50 text-green-800 border-green-200',
+    'Humanitarian Aid': 'bg-amber-50 text-amber-800 border-amber-200',
+    'Advocacy': 'bg-red-50 text-red-800 border-red-200',
+    'Non-profit Organizations': 'bg-slate-100 text-slate-800 border-slate-200'
   };
   // @ts-ignore
-  return colors[category] || 'bg-sand-50 text-gray-800 border-sand-200';
+  return colors[category] || 'bg-gray-50 text-gray-800 border-gray-200';
 }
 
 const serviceStatus = hours ? getServiceStatus(hours) : null;
@@ -106,22 +106,22 @@ const googleMapsUrl = location?.coordinates
           <div class="absolute top-0 right-0 flex flex-col gap-1 items-end p-2 pointer-events-none z-20">
             {serviceStatus && hours && (
                <div class="relative inline-block group/tooltip pointer-events-auto" onclick="event.stopPropagation(); this.querySelector('.hours-tooltip').classList.toggle('hidden')">
-                   <div class="cursor-help transition-transform hover:scale-105">
-                       <span class={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border shadow-sm backdrop-blur-sm ${
+                   <div class="cursor-help">
+                       <span class={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border shadow-sm ${
                          serviceStatus === 'open'
                            ? 'bg-green-50/90 text-green-700 border-green-200'
                            : 'bg-gray-50/90 text-gray-600 border-gray-200'
                        }`}>
                          <span class={`w-1.5 h-1.5 rounded-full mr-1.5 ${
                            serviceStatus === 'open' ? 'bg-green-500' : 'bg-gray-400'
-                         } animate-pulse`}></span>
+                         }`}></span>
                          {serviceStatus === 'open' ? 'Open' : 'Closed'}
                          <svg class="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                        </span>
                    </div>
 
                    <!-- Tooltip -->
-                   <div class="hours-tooltip hidden group-hover/tooltip:block absolute top-full right-0 mt-2 w-48 p-3 bg-white text-gray-700 text-xs rounded-lg shadow-xl z-50 border border-gray-100 ring-1 ring-black/5">
+                   <div class="hours-tooltip hidden group-hover/tooltip:block absolute top-full right-0 mt-2 w-48 p-3 bg-white text-gray-700 text-xs rounded-lg shadow-sm z-50 border border-gray-200 ring-1 ring-black/5">
                      <div class="font-semibold mb-1 text-gray-900 border-b border-gray-100 pb-1">Opening Hours</div>
                      <div class="whitespace-pre-line leading-relaxed">{hours}</div>
                      <!-- Arrow -->

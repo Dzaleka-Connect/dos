@@ -116,8 +116,8 @@ export function StakeholdersSection() {
               <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${
                 stakeholder.type === 'NGO' ? 'bg-blue-100 text-blue-600' :
                 stakeholder.type === 'Government' ? 'bg-green-100 text-green-600' :
-                stakeholder.type === 'UN' ? 'bg-purple-100 text-purple-600' :
-                'bg-orange-100 text-orange-600'
+                stakeholder.type === 'UN' ? 'bg-blue-100 text-blue-700' :
+                'bg-amber-100 text-amber-700'
               }`}>
                 {stakeholder.type === 'NGO' && (
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,8 +145,8 @@ export function StakeholdersSection() {
                   <span className={`text-sm px-3 py-1 rounded-full ${
                     stakeholder.type === 'NGO' ? 'bg-blue-50 text-blue-700' :
                     stakeholder.type === 'Government' ? 'bg-green-50 text-green-700' :
-                    stakeholder.type === 'UN' ? 'bg-purple-50 text-purple-700' :
-                    'bg-orange-50 text-orange-700'
+                    stakeholder.type === 'UN' ? 'bg-blue-50 text-blue-700' :
+                    'bg-amber-50 text-amber-700'
                   }`}>
                     {stakeholder.percentage}%
                   </span>
