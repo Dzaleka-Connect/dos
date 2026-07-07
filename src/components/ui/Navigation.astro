@@ -38,7 +38,7 @@ const moreDropdownLinks = [
 const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
 ---
 
-<nav class="bg-white border-b border-slate-200 shadow-sm">
+<nav class="relative bg-white border-b border-slate-200 shadow-sm">
   <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
@@ -119,14 +119,16 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
       <!-- Mobile Menu Button -->
       <button
         type="button"
-        class="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-primary-600 hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+        class="lg:hidden inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white p-2 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-500"
         aria-controls="mobile-menu"
         aria-expanded="false"
+        aria-label="Open main menu"
         id="menu-button"
       >
-        <span class="sr-only">Open main menu</span>
+        <span class="sr-only" data-menu-label>Open main menu</span>
         <svg
           class="block h-6 w-6"
+          data-menu-icon-open
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -140,41 +142,66 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
             d="M4 6h16M4 12h16M4 18h16"
           />
         </svg>
+        <svg
+          class="hidden h-6 w-6"
+          data-menu-icon-close
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
       </button>
     </div>
   </div>
 
   <!-- Mobile Menu -->
-  <div class="hidden max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-gray-200 bg-white shadow-sm lg:hidden" id="mobile-menu">
-    <div class="px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3">
-      <div class="space-y-1">
-      {primaryLinks.map(({ href, label, icon }) => (
-        <a
-          href={href}
-          class:list={[
-            'flex items-center space-x-2 px-3 py-2.5 rounded-md text-base font-medium transition-colors',
-            isActive(href)
-              ? 'text-primary-600 bg-primary-50'
-              : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600'
-          ]}
-        >
-          <Fragment set:html={icon} />
-          <span>{label}</span>
+  <div
+    class="hidden absolute left-2 right-2 top-full z-50 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:hidden"
+    id="mobile-menu"
+    aria-hidden="true"
+  >
+    <div class="max-h-[min(68dvh,32rem)] overflow-y-auto overscroll-contain px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Menu</p>
+          <p class="text-sm text-slate-600">Quick access to Dzaleka services</p>
+        </div>
+        <a href="/search" class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+          Search
         </a>
-      ))}
       </div>
 
-      <div class="mt-4 border-t border-gray-100 pt-4">
-        <p class="px-1 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">More pages</p>
-        <div class="grid grid-cols-2 gap-2">
+      <div class="mt-4 space-y-2">
+        {primaryLinks.map(({ href, label, icon }) => (
+          <a
+            href={href}
+            class:list={[
+              'flex items-center gap-3 rounded-lg border px-3 py-3 text-base font-semibold transition-colors',
+              isActive(href)
+                ? 'border-slate-900 bg-slate-900 text-white'
+                : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950'
+            ]}
+          >
+            <Fragment set:html={icon} />
+            <span>{label}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-5 border-t border-slate-100 pt-4">
+        <p class="px-1 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-500">More pages</p>
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {moreDropdownLinks.map(({ href, label, icon }) => (
             <a
               href={href}
               class:list={[
                 'flex min-w-0 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors',
                 isActive(href)
-                  ? 'border-primary-200 bg-primary-50 text-primary-700'
-                  : 'border-gray-100 text-gray-600 hover:border-gray-200 hover:bg-gray-50 hover:text-primary-600'
+                  ? 'border-slate-900 bg-slate-900 text-white'
+                  : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950'
               ]}
             >
               <Fragment set:html={icon} />
@@ -188,41 +215,57 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
 </nav>
 
 <script>
-  // Mobile menu toggle
-  const menuButton = document.getElementById('menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
+  const setupMobileMenu = () => {
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const openIcon = menuButton?.querySelector('[data-menu-icon-open]');
+    const closeIcon = menuButton?.querySelector('[data-menu-icon-close]');
+    const menuLabel = menuButton?.querySelector('[data-menu-label]');
 
-  if (menuButton && mobileMenu) {
-    const updateMobileMenuHeight = () => {
-      if (mobileMenu.classList.contains('hidden')) return;
-      const menuTop = mobileMenu.getBoundingClientRect().top;
-      const availableHeight = Math.max(window.innerHeight - menuTop, 240);
-      mobileMenu.style.maxHeight = `${availableHeight}px`;
+    if (!menuButton || !mobileMenu || menuButton.dataset.menuReady === 'true') return;
+    menuButton.dataset.menuReady = 'true';
+
+    const setMobileMenuOpen = (isOpen) => {
+      mobileMenu.classList.toggle('hidden', !isOpen);
+      mobileMenu.setAttribute('aria-hidden', (!isOpen).toString());
+      menuButton.setAttribute('aria-expanded', isOpen.toString());
+      menuButton.setAttribute('aria-label', isOpen ? 'Close main menu' : 'Open main menu');
+      if (menuLabel) menuLabel.textContent = isOpen ? 'Close main menu' : 'Open main menu';
+      document.body.classList.toggle('overflow-hidden', isOpen);
+      openIcon?.classList.toggle('hidden', isOpen);
+      closeIcon?.classList.toggle('hidden', !isOpen);
     };
 
-    const closeMobileMenu = () => {
-      mobileMenu.classList.add('hidden');
-      mobileMenu.style.maxHeight = '';
-      document.body.classList.remove('overflow-hidden');
-      menuButton.setAttribute('aria-expanded', 'false');
-    };
+    const closeMobileMenu = () => setMobileMenuOpen(false);
+
+    closeMobileMenu();
 
     menuButton.addEventListener('click', () => {
-      const isHidden = mobileMenu.classList.toggle('hidden');
-      menuButton.setAttribute('aria-expanded', (!isHidden).toString());
-      document.body.classList.toggle('overflow-hidden', !isHidden);
-      if (!isHidden) updateMobileMenuHeight();
+      setMobileMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true');
     });
 
-    window.addEventListener('resize', updateMobileMenuHeight);
-    window.addEventListener('orientationchange', updateMobileMenuHeight);
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeMobileMenu();
     });
+
+    document.addEventListener('click', (event) => {
+      if (mobileMenu.classList.contains('hidden')) return;
+      const target = event.target;
+      if (target instanceof Node && !mobileMenu.contains(target) && !menuButton.contains(target)) {
+        closeMobileMenu();
+      }
+    });
+
     mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', closeMobileMenu);
     });
-  }
+
+    window.addEventListener('pagehide', closeMobileMenu);
+    window.addEventListener('pageshow', closeMobileMenu);
+  };
+
+  setupMobileMenu();
+  document.addEventListener('astro:page-load', setupMobileMenu);
 </script>
 
 <style>
