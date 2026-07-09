@@ -309,7 +309,7 @@ const jobSchema = z.object({
     'other'
   ]),
   salary: z.string().optional(),
-  deadline: z.coerce.date(),
+  deadline: z.coerce.date().optional(),
   posted: z.coerce.date(),
   status: z.enum(['open', 'closed', 'draft']).default('open'),
   featured: z.boolean().default(false),

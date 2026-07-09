@@ -16,7 +16,7 @@ const { Content } = await render(job);
 
 // Check if job is closed
 const currentDate = new Date();
-const isExpired = new Date(job.data.deadline) < currentDate;
+const isExpired = job.data.deadline ? new Date(job.data.deadline) < currentDate : false;
 const isClosed = job.data.status === 'closed' || isExpired;
 
 // Get related jobs
@@ -173,7 +173,7 @@ const jobStructuredData = {
   "title": job.data.title,
   "description": job.data.description,
   "datePosted": job.data.posted,
-  "validThrough": job.data.deadline,
+  ...(job.data.deadline && { "validThrough": job.data.deadline.toISOString() }),
   "employmentType": employmentType,
   "identifier": {
     "@type": "PropertyValue",

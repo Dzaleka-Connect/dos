@@ -35,7 +35,11 @@ const pageKeywords =
 
 const jobItems = (await getCollection('jobs'))
   .filter((job) => job.data.status === 'open' && !isJobExpired(job.data.deadline))
-  .sort((a, b) => new Date(a.data.deadline).getTime() - new Date(b.data.deadline).getTime())
+  .sort((a, b) => {
+    const dateA = a.data.deadline ? new Date(a.data.deadline).getTime() : Infinity;
+    const dateB = b.data.deadline ? new Date(b.data.deadline).getTime() : Infinity;
+    return dateA - dateB;
+  })
   .map<FinderItem>((job) => ({
     title: job.data.title,
     summary: job.data.description,
@@ -49,7 +53,7 @@ const jobItems = (await getCollection('jobs'))
           ? ['residents and families', 'artists, educators, and job seekers']
           : ['artists, educators, and job seekers'],
     organization: job.data.organization,
-    deadline: job.data.deadline.toISOString()
+    deadline: job.data.deadline ? job.data.deadline.toISOString() : undefined
   }));
 
 const curatedItems: FinderItem[] = curatedGrantsPrograms.map((item) => ({

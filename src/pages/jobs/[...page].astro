@@ -32,7 +32,9 @@ sortedJobs = sortedJobs.sort((a, b) => {
   if (currentSort === 'recent') {
     return new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime();
   } else {
-    return new Date(a.data.deadline).getTime() - new Date(b.data.deadline).getTime();
+    const dateA = a.data.deadline ? new Date(a.data.deadline).getTime() : Infinity;
+    const dateB = b.data.deadline ? new Date(b.data.deadline).getTime() : Infinity;
+    return dateA - dateB;
   }
 });
 
