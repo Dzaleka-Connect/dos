@@ -8,6 +8,7 @@ export const OPENAPI_PATH = '/api/openapi.json';
 export const OPENAPI_URL = `${SITE_URL}${OPENAPI_PATH}`;
 export const API_STATUS_PATH = '/api/status';
 export const API_STATUS_URL = `${SITE_URL}${API_STATUS_PATH}`;
+export const ENCYCLOPEDIA_API_DOCS_URL = `${SITE_URL}/encyclopedia/developers`;
 
 export const discoveryLinks = [
   {
@@ -55,6 +56,21 @@ export const apiCatalogDocument = {
         },
       ],
     },
+    {
+      anchor: `${API_BASE_URL}/encyclopedia`,
+      'service-desc': [
+        {
+          href: OPENAPI_URL,
+          type: 'application/openapi+json',
+        },
+      ],
+      'service-doc': [
+        {
+          href: ENCYCLOPEDIA_API_DOCS_URL,
+          type: 'text/html',
+        },
+      ],
+    },
   ],
 };
 
@@ -63,6 +79,7 @@ type OpenApiOperation = {
   summary: string;
   description: string;
   tags: string[];
+  parameters?: Record<string, unknown>[];
 };
 
 function collectionOperations(summary: string, description: string): OpenApiOperation[] {
@@ -166,6 +183,70 @@ const openApiOperations: Record<string, OpenApiOperation[]> = {
     'List published pages',
     'Returns published markdown reference pages served through the catch-all page route.'
   ),
+  '/api/encyclopedia': [
+    {
+      method: 'get',
+      summary: 'List and search encyclopedia entries',
+      description: 'Returns filtered, sorted, and paginated Dzaleka Encyclopedia records.',
+      tags: ['Encyclopedia'],
+      parameters: [
+        { name: 'q', in: 'query', schema: { type: 'string' }, description: 'Full-text search query.' },
+        { name: 'category', in: 'query', schema: { type: 'string' }, description: 'Exact entry category.' },
+        { name: 'type', in: 'query', schema: { type: 'string' }, description: 'Exact entry type.' },
+        { name: 'status', in: 'query', schema: { type: 'string', enum: ['reviewed', 'developing'] } },
+        { name: 'featured', in: 'query', schema: { type: 'boolean' } },
+        { name: 'page', in: 'query', schema: { type: 'integer', minimum: 1, default: 1 } },
+        { name: 'perPage', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 100, default: 20 } },
+        { name: 'sort', in: 'query', schema: { type: 'string', enum: ['title', 'updated'] } },
+        { name: 'order', in: 'query', schema: { type: 'string', enum: ['asc', 'desc'] } },
+        { name: 'include', in: 'query', schema: { type: 'string' }, description: 'Set to body to include Markdown bodies.' },
+      ],
+    },
+    {
+      method: 'options',
+      summary: 'CORS preflight for encyclopedia entries',
+      description: 'Returns allowed methods and headers.',
+      tags: ['Encyclopedia'],
+    },
+  ],
+  '/api/encyclopedia/{slug}': [
+    {
+      method: 'get',
+      summary: 'Get an encyclopedia entry',
+      description: 'Returns one complete entry as JSON or Schema.org JSON-LD.',
+      tags: ['Encyclopedia'],
+      parameters: [
+        { name: 'slug', in: 'path', required: true, schema: { type: 'string' } },
+        { name: 'format', in: 'query', schema: { type: 'string', enum: ['jsonld'] }, description: 'Return JSON-LD.' },
+      ],
+    },
+    {
+      method: 'options',
+      summary: 'CORS preflight for an encyclopedia entry',
+      description: 'Returns allowed methods and headers.',
+      tags: ['Encyclopedia'],
+    },
+  ],
+  '/api/encyclopedia/suggest': [
+    {
+      method: 'get',
+      summary: 'Suggest encyclopedia entries',
+      description: 'Returns lightweight ranked suggestions for search interfaces.',
+      tags: ['Encyclopedia'],
+      parameters: [
+        { name: 'q', in: 'query', required: true, schema: { type: 'string', minLength: 2 } },
+        { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 20, default: 8 } },
+      ],
+    },
+  ],
+  '/api/encyclopedia/facets': [
+    {
+      method: 'get',
+      summary: 'Get encyclopedia facets',
+      description: 'Returns entry counts by category, type, status, and initial letter.',
+      tags: ['Encyclopedia'],
+    },
+  ],
   '/api/search': [
     {
       method: 'get',
@@ -324,6 +405,7 @@ export function buildOpenApiDocument() {
             tags: operation.tags,
             summary: operation.summary,
             description: operation.description,
+            ...(operation.parameters ? { parameters: operation.parameters } : {}),
             responses: {
               '200': {
                 description: 'Successful response',
@@ -365,6 +447,7 @@ export function buildOpenApiDocument() {
     },
     tags: [
       { name: 'Collections', description: 'Published collection endpoints.' },
+      { name: 'Encyclopedia', description: 'Read-only Dzaleka Encyclopedia records, search, and facets.' },
       { name: 'Search', description: 'Search, index, and query endpoints.' },
       { name: 'Feeds', description: 'Syndication endpoints.' },
       { name: 'Data', description: 'Dashboard and snapshot endpoints.' },

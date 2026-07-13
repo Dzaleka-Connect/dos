@@ -3,11 +3,13 @@ title: "Dzaleka Health Centre"
 summary: "The primary health facility inside Dzaleka, serving refugees, asylum-seekers, and surrounding communities in Dowa District."
 category: "Health"
 entryType: "organization"
+schemaType: "MedicalOrganization"
 aliases: ["Dzaleka clinic", "Dzaleka Health Center"]
 image: "/images/Dzaleka Health Centre.jpg"
 imageAlt: "Dzaleka Health Centre"
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
 facts:
   - label: "Location"
@@ -16,7 +18,7 @@ facts:
     value: "Approximately 86,000 people"
   - label: "Public partnership"
     value: "Malawi Ministry of Health and UNHCR"
-relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation"]
+relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation", "health-nutrition-and-population", "food-security-and-assistance"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"
@@ -26,6 +28,10 @@ sources:
     publisher: "United Nations Malawi"
     url: "https://malawi.un.org/en/40891-unhcr-registers-over-41000-people-congested-dzaleka-refugee-camp"
     date: "25 November 2019"
+  - title: "Malawi: Understanding the Health, Nutrition and Population Situation in Dzaleka Refugee Camp 2024"
+    publisher: "World Bank-UNHCR Joint Data Center"
+    url: "https://www.jointdatacenter.org/malawi-understanding-the-health-nutrition-and-population-situation-in-dzaleka-refugee-camp-2024/"
+    date: "2 July 2026"
 ---
 
 ## Role

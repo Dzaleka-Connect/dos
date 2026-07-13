@@ -21,6 +21,7 @@ const VALID_COLLECTIONS = [
   'rights',
   'poets',
   'dancers',
+  'encyclopedia',
 ] as const;
 
 const corsHeaders = {

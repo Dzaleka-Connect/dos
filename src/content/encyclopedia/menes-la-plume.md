@@ -4,12 +4,16 @@ sortName: "La Plume, Menes"
 summary: "Congolese poet, musician, and cultural organiser who founded Tumaini Letu and the Tumaini Festival in Dzaleka."
 category: "People"
 entryType: "person"
+schemaType: "Person"
 aliases: ["Tresor Nzengu Mpauni", "Trésor Nzengu Mpauni"]
 image: "/images/profiles/menes-la-plume.jpg"
 imageAlt: "Portrait of Menes la Plume"
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
+sameAs:
+  - "https://tumaini-festival.dzaleka.com/pages/about.html"
 facts:
   - label: "Known for"
     value: "Poetry, music, Tumaini Letu, Tumaini Festival"
@@ -17,7 +21,7 @@ facts:
     value: "2008"
   - label: "Country of origin"
     value: "Democratic Republic of the Congo"
-relatedEntries: ["tumaini-festival", "dzaleka-refugee-camp", "yetu-community-radio"]
+relatedEntries: ["tumaini-festival", "dzaleka-refugee-camp", "yetu-community-radio", "refugee-led-organisations"]
 sources:
   - title: "Tumaini Festival history"
     publisher: "Dzaleka Digital Heritage"

@@ -1,0 +1,95 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const canonical = 'https://services.dzaleka.com/encyclopedia/about';
+const title = 'About the Dzaleka Encyclopedia';
+const description = 'The purpose, scope, editorial model, and community role of the Dzaleka Encyclopedia.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': canonical,
+  url: canonical,
+  name: title,
+  description,
+  isPartOf: { '@id': 'https://services.dzaleka.com/encyclopedia#collection' },
+  about: { '@id': 'https://services.dzaleka.com/encyclopedia/dzaleka-refugee-camp#entity' },
+};
+---
+
+<MainLayout title={`${title} | Dzaleka Online Services`} description={description} canonical={canonical} schema={schema}>
+  <div class="bg-white">
+    <header class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' }]} />
+        <p class="mt-8 text-sm font-semibold uppercase tracking-widest text-slate-500">Purpose and stewardship</p>
+        <h1 class="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">About the Dzaleka Encyclopedia</h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-600 sm:text-xl">A sourced, community-informed reference to Dzaleka Refugee Camp and the people, institutions, events, and public questions connected to it.</p>
+        <nav class="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Encyclopedia information">
+          <a href="/encyclopedia" class="font-semibold text-primary-700 hover:text-primary-800">Browse entries</a>
+          <a href="/encyclopedia/editorial-guidelines" class="font-semibold text-primary-700 hover:text-primary-800">Editorial guidance</a>
+          <a href="/encyclopedia/developers" class="font-semibold text-primary-700 hover:text-primary-800">Developer API</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-5xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:px-8 lg:py-14">
+      <main class="min-w-0 space-y-12">
+        <section aria-labelledby="mission-heading">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Mission</p>
+          <h2 id="mission-heading" class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Keep a useful public record of Dzaleka</h2>
+          <div class="mt-5 space-y-4 text-base leading-8 text-slate-700">
+            <p>The encyclopedia brings together dispersed public records and community knowledge in one place. It aims to make Dzaleka easier to understand without reducing the camp to a single crisis, organisation, or statistic.</p>
+            <p>Entries cover history, law, population, health, education, livelihoods, infrastructure, culture, film, organisations, and people whose work is connected to Dzaleka. Claims that change over time are dated, and sources are shown so readers can inspect the basis for an entry.</p>
+          </div>
+        </section>
+
+        <section class="border-t border-slate-200 pt-10" aria-labelledby="principles-heading">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Editorial principles</p>
+          <h2 id="principles-heading" class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Evidence, context, dignity</h2>
+          <div class="mt-6 grid gap-5 sm:grid-cols-2">
+            {[
+              ['Make sources visible', 'Readers should be able to see where a factual claim came from and when it was recorded.'],
+              ['Date changing information', 'Population, service availability, programme status, and policy can change. Entries state the relevant period.'],
+              ['Value local knowledge', 'Attributed interviews, oral history, photographs, and community records can document subjects missing from formal archives.'],
+              ['Protect people', 'The encyclopedia does not publish private case details or information that creates avoidable safety, dignity, or protection risks.'],
+            ].map(([heading, text]) => (
+              <div class="rounded-xl border border-slate-200 bg-white p-5">
+                <h3 class="font-bold text-slate-950">{heading}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="border-t border-slate-200 pt-10" aria-labelledby="model-heading">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">How it works</p>
+          <h2 id="model-heading" class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Community contributions with editorial review</h2>
+          <div class="mt-5 space-y-4 text-base leading-8 text-slate-700">
+            <p>This is not an open-edit wiki. Dzaleka Online Services maintains the collection and reviews proposed changes before publication. That allows people to contribute while keeping sourcing, safety, structure, and dated claims consistent across entries.</p>
+            <p>Residents, former residents, organisations, researchers, artists, journalists, photographers, and readers are welcome to propose corrections, stronger sources, missing context, photographs, and new entries.</p>
+          </div>
+          <a href="/encyclopedia/submit-correction" class="mt-6 inline-flex rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">Send a contribution</a>
+        </section>
+
+        <section class="border-t border-slate-200 pt-10" aria-labelledby="limits-heading">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Limits</p>
+          <h2 id="limits-heading" class="mt-2 text-3xl font-bold tracking-tight text-slate-950">What the editorial team cannot provide</h2>
+          <p class="mt-5 text-base leading-8 text-slate-700">We welcome constructive comments, questions, and suggestions, but the encyclopedia is maintained with limited volunteer capacity. The team cannot research private family histories, identify or value artefacts, or provide legal, medical, protection, immigration, or emergency casework. Questions in those areas should go to the relevant qualified service.</p>
+        </section>
+      </main>
+
+      <aside class="space-y-7 lg:sticky lg:top-28 lg:h-fit">
+        <section class="border-l-4 border-primary-600 pl-5">
+          <h2 class="font-bold text-slate-950">Collection scope</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Dzaleka Refugee Camp, its public life, and people or work with a clear, documentable connection to the camp.</p>
+        </section>
+        <section class="border-t border-slate-200 pt-6">
+          <h2 class="font-bold text-slate-950">Use the data</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">The read-only public API supports search, filters, pagination, facets, individual records, and JSON-LD.</p>
+          <a href="/encyclopedia/developers" class="mt-3 inline-flex text-sm font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">View developer documentation</a>
+        </section>
+      </aside>
+    </div>
+  </div>
+</MainLayout>

@@ -4,9 +4,11 @@ sortName: "Dzaleka AppFactory"
 summary: "A software-development training programme launched in Dzaleka in 2017 through Microsoft 4Afrika and UNHCR's Connectivity for Refugees initiative."
 category: "Education"
 entryType: "organization"
+schemaType: "EducationalOrganization"
 aliases: ["AppFactory", "Microsoft AppFactory Dzaleka"]
 featured: false
 status: "developing"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
 facts:
   - label: "Launched"
@@ -15,7 +17,7 @@ facts:
     value: "Microsoft 4Afrika and UNHCR"
   - label: "Historical distinction"
     value: "First AppFactory established in a refugee camp"
-relatedEntries: ["education-in-dzaleka", "dzaleka-refugee-camp", "yetu-community-radio"]
+relatedEntries: ["education-in-dzaleka", "dzaleka-refugee-camp", "yetu-community-radio", "livelihoods-and-local-economy", "dzaleka-mapping-project"]
 sources:
   - title: "Refugee camp AppFactory grooming software developers"
     publisher: "UNHCR"

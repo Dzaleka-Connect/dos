@@ -3,11 +3,13 @@ title: "Education in Dzaleka"
 summary: "Public, private, community, and post-secondary education in Dzaleka, including the Malawi curriculum and long-running scholarship and digital-learning programmes."
 category: "Education"
 entryType: "topic"
+schemaType: "Article"
 aliases: ["Dzaleka schools", "Refugee education in Dzaleka"]
 image: "/images/sites/umodzi-katubza-primary-school-1.jpg"
 imageAlt: "A school serving the Dzaleka community"
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
 facts:
   - label: "Public schools reported in 2024"
@@ -16,7 +18,7 @@ facts:
     value: "27 across preschool, primary, and secondary levels"
   - label: "Curriculum"
     value: "Malawi curriculum"
-relatedEntries: ["dzaleka-refugee-camp", "dzaleka-appfactory", "population-and-demography"]
+relatedEntries: ["dzaleka-refugee-camp", "dzaleka-appfactory", "population-and-demography", "jesuit-refugee-service", "there-is-hope-malawi"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

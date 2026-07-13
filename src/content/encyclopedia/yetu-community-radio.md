@@ -4,10 +4,15 @@ sortName: "Yetu Community Radio"
 summary: "A multilingual community radio station based in Dzaleka, established to serve refugee and Malawian communities with public information and community programming."
 category: "Institution"
 entryType: "organization"
+schemaType: "RadioStation"
 aliases: ["Yetu FM", "Dzaleka Yetu Community Radio"]
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
+officialWebsite: "https://yetufm.mw/"
+sameAs:
+  - "https://yetufm.mw/"
 facts:
   - label: "First broadcast"
     value: "7 August 2018"
@@ -15,7 +20,7 @@ facts:
     value: "English, Chichewa, Kiswahili, French, Kinyarwanda"
   - label: "Location"
     value: "Dzaleka, Dowa District"
-relatedEntries: ["dzaleka-refugee-camp", "tumaini-festival", "dzaleka-appfactory"]
+relatedEntries: ["dzaleka-refugee-camp", "tumaini-festival", "dzaleka-appfactory", "refugee-led-organisations"]
 sources:
   - title: "UNHCR launches Yetu Community Radio in Dzaleka refugee camp"
     publisher: "UNHCR Operational Data Portal / United Nations Malawi"

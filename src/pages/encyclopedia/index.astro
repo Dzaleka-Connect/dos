@@ -3,297 +3,469 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
-const entries = (await getCollection('encyclopedia')).sort((a, b) => {
-  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
-  return (a.data.sortName || a.data.title).localeCompare(b.data.sortName || b.data.title);
-});
-
+const entries = (await getCollection('encyclopedia')).sort((a, b) =>
+  (a.data.sortName || a.data.title).localeCompare(b.data.sortName || b.data.title)
+);
+const featuredIds = ['dzaleka-refugee-camp', 'history-of-dzaleka', 'law-and-encampment-policy', 'refugee-led-organisations'];
+const featuredEntries = featuredIds
+  .map((id) => entries.find((entry) => entry.id === id))
+  .filter(Boolean);
 const categories = [...new Set(entries.map((entry) => entry.data.category))]
   .sort()
   .map((category) => ({
     name: category,
     count: entries.filter((entry) => entry.data.category === category).length,
   }));
-
-const availableLetters = [...new Set(entries.map((entry) => (entry.data.sortName || entry.data.title).charAt(0).toUpperCase()))].sort();
+const availableLetters = new Set(entries.map((entry) => (entry.data.sortName || entry.data.title).charAt(0).toUpperCase()));
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const sourceCount = new Set(entries.flatMap((entry) => entry.data.sources.map((source) => source.url))).size;
+const latestReview = entries.reduce(
+  (latest, entry) => entry.data.lastReviewed > latest ? entry.data.lastReviewed : latest,
+  entries[0]?.data.lastReviewed || new Date()
+);
+const reviewLabel = latestReview.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 const canonical = 'https://services.dzaleka.com/encyclopedia';
 const title = 'Dzaleka Encyclopedia';
-const description = 'Search sourced reference entries about Dzaleka Refugee Camp, including its history, people, places, institutions, culture, health, education, and infrastructure.';
+const description = 'A sourced reference to Dzaleka Refugee Camp: its history, people, institutions, culture, services, law, health, education, infrastructure, and public life.';
+const campEntry = entries.find((entry) => entry.id === 'dzaleka-refugee-camp');
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${canonical}#collection`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: 'en',
+      isPartOf: { '@id': 'https://services.dzaleka.com/#website' },
+      about: { '@id': `${canonical}/dzaleka-refugee-camp#entity` },
+      mainEntity: { '@id': `${canonical}#entries` },
+      dateModified: latestReview.toISOString(),
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${canonical}#entries`,
+      name: 'Dzaleka Encyclopedia entries',
+      numberOfItems: entries.length,
+      itemListOrder: 'https://schema.org/ItemListOrderAscending',
+      itemListElement: entries.map((entry, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${canonical}/${entry.id}`,
+        name: entry.data.title,
+      })),
+    },
+    {
+      '@type': 'DefinedTermSet',
+      '@id': `${canonical}#term-set`,
+      url: canonical,
+      name: 'Dzaleka Encyclopedia topics',
+      description,
+      hasDefinedTerm: entries.map((entry) => ({
+        '@id': `${canonical}/${entry.id}#entity`,
+        name: entry.data.title,
+      })),
+    },
+    {
+      '@type': 'Place',
+      '@id': `${canonical}/dzaleka-refugee-camp#entity`,
+      name: 'Dzaleka Refugee Camp',
+      alternateName: campEntry?.data.aliases,
+      description: campEntry?.data.summary,
+      image: 'https://services.dzaleka.com/images/encyclopedia/entrance-sign.jpg',
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: campEntry?.data.geo?.latitude,
+        longitude: campEntry?.data.geo?.longitude,
+      },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Dzaleka',
+        addressRegion: 'Dowa District',
+        addressCountry: 'MW',
+      },
+      sameAs: campEntry?.data.sameAs,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonical}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
+        { '@type': 'ListItem', position: 2, name: title, item: canonical },
+      ],
+    },
+  ],
+};
 ---
 
 <MainLayout
   title={`${title} | Dzaleka Online Services`}
   description={description}
   canonical={canonical}
-  image="/images/dzaleka-hero.jpeg"
+  image="/images/encyclopedia/camp-panorama.jpg"
+  robots="index, follow, max-image-preview:large"
+  schema={structuredData}
+  openGraph={{
+    title,
+    description,
+    type: 'website',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: canonical,
+    image: {
+      url: 'https://services.dzaleka.com/images/encyclopedia/camp-panorama.jpg',
+      width: 1476,
+      height: 830,
+      alt: 'A panoramic view across Dzaleka Refugee Camp',
+      type: 'image/jpeg',
+    },
+  }}
 >
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: title,
-      description,
-      url: canonical,
-      mainEntity: {
-        '@type': 'ItemList',
-        numberOfItems: entries.length,
-        itemListElement: entries.map((entry, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          url: `${canonical}/${entry.id}`,
-          name: entry.data.title,
-        })),
-      },
-    })}
-  />
-
-  <main class="bg-white">
-    <section class="relative overflow-hidden bg-slate-950 text-white">
+  <div class="bg-white">
+    <header class="relative bg-slate-950 text-white">
       <img
-        src="/images/dzaleka-hero.jpeg"
-        alt="Dzaleka Refugee Camp"
-        class="absolute inset-0 h-full w-full object-cover opacity-35"
+        src="/images/encyclopedia/camp-panorama.jpg"
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover object-center opacity-45"
+        fetchpriority="high"
       />
       <div class="absolute inset-0 bg-slate-950/70"></div>
-      <div class="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <Breadcrumb
-          items={[{ label: 'Home', href: '/' }, { label: 'Dzaleka Encyclopedia' }]}
-          light
-        />
-        <div class="mt-8 max-w-4xl">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-300">Community reference</p>
+      <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: title }]} light />
+        <div class="mt-8 max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-300">Reference and public record</p>
           <h1 class="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">Dzaleka Encyclopedia</h1>
-          <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-200 sm:text-xl">
-            Sourced articles about the camp's history, people, places, institutions, culture, and public life.
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-100 sm:text-xl">
+            A sourced guide to the camp's history, people, institutions, culture, services, law, and everyday life.
           </p>
         </div>
 
         <div class="mt-8 max-w-3xl">
           <label for="encyclopedia-search" class="sr-only">Search the encyclopedia</label>
-          <div class="relative">
+          <div id="search-control" class="relative z-30">
             <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
             </svg>
             <input
               id="encyclopedia-search"
               type="search"
-              placeholder="Search names, places, organisations, and topics"
+              placeholder="Search people, places, films, organisations, and topics"
               autocomplete="off"
-              class="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base text-slate-950 shadow-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-400"
+              aria-controls="search-suggestions"
+              aria-expanded="false"
+              class="w-full rounded-lg border border-white bg-white py-3.5 pl-12 pr-4 text-base text-slate-950 shadow-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-400"
             />
+            <div id="search-suggestions" class="absolute inset-x-0 top-full mt-2 hidden overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-950 shadow-lg" role="region" aria-label="Search suggestions">
+              <div id="search-suggestion-list" class="max-h-80 overflow-y-auto"></div>
+              <a id="view-search-results" href="#all-entries" class="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100">
+                <span>View all matching entries</span>
+                <span id="search-suggestion-count" class="text-slate-500"></span>
+              </a>
+            </div>
           </div>
-          <p class="mt-3 text-sm text-slate-300">Search includes titles, aliases, summaries, categories, and article text.</p>
+          <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            <p class="text-slate-300">{entries.length} entries · {sourceCount} linked sources · reviewed through {reviewLabel}</p>
+            <a href="/encyclopedia/submit-correction?type=new-entry" class="font-semibold text-white underline decoration-slate-500 underline-offset-4 hover:decoration-white">Contribute an entry</a>
+          </div>
+          <nav class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Encyclopedia information">
+            <a href="/encyclopedia/about" class="font-semibold text-slate-100 hover:text-white">About</a>
+            <a href="/encyclopedia/editorial-guidelines" class="font-semibold text-slate-100 hover:text-white">Sources and editorial guidance</a>
+            <a href="/encyclopedia/developers" class="font-semibold text-slate-100 hover:text-white">Developer API</a>
+          </nav>
         </div>
       </div>
-    </section>
+    </header>
 
     <section class="border-b border-slate-200 bg-slate-50">
-      <div class="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-slate-200 px-4 sm:px-6 md:grid-cols-3 lg:px-8">
-        <div class="bg-slate-50 py-5 pr-5">
-          <p class="text-2xl font-bold text-slate-950">{entries.length}</p>
-          <p class="mt-1 text-sm text-slate-600">Reference entries</p>
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Start here</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-950">Four ways into the collection</h2>
+          </div>
+          <a href="#all-entries" class="text-sm font-semibold text-primary-700 hover:text-primary-800">Browse every entry <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="bg-slate-50 px-5 py-5">
-          <p class="text-2xl font-bold text-slate-950">{categories.length}</p>
-          <p class="mt-1 text-sm text-slate-600">Subject areas</p>
-        </div>
-        <div class="col-span-2 bg-slate-50 px-5 py-5 md:col-span-1">
-          <p class="text-2xl font-bold text-slate-950">{sourceCount}</p>
-          <p class="mt-1 text-sm text-slate-600">Linked sources</p>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {featuredEntries.map((entry) => (
+            <a href={`/encyclopedia/${entry.id}`} class="group overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm">
+              {entry.data.image && (
+                <img src={entry.data.image} alt="" class="aspect-[16/9] w-full object-cover" loading="lazy" />
+              )}
+              <div class="p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{entry.data.category}</p>
+                <h3 class="mt-2 text-lg font-bold leading-6 text-slate-950 group-hover:text-primary-700">{entry.data.title}</h3>
+                <p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{entry.data.summary}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>
 
-    <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <div class="grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <aside>
-          <div class="lg:sticky lg:top-28">
-            <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Browse by subject</h2>
-            <div class="mt-4 flex flex-wrap gap-2 lg:flex-col" id="category-filters">
-              <button
-                type="button"
-                class="category-filter flex items-center justify-between rounded-lg bg-slate-900 px-3 py-2 text-left text-sm font-semibold text-white"
-                data-category="all"
-                aria-pressed="true"
-              >
-                <span>All entries</span>
-                <span>{entries.length}</span>
-              </button>
-              {categories.map((category) => (
-                <button
-                  type="button"
-                  class="category-filter flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm font-medium text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-                  data-category={category.name.toLowerCase()}
-                  aria-pressed="false"
-                >
-                  <span>{category.name}</span>
-                  <span class="text-slate-500">{category.count}</span>
-                </button>
-              ))}
-            </div>
-
-            <div class="mt-8 border-t border-slate-200 pt-6">
-              <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Browse A-Z</h2>
-              <div class="mt-3 flex flex-wrap gap-1.5" id="letter-filters">
-                <button type="button" class="letter-filter rounded-md bg-slate-900 px-2.5 py-1.5 text-sm font-semibold text-white" data-letter="all" aria-pressed="true">All</button>
-                {availableLetters.map((letter) => (
-                  <button type="button" class="letter-filter rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" data-letter={letter} aria-pressed="false">{letter}</button>
-                ))}
-              </div>
-            </div>
+    <section id="all-entries" class="mx-auto max-w-6xl scroll-mt-24 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div class="border-b border-slate-200 pb-6">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Browse the collection</p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">All entries</h2>
           </div>
-        </aside>
+          <p class="text-sm text-slate-600" aria-live="polite"><span id="result-count">{entries.length}</span> matching entries</p>
+        </div>
 
-        <div>
-          <div class="flex items-end justify-between gap-4 border-b border-slate-200 pb-4">
-            <div>
-              <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Entries</p>
-              <h2 class="mt-1 text-2xl font-bold text-slate-950">Browse the encyclopedia</h2>
-            </div>
-            <p class="text-sm text-slate-600" aria-live="polite"><span id="result-count">{entries.length}</span> shown</p>
-          </div>
+        <div id="category-filters" class="mt-6 flex flex-wrap gap-2" aria-label="Filter by subject">
+          <button type="button" class="category-filter rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white" data-category="all" aria-pressed="true">All <span class="ml-1 text-slate-300">{entries.length}</span></button>
+          {categories.map((category) => (
+            <button type="button" class="category-filter rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" data-category={category.name.toLowerCase()} aria-pressed="false">
+              {category.name} <span class="ml-1 text-slate-400">{category.count}</span>
+            </button>
+          ))}
+        </div>
 
-          <div id="entry-list" class="divide-y divide-slate-200">
-            {entries.map((entry) => {
-              const searchText = [
-                entry.data.title,
-                entry.data.summary,
-                entry.data.category,
-                ...(entry.data.aliases || []),
-                entry.body || '',
-              ].join(' ').toLowerCase();
-              const firstLetter = (entry.data.sortName || entry.data.title).charAt(0).toUpperCase();
-
-              return (
-                <article
-                  class="encyclopedia-entry py-6"
-                  data-search={searchText}
-                  data-category={entry.data.category.toLowerCase()}
-                  data-letter={firstLetter}
-                >
-                  <a href={`/encyclopedia/${entry.id}`} class="group grid gap-5 sm:grid-cols-[minmax(0,1fr)_140px] sm:items-start">
-                    <div>
-                      <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                        <span>{entry.data.category}</span>
-                        {entry.data.status === 'developing' && <span class="rounded bg-amber-50 px-2 py-0.5 text-amber-800">Developing entry</span>}
-                      </div>
-                      <h3 class="mt-2 text-xl font-bold text-slate-950 group-hover:text-primary-700">{entry.data.title}</h3>
-                      {entry.data.aliases && entry.data.aliases.length > 0 && (
-                        <p class="mt-1 text-sm text-slate-500">Also known as {entry.data.aliases.join(', ')}</p>
-                      )}
-                      <p class="mt-3 max-w-3xl leading-7 text-slate-600">{entry.data.summary}</p>
-                      <p class="mt-3 text-sm font-semibold text-primary-700">Read entry <span aria-hidden="true">&rarr;</span></p>
-                    </div>
-                    {entry.data.image && (
-                      <img src={entry.data.image} alt="" class="h-24 w-full rounded-lg border border-slate-200 object-cover sm:h-24" loading="lazy" />
-                    )}
-                  </a>
-                </article>
-              );
-            })}
-          </div>
-
-          <div id="no-results" class="hidden border-b border-slate-200 py-12 text-center">
-            <h3 class="text-lg font-bold text-slate-950">No entries found</h3>
-            <p class="mt-2 text-slate-600">Try another search term or clear the browse filters.</p>
-            <button id="clear-filters" type="button" class="mt-5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Clear filters</button>
-          </div>
+        <div id="letter-filters" class="mt-5 flex flex-wrap items-center gap-1" aria-label="Filter by first letter">
+          <button type="button" class="letter-filter mr-1 rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-white" data-letter="all" aria-pressed="true">A-Z</button>
+          {alphabet.map((letter) => availableLetters.has(letter) ? (
+            <button type="button" class="letter-filter min-w-8 rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" data-letter={letter} aria-pressed="false">{letter}</button>
+          ) : (
+            <span class="min-w-8 px-2 py-1.5 text-center text-xs font-semibold text-slate-300" aria-hidden="true">{letter}</span>
+          ))}
         </div>
       </div>
+
+      <div id="entry-list" class="mt-7 grid gap-4 md:grid-cols-2">
+        {entries.map((entry, index) => {
+          const searchText = [entry.data.title, entry.data.summary, entry.data.category, ...(entry.data.aliases || []), entry.body || ''].join(' ').toLowerCase();
+          const firstLetter = (entry.data.sortName || entry.data.title).charAt(0).toUpperCase();
+          const isLogo = entry.data.image?.toLowerCase().includes('logo');
+          return (
+            <article class:list={['encyclopedia-entry rounded-xl border border-slate-200 bg-white p-5 hover:border-slate-300 hover:shadow-sm', index >= 10 && 'hidden']} data-search={searchText} data-category={entry.data.category.toLowerCase()} data-letter={firstLetter} data-title={entry.data.title} data-url={`/encyclopedia/${entry.id}`}>
+              <a href={`/encyclopedia/${entry.id}`} class="group grid h-full gap-4 sm:grid-cols-[96px_minmax(0,1fr)]">
+                {entry.data.image ? (
+                  <img src={entry.data.image} alt="" class:list={['h-24 w-full rounded-lg bg-slate-100 sm:w-24', isLogo ? 'object-contain p-2' : 'object-cover']} loading="lazy" />
+                ) : (
+                  <div class="hidden h-24 w-24 items-center justify-center rounded-lg bg-slate-100 text-2xl font-bold text-slate-400 sm:flex" aria-hidden="true">{firstLetter}</div>
+                )}
+                <div>
+                  <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <span>{entry.data.category}</span>
+                    {entry.data.status === 'developing' && <span class="text-amber-700">Developing</span>}
+                  </div>
+                  <h3 class="mt-1.5 text-lg font-bold leading-6 text-slate-950 group-hover:text-primary-700">{entry.data.title}</h3>
+                  <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{entry.data.summary}</p>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+
+      <div id="no-results" class="mt-8 hidden rounded-xl border border-slate-200 bg-slate-50 px-5 py-12 text-center">
+        <h3 class="text-lg font-bold text-slate-950">No matching entries</h3>
+        <p class="mt-2 text-slate-600">Try another term or clear the browse filters.</p>
+        <button id="clear-filters" type="button" class="mt-5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Clear filters</button>
+      </div>
+
+      <nav id="pagination" class="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between" aria-label="Encyclopedia pages">
+        <p id="page-status" class="text-sm text-slate-600" aria-live="polite">Page 1</p>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="pagination-prev" type="button" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
+          <div id="pagination-pages" class="flex flex-wrap gap-1" aria-label="Choose a page"></div>
+          <button id="pagination-next" type="button" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">Next</button>
+        </div>
+      </nav>
     </section>
 
     <section class="border-t border-slate-200 bg-slate-50">
-      <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:px-8">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Editorial approach</p>
-          <h2 class="mt-2 text-2xl font-bold text-slate-950">A reference work that shows its sources</h2>
-          <p class="mt-4 leading-7 text-slate-600">
-            Entries distinguish dated evidence from current service information. Population figures, programme status, and infrastructure counts are tied to a source and reporting date.
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Editorial standard</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-950">Dated claims, visible sources, open corrections</h2>
+          <p class="mt-4 max-w-2xl leading-7 text-slate-600">
+            Entries separate historical evidence from current service information. Population figures, programme status, and infrastructure counts carry a reporting date so older records are not mistaken for current conditions.
           </p>
         </div>
         <div class="border-l-4 border-primary-600 pl-5">
-          <h2 class="text-lg font-bold text-slate-950">Corrections and contributions</h2>
-          <p class="mt-2 leading-7 text-slate-600">Community knowledge matters. Send a source, correction, missing name, or proposed entry for editorial review.</p>
-          <a href="/support" class="mt-4 inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100">Submit a correction</a>
+          <h2 class="text-lg font-bold text-slate-950">Help document Dzaleka</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Residents, former residents, organisations, researchers, families, and photographers are welcome to propose entries or improve existing ones. Every submission is reviewed before publication.</p>
+          <div class="mt-4 flex flex-wrap gap-3">
+            <a href="/encyclopedia/submit-correction?type=new-entry" class="inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Propose an entry</a>
+            <a href="/encyclopedia/submit-correction" class="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100">Send a correction</a>
+          </div>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>
 
 <script>
-  const searchInput = document.getElementById('encyclopedia-search');
-  const entries = Array.from(document.querySelectorAll('.encyclopedia-entry'));
-  const categoryButtons = Array.from(document.querySelectorAll('.category-filter'));
-  const letterButtons = Array.from(document.querySelectorAll('.letter-filter'));
+  const searchInput = document.getElementById('encyclopedia-search') as HTMLInputElement | null;
+  const searchControl = document.getElementById('search-control');
+  const searchSuggestions = document.getElementById('search-suggestions');
+  const suggestionList = document.getElementById('search-suggestion-list');
+  const suggestionCount = document.getElementById('search-suggestion-count');
+  const entryElements = Array.from(document.querySelectorAll<HTMLElement>('.encyclopedia-entry'));
+  const categoryButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.category-filter'));
+  const letterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.letter-filter'));
   const resultCount = document.getElementById('result-count');
   const noResults = document.getElementById('no-results');
   const clearButton = document.getElementById('clear-filters');
-
+  const pagination = document.getElementById('pagination');
+  const pageStatus = document.getElementById('page-status');
+  const pageButtons = document.getElementById('pagination-pages');
+  const previousButton = document.getElementById('pagination-prev') as HTMLButtonElement | null;
+  const nextButton = document.getElementById('pagination-next') as HTMLButtonElement | null;
+  const pageSize = 10;
   let activeCategory = 'all';
   let activeLetter = 'all';
+  let currentPage = 1;
 
-  const setActiveButton = (buttons, activeButton, activeClasses, inactiveClasses) => {
-    buttons.forEach((button) => {
-      const isActive = button === activeButton;
-      button.setAttribute('aria-pressed', String(isActive));
-      activeClasses.forEach((className) => button.classList.toggle(className, isActive));
-      inactiveClasses.forEach((className) => button.classList.toggle(className, !isActive));
-    });
-  };
-
-  const filterEntries = () => {
+  const getMatchingEntries = () => {
     const query = searchInput?.value.trim().toLowerCase() || '';
-    let visible = 0;
-
-    entries.forEach((entry) => {
-      const matchesSearch = !query || entry.dataset.search?.includes(query);
-      const matchesCategory = activeCategory === 'all' || entry.dataset.category === activeCategory;
-      const matchesLetter = activeLetter === 'all' || entry.dataset.letter === activeLetter;
-      const shouldShow = Boolean(matchesSearch && matchesCategory && matchesLetter);
-      entry.classList.toggle('hidden', !shouldShow);
-      if (shouldShow) visible += 1;
-    });
-
-    if (resultCount) resultCount.textContent = String(visible);
-    noResults?.classList.toggle('hidden', visible !== 0);
+    return entryElements.filter((entry) => (
+      (!query || entry.dataset.search?.includes(query))
+        && (activeCategory === 'all' || entry.dataset.category === activeCategory)
+        && (activeLetter === 'all' || entry.dataset.letter === activeLetter)
+    ));
   };
 
-  categoryButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      activeCategory = button.dataset.category || 'all';
-      setActiveButton(
-        categoryButtons,
-        button,
-        ['bg-slate-900', 'text-white'],
-        ['border', 'border-slate-200', 'bg-white', 'text-slate-700'],
-      );
-      filterEntries();
-    });
-  });
+  const hideSearchSuggestions = () => {
+    searchSuggestions?.classList.add('hidden');
+    searchInput?.setAttribute('aria-expanded', 'false');
+  };
 
-  letterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      activeLetter = button.dataset.letter || 'all';
-      setActiveButton(
-        letterButtons,
-        button,
-        ['bg-slate-900', 'text-white'],
-        ['border', 'border-slate-200', 'bg-white', 'text-slate-700'],
-      );
-      filterEntries();
-    });
-  });
+  const updateSearchSuggestions = (matchingEntries: HTMLElement[]) => {
+    const query = searchInput?.value.trim() || '';
+    if (query.length < 2) {
+      hideSearchSuggestions();
+      suggestionList?.replaceChildren();
+      return;
+    }
 
-  searchInput?.addEventListener('input', filterEntries);
+    const suggestions = matchingEntries.slice(0, 5).map((entry) => {
+      const link = document.createElement('a');
+      link.href = entry.dataset.url || '#all-entries';
+      link.className = 'block border-b border-slate-100 px-4 py-3 last:border-b-0 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none';
+
+      const title = document.createElement('span');
+      title.className = 'block font-semibold text-slate-950';
+      title.textContent = entry.dataset.title || '';
+
+      const category = document.createElement('span');
+      category.className = 'mt-0.5 block text-xs font-semibold uppercase tracking-wider text-slate-500';
+      category.textContent = entry.dataset.category || '';
+
+      link.append(title, category);
+      return link;
+    });
+
+    if (suggestionList) {
+      suggestionList.replaceChildren(...suggestions);
+      if (matchingEntries.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'px-4 py-4 text-sm text-slate-600';
+        empty.textContent = `No entries match “${query}”.`;
+        suggestionList.append(empty);
+      }
+    }
+    if (suggestionCount) suggestionCount.textContent = String(matchingEntries.length);
+    searchSuggestions?.classList.remove('hidden');
+    searchInput?.setAttribute('aria-expanded', 'true');
+  };
+
+  const updateButtons = (buttons: HTMLButtonElement[], active: HTMLButtonElement) => {
+    buttons.forEach((button) => {
+      const selected = button === active;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('bg-slate-900', selected);
+      button.classList.toggle('text-white', selected);
+      button.classList.toggle('border-slate-900', selected);
+      button.classList.toggle('bg-white', !selected);
+      button.classList.toggle('text-slate-700', !selected);
+      button.classList.toggle('border-slate-300', !selected);
+    });
+  };
+
+  const showPage = () => {
+    const matchingEntries = getMatchingEntries();
+    const totalPages = Math.max(1, Math.ceil(matchingEntries.length / pageSize));
+    currentPage = Math.min(currentPage, totalPages);
+    const pageStart = (currentPage - 1) * pageSize;
+    const visibleEntries = new Set(matchingEntries.slice(pageStart, pageStart + pageSize));
+
+    entryElements.forEach((entry) => {
+      entry.classList.toggle('hidden', !visibleEntries.has(entry));
+    });
+    if (resultCount) resultCount.textContent = String(matchingEntries.length);
+    noResults?.classList.toggle('hidden', matchingEntries.length !== 0);
+    pagination?.classList.toggle('hidden', matchingEntries.length === 0);
+    if (pageStatus) pageStatus.textContent = matchingEntries.length > 0
+      ? `Page ${currentPage} of ${totalPages} · ${pageStart + 1}-${Math.min(pageStart + pageSize, matchingEntries.length)} of ${matchingEntries.length}`
+      : '';
+    if (previousButton) previousButton.disabled = currentPage === 1;
+    if (nextButton) nextButton.disabled = currentPage === totalPages;
+
+    pageButtons?.replaceChildren(...Array.from({ length: totalPages }, (_, index) => {
+      const page = index + 1;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = String(page);
+      button.setAttribute('aria-label', `Page ${page}`);
+      button.setAttribute('aria-current', page === currentPage ? 'page' : 'false');
+      button.className = page === currentPage
+        ? 'min-h-10 min-w-10 rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white'
+        : 'min-h-10 min-w-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50';
+      button.addEventListener('click', () => {
+        currentPage = page;
+        showPage();
+        document.getElementById('all-entries')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      return button;
+    }));
+    updateSearchSuggestions(matchingEntries);
+  };
+
+  categoryButtons.forEach((button) => button.addEventListener('click', () => {
+    activeCategory = button.dataset.category || 'all';
+    currentPage = 1;
+    updateButtons(categoryButtons, button);
+    showPage();
+  }));
+  letterButtons.forEach((button) => button.addEventListener('click', () => {
+    activeLetter = button.dataset.letter || 'all';
+    currentPage = 1;
+    updateButtons(letterButtons, button);
+    showPage();
+  }));
+  searchInput?.addEventListener('input', () => {
+    currentPage = 1;
+    showPage();
+  });
+  searchInput?.addEventListener('focus', () => updateSearchSuggestions(getMatchingEntries()));
+  searchInput?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hideSearchSuggestions();
+  });
+  document.addEventListener('click', (event) => {
+    if (event.target instanceof Node && !searchControl?.contains(event.target)) hideSearchSuggestions();
+  });
+  previousButton?.addEventListener('click', () => {
+    if (currentPage > 1) currentPage -= 1;
+    showPage();
+  });
+  nextButton?.addEventListener('click', () => {
+    currentPage += 1;
+    showPage();
+  });
   clearButton?.addEventListener('click', () => {
     if (searchInput) searchInput.value = '';
     activeCategory = 'all';
     activeLetter = 'all';
-    categoryButtons[0]?.click();
-    letterButtons[0]?.click();
+    currentPage = 1;
+    if (categoryButtons[0]) updateButtons(categoryButtons, categoryButtons[0]);
+    if (letterButtons[0]) updateButtons(letterButtons, letterButtons[0]);
+    showPage();
     searchInput?.focus();
   });
+  showPage();
 </script>

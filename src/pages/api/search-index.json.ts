@@ -12,6 +12,7 @@ export const GET = async () => {
     const photos = await getCollection('photos');
     const jobs = await getCollection('jobs');
     const inspirationalStories = await getCollection('inspirational-stories');
+    const encyclopedia = await getCollection('encyclopedia');
 
     // Fetch talents (data collection)
     let talents: any[] = [];
@@ -118,6 +119,15 @@ export const GET = async () => {
             url: `/inspirational-stories/${item.id}`,
             image: item.data.personImage,
             tags: item.data.tags || []
+        })),
+        ...encyclopedia.map(item => ({
+            title: item.data.title,
+            description: item.data.summary,
+            type: 'Encyclopedia',
+            category: item.data.category,
+            url: `/encyclopedia/${item.id}`,
+            image: item.data.image,
+            tags: item.data.aliases || []
         })),
         ...talents.map((item: any, index: number) => ({
             title: item.name,

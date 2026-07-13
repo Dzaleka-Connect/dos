@@ -3,11 +3,15 @@ title: "Population and demography"
 summary: "A dated guide to population figures for Dzaleka and Malawi's refugee population, including countries of origin and why totals vary between reports."
 category: "History"
 entryType: "topic"
+schemaType: "Article"
 aliases: ["Dzaleka population", "Camp population"]
-image: "/images/Inside_dzaleka.jpg"
-imageAlt: "Community life inside Dzaleka Refugee Camp"
+image: "/images/encyclopedia/camp-panorama.jpg"
+imageAlt: "A panoramic view across Dzaleka Refugee Camp"
+imageCaption: "Population growth has made Dzaleka a dense settlement extending across the surrounding landscape."
+imageCredit: "Dzaleka Online Services archive"
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
 facts:
   - label: "August 2024 report"
@@ -16,7 +20,7 @@ facts:
     value: "Democratic Republic of the Congo"
   - label: "Reporting rule"
     value: "Always cite a date and geographic scope"
-relatedEntries: ["dzaleka-refugee-camp", "education-in-dzaleka", "water-and-sanitation"]
+relatedEntries: ["dzaleka-refugee-camp", "history-of-dzaleka", "housing-and-overcrowding", "health-nutrition-and-population", "education-in-dzaleka", "water-and-sanitation"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

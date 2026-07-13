@@ -5,119 +5,315 @@ import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('encyclopedia');
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const toc = headings.filter((heading) => heading.depth === 2);
 const allEntries = await getCollection('encyclopedia');
 const relatedEntries = (entry.data.relatedEntries || [])
   .map((id) => allEntries.find((candidate) => candidate.id === id))
   .filter(Boolean);
-
 const canonical = `https://services.dzaleka.com/encyclopedia/${entry.id}`;
-const schemaType = entry.data.entryType === 'person'
-  ? 'Person'
-  : entry.data.entryType === 'place' || entry.data.entryType === 'overview'
-    ? 'Place'
-    : entry.data.entryType === 'organization'
-      ? 'Organization'
-      : 'Thing';
-const reviewedDate = entry.data.lastReviewed.toLocaleDateString('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+const encyclopediaUrl = 'https://services.dzaleka.com/encyclopedia';
+const campEntityId = `${encyclopediaUrl}/dzaleka-refugee-camp#entity`;
+const configuredEntityType = entry.data.schemaType || (
+  entry.data.entryType === 'person' ? 'Person'
+    : entry.data.entryType === 'organization' ? 'Organization'
+      : entry.data.entryType === 'event' ? 'Event'
+        : entry.data.entryType === 'film' ? 'Movie'
+        : entry.data.entryType === 'place' || entry.data.entryType === 'overview' ? 'Place'
+          : 'Article'
+);
+const entityType = configuredEntityType === 'Article'
+  ? 'DefinedTerm'
+  : configuredEntityType === 'Event'
+    ? 'EventSeries'
+    : configuredEntityType;
+const publishedDate = entry.data.datePublished || entry.data.lastReviewed;
+const reviewedDate = entry.data.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const wordCount = entry.body?.trim().split(/\s+/).filter(Boolean).length || 0;
+const readingMinutes = Math.max(1, Math.ceil(wordCount / 220));
+const correctionUrl = `/encyclopedia/submit-correction?entry=${encodeURIComponent(entry.id)}`;
+const isPerson = entry.data.entryType === 'person';
+const isFilm = entry.data.entryType === 'film';
+const hasHeaderMedia = (isPerson || isFilm) && Boolean(entry.data.image);
+const isLogoImage = entry.data.image?.toLowerCase().includes('logo');
+const allImages = [
+  ...(entry.data.image ? [{
+    src: entry.data.image,
+    alt: entry.data.imageAlt || entry.data.title,
+    caption: entry.data.imageCaption,
+    credit: entry.data.imageCredit,
+  }] : []),
+  ...(entry.data.gallery || []),
+];
+const absoluteUrl = (path: string) => path.startsWith('http') ? path : `https://services.dzaleka.com${path}`;
+const imageObjects = allImages.map((image, index) => ({
+  '@type': 'ImageObject',
+  '@id': `${canonical}#image-${index + 1}`,
+  contentUrl: absoluteUrl(image.src),
+  url: absoluteUrl(image.src),
+  caption: image.caption || image.alt,
+  creditText: image.credit,
+  representativeOfPage: index === 0,
+}));
+
+const entity: Record<string, unknown> = {
+  '@type': entityType,
+  '@id': `${canonical}#entity`,
+  name: entry.data.title,
+  alternateName: entry.data.aliases,
+  description: entry.data.summary,
+  url: entry.data.officialWebsite || canonical,
+  mainEntityOfPage: canonical,
+  image: imageObjects.length ? imageObjects.map((image) => ({ '@id': image['@id'] })) : undefined,
+  sameAs: entry.data.sameAs,
+};
+
+if (entityType === 'DefinedTerm') {
+  entity.inDefinedTermSet = { '@id': `${encyclopediaUrl}#term-set` };
+}
+
+if (entry.data.geo) {
+  entity.geo = {
+    '@type': 'GeoCoordinates',
+    latitude: entry.data.geo.latitude,
+    longitude: entry.data.geo.longitude,
+  };
+  entity.address = {
+    '@type': 'PostalAddress',
+    addressLocality: 'Dzaleka',
+    addressRegion: 'Dowa District',
+    addressCountry: 'MW',
+  };
+  entity.containedInPlace = {
+    '@type': 'AdministrativeArea',
+    name: 'Dowa District',
+    containedInPlace: { '@type': 'Country', name: 'Malawi' },
+  };
+}
+
+if (['Organization', 'NGO', 'RadioStation', 'EducationalOrganization', 'MedicalOrganization'].includes(entityType)) {
+  entity.areaServed = { '@id': campEntityId };
+}
+if (entityType === 'EventSeries') entity.location = { '@id': campEntityId };
+if (entityType === 'Movie') {
+  entity.genre = 'Documentary';
+  entity.locationCreated = { '@id': campEntityId };
+  entity.datePublished = entry.data.film?.releaseDate;
+  entity.duration = entry.data.film?.runtime;
+  entity.director = entry.data.film?.directors?.map((name) => ({ '@type': 'Person', name }));
+  entity.productionCompany = entry.data.film?.productionCompanies?.map((name) => ({ '@type': 'Organization', name }));
+  entity.actor = entry.data.film?.featuredPeople?.map((name) => ({ '@type': 'Person', name }));
+}
+
+const articleSchema = {
+  '@type': 'Article',
+  '@id': `${canonical}#article`,
+  url: canonical,
+  headline: entry.data.title,
+  description: entry.data.summary,
+  image: imageObjects.length ? imageObjects.map((image) => ({ '@id': image['@id'] })) : undefined,
+  datePublished: publishedDate.toISOString(),
+  dateModified: entry.data.lastReviewed.toISOString(),
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  wordCount,
+  articleSection: entry.data.category,
+  mainEntityOfPage: { '@id': canonical },
+  about: { '@id': `${canonical}#entity` },
+  isPartOf: { '@id': `${encyclopediaUrl}#collection` },
+  author: {
+    '@type': 'Organization',
+    '@id': 'https://services.dzaleka.com/#organization',
+    name: 'Dzaleka Online Services',
+    url: 'https://services.dzaleka.com/',
+  },
+  publisher: {
+    '@type': 'Organization',
+    '@id': 'https://services.dzaleka.com/#organization',
+    name: 'Dzaleka Online Services',
+    url: 'https://services.dzaleka.com/',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png',
+    },
+  },
+  citation: entry.data.sources.map((source) => ({
+    '@type': 'CreativeWork',
+    name: source.title,
+    publisher: { '@type': 'Organization', name: source.publisher },
+    url: source.url,
+  })),
+};
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': canonical,
+      url: canonical,
+      name: `${entry.data.title} | Dzaleka Encyclopedia`,
+      description: entry.data.summary,
+      isPartOf: { '@id': 'https://services.dzaleka.com/#website' },
+      breadcrumb: { '@id': `${canonical}#breadcrumb` },
+      mainEntity: { '@id': `${canonical}#entity` },
+      primaryImageOfPage: imageObjects[0] ? { '@id': imageObjects[0]['@id'] } : undefined,
+      datePublished: publishedDate.toISOString(),
+      dateModified: entry.data.lastReviewed.toISOString(),
+    },
+    articleSchema,
+    entity,
+    ...imageObjects,
+    ...(entry.id === 'dzaleka-refugee-camp' ? [] : [{
+      '@type': 'Place',
+      '@id': campEntityId,
+      name: 'Dzaleka Refugee Camp',
+      url: `${encyclopediaUrl}/dzaleka-refugee-camp`,
+      sameAs: ['https://www.wikidata.org/wiki/Q135224742', 'https://en.wikipedia.org/wiki/Dzaleka_Refugee_Camp'],
+    }]),
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonical}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Dzaleka Encyclopedia', item: encyclopediaUrl },
+        { '@type': 'ListItem', position: 3, name: entry.data.title, item: canonical },
+      ],
+    },
+  ],
+};
 ---
 
 <MainLayout
   title={`${entry.data.title} | Dzaleka Encyclopedia`}
   description={entry.data.summary}
   canonical={canonical}
-  image={entry.data.image || '/images/dzaleka-hero.jpeg'}
+  image={entry.data.image || '/images/encyclopedia/camp-panorama.jpg'}
   type="article"
+  robots="index, follow, max-image-preview:large"
+  schema={structuredData}
+  openGraph={{
+    title: entry.data.title,
+    description: entry.data.summary,
+    type: 'article',
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: canonical,
+    image: {
+      url: absoluteUrl(entry.data.image || '/images/encyclopedia/camp-panorama.jpg'),
+      alt: entry.data.imageAlt || entry.data.title,
+      type: 'image/jpeg',
+    },
+    article: {
+      publishedTime: publishedDate.toISOString(),
+      modifiedTime: entry.data.lastReviewed.toISOString(),
+      author: 'Dzaleka Online Services',
+      tags: [entry.data.category, ...(entry.data.aliases || [])],
+      section: entry.data.category,
+    },
+  }}
 >
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: entry.data.title,
-      description: entry.data.summary,
-      image: entry.data.image ? `https://services.dzaleka.com${entry.data.image}` : undefined,
-      dateModified: entry.data.lastReviewed.toISOString(),
-      mainEntityOfPage: canonical,
-      author: {
-        '@type': 'Organization',
-        name: 'Dzaleka Online Services',
-      },
-      publisher: {
-        '@type': 'Organization',
-        name: 'Dzaleka Online Services',
-        url: 'https://services.dzaleka.com',
-      },
-      about: {
-        '@type': schemaType,
-        name: entry.data.title,
-        alternateName: entry.data.aliases || undefined,
-      },
-      citation: entry.data.sources.map((source) => source.url),
-    })}
-  />
-
-  <main class="bg-white">
-    <header class="border-b border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <Breadcrumb
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' },
-            { label: entry.data.title },
-          ]}
-        />
-        <div class="mt-8 max-w-4xl">
-          <div class="flex flex-wrap items-center gap-3">
-            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">{entry.data.category}</p>
-            {entry.data.status === 'developing' && (
-              <span class="rounded-md bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-800">Developing entry</span>
+  <article class="bg-white">
+    <header class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-6xl px-4 py-9 sm:px-6 sm:py-12 lg:px-8">
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' },
+        ]} />
+        <div class:list={[
+          'mt-7',
+          hasHeaderMedia
+            ? isFilm
+              ? 'grid gap-8 sm:grid-cols-[minmax(0,1fr)_240px] sm:items-start lg:grid-cols-[minmax(0,1fr)_280px]'
+              : 'grid gap-8 sm:grid-cols-[minmax(0,1fr)_176px] sm:items-start lg:grid-cols-[minmax(0,1fr)_208px]'
+            : 'max-w-4xl',
+        ]}>
+          <div class="max-w-4xl">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+              <span class="font-semibold uppercase tracking-widest text-slate-500">{entry.data.category}</span>
+              <span class="text-slate-300" aria-hidden="true">/</span>
+              <span class="text-slate-500">{readingMinutes} min read</span>
+              {entry.data.status === 'developing' && (
+                <span class="rounded-md bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900">Developing entry</span>
+              )}
+            </div>
+            <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">{entry.data.title}</h1>
+            {hasHeaderMedia && entry.data.image && (
+              <figure class:list={[
+                'ml-auto mt-6 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:hidden',
+                isFilm ? 'max-w-sm' : 'max-w-xs',
+              ]}>
+                <img
+                  src={entry.data.image}
+                  alt={entry.data.imageAlt || entry.data.title}
+                  class:list={[
+                    isFilm ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-square w-full object-cover',
+                  ]}
+                  fetchpriority="high"
+                />
+                {entry.data.imageCredit && (
+                  <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">Photo: {entry.data.imageCredit}.</figcaption>
+                )}
+              </figure>
             )}
+            {entry.data.aliases && entry.data.aliases.length > 0 && (
+              <p class="mt-3 text-sm text-slate-500">Also known as {entry.data.aliases.join(', ')}</p>
+            )}
+            <p class="mt-5 text-lg leading-8 text-slate-700 sm:text-xl">{entry.data.summary}</p>
+            <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
+              <span>Last reviewed {reviewedDate}</span>
+              <span>{entry.data.sources.length} {entry.data.sources.length === 1 ? 'source' : 'sources'}</span>
+            </div>
           </div>
-          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">{entry.data.title}</h1>
-          {entry.data.aliases && entry.data.aliases.length > 0 && (
-            <p class="mt-3 text-sm text-slate-500">Also known as {entry.data.aliases.join(', ')}</p>
+          {hasHeaderMedia && entry.data.image && (
+            <figure class:list={[
+              'hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:block',
+              isFilm ? 'w-60 lg:w-[280px]' : 'w-44 lg:w-52',
+            ]}>
+              <img
+                src={entry.data.image}
+                alt={entry.data.imageAlt || entry.data.title}
+                class:list={[
+                  isFilm ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-[4/5] w-full object-cover',
+                ]}
+                fetchpriority="high"
+              />
+              {entry.data.imageCredit && (
+                <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">Photo: {entry.data.imageCredit}.</figcaption>
+              )}
+            </figure>
           )}
-          <p class="mt-5 text-lg leading-8 text-slate-600 sm:text-xl">{entry.data.summary}</p>
-          <p class="mt-5 text-sm text-slate-500">Last reviewed {reviewedDate}</p>
         </div>
       </div>
     </header>
 
-    {entry.data.image && (
+    {entry.data.image && !isPerson && !isFilm && (
       <div class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 lg:px-8">
-        <figure class:list={[
-          'overflow-hidden rounded-xl border border-slate-200 bg-slate-100',
-          entry.data.entryType === 'person' ? 'max-w-sm' : '',
-        ]}>
+        <figure class="overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
           <img
             src={entry.data.image}
             alt={entry.data.imageAlt || entry.data.title}
-            class:list={[
-              'w-full object-cover',
-              entry.data.entryType === 'person' ? 'aspect-[4/5]' : 'aspect-[16/7]',
-            ]}
+            class:list={['w-full', isLogoImage ? 'h-64 bg-white object-contain p-10 sm:h-72 sm:p-14' : 'max-h-[620px] aspect-[16/8] object-cover']}
+            fetchpriority="high"
           />
+          {(entry.data.imageCaption || entry.data.imageCredit) && (
+            <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-500">
+              {entry.data.imageCaption}{entry.data.imageCaption && entry.data.imageCredit ? ' ' : ''}{entry.data.imageCredit && <span>Photo: {entry.data.imageCredit}.</span>}
+            </figcaption>
+          )}
         </figure>
       </div>
     )}
 
-    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:px-8 lg:py-14">
-      <article class="min-w-0">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_290px] lg:px-8 lg:py-14">
+      <div class="min-w-0">
         {entry.data.status === 'developing' && (
           <div class="mb-8 border-l-4 border-amber-500 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
-            This entry documents verified historical information, but a recent primary source has not yet confirmed every current operational detail.
+            This entry preserves verified historical information, but a recent primary source has not confirmed every current operational detail.
           </div>
         )}
 
@@ -125,25 +321,79 @@ const reviewedDate = entry.data.lastReviewed.toLocaleDateString('en-GB', {
           <Content />
         </div>
 
+        {entry.data.gallery && entry.data.gallery.length > 0 && (
+          <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="gallery-heading">
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Visual record</p>
+            <h2 id="gallery-heading" class="mt-2 text-2xl font-bold text-slate-950">Photographs</h2>
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              {entry.data.gallery.map((image, index) => (
+                <figure class:list={['overflow-hidden rounded-xl border border-slate-200 bg-slate-50', index === 0 && entry.data.gallery && entry.data.gallery.length % 2 === 1 ? 'sm:col-span-2' : '']}>
+                  <img src={image.src} alt={image.alt} class="aspect-[4/3] w-full object-cover" loading="lazy" />
+                  {(image.caption || image.credit) && (
+                    <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-500">
+                      {image.caption}{image.caption && image.credit ? ' ' : ''}{image.credit && <span>Photo: {image.credit}.</span>}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="sources-heading">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">References</p>
+          <h2 id="sources-heading" class="mt-2 text-2xl font-bold text-slate-950">Sources</h2>
+          <ol class="mt-6 space-y-5">
+            {entry.data.sources.map((source, index) => (
+              <li class="grid grid-cols-[2rem_minmax(0,1fr)] gap-3 text-sm leading-6">
+                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-500">{index + 1}</span>
+                <div>
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">{source.title}</a>
+                  <p class="text-slate-600">{source.publisher}{source.date ? `, ${source.date}` : ''}</p>
+                  {source.note && <p class="mt-1 text-xs text-slate-500">{source.note}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
         {relatedEntries.length > 0 && (
-          <section class="mt-12 border-t border-slate-200 pt-8">
-            <h2 class="text-2xl font-bold text-slate-950">Related entries</h2>
-            <div class="mt-5 divide-y divide-slate-200 border-y border-slate-200">
+          <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="related-heading">
+            <h2 id="related-heading" class="text-2xl font-bold text-slate-950">Related entries</h2>
+            <div class="mt-5 grid gap-3 sm:grid-cols-2">
               {relatedEntries.map((related) => related && (
-                <a href={`/encyclopedia/${related.id}`} class="group flex items-center justify-between gap-4 py-4">
-                  <div>
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{related.data.category}</p>
-                    <h3 class="mt-1 font-bold text-slate-950 group-hover:text-primary-700">{related.data.title}</h3>
-                  </div>
-                  <span class="text-primary-700" aria-hidden="true">&rarr;</span>
+                <a href={`/encyclopedia/${related.id}`} class="group rounded-xl border border-slate-200 bg-white p-4 hover:border-slate-300 hover:shadow-sm">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{related.data.category}</p>
+                  <h3 class="mt-1 font-bold text-slate-950 group-hover:text-primary-700">{related.data.title}</h3>
+                  <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{related.data.summary}</p>
                 </a>
               ))}
             </div>
           </section>
         )}
-      </article>
 
-      <aside class="space-y-8 lg:sticky lg:top-28 lg:h-fit">
+        <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-xl font-bold text-slate-950">Help improve this entry</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Send a correction, a stronger source, a missing detail, or a photograph. Submissions are reviewed against the encyclopedia's editorial guidance before the public record changes.</p>
+          <a href={correctionUrl} class="mt-4 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Submit a correction</a>
+          <a href="/encyclopedia/editorial-guidelines" class="mt-4 ml-3 inline-flex text-sm font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">Read the editorial guidelines</a>
+        </section>
+      </div>
+
+      <aside class="space-y-7 lg:sticky lg:top-28 lg:h-fit">
+        {toc.length > 0 && (
+          <nav class="border-b border-slate-200 pb-6" aria-label="On this page">
+            <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">On this page</h2>
+            <ol class="mt-4 space-y-2.5">
+              {toc.map((heading) => (
+                <li><a href={`#${heading.slug}`} class="text-sm leading-5 text-slate-700 hover:text-primary-700">{heading.text}</a></li>
+              ))}
+              {entry.data.gallery && <li><a href="#gallery-heading" class="text-sm leading-5 text-slate-700 hover:text-primary-700">Photographs</a></li>}
+              <li><a href="#sources-heading" class="text-sm leading-5 text-slate-700 hover:text-primary-700">Sources</a></li>
+            </ol>
+          </nav>
+        )}
+
         {entry.data.facts && entry.data.facts.length > 0 && (
           <section class="rounded-xl border border-slate-200 bg-slate-50 p-5">
             <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">At a glance</h2>
@@ -158,41 +408,25 @@ const reviewedDate = entry.data.lastReviewed.toLocaleDateString('en-GB', {
           </section>
         )}
 
-        <section class="border-t border-slate-200 pt-6 lg:border-t-0 lg:pt-0">
-          <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Sources</h2>
-          <ol class="mt-4 space-y-4">
-            {entry.data.sources.map((source, index) => (
-              <li class="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2 text-sm leading-6">
-                <span class="font-semibold text-slate-400">{index + 1}</span>
-                <div>
-                  <a href={source.url} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">
-                    {source.title}
-                  </a>
-                  <p class="text-slate-600">{source.publisher}{source.date ? `, ${source.date}` : ''}</p>
-                  {source.note && <p class="mt-1 text-xs text-slate-500">{source.note}</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
+        {entry.data.officialWebsite && (
+          <a href={entry.data.officialWebsite} target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-4 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+            <span>Official website</span><span aria-hidden="true">↗</span>
+          </a>
+        )}
 
-        <section class="border-t border-slate-200 pt-6">
-          <h2 class="font-bold text-slate-950">See something to correct?</h2>
-          <p class="mt-2 text-sm leading-6 text-slate-600">Send evidence or a better source for editorial review.</p>
-          <a href="/support" class="mt-4 inline-flex rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50">Report an issue</a>
-        </section>
+        <p class="text-xs leading-5 text-slate-500">This entry is part of a community-maintained reference work. Service details may change between reviews. <a href="/encyclopedia/about" class="underline underline-offset-2 hover:text-primary-700">About the encyclopedia</a>.</p>
       </aside>
     </div>
-  </main>
+  </article>
 </MainLayout>
 
 <style>
   .encyclopedia-prose :global(h2) {
-    margin-top: 2.5rem;
+    margin-top: 2.75rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgb(226 232 240);
+    scroll-margin-top: 7rem;
   }
-
   .encyclopedia-prose :global(h2:first-child) {
     margin-top: 0;
     padding-top: 0;

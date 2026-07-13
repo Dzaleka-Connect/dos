@@ -116,7 +116,8 @@ export const GET: APIRoute = async ({ request, url }) => {
       'news',
       'photos',
       'jobs',
-      'docs'
+      'docs',
+      'encyclopedia'
     ];
     const limit = parseInt(url.searchParams.get('limit') || '10');
 
@@ -156,8 +157,11 @@ export const GET: APIRoute = async ({ request, url }) => {
               item.data.title,
               item.data.name,
               item.data.description,
+              item.data.summary,
               item.data.category,
               item.data.tags?.join(' '),
+              item.data.aliases?.join(' '),
+              item.body,
               item.id
             ]
               .filter(Boolean)
@@ -170,10 +174,10 @@ export const GET: APIRoute = async ({ request, url }) => {
           .map(item => ({
             slug: item.id,
             title: item.data.title || item.data.name,
-            description: item.data.description,
+            description: item.data.description || item.data.summary,
             category: item.data.category,
             collection: collectionName,
-            url: `/${collectionName}/${item.id}`,
+            url: collectionName === 'encyclopedia' ? `/encyclopedia/${item.id}` : `/${collectionName}/${item.id}`,
             image: item.data.image || item.data.logo,
             featured: item.data.featured || false
           }));

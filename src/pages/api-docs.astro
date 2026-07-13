@@ -12,6 +12,7 @@ const siteUrl = 'https://services.dzaleka.com';
 const baseApiUrl = `${siteUrl}/api`;
 
 const collectionEndpoints = [
+  { name: 'Encyclopedia', path: '/api/encyclopedia', dataKey: 'entries', methods: ['GET', 'OPTIONS'], description: 'Sourced encyclopedia entries with filters, pagination, detail records, suggestions, facets, and JSON-LD.', docs: '/encyclopedia/developers' },
   { name: 'Services', path: '/api/services', dataKey: 'services', description: 'Published service organisations and support listings.' },
   { name: 'Resources', path: '/api/resources', dataKey: 'resources', description: 'Published resources, documents, and downloads.' },
   { name: 'Events', path: '/api/events', dataKey: 'events', description: 'Published community events and activity listings.' },
@@ -224,6 +225,12 @@ const linkHeaderExample = discoveryLinks
             >
               Open data platform
             </a>
+            <a
+              href="/encyclopedia/developers"
+              class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Encyclopedia API
+            </a>
           </div>
         </div>
 
@@ -318,7 +325,7 @@ const linkHeaderExample = discoveryLinks
             <div class="max-w-3xl">
               <h2 class="text-2xl font-semibold text-gray-900">Collection endpoints</h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
-                These endpoints share the same public response pattern. `GET` returns the full collection, `POST` returns the same collection with optional metadata and stats, and `OPTIONS` is available for CORS.
+                Most collection endpoints support `GET`, `POST`, and `OPTIONS`. The encyclopedia is read-only and uses dedicated query, detail, suggestion, and facet endpoints.
               </p>
             </div>
 
@@ -338,7 +345,7 @@ const linkHeaderExample = discoveryLinks
                         <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
                       </div>
                       <div class="flex flex-wrap gap-2">
-                        {['GET', 'POST', 'OPTIONS'].map((method) => (
+                        {(endpoint.methods || ['GET', 'POST', 'OPTIONS']).map((method) => (
                           <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
                             {method}
                           </span>
@@ -347,7 +354,10 @@ const linkHeaderExample = discoveryLinks
                       <div>
                         <code class="rounded-[5px] bg-gray-100 px-2 py-1 text-xs text-gray-700">{endpoint.dataKey}</code>
                       </div>
-                      <p class="text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                      <div>
+                        <p class="text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                        {endpoint.docs && <a href={endpoint.docs} class="mt-2 inline-flex text-sm font-semibold text-primary-700 hover:text-primary-800">Dedicated documentation</a>}
+                      </div>
                     </div>
                   </div>
                 ))}

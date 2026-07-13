@@ -86,11 +86,15 @@ const homepageSchema = [
     '@type': 'WebSite',
     '@id': `${canonical}#website`,
     name: 'Dzaleka Online Services',
+    alternateName: ['Dzaleka Online', 'services.dzaleka.com'],
     url: canonical,
     description: seo.description,
     inLanguage: 'en',
     publisher: {
       '@id': `${canonical}#organization`
+    },
+    about: {
+      '@id': 'https://services.dzaleka.com/encyclopedia/dzaleka-refugee-camp#entity'
     }
   },
   {
@@ -111,10 +115,39 @@ const homepageSchema = [
       addressRegion: 'Dowa District',
       addressCountry: 'MW'
     },
+    areaServed: {
+      '@id': 'https://services.dzaleka.com/encyclopedia/dzaleka-refugee-camp#entity'
+    },
     sameAs: [
       'https://facebook.com/dzalekaonline',
       'https://twitter.com/dzalekaconnect',
       'https://instagram.com/dzalekaonline'
+    ]
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    '@id': 'https://services.dzaleka.com/encyclopedia/dzaleka-refugee-camp#entity',
+    name: 'Dzaleka Refugee Camp',
+    alternateName: ['Dzaleka Camp', 'Dzaleka Refugee Settlement'],
+    description: "A long-established refugee settlement in Dowa District, Malawi, opened in 1994 and home to a multilingual community from the Great Lakes region and the Horn of Africa.",
+    url: 'https://services.dzaleka.com/encyclopedia/dzaleka-refugee-camp',
+    image: 'https://services.dzaleka.com/images/encyclopedia/entrance-sign.jpg',
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: -13.6628138,
+      longitude: 33.8704301
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Dzaleka',
+      addressRegion: 'Dowa District',
+      addressCountry: 'MW'
+    },
+    sameAs: [
+      'https://www.wikidata.org/wiki/Q135224742',
+      'https://en.wikipedia.org/wiki/Dzaleka_Refugee_Camp',
+      'https://www.unhcr.org/us/where-we-work/countries/malawi'
     ]
   }
 ];

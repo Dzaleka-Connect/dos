@@ -3,12 +3,17 @@ title: "Tumaini Festival"
 summary: "A refugee-led arts and culture festival founded in Dzaleka in 2014, bringing camp residents, Malawian communities, and visiting artists together."
 category: "Culture"
 entryType: "event"
+schemaType: "Event"
 aliases: ["Tumaini", "Tumaini Arts Festival"]
 image: "/images/tumaini_festival_cover.jpeg"
 imageAlt: "A crowd and performers at Tumaini Festival in Dzaleka"
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
+officialWebsite: "https://tumaini-festival.dzaleka.com/"
+sameAs:
+  - "https://tumaini-festival.dzaleka.com/"
 facts:
   - label: "Founded"
     value: "2014"
@@ -16,7 +21,7 @@ facts:
     value: "Menes la Plume"
   - label: "Location"
     value: "Dzaleka Refugee Camp"
-relatedEntries: ["menes-la-plume", "dzaleka-refugee-camp", "yetu-community-radio"]
+relatedEntries: ["menes-la-plume", "dzaleka-refugee-camp", "yetu-community-radio", "refugee-led-organisations", "we-name-ourselves-film"]
 sources:
   - title: "Tumaini Festival history"
     publisher: "Dzaleka Digital Heritage"

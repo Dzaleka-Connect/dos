@@ -4,12 +4,17 @@ sortName: "Magambi, Innocent"
 summary: "Refugee-rights advocate and founder of There Is Hope, whose work grew from his experience living in Dzaleka and other refugee camps."
 category: "People"
 entryType: "person"
+schemaType: "Person"
 aliases: ["Innocent Magambi Ziba"]
 image: "/images/profiles/innocent-magambi.png"
 imageAlt: "Portrait of Innocent Magambi"
 featured: true
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
+sameAs:
+  - "https://inuaadvocacy.org/home/story/"
+  - "https://thereishopemalawi.org/team/"
 facts:
   - label: "Born"
     value: "1972, Democratic Republic of the Congo"
@@ -17,7 +22,7 @@ facts:
     value: "There Is Hope and Inua Advocacy"
   - label: "Connection to Dzaleka"
     value: "Former resident and community organisation founder"
-relatedEntries: ["dzaleka-refugee-camp", "dzaleka-health-centre", "education-in-dzaleka"]
+relatedEntries: ["dzaleka-refugee-camp", "there-is-hope-malawi", "inua-advocacy", "law-and-encampment-policy"]
 sources:
   - title: "A word from our founder"
     publisher: "There Is Hope"

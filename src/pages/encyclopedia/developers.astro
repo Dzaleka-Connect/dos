@@ -1,0 +1,121 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const canonical = 'https://services.dzaleka.com/encyclopedia/developers';
+const title = 'Dzaleka Encyclopedia API';
+const description = 'Developer documentation for searching, filtering, and reusing records from the Dzaleka Encyclopedia public API.';
+const endpoints = [
+  ['GET', '/api/encyclopedia', 'List, search, filter, sort, and paginate entries.'],
+  ['GET', '/api/encyclopedia/{slug}', 'Retrieve one complete entry, including Markdown body and sources.'],
+  ['GET', '/api/encyclopedia/suggest', 'Return lightweight ranked suggestions for a search interface.'],
+  ['GET', '/api/encyclopedia/facets', 'Return counts by category, entry type, status, and initial letter.'],
+];
+---
+
+<MainLayout title={`${title} | Dzaleka Online Services`} description={description} canonical={canonical}>
+  <div class="bg-white">
+    <header class="border-b border-slate-200 bg-slate-950 text-white">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' }]} light />
+        <p class="mt-8 text-sm font-semibold uppercase tracking-widest text-slate-300">Developers</p>
+        <h1 class="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">Dzaleka Encyclopedia API</h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-200 sm:text-xl">Public, read-only JSON access to encyclopedia entries, sources, relationships, images, and structured entity data.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="/api/encyclopedia" class="inline-flex rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-100">Open the API</a>
+          <a href="/api/openapi.json" class="inline-flex rounded-lg border border-slate-600 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">OpenAPI document</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:px-8 lg:py-14">
+      <aside class="lg:sticky lg:top-28 lg:h-fit">
+        <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">On this page</p>
+        <nav class="mt-4 border-l border-slate-200 pl-4 text-sm" aria-label="Developer page contents">
+          <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#quick-start">Quick start</a>
+          <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#endpoints">Endpoints</a>
+          <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#parameters">Parameters</a>
+          <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#json-ld">JSON-LD</a>
+          <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#usage">Usage and attribution</a>
+        </nav>
+      </aside>
+
+      <main class="min-w-0 space-y-12">
+        <section id="quick-start" class="scroll-mt-28">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Quick start</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">No API key required</h2>
+          <p class="mt-4 leading-7 text-slate-700">Send a GET request from a browser, command line, server, or client application. CORS is enabled for public read access.</p>
+          <pre class="mt-5 overflow-x-auto rounded-xl bg-slate-950 p-5 text-sm leading-6 text-slate-100"><code>curl "https://services.dzaleka.com/api/encyclopedia?q=health&amp;perPage=10"</code></pre>
+          <pre class="mt-4 overflow-x-auto rounded-xl bg-slate-950 p-5 text-sm leading-6 text-slate-100"><code>{`const response = await fetch(
+  'https://services.dzaleka.com/api/encyclopedia?type=person&perPage=20'
+);
+const { data, meta } = await response.json();`}</code></pre>
+        </section>
+
+        <section id="endpoints" class="scroll-mt-28 border-t border-slate-200 pt-10">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Reference</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Endpoints</h2>
+          <div class="mt-6 overflow-hidden rounded-xl border border-slate-200">
+            <div class="divide-y divide-slate-200">
+              {endpoints.map(([method, path, detail]) => (
+                <div class="grid gap-2 p-5 sm:grid-cols-[60px_250px_minmax(0,1fr)] sm:items-start">
+                  <span class="w-fit rounded-md border border-green-200 bg-green-50 px-2 py-1 text-xs font-bold text-green-800">{method}</span>
+                  <code class="break-all text-sm font-semibold text-slate-950">{path}</code>
+                  <p class="text-sm leading-6 text-slate-600">{detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="parameters" class="scroll-mt-28 border-t border-slate-200 pt-10">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Collection query</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Filters and pagination</h2>
+          <dl class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+            {[
+              ['q', 'Full-text search across title, aliases, summary, category, type, and entry body.'],
+              ['category', 'Exact category, such as People, Culture, Health, or Institution.'],
+              ['type', 'Exact entry type: person, organization, place, overview, event, film, or topic.'],
+              ['status', 'reviewed or developing.'],
+              ['featured', 'true or false.'],
+              ['page', 'Page number. Defaults to 1.'],
+              ['perPage', 'Records per page. Defaults to 20 and is capped at 100.'],
+              ['sort', 'title or updated.'],
+              ['order', 'asc or desc.'],
+              ['include', 'Use include=body to add Markdown bodies to collection results. Detail responses always include the body.'],
+            ].map(([term, detail]) => (
+              <div class="grid gap-2 py-4 sm:grid-cols-[110px_minmax(0,1fr)]">
+                <dt><code class="text-sm font-bold text-slate-950">{term}</code></dt>
+                <dd class="text-sm leading-6 text-slate-600">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="mt-5 text-sm leading-6 text-slate-600">Collection responses include <code>meta</code> totals and first, previous, next, and last links. An out-of-range page returns an empty entries array without changing the requested page number.</p>
+        </section>
+
+        <section id="json-ld" class="scroll-mt-28 border-t border-slate-200 pt-10">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Linked data</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Request Schema.org JSON-LD</h2>
+          <p class="mt-4 leading-7 text-slate-700">Individual records can be returned as entity-focused JSON-LD. Types include Person, Organization, Place, EventSeries, Movie, and DefinedTerm.</p>
+          <pre class="mt-5 overflow-x-auto rounded-xl bg-slate-950 p-5 text-sm leading-6 text-slate-100"><code>curl -H "Accept: application/ld+json" \
+  "https://services.dzaleka.com/api/encyclopedia/remy-gakwaya"</code></pre>
+          <p class="mt-4 text-sm leading-6 text-slate-600">Clients that cannot set an Accept header may append <code>?format=jsonld</code>.</p>
+        </section>
+
+        <section id="usage" class="scroll-mt-28 border-t border-slate-200 pt-10">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Responsible reuse</p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Usage, limits, and attribution</h2>
+          <div class="mt-5 space-y-4 leading-7 text-slate-700">
+            <p>Read requests are limited to 60 per minute per IP address. Successful responses are cached for five minutes. Errors use standard HTTP status codes and return a JSON object with <code>status: "error"</code> and a message.</p>
+            <p>Attribute reused records to <strong>Dzaleka Encyclopedia, Dzaleka Online Services</strong> and link to the source entry where practical. Review the <a href="/open-license" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">open license</a> before bulk reuse.</p>
+            <p>Current service, policy, and population claims can age. Preserve each record's <code>lastReviewed</code> date and inspect its sources before presenting it as current.</p>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="/api-docs" class="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-50">All site APIs</a>
+            <a href="/encyclopedia/submit-correction" class="inline-flex rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">Report a data issue</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</MainLayout>

@@ -3,9 +3,20 @@ title: "Water and sanitation"
 summary: "A reference entry on water supply, latrines, handwashing, and waste management in Dzaleka, based on UNHCR's August 2024 reporting."
 category: "Infrastructure"
 entryType: "topic"
+schemaType: "Article"
 aliases: ["WASH in Dzaleka", "Water supply in Dzaleka"]
+image: "/images/encyclopedia/drainage-channel.jpg"
+imageAlt: "An open drainage channel between homes in Dzaleka"
+imageCaption: "Drainage, wastewater, and solid-waste systems operate under severe space constraints."
+imageCredit: "Dzaleka Online Services archive"
+gallery:
+  - src: "/images/encyclopedia/housing-lane.jpg"
+    alt: "Closely spaced homes along a lane in Dzaleka"
+    caption: "Dense housing limits space available for household sanitation."
+    credit: "Dzaleka Online Services archive"
 featured: false
 status: "reviewed"
+datePublished: 2026-07-13
 lastReviewed: 2026-07-13
 facts:
   - label: "Functional handpumps reported"
@@ -16,7 +27,7 @@ facts:
     value: "275, including institutions"
   - label: "Reference period"
     value: "UNHCR August 2024 fact sheet"
-relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "dzaleka-health-centre"]
+relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "dzaleka-health-centre", "housing-and-overcrowding", "health-nutrition-and-population"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"
