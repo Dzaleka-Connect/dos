@@ -5,6 +5,10 @@ category: "Health"
 entryType: "topic"
 schemaType: "Article"
 aliases: ["Mental health", "MHPSS in Dzaleka"]
+image: "/images/encyclopedia/mental-health-in-dzaleka.jpg"
+imageAlt: "A facilitator leading a session with students in Dzaleka"
+imageCaption: "A psychosocial support session with students, photographed by the Match Foundation."
+imageCredit: "Match Foundation"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13

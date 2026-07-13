@@ -6,6 +6,10 @@ entryType: "organization"
 schemaType: "Organization"
 aliases: ["Kibebe", "Kibebe Malawi"]
 officialWebsite: "https://kibebe.com"
+image: "/images/encyclopedia/kibebe.jpg"
+imageAlt: "A Kibébé artisan cutting repurposed denim at the workshop"
+imageCaption: "An artisan working with repurposed denim, from Kibébé's own site."
+imageCredit: "Kibébé"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13

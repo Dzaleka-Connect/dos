@@ -5,6 +5,10 @@ category: "History"
 entryType: "place"
 schemaType: "Place"
 aliases: ["Luwani camp"]
+image: "/images/encyclopedia/luwani-refugee-camp.jpg"
+imageAlt: "Mozambican refugees at makeshift shelters in 2016"
+imageCaption: "Mozambican refugees photographed during Al Jazeera's 2016 reporting on the Kapise–Luwani relocation."
+imageCredit: "Al Jazeera"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13
@@ -32,6 +36,10 @@ sources:
     publisher: "UNHCR Operational Data Portal"
     url: "https://data.unhcr.org/en/news/15264"
     date: "April 2016"
+  - title: "Mozambican refugees stuck between somewhere and nowhere"
+    publisher: "Al Jazeera"
+    url: "https://www.aljazeera.com/features/2016/7/22/mozambican-refugees-stuck-between-somewhere-and-nowhere"
+    date: "22 July 2016"
   - title: "UN agency welcomes Malawi's decision to reopen former camp for Mozambique refugees"
     publisher: "UN News"
     url: "https://news.un.org/en/story/2016/03/524342"
@@ -50,6 +58,6 @@ On 26 October 2007, Luwani closed on government orders, and a UNHCR convoy moved
 
 In March 2016, the government agreed to reopen Luwani as numbers fleeing renewed political violence in Mozambique grew, and UNHCR began relocating Mozambican asylum seekers there from the border village of Kapise the following month. The reopening proved short-lived: as conditions in Mozambique changed, most residents opted for voluntary repatriation, and the camp wound down again.
 
-## Why it matters for Dzaleka
+## Legacy in Dzaleka's records
 
 Luwani appears throughout Dzaleka's records — UNHCR nutrition surveys from the mid-2010s covered "Dzaleka and Luwani" together, and older residents of Dzaleka include people transferred in the 2007 closure. Understanding Luwani is necessary to understand how Malawi arrived at a single-camp policy.

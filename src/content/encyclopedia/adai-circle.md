@@ -5,6 +5,10 @@ category: "Education"
 entryType: "organization"
 schemaType: "EducationalOrganization"
 aliases: ["Africa Deep Artificial Intelligence Circle", "Adai Circle"]
+image: "/images/encyclopedia/adai-circle.jpg"
+imageAlt: "ADAI Circle members working with computers in Dzaleka"
+imageCaption: "ADAI Circle members, from MIT Open Learning's coverage of the organisation."
+imageCredit: "MIT Open Learning"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13

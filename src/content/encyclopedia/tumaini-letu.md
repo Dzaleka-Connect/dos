@@ -6,6 +6,10 @@ entryType: "organization"
 schemaType: "NGO"
 aliases: ["Tumaini letu"]
 officialWebsite: "https://tumainiletu.org"
+image: "/images/tumaini_festival_cover.jpeg"
+imageAlt: "A crowd and performers at Tumaini Festival in Dzaleka"
+imageCaption: "Tumaini Letu's flagship event, the Tumaini Festival, inside Dzaleka."
+imageCredit: "Dzaleka Online Services archive"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13

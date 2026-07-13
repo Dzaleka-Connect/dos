@@ -5,6 +5,10 @@ category: "Culture"
 entryType: "topic"
 schemaType: "Article"
 aliases: ["Football in Dzaleka", "Dzaleka Sports Association"]
+image: "/images/encyclopedia/sport-in-dzaleka.jpg"
+imageAlt: "Young footballers at a Dzaleka Sports Association event"
+imageCaption: "A Dzaleka Sports Association youth football event, from Dzaleka.com's reporting."
+imageCredit: "Dzaleka Sports Association via Dzaleka.com"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13
@@ -47,6 +51,6 @@ The Dzaleka Sports Association organises structured competition for children, in
 
 External programmes have grown around the local scene. A FIFA Foundation–supported coaching programme ran in the camp in 2024, with a FIFA assessment visit reported in 2026. The Match Foundation has documented football-based mental health work with young people, run with the Fountain of Hope organisation. Dance and youth groups such as Salama Africa also field football teams alongside their arts programmes.
 
-## Why sport matters here
+## Beyond recreation
 
 In a camp where formal work and movement are restricted, organised sport carries weight beyond recreation: structured time for young people, one of the main bridges to the host community, and — as the mental health entry documents — one of the few widely accessible forms of psychosocial support.

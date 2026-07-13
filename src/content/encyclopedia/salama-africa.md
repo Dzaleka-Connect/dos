@@ -5,6 +5,10 @@ category: "Culture"
 entryType: "organization"
 schemaType: "Organization"
 aliases: ["Salama Africa Dance Crew"]
+image: "/images/encyclopedia/salama-africa.jpg"
+imageAlt: "Two members of Salama Africa in Dzaleka"
+imageCaption: "Members of Salama Africa, photographed for JRS's 2018 profile of the group."
+imageCredit: "Jesuit Refugee Service"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13
@@ -46,6 +50,6 @@ Reporting on the group describes a nationally competitive dance crew alongside f
 
 Salama Africa performers have also appeared at the Tumaini Festival, the annual arts festival held inside Dzaleka.
 
-## Why it matters
+## Youth organisation through the arts
 
 Dance groups are one of the most visible forms of youth organisation in Dzaleka. Alongside groups documented in the camp's wider dance scene, Salama Africa shows how cultural work doubles as youth support: structured time, mentorship, and a public stage for young people whose options are otherwise limited by encampment.

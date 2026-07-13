@@ -23,7 +23,7 @@ sources:
   - title: "Solar Electric Cooking in Displacement Settings: Lessons from Dzaleka Refugee Camp"
     publisher: "Modern Energy Cooking Services (MECS)"
     url: "https://mecs.org.uk/publications/solar-electric-cooking-in-displacement-settings-lessons-from-dzaleka-refugee-camp/"
-    date: "2024"
+    date: "10 September 2024"
   - title: "Solar Electric Cooking in Displacement Settings: Lessons from Dzaleka Refugee Camp (report PDF)"
     publisher: "Modern Energy Cooking Services (MECS)"
     url: "https://mecs.org.uk/wp-content/uploads/2024/09/Solar-Electric-Cooking-in-Displacement-Settings-Lessons-from-Dzaleka-Refugee-Camp.pdf"
@@ -44,7 +44,7 @@ The costs of biomass cooking fall unevenly. Firewood collection is customarily a
 
 From September 2022, Modern Energy Cooking Services (MECS) and the World Food Programme ran a solar electric cooking pilot in Dzaleka, installing solar-powered electric stoves in 61 households and a day-care centre. A follow-up study 18 months after installation examined how the stoves held up in daily use and what they displaced.
 
-The resulting 2024 report, "Solar Electric Cooking in Displacement Settings: Lessons from Dzaleka Refugee Camp," documents both the promise and the practical constraints of solar cooking in the camp — panel capacity, weather dependence, and the persistence of biomass as a backup. It is the most detailed public study of household energy in Dzaleka to date.
+The resulting report by Todd and Giese, published in September 2024, documents both the promise and the practical constraints of solar cooking in the camp — panel capacity, weather dependence, and the persistence of biomass as a backup. It is the most detailed public study of household energy in Dzaleka to date.
 
 ## Reading the numbers
 

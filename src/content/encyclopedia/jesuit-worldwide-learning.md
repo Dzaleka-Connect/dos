@@ -6,6 +6,10 @@ entryType: "organization"
 schemaType: "EducationalOrganization"
 aliases: ["JWL", "Jesuit Worldwide Learning: Higher Education at the Margins"]
 officialWebsite: "https://www.jwl.org"
+image: "/images/encyclopedia/jesuit-worldwide-learning.jpg"
+imageAlt: "Jesuit Worldwide Learning graduates in Malawi at a diploma ceremony"
+imageCaption: "JWL diploma graduates in Malawi, from Regis University's 2019 announcement."
+imageCredit: "Regis University"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13
