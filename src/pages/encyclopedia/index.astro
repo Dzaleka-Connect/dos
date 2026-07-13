@@ -1,0 +1,299 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+
+const entries = (await getCollection('encyclopedia')).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return (a.data.sortName || a.data.title).localeCompare(b.data.sortName || b.data.title);
+});
+
+const categories = [...new Set(entries.map((entry) => entry.data.category))]
+  .sort()
+  .map((category) => ({
+    name: category,
+    count: entries.filter((entry) => entry.data.category === category).length,
+  }));
+
+const availableLetters = [...new Set(entries.map((entry) => (entry.data.sortName || entry.data.title).charAt(0).toUpperCase()))].sort();
+const sourceCount = new Set(entries.flatMap((entry) => entry.data.sources.map((source) => source.url))).size;
+const canonical = 'https://services.dzaleka.com/encyclopedia';
+const title = 'Dzaleka Encyclopedia';
+const description = 'Search sourced reference entries about Dzaleka Refugee Camp, including its history, people, places, institutions, culture, health, education, and infrastructure.';
+---
+
+<MainLayout
+  title={`${title} | Dzaleka Online Services`}
+  description={description}
+  canonical={canonical}
+  image="/images/dzaleka-hero.jpeg"
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: title,
+      description,
+      url: canonical,
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: entries.length,
+        itemListElement: entries.map((entry, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: `${canonical}/${entry.id}`,
+          name: entry.data.title,
+        })),
+      },
+    })}
+  />
+
+  <main class="bg-white">
+    <section class="relative overflow-hidden bg-slate-950 text-white">
+      <img
+        src="/images/dzaleka-hero.jpeg"
+        alt="Dzaleka Refugee Camp"
+        class="absolute inset-0 h-full w-full object-cover opacity-35"
+      />
+      <div class="absolute inset-0 bg-slate-950/70"></div>
+      <div class="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <Breadcrumb
+          items={[{ label: 'Home', href: '/' }, { label: 'Dzaleka Encyclopedia' }]}
+          light
+        />
+        <div class="mt-8 max-w-4xl">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-300">Community reference</p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">Dzaleka Encyclopedia</h1>
+          <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-200 sm:text-xl">
+            Sourced articles about the camp's history, people, places, institutions, culture, and public life.
+          </p>
+        </div>
+
+        <div class="mt-8 max-w-3xl">
+          <label for="encyclopedia-search" class="sr-only">Search the encyclopedia</label>
+          <div class="relative">
+            <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+            </svg>
+            <input
+              id="encyclopedia-search"
+              type="search"
+              placeholder="Search names, places, organisations, and topics"
+              autocomplete="off"
+              class="w-full rounded-lg border border-white bg-white py-4 pl-12 pr-4 text-base text-slate-950 shadow-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-400"
+            />
+          </div>
+          <p class="mt-3 text-sm text-slate-300">Search includes titles, aliases, summaries, categories, and article text.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-slate-200 px-4 sm:px-6 md:grid-cols-3 lg:px-8">
+        <div class="bg-slate-50 py-5 pr-5">
+          <p class="text-2xl font-bold text-slate-950">{entries.length}</p>
+          <p class="mt-1 text-sm text-slate-600">Reference entries</p>
+        </div>
+        <div class="bg-slate-50 px-5 py-5">
+          <p class="text-2xl font-bold text-slate-950">{categories.length}</p>
+          <p class="mt-1 text-sm text-slate-600">Subject areas</p>
+        </div>
+        <div class="col-span-2 bg-slate-50 px-5 py-5 md:col-span-1">
+          <p class="text-2xl font-bold text-slate-950">{sourceCount}</p>
+          <p class="mt-1 text-sm text-slate-600">Linked sources</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <aside>
+          <div class="lg:sticky lg:top-28">
+            <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Browse by subject</h2>
+            <div class="mt-4 flex flex-wrap gap-2 lg:flex-col" id="category-filters">
+              <button
+                type="button"
+                class="category-filter flex items-center justify-between rounded-lg bg-slate-900 px-3 py-2 text-left text-sm font-semibold text-white"
+                data-category="all"
+                aria-pressed="true"
+              >
+                <span>All entries</span>
+                <span>{entries.length}</span>
+              </button>
+              {categories.map((category) => (
+                <button
+                  type="button"
+                  class="category-filter flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm font-medium text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  data-category={category.name.toLowerCase()}
+                  aria-pressed="false"
+                >
+                  <span>{category.name}</span>
+                  <span class="text-slate-500">{category.count}</span>
+                </button>
+              ))}
+            </div>
+
+            <div class="mt-8 border-t border-slate-200 pt-6">
+              <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Browse A-Z</h2>
+              <div class="mt-3 flex flex-wrap gap-1.5" id="letter-filters">
+                <button type="button" class="letter-filter rounded-md bg-slate-900 px-2.5 py-1.5 text-sm font-semibold text-white" data-letter="all" aria-pressed="true">All</button>
+                {availableLetters.map((letter) => (
+                  <button type="button" class="letter-filter rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" data-letter={letter} aria-pressed="false">{letter}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div>
+          <div class="flex items-end justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Entries</p>
+              <h2 class="mt-1 text-2xl font-bold text-slate-950">Browse the encyclopedia</h2>
+            </div>
+            <p class="text-sm text-slate-600" aria-live="polite"><span id="result-count">{entries.length}</span> shown</p>
+          </div>
+
+          <div id="entry-list" class="divide-y divide-slate-200">
+            {entries.map((entry) => {
+              const searchText = [
+                entry.data.title,
+                entry.data.summary,
+                entry.data.category,
+                ...(entry.data.aliases || []),
+                entry.body || '',
+              ].join(' ').toLowerCase();
+              const firstLetter = (entry.data.sortName || entry.data.title).charAt(0).toUpperCase();
+
+              return (
+                <article
+                  class="encyclopedia-entry py-6"
+                  data-search={searchText}
+                  data-category={entry.data.category.toLowerCase()}
+                  data-letter={firstLetter}
+                >
+                  <a href={`/encyclopedia/${entry.id}`} class="group grid gap-5 sm:grid-cols-[minmax(0,1fr)_140px] sm:items-start">
+                    <div>
+                      <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        <span>{entry.data.category}</span>
+                        {entry.data.status === 'developing' && <span class="rounded bg-amber-50 px-2 py-0.5 text-amber-800">Developing entry</span>}
+                      </div>
+                      <h3 class="mt-2 text-xl font-bold text-slate-950 group-hover:text-primary-700">{entry.data.title}</h3>
+                      {entry.data.aliases && entry.data.aliases.length > 0 && (
+                        <p class="mt-1 text-sm text-slate-500">Also known as {entry.data.aliases.join(', ')}</p>
+                      )}
+                      <p class="mt-3 max-w-3xl leading-7 text-slate-600">{entry.data.summary}</p>
+                      <p class="mt-3 text-sm font-semibold text-primary-700">Read entry <span aria-hidden="true">&rarr;</span></p>
+                    </div>
+                    {entry.data.image && (
+                      <img src={entry.data.image} alt="" class="h-24 w-full rounded-lg border border-slate-200 object-cover sm:h-24" loading="lazy" />
+                    )}
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+
+          <div id="no-results" class="hidden border-b border-slate-200 py-12 text-center">
+            <h3 class="text-lg font-bold text-slate-950">No entries found</h3>
+            <p class="mt-2 text-slate-600">Try another search term or clear the browse filters.</p>
+            <button id="clear-filters" type="button" class="mt-5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-200 bg-slate-50">
+      <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:px-8">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Editorial approach</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-950">A reference work that shows its sources</h2>
+          <p class="mt-4 leading-7 text-slate-600">
+            Entries distinguish dated evidence from current service information. Population figures, programme status, and infrastructure counts are tied to a source and reporting date.
+          </p>
+        </div>
+        <div class="border-l-4 border-primary-600 pl-5">
+          <h2 class="text-lg font-bold text-slate-950">Corrections and contributions</h2>
+          <p class="mt-2 leading-7 text-slate-600">Community knowledge matters. Send a source, correction, missing name, or proposed entry for editorial review.</p>
+          <a href="/support" class="mt-4 inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100">Submit a correction</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<script>
+  const searchInput = document.getElementById('encyclopedia-search');
+  const entries = Array.from(document.querySelectorAll('.encyclopedia-entry'));
+  const categoryButtons = Array.from(document.querySelectorAll('.category-filter'));
+  const letterButtons = Array.from(document.querySelectorAll('.letter-filter'));
+  const resultCount = document.getElementById('result-count');
+  const noResults = document.getElementById('no-results');
+  const clearButton = document.getElementById('clear-filters');
+
+  let activeCategory = 'all';
+  let activeLetter = 'all';
+
+  const setActiveButton = (buttons, activeButton, activeClasses, inactiveClasses) => {
+    buttons.forEach((button) => {
+      const isActive = button === activeButton;
+      button.setAttribute('aria-pressed', String(isActive));
+      activeClasses.forEach((className) => button.classList.toggle(className, isActive));
+      inactiveClasses.forEach((className) => button.classList.toggle(className, !isActive));
+    });
+  };
+
+  const filterEntries = () => {
+    const query = searchInput?.value.trim().toLowerCase() || '';
+    let visible = 0;
+
+    entries.forEach((entry) => {
+      const matchesSearch = !query || entry.dataset.search?.includes(query);
+      const matchesCategory = activeCategory === 'all' || entry.dataset.category === activeCategory;
+      const matchesLetter = activeLetter === 'all' || entry.dataset.letter === activeLetter;
+      const shouldShow = Boolean(matchesSearch && matchesCategory && matchesLetter);
+      entry.classList.toggle('hidden', !shouldShow);
+      if (shouldShow) visible += 1;
+    });
+
+    if (resultCount) resultCount.textContent = String(visible);
+    noResults?.classList.toggle('hidden', visible !== 0);
+  };
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeCategory = button.dataset.category || 'all';
+      setActiveButton(
+        categoryButtons,
+        button,
+        ['bg-slate-900', 'text-white'],
+        ['border', 'border-slate-200', 'bg-white', 'text-slate-700'],
+      );
+      filterEntries();
+    });
+  });
+
+  letterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeLetter = button.dataset.letter || 'all';
+      setActiveButton(
+        letterButtons,
+        button,
+        ['bg-slate-900', 'text-white'],
+        ['border', 'border-slate-200', 'bg-white', 'text-slate-700'],
+      );
+      filterEntries();
+    });
+  });
+
+  searchInput?.addEventListener('input', filterEntries);
+  clearButton?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    activeCategory = 'all';
+    activeLetter = 'all';
+    categoryButtons[0]?.click();
+    letterButtons[0]?.click();
+    searchInput?.focus();
+  });
+</script>

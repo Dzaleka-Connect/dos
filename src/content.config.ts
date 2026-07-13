@@ -761,6 +761,32 @@ const siteSchema = z.object({
   associatedEvents: z.string().optional(),
 });
 
+const encyclopediaSchema = z.object({
+  title: z.string(),
+  sortName: z.string().optional(),
+  summary: z.string(),
+  category: z.enum(['History', 'Place', 'Institution', 'People', 'Culture', 'Health', 'Education', 'Infrastructure']),
+  entryType: z.enum(['overview', 'place', 'organization', 'person', 'event', 'topic']),
+  aliases: z.array(z.string()).optional(),
+  image: z.string().optional(),
+  imageAlt: z.string().optional(),
+  featured: z.boolean().optional().default(false),
+  status: z.enum(['reviewed', 'developing']).default('reviewed'),
+  lastReviewed: z.coerce.date(),
+  facts: z.array(z.object({
+    label: z.string(),
+    value: z.string(),
+  })).optional(),
+  relatedEntries: z.array(z.string()).optional(),
+  sources: z.array(z.object({
+    title: z.string(),
+    publisher: z.string(),
+    url: z.string().url(),
+    date: z.string().optional(),
+    note: z.string().optional(),
+  })).min(1),
+});
+
 // Define collections for previously auto-generated folders
 const artistsCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/artists" }),
@@ -799,6 +825,11 @@ const projectsCollection = defineCollection({
 const sitesCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/sites" }),
   schema: siteSchema,
+});
+
+const encyclopediaCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/encyclopedia" }),
+  schema: encyclopediaSchema,
 });
 
 // Define the rights schema
@@ -846,4 +877,5 @@ export const collections = {
   poets: poetsCollection,
   projects: projectsCollection,
   sites: sitesCollection,
+  encyclopedia: encyclopediaCollection,
 } as const;
