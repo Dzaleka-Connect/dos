@@ -26,7 +26,24 @@ export const handler: Handler = async (event: HandlerEvent) => {
 
   try {
     const body = JSON.parse(event.body || '{}');
-    const { type, title, category, description, price, priceType, condition, imageUrl, vendor, deliveryOptions, paymentMethods, tags } = body;
+    const {
+      type,
+      title,
+      category,
+      description,
+      price,
+      priceAmount,
+      currency,
+      priceType,
+      condition,
+      availability,
+      imageUrl,
+      vendor,
+      deliveryOptions,
+      shipping,
+      paymentMethods,
+      tags,
+    } = body;
 
     if (!title || !type || !category || !description || !vendor?.name || !vendor?.phone || !vendor?.location) {
       return {
@@ -49,6 +66,8 @@ export const handler: Handler = async (event: HandlerEvent) => {
           <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Title</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${title}</td></tr>
           <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Category</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${category}</td></tr>
           <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Price</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${price || 'Not specified'} (${priceType})</td></tr>
+          ${priceAmount ? `<tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Structured Price</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${priceAmount} ${currency}</td></tr>` : ''}
+          ${availability ? `<tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Availability</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${availability}</td></tr>` : ''}
           ${condition ? `<tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Condition</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${condition}</td></tr>` : ''}
           ${imageUrl ? `<tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Image</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="${imageUrl}">${imageUrl}</a></td></tr>` : ''}
         </table>
@@ -66,6 +85,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
         </table>
 
         ${deliveryOptions?.length ? `<p><strong>Delivery Options:</strong> ${deliveryOptions.join(', ')}</p>` : ''}
+        ${shipping ? `<p><strong>Delivery Details:</strong> ${shipping.cost} ${shipping.currency} to ${shipping.country}; ${shipping.handlingDays} preparation day(s), ${shipping.transitDays} delivery day(s)</p>` : ''}
         ${paymentMethods?.length ? `<p><strong>Payment Methods:</strong> ${paymentMethods.join(', ')}</p>` : ''}
         ${tags?.length ? `<p><strong>Tags:</strong> ${tags.join(', ')}</p>` : ''}
 

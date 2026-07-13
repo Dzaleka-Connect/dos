@@ -13,8 +13,11 @@ export async function getStaticPaths() {
 const { listing } = Astro.props;
 const { Content } = await render(listing);
 
+const isExternalListing = Boolean(listing.data.externalLink);
 const priceDisplay =
-  listing.data.priceType === 'free'
+  isExternalListing
+    ? 'Check current price on seller site'
+    : listing.data.priceType === 'free'
     ? 'Free'
     : listing.data.priceType === 'contact'
       ? 'Contact for price'
@@ -34,61 +37,99 @@ const isBook = listing.data.category === 'books-media';
 const listingLabel = isBook ? 'Book' : listing.data.type === 'service' ? 'Service' : 'Product';
 const schemaType = isBook ? 'Book' : listing.data.type === 'service' ? 'Service' : 'Product';
 const listingUrl = `https://services.dzaleka.com/marketplace/${listing.id}`;
-const isMarketplaceProduct = !isBook && listing.data.type === 'product';
-const returnPolicyUrl = 'https://services.dzaleka.com/marketplace/returns';
-const shippingPolicyUrl = 'https://services.dzaleka.com/marketplace/shipping';
+const availabilityUrls = {
+  in_stock: 'https://schema.org/InStock',
+  out_of_stock: 'https://schema.org/OutOfStock',
+  preorder: 'https://schema.org/PreOrder',
+  backorder: 'https://schema.org/BackOrder',
+};
+const canPublishMerchantOffer =
+  listing.data.type === 'product' &&
+  !isExternalListing &&
+  listing.data.status === 'active' &&
+  listing.data.priceType === 'fixed' &&
+  listing.data.priceAmount !== undefined &&
+  listing.data.currency !== undefined &&
+  listing.data.availability !== undefined &&
+  listing.data.shipping !== undefined;
 
 const schemaData = {
   '@context': 'https://schema.org',
-  '@type': schemaType,
+  '@type': 'ItemPage',
   name: listing.data.title,
   description: listing.data.description,
-  image: listing.data.images || [],
   url: listingUrl,
-  ...(isMarketplaceProduct && {
-    brand: {
-      '@type': 'Brand',
-      name: listing.data.vendor.name,
-    },
-    sku: listing.id,
-  }),
-  ...(isBook && { author: { '@type': 'Person', name: listing.data.vendor.name } }),
-  offers: {
-    '@type': 'Offer',
-    price: listing.data.price?.replace(/[^0-9.]/g, '') || '0',
-    priceCurrency: listing.data.price?.includes('USD') ? 'USD' : 'MWK',
-    availability: 'https://schema.org/InStock',
-    seller: {
-      '@type': 'Person',
-      name: listing.data.vendor.name,
-    },
-    ...(isMarketplaceProduct && {
-      hasMerchantReturnPolicy: {
-        '@id': `${returnPolicyUrl}#policy`,
+  mainEntity: {
+    '@type': schemaType,
+    name: listing.data.title,
+    description: listing.data.description,
+    image: listing.data.images || [],
+    url: listingUrl,
+    ...(isExternalListing && { sameAs: listing.data.externalLink }),
+    ...(listing.data.type === 'product' && !isBook && {
+      brand: {
+        '@type': 'Brand',
+        name: listing.data.vendor.name,
       },
-      shippingDetails: {
-        '@type': 'OfferShippingDetails',
-        hasShippingService: {
-          '@id': `${shippingPolicyUrl}#policy`,
+      sku: listing.id,
+    }),
+    ...(isBook && { author: { '@type': 'Person', name: listing.data.vendor.name } }),
+    ...(canPublishMerchantOffer && {
+      offers: {
+        '@type': 'Offer',
+        url: listingUrl,
+        price: listing.data.priceAmount,
+        priceCurrency: listing.data.currency,
+        availability: availabilityUrls[listing.data.availability],
+        seller: {
+          '@type': 'Organization',
+          name: listing.data.vendor.name,
         },
+        shippingDetails: {
+          '@type': 'OfferShippingDetails',
+          shippingDestination: {
+            '@type': 'DefinedRegion',
+            addressCountry: listing.data.shipping.country,
+          },
+          shippingRate: {
+            '@type': 'MonetaryAmount',
+            value: listing.data.shipping.cost,
+            currency: listing.data.shipping.currency,
+          },
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: {
+              '@type': 'QuantitativeValue',
+              minValue: listing.data.shipping.handlingDays,
+              maxValue: listing.data.shipping.handlingDays,
+              unitCode: 'DAY',
+            },
+            transitTime: {
+              '@type': 'QuantitativeValue',
+              minValue: listing.data.shipping.transitDays,
+              maxValue: listing.data.shipping.transitDays,
+              unitCode: 'DAY',
+            },
+          },
+        },
+        ...(listing.data.condition && {
+          itemCondition:
+            listing.data.condition === 'new'
+              ? 'https://schema.org/NewCondition'
+              : listing.data.condition === 'used'
+                ? 'https://schema.org/UsedCondition'
+                : 'https://schema.org/RefurbishedCondition',
+        }),
       },
     }),
-    ...(listing.data.condition && {
-      itemCondition:
-        listing.data.condition === 'new'
-          ? 'https://schema.org/NewCondition'
-          : listing.data.condition === 'used'
-            ? 'https://schema.org/UsedCondition'
-            : 'https://schema.org/RefurbishedCondition',
+    ...(listing.data.vendor.location && {
+      areaServed: {
+        '@type': 'Place',
+        name: listing.data.vendor.location,
+      },
     }),
   },
   datePublished: listing.data.datePosted,
-  ...(listing.data.vendor.location && {
-    areaServed: {
-      '@type': 'Place',
-      name: listing.data.vendor.location,
-    },
-  }),
 };
 ---
 
@@ -204,7 +245,7 @@ const schemaData = {
                     rel="noopener noreferrer"
                     class="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
-                    Open external link
+                    View on seller site
                   </a>
                 )}
               </div>

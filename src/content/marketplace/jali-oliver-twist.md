@@ -3,8 +3,7 @@ title: "Jali"
 description: "A powerful, warm and funny memoir from a young man with an incredible story. Oliver Twist's journey from a childhood in Dzaleka Refugee Camp to the comedy stages of Australia."
 type: "product"
 category: "books-media"
-price: "USD 27.19"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://m.media-amazon.com/images/I/71UwwvM8zxL._SL1500_.jpg"
 vendor:

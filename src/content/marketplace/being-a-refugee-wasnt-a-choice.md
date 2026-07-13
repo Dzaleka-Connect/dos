@@ -3,8 +3,7 @@ title: "Being a Refugee Wasn't a Choice"
 description: "A powerful poetry anthology assembled by Charles Lipanda Mahigwe, Ruth Takondwa, and Salvador Cap Bic. Raw honesty and hope from poets at Dzaleka Refugee Camp writing not as victims but as witnesses to injustice, endurance, and beauty."
 type: "product"
 category: "books-media"
-price: "USD 11.05"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "/images/being-a-refugee-wasnt-a-choice.jpg"
 vendor:

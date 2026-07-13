@@ -3,8 +3,7 @@ title: "Refugee for Life: My Journey Across Africa to Find a Place Called Home"
 description: "The inspiring story of Innocent Magambi, born a refugee who lived his first 27 years in five refugee camps across East Africa. A powerful account of faith, resilience, and hope."
 type: "product"
 category: "books-media"
-price: "USD 18.00"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "/images/My Journey Across Africa to Find a Place Called Home Book.jpeg"
 vendor:
@@ -45,5 +44,5 @@ Inno's hope is that by telling his story he will help dispel myths concerning th
 
 ## Purchase Options
 
-- **Kindle Edition**: $18.00
+- **Kindle Edition**: See the seller page for current pricing
 - Available on Amazon

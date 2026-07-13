@@ -3,8 +3,7 @@ title: "Walk This Way: The Journey of a Rwandan Refugee"
 description: "A first-person biography by Joseph Ndereyimana, detailing his escape from the 1994 Rwandan genocide, his journey across Africa, and his time at Dzaleka Refugee Camp. A powerful story of survival and spiritual resilience."
 type: "product"
 category: "books-media"
-price: "USD 17.99"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://pictures.abebooks.com/inventory/1295393974.jpg"
 vendor:

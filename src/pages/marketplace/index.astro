@@ -145,7 +145,9 @@ const quickStats = [
                 const isBook = listing.data.category === 'books-media';
                 const listingTypeLabel = isBook ? 'Book' : listing.data.type === 'service' ? 'Service' : 'Product';
                 const priceLabel =
-                  listing.data.priceType === 'free'
+                  listing.data.externalLink
+                    ? 'Check seller price'
+                    : listing.data.priceType === 'free'
                     ? 'Free'
                     : listing.data.priceType === 'contact'
                       ? 'Contact for price'
@@ -222,7 +224,8 @@ const quickStats = [
         <article class="rounded-xl border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">How listings work</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">
-            Sellers share a description, price, image, and contact details. Buyers contact the vendor directly.
+            Listings include a description, image, and vendor details. Local listings show a price when provided;
+            external listings link to the seller's current price and terms.
           </p>
         </article>
         <article class="rounded-xl border border-gray-200 bg-white p-5">

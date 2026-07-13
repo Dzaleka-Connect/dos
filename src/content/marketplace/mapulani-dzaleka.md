@@ -3,8 +3,7 @@ title: "Mapulani (Dzaleka Version)"
 description: "The special Dzaleka version of Namadingo's hit song 'Mapulani', featuring Dzaleka's own Israel Kabongo. A powerful musical collaboration bridging communities."
 type: "product"
 category: "music"
-price: "USD 1.29"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://m.media-amazon.com/images/I/41D52d0kw8S._UX716_FMwebp_QL85_.jpg"
 vendor:

@@ -2,17 +2,6 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 
 const canonical = 'https://services.dzaleka.com/marketplace/returns';
-const merchantReturnPolicy = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Dzaleka Online Services",
-  "url": "https://services.dzaleka.com",
-  "hasMerchantReturnPolicy": {
-    "@type": "MerchantReturnPolicy",
-    "@id": `${canonical}#policy`,
-    "merchantReturnLink": canonical
-  }
-};
 ---
 
 <MainLayout
@@ -20,7 +9,6 @@ const merchantReturnPolicy = {
   description="How returns and disputes are handled for Dzaleka Marketplace listings."
   canonical={canonical}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(merchantReturnPolicy)} />
   <main class="bg-white">
     <section class="border-b border-gray-200">
       <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">

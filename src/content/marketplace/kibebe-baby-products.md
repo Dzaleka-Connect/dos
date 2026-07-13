@@ -3,9 +3,7 @@ title: "Kibebe Handmade Baby Products"
 description: "Fair Trade certified handmade baby items crafted in Malawi. Includes onesies, bibs, rattles, squeaky toys, and sensory play mats. Eco-friendly and sustainable."
 type: "product"
 category: "arts-crafts"
-price: "USD 10 - 39"
-currency: "USD"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://kibebe.com/cdn/shop/products/2_6b9e5307-36d2-4392-b833-406e989a7075.png?v=1638973054&width=533"
   - "https://kibebe.com/cdn/shop/files/2023usabib_2.png?v=1699962509&width=533"
@@ -33,12 +31,12 @@ externalLink: "https://kibebe.com/collections/baby"
 Fair Trade Certified artisan products handcrafted in Malawi.
 
 ### Available Items:
-- **Baby Lion Onesie** - $26.00
-- **Baby Bibs** - $10.00
-- **Baby Squeaky Toys** - $10.00
-- **Ecofriendly Baby Rattles** - $14.00
-- **Baby Sensory Play Mat** - $39.00
+- Baby lion onesies
+- Baby bibs
+- Baby squeaky toys
+- Eco-friendly baby rattles
+- Baby sensory play mats
 
-All products are handmade by skilled artisans and are eco-friendly.
+All products are handmade by skilled artisans. Check the Kibebe store for current prices and availability.
 
 **Shop online:** [kibebe.com](https://kibebe.com)

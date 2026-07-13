@@ -2,27 +2,6 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 
 const canonical = 'https://services.dzaleka.com/marketplace/shipping';
-const shippingPolicy = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Dzaleka Online Services",
-  "url": "https://services.dzaleka.com",
-  "hasShippingService": {
-    "@type": "ShippingService",
-    "@id": `${canonical}#policy`,
-    "name": "Marketplace shipping guidance",
-    "shippingConditions": [
-      {
-        "@type": "ShippingConditions",
-        "shippingDestination": {
-          "@type": "DefinedRegion",
-          "addressCountry": "MW"
-        },
-        "doesNotShip": false
-      }
-    ]
-  }
-};
 ---
 
 <MainLayout
@@ -30,7 +9,6 @@ const shippingPolicy = {
   description="How pickup and delivery work for Dzaleka Marketplace listings."
   canonical={canonical}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(shippingPolicy)} />
   <main class="bg-white">
     <section class="border-b border-gray-200">
       <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
@@ -43,7 +21,7 @@ const shippingPolicy = {
         </nav>
         <h1 class="text-3xl font-semibold tracking-tight text-gray-900">Marketplace shipping guidance</h1>
         <p class="mt-4 max-w-2xl text-lg text-gray-600">
-          Pickup and delivery options vary by vendor and by listing.
+          Dzaleka Online Services lists products but does not fulfil orders. Pickup, delivery areas, charges, and timing are set by each vendor.
         </p>
       </div>
     </section>
@@ -63,6 +41,7 @@ const shippingPolicy = {
         <ul class="mt-4 space-y-3 text-sm text-gray-700">
           <li>Confirm whether delivery is available for your area.</li>
           <li>Confirm the delivery charge, timing, and payment method before sending money.</li>
+          <li>For external products, use the delivery policy shown on the seller's website.</li>
           <li>Use the vendor’s listed phone, WhatsApp, or email if you need clarification.</li>
         </ul>
       </div>

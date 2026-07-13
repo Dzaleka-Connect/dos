@@ -3,8 +3,7 @@ title: "A Place Called Hope"
 description: "A profound story about the impact on someone's life, exploring themes of hope and transformation."
 type: "product"
 category: "books-media"
-price: "USD 20.00"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://m.media-amazon.com/images/I/71phoxZ89bL._SL1500_.jpg"
 vendor:

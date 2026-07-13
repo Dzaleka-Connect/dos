@@ -558,6 +558,8 @@ const marketplaceSchema = z.object({
   type: z.enum(['product', 'service']),
   category: z.string(),
   price: z.string().optional(),
+  priceAmount: z.number().positive().optional(),
+  currency: z.enum(['MWK', 'USD']).optional(),
   priceType: z.enum(['fixed', 'negotiable', 'free', 'contact']).default('contact'),
   images: z.array(z.string()).optional(),
   vendor: z.object({
@@ -573,6 +575,14 @@ const marketplaceSchema = z.object({
   datePosted: z.coerce.date(),
   condition: z.enum(['new', 'used', 'refurbished']).optional(),
   quantity: z.number().optional(),
+  availability: z.enum(['in_stock', 'out_of_stock', 'preorder', 'backorder']).optional(),
+  shipping: z.object({
+    country: z.string().regex(/^[A-Z]{2}$/),
+    cost: z.number().nonnegative(),
+    currency: z.enum(['MWK', 'USD']),
+    handlingDays: z.number().int().nonnegative(),
+    transitDays: z.number().int().nonnegative(),
+  }).optional(),
   deliveryOptions: z.array(z.string()).optional(),
   paymentMethods: z.array(z.string()).optional(),
   externalLink: z.string().url().optional(),

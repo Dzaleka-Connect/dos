@@ -3,8 +3,7 @@ title: "Refuge-E: The Journey Much Desired"
 description: "The journey of a young refugee from the Democratic Republic of Congo navigating life through two refugee camps. A story of resilience, education, and the search for hope amidst bureaucracy and displacement."
 type: "product"
 category: "books-media"
-price: " USD 23.00"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://m.media-amazon.com/images/I/71cBFjcP9UL._SL1360_.jpg"
 vendor:

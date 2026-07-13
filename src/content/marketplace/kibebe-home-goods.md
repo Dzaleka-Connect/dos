@@ -3,9 +3,7 @@ title: "Kibebe Handmade Home Goods & Bags"
 description: "Fair Trade certified handmade home goods, bags, and accessories crafted in Malawi. Sustainable aprons, tote bags, and more from skilled artisans."
 type: "product"
 category: "arts-crafts"
-price: "USD 15 - 50"
-currency: "USD"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://kibebe.com/cdn/shop/products/ToteBag_07.jpg?v=1673439270"
 vendor:
@@ -31,12 +29,12 @@ externalLink: "https://kibebe.com/collections/home-goods"
 Fair Trade Certified artisan products handcrafted in Malawi.
 
 ### Available Items:
-- **Aprons with Repurposed Denim Pockets** - from $15.00
+- Aprons with repurposed denim pockets
 - **Handmade Tote Bags**
 - **Stationery & Gift Items**
 - **Party Accessories**
 
-All products support local artisans and are eco-friendly.
+Check the Kibebe store for current prices and availability.
 
 **Shop online:** [kibebe.com](https://kibebe.com)
 

@@ -3,8 +3,7 @@ title: "Unyielding Strength & Resilience"
 description: "This book tells the powerful and inspirational true story of Sandra Zaca's journey of survival, from the chaos of Dzaleka refugee camp to rebuilding her life in South Africa."
 type: "product"
 category: "books-media"
-price: "USD 17.99"
-priceType: "fixed"
+priceType: "contact"
 images:
   - "https://m.media-amazon.com/images/I/61A9+IR7CdL._SL1500_.jpg"
 vendor:
