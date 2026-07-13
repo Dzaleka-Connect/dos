@@ -1,11 +1,11 @@
 ---
 title: "Jali"
-description: "A powerful, warm and funny memoir from a young man with an incredible story. Oliver Twist's journey from a childhood in Dzaleka Refugee Camp to the comedy stages of Australia."
+description: "Oliver Twist's 2023 memoir about fleeing Rwanda, growing up in a refugee camp in Malawi, and later becoming a writer, actor, and comedian in Australia."
 type: "product"
 category: "books-media"
 priceType: "contact"
 images:
-  - "https://m.media-amazon.com/images/I/71UwwvM8zxL._SL1500_.jpg"
+  - "/images/encyclopedia/jali-book.jpg"
 vendor:
   name: "Oliver Twist"
   location: "Australia / Dzaleka Alum"
@@ -22,12 +22,14 @@ externalLink: "https://www.penguin.com.au/books/jali-9781761047534"
 
 ## About the Book
 
-**Jali** is the incredible true story of **Oliver Twist**. Born in Rwanda, Oliver fled the aftermath of genocide with his family, spending his childhood in Malawi's **Dzaleka Refugee Camp**.
+*Jali* is Oliver Twist's account of leaving Rwanda after the 1994 genocide, spending fourteen years in Malawi, and later resettling in Australia.
 
-"Jali" means historian, storyteller, praise singer, poet, or musician. In this powerful memoir, Oliver embodies this role, using humor and heart to tell of his survival, his time in Dzaleka, and his eventual journey to Australia where he became a celebrated comedian.
+Ebury Australia published the 240-page trade paperback on 1 August 2023 under ISBN 9781761047534. Ebook and audiobook editions are also available.
 
-> "A story of resilience, finding your voice, and the power of laughter in the darkest of times."
+The memoir developed from Twist's one-person stage work of the same name. Dzaleka's story and marketplace records identify the Malawian camp in his account with Dzaleka.
 
 ## Purchase Options
 
 - **Paperback & E-book**: Available via [Penguin Books Australia](https://www.penguin.com.au/books/jali-9781761047534).
+
+[Read the sourced encyclopedia entry](/encyclopedia/jali-book) for edition details and references.

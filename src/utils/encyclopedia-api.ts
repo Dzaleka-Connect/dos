@@ -39,8 +39,9 @@ export function encyclopediaJsonLd(entry: CollectionEntry<'encyclopedia'>) {
       : data.entryType === 'organization' ? 'Organization'
         : data.entryType === 'event' ? 'EventSeries'
           : data.entryType === 'film' ? 'Movie'
-            : data.entryType === 'place' || data.entryType === 'overview' ? 'Place'
-              : 'DefinedTerm'
+            : data.entryType === 'book' ? 'Book'
+              : data.entryType === 'place' || data.entryType === 'overview' ? 'Place'
+                : 'DefinedTerm'
   );
   const type = configuredType === 'Article' ? 'DefinedTerm' : configuredType === 'Event' ? 'EventSeries' : configuredType;
 
@@ -72,6 +73,27 @@ export function encyclopediaJsonLd(entry: CollectionEntry<'encyclopedia'>) {
       actor: data.film?.featuredPeople?.map((name) => ({ '@type': 'Person', name })),
       locationCreated: { '@id': `${ENCYCLOPEDIA_URL}/dzaleka-refugee-camp#entity` },
     } : {}),
+    ...(data.entryType === 'book' ? {
+      author: data.book?.authors.map((name) => ({ '@type': 'Person', name })),
+      contributor: data.book?.contributors?.map((contributor) => ({
+        '@type': 'Person',
+        name: contributor.name,
+        description: contributor.role,
+      })),
+      genre: data.book?.genres,
+      inLanguage: data.book?.originalLanguage,
+      about: { '@id': `${ENCYCLOPEDIA_URL}/dzaleka-refugee-camp#entity` },
+      workExample: data.book?.editions?.map((edition) => ({
+        '@type': 'Book',
+        name: edition.name || data.title,
+        isbn: edition.isbn13 || edition.isbn10,
+        publisher: edition.publisher ? { '@type': 'Organization', name: edition.publisher } : undefined,
+        datePublished: edition.publicationDate,
+        bookFormat: edition.format,
+        numberOfPages: edition.pages,
+        inLanguage: edition.language,
+      })),
+    } : {}),
   };
 }
 
@@ -83,6 +105,18 @@ export function searchableText(entry: CollectionEntry<'encyclopedia'>) {
     entry.data.category,
     entry.data.entryType,
     ...(entry.data.aliases || []),
+    ...(entry.data.book?.authors || []),
+    ...(entry.data.book?.contributors?.flatMap((contributor) => [contributor.name, contributor.role]) || []),
+    ...(entry.data.book?.genres || []),
+    ...(entry.data.book?.editions?.flatMap((edition) => [
+      edition.name,
+      edition.isbn10,
+      edition.isbn13,
+      edition.publisher,
+      edition.publicationDate,
+      edition.format,
+      edition.language,
+    ]) || []),
     entry.body,
   ].filter(Boolean).join(' ').toLowerCase();
 }

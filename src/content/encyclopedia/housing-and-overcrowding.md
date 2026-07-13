@@ -27,7 +27,7 @@ facts:
     value: "More than 52,000 at the end of 2024"
   - label: "Settlement pattern"
     value: "Dense residential sections with limited land for expansion"
-relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation", "health-nutrition-and-population"]
+relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation", "health-nutrition-and-population", "mdhs-household-conditions"]
 sources:
   - title: "Malawi country overview"
     publisher: "UNHCR"
@@ -60,4 +60,3 @@ Overcrowding increases demand for classrooms, health services, water points, and
 ## Interpreting photographs
 
 The photographs on this page show particular streets and homes, not a complete survey of housing conditions. They document visible features of the built environment but should be read alongside population and household data.
-

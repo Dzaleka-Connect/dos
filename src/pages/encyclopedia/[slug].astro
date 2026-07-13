@@ -23,8 +23,9 @@ const configuredEntityType = entry.data.schemaType || (
     : entry.data.entryType === 'organization' ? 'Organization'
       : entry.data.entryType === 'event' ? 'Event'
         : entry.data.entryType === 'film' ? 'Movie'
-        : entry.data.entryType === 'place' || entry.data.entryType === 'overview' ? 'Place'
-          : 'Article'
+          : entry.data.entryType === 'book' ? 'Book'
+            : entry.data.entryType === 'place' || entry.data.entryType === 'overview' ? 'Place'
+              : 'Article'
 );
 const entityType = configuredEntityType === 'Article'
   ? 'DefinedTerm'
@@ -38,8 +39,14 @@ const readingMinutes = Math.max(1, Math.ceil(wordCount / 220));
 const correctionUrl = `/encyclopedia/submit-correction?entry=${encodeURIComponent(entry.id)}`;
 const isPerson = entry.data.entryType === 'person';
 const isFilm = entry.data.entryType === 'film';
-const hasHeaderMedia = (isPerson || isFilm) && Boolean(entry.data.image);
+const isBook = entry.data.entryType === 'book';
+const isCoverMedia = isFilm || isBook;
+const hasHeaderMedia = (isPerson || isCoverMedia) && Boolean(entry.data.image);
 const isLogoImage = entry.data.image?.toLowerCase().includes('logo');
+const imageCaption = entry.data.imageCaption?.trim();
+const imageCaptionSeparator = imageCaption && entry.data.imageCredit
+  ? /[.!?]$/.test(imageCaption) ? ' ' : '. '
+  : '';
 const allImages = [
   ...(entry.data.image ? [{
     src: entry.data.image,
@@ -50,6 +57,12 @@ const allImages = [
   ...(entry.data.gallery || []),
 ];
 const absoluteUrl = (path: string) => path.startsWith('http') ? path : `https://services.dzaleka.com${path}`;
+const socialImagePath = entry.data.image || '/images/encyclopedia/camp-panorama.jpg';
+const socialImageType = socialImagePath.toLowerCase().endsWith('.png')
+  ? 'image/png'
+  : socialImagePath.toLowerCase().endsWith('.webp')
+    ? 'image/webp'
+    : 'image/jpeg';
 const imageObjects = allImages.map((image, index) => ({
   '@type': 'ImageObject',
   '@id': `${canonical}#image-${index + 1}`,
@@ -107,6 +120,27 @@ if (entityType === 'Movie') {
   entity.director = entry.data.film?.directors?.map((name) => ({ '@type': 'Person', name }));
   entity.productionCompany = entry.data.film?.productionCompanies?.map((name) => ({ '@type': 'Organization', name }));
   entity.actor = entry.data.film?.featuredPeople?.map((name) => ({ '@type': 'Person', name }));
+}
+if (entityType === 'Book') {
+  entity.author = entry.data.book?.authors.map((name) => ({ '@type': 'Person', name }));
+  entity.contributor = entry.data.book?.contributors?.map((contributor) => ({
+    '@type': 'Person',
+    name: contributor.name,
+    description: contributor.role,
+  }));
+  entity.genre = entry.data.book?.genres;
+  entity.inLanguage = entry.data.book?.originalLanguage;
+  entity.about = { '@id': campEntityId };
+  entity.workExample = entry.data.book?.editions?.map((edition) => ({
+    '@type': 'Book',
+    name: edition.name || entry.data.title,
+    isbn: edition.isbn13 || edition.isbn10,
+    publisher: edition.publisher ? { '@type': 'Organization', name: edition.publisher } : undefined,
+    datePublished: edition.publicationDate,
+    bookFormat: edition.format,
+    numberOfPages: edition.pages,
+    inLanguage: edition.language,
+  }));
 }
 
 const articleSchema = {
@@ -192,7 +226,7 @@ const structuredData = {
   title={`${entry.data.title} | Dzaleka Encyclopedia`}
   description={entry.data.summary}
   canonical={canonical}
-  image={entry.data.image || '/images/encyclopedia/camp-panorama.jpg'}
+  image={socialImagePath}
   type="article"
   robots="index, follow, max-image-preview:large"
   schema={structuredData}
@@ -204,9 +238,9 @@ const structuredData = {
     locale: 'en_US',
     url: canonical,
     image: {
-      url: absoluteUrl(entry.data.image || '/images/encyclopedia/camp-panorama.jpg'),
+      url: absoluteUrl(socialImagePath),
       alt: entry.data.imageAlt || entry.data.title,
-      type: 'image/jpeg',
+      type: socialImageType,
     },
     article: {
       publishedTime: publishedDate.toISOString(),
@@ -227,7 +261,7 @@ const structuredData = {
         <div class:list={[
           'mt-7',
           hasHeaderMedia
-            ? isFilm
+            ? isCoverMedia
               ? 'grid gap-8 sm:grid-cols-[minmax(0,1fr)_240px] sm:items-start lg:grid-cols-[minmax(0,1fr)_280px]'
               : 'grid gap-8 sm:grid-cols-[minmax(0,1fr)_176px] sm:items-start lg:grid-cols-[minmax(0,1fr)_208px]'
             : 'max-w-4xl',
@@ -245,18 +279,20 @@ const structuredData = {
             {hasHeaderMedia && entry.data.image && (
               <figure class:list={[
                 'mt-6 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:hidden',
-                isFilm && 'mx-auto max-w-sm',
+                isCoverMedia && 'mx-auto max-w-sm',
               ]}>
                 <img
                   src={entry.data.image}
                   alt={entry.data.imageAlt || entry.data.title}
                   class:list={[
-                    isFilm ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-square w-full object-cover',
+                    isCoverMedia ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-square w-full object-cover',
                   ]}
                   fetchpriority="high"
                 />
-                {entry.data.imageCredit && (
-                  <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">Photo: {entry.data.imageCredit}.</figcaption>
+                {(entry.data.imageCaption || entry.data.imageCredit) && (
+                  <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">
+                    {imageCaption}{imageCaptionSeparator}{entry.data.imageCredit && <span>{isCoverMedia ? 'Credit' : 'Photo'}: {entry.data.imageCredit}.</span>}
+                  </figcaption>
                 )}
               </figure>
             )}
@@ -272,18 +308,20 @@ const structuredData = {
           {hasHeaderMedia && entry.data.image && (
             <figure class:list={[
               'hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:block',
-              isFilm ? 'w-60 lg:w-[280px]' : 'w-44 lg:w-52',
+              isCoverMedia ? 'w-60 lg:w-[280px]' : 'w-44 lg:w-52',
             ]}>
               <img
                 src={entry.data.image}
                 alt={entry.data.imageAlt || entry.data.title}
                 class:list={[
-                  isFilm ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-[4/5] w-full object-cover',
+                  isCoverMedia ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-[4/5] w-full object-cover',
                 ]}
                 fetchpriority="high"
               />
-              {entry.data.imageCredit && (
-                <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">Photo: {entry.data.imageCredit}.</figcaption>
+              {(entry.data.imageCaption || entry.data.imageCredit) && (
+                <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">
+                  {imageCaption}{imageCaptionSeparator}{entry.data.imageCredit && <span>{isCoverMedia ? 'Credit' : 'Photo'}: {entry.data.imageCredit}.</span>}
+                </figcaption>
               )}
             </figure>
           )}
@@ -291,7 +329,7 @@ const structuredData = {
       </div>
     </header>
 
-    {entry.data.image && !isPerson && !isFilm && (
+    {entry.data.image && !isPerson && !isCoverMedia && (
       <div class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 lg:px-8">
         <figure class="overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
           <img

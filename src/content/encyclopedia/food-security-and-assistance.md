@@ -21,7 +21,7 @@ facts:
     value: "22% of households were marginally food secure with WFP support"
   - label: "August 2024 ration"
     value: "Raised from 50% to 75% of the planned general assistance level"
-relatedEntries: ["dzaleka-refugee-camp", "health-nutrition-and-population", "livelihoods-and-local-economy", "population-and-demography"]
+relatedEntries: ["dzaleka-refugee-camp", "health-nutrition-and-population", "vaccination-nutrition-and-anaemia-mdhs-2024", "livelihoods-and-local-economy", "population-and-demography"]
 sources:
   - title: "Malawi"
     publisher: "World Food Programme"
@@ -53,4 +53,3 @@ Ration percentages describe how much of the planned food requirement is funded a
 ## Reading current figures
 
 Assistance numbers and transfer values can change quickly. This entry records the system and dated evidence rather than presenting an undated monthly amount. People seeking current distribution information should confirm it with WFP, UNHCR, camp authorities, or recognised community information channels.
-

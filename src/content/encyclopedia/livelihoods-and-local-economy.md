@@ -28,7 +28,7 @@ facts:
     value: "Less than 7% of the camp population in August 2024"
   - label: "2017 survey coverage"
     value: "802 refugee households in Dzaleka"
-relatedEntries: ["dzaleka-refugee-camp", "law-and-encampment-policy", "food-security-and-assistance", "dzaleka-appfactory", "there-is-hope-malawi"]
+relatedEntries: ["dzaleka-refugee-camp", "law-and-encampment-policy", "food-security-and-assistance", "social-development-mdhs-2024", "dzaleka-appfactory", "there-is-hope-malawi"]
 sources:
   - title: "UNHCR Malawi Fact Sheet"
     publisher: "UNHCR"
@@ -71,4 +71,3 @@ Online work can provide access to clients beyond the camp. A 2024 UNHCR Innovati
 ## Relationship to assistance
 
 Income and humanitarian assistance overlap. Food or cash transfers can be a household's most reliable resource, while trade and casual work help cover needs that assistance does not meet. Funding cuts therefore affect both household consumption and the wider camp economy.
-

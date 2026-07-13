@@ -20,7 +20,7 @@ facts:
     value: "Democratic Republic of the Congo"
   - label: "Reporting rule"
     value: "Always cite a date and geographic scope"
-relatedEntries: ["dzaleka-refugee-camp", "history-of-dzaleka", "housing-and-overcrowding", "health-nutrition-and-population", "education-in-dzaleka", "water-and-sanitation"]
+relatedEntries: ["dzaleka-refugee-camp", "history-of-dzaleka", "housing-and-overcrowding", "health-nutrition-and-population", "mdhs-household-conditions", "education-in-dzaleka", "water-and-sanitation"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

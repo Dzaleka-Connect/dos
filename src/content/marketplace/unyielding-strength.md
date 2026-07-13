@@ -1,14 +1,14 @@
 ---
-title: "Unyielding Strength & Resilience"
-description: "This book tells the powerful and inspirational true story of Sandra Zaca's journey of survival, from the chaos of Dzaleka refugee camp to rebuilding her life in South Africa."
+title: "Unyielding Strength: A Story of Resilience"
+description: "Sandra B. Zaca's memoir of displacement from the Democratic Republic of the Congo and rebuilding life in South Africa."
 type: "product"
 category: "books-media"
 priceType: "contact"
 images:
-  - "https://m.media-amazon.com/images/I/61A9+IR7CdL._SL1500_.jpg"
+  - "/images/encyclopedia/unyielding-strength-book.jpg"
 vendor:
   name: "Sandra Zaca"
-  location: "Dzaleka Refugee Camp"
+  location: "South Africa"
 status: "active"
 featured: true
 datePosted: 2024-02-06
@@ -22,10 +22,12 @@ externalLink: "https://www.amazon.com/Unyielding-Strength-Resilience-Sandra-Zaca
 
 ## About the Book
 
-Unyielding Strength: A Story of Resilience by Sandra B. Zaca is an inspirational memoir detailing her journey as a refugee who fled the war-torn Democratic Republic of Congo (DRC), lived in the Dzaleka refugee camp in Malawi, and eventually built a successful life in South Africa.
+*Unyielding Strength: A Story of Resilience* is Sandra B. Zaca's memoir of forced displacement from the Democratic Republic of the Congo and rebuilding life in South Africa.
 
-The book is a powerful, first-hand account of survival and the extraordinary power of the human spirit to overcome adversity. Sandra B. Zaca shares her experiences of enduring abuse, hardship, and the deep sense of displacement that comes with being a refugee.
+The local marketplace record associates part of the journey with Dzaleka. Public catalogue and interview sources reviewed in July 2026 confirm the author and her wider refugee history but do not yet provide a dated Dzaleka chronology. The encyclopedia entry records that evidence gap.
 
 ## Purchase Options
 
 - Available on Amazon
+
+[Read the developing encyclopedia entry](/encyclopedia/unyielding-strength-book) for the current source record.

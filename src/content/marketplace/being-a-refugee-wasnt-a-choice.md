@@ -1,6 +1,6 @@
 ---
 title: "Being a Refugee Wasn't a Choice"
-description: "A powerful poetry anthology assembled by Charles Lipanda Mahigwe, Ruth Takondwa, and Salvador Cap Bic. Raw honesty and hope from poets at Dzaleka Refugee Camp writing not as victims but as witnesses to injustice, endurance, and beauty."
+description: "A 2025 poetry anthology assembled by Charles Lipanda Mahigwe, Ruth Takondwa, and Salvador Cap Bic, with more than fifty voices writing about displacement, identity, injustice, and Dzaleka."
 type: "product"
 category: "books-media"
 priceType: "contact"
@@ -26,28 +26,16 @@ externalLink: "https://www.amazon.com.au/REFUGEE-CHOICE-CHARLES-LIPANDA-MAHIGWE/
 
 ## About the Book
 
-**"Being a Refugee Wasn't a Choice"** is a poetry anthology assembled by Charles Lipanda Mahigwe, Ruth Takondwa, and Salvador Cap Bic. The book focuses on the lives of refugees, especially in Africa and those who reside at the Dzaleka Refugee Camp in Malawi.
+*Being a Refugee Wasn't a Choice* is a 204-page poetry anthology assembled by Charles Lipanda Mahigwe, Ruth Takondwa, and Salvador Cap Bic. Writing EDEN published the paperback in 2025 under ISBN 9789996085130.
 
-## The Vision
+## The collection
 
-Charles Lipanda Mahigwe's vision and leadership brought about this volume. His poetry and activism demonstrate that adversity does not have to stifle talent.
+The collection brings together more than fifty contributors writing about war, displacement, identity, education, gender, belonging, and daily life in refugee communities. It developed through African Youth Artistic Poetry, a collective based in Dzaleka.
 
-The anthology features raw honesty and hope, with poets writing **not as victims but as witnesses** to injustice, endurance, and the belief that even the most fractured heart can still bring forth beauty.
-
-## A Call for Recognition
-
-This anthology is not a cry for pity but a **call for recognition, justice, and humanity**.
-
-## Contributors
-
-- Charles Lipanda Mahigwe
-- Ruth Takondwa
-- Salvador Cap Bic
-- P.M. Quinns
-- Trinity Burning
-- Eden Writing
-- And more voices from Dzaleka
+P. M. Quinns contributed editorial work and the foreword. Burning Trinity is credited for the cover illustration.
 
 ## Purchase
 
-Available on Amazon: https://www.amazon.com.au/REFUGEE-CHOICE-CHARLES-LIPANDA-MAHIGWE/dp/9996085139
+Available on [Amazon](https://www.amazon.com.au/REFUGEE-CHOICE-CHARLES-LIPANDA-MAHIGWE/dp/9996085139).
+
+[Read the sourced encyclopedia entry](/encyclopedia/being-a-refugee-wasnt-a-choice-book) for publication details and references.

@@ -15,7 +15,9 @@ The [Dzaleka Encyclopedia](/encyclopedia) is now available on Dzaleka Online Ser
 
 It is a public reference about Dzaleka Refugee Camp: where it is, how it developed, who has shaped its institutions, and how education, health, law, livelihoods, culture, infrastructure, and humanitarian services intersect.
 
-The first edition contains 33 entries. It includes an overview of the camp and articles on population, housing, water and sanitation, food security, refugee law, local livelihoods, the 2024 health and population study, refugee-led organisations, community radio, technology, education, arts, advocacy, documentary film, and people connected to Dzaleka's public life.
+The collection now contains 47 entries. It includes an overview of the camp and articles on population, housing, water and sanitation, food security, refugee law, local livelihoods, refugee-led organisations, community radio, technology, education, arts, advocacy, books, documentary film, and people connected to Dzaleka's public life.
+
+A six-entry research collection documents Dzaleka's inclusion in the 2024 Malawi Demographic and Health Survey. It separates the survey design from detailed records on household conditions, reproductive health, vaccination and nutrition, maternal care and malaria, employment, disability, and reported violence.
 
 ## Built around sources
 
@@ -25,28 +27,29 @@ The initial research draws on material from UNHCR, the Government of Malawi, the
 
 ## Designed for reference
 
-Readers can search the full collection, filter entries by subject, or browse from A to Z. Each article includes:
+Readers can search the full collection, filter entries by subject or record type, or browse from A to Z. Each article includes:
 
 - a concise introduction and dated facts;
 - an on-page contents list;
 - photographs where a relevant record is available;
 - direct links to source documents;
 - related encyclopedia entries; and
-- structured metadata describing the article's main person, place, organisation, event, or topic.
+- structured metadata describing the article's main person, place, organisation, event, book, film, or topic.
 
 The structured metadata helps search engines understand how the pages and entities relate to one another. It does not guarantee any particular search feature or Knowledge Panel.
 
 ## This is a community record
 
-No first edition can document every organisation, place, person, film, or historical detail in Dzaleka. Current and former residents, community organisations, researchers, families, artists, filmmakers, and photographers are invited to help build the record. Constructive comments, questions, and suggestions are welcome.
+No edition can document every organisation, place, person, book, film, or historical detail connected to Dzaleka. Current and former residents, community organisations, researchers, families, writers, artists, filmmakers, and photographers are invited to help build the record. Constructive comments, questions, and suggestions are welcome.
 
 The [correction and contribution form](/encyclopedia/submit-correction) accepts:
 
 - corrections to published entries;
 - newer or stronger sources;
 - missing context and names;
-- proposals for new entries; and
+- proposals for new entries;
 - biographies and organisation histories;
+- books, films, photographs, and other cultural records;
 - photographs shared with permission; and
 - public documents, archival material, or first-hand context that can lead editors to stronger sources.
 

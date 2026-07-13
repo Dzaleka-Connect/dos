@@ -18,7 +18,7 @@ facts:
     value: "Approximately 86,000 people"
   - label: "Public partnership"
     value: "Malawi Ministry of Health and UNHCR"
-relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation", "health-nutrition-and-population", "food-security-and-assistance"]
+relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation", "health-nutrition-and-population", "fertility-and-family-planning-mdhs-2024", "maternal-health-and-malaria-mdhs-2024", "food-security-and-assistance"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

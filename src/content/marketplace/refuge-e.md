@@ -1,11 +1,11 @@
 ---
 title: "Refuge-E: The Journey Much Desired"
-description: "The journey of a young refugee from the Democratic Republic of Congo navigating life through two refugee camps. A story of resilience, education, and the search for hope amidst bureaucracy and displacement."
+description: "Njamba Koffi's 2018 memoir of a young Congolese refugee navigating Dzaleka and Mpaka camps while pursuing education."
 type: "product"
 category: "books-media"
 priceType: "contact"
 images:
-  - "https://m.media-amazon.com/images/I/71cBFjcP9UL._SL1360_.jpg"
+  - "/images/encyclopedia/refuge-e-book.jpg"
 vendor:
   name: "John Michael Koffi"
   location: "Dzaleka Refugee Camp"
@@ -23,14 +23,14 @@ externalLink: "https://www.amazon.com.au/Refuge-Journey-John-Michael-Koffi/dp/17
 
 ## About the Book
 
-Njamba Koffi is a talented poet, musician and writer originally from the Democratic Republic of Congo. When Njamba was 11, he and his family, like millions of others, had to flee the DRC. They stayed briefly in Tanzania, then in Dzaleka Refugee Camp in Malawi until finally settling in Eswatini, where Njamba helped set up a youth group in the camp. 
+*Refuge-e: The Journey Much Desired* follows a young person identified as John after his family leaves the Democratic Republic of the Congo. The narrative covers Dzaleka Refugee Camp in Malawi, a later move to Mpaka Camp in Eswatini, and the educational opportunities that eventually take him to United World College.
 
-His book, ‘Refugee, The Journey Much Desired’ is based on this part of his life and he’s currently working on another part of his autobiography and a book of poetry from his new home in Canada. 
+Tellwell Talent published paperback and hardcover editions in April 2018. The 270-page paperback carries ISBN 9781773708232; the hardcover carries ISBN 9781773708249.
 
-He tells us more about these projects in the interview, reads his beautifully crafted poetry (‘Encounter’, ‘Two Waves’, ‘A Flight’, ‘On Life and Death’) and gives his thoughtful analysis on writing, migration and activism – including advice for writers and how the literature industry can be more inclusive of black, refugee and other structurally marginalised voices.
-
-His book Refuge-e: The Journey Much Desired is available online. One of the organisations Njamba is an advisor to – Amala – works with refugee communities to provide education in camps. And another group he works with UBC Africa Awareness Initiative  Here’s also a great interview he did with Elie Bahhadi of Jumpstart Refugee Talent.
+The book was published under the name John Michael Koffi. The author now uses Njamba Koffi in his public work.
 
 ## Purchase Options
 
 - Available on Amazon
+
+[Read the sourced encyclopedia entry](/encyclopedia/refuge-e-book) for edition details and references.

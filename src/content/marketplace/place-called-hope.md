@@ -1,14 +1,14 @@
 ---
 title: "A Place Called Hope"
-description: "A profound story about the impact on someone's life, exploring themes of hope and transformation."
+description: "Luísa Marteleto's illustrated story of a child whose family reaches Dzaleka and becomes involved with the Nação Ubuntu project."
 type: "product"
 category: "books-media"
 priceType: "contact"
 images:
-  - "https://m.media-amazon.com/images/I/71phoxZ89bL._SL1500_.jpg"
+  - "/images/encyclopedia/nacao-ubuntu-book.jpg"
 vendor:
   name: "Luisa Marteleto"
-  location: "Dzaleka Refugee Camp"
+  location: "Brazil / Dzaleka subject"
 status: "active"
 featured: true
 datePosted: 2024-02-06
@@ -21,12 +21,13 @@ externalLink: "https://www.amazon.com/Place-Called-Hope-Luisa-Marteleto/dp/B0CHL
 
 ## About the Book
 
-In this compelling book, the reader is taken on a poignant journey of a child whose life undergoes a remarkable transformation overnight. Forced to flee violence in their home country, the child's family seeks refuge in Malawi, finding solace in the Dzaleka Refugee Camp. However, life in the camp is harsh, characterized by absolute poverty and the lack of opportunities for improvement.
+The book follows a child whose family leaves home because of violence and reaches Dzaleka Refugee Camp in Malawi. It introduces younger readers to displacement, camp life, restricted opportunities, and organised community support through the family's involvement with Nação Ubuntu.
 
-A glimmer of hope emerges when they are offered a chance to be part of the Nação Ubuntu project, initiated by Fraternidade Sem Fronteiras. This turning point proves to be a life-changing experience not only for them but also for numerous other families facing similar challenges. The project's success is made possible through the generous support of individuals like you and me, demonstrating that even our smallest contributions can create a profound impact on someone's life.
+The documented Portuguese edition is titled *Nação Ubuntu: Um Lugar Chamado Esperança*. Editora Chico Xavier published the 80-page edition in 2023 under ISBN 9786589497622. Vanessa Alexandre is credited as illustrator and as the inspiration for the story. The English-language cover uses the title *Ubuntu Nation: A Place Called Hope*.
 
-Join the journey of resilience, compassion, and the power of collective effort as this book showcases how the human spirit can prevail against adversity and offer hope in the face of overwhelming odds.
+## Purchase options
 
-## Purchase Options
+- The English edition is listed on Amazon.
+- The Portuguese edition is listed by [Editora Chico Xavier](https://editoraedistribuidorachicoxavier.corpsuite.com.br/livros-revistas-hqis/nacao-ubuntu-um-lugar-chamado-esperanca).
 
-- Available on Amazon
+[Read the sourced encyclopedia entry](/encyclopedia/nacao-ubuntu-book) for edition details and references.

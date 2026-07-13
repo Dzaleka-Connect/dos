@@ -1,11 +1,11 @@
 ---
 title: "Walk This Way: The Journey of a Rwandan Refugee"
-description: "A first-person biography by Joseph Ndereyimana, detailing his escape from the 1994 Rwandan genocide, his journey across Africa, and his time at Dzaleka Refugee Camp. A powerful story of survival and spiritual resilience."
+description: "Joseph Ndereyimana's 1999 testimony of flight from Rwanda and arrival at the newly established Dzaleka Refugee Centre in 1995."
 type: "product"
 category: "books-media"
 priceType: "contact"
 images:
-  - "https://pictures.abebooks.com/inventory/1295393974.jpg"
+  - "/images/encyclopedia/walk-this-way-book.jpg"
 vendor:
   name: "Joseph Ndereyimana"
   location: "Dzaleka Refugee Camp / Malawi"
@@ -24,10 +24,12 @@ externalLink: "https://www.abebooks.com/first-edition/Walk-Way-Journey-Rwandan-R
 
 ## About the Book
 
-**"Walk This Way: The Journey of a Rwandan Refugee"** (1999) is a compelling first-person biography by **Joseph Ndereyimana**, as told to Carolyn Neville.
+*Walk This Way: The Journey of a Rwandan Refugee* is Joseph Ndereyimana's first-person account, told to Carolyn Neville and edited by Janet Jackson.
 
-The book details his harrowing escape from the 1994 Rwandan genocide and his subsequent journey across several African nations. It provides a rare and personal insight into his time living at the **Dzaleka Refugee Camp** in Malawi. Through his story, Ndereyimana explores deep themes of survival, human endurance, and spiritual resilience in the face of unimaginable adversity.
+Published in Cape Town in 1999, the 133-page book records Ndereyimana's route from Rwanda and his arrival at Dzaleka in December 1995. His observations are an early named testimony of the settlement, when its population and organisation were very different from today. The first edition carries ISBN 9780620236058.
 
 ## Purchase Options
 
 - Available on AbeBooks
+
+[Read the sourced encyclopedia entry](/encyclopedia/walk-this-way-book) for historical context and references.
