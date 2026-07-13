@@ -44,7 +44,6 @@ const links = {
   contact: [
     { name: 'Contact Us', href: '/contact' },
     { name: 'Support', href: '/support' },
-    { name: 'Download the iOS app', href: 'https://apps.apple.com/au/app/dzaleka-online/id6769817555', external: true },
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Terms of Service', href: '/terms' },
     { name: 'Donate', href: '/support-our-work' }
@@ -83,6 +82,19 @@ const links = {
             </svg>
           </a>
         </div>
+        <a
+          href="https://apps.apple.com/au/app/dzaleka-online/id6769817555"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-6 inline-flex"
+          aria-label="Download Dzaleka Online on the App Store"
+        >
+          <img
+            src="/images/download-on-app-store.svg"
+            alt="Download on the App Store"
+            class="h-10 w-auto"
+          />
+        </a>
       </div>
 
       <!-- Services -->
@@ -133,12 +145,7 @@ const links = {
         <ul class="space-y-2">
           {links.contact.map(link => (
             <li>
-              <a
-                href={link.href}
-                target={link.external ? '_blank' : undefined}
-                rel={link.external ? 'noopener noreferrer' : undefined}
-                class="text-gray-600 hover:text-primary-600 transition-colors"
-              >
+              <a href={link.href} class="text-gray-600 hover:text-primary-600 transition-colors">
                 {link.name}
               </a>
             </li>
@@ -151,6 +158,9 @@ const links = {
     <div class="mt-12 pt-8 border-t border-gray-200">
       <p class="text-center text-gray-600 text-sm">
         © {currentYear} Dzaleka Online Services. All rights reserved.
+      </p>
+      <p class="mt-2 text-center text-xs text-gray-500">
+        Apple and the Apple logo are trademarks of Apple Inc. App Store is a service mark of Apple Inc.
       </p>
     </div>
   </div>
