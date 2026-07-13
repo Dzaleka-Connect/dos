@@ -1,6 +1,5 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import PageHeader from '../components/ui/PageHeader.astro';
 import { getCollection } from 'astro:content';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 
@@ -12,17 +11,17 @@ const featuredVoices = sortedVoices.filter(voice => voice.data.featured);
 const categories = [
   {
     title: "Stories",
-    description: "Personal journeys, experiences, and memories from Dzaleka",
+    description: "First-person accounts, experiences, and memories from Dzaleka",
     color: "bg-slate-50 text-slate-700 border-slate-200"
   },
   {
     title: "Culture",
-    description: "Celebrating our diverse cultural heritage through stories and traditions",
+    description: "Writing about language, traditions, art, music, and cultural life",
     color: "bg-gray-50 text-gray-700 border-gray-200"
   },
   {
     title: "Community",
-    description: "Community initiatives, events, and people making a difference",
+    description: "Reports on local groups, events, services, and shared concerns",
     color: "bg-slate-50 text-slate-700 border-slate-200"
   }
 ];
@@ -41,17 +40,18 @@ const categories = [
           ]} />
         </div>
 
-        <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        <div class="max-w-4xl">
+          <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-slate-500">Stories from Dzaleka</p>
+          <h1 class="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
             Community Voice
           </h1>
-          <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+          <p class="mb-10 max-w-3xl text-lg leading-relaxed text-gray-600 md:text-xl">
             Stories, experiences, and perspectives written by people who live in Dzaleka
           </p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <div class="flex flex-col gap-3 sm:flex-row">
             <a
               href="/submit-voice"
-              class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gray-900 hover:bg-gray-800 rounded-full transition-colors"
+              class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-slate-800"
             >
               Share Your Story
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,9 +60,9 @@ const categories = [
             </a>
             <a
               href="#stories"
-              class="inline-flex items-center px-8 py-4 border border-gray-900 text-lg font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-full transition-colors"
+              class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50"
             >
-              Explore Voices
+              Browse stories
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
@@ -76,9 +76,8 @@ const categories = [
 
     <!-- Featured Stories with Parallax -->
     {featuredVoices.length > 0 && (
-      <section class="relative py-20 overflow-hidden" id="stories">
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-100/50 to-transparent"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <section class="py-16" id="stories">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Featured Stories</h2>
           <p class="text-lg text-gray-600 mb-12">Highlighted voices from our community</p>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -94,7 +93,7 @@ const categories = [
                 </div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <div class="flex items-center gap-3 mb-3">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-900/80 text-white">
+                    <span class="inline-flex items-center rounded-md bg-slate-900/90 px-2.5 py-1 text-sm font-medium text-white">
                       {voice.data.category}
                     </span>
                     <time class="text-sm text-white">{new Date(voice.data.date).toLocaleDateString()}</time>
@@ -127,12 +126,12 @@ const categories = [
     <section class="py-16 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Browse by Category</h2>
-        <p class="text-lg text-gray-600 mb-12">Explore stories through different perspectives</p>
+        <p class="text-lg text-gray-600 mb-10">Filter the archive by subject.</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.map((category) => (
             <a
               href={`/community-voices?category=${category.title.toLowerCase()}`}
-              class={`block p-8 border rounded-xl ${category.color} transition-colors duration-200 text-left`}
+              class={`block rounded-xl border p-6 text-left transition-colors duration-200 hover:border-slate-400 ${category.color}`}
             >
               <h3 class="text-xl font-semibold mb-2">{category.title}</h3>
               <p class="text-sm opacity-90">{category.description}</p>
@@ -146,7 +145,7 @@ const categories = [
     <section class="py-16 bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">All Stories</h2>
-        <p class="text-lg text-gray-600 mb-12">Voices from our diverse community</p>
+        <p class="text-lg text-gray-600 mb-12">Published contributions, newest first.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sortedVoices.map((voice) => (
             <article class="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-slate-400 transition-colors duration-200">
@@ -159,7 +158,7 @@ const categories = [
               </div>
               <div class="p-6">
                 <div class="flex items-center justify-between mb-3">
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-800">
+                  <span class="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-sm font-medium text-slate-800">
                     {voice.data.category}
                   </span>
                   <time class="text-sm text-gray-500">{new Date(voice.data.date).toLocaleDateString()}</time>

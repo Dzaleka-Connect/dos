@@ -45,11 +45,11 @@ const infoData: Record<string, InfoItem> = {
   economic: {
     title: "Economic Impact of Refugees",
     content: [
-      "Refugees have transformed local commerce with reliable and affordable shops",
-      "Partnerships with local landowners have revolutionized agriculture in Dowa District",
-      "Refugee-led initiatives have created jobs for thousands of Malawians",
-      "Skills transfer has helped fill gaps in education and various sectors",
-      "Despite restrictive laws, refugees contribute significantly to local economy"
+      "Refugee-run shops and services are part of local commerce in Dzaleka and Dowa District",
+      "Some residents work with local landowners on small-scale agriculture",
+      "Refugee-led organizations and businesses employ both refugees and Malawians",
+      "Training and teaching programmes share skills in education, trades, and technology",
+      "Restrictions on movement and formal employment continue to limit economic participation"
     ],
     source: "Dzaleka Economic Impact Assessment 2024"
   },
@@ -143,7 +143,7 @@ const infoData: Record<string, InfoItem> = {
       "Child protection mechanisms include foster care arrangements and youth programs.",
       "Community leadership structures represent different nationalities and groups.",
       "Mental health and psychosocial support services are available but limited.",
-      "Women's centers provide safe spaces and empowerment programs.",
+      "Women's centres provide safe spaces and support programmes.",
       "Security is managed through cooperation between camp authorities and refugee leaders.",
       "Registration and documentation processes are ongoing to maintain accurate data."
     ],

@@ -16,8 +16,8 @@ const {
 } = Astro.props;
 
 const variantClasses = {
-  default: 'bg-white shadow-sm',
-  elevated: 'bg-white shadow-md',
+  default: 'border border-gray-200 bg-white',
+  elevated: 'border border-gray-200 bg-white shadow-sm',
   outlined: 'bg-white border border-gray-200',
   ghost: 'bg-transparent'
 };
@@ -36,7 +36,7 @@ const roundedClasses = {
   xl: 'rounded-xl'
 };
 
-const hoverClass = hover ? 'hover:shadow-md transition-shadow duration-200' : '';
+const hoverClass = hover ? 'transition hover:border-gray-300 hover:shadow-sm' : '';
 
 const cardClasses = `${variantClasses[variant]} ${paddingClasses[padding]} ${roundedClasses[rounded]} ${hoverClass} ${className}`;
 ---

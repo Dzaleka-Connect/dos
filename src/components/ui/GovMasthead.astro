@@ -184,17 +184,6 @@
   const desktopToggle = document.getElementById('masthead-toggle-desktop');
   const expandableContent = document.getElementById('govt-masthead-expandable');
 
-  // Function to update main content padding based on header height
-  function updateMainPadding() {
-    const header = document.querySelector('header');
-    const mainContainer = document.querySelector('.flex.flex-col.min-h-screen');
-    
-    if (header && mainContainer) {
-      const headerHeight = header.offsetHeight;
-      mainContainer.style.paddingTop = `${headerHeight}px`;
-    }
-  }
-
   function toggleMasthead(button: HTMLElement | null) {
     if (!button || !expandableContent) return;
 
@@ -207,28 +196,14 @@
       if (chevron) {
         chevron.classList.toggle('rotate-180');
       }
-
-      // Update padding after toggle animation
-      setTimeout(updateMainPadding, 50);
     });
   }
 
   toggleMasthead(mobileToggle);
   toggleMasthead(desktopToggle);
-
-  // Set initial padding on page load
-  updateMainPadding();
-
-  // Update padding on window resize
-  window.addEventListener('resize', updateMainPadding);
 </script>
 
 <style>
-  /* Smooth transitions for expand/collapse */
-  #govt-masthead-expandable {
-    transition: all 0.3s ease-in-out;
-  }
-  
   /* Ensure proper rotation animation */
   svg {
     transition: transform 0.3s ease-in-out;

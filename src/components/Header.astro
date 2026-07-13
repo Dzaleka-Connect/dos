@@ -3,48 +3,9 @@ import Navigation from './ui/Navigation.astro';
 import GovMasthead from './ui/GovMasthead.astro';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50">
-  <div id="gov-masthead-wrapper" class="transition-all duration-300 ease-in-out">
+<header class="sticky top-0 z-50">
+  <div id="gov-masthead-wrapper">
     <GovMasthead />
   </div>
   <Navigation />
 </header>
-
-<script>
-  // Hide GovMasthead on scroll down, show on scroll up or at top
-  let lastScrollY = 0;
-  const mastheadWrapper = document.getElementById('gov-masthead-wrapper');
-  
-  function handleScroll() {
-    const currentScrollY = window.scrollY;
-    
-    if (!mastheadWrapper) return;
-    
-    // Hide masthead when scrolling down past 100px
-    if (currentScrollY > 100) {
-      mastheadWrapper.style.marginTop = `-${mastheadWrapper.offsetHeight}px`;
-      mastheadWrapper.style.opacity = '0';
-    } else {
-      // Show masthead when at top or scrolling up near top
-      mastheadWrapper.style.marginTop = '0';
-      mastheadWrapper.style.opacity = '1';
-    }
-    
-    lastScrollY = currentScrollY;
-  }
-  
-  // Throttle scroll handler for performance
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        handleScroll();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-  
-  // Initial check
-  handleScroll();
-</script>

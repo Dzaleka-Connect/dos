@@ -36,14 +36,25 @@ const moreDropdownLinks = [
 ];
 
 const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
+const mobileMoreHrefs = new Set([
+  '/start-here',
+  '/communities',
+  '/new-to-dzaleka',
+  '/easy-read',
+  '/languages',
+  '/rights-navigator',
+  '/dzaleka-wellbeing',
+  '/about'
+]);
+const mobileMoreLinks = moreDropdownLinks.filter(({ href }) => mobileMoreHrefs.has(href));
 ---
 
-<nav class="relative bg-white border-b border-slate-200 shadow-sm">
+<nav class="relative border-b border-slate-200 bg-white" aria-label="Main navigation">
   <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
-      <a href="/" class="flex items-center space-x-2">
-        <span class="text-xl font-bold text-primary-600">Dzaleka Online Services</span>
+      <a href="/" class="flex min-w-0 items-center">
+        <span class="truncate text-lg font-bold text-slate-900 sm:text-xl">Dzaleka Online Services</span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -159,30 +170,30 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
 
   <!-- Mobile Menu -->
   <div
-    class="hidden absolute left-2 right-2 top-full z-50 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:hidden"
+    class="absolute left-2 right-2 top-full z-50 mt-2 hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:hidden"
     id="mobile-menu"
     aria-hidden="true"
   >
     <div class="max-h-[min(68dvh,32rem)] overflow-y-auto overscroll-contain px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
         <div>
           <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Menu</p>
-          <p class="text-sm text-slate-600">Quick access to Dzaleka services</p>
+          <p class="text-sm text-slate-600">Services and information</p>
         </div>
         <a href="/search" class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
           Search
         </a>
       </div>
 
-      <div class="mt-4 space-y-2">
+      <div class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {primaryLinks.map(({ href, label, icon }) => (
           <a
             href={href}
             class:list={[
-              'flex items-center gap-3 rounded-lg border px-3 py-3 text-base font-semibold transition-colors',
+              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors',
               isActive(href)
-                ? 'border-slate-900 bg-slate-900 text-white'
-                : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950'
+                ? 'bg-slate-900 text-white'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
             ]}
           >
             <Fragment set:html={icon} />
@@ -194,7 +205,7 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
       <div class="mt-5 border-t border-slate-100 pt-4">
         <p class="px-1 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-500">More pages</p>
         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {moreDropdownLinks.map(({ href, label, icon }) => (
+          {mobileMoreLinks.map(({ href, label, icon }) => (
             <a
               href={href}
               class:list={[
@@ -209,6 +220,10 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
             </a>
           ))}
         </div>
+        <a href="/start-here" class="mt-4 flex items-center justify-between rounded-lg bg-slate-100 px-3 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-200">
+          <span>Not sure where to start?</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
       </div>
     </div>
   </div>
@@ -231,7 +246,6 @@ const moreIsActive = moreDropdownLinks.some(({ href }) => isActive(href));
       menuButton.setAttribute('aria-expanded', isOpen.toString());
       menuButton.setAttribute('aria-label', isOpen ? 'Close main menu' : 'Open main menu');
       if (menuLabel) menuLabel.textContent = isOpen ? 'Close main menu' : 'Open main menu';
-      document.body.classList.toggle('overflow-hidden', isOpen);
       openIcon?.classList.toggle('hidden', isOpen);
       closeIcon?.classList.toggle('hidden', !isOpen);
     };

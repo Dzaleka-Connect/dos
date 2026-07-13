@@ -1,227 +1,129 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
 
-const seo = {
-  title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
-  description: "Support Dzaleka Online Services to preserve and promote Dzaleka's cultural heritage. Donate now to help digitize history, empower refugees, and amplify community voices.",
-  keywords: "support Dzaleka, donate Dzaleka, cultural heritage, refugee stories, digital archive, Malawi, empower refugees, preserve history, Dzaleka Online Services, charity, nonprofit, African heritage, community support, fundraising, digital storytelling, oral history, youth empowerment, creative economy, donate now, help refugees",
-  canonical: "https://services.dzaleka.com/support-our-work",
-  openGraph: {
-    title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
-    description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
-    type: "article",
-    image: {
-      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
-      alt: "Support Dzaleka Online Services - Preserving Cultural Heritage"
-    },
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
-    url: "https://services.dzaleka.com/support-our-work"
-  },
-  twitter: {
-    card: "summary_large_image",
-    creator: "@dzalekaconnect",
-    title: "Support Dzaleka: Donate & Preserve Cultural Heritage | Dzaleka Online Services",
-    description: "Donate to Dzaleka Online Services and help preserve Dzaleka's cultural heritage. Your support empowers refugees, digitizes history, and builds a creative future.",
-    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg"
-  }
-};
+const title = 'Support Dzaleka Online Services';
+const description = 'Donate equipment, funds, or professional support for Dzaleka Online Services and its public information and cultural archive work.';
 ---
 
 <MainLayout
-  title={seo.title}
-  description={seo.description}
-  keywords={seo.keywords}
-  canonical={seo.canonical}
-  openGraph={seo.openGraph}
-  twitter={seo.twitter}
+  title={`${title} - Dzaleka Online Services`}
+  description={description}
+  canonical="https://services.dzaleka.com/support-our-work"
+  openGraph={{
+    title,
+    description,
+    type: 'website',
+    image: {
+      url: 'https://services.dzaleka.com/images/dzaleka-hero.jpeg',
+      alt: 'Community activity in Dzaleka'
+    },
+    site_name: 'Dzaleka Online Services',
+    locale: 'en_US',
+    url: 'https://services.dzaleka.com/support-our-work'
+  }}
+  twitter={{
+    card: 'summary_large_image',
+    title,
+    description,
+    image: 'https://services.dzaleka.com/images/dzaleka-hero.jpeg'
+  }}
 >
-  <!-- Hero Section with Image -->
-  <div class="relative">
-    <!-- Hero Image -->
-    <div class="absolute inset-0">
-      <img 
-        src="/images/dzaleka-hero.jpeg" 
-        alt="Dzaleka Cultural Heritage" 
-        class="w-full h-full object-cover"
-      />
-      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-    </div>
-
-    <!-- Hero Content -->
-    <div class="relative min-h-[50vh] flex items-center">
-      <div class="container mx-auto px-4 py-12">
-        <div class="max-w-3xl">
-          <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
-            Support Our Work
-          </h1>
-          <p class="text-lg md:text-xl text-white mb-6">
-            Help us preserve and promote Dzaleka's cultural heritage through digital technologies
+  <main class="min-h-screen bg-white">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Support our work' }]} />
+        <div class="mt-8 max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Support</p>
+          <h1 class="mt-3 text-4xl font-bold text-slate-900 sm:text-5xl">Support Dzaleka Online Services</h1>
+          <p class="mt-5 text-lg leading-8 text-slate-600 sm:text-xl">
+            Help maintain public service information, document community history, and give local contributors the equipment and support needed to publish their work.
           </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a 
-              href="https://fundraise.dzaleka.com/dzaleka-online-services" 
-              class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a
+              href="https://fundraise.dzaleka.com/dzaleka-online-services"
+              class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-5 py-3 font-semibold text-white hover:bg-slate-800"
             >
-              Donate Now
+              Donate online
             </a>
-            <a 
-              href="#ways-to-support" 
-              class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-white hover:text-gray-900 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+            <a
+              href="mailto:dzalekaconnect@gmail.com?subject=Support%20Dzaleka%20Online%20Services"
+              class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 hover:bg-slate-50"
             >
-              Learn More
+              Contact the team
             </a>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </header>
 
-  <main class="min-h-screen bg-gray-50">
-    <div class="container mx-auto px-4 py-8">
-      <div class="max-w-4xl mx-auto">
-        <!-- Introduction -->
-        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <div class="prose prose-lg">
-            <p class="text-lg text-gray-700">
-              Digital technologies have created vast opportunities for preserving and promoting cultural heritage — and Dzaleka Online Services is harnessing these tools to tell our stories, document our history, and amplify the voices within Dzaleka Refugee Camp.
+    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div class="space-y-12">
+          <section>
+            <h2 class="text-2xl font-bold text-slate-900">What support pays for</h2>
+            <p class="mt-4 max-w-3xl leading-7 text-slate-600">
+              Dzaleka Online Services is a community-maintained website. Contributions cover the practical work required to collect, check, publish, and preserve information.
             </p>
-            <p class="text-lg text-gray-700">
-              We need your support to fully explore and utilise these opportunities.
-            </p>
-          </div>
-        </section>
-
-        <!-- Impact Areas -->
-        <section id="ways-to-support" class="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Your Impact</h2>
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-gray-50 rounded-lg p-6">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Your financial gift will go towards:</h3>
-              <ul class="space-y-3">
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Digitisation of photos, documents, and oral histories</span>
-                </li>
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Innovation in digital archiving and storytelling</span>
-                </li>
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Research that centres refugee experiences and narratives</span>
-                </li>
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Capacity building for local youth and content creators</span>
-                </li>
-              </ul>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-6">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">With your support, we can:</h3>
-              <ul class="space-y-3">
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Improve public access to cultural records and digital archives</span>
-                </li>
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Preserve and restore historical materials</span>
-                </li>
-                <li class="flex items-start">
-                  <svg class="w-6 h-6 text-slate-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span>Boost cultural vibrancy and build creative economies</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- Donation Options -->
-        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Ways to Support</h2>
-          
-          <!-- Online Donation -->
-          <div class="mb-8">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Donate Online</h3>
-            <p class="text-gray-700 mb-4">Support our work with a one-off, monthly, or annual donation.</p>
-            <a href="https://fundraise.dzaleka.com/dzaleka-online-services" 
-               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-              Donate To Dzaleka Online Services
-            </a>
-          </div>
-
-          <!-- Grants & Institutional Giving -->
-          <div class="mb-8">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Grants & Institutional Giving</h3>
-            <p class="text-gray-700 mb-4">
-              Institutional giving plays a key role in expanding our impact. If you're part of a foundation, NGO, or funder interested in digital heritage, refugee storytelling, or African-led innovation — we'd love to connect.
-            </p>
-            <p class="text-gray-700 mb-4">
-              Reach us at: <a href="mailto:dzalekaconnect@gmail.com" class="text-gray-700 underline hover:text-gray-900">dzalekaconnect@gmail.com</a>
-            </p>
-            <p class="text-sm text-gray-600">We are committed to transparency and only accept funding aligned with our values.</p>
-          </div>
-
-          <!-- In-Kind Donations -->
-          <div class="mb-8">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">In-Kind Donations</h3>
-            <p class="text-gray-700 mb-4">We also welcome in-kind support, including but not limited to:</p>
-            <ul class="list-disc pl-6 mb-4 text-gray-700">
-              <li>Technical equipment (laptops, cameras, scanners, hard drives)</li>
-              <li>Archival storage materials</li>
-              <li>Books, stationery, or event space</li>
+            <ul class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
+              <li class="py-4">
+                <h3 class="font-semibold text-slate-900">Public information</h3>
+                <p class="mt-1 text-slate-600">Updating service listings, urgent contacts, jobs, events, resources, and guidance pages.</p>
+              </li>
+              <li class="py-4">
+                <h3 class="font-semibold text-slate-900">Digitisation and archiving</h3>
+                <p class="mt-1 text-slate-600">Scanning photographs and documents, recording oral histories, and maintaining structured cultural records.</p>
+              </li>
+              <li class="py-4">
+                <h3 class="font-semibold text-slate-900">Contributor equipment</h3>
+                <p class="mt-1 text-slate-600">Cameras, recorders, storage, connectivity, and basic tools used by local writers and documentarians.</p>
+              </li>
+              <li class="py-4">
+                <h3 class="font-semibold text-slate-900">Publishing and maintenance</h3>
+                <p class="mt-1 text-slate-600">Hosting, accessibility work, security, backups, and improvements to submission and correction workflows.</p>
+              </li>
             </ul>
-            <p class="text-gray-700">
-              Have something to offer? Email <a href="mailto:dzalekaconnect@gmail.com" class="text-gray-700 underline hover:text-gray-900">dzalekaconnect@gmail.com</a>
-            </p>
-          </div>
+          </section>
 
-          <!-- Mobile Money & Bank Transfer -->
-          <div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Airtel Money / TNM Mpamba / Direct Transfer</h3>
-            <p class="text-gray-700 mb-4">Prefer to donate through mobile money or bank transfer?</p>
-            <p class="text-gray-700">
-              Contact us for details: <a href="mailto:dzalekaconnect@gmail.com" class="text-gray-700 underline hover:text-gray-900">dzalekaconnect@gmail.com</a>
-            </p>
-          </div>
-        </section>
+          <section>
+            <h2 class="text-2xl font-bold text-slate-900">Other ways to contribute</h2>
+            <div class="mt-6 space-y-8">
+              <div>
+                <h3 class="text-lg font-semibold text-slate-900">Equipment and materials</h3>
+                <p class="mt-2 leading-7 text-slate-600">
+                  Useful donations include working laptops, cameras, audio recorders, scanners, hard drives, archival storage materials, books, and stationery. Contact us before sending equipment so we can confirm what is currently needed.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-slate-900">Institutional funding</h3>
+                <p class="mt-2 leading-7 text-slate-600">
+                  We welcome conversations with funders working in public-interest technology, community information, refugee-led media, archives, research, or cultural documentation.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-slate-900">Professional support</h3>
+                <p class="mt-2 leading-7 text-slate-600">
+                  Researchers, archivists, designers, developers, editors, translators, and accessibility specialists can offer time for a defined piece of work.
+                </p>
+              </div>
+            </div>
+          </section>
 
-        <!-- Privacy Notice -->
-        <section class="bg-white rounded-xl shadow-sm p-6">
-          <div class="prose prose-lg">
-            <p class="text-gray-700">
-              We take donor privacy seriously and carefully safeguard all data shared during the donation process. Please refer to our <a href="/privacy" class="text-gray-700 underline hover:text-gray-900">Privacy Policy</a> to learn more.
+          <section class="border-t border-slate-200 pt-8">
+            <h2 class="text-2xl font-bold text-slate-900">Contact</h2>
+            <p class="mt-3 leading-7 text-slate-600">
+              Email <a href="mailto:dzalekaconnect@gmail.com" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">dzalekaconnect@gmail.com</a> for in-kind donations, funding enquiries, or payment details for Airtel Money, TNM Mpamba, or direct transfer.
             </p>
-          </div>
-        </section>
+          </section>
+        </div>
+
+        <aside class="h-fit rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-lg font-semibold text-slate-900">Donor privacy</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            We use donor information only to process contributions, maintain records, and respond to enquiries. Read the <a href="/privacy" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">privacy policy</a> for details.
+          </p>
+        </aside>
       </div>
     </div>
   </main>
 </MainLayout>
-
-<style>
-  .prose a {
-    @apply text-gray-700 underline hover:text-gray-900;
-  }
-  .prose ul {
-    @apply list-disc pl-6 mb-4;
-  }
-  .prose li {
-    @apply text-gray-700;
-  }
-</style> 

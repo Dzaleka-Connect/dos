@@ -1,35 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import PageHeader from '../../components/ui/PageHeader.astro';
-
-// Get cultural organizations
-const services = await getCollection('services');
-const culturalOrgs = services.filter(service => 
-  ['Tumaini Festival', 'Dzaleka Art Project', 'Dzaleka Arts Lab', 'Inside Dzaleka', 'Salama Africa'].includes(service.data.title)
-);
-
-// Featured events or programs
-const featuredPrograms = [
-  {
-    title: 'Tumaini Festival',
-    description: 'Annual multicultural festival celebrating arts, music, and dance from various refugee communities',
-    image: '/images/tumaini-festival.jpg',
-    link: '/services/tumaini-festival'
-  },
-  {
-    title: 'Art Exhibitions',
-    description: 'Regular exhibitions showcasing artwork from talented camp artists',
-    image: '/images/art-exhibitions.jpg',
-    link: '/services/dzaleka-art-project'
-  },
-  {
-    title: 'Cultural Performances',
-    description: 'Traditional dance, music, and theatrical performances representing diverse cultures',
-    image: '/images/cultural-performances.jpg',
-    link: '/services/salama-africa'
-  }
-];
 ---
 
 <MainLayout title="Cultural Hub - Dzaleka Online Services">
@@ -57,9 +27,9 @@ const featuredPrograms = [
             <div class="flex justify-center">
               <a 
                 href="#organizations" 
-                class="inline-flex items-center px-6 py-3 bg-white text-slate-700 rounded-full hover:bg-slate-50 transition-colors duration-300 font-medium"
+                class="inline-flex items-center rounded-lg bg-white px-6 py-3 font-medium text-slate-900 transition-colors duration-300 hover:bg-slate-100"
               >
-                Explore Organizations
+                Browse organizations
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
@@ -74,14 +44,12 @@ const featuredPrograms = [
     <section class="py-24 bg-white">
       <div class="container mx-auto px-6">
         <div class="max-w-3xl mx-auto text-center mb-16">
-          <span class="inline-block px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium mb-4">
-            Impact Showcase
-          </span>
+          <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-slate-500">Cultural work</p>
           <h2 class="text-4xl font-bold text-gray-900 mb-6">
             What cultural work looks like here
           </h2>
           <p class="text-lg text-gray-600">
-            The achievements of cultural organizations working in Dzaleka Refugee Camp
+            Festivals, artist directories, craft businesses, and performance groups working in Dzaleka.
           </p>
         </div>
 
@@ -96,7 +64,7 @@ const featuredPrograms = [
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-4">Cultural Exchange</h3>
               <p class="text-gray-600 mb-6">
-                Through the renowned <a href="https://tumaini-festival.dzaleka.com" class="text-slate-700 hover:text-slate-700 font-medium">Tumaini Festival</a>, founded in 2014, artists from across Africa and the world share stages with performers from Dzaleka, fostering cross-cultural understanding.
+                <a href="https://tumaini-festival.dzaleka.com" class="font-medium text-slate-700 hover:text-slate-900">Tumaini Festival</a>, founded in 2014, programmes artists from Dzaleka alongside performers from Malawi and other countries.
               </p>
               <div class="flex items-center text-slate-700 font-medium">
                 <span class="text-3xl font-bold mr-2">24K+</span>
@@ -123,11 +91,11 @@ const featuredPrograms = [
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-4">Cultural Enterprise</h3>
               <p class="text-gray-600 mb-6">
-                Through initiatives like <a href="https://kibebe.com" class="text-slate-700 hover:text-slate-700 font-medium">Kibebe</a>, refugee artisans are turning traditional crafts into sustainable livelihoods while preserving cultural heritage.
+                <a href="https://kibebe.com" class="font-medium text-slate-700 hover:text-slate-900">Kibebe</a> works with refugee artisans to produce and sell bags, homeware, and other textile products.
               </p>
               <div class="flex items-center text-slate-700 font-medium">
                 <span class="text-3xl font-bold mr-2">100+</span>
-                <span>Artisans Empowered</span>
+                <span>Artisans listed by the project</span>
               </div>
               <div class="mt-4 text-sm text-gray-500">
                 <a href="https://seed.uno/enterprise-profiles/kibebe" class="hover:text-slate-700 transition-colors">
@@ -150,7 +118,7 @@ const featuredPrograms = [
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-4">Arts & Performance</h3>
               <p class="text-gray-600 mb-6">
-                The <a href="https://dzalekaartproject.com" class="text-slate-700 hover:text-slate-700 font-medium">Dzaleka Art Project</a> documents and promotes refugee artists, showcasing diverse talents through visual art, music, dance, and theater.
+                The <a href="https://dzalekaartproject.com" class="font-medium text-slate-700 hover:text-slate-900">Dzaleka Art Project</a> documents artists working in visual art, music, dance, and theatre.
               </p>
               <div class="flex items-center text-slate-700 font-medium">
                 <span class="text-3xl font-bold mr-2">150+</span>
@@ -175,9 +143,9 @@ const featuredPrograms = [
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-4">Community Impact</h3>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Community programmes</h3>
               <p class="text-gray-600 mb-6">
-                Cultural initiatives in Dzaleka span youth empowerment, mental health support, peace building, and arts activities, creating lasting positive change in the community.
+                Cultural organizations also run youth programmes, arts workshops, peace-building activities, and mental health support.
               </p>
               <div class="flex items-center text-slate-700 font-medium">
                 <span class="text-3xl font-bold mr-2">153+</span>
@@ -227,10 +195,10 @@ const featuredPrograms = [
     <section id="organizations" class="py-20 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center mb-16">
-          <span class="text-slate-700 font-semibold text-sm uppercase tracking-wider">Featured Organizations</span>
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-4">Cultural Leaders in Dzaleka</h2>
+          <span class="text-sm font-semibold uppercase tracking-widest text-slate-500">Directory</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-4">Cultural organizations in Dzaleka</h2>
           <p class="text-xl text-gray-600 mt-4">
-            Meet the organizations shaping cultural life in Dzaleka
+            Follow their work, visit their websites, or find their service listing.
           </p>
         </div>
 
@@ -247,7 +215,7 @@ const featuredPrograms = [
             <div class="p-6">
               <h3 class="text-xl font-bold text-gray-900 mb-2">Tumaini Festival</h3>
               <p class="text-gray-600 mb-4">
-                Malawi's premier refugee-led arts and cultural festival, celebrating diversity through music, dance, and poetry.
+                A refugee-led festival presenting music, dance, theatre, poetry, film, and visual art.
               </p>
               <a
                 href="https://tumaini-festival.dzaleka.com"
@@ -299,7 +267,7 @@ const featuredPrograms = [
             <div class="p-6">
               <h3 class="text-xl font-bold text-gray-900 mb-2">Kibebe</h3>
               <p class="text-gray-600 mb-4">
-                Empowering refugee artisans through traditional crafts and contemporary design, creating sustainable livelihoods through art.
+                A social enterprise selling textile products made by refugee artisans in Dzaleka.
               </p>
               <a
                 href="/services/kibebe"
@@ -346,19 +314,17 @@ const featuredPrograms = [
     <section class="relative py-20 overflow-hidden bg-gray-900 border-t border-gray-800">
       <div class="relative container mx-auto px-6">
         <div class="max-w-4xl mx-auto text-center">
-          <span class="inline-block px-4 py-2 bg-gray-800 text-white/90 rounded-full text-sm font-medium mb-4 border border-gray-700">
-            Join Our Community
-          </span>
+          <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-slate-300">More listings</p>
           <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-            Discover More Cultural Initiatives
+            Find events and cultural organizations
           </h2>
           <p class="text-lg text-white/80 mb-10 max-w-2xl mx-auto">
-            Explore upcoming events and connect with the organizations behind them.
+            Check the event calendar or browse the services directory.
           </p><br>
           <div class="flex flex-wrap justify-center gap-4">
             <a 
               href="/events" 
-              class="inline-flex items-center px-6 py-3 bg-white text-slate-900 rounded-full hover:bg-slate-50 transition-colors duration-300 font-medium group"
+              class="inline-flex items-center rounded-lg bg-white px-6 py-3 font-medium text-slate-900 transition-colors duration-300 hover:bg-slate-100"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
@@ -367,7 +333,7 @@ const featuredPrograms = [
             </a>
             <a 
               href="/services" 
-              class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition-colors duration-300 font-medium border border-gray-700 group"
+              class="inline-flex items-center rounded-lg border border-slate-600 bg-slate-800 px-6 py-3 font-medium text-white transition-colors duration-300 hover:bg-slate-700"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 00-2 2v2a2 2 0 002 2h12a2 2 0 002-2v-2a2 2 0 00-2-2H4z" />

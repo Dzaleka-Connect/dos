@@ -174,7 +174,7 @@ import Schema from '../components/Schema.astro';
 			});
 		</script>
 	</head>
-	<body class="flex flex-col min-h-screen pt-16">
+	<body class="flex min-h-screen flex-col bg-white text-slate-800">
 		<slot />
 		
 		<!-- Site Analytics Tracking -->
@@ -216,15 +216,6 @@ import Schema from '../components/Schema.astro';
 						}
 					});
 
-					// Warn before clearing site data
-					window.addEventListener('beforeunload', (e) => {
-						if (document.hasStorageAccess && !document.hasStorageAccess()) {
-							const msg = 'Warning: Clearing site data will erase analytics. Export your data first.';
-							e.returnValue = msg;
-							return msg;
-						}
-					});
-
 					// Initialize page view tracking
 					let data = await trackPageView();
 					
@@ -253,25 +244,6 @@ import Schema from '../components/Schema.astro';
 							
 						} catch (error) {
 							console.warn('IP geolocation failed:', error);
-							
-							// Fallback to browser geolocation if available
-							if (navigator.geolocation) {
-								try {
-									const position = await new Promise((resolve, reject) => {
-										navigator.geolocation.getCurrentPosition(resolve, reject);
-									});
-									
-									return {
-										latitude: position.coords.latitude,
-										longitude: position.coords.longitude,
-										accuracy: position.coords.accuracy,
-										source: 'browser'
-									};
-								} catch (geoError) {
-									console.warn('Browser geolocation failed:', geoError);
-									return null;
-								}
-							}
 							return null;
 						}
 					}
@@ -416,15 +388,9 @@ import Schema from '../components/Schema.astro';
 
 <style is:global>
 	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
-
-		/* Cultural color palette */
-		--terracotta: #CC5500;
-		--ochre: #CC8800;
-		--earth: #B85C2E;
+		--accent: 2, 132, 199;
+		--accent-light: 224, 242, 254;
+		--accent-dark: 12, 74, 110;
 	}
 
 	html {
@@ -440,15 +406,21 @@ import Schema from '../components/Schema.astro';
 		color: #1f2937;
 	}
 
-	h1, h2, h3, h4, h5, h6 {
-		font-family: 'Manrope', system-ui, sans-serif;
-		font-weight: 600;
-		letter-spacing: -0.02em;
+	/* Keep page content visible immediately, including on mobile browsers that defer animations. */
+	.animate-fade-in,
+	.animate-fade-in-up,
+	.animate-slide-up,
+	.animate-reveal,
+	.scroll-reveal,
+	[class*="stagger-"] {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
 	}
 
-	h3 {
-		font-weight: 500;
-		letter-spacing: -0.01em;
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Manrope', system-ui, sans-serif;
+		letter-spacing: 0;
 	}
 
 	/* Better visual hierarchy for headings - only when no Tailwind classes */
@@ -480,19 +452,6 @@ import Schema from '../components/Schema.astro';
 	h6:not([class*="text-"]) {
 		font-size: 1rem;
 		line-height: 1.5;
-	}
-
-	/* Ensure h3 uses Manrope even with Tailwind utilities and font classes */
-	.font-semibold h3,
-	.font-medium h3,
-	.font-bold h3,
-	.font-heading h3,
-	h3.font-semibold,
-	h3.font-medium,
-	h3.font-bold,
-	h3.font-heading {
-		font-family: 'Manrope', system-ui, sans-serif;
-		font-weight: 500 !important;
 	}
 
 	code {
