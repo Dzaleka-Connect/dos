@@ -58,6 +58,116 @@ const title = 'Dzaleka Encyclopedia';
 const description = 'A sourced reference to Dzaleka Refugee Camp: its history, people, institutions, culture, services, law, health, education, infrastructure, and public life.';
 const campEntry = entries.find((entry) => entry.id === 'dzaleka-refugee-camp');
 
+// ---------- "On this day" calendar data ----------
+// Each event maps a month/day to an encyclopedia slug, with descriptive text.
+// Multiple events can share the same date — they all display as a timeline.
+const encyclopediaCalendar: { month: number; day: number; year?: number; text: string; slug: string }[] = [
+  // January
+  { month: 1, day: 1, text: "Dzaleka marks the start of another year in the camp.", slug: 'dzaleka-refugee-camp' },
+  { month: 1, day: 15, text: "John Chilembwe Day — national holiday in Malawi celebrating the early anti-colonial leader.", slug: 'history-of-dzaleka' },
+
+  // February
+  { month: 2, day: 2, year: 2020, text: "ADAI Circle (Africa Deep Artificial Intelligence Circle) was established in Dzaleka by Byamasu Patrick Paul and Amisi Hassan Jospin.", slug: 'adai-circle' },
+  { month: 2, day: 20, year: 2015, text: "Salama Africa, a refugee-founded youth arts and dance center in Dzaleka, was officially registered with the Malawian Refugee Department.", slug: 'salama-africa' },
+  { month: 2, day: 20, text: "World Day of Social Justice highlights displaced communities.", slug: 'social-development-mdhs-2024' },
+
+  // March
+  { month: 3, day: 3, text: "Martyrs' Day — Malawi national holiday honoring those who lost their lives in the struggle for independence.", slug: 'history-of-dzaleka' },
+  { month: 3, day: 8, text: "International Women's Day — many camp organisations celebrate the women of Dzaleka.", slug: 'henriette-kiwele' },
+  { month: 3, day: 22, text: "World Water Day — a critical issue in the camp.", slug: 'water-and-sanitation' },
+  { month: 3, day: 27, year: 2023, text: "The Government of Malawi issued a directive requiring all refugees residing outside designated areas to relocate back to Dzaleka Camp.", slug: 'law-and-encampment-policy' },
+
+  // April
+  { month: 4, day: 7, text: "World Health Day — Dzaleka Health Centre serves the camp population.", slug: 'dzaleka-health-centre' },
+  { month: 4, day: 7, year: 1994, text: "The Rwandan genocide began, driving some of the first refugees to Malawi.", slug: 'history-of-dzaleka' },
+  { month: 4, day: 19, year: 2022, text: "Run Elvin! by former Dzaleka refugee Gabriel Ndayishimiye was published.", slug: 'run-elvin-book' },
+  { month: 4, day: 25, year: 2007, text: "The Malawian government announced its decision to close Luwani Refugee Camp, initiating the consolidation of residents into Dzaleka.", slug: 'luwani-refugee-camp' },
+
+  // May
+  { month: 5, day: 1, text: "Labour Day — Malawi national holiday celebrating workers' rights and achievements.", slug: 'livelihoods-and-local-economy' },
+  { month: 5, day: 14, text: "Kamuzu Day — Malawi national holiday celebrating Hastings Kamuzu Banda, during whose presidency the Dzaleka site was a political prison.", slug: 'history-of-dzaleka' },
+  { month: 5, day: 15, text: "International Day of Families — highlighting the importance of family tracing and reunification for refugees.", slug: 'population-and-demography' },
+  { month: 5, day: 22, year: 2024, text: "The audiobook edition of James Niyomugabo's How To Create Like God was released.", slug: 'how-to-create-like-god-book' },
+  { month: 5, day: 25, text: "Africa Day is celebrated across the camp's multinational community.", slug: 'dzaleka-refugee-camp' },
+
+  // June
+  { month: 6, day: 1, year: 2017, text: "The Dzaleka AppFactory opened through Microsoft 4Afrika and UNHCR's Connectivity for Refugees programme.", slug: 'dzaleka-appfactory' },
+  { month: 6, day: 14, text: "Freedom Day — Malawi national holiday commemorating the 1993 democratic referendum that ended one-party rule.", slug: 'history-of-dzaleka' },
+  { month: 6, day: 16, text: "Day of the African Child recognises young people's rights to education.", slug: 'education-in-dzaleka' },
+  { month: 6, day: 18, year: 2022, text: "Humanitarian OpenStreetMap Team published details of the MapMalawi Dzaleka Mapping Project.", slug: 'dzaleka-mapping-project' },
+  { month: 6, day: 20, text: "World Refugee Day is observed around the world and in the camp.", slug: 'dzaleka-refugee-camp' },
+  { month: 6, day: 26, text: "International Day in Support of Victims of Torture — a relevant day of reflection in Dzaleka where many fled violence.", slug: 'mental-health-in-dzaleka' },
+
+  // July
+  { month: 7, day: 6, text: "Malawi Independence Day — the host nation's national holiday.", slug: 'law-and-encampment-policy' },
+  { month: 7, day: 13, year: 1994, text: "In the months following April 1994, Dzaleka was established as a refugee camp in Dowa District.", slug: 'history-of-dzaleka' },
+
+  // August
+  { month: 8, day: 1, year: 2023, text: "Jali, a book by comedian and storyteller Oliver Twist, was published by Ebury Australia.", slug: 'jali-book' },
+  { month: 8, day: 7, year: 2018, text: "Yetu Community Radio (Yetu FM) began broadcasting from Dzaleka, becoming the first community radio station in a refugee camp in Southern Africa.", slug: 'yetu-community-radio' },
+  { month: 8, day: 12, text: "International Youth Day — Dzaleka's population skews young.", slug: 'population-and-demography' },
+  { month: 8, day: 19, year: 2016, text: "Refugee for Life, a memoir by Innocent Magambi, was published.", slug: 'refuge-for-life-book' },
+  { month: 8, day: 19, text: "World Humanitarian Day honours aid workers in the camp.", slug: 'jesuit-refugee-service' },
+  { month: 8, day: 21, year: 2023, text: "How To Create Like God by James Niyomugabo was published as a paperback.", slug: 'how-to-create-like-god-book' },
+
+  // September
+  { month: 9, day: 8, text: "International Literacy Day — education programmes in the camp mark the occasion.", slug: 'jesuit-worldwide-learning' },
+  { month: 9, day: 13, year: 2018, text: "UNHCR profiled technologist Remy Gakwaya and the TakeNoLab coding group.", slug: 'remy-gakwaya' },
+  { month: 9, day: 21, text: "International Day of Peace — marked by community activities promoting coexistence inside and outside the camp.", slug: 'salama-africa' },
+
+  // October
+  { month: 10, day: 10, text: "World Mental Health Day — mental health support remains a vital need.", slug: 'mental-health-in-dzaleka' },
+  { month: 10, day: 15, text: "Mother's Day — Malawi national holiday celebrating mothers across the nation.", slug: 'maternal-health-and-malaria-mdhs-2024' },
+  { month: 10, day: 16, text: "World Food Day — food security is one of Dzaleka's ongoing challenges.", slug: 'food-security-and-assistance' },
+  { month: 10, day: 25, year: 2007, text: "Luwani Refugee Camp was officially closed, and the final convoy of residents was transferred to Dzaleka.", slug: 'luwani-refugee-camp' },
+
+  // November
+  { month: 11, day: 1, year: 2014, text: "The first Tumaini Festival is held at the camp, founded by Menes la Plume to promote arts and music.", slug: 'tumaini-festival' },
+  { month: 11, day: 9, year: 2018, text: "Dr. Mireille Twayigira was profiled as a JRS Refugee Education Advocate, sharing her story of hope.", slug: 'mireille-twayigira' },
+  { month: 11, day: 20, text: "World Children's Day — highlighting children's rights to education and protection in refugee settings.", slug: 'education-in-dzaleka' },
+  { month: 11, day: 22, year: 2007, text: "UNHCR and Malawi completed the registration of all refugees and asylum seekers.", slug: 'history-of-dzaleka' },
+
+  // December
+  { month: 12, day: 1, text: "World AIDS Day — health campaigns run from Dzaleka Health Centre.", slug: 'dzaleka-health-centre' },
+  { month: 12, day: 7, year: 2012, text: "Jesuit Refugee Service documented the expansion of its education programmes in Dzaleka.", slug: 'jesuit-refugee-service' },
+  { month: 12, day: 10, text: "Human Rights Day — commemorating the adoption of the Universal Declaration of Human Rights and highlighting refugee rights.", slug: 'inua-advocacy' },
+  { month: 12, day: 18, text: "International Migrants Day recognises the displaced population.", slug: 'population-and-demography' },
+  { month: 12, day: 25, text: "Christmas Day — widely celebrated with church services and family gatherings inside the camp.", slug: 'tumaini-festival' },
+  { month: 12, day: 26, text: "Boxing Day — national holiday in Malawi, celebrated with sports activities and rest.", slug: 'sport-in-dzaleka' },
+];
+
+// Pool of entries suitable for the daily card rotation (need at least a title and summary).
+const rotationPool = entries
+  .filter((entry) => entry.data.title && entry.data.summary)
+  .map((entry) => ({
+    slug: entry.id,
+    title: entry.data.title,
+    summary: entry.data.summary,
+    category: entry.data.category,
+    image: entry.data.image || '',
+  }));
+
+// Server-side defaults so the page renders correctly before client-side hydration.
+const now = new Date();
+const todayMonth = now.getMonth() + 1;
+const todayDay = now.getDate();
+const todayMonthDay = now.toLocaleDateString('en-GB', { month: 'long', day: 'numeric' });
+
+// Collect ALL events for today (not just the first match).
+const todayEvents = encyclopediaCalendar.filter(
+  (event) => event.month === todayMonth && event.day === todayDay
+);
+
+const dayOfYear = Math.floor(
+  (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000
+);
+
+// The featured pick: the first matching event's entry, or a deterministic rotation fallback.
+const defaultEvent = todayEvents[0] || null;
+const defaultPick = defaultEvent
+  ? rotationPool.find((p) => p.slug === defaultEvent.slug) || rotationPool[0]
+  : rotationPool[(now.getFullYear() * 37 + dayOfYear) % rotationPool.length] || rotationPool[0];
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -234,6 +344,80 @@ const structuredData = {
       </div>
     </section>
 
+    <section class="border-b border-slate-200 bg-white" id="on-this-day" data-calendar={JSON.stringify(encyclopediaCalendar)} data-pool={JSON.stringify(rotationPool)}>
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <!-- Header row -->
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">On this day</p>
+            <h2 class="mt-2 text-2xl font-bold text-slate-950" id="otd-date">{todayMonthDay}</h2>
+          </div>
+          <!-- Date search control -->
+          <div class="flex items-center gap-2">
+            <label for="otd-date-select" class="text-xs font-semibold uppercase tracking-wider text-slate-500">Select date:</label>
+            <input
+              type="date"
+              id="otd-date-select"
+              class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-slate-300 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400"
+            />
+          </div>
+        </div>
+
+        <!-- Two-column layout: events list + featured card -->
+        <div class="mt-6 grid gap-8 md:grid-cols-[1fr_320px]" id="otd-body">
+          <!-- Events timeline -->
+          <div>
+            {todayEvents.length > 0 ? (
+              <ul class="space-y-4" id="otd-events">
+                {todayEvents.map((event) => {
+                  const poolEntry = rotationPool.find((p) => p.slug === event.slug);
+                  return (
+                    <li class="flex gap-3">
+                      <span class="mt-1.5 block h-2 w-2 shrink-0 rounded-full bg-slate-400" aria-hidden="true"></span>
+                      <div>
+                        <p class="leading-7 text-slate-700">
+                          {event.year && <strong class="font-semibold text-slate-950">{event.year}</strong>}
+                          {event.year && <span> – </span>}
+                          {event.text}
+                        </p>
+                        {poolEntry && (
+                          <a href={`/encyclopedia/${poolEntry.slug}`} class="mt-1 inline-block text-sm font-medium text-primary-700 hover:text-primary-800">
+                            Read entry →
+                          </a>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <p class="leading-7 text-slate-600" id="otd-fallback-text">No calendar events for today — explore a featured entry from the collection.</p>
+            )}
+          </div>
+
+          <!-- Featured entry card -->
+          <a
+            id="otd-card"
+            href={`/encyclopedia/${defaultPick.slug}`}
+            class="group block w-full overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm self-start"
+          >
+            <img
+              id="otd-image"
+              src={defaultPick.image || ''}
+              alt=""
+              class={`aspect-[16/9] w-full object-cover ${defaultPick.image ? '' : 'hidden'}`}
+              loading="lazy"
+            />
+            <div class="p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500" id="otd-category">{defaultPick.category}</p>
+              <h3 class="mt-2 text-lg font-bold leading-6 text-slate-950 group-hover:text-primary-700" id="otd-title">{defaultPick.title}</h3>
+              <p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-600" id="otd-summary">{defaultPick.summary}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
     {surveyEntries.length > 0 && (
       <section class="border-b border-slate-200 bg-white">
         <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -360,6 +544,115 @@ const structuredData = {
 </MainLayout>
 
 <script>
+  // "On this day" rotation and interactive date selection.
+  const otdSection = document.getElementById('on-this-day');
+  if (otdSection) {
+    try {
+      type CalendarEvent = { month: number; day: number; year?: number; text: string; slug: string };
+      type PoolEntry = { slug: string; title: string; summary: string; category: string; image: string };
+
+      const calendar: CalendarEvent[] = JSON.parse(otdSection.dataset.calendar || '[]');
+      const pool: PoolEntry[] = JSON.parse(otdSection.dataset.pool || '[]');
+      const now = new Date();
+
+      const dateEl = document.getElementById('otd-date');
+      const dateSelectInput = document.getElementById('otd-date-select') as HTMLInputElement | null;
+
+      const updateOnThisDay = (targetDate: Date) => {
+        const m = targetDate.getMonth() + 1;
+        const d = targetDate.getDate();
+
+        // Update the date heading
+        if (dateEl) {
+          dateEl.textContent = targetDate.toLocaleDateString('en-GB', { month: 'long', day: 'numeric' });
+        }
+
+        // Find events for selected date
+        const selectedEvents = calendar.filter((e) => e.month === m && e.day === d);
+
+        // Rebuild events list inside its parent container
+        const eventsParent = document.querySelector('#otd-body > div:first-child');
+        if (eventsParent) {
+          if (selectedEvents.length > 0) {
+            let ul = document.getElementById('otd-events');
+            if (!ul) {
+              ul = document.createElement('ul');
+              ul.id = 'otd-events';
+              eventsParent.innerHTML = '';
+              eventsParent.appendChild(ul);
+            }
+            ul.className = 'space-y-4';
+            ul.innerHTML = selectedEvents.map((event) => {
+              const poolEntry = pool.find((p) => p.slug === event.slug);
+              const yearStr = event.year
+                ? `<strong class="font-semibold text-slate-950">${event.year}</strong><span> – </span>`
+                : '';
+              const linkStr = poolEntry
+                ? `<a href="/encyclopedia/${poolEntry.slug}" class="mt-1 inline-block text-sm font-medium text-primary-700 hover:text-primary-800">Read entry →</a>`
+                : '';
+              return `<li class="flex gap-3">
+                <span class="mt-1.5 block h-2 w-2 shrink-0 rounded-full bg-slate-400" aria-hidden="true"></span>
+                <div>
+                  <p class="leading-7 text-slate-700">${yearStr}${event.text}</p>
+                  ${linkStr}
+                </div>
+              </li>`;
+            }).join('');
+          } else {
+            eventsParent.innerHTML = `<p id="otd-fallback-text" class="leading-7 text-slate-600">No calendar events for this date — explore a featured entry from the collection.</p>`;
+          }
+        }
+
+        // Update the featured card
+        const startOfYear = new Date(targetDate.getFullYear(), 0, 0);
+        const dayOfYear = Math.floor((targetDate.getTime() - startOfYear.getTime()) / 86400000);
+        const firstEvent = selectedEvents[0];
+        const pick = firstEvent
+          ? pool.find((p) => p.slug === firstEvent.slug) || pool[0]
+          : pool[(targetDate.getFullYear() * 37 + dayOfYear) % pool.length];
+        if (pick) {
+          const card = document.getElementById('otd-card') as HTMLAnchorElement | null;
+          const image = document.getElementById('otd-image') as HTMLImageElement | null;
+          const category = document.getElementById('otd-category');
+          const titleEl = document.getElementById('otd-title');
+          const summary = document.getElementById('otd-summary');
+          if (card) card.href = `/encyclopedia/${pick.slug}`;
+          if (image) {
+            if (pick.image) {
+              image.src = pick.image;
+              image.classList.remove('hidden');
+            } else {
+              image.classList.add('hidden');
+            }
+          }
+          if (category) category.textContent = pick.category;
+          if (titleEl) titleEl.textContent = pick.title;
+          if (summary) summary.textContent = pick.summary;
+        }
+      };
+
+      // Set input element to local date and trigger initial render
+      if (dateSelectInput) {
+        const tzOffset = now.getTimezoneOffset() * 60000;
+        const localISODate = new Date(now.getTime() - tzOffset).toISOString().split('T')[0];
+        dateSelectInput.value = localISODate;
+
+        dateSelectInput.addEventListener('change', () => {
+          if (dateSelectInput.value) {
+            const [y, mStr, dStr] = dateSelectInput.value.split('-').map(Number);
+            const selectedDate = new Date(y, mStr - 1, dStr);
+            updateOnThisDay(selectedDate);
+          }
+        });
+      }
+
+      // Initial run for today
+      updateOnThisDay(now);
+    } catch (error) {
+      console.error('On this day rotation failed:', error);
+    }
+  }
+
   const searchInput = document.getElementById('encyclopedia-search') as HTMLInputElement | null;
   const searchControl = document.getElementById('search-control');
   const searchSuggestions = document.getElementById('search-suggestions');
