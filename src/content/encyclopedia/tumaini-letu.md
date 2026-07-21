@@ -38,14 +38,14 @@ sources:
 
 ## Origins
 
-Tumaini Letu — "Our Hope" in Swahili — is a non-profit organisation based in Dzaleka. It was founded in 2012 by Trésor Nzengu Mpauni, the Congolese poet and cultural organiser known as Menes la Plume, who arrived in the camp as a refugee.
+Tumaini Letu — "Our Hope" in Swahili — is a non-profit organisation based in Dzaleka. It was founded in 2012 by Trésor Nzengu Mpauni, the Congolese poet and cultural organiser known as [Menes la Plume](/encyclopedia/menes-la-plume), who arrived in the camp as a refugee.
 
-## The festival and beyond
+## Activities
 
-The organisation is best known for the Tumaini Festival, which it has staged inside the camp since 2014 and which is widely described as the world's only arts festival held within a refugee camp. The festival is covered in its own entry; Tumaini Letu is the institution behind it.
+The organisation is best known for the [Tumaini Festival](/encyclopedia/tumaini-festival), which it has staged inside the camp since 2014 and which is widely described as the world's only arts festival held within a refugee camp. The festival is covered in its own entry; Tumaini Letu is the institution behind it.
 
 Beyond the festival, the organisation describes its mission as promoting the economic, social, and cultural inclusion of refugees in Malawi — through workshops and training, business and connection opportunities, and by opening Dzaleka to visitors.
 
 ## Recognition
 
-Tumaini Letu's own reporting counts thousands of entrepreneurs supported and jobs created around the festival economy; these figures come from the organisation and have not been independently audited. Its recognition includes the 2020 Sharjah International Award for Refugee Advocacy and Support, and the World Bank has profiled the festival's founding as a case of refugee-led social inclusion.
+Tumaini Letu's own reporting counts thousands of entrepreneurs supported and jobs created around the festival economy; these figures come from the organisation and have not been independently audited. Its recognition includes the 2020 Sharjah International Award for Refugee Advocacy and Support, and the [World Bank](https://blogs.worldbank.org/nasikiliza/breaking-mold-refugees-founding-tumaini-festival-dzaleka-refugee-camp-malawi) has profiled the festival's founding as a case of refugee-led social inclusion.

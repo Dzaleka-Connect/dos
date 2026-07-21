@@ -40,16 +40,16 @@ sources:
 
 ## Origins
 
-Salama Africa was established in Dzaleka in 2014 by Congolese-born brothers Toussaint and Fredy Farini, together with collaborators. It began as a dance group and grew into an intercultural youth centre.
+Salama Africa was established in Dzaleka in 2014 by Congolese-born brothers [Toussaint](/encyclopedia/toussaint-farini-buunda) and Fredy Farini, together with collaborators. It began as a dance group and grew into an intercultural youth centre.
 
-Jesuit Refugee Service and the Wilson Center have both profiled the group as an example of refugee-led creative work in the camp: young people organising their own training, performances, and activities rather than waiting for outside programmes.
+[Jesuit Refugee Service](/encyclopedia/jesuit-refugee-service) and the [Wilson Center](https://www.wilsoncenter.org/article/refugee-creativity-fun-and-initiative-dzaleka-refugee-camp-malawi) have both profiled the group as an example of refugee-led creative work in the camp: young people organising their own training, performances, and activities rather than waiting for outside programmes.
 
 ## Activities
 
-Reporting on the group describes a nationally competitive dance crew alongside football teams and arts classes for children and young people in the camp. Malawi's Nation newspaper has covered the crew's influence on the national dance scene, and Jesuit Worldwide Learning reported its second-place finish in a national Kajive dance competition in Blantyre.
+Reporting on the group describes a nationally competitive dance crew alongside football teams and arts classes for children and young people in the camp. Malawi's Nation newspaper has covered the crew's influence on the national dance scene, and [Jesuit Worldwide Learning](/encyclopedia/jesuit-worldwide-learning) reported its second-place finish in a national Kajive dance competition in Blantyre.
 
-Salama Africa performers have also appeared at the Tumaini Festival, the annual arts festival held inside Dzaleka.
+Salama Africa performers have also appeared at the [Tumaini Festival](/encyclopedia/tumaini-festival), the annual arts festival held inside Dzaleka.
 
-## Youth organisation through the arts
+## Significance
 
-Dance groups are one of the most visible forms of youth organisation in Dzaleka. Alongside groups documented in the camp's wider dance scene, Salama Africa shows how cultural work doubles as youth support: structured time, mentorship, and a public stage for young people whose options are otherwise limited by encampment.
+Salama Africa is one of several refugee-led dance and youth groups documented in Dzaleka's arts scene. Alongside its performances, reporting on the group describes activities aimed at young people in the camp, including arts classes and football teams.

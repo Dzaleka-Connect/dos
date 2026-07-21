@@ -46,18 +46,18 @@ sources:
     date: "March 2016"
 ---
 
-## The Mozambican era
+## History
 
 Luwani camp, in Neno District in southern Malawi, was part of the infrastructure Malawi built to host Mozambicans fleeing the 1977–1992 civil war — a displacement crisis in which Malawi sheltered around a million people. After the war ended and most Mozambicans returned home, Luwani continued to operate on a much smaller scale for refugees from the Great Lakes region and the Horn of Africa.
 
 ## Closure and consolidation at Dzaleka
 
-On 26 October 2007, Luwani closed on government orders, and a UNHCR convoy moved its last residents — about 660 refugees and asylum seekers — to Dzaleka. The closure made Dzaleka Malawi's only refugee camp, a consolidation that shapes the camp's overcrowding to this day: a single site, designed for a fraction of its current population, absorbing every new arrival to the country.
+On 26 October 2007, Luwani closed on government orders, and a [UNHCR](https://www.unhcr.org/news/latest/2007/10/4721eb834/luwani-refugee-camp-malawi-closes-unhcr-moves-residents.html) convoy moved its last residents — about 660 refugees and asylum seekers — to Dzaleka. The closure made Dzaleka Malawi's only refugee camp, a consolidation that shapes the camp's overcrowding to this day: a single site, designed for a fraction of its current population, absorbing every new arrival to the country.
 
 ## Brief reopening
 
 In March 2016, the government agreed to reopen Luwani as numbers fleeing renewed political violence in Mozambique grew, and UNHCR began relocating Mozambican asylum seekers there from the border village of Kapise the following month. The reopening proved short-lived: as conditions in Mozambique changed, most residents opted for voluntary repatriation, and the camp wound down again.
 
-## Legacy in Dzaleka's records
+## Legacy
 
-Luwani appears throughout Dzaleka's records — UNHCR nutrition surveys from the mid-2010s covered "Dzaleka and Luwani" together, and older residents of Dzaleka include people transferred in the 2007 closure. Understanding Luwani is necessary to understand how Malawi arrived at a single-camp policy.
+Luwani appears in Dzaleka's records: UNHCR nutrition surveys from the mid-2010s covered "Dzaleka and Luwani" together, and Dzaleka's older residents include people transferred there in the 2007 closure. Luwani's closure is the point at which Malawi moved to a single-camp system.

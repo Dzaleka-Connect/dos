@@ -39,9 +39,9 @@ sources:
     date: "20 March 2025"
 ---
 
-## The football scene
+## Football
 
-Football is the camp's dominant sport. UNHCR's Goal Click storytelling project, which put cameras in the hands of refugee players, reported around fifteen football teams in Dzaleka, some competing in national and regional leagues and tournaments. Camp teams have also played exhibition matches against Malawi Super League opposition.
+Football is the camp's dominant sport. UNHCR's [Goal Click](https://www.unhcr.org/goalclick/a-game-that-unifies-after-displacement-in-africa/) storytelling project, which put cameras in the hands of refugee players, reported around fifteen football teams in Dzaleka, some competing in national and regional leagues and tournaments. Camp teams have also played exhibition matches against Malawi Super League opposition.
 
 ## Organised youth sport
 
@@ -49,8 +49,8 @@ The Dzaleka Sports Association organises structured competition for children, in
 
 ## Partners and programmes
 
-External programmes have grown around the local scene. A FIFA Foundation–supported coaching programme ran in the camp in 2024, with a FIFA assessment visit reported in 2026. The Match Foundation has documented football-based mental health work with young people, run with the Fountain of Hope organisation. Dance and youth groups such as Salama Africa also field football teams alongside their arts programmes.
+External programmes have grown around the local scene. A FIFA Foundation–supported coaching programme ran in the camp in 2024, with a FIFA assessment visit reported in 2026. The [Match Foundation](https://match-foundation.com/2025/03/20/mental-health-through-sports-at-dzaleka-camp/) has documented football-based mental health work with young people, run with the [Fountain of Hope](/encyclopedia/fountain-of-hope-africa) organisation. Dance and youth groups such as [Salama Africa](/encyclopedia/salama-africa) also field football teams alongside their arts programmes.
 
-## Beyond recreation
+## Significance
 
-In a camp where formal work and movement are restricted, organised sport carries weight beyond recreation: structured time for young people, one of the main bridges to the host community, and — as the mental health entry documents — one of the few widely accessible forms of psychosocial support.
+Reporting on the camp describes organised sport as providing structured activity for young people and as one of the regular points of contact between the refugee and host communities. Sports programmes have also been used as a vehicle for psychosocial support, as documented in the entry on [mental health in Dzaleka](/encyclopedia/mental-health-in-dzaleka).

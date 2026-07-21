@@ -34,7 +34,7 @@ sources:
     date: "2022"
 ---
 
-## The energy picture
+## Overview
 
 Like most displacement settings in sub-Saharan Africa, Dzaleka runs largely on biomass. Research on refugee settlements in the region reports that the great majority of camp households lack electricity access and rely on firewood and charcoal for cooking — a pattern that holds in Dzaleka, where most households cook on biomass and electricity access is limited to a minority of homes and institutions.
 
@@ -42,10 +42,10 @@ The costs of biomass cooking fall unevenly. Firewood collection is customarily a
 
 ## The solar electric cooking pilot
 
-From September 2022, Modern Energy Cooking Services (MECS) and the World Food Programme ran a solar electric cooking pilot in Dzaleka, installing solar-powered electric stoves in 61 households and a day-care centre. A follow-up study 18 months after installation examined how the stoves held up in daily use and what they displaced.
+From September 2022, [Modern Energy Cooking Services (MECS)](https://mecs.org.uk/publications/solar-electric-cooking-in-displacement-settings-lessons-from-dzaleka-refugee-camp/) and the World Food Programme ran a solar electric cooking pilot in Dzaleka, installing solar-powered electric stoves in 61 households and a day-care centre. A follow-up study 18 months after installation examined how the stoves held up in daily use and what they displaced.
 
-The resulting report by Todd and Giese, published in September 2024, documents both the promise and the practical constraints of solar cooking in the camp — panel capacity, weather dependence, and the persistence of biomass as a backup. It is the most detailed public study of household energy in Dzaleka to date.
+The resulting report by Todd and Giese, published in September 2024, documents the practical constraints of solar cooking in the camp, including panel capacity, weather dependence, and the continued use of biomass as a backup.
 
-## Reading the numbers
+## Data availability
 
-Figures in this entry describe the pilot and regional research findings, not a camp-wide energy census. No comprehensive measurement of household energy access in Dzaleka has been published; the MECS report and UNHCR's periodic fact sheets are the nearest available evidence.
+The figures in this entry describe the pilot and regional research findings rather than a camp-wide energy census. No comprehensive measurement of household energy access in Dzaleka has been published; the MECS report and UNHCR's periodic fact sheets are the nearest available evidence.

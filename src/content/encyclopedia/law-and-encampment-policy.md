@@ -22,7 +22,7 @@ facts:
     value: "Encampment policy centred on Dzaleka"
   - label: "Act review"
     value: "National validation workshop held in February 2026"
-relatedEntries: ["dzaleka-refugee-camp", "history-of-dzaleka", "livelihoods-and-local-economy", "inua-advocacy"]
+relatedEntries: ["forced-relocation-2023", "dzaleka-refugee-camp", "history-of-dzaleka", "livelihoods-and-local-economy", "inua-advocacy"]
 sources:
   - title: "Malawi country page"
     publisher: "UNHCR Operational Data Portal"

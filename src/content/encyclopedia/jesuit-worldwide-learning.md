@@ -39,18 +39,18 @@ sources:
     date: "27 March 2013"
 ---
 
-## Higher education inside the camp
+## Overview
 
 Jesuit Worldwide Learning (JWL) delivers university-level education to learners in refugee camps and other marginalised settings through a blended model: students study at a local learning centre with on-site facilitation, while courses are taught online by faculty from Jesuit universities.
 
-Dzaleka hosts one of JWL's learning centres, operated alongside Jesuit Refugee Service's education work in the camp. The programme began under the name Jesuit Commons: Higher Education at the Margins, founded in 2010.
+Dzaleka hosts one of JWL's learning centres, operated alongside [Jesuit Refugee Service](/encyclopedia/jesuit-refugee-service)'s education work in the camp. The programme began under the name Jesuit Commons: Higher Education at the Margins, founded in 2010.
 
 ## The Regis diploma
 
-The flagship credential is a diploma in liberal studies accredited by Regis University in Denver. The 45-credit-hour programme — typically completed in about three years — combines 30 core liberal-studies credits with 15 credits in one of three specialties: social work, education, or business. Credits can be applied toward bachelor's degree programmes at partner institutions.
+The flagship credential is a diploma in liberal studies accredited by [Regis University](https://www.regis.edu/news/2019/news-releases/07/regis-awards-diplomas-in-kenya-malawi) in Denver. The 45-credit-hour programme — typically completed in about three years — combines 30 core liberal-studies credits with 15 credits in one of three specialties: social work, education, or business. Credits can be applied toward bachelor's degree programmes at partner institutions.
 
 Regis University reported conferring diplomas to Dzaleka students in graduation ceremonies covered in 2018 and 2019, and more than 180 instructors from Jesuit institutions have taught in the online programme.
 
-## Local significance
+## Significance
 
-For students confined to the camp by encampment policy, JWL has been one of the few routes to an internationally accredited credential without leaving Dzaleka. Several figures documented in this encyclopedia passed through JWL or JRS training centres — including Remy Gakwaya, who learned programming there before founding TakeNoLab.
+JWL provides an internationally accredited credential to students who, under Malawi's encampment policy, cannot easily leave Dzaleka to study elsewhere. Several people documented in this encyclopedia passed through JWL or JRS training centres, including [Remy Gakwaya](/encyclopedia/remy-gakwaya), who learned programming there before founding [TakeNoLab](/encyclopedia/takenolab).
