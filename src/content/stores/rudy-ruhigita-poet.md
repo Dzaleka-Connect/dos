@@ -2,7 +2,8 @@
 name: "Rudy RUHIGITA Poet"
 description: "Poet and spoken word artist based in Dzaleka Refugee Camp, available for booking to provide entertainment at events and venues."
 type: "other"
-logo: "https://res.cloudinary.com/dcvwslmow/image/upload/v1784624572/stores/logos/tiia4fuqeczwjcs8aa37.jpg"
+logo: "https://res.cloudinary.com/dcvwslmow/image/upload/c_fill,g_auto,ar_1:1,w_600,q_auto,f_auto/v1784624572/stores/logos/tiia4fuqeczwjcs8aa37.jpg"
+coverImage: "https://res.cloudinary.com/dcvwslmow/image/upload/c_fill,g_auto,ar_4:3,w_800,q_auto,f_auto/v1784624572/stores/logos/tiia4fuqeczwjcs8aa37.jpg"
 owner:
   name: "Rudy RUHIGITA Poet"
   phone: "+265881237876"
@@ -10,7 +11,7 @@ owner:
   email: "bienvehenock@gmail.com"
 location:
   address: "Dzaleka"
-  zone: "Lisugwe"
+  zone: "Lisungwe"
 hours:
   - day: "Monday"
     open: ""
