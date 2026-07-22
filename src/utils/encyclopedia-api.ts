@@ -45,6 +45,18 @@ export function encyclopediaJsonLd(entry: CollectionEntry<'encyclopedia'>) {
   );
   const type = configuredType === 'Article' ? 'DefinedTerm' : configuredType === 'Event' ? 'EventSeries' : configuredType;
 
+  const factProperties = (data.facts || []).map((fact) => ({
+    '@type': 'PropertyValue',
+    name: fact.label,
+    value: fact.value,
+  }));
+
+  const mentions = (data.relatedEntries || []).map((relatedId) => ({
+    '@type': 'Thing',
+    '@id': `${ENCYCLOPEDIA_URL}/${relatedId}#entity`,
+    url: `${ENCYCLOPEDIA_URL}/${relatedId}`,
+  }));
+
   return {
     '@context': 'https://schema.org',
     '@type': type,
@@ -56,7 +68,16 @@ export function encyclopediaJsonLd(entry: CollectionEntry<'encyclopedia'>) {
     description: data.summary,
     image: data.image ? (data.image.startsWith('http') ? data.image : `https://services.dzaleka.com${data.image}`) : undefined,
     sameAs: data.sameAs,
+    keywords: [data.category, data.entryType, ...(data.aliases || [])].join(', '),
     dateModified: data.lastReviewed.toISOString(),
+    additionalProperty: factProperties.length ? factProperties : undefined,
+    mentions: mentions.length ? mentions : undefined,
+    citation: data.sources?.map((source) => ({
+      '@type': 'CreativeWork',
+      name: source.title,
+      publisher: { '@type': 'Organization', name: source.publisher },
+      url: source.url,
+    })),
     ...(data.geo ? {
       geo: {
         '@type': 'GeoCoordinates',

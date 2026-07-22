@@ -22,8 +22,13 @@ facts:
     value: "Encampment policy centred on Dzaleka"
   - label: "Act review"
     value: "National validation workshop held in February 2026"
-relatedEntries: ["forced-relocation-2023", "dzaleka-refugee-camp", "history-of-dzaleka", "livelihoods-and-local-economy", "inua-advocacy"]
+relatedEntries: ["forced-relocation-2023", "dzaleka-refugee-camp", "history-of-dzaleka", "livelihoods-and-local-economy", "inua-advocacy", "waiting-in-dzaleka-refugee-camp-thesis"]
 sources:
+  - title: "Waiting in Dzaleka Refugee Camp - Agency through self- and community organisation"
+    publisher: "University of Applied Sciences Erfurt / DB-Thüringen"
+    url: "https://www.db-thueringen.de/servlets/MCRFileNodeServlet/dbt_derivate_00069597/Stammen_Anna_Lena.pdf"
+    date: "31 January 2025"
+    note: "Master's thesis evaluating encampment policy, waiting, and spatial governance in Dzaleka."
   - title: "Malawi country page"
     publisher: "UNHCR Operational Data Portal"
     url: "https://data.unhcr.org/en/country/mwi"
@@ -49,9 +54,10 @@ This article is a general reference, not legal advice. Current legal questions s
 
 ## Encampment policy
 
-Malawi's encampment policy generally requires refugees and asylum-seekers to live at Dzaleka unless authorised to reside or travel elsewhere. Exit permits can be important for education, specialised medical care, work, or other travel outside the camp.
+Malawi's encampment policy generally requires refugees and asylum-seekers to live at Dzaleka unless authorised to reside or travel elsewhere. Exit permits can be important for education, specialised medical care, work, or other travel outside the camp. Sociological analysis (e.g. Stammen 2025) describes the encampment system as a spatial technology that enforces prolonged "waiting" and legal limbo, which residents counter through self-reliance initiatives and community organisations.
 
-In March 2023, the Government directed refugees and asylum-seekers living in urban and rural areas to return to Dzaleka. UNHCR reported that the relocation increased pressure on an already congested settlement and called for rights and dignity to be protected during the process.
+In March 2023, the Government directed refugees and asylum-seekers living in urban and rural areas to return to Dzaleka. UNHCR reported that the relocation increased pressure on an already congested settlement and called for rights and dignity to be protected during the process. Academic research records that the forced returns exacerbated housing shortages, heightened social tension, and displaced residents from urban livelihoods.
+
 
 ## Work and education
 

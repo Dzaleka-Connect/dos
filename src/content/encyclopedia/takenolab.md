@@ -22,8 +22,13 @@ facts:
     value: "Just outside the Dzaleka gates, Dowa District"
   - label: "Cost to students"
     value: "Free"
-relatedEntries: ["remy-gakwaya", "dzaleka-appfactory", "adai-circle", "education-in-dzaleka", "dzaleka-mapping-project", "refugee-led-organisations"]
+relatedEntries: ["remy-gakwaya", "dzaleka-appfactory", "adai-circle", "education-in-dzaleka", "dzaleka-mapping-project", "refugee-led-organisations", "waiting-in-dzaleka-refugee-camp-thesis"]
 sources:
+  - title: "Waiting in Dzaleka Refugee Camp - Agency through self- and community organisation"
+    publisher: "University of Applied Sciences Erfurt / DB-Thüringen"
+    url: "https://www.db-thueringen.de/servlets/MCRFileNodeServlet/dbt_derivate_00069597/Stammen_Anna_Lena.pdf"
+    date: "31 January 2025"
+    note: "Master's thesis documenting TakeNoLab's role in digital education, Katudza hub, and remote freelancing as spatial agency."
   - title: "Refugees learn to code a new future in Malawi"
     publisher: "UNHCR"
     url: "https://www.unhcr.org/news/stories/refugees-learn-code-new-future-malawi"
@@ -39,7 +44,7 @@ sources:
 
 ## Overview
 
-TakeNoLab is a technology school just outside the gates of Dzaleka in Dowa District. [Remy Gakwaya](/encyclopedia/remy-gakwaya), a Burundian who lived in the camp as a refugee, founded it in 2015. Its courses — digital skills, online freelancing, and entrepreneurship — are offered to refugees and Malawians at no cost.
+TakeNoLab is a technology school with operations in the Katudza sector near the gates of Dzaleka in Dowa District. [Remy Gakwaya](/encyclopedia/remy-gakwaya), a Burundian who lived in the camp as a refugee, founded it in 2015. Its courses — digital skills, online freelancing, and software development — are offered to refugees and Malawians at no cost.
 
 The [Wilson Center](https://www.wilsoncenter.org/article/refugee-creativity-fun-and-initiative-dzaleka-refugee-camp-malawi)'s profile of the camp describes TakeNoLab as one of the refugee-led initiatives that residents built themselves, rather than programmes brought in from outside. It grew out of the same work covered in Gakwaya's own entry, where early students sometimes practised typing on printed keyboard diagrams because the group had too few computers.
 
@@ -47,6 +52,13 @@ The [Wilson Center](https://www.wilsoncenter.org/article/refugee-creativity-fun-
 
 Gakwaya was resettled to the United States in 2022. The Wilson Center reports that the school continued under his remote supervision and the local direction of Deborah Ntakirutimana, a Burundian who has been a refugee since infancy. Its own reporting counts more than two thousand students trained; that figure comes from the organisation.
 
+## Academic Significance and Spatial Mobility
+
+Academic research on Dzaleka (Stammen 2025) highlights TakeNoLab as a key example of how digital technology functions as a form of "spatial relocation" for young refugees:
+* **Transcending Encampment**: By teaching digital skills and remote freelancing, TakeNoLab enables students to earn income from global clients, allowing them to transcend the physical restrictions of encampment laws ("my body is in the camp, but my mind is free").
+* **Katudza Sector Hub**: Located in Katudza alongside other community organisations, TakeNoLab forms part of an emerging institutional and educational sector within the camp's social geography.
+
 ## Related work
 
 TakeNoLab is one of several refugee-founded technology education initiatives in and around Dzaleka, alongside the [Dzaleka AppFactory](/encyclopedia/dzaleka-appfactory) and [ADAI Circle](/encyclopedia/adai-circle). It was the local partner for the 2022 [Dzaleka Mapping Project](/encyclopedia/dzaleka-mapping-project), helping recruit young people who knew the camp to map its buildings, water points, and services.
+

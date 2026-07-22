@@ -22,7 +22,7 @@ facts:
     value: "Artificial intelligence, data science, software, hardware"
   - label: "Facility"
     value: "Innovation hub with public internet access"
-relatedEntries: ["dzaleka-appfactory", "education-in-dzaleka", "refugee-led-organisations", "remy-gakwaya", "dzaleka-refugee-camp"]
+relatedEntries: ["amisi-hassan-jospin", "byamasu-patrick-paul", "dzaleka-appfactory", "education-in-dzaleka", "refugee-led-organisations", "remy-gakwaya", "dzaleka-refugee-camp"]
 sources:
   - title: "MIT RAISE: Teaching 25 Million Students AI Is Something You Build"
     publisher: "DEEP Education Network"
@@ -37,7 +37,7 @@ sources:
 
 ## History
 
-ADAI Circle — Africa Deep Artificial Intelligence Circle — was established in Dzaleka on 2 February 2020 by Byamasu Patrick Paul and Amisi Hassan Jospin. It concentrates on artificial intelligence and data science, alongside software development and hardware design. Its innovation hub also offers internet access, which is otherwise scarce and expensive in the camp.
+ADAI Circle — Africa Deep Artificial Intelligence Circle — was established in Dzaleka on 2 February 2020 by [Byamasu Patrick Paul](/encyclopedia/byamasu-patrick-paul) and [Amisi Hassan Jospin](/encyclopedia/amisi-hassan-jospin). It concentrates on artificial intelligence and data science, alongside software development and hardware design. Its innovation hub also offers internet access, which is otherwise scarce and expensive in the camp.
 
 ## MIT partnerships
 

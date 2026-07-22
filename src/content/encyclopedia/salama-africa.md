@@ -22,8 +22,13 @@ facts:
     value: "Dance, arts classes, and youth activities"
   - label: "Recognition"
     value: "Placed second in a national Kajive dance competition"
-relatedEntries: ["toussaint-farini-buunda", "tumaini-festival", "refugee-led-organisations", "sport-in-dzaleka", "dzaleka-refugee-camp"]
+relatedEntries: ["toussaint-farini-buunda", "tumaini-festival", "refugee-led-organisations", "sport-in-dzaleka", "dzaleka-refugee-camp", "waiting-in-dzaleka-refugee-camp-thesis"]
 sources:
+  - title: "Waiting in Dzaleka Refugee Camp - Agency through self- and community organisation"
+    publisher: "University of Applied Sciences Erfurt / DB-Thüringen"
+    url: "https://www.db-thueringen.de/servlets/MCRFileNodeServlet/dbt_derivate_00069597/Stammen_Anna_Lena.pdf"
+    date: "31 January 2025"
+    note: "Master's thesis analyzing Salama Africa's internal employment generation, artistic pride, and psychosocial support."
   - title: "Malawi: Salama Africa empowers refugee youth"
     publisher: "Jesuit Refugee Service"
     url: "https://jrs.net/en/story/malawi-salama-africa-empowers-refugee-youth/"
@@ -50,6 +55,10 @@ Reporting on the group describes a nationally competitive dance crew alongside f
 
 Salama Africa performers have also appeared at the [Tumaini Festival](/encyclopedia/tumaini-festival), the annual arts festival held inside Dzaleka.
 
-## Significance
+## Economic and Psychosocial Impact
 
-Salama Africa is one of several refugee-led dance and youth groups documented in Dzaleka's arts scene. Alongside its performances, reporting on the group describes activities aimed at young people in the camp, including arts classes and football teams.
+Sociological fieldwork (Stammen 2025) highlights Salama Africa's model of internal employment generation and psychosocial empowerment:
+* **Salary Generation and Internal Hiring**: The organisation prioritizes recruiting internally from within the camp, paying stipends for performances and securing external employment for dancers as dance instructors in Lilongwe, directly countering legal barriers to formal employment.
+* **Artistic Self-Worth**: By enabling youth to perform alongside established Malawian artists, the centre builds artistic confidence and equal standing ("we are all artists").
+* **Emotional Haven**: Youth members report that sharing experiences and dancing together provides a supportive peer family, relieving stress and trauma from encampment.
+

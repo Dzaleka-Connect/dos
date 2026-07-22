@@ -20,8 +20,13 @@ facts:
     value: "Education, rights, technology, livelihoods, arts, health, protection, and mutual aid"
   - label: "Operating context"
     value: "Independent initiatives and partnerships with government, UN, NGO, and host-community institutions"
-relatedEntries: ["dzaleka-refugee-camp", "there-is-hope-malawi", "inua-advocacy", "dzaleka-appfactory", "tumaini-festival", "yetu-community-radio"]
+relatedEntries: ["dzaleka-refugee-camp", "there-is-hope-malawi", "inua-advocacy", "dzaleka-appfactory", "tumaini-festival", "yetu-community-radio", "waiting-in-dzaleka-refugee-camp-thesis"]
 sources:
+  - title: "Waiting in Dzaleka Refugee Camp - Agency through self- and community organisation"
+    publisher: "University of Applied Sciences Erfurt / DB-Thüringen"
+    url: "https://www.db-thueringen.de/servlets/MCRFileNodeServlet/dbt_derivate_00069597/Stammen_Anna_Lena.pdf"
+    date: "31 January 2025"
+    note: "Master's thesis analyzing refugee agency, coping mechanisms, and RLO engagement in Dzaleka."
   - title: "Malawi Refugee Guide"
     publisher: "Inua Advocacy"
     url: "https://inuaadvocacy.org/2024/12/malawi-refugee-guide/"
@@ -39,7 +44,7 @@ sources:
 
 A refugee-led organisation is an organisation in which refugees have substantial leadership and decision-making power. At Dzaleka, these organisations range from registered non-profits and networks to community groups, social enterprises, schools, cultural organisations, and mutual-aid initiatives.
 
-They are not one sector with a single structure. Some work independently; others implement projects with UN agencies, international organisations, government departments, foundations, or Malawian civil-society groups.
+They are not one sector with a single structure. Some work independently; others implement projects with UN agencies, international organisations, government departments, foundations, or Malawian civil-society groups. Sociological research on Dzaleka (e.g. Stammen 2025) emphasizes that RLOs serve as critical channels through which residents claim agency and self-determination amidst legal limbo and encampment constraints.
 
 ## Areas of work
 
@@ -49,9 +54,10 @@ Examples documented in public sources include TakenoLAB, Fountain of Hope, the R
 
 ## Recognition and resources
 
-UNHCR's evaluation of livelihoods programming in Malawi records refugee-led organisations implementing their own projects in Dzaleka. At the same time, RLOs can face funding, registration, banking, movement, and institutional-access barriers that affect their ability to operate on equal terms with larger organisations.
+UNHCR's evaluation of livelihoods programming in Malawi records refugee-led organisations implementing their own projects in Dzaleka. At the same time, RLOs can face funding, registration, banking, movement, and institutional-access barriers that affect their ability to operate on equal terms with larger organisations. Academic research highlights that despite these structural hurdles, engagement in RLOs acts as an essential coping mechanism against boredom, isolation, and enforced dependence.
 
 ## Keeping the record current
 
 Community organisations change frequently. Some close, merge, relocate, or change names; new groups form in response to emerging needs. The encyclopedia records institutional history, while the service directory should be used for current contacts and operating status.
+
 
