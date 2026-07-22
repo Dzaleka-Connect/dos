@@ -6,6 +6,10 @@ category: "People"
 entryType: "person"
 schemaType: "Person"
 aliases: ["Goldine", "La Pearl"]
+image: "/images/encyclopedia/dj-la-pearl.jpg"
+imageAlt: "DJ La Pearl smiling at her DJ decks in Dzaleka"
+imageCaption: "DJ La Pearl practising a set, photographed for the World Food Programme."
+imageCredit: "WFP/Badre Bahaji"
 featured: false
 status: "reviewed"
 datePublished: 2026-07-13
