@@ -1,0 +1,101 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { DzalekaInteractiveMap } from '../components/data/DzalekaInteractiveMap';
+import rawOsmPoints from '../data/dzalekaOsmPoints.json';
+
+const pageTitle = "Dzaleka Refugee Camp Map & Driving Directions | GPS Coordinates (-13.6592, 33.8705)";
+const description = "Get exact GPS coordinates (-13.6592, 33.8705), driving directions from Lilongwe (~41km via M7 highway), and an empirical OpenStreetMap of Dzaleka Refugee Camp in Dowa District, Malawi. Mapped healthcare center, secondary school, police station, central market, and NGO offices.";
+const keywords = "Dzaleka refugee camp map, Dzaleka directions, how to get to Dzaleka, Dzaleka coordinates, Dzaleka healthcare center location, Dzaleka police station, Dzaleka market, Dowa district refugee camp map, OpenStreetMap Dzaleka";
+
+const keyPlaces = (rawOsmPoints as any[]).slice(0, 15).map(pt => ({
+  "@type": "Place",
+  "name": pt.name,
+  "description": pt.description,
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": pt.lat,
+    "longitude": pt.lng
+  }
+}));
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Place", "Map", "CivicStructure"],
+      "name": "Dzaleka Refugee Camp",
+      "description": description,
+      "url": "https://services.dzaleka.com/map",
+      "hasMap": "https://services.dzaleka.com/map",
+      "image": "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -13.6592075,
+        "longitude": 33.8704547
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "M7 Highway, Dzaleka Refugee Camp",
+        "addressLocality": "Dowa District",
+        "addressRegion": "Central Region",
+        "addressCountry": "MW"
+      },
+      "containsPlace": keyPlaces
+    }
+  ]
+};
+---
+
+<MainLayout title={pageTitle} description={description} keywords={keywords} image="/images/dzaleka-hero.jpeg">
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <style is:global>
+    .leaflet-container {
+      font-family: inherit !important;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+    .custom-map-pin {
+      background: transparent !important;
+      border: none !important;
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 0.75rem !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+      padding: 0 !important;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .leaflet-popup-content {
+      margin: 12px 14px !important;
+      line-height: 1.5 !important;
+    }
+    .leaflet-popup-tip {
+      background: #ffffff !important;
+    }
+  </style>
+
+  {/* FULL-PAGE EDGE-TO-EDGE GOOGLE MAPS CANVAS FILLING TOP OF PAGE */}
+  <div class="relative w-full h-[calc(100vh-4rem)] min-h-[640px] bg-slate-900 overflow-hidden">
+    <DzalekaInteractiveMap client:load />
+  </div>
+
+  {/* SEARCH ENGINE CRAWLER OPTIMIZED INDEXING SECTION (ACCESSIBLE TO GOOGLEBOT FOR TOP SEARCH RANKINGS) */}
+  <section class="sr-only" aria-label="Search Engine Indexing & Directions Data">
+    <h2>Directions to Dzaleka Refugee Camp</h2>
+    <p>
+      Dzaleka Refugee Camp is located in Dowa District, Central Region, Malawi at GPS coordinates -13.6592, 33.8705.
+      From the capital city Lilongwe, travel approximately 41 kilometers north-east along the M7 highway towards Dowa Boma.
+    </p>
+
+    <h3>Key Infrastructure & Mapped Facilities in Dzaleka:</h3>
+    <ul>
+      {rawOsmPoints.map((pt: any) => (
+        <li>
+          <strong>{pt.name}</strong> - {pt.description} (Category: {pt.categoryLabel}, Coordinates: {pt.lat}, {pt.lng}, Zone: {pt.zone})
+        </li>
+      ))}
+    </ul>
+  </section>
+</MainLayout>
