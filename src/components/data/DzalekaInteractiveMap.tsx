@@ -467,7 +467,7 @@ export function DzalekaInteractiveMap() {
                 setSearchFocused(true);
               }}
               style={{ outline: 'none', border: 'none', boxShadow: 'none' }}
-              className="w-full bg-transparent text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-0 font-medium border-0 outline-none"
+              className="w-full bg-transparent text-[16px] sm:text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-0 font-medium border-0 outline-none"
             />
             {searchQuery && (
               <button
@@ -508,7 +508,7 @@ export function DzalekaInteractiveMap() {
 
           {/* Autocomplete Suggestions Dropdown */}
           {searchFocused && (
-            <div className="absolute top-13 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden z-40 max-h-80 overflow-y-auto">
+            <div className="absolute top-full mt-2 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden z-50 max-h-80 overflow-y-auto">
               <div className="px-3.5 py-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between text-[11px]">
                 <span className="font-semibold text-slate-500 uppercase tracking-wider">
                   {searchQuery ? `Matching Places (${filteredPoints.length})` : 'Popular Locations'}
@@ -529,6 +529,7 @@ export function DzalekaInteractiveMap() {
                   suggestions.map((pt) => (
                     <div
                       key={pt.id}
+                      onMouseDown={(e) => e.preventDefault()}
                       onClick={() => selectAndFly(pt)}
                       className="p-3 hover:bg-sky-50/70 cursor-pointer transition-colors flex items-center gap-3 group"
                     >
@@ -796,7 +797,7 @@ export function DzalekaInteractiveMap() {
                         const found = DEFAULT_ORIGINS.find((o) => o.name === e.target.value);
                         if (found) setOriginPoint(found);
                       }}
-                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-xs text-slate-900 font-semibold focus:outline-none"
+                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none"
                     >
                       {DEFAULT_ORIGINS.map((orig) => (
                         <option key={orig.name} value={orig.name}>
@@ -818,7 +819,7 @@ export function DzalekaInteractiveMap() {
                           setSelectedPoint(found);
                         }
                       }}
-                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-xs text-slate-900 font-semibold focus:outline-none"
+                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none"
                     >
                       {MAP_POINTS.map((pt) => (
                         <option key={pt.id} value={pt.id}>
