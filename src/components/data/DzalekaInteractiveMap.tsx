@@ -63,6 +63,7 @@ export function DzalekaInteractiveMap() {
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const [copiedCoords, setCopiedCoords] = useState<boolean>(false);
+  const [sharedLink, setSharedLink] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [showEmergencyModal, setShowEmergencyModal] = useState<boolean>(false);
@@ -205,6 +206,28 @@ export function DzalekaInteractiveMap() {
         });
 
         markersRef.current = markersMap;
+
+        // Open focused on a shared place: /map?place=<id>, or ?lat=&lng=
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const placeId = params.get('place');
+          const shared = placeId ? MAP_POINTS.find((p) => p.id === placeId) : undefined;
+          if (shared) {
+            map.setView([shared.lat, shared.lng], 18);
+            setSelectedPoint(shared);
+            setDestinationPoint(shared);
+            setSidebarOpen(true);
+            markersMap.get(shared.id)?.openPopup();
+          } else {
+            const lat = parseFloat(params.get('lat') || '');
+            const lng = parseFloat(params.get('lng') || '');
+            if (Number.isFinite(lat) && Number.isFinite(lng)) {
+              map.setView([lat, lng], 18);
+            }
+          }
+        } catch {
+          // Malformed query string: fall back to the default camp view.
+        }
 
         // Swap pin-only and labelled icons when crossing the zoom threshold.
         let labelsVisible = map.getZoom() >= LABEL_ZOOM_THRESHOLD;
@@ -421,6 +444,44 @@ export function DzalekaInteractiveMap() {
     navigator.clipboard.writeText(text);
     setCopiedCoords(true);
     setTimeout(() => setCopiedCoords(false), 2000);
+  };
+
+  // Build a link that reopens the map focused on this place.
+  const shareUrlFor = (pt: MapPoint) => {
+    const base = typeof window !== 'undefined'
+      ? `${window.location.origin}${window.location.pathname}`
+      : 'https://services.dzaleka.com/map';
+    return `${base}?place=${encodeURIComponent(pt.id)}`;
+  };
+
+  // Share a place: use the native share sheet where available (mobile),
+  // otherwise copy the link to the clipboard.
+  const sharePoint = async (pt: MapPoint) => {
+    const url = shareUrlFor(pt);
+    const shareData = {
+      title: pt.name,
+      text: `${pt.name} — Dzaleka Refugee Camp (${pt.lat.toFixed(5)}, ${pt.lng.toFixed(5)})`,
+      url,
+    };
+    try {
+      if (typeof navigator !== 'undefined' && navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setSharedLink(true);
+      setTimeout(() => setSharedLink(false), 2000);
+    } catch (err) {
+      // User dismissed the share sheet, or clipboard was blocked.
+      if ((err as Error)?.name === 'AbortError') return;
+      try {
+        await navigator.clipboard.writeText(url);
+        setSharedLink(true);
+        setTimeout(() => setSharedLink(false), 2000);
+      } catch {
+        // Nothing further we can do; leave the UI unchanged.
+      }
+    }
   };
 
   const handlePrintSheet = () => {
@@ -987,6 +1048,25 @@ export function DzalekaInteractiveMap() {
                   </svg>
                   <span>Get Directions To Location</span>
                 </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => sharePoint(selectedPoint)}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342a3 3 0 100-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684zm0-12a3 3 0 105.368-2.684 3 3 0 00-5.368 2.684z" />
+                    </svg>
+                    <span>{sharedLink ? 'Link copied' : 'Share location'}</span>
+                  </button>
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${selectedPoint.lat},${selectedPoint.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
+                  >
+                    <span>Open in Google Maps</span>
+                  </a>
+                </div>
                 <a
                   href={`https://www.openstreetmap.org/${selectedPoint.osmType}/${selectedPoint.osmId}`}
                   target="_blank"
