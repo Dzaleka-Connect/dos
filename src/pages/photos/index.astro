@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { format } from 'date-fns';
+import { InstagramStoriesViewer } from '../../components/photos/InstagramStoriesViewer';
 
 // Get URL parameters
 const { searchParams } = Astro.url;
@@ -24,6 +25,27 @@ const photosByYear = photos.reduce((acc, photo) => {
 const years = Object.keys(photosByYear)
   .map(Number)
   .sort((a, b) => b - a);
+
+// Transform photos by year for Instagram-style Stories Viewer
+const yearGroups = years.map((year) => {
+  const sortedPhotos = photosByYear[year].sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+  return {
+    year,
+    photos: sortedPhotos.map((p) => ({
+      slug: p.id || p.slug,
+      title: p.data.title,
+      description: p.data.description || p.body?.slice(0, 160) || '',
+      date: p.data.date,
+      image: p.data.image,
+      photographerName: typeof p.data.photographer === 'string'
+        ? p.data.photographer
+        : (p.data.photographer?.name || 'Dzaleka Community Photographers'),
+      location: p.data.location || 'Dzaleka Refugee Camp'
+    }))
+  };
+});
 
 const siteUrl = "https://services.dzaleka.com";
 const toAbsoluteUrl = (value?: string) => {
@@ -180,11 +202,42 @@ const galleryStructuredData = {
             </svg>
             Submit a photo record
           </a>
+
+          {/* Instagram-Style Year Story Highlights */}
+          <div class="mt-10 pt-6 border-t border-slate-200 text-center flex flex-col items-center">
+            <div class="flex items-center justify-center gap-3 px-1 mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
+                Interactive Year Stories (Tap to Watch)
+              </span>
+              <span class="text-[11px] font-semibold text-slate-400">
+                • {years.length} Years Archived
+              </span>
+            </div>
+            <InstagramStoriesViewer client:load yearGroups={yearGroups} />
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container mx-auto px-4 py-16">
+    <div class="container mx-auto px-4 py-12">
+      {/* QUICK YEAR JUMP NAVIGATION BAR */}
+      <div class="mb-14 flex flex-wrap items-center justify-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 mr-2 flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Archive Years:
+        </span>
+        {years.map((y) => (
+          <a
+            href={`#${y}`}
+            class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 hover:bg-slate-900 hover:text-white border border-slate-200/90 transition-colors shadow-xs"
+          >
+            {y} <span class="text-[10px] text-slate-400 font-normal">({previewPhotosByYear[y].totalPhotos})</span>
+          </a>
+        ))}
+      </div>
 
     {years.map(year => {
       const { photos, totalPhotos } = previewPhotosByYear[year];
