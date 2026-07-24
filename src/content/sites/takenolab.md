@@ -3,7 +3,10 @@ title: "TakenoLAB"
 description: "A prominent refugee-led technology and entrepreneurship school founded in Dzaleka Refugee Camp to bridge the digital divide through programmer training and AI initiatives."
 alternativeNames: "TakenoLAB Tech Hub"
 yearEstablished: 2015
-campZone: "Dzaleka"
+campZone: "Katudza Sector"
+specificLocation: "Katudza Sector near North-East Gate, Dzaleka"
+latitude: -13.6568
+longitude: 33.8694
 legalStatus: "Refugee-led Non-Profit"
 category: "Technology"
 featured: true

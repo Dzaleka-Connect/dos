@@ -32,10 +32,15 @@ export default defineConfig({
   },
   vite: {
     resolve: {
-      dedupe: ['react', 'react-dom', 'react/jsx-runtime']
+      dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime']
     },
     optimizeDeps: {
       include: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'leaflet',
         'react-chartjs-2',
         'chart.js',
         'chart.js/auto'

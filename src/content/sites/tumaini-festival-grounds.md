@@ -2,7 +2,11 @@
 title: Tumaini Festival Grounds
 description: The central gathering space for the internationally recognized Tumaini Festival, a refugee-led music and cultural event that promotes peace, intercultural harmony, and creative expression.
 yearEstablished: 2014
-campZone: Dzaleka Main Arena
+referenceId: "DZK-004"
+campZone: "Central Sector"
+specificLocation: "Community Center Grounds & Main Sports Arena"
+latitude: -13.6601
+longitude: 33.8718
 legalStatus: public
 category: Cultural Space
 featured: true

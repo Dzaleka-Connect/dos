@@ -2,12 +2,15 @@
 title: "Dzaleka Tuesday Market"
 description: "The largest and most vibrant weekly trading event in Dzaleka Refugee Camp, acting as the community's economic and social heart."
 alternativeNames: "Tuesday Market, Mardi Marché"
-campZone: "Central / Kawale (The Spine)"
+campZone: "Central Market Spine"
+specificLocation: "Kawale Commercial Axis, Central Dzaleka"
+latitude: -13.6596
+longitude: 33.8709
 legalStatus: "Informal Weekly Marketplace"
 category: "Marketplace"
 featured: true
 image: "/images/sites/mardi-marche.jpg"
-referenceId: "DZK-003"
+referenceId: "DZK-010"
 significanceCriteria:
   - "Living Tradition"
   - "Economic Resilience"

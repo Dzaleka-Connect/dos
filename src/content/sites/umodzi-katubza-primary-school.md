@@ -3,7 +3,11 @@ title: "Umodzi Katubza Primary School"
 description: "A primary school located within Dzaleka Refugee Camp, providing education and counselling to refugee and host community children, managed by the Jesuit Refugee Service (JRS)."
 alternativeNames: "Umodzi Katubza"
 yearEstablished: 2013
-campZone: "Dzaleka"
+referenceId: "DZK-006"
+campZone: "Katudza Sector"
+specificLocation: "Northern Educational Campus, Katudza Sector"
+latitude: -13.6559
+longitude: 33.8688
 legalStatus: "NGO Managed (JRS)"
 category: "Education"
 featured: true

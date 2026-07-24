@@ -1,0 +1,137 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { KeepingPlaceExplorer } from '../components/keeping-place/KeepingPlaceExplorer';
+
+const pageTitle = "Dzaleka Keeping Place GIS | Cultural Heritage & Spatial Land Map";
+const description = "Interactive GIS cultural heritage, spatial mapping, customary land boundaries, oral history archives, and relationship engine for Dzaleka Refugee Camp, Dowa District, Malawi.";
+const keywords = "Dzaleka Keeping Place, GIS cultural heritage map, Dzaleka spatial mapping, customary land rights, Dowa refugee camp GIS, OpenStreetMap Dzaleka, refugee data sovereignty";
+const canonicalUrl = "https://services.dzaleka.com/explore";
+const ogImageUrl = "https://services.dzaleka.com/images/Dzaleka%20Health%20Centre.jpg";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://services.dzaleka.com/explore#webpage",
+      "url": canonicalUrl,
+      "name": pageTitle,
+      "description": description,
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://services.dzaleka.com/#website",
+        "name": "Dzaleka Online Services",
+        "url": "https://services.dzaleka.com"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://services.dzaleka.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Keeping Place GIS Explorer",
+            "item": canonicalUrl
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Map",
+      "@id": "https://services.dzaleka.com/explore#map",
+      "name": "Dzaleka Keeping Place Spatial Map",
+      "description": "Interactive GIS spatial mapping of 120+ verified community landmarks, health facilities, education centers, and cultural heritage sites in Dzaleka.",
+      "url": canonicalUrl
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://services.dzaleka.com/explore#dataset",
+      "name": "Dzaleka Spatial & Cultural Heritage Dataset",
+      "description": "Open GIS spatial dataset containing geographic coordinates, cultural protocol classifications, and research citations for Dzaleka Refugee Camp.",
+      "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Dzaleka Refugee Camp",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -13.6592,
+          "longitude": 33.8705
+        }
+      }
+    }
+  ]
+};
+---
+
+<MainLayout title={pageTitle} description={description} keywords={keywords}>
+  {/* SEO Meta & Canonical Tags */}
+  <link rel="canonical" href={canonicalUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:site_name" content="Dzaleka Online Services" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={canonicalUrl} />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+
+  {/* Structured Data (JSON-LD) */}
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <style is:global>
+    .leaflet-container {
+      font-family: inherit !important;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+    .custom-kp-pin {
+      background: transparent !important;
+      border: none !important;
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 0.75rem !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+      padding: 0 !important;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .leaflet-popup-content {
+      margin: 12px 14px !important;
+      line-height: 1.5 !important;
+    }
+    .leaflet-popup-tip {
+      background: #ffffff !important;
+    }
+    .kp-map-tooltip {
+      background: #0f172a !important;
+      border: 1px solid #334155 !important;
+      color: #f8fafc !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      border-radius: 6px !important;
+      padding: 3px 8px !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+      white-space: nowrap !important;
+    }
+    .kp-map-tooltip::before {
+      border-top-color: #0f172a !important;
+    }
+  </style>
+
+  {/* FULL SCREEN EDGE-TO-EDGE GIS APPLICATION CANVAS */}
+  <div class="w-full h-[calc(100vh-4rem)] min-h-[640px] bg-slate-50 overflow-hidden flex flex-col" role="region" aria-label="Dzaleka Keeping Place GIS Canvas">
+    <h1 class="sr-only">Dzaleka Keeping Place GIS Cultural Heritage & Spatial Land Map</h1>
+    <KeepingPlaceExplorer client:load />
+  </div>
+</MainLayout>

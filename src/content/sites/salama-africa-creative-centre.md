@@ -3,7 +3,11 @@ title: "Salama Africa Creative Centre"
 description: "A groundbreaking creative hub in Dzaleka Refugee Camp built to foster innovation, entrepreneurship, and artistic development among youth for positive social transformation."
 alternativeNames: "Creative Center, Salama Hub"
 yearEstablished: 2018
-campZone: "Likuni 1, Dzaleka"
+referenceId: "DZK-005"
+campZone: "Katudza Sector"
+specificLocation: "Likuni 1 Block, Katudza Sector, Dzaleka"
+latitude: -13.6575
+longitude: 33.8701
 legalStatus: "Community Hub / NGO Project"
 category: "Creative Hub"
 featured: true

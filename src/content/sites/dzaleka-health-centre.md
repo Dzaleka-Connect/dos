@@ -3,7 +3,10 @@ title: "Dzaleka Health Centre"
 description: "The primary healthcare facility serving a catchment population of 86,000 people, including 54,000 refugees and asylum-seekers from Dzaleka Refugee Camp and 32,000 local residents from Dowa District."
 alternativeNames: "Dzaleka Clinic, Refugee Health Centre"
 yearEstablished: 1994
-campZone: "Likuni 1, Dzaleka Health Centre"
+campZone: "Central Sector"
+specificLocation: "Main Access Road near Camp Reception Gate"
+latitude: -13.6581
+longitude: 33.8712
 legalStatus: "Public"
 category: "Healthcare"
 featured: true

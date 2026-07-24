@@ -2,12 +2,15 @@
 title: "Dzaleka Hill"
 description: "A natural viewpoint overlooking the Dzaleka Refugee Camp, used for recreation, community activities, and environmental conservation projects."
 alternativeNames: "Dzaleka Viewpoint"
-campZone: "Peripheral Area"
+campZone: "Western Heights"
+specificLocation: "Western Elevation Ridge Overlook"
+latitude: -13.6540
+longitude: 33.8650
 legalStatus: "Natural Landmark"
 category: "Natural Landmark"
 featured: true
 image: "/images/sites/dzaleka-hill.jpg"
-referenceId: "DZK-004"
+referenceId: "DZK-012"
 significanceCriteria:
   - "Natural Heritage"
   - "Community Memory"

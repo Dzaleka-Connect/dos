@@ -3,8 +3,11 @@ title: "The Old Dzaleka Maximum Security Prison"
 description: "The historical context of the Dzaleka site, which originally operated as a maximum-security political prison under President Dr. Hastings Kamuzu Banda before becoming a refugee camp in 1994."
 alternativeNames: "Dzaleka Prison, N'dzaleka"
 yearEstablished: 1964
-campZone: "General Camp Infrastructure"
-legalStatus: "Former Prison / Historical Site"
+campZone: "Original Encampment Perimeter (Historical Camp Core)"
+specificLocation: "Original 1964 Prison Grounds encompassing the central footprint of Dzaleka Camp"
+latitude: -13.6592
+longitude: 33.8705
+legalStatus: "Former Prison Grounds / Historical Core"
 category: "Historical Site"
 featured: true
 image: "/images/6976810_orig.jpg"
@@ -23,9 +26,9 @@ educationalResources:
 
 ## Site Description
 
-The ground that Dzaleka Refugee Camp sits on today holds a dark historical legacy. Long before it was established as a sanctuary for refugees in 1994, the physical infrastructure of Dzaleka was built as a **notorious maximum security political prison** during the regime of Malawi's first president, Dr. Hastings Kamuzu Banda (1964–1994). 
+The entire ground that Dzaleka Refugee Camp sits on today holds a dark historical legacy. Long before it was established as a sanctuary for refugees in 1994, the entire physical site and perimeter of Dzaleka was built as a **notorious maximum security political prison** during the regime of Malawi's first president, Dr. Hastings Kamuzu Banda (1964–1994). 
 
-The prison was specifically located here because of the cold, harsh local climate, which was weaponized to punish detainees, who were frequently denied basic comforts like blankets. While many of the original brick structures have since been repurposed to house refugees and camp infrastructure, the legacy of the architecture initially intended for confinement remains visible in the layout of the older administrative blocks.
+The prison encompassed the entire initial 0.74 km² camp area. It was specifically located here because of the cold, harsh local climate, which was weaponized to punish detainees, who were frequently denied basic comforts like blankets. While many of the original brick structures have since been repurposed to house refugees, health clinics, and camp administration, the entire historical footprint of the camp originates from this confinement architecture.
 
 ## Statement of Significance
 

@@ -1,7 +1,11 @@
 ---
 title: Kibebe Artisan Workspace
 description: A collaborative workspace and social enterprise hub for refugee artisans creating traditional and contemporary crafts. It is a vital economic and cultural center promoting self-reliance through artistry.
-campZone: Commercial Zone
+referenceId: "DZK-009"
+campZone: "Entrance / Commercial Sector"
+specificLocation: "There is Hope Vocational Complex"
+latitude: -13.6620
+longitude: 33.8745
 legalStatus: restricted
 category: Economic & Cultural Hub
 featured: false

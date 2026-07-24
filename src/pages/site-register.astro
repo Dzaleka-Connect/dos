@@ -4,7 +4,7 @@ import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { formatDate } from '../utils/dateHelpers';
 
 const title = "Dzaleka Heritage Site Register | Dzaleka Online Services";
-const description = "The official record of cultural, historical, and natural heritage sites within the Dzaleka community.";
+const description = "A community-led record documenting cultural, historical, and natural heritage sites in the Dzaleka community.";
 
 // Load all site content and related updates at build time
 let allSites = [];
@@ -48,27 +48,53 @@ categories.forEach(cat => {
 const atRiskCount = allSites.filter(s => s.frontmatter.condition === 'poor' || s.frontmatter.condition === 'ruins').length;
 ---
 
-<MainLayout title={title} description={description}>
+<MainLayout title={title} description={description} canonical="https://services.dzaleka.com/site-register">
+  {/* Schema.org ItemList Structured Data */}
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Dzaleka Heritage Site Register",
+    "description": description,
+    "url": "https://services.dzaleka.com/site-register",
+    "numberOfItems": allSites.length,
+    "itemListElement": allSites.map((s, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": s.frontmatter.title,
+      "url": `https://services.dzaleka.com/site-register/${s.file.split('/').pop().replace('.md', '')}`
+    }))
+  })} />
   <!-- Header -->
   <section class="border-b border-slate-200 bg-white">
-    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div class="mb-6">
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="mb-4">
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Site Register' }]} />
       </div>
-      <div class="max-w-2xl">
-        <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Dzaleka Site Register</h1>
-        <p class="mt-4 text-base leading-7 text-slate-600">
-          Browse important cultural, historical, and community locations documented by the community.
+      <div class="max-w-3xl">
+        <p class="text-xs font-semibold uppercase tracking-widest text-sky-700 mb-2">
+          Heritage Register & Inscriptions
         </p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="/site-register/submit" class="inline-flex items-center rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition-colors">
-            Submit a site
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          Dzaleka Heritage Site Register
+        </h1>
+        <p class="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
+          A community-led record documenting cultural, historical, educational, and natural heritage sites within Dzaleka Refugee Camp and surrounding Dowa host communities.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <a href="/explore" class="inline-flex items-center rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-colors shadow-sm">
+            Explore GIS Map &rarr;
           </a>
-          <a href="/site-register/about" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors">
-            About the register
+          <a href="/site-register/submit" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+            Submit a Site
           </a>
-          <a href="/site-register/license" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 transition-colors">
-            License & usage
+        </div>
+        <div class="mt-4 flex items-center gap-4 text-xs text-slate-500">
+          <a href="/site-register/about" class="hover:text-slate-900 hover:underline">
+            About the Register
+          </a>
+          <span>&bull;</span>
+          <a href="/site-register/license" class="hover:text-slate-900 hover:underline">
+            License & Usage Policy
           </a>
         </div>
       </div>

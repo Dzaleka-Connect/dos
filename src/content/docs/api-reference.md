@@ -56,8 +56,11 @@ Main collection routes:
 - `/api/dancers`
 - `/api/docs`
 - `/api/pages`
+- `/api/v1/spatial.json` (RFC 7946 GeoJSON FeatureCollection of 92+ spatial nodes)
+- `/api/v1/spatial.csv` (Tabular CSV export for QGIS, GeoPandas, and Excel analysis)
 
 `/api/pages` returns published markdown reference pages that are served through the site's catch-all page route.
+`/api/v1/spatial.json` returns GeoJSON feature objects for Dzaleka spatial nodes, water boreholes, schools, and health facilities under CC BY-SA 4.0.
 
 ### Example
 

@@ -3,7 +3,11 @@ title: "Dzaleka Community Day Secondary School (CDSS)"
 description: "The primary provider of secondary education within Dzaleka Refugee Camp, serving a diverse student body of refugees and local Malawians through the national curriculum."
 alternativeNames: "Dzaleka CDSS"
 yearEstablished: 2000
-campZone: "Dzaleka"
+referenceId: "DZK-007"
+campZone: "Lilabwe Sector"
+specificLocation: "Eastern Educational Zone, Lilabwe Sector"
+latitude: -13.6612
+longitude: 33.8731
 legalStatus: "Government-Aided / NGO Management"
 category: "Education"
 featured: true

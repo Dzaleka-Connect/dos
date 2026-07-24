@@ -245,7 +245,7 @@ const seo = {
                     <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
                   </svg>
                 </button>
-                <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0" data-page-current>1</span>
+                <div id="pageNumbers" class="flex items-center space-x-1 px-2"></div>
                 <button
                   type="button"
                   data-page-next
@@ -269,131 +269,183 @@ const seo = {
   </div>
 
   <script>
-    const searchInput = document.querySelector('[data-dataset-search]');
-    const filterButtons = Array.from(document.querySelectorAll('[data-theme-filter]'));
-    const cards = Array.from(document.querySelectorAll('[data-dataset-card]'));
-    const resultsCount = document.querySelector('[data-results-count]');
-    const emptyState = document.querySelector('[data-empty-state]');
-    
-    // Pagination elements
-    const paginationContainer = document.querySelector('[data-pagination-container]');
-    const btnPrev = document.querySelector('[data-page-prev]');
-    const btnNext = document.querySelector('[data-page-next]');
-    const btnMobilePrev = document.querySelector('[data-mobile-prev]');
-    const btnMobileNext = document.querySelector('[data-mobile-next]');
-    const textCurrent = document.querySelector('[data-page-current]');
-    const textStart = document.querySelector('[data-page-start]');
-    const textEnd = document.querySelector('[data-page-end]');
-    const textTotal = document.querySelector('[data-page-total]');
-
-    let activeTheme = 'All';
-    let currentPage = 1;
-    const itemsPerPage = 6;
-    let filteredCards = [];
-
-    function updateButtonStyles() {
-      filterButtons.forEach((button) => {
-        const isActive = button.dataset.themeFilter === activeTheme;
-        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        button.className = isActive
-          ? 'inline-flex items-center rounded-full bg-gray-900 px-3.5 py-1.5 text-sm font-medium text-white'
-          : 'inline-flex items-center rounded-full border border-gray-300 bg-white px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50';
-      });
-    }
-
-    function applyFilters() {
-      const query = (searchInput?.value || '').trim().toLowerCase();
-      filteredCards = [];
-
-      cards.forEach((card) => {
-        const matchesTheme = activeTheme === 'All' || card.dataset.theme === activeTheme;
-        const matchesSearch = !query || (card.dataset.search || '').includes(query);
-        const shouldShow = matchesTheme && matchesSearch;
-
-        if (shouldShow) {
-          filteredCards.push(card);
-        } else {
-          card.toggleAttribute('hidden', true);
-        }
-      });
-
-      currentPage = 1;
-      updatePagination();
-    }
-
-    function updatePagination() {
-      const totalItems = filteredCards.length;
-      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+    function initDatasetPagination() {
+      const searchInput = document.querySelector('[data-dataset-search]') as HTMLInputElement;
+      const filterButtons = Array.from(document.querySelectorAll('[data-theme-filter]')) as HTMLButtonElement[];
+      const cards = Array.from(document.querySelectorAll('[data-dataset-card]')) as HTMLElement[];
+      const resultsCount = document.querySelector('[data-results-count]');
+      const emptyState = document.querySelector('[data-empty-state]') as HTMLElement;
       
-      // Ensure current page is valid
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
+      // Pagination elements
+      const paginationContainer = document.querySelector('[data-pagination-container]') as HTMLElement;
+      const btnPrev = document.querySelector('[data-page-prev]') as HTMLButtonElement;
+      const btnNext = document.querySelector('[data-page-next]') as HTMLButtonElement;
+      const btnMobilePrev = document.querySelector('[data-mobile-prev]') as HTMLButtonElement;
+      const btnMobileNext = document.querySelector('[data-mobile-next]') as HTMLButtonElement;
+      const pageNumbers = document.getElementById('pageNumbers');
+      const textCurrent = document.querySelector('[data-page-current]');
+      const textStart = document.querySelector('[data-page-start]');
+      const textEnd = document.querySelector('[data-page-end]');
+      const textTotal = document.querySelector('[data-page-total]');
 
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+      let activeTheme = 'All';
+      let currentPage = 1;
+      const itemsPerPage = 6;
+      let filteredCards: HTMLElement[] = [];
 
-      // Show/hide appropriate cards for the current page
-      filteredCards.forEach((card, index) => {
-        const shouldShow = index >= startIndex && index < endIndex;
-        card.toggleAttribute('hidden', !shouldShow);
-      });
-
-      // Update Header counts
-      if (resultsCount) {
-        resultsCount.textContent = `${totalItems} dataset${totalItems === 1 ? '' : 's'}`;
+      function updateButtonStyles() {
+        filterButtons.forEach((button) => {
+          const isActive = button.dataset.themeFilter === activeTheme;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          button.className = isActive
+            ? 'inline-flex items-center rounded-full bg-gray-900 px-3.5 py-1.5 text-sm font-medium text-white'
+            : 'inline-flex items-center rounded-full border border-gray-300 bg-white px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50';
+        });
       }
 
-      // Handle Empty State
-      if (emptyState) {
-        emptyState.toggleAttribute('hidden', totalItems !== 0);
+      function hideCard(card: HTMLElement) {
+        card.setAttribute('hidden', '');
+        card.classList.add('hidden');
+        card.style.display = 'none';
       }
 
-      // Update Pagination UI
-      if (paginationContainer) {
-        // Hide pagination if 1 or fewer pages and not empty
-        paginationContainer.toggleAttribute('hidden', totalPages <= 1);
+      function showCard(card: HTMLElement) {
+        card.removeAttribute('hidden');
+        card.classList.remove('hidden');
+        card.style.display = 'flex';
+      }
+
+      function applyFilters() {
+        const query = (searchInput?.value || '').trim().toLowerCase();
+        filteredCards = [];
+
+        cards.forEach((card) => {
+          const matchesTheme = activeTheme === 'All' || card.dataset.theme === activeTheme;
+          const matchesSearch = !query || (card.dataset.search || '').includes(query);
+          const shouldShow = matchesTheme && matchesSearch;
+
+          if (shouldShow) {
+            filteredCards.push(card);
+          } else {
+            hideCard(card);
+          }
+        });
+
+        currentPage = 1;
+        updatePagination();
+      }
+
+      function renderPageNumbers(totalPages: number) {
+        if (!pageNumbers) return;
+        pageNumbers.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = String(i);
+          btn.className = i === currentPage
+            ? 'relative inline-flex items-center px-3 py-1.5 text-xs font-bold text-white bg-slate-900 rounded-md focus:z-20'
+            : 'relative inline-flex items-center px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 rounded-md focus:z-20';
+          btn.addEventListener('click', () => goToPage(i));
+          pageNumbers.appendChild(btn);
+        }
+      }
+
+      function updatePagination() {
+        const totalItems = filteredCards.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
         
-        if (textStart) textStart.textContent = totalItems === 0 ? 0 : startIndex + 1;
-        if (textEnd) textEnd.textContent = endIndex;
-        if (textTotal) textTotal.textContent = totalItems;
-        if (textCurrent) textCurrent.textContent = currentPage;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
 
-        const isFirstPage = currentPage === 1;
-        const isLastPage = currentPage === totalPages;
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
-        if (btnPrev) btnPrev.disabled = isFirstPage;
-        if (btnNext) btnNext.disabled = isLastPage;
-        if (btnMobilePrev) btnMobilePrev.disabled = isFirstPage;
-        if (btnMobileNext) btnMobileNext.disabled = isLastPage;
+        // Show/hide appropriate cards for the current page
+        filteredCards.forEach((card, index) => {
+          const shouldShow = index >= startIndex && index < endIndex;
+          if (shouldShow) {
+            showCard(card);
+          } else {
+            hideCard(card);
+          }
+        });
+
+        // Update Header counts
+        if (resultsCount) {
+          resultsCount.textContent = `${totalItems} dataset${totalItems === 1 ? '' : 's'}`;
+        }
+
+        // Handle Empty State
+        if (emptyState) {
+          if (totalItems === 0) {
+            emptyState.removeAttribute('hidden');
+            emptyState.style.display = 'block';
+          } else {
+            emptyState.setAttribute('hidden', '');
+            emptyState.style.display = 'none';
+          }
+        }
+
+        // Update Pagination UI
+        if (paginationContainer) {
+          if (totalPages <= 1) {
+            paginationContainer.setAttribute('hidden', '');
+            paginationContainer.style.display = 'none';
+          } else {
+            paginationContainer.removeAttribute('hidden');
+            paginationContainer.style.display = 'flex';
+          }
+          
+          if (textStart) textStart.textContent = String(totalItems === 0 ? 0 : startIndex + 1);
+          if (textEnd) textEnd.textContent = String(endIndex);
+          if (textTotal) textTotal.textContent = String(totalItems);
+          if (textCurrent) textCurrent.textContent = String(currentPage);
+
+          renderPageNumbers(totalPages);
+
+          const isFirstPage = currentPage === 1;
+          const isLastPage = currentPage === totalPages;
+
+          if (btnPrev) btnPrev.disabled = isFirstPage;
+          if (btnNext) btnNext.disabled = isLastPage;
+          if (btnMobilePrev) btnMobilePrev.disabled = isFirstPage;
+          if (btnMobileNext) btnMobileNext.disabled = isLastPage;
+        }
       }
-    }
 
-    function goToPage(page) {
-      currentPage = page;
-      updatePagination();
-      // Scroll smoothly to top of list
-      document.querySelector('[data-dataset-grid]')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+      function goToPage(page: number) {
+        currentPage = page;
+        updatePagination();
+        document.querySelector('[data-dataset-grid]')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
 
-    filterButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        activeTheme = button.dataset.themeFilter || 'All';
-        updateButtonStyles();
-        applyFilters();
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activeTheme = button.dataset.themeFilter || 'All';
+          updateButtonStyles();
+          applyFilters();
+        });
       });
-    });
 
-    searchInput?.addEventListener('input', applyFilters);
+      searchInput?.addEventListener('input', applyFilters);
 
-    [btnPrev, btnMobilePrev].forEach(btn => {
-      btn?.addEventListener('click', () => goToPage(currentPage - 1));
-    });
+      [btnPrev, btnMobilePrev].forEach(btn => {
+        btn?.addEventListener('click', () => goToPage(currentPage - 1));
+      });
 
-    [btnNext, btnMobileNext].forEach(btn => {
-      btn?.addEventListener('click', () => goToPage(currentPage + 1));
-    });
+      [btnNext, btnMobileNext].forEach(btn => {
+        btn?.addEventListener('click', () => goToPage(currentPage + 1));
+      });
 
-    updateButtonStyles();
-    applyFilters();
+      updateButtonStyles();
+      applyFilters();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDatasetPagination);
+    } else {
+      initDatasetPagination();
+    }
   </script>
 </MainLayout>

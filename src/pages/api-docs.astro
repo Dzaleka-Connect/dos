@@ -103,6 +103,25 @@ const actionEndpoints = [
     example: `curl -X POST "${baseApiUrl}/submit-voice" -H "Content-Type: application/json" -d '{"title":"Story title","author":"Name","content":"Story text"}'`,
   },
   {
+    name: 'Spatial GeoJSON Data',
+    methods: ['GET'],
+    path: '/api/v1/spatial.json',
+    description: 'Returns an RFC 7946 GeoJSON FeatureCollection of all 92+ Dzaleka spatial nodes, Site Register records, and Public Art catalogue data.',
+    notes: [
+      'Supports query parameters: `category`, `zone`, `protocol`, and `format=json`.',
+      'CORS allowed (*). Published under CC BY-SA 4.0 Open Access.'
+    ],
+    example: `curl -sS "${baseApiUrl}/v1/spatial.json?category=public_service"`,
+  },
+  {
+    name: 'Spatial CSV Export',
+    methods: ['GET'],
+    path: '/api/v1/spatial.csv',
+    description: 'Serves a tabular CSV file export of all 92+ Dzaleka spatial nodes for QGIS, Excel, or Python data analysis.',
+    notes: ['Supports query parameters: `category` and `zone`.'],
+    example: `curl -sS "${baseApiUrl}/v1/spatial.csv"`,
+  },
+  {
     name: 'Send Booking Confirmation',
     methods: ['POST'],
     path: '/api/send-booking-confirmation',

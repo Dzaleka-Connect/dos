@@ -48,6 +48,8 @@ Dzaleka Online Services is not one tool. It is a public site made up of support 
 - [Public Art Catalogue](/public-art-catalogue)
 - [Site Register](/site-register)
 - [Open Data Platform](/open-data-platform)
+- [GIS Interactive Explorer](/explore)
+- [Open Community Mapping & Record Submission Tool](/map/submit)
 
 ## Developer and agent access
 

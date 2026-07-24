@@ -3,7 +3,11 @@ title: "There Is Hope Campus"
 description: "The operational base and educational hub for 'There Is Hope' (TIH), located just 200 meters outside the Dzaleka camp borders."
 alternativeNames: "TIH Malawi, There Is Hope Base"
 yearEstablished: 2006
-campZone: "Camp Periphery (200m from entrance)"
+referenceId: "DZK-011"
+campZone: "Camp Entrance / Highway"
+specificLocation: "Main Access Road (200m from Security Entrance)"
+latitude: -13.6625
+longitude: 33.8750
 legalStatus: "NGO Campus"
 category: "Educational Hub"
 featured: false
