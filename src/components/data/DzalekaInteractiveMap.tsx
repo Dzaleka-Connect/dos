@@ -672,9 +672,9 @@ export function DzalekaInteractiveMap() {
       {/* TOP FLOATING CONTROLS WRAPPER (MOBILE SWIPEABLE CAROUSEL & DESKTOP FLEX) */}
       <div className="absolute top-3 left-3 right-3 z-30 pointer-events-none flex flex-col gap-2 print-hidden">
         
-        {/* GOOGLE MAPS FLOATING PILL SEARCH BAR */}
+        {/* FLOATING PILL SEARCH BAR */}
         <div className="pointer-events-auto relative w-full md:max-w-md">
-          <div className="rounded-full bg-white/95 backdrop-blur-md shadow-2xl border border-slate-200/90 h-11 px-3.5 flex items-center gap-2">
+          <div className="rounded-full bg-white backdrop-blur-md shadow-md border border-slate-200 h-11 px-3.5 flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
               <svg className="h-3.5 w-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -731,7 +731,7 @@ export function DzalekaInteractiveMap() {
 
           {/* Autocomplete Suggestions Dropdown */}
           {searchFocused && (
-            <div className="absolute top-full mt-2 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden z-50 max-h-80 overflow-y-auto">
+            <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
               <div className="px-3.5 py-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between text-[11px]">
                 <span className="font-semibold text-slate-500 uppercase tracking-wider">
                   {searchQuery ? `Matching Places (${filteredPoints.length})` : 'Popular Locations'}
@@ -1948,13 +1948,13 @@ function getPinSvgWithName(type: MapPoint['type'], name: string): string {
   ">
     ${badgeHtml}
     <span style="
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: rgba(255, 255, 255, 0.98);
       color: #0f172a;
       font-weight: 700;
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 9999px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
       border: 1px solid rgba(226, 232, 240, 0.9);
       letter-spacing: -0.01em;
     ">${name}</span>
@@ -1972,7 +1972,7 @@ function getPinSvgOnly(type: MapPoint['type']): string {
         min-height: 32px;
         border-radius: 50%;
         border: 2px solid white;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1994,7 +1994,7 @@ function getPinSvgOnly(type: MapPoint['type']): string {
         min-height: 32px;
         border-radius: 50%;
         border: 2px solid white;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2016,7 +2016,7 @@ function getPinSvgOnly(type: MapPoint['type']): string {
         min-height: 32px;
         border-radius: 50%;
         border: 2px solid white;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2039,7 +2039,7 @@ function getPinSvgOnly(type: MapPoint['type']): string {
         min-height: 32px;
         border-radius: 50%;
         border: 2px solid white;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2065,7 +2065,7 @@ function getPinSvgOnly(type: MapPoint['type']): string {
         min-height: 32px;
         border-radius: 50%;
         border: 2px solid white;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         display: flex;
         align-items: center;
         justify-content: center;
