@@ -18,6 +18,10 @@ export interface MapPoint {
   encyclopediaUrl?: string;
 }
 
+// Zoom level at or above which marker name labels are shown. Below this the
+// 90+ labels overlap each other and obscure the map.
+const LABEL_ZOOM_THRESHOLD = 17;
+
 const MAP_POINTS: MapPoint[] = (rawOsmPoints as MapPoint[]).map((pt) => {
   const lower = pt.name.toLowerCase();
   let encyclopediaUrl: string | undefined;
@@ -135,7 +139,8 @@ export function DzalekaInteractiveMap() {
 
         const tileLayer = L.tileLayer(getTileUrl(activeLayer), {
           attribution: getAttribution(activeLayer),
-          maxZoom: 19,
+          maxZoom: 20,
+          maxNativeZoom: activeLayer === 'satellite' ? 18 : 19,
         }).addTo(map);
 
         tileLayerRef.current = tileLayer;
@@ -153,13 +158,19 @@ export function DzalekaInteractiveMap() {
 
         const markersMap = new Map<string, LeafletMarker>();
 
-        MAP_POINTS.forEach((pt) => {
-          const customIcon = L.divIcon({
+        // Name labels only appear once the map is zoomed in far enough that they
+        // do not overlap each other. Below the threshold we render the pin alone,
+        // which also keeps the clickable area to the pin itself.
+        const buildIcon = (pt: MapPoint, withLabel: boolean) =>
+          L.divIcon({
             className: 'custom-map-pin',
-            html: getPinSvgWithName(pt.type, pt.name),
-            iconSize: [240, 36],
+            html: withLabel ? getPinSvgWithName(pt.type, pt.name) : getPinSvgOnly(pt.type),
+            iconSize: withLabel ? [240, 36] : [32, 32],
             iconAnchor: [16, 16],
           });
+
+        MAP_POINTS.forEach((pt) => {
+          const customIcon = buildIcon(pt, map.getZoom() >= LABEL_ZOOM_THRESHOLD);
 
           const popupHtml = `
             <div style="font-family: system-ui, -apple-system, sans-serif; padding: 4px; max-width: 250px;">
@@ -194,6 +205,17 @@ export function DzalekaInteractiveMap() {
         });
 
         markersRef.current = markersMap;
+
+        // Swap pin-only and labelled icons when crossing the zoom threshold.
+        let labelsVisible = map.getZoom() >= LABEL_ZOOM_THRESHOLD;
+        map.on('zoomend', () => {
+          const shouldShow = map.getZoom() >= LABEL_ZOOM_THRESHOLD;
+          if (shouldShow === labelsVisible) return;
+          labelsVisible = shouldShow;
+          MAP_POINTS.forEach((pt) => {
+            markersMap.get(pt.id)?.setIcon(buildIcon(pt, shouldShow));
+          });
+        });
       } catch (err) {
         console.warn('Map initialization safely handled:', err);
       }
@@ -272,7 +294,8 @@ export function DzalekaInteractiveMap() {
         attr = '&copy; OpenStreetMap contributors | HOT';
       }
 
-      const layer = L.tileLayer(url, { attribution: attr, maxZoom: 19 }).addTo(mapRef.current);
+      const maxNativeZoom = newLayer === 'satellite' ? 18 : 19;
+      const layer = L.tileLayer(url, { attribution: attr, maxZoom: 20, maxNativeZoom }).addTo(mapRef.current);
       tileLayerRef.current = layer;
     }
   };
@@ -1609,7 +1632,6 @@ function getPinSvgWithName(type: MapPoint['type'], name: string): string {
       border-radius: 9999px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.25);
       border: 1px solid rgba(226, 232, 240, 0.9);
-      backdrop-filter: blur(4px);
       letter-spacing: -0.01em;
     ">${name}</span>
   </div>`;
