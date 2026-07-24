@@ -110,8 +110,8 @@ export const updates: Update[] = [
             'The update is here to flag editorial attention rather than celebrate a launch: someone needs to review the submission, decide whether it is ready, and request changes if the draft still needs work.',
             'Keeping this visible in the updates feed makes the editorial queue feel like part of the living site, not a hidden back-office task.'
         ].join('\n\n'),
-        link: '/community-voices/admin',
-        linkText: 'Review submission'
+        link: '/community-voices',
+        linkText: 'View community voices'
     },
     {
         date: '2025-02-05',

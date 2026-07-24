@@ -1,4 +1,5 @@
 ---
+import { photographerSlug } from '../../utils/photographerSlug';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -10,10 +11,11 @@ const photographers = allPhotos.reduce((acc, photo) => {
   const photographer = photo.data.photographer;
   if (!photographer?.name) return acc;
 
-  const key = photo.data.contributor || photographer.name.toLowerCase().replace(/\s+/g, '-');
+  const key = photographerSlug(photo.data.contributor, photographer.name);
   
   if (!acc[key]) {
     acc[key] = {
+      slug: key,
       name: photographer.name,
       bio: photographer.bio,
       instagram: photographer.instagram,
@@ -183,7 +185,7 @@ const title = "Photographers | Dzaleka Online Services";
             data-photographer={photographer.name.toLowerCase()}
             data-tags={Array.from(photographer.tags).join(' ')}
           >
-            <a href={`/photos/contributor/${photographer.name.toLowerCase().replace(/\s+/g, '-')}`} class="block">
+            <a href={`/photos/contributor/${photographerSlug(photographer.slug, photographer.name)}`} class="block">
               <div class="relative">
                 <img 
                   src={photographer.latestPhoto.data.image} 

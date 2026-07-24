@@ -4,7 +4,7 @@ description: Analysis of the social and economic impact of the 2020 Virtual Tuma
 date: 2021-01-15
 category: Report
 fileType: pdf
-resourceUrl: '/public/resources/pdf/Tumaini-Letu-Impact-Report-2020-2.pdf'
+resourceUrl: '/resources/pdf/Tumaini-Letu-Impact-Report-2020-2.pdf'
 downloadUrl: 'https://tumainiletu.org/wp-content/uploads/2022/01/Tumaini-Letu-Impact-Report-2020-2.pdf'
 fileSize: '4.2 MB'
 lastUpdated: 2021-01-15

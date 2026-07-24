@@ -31,7 +31,7 @@ Showcase your visual stories through our photo gallery:
 - Share artistic photography
 - Contribute to our visual archive
 
-[View the photo gallery](/photo-gallery)
+[View the photo gallery](/photos)
 
 ### 3. Success Stories
 Highlight achievements and inspiring journeys:
@@ -63,7 +63,7 @@ Share and celebrate our rich cultural heritage:
 5. Submit for review
 
 ### For Visual Content
-1. Visit the [Photo Gallery](/photo-gallery) submission page
+1. Visit the [Photo Gallery](/photos) submission page
 2. Upload your images
 3. Add descriptions and context
 4. Tag relevant categories

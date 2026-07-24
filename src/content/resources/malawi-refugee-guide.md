@@ -5,7 +5,7 @@ date: 2024-01-20
 category: Report
 fileType: pdf
 resourceUrl: 'https://inuaadvocacy.org/wp-content/uploads/2024/12/MALAWI-REFUGEE-GUIDE-DEC-2024.pdf'
-downloadUrl: '/public/resources/pdf/MALAWI-REFUGEE-GUIDE-DEC-2024 (1).pdf'
+downloadUrl: '/resources/pdf/MALAWI-REFUGEE-GUIDE-DEC-2024 (1).pdf'
 fileSize: '18 MB'
 lastUpdated: 2024-12-24
 languages: ['English']

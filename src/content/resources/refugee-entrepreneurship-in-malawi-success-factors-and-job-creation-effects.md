@@ -5,7 +5,7 @@ date: 2024-01-25
 category: Research
 fileType: pdf
 resourceUrl: 'https://inuaadvocacy.org/wp-content/uploads/2022/02/FDeLeo_Refugee_Entrepreneurship_In_Malawi.pdf'
-downloadUrl: '/public/resources/pdf/FDeLeo_Refugee_Entrepreneurship_In_Malawi.pdf'
+downloadUrl: '/resources/pdf/FDeLeo_Refugee_Entrepreneurship_In_Malawi.pdf'
 fileSize: '3.2 MB'
 lastUpdated: 2024-01-25
 languages: ['English']

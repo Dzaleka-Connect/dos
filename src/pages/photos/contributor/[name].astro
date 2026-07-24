@@ -2,6 +2,7 @@
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
+import { photographerSlug } from '../../../utils/photographerSlug';
 
 export async function getStaticPaths() {
   const photos = await getCollection('photos');
@@ -12,7 +13,7 @@ export async function getStaticPaths() {
     const { photographer } = photo.data;
     if (!photographer?.name) continue;
     
-    const key = photo.data.contributor || photographer.name.toLowerCase().replace(/\s+/g, '-');
+    const key = photographerSlug(photo.data.contributor, photographer.name);
     
     if (!photographers.has(key)) {
       photographers.set(key, {
