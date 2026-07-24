@@ -96,6 +96,103 @@ export function DzalekaInteractiveMap() {
   const [travelMode, setTravelMode] = useState<'driving' | 'walking' | 'transit'>('driving');
   const [locatingUser, setLocatingUser] = useState<boolean>(false);
 
+  // LIVE ANIMATED ROUTE NAVIGATION SIMULATION STATE
+  const [isNavigating, setIsNavigating] = useState<boolean>(false);
+  const [navProgress, setNavProgress] = useState<number>(0);
+  const navMarkerRef = useRef<any>(null);
+  const animFrameRef = useRef<number | null>(null);
+
+  const startLiveNavigation = async () => {
+    if (!originPoint || !destinationPoint || !mapRef.current) return;
+    const L = (await import('leaflet')).default;
+
+    setIsNavigating(true);
+    setNavProgress(0);
+
+    if (navMarkerRef.current) {
+      try {
+        mapRef.current.removeLayer(navMarkerRef.current);
+      } catch (e) {}
+    }
+
+    // High visibility pulsing traveler beacon
+    const travelerIcon = L.divIcon({
+      className: 'live-traveler-beacon',
+      html: `
+        <div style="
+          position: relative;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">
+          <div style="
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(2, 132, 199, 0.4);
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+          "></div>
+          <div style="
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #0284c7;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+          "></div>
+        </div>
+      `,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+
+    const marker = L.marker([originPoint.lat, originPoint.lng], { icon: travelerIcon, zIndexOffset: 1000 }).addTo(mapRef.current);
+    navMarkerRef.current = marker;
+
+    const durationMs = 7000;
+    const startMs = performance.now();
+
+    const animate = (now: number) => {
+      const elapsed = now - startMs;
+      const progress = Math.min(elapsed / durationMs, 1);
+      setNavProgress(Math.round(progress * 100));
+
+      const currentLat = originPoint.lat + (destinationPoint.lat - originPoint.lat) * progress;
+      const currentLng = originPoint.lng + (destinationPoint.lng - originPoint.lng) * progress;
+
+      if (navMarkerRef.current) {
+        navMarkerRef.current.setLatLng([currentLat, currentLng]);
+        mapRef.current?.setView([currentLat, currentLng], Math.max(mapRef.current.getZoom(), 16), { animate: true });
+      }
+
+      if (progress < 1) {
+        animFrameRef.current = requestAnimationFrame(animate);
+      } else {
+        setIsNavigating(false);
+      }
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+  };
+
+  const stopLiveNavigation = () => {
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+      animFrameRef.current = null;
+    }
+    if (navMarkerRef.current && mapRef.current) {
+      try {
+        mapRef.current.removeLayer(navMarkerRef.current);
+      } catch (e) {}
+      navMarkerRef.current = null;
+    }
+    setIsNavigating(false);
+    setNavProgress(0);
+  };
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     let isMounted = true;
@@ -260,6 +357,11 @@ export function DzalekaInteractiveMap() {
   }, []);
 
   // UPDATE ROUTE POLYLINE WHEN IN DIRECTIONS MODE
+  // State for OSRM real road route data
+  const [routeSteps, setRouteSteps] = useState<any[]>([]);
+  const [realDistanceKm, setRealDistanceKm] = useState<string>('');
+  const [realDurationMin, setRealDurationMin] = useState<number>(0);
+
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -277,24 +379,61 @@ export function DzalekaInteractiveMap() {
 
       if (directionsMode && originPoint && destinationPoint) {
         try {
+          const profile = travelMode === 'walking' ? 'foot' : 'driving';
+          const osrmUrl = `https://router.project-osrm.org/route/v1/${profile}/${originPoint.lng},${originPoint.lat};${destinationPoint.lng},${destinationPoint.lat}?overview=full&geometries=geojson&steps=true`;
+          
+          const res = await fetch(osrmUrl);
+          const data = await res.json();
+
+          let routeCoords: [number, number][] = [
+            [originPoint.lat, originPoint.lng],
+            [destinationPoint.lat, destinationPoint.lng]
+          ];
+
+          if (data.code === 'Ok' && data.routes && data.routes[0]) {
+            const route = data.routes[0];
+            if (route.geometry && route.geometry.coordinates) {
+              routeCoords = route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]);
+            }
+            if (route.legs && route.legs[0] && route.legs[0].steps) {
+              setRouteSteps(route.legs[0].steps);
+            }
+            setRealDistanceKm((route.distance / 1000).toFixed(2));
+            setRealDurationMin(Math.ceil(route.duration / 60));
+          } else {
+            setRouteSteps([]);
+            setRealDistanceKm(distKm.toFixed(2));
+            setRealDurationMin(parseInt(estTime) || 5);
+          }
+
+          const polyline = L.polyline(routeCoords, {
+            color: '#0284c7',
+            weight: 5,
+            opacity: 0.9,
+            lineCap: 'round',
+            lineJoin: 'round'
+          }).addTo(mapRef.current);
+
+          routePolylineRef.current = polyline;
+          mapRef.current.fitBounds(polyline.getBounds().pad(0.25));
+        } catch (e) {
+          // Fallback if network fails
           const polyline = L.polyline(
             [
               [originPoint.lat, originPoint.lng],
               [destinationPoint.lat, destinationPoint.lng],
             ],
-            { color: '#0284c7', weight: 5, opacity: 0.85, dashArray: '8, 8' }
+            { color: '#0284c7', weight: 4, opacity: 0.8 }
           ).addTo(mapRef.current);
 
           routePolylineRef.current = polyline;
           mapRef.current.fitBounds(polyline.getBounds().pad(0.25));
-        } catch (e) {
-          // Ignore polyline draw errors
         }
       }
     };
 
     drawRoute();
-  }, [directionsMode, originPoint, destinationPoint]);
+  }, [directionsMode, originPoint, destinationPoint, travelMode]);
 
   const changeTileLayer = async (newLayer: 'satellite' | 'streets' | 'humanitarian') => {
     setActiveLayer(newLayer);
@@ -864,36 +1003,86 @@ export function DzalekaInteractiveMap() {
 
                 {/* Origin & Destination Inputs */}
                 <div className="mt-4 space-y-2.5">
-                  {/* Origin */}
+                  {/* Origin A */}
                   <div className="rounded-xl border border-slate-200 p-2.5 bg-slate-50/70">
                     <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 mb-1">
-                      <span>ORIGIN (A)</span>
+                      <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        START POINT (A)
+                      </span>
                       <button
                         onClick={handleGetUserLocation}
-                        className="text-sky-700 hover:underline flex items-center gap-1"
+                        className="text-sky-700 hover:underline flex items-center gap-1 text-[11px]"
                       >
-                        {locatingUser ? 'Locating...' : 'Use My GPS'}
+                        {locatingUser ? 'Locating...' : '📍 My GPS'}
                       </button>
                     </div>
                     <select
                       value={originPoint.name}
                       onChange={(e) => {
-                        const found = DEFAULT_ORIGINS.find((o) => o.name === e.target.value);
+                        const allOptions = [
+                          ...DEFAULT_ORIGINS,
+                          ...MAP_POINTS.map((pt) => ({ name: pt.name, lat: pt.lat, lng: pt.lng }))
+                        ];
+                        const found = allOptions.find((o) => o.name === e.target.value);
                         if (found) setOriginPoint(found);
                       }}
-                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none"
+                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none focus:border-sky-500"
                     >
-                      {DEFAULT_ORIGINS.map((orig) => (
-                        <option key={orig.name} value={orig.name}>
-                          {orig.name} ({orig.lat.toFixed(3)}, {orig.lng.toFixed(3)})
-                        </option>
-                      ))}
+                      <optgroup label="Primary Gates & Centers">
+                        {DEFAULT_ORIGINS.map((orig) => (
+                          <option key={orig.name} value={orig.name}>
+                            {orig.name} ({orig.lat.toFixed(3)}, {orig.lng.toFixed(3)})
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label="Community Facilities & Places in Camp">
+                        {MAP_POINTS.map((pt) => (
+                          <option key={`orig-${pt.id}`} value={pt.name}>
+                            {pt.name} ({pt.categoryLabel})
+                          </option>
+                        ))}
+                      </optgroup>
                     </select>
                   </div>
 
-                  {/* Destination */}
+                  {/* Swap A <-> B Button */}
+                  <div className="flex justify-center -my-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!destinationPoint) return;
+                        const prevOriginName = originPoint.name;
+                        const prevOriginLat = originPoint.lat;
+                        const prevOriginLng = originPoint.lng;
+
+                        setOriginPoint({
+                          name: destinationPoint.name,
+                          lat: destinationPoint.lat,
+                          lng: destinationPoint.lng
+                        });
+
+                        const matchingDest = MAP_POINTS.find(p => p.name === prevOriginName || (p.lat === prevOriginLat && p.lng === prevOriginLng));
+                        if (matchingDest) {
+                          setDestinationPoint(matchingDest);
+                        }
+                      }}
+                      className="rounded-full bg-white border border-slate-300 p-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-50 shadow-xs transition-colors flex items-center gap-1 text-[11px] font-bold px-3"
+                      title="Swap Start (A) and Destination (B)"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                      </svg>
+                      <span>Swap A ⇄ B</span>
+                    </button>
+                  </div>
+
+                  {/* Destination B */}
                   <div className="rounded-xl border border-slate-200 p-2.5 bg-slate-50/70">
-                    <div className="text-[11px] font-semibold text-slate-500 mb-1">DESTINATION (B)</div>
+                    <div className="text-[11px] font-semibold text-rose-700 flex items-center gap-1.5 mb-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-rose-600 inline-block"></span>
+                      DESTINATION (B)
+                    </div>
                     <select
                       value={destinationPoint?.id || ''}
                       onChange={(e) => {
@@ -903,10 +1092,10 @@ export function DzalekaInteractiveMap() {
                           setSelectedPoint(found);
                         }
                       }}
-                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none"
+                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none focus:border-sky-500"
                     >
                       {MAP_POINTS.map((pt) => (
-                        <option key={pt.id} value={pt.id}>
+                        <option key={`dest-${pt.id}`} value={pt.id}>
                           {pt.name} ({pt.categoryLabel})
                         </option>
                       ))}
@@ -916,36 +1105,91 @@ export function DzalekaInteractiveMap() {
 
                 {/* Distance & Travel Time Result Card */}
                 {destinationPoint && (
-                  <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-900">
+                  <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-900 shadow-xs">
                     <div className="flex items-center justify-between">
                       <div>
                         <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-700">
-                          Estimated Travel Time
+                          Road Travel Time ({travelMode})
                         </span>
-                        <h4 className="text-2xl font-bold text-slate-950 font-mono mt-0.5">{estTime}</h4>
+                        <h4 className="text-2xl font-bold text-slate-950 font-mono mt-0.5">
+                          {realDurationMin ? `${realDurationMin} mins` : estTime}
+                        </h4>
                       </div>
                       <div className="text-right">
                         <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                          Distance
+                          Road Distance
                         </span>
-                        <p className="text-lg font-bold text-slate-900 font-mono mt-0.5">{distKm} km</p>
+                        <p className="text-lg font-bold text-slate-900 font-mono mt-0.5">
+                          {realDistanceKm ? `${realDistanceKm} km` : `${distKm} km`}
+                        </p>
                       </div>
                     </div>
 
-                    {/* Step-by-Step Guidance */}
+                    {/* Step-by-Step Waypoint Guidance */}
                     <div className="mt-4 pt-3 border-t border-sky-200/80 text-xs space-y-2 text-slate-700">
-                      <div className="flex items-start gap-2">
-                        <span className="font-bold text-sky-700">1.</span>
-                        <span>Start at <strong>{originPoint.name}</strong></span>
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        OpenStreetMap Ground-Truth Route:
                       </div>
-                      <div className="flex items-start gap-2">
-                        <span className="font-bold text-sky-700">2.</span>
-                        <span>Follow M7 road toward Dowa District / Dzaleka Access Road</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="font-bold text-sky-700">3.</span>
-                        <span>Arrive at <strong>{destinationPoint.name}</strong></span>
-                      </div>
+                      
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (mapRef.current) {
+                            mapRef.current.setView([originPoint.lat, originPoint.lng], 18, { animate: true });
+                          }
+                        }}
+                        className="flex items-start gap-2 w-full text-left p-1.5 rounded-lg hover:bg-sky-100/80 transition-colors group cursor-pointer"
+                      >
+                        <span className="font-bold text-emerald-700 shrink-0">1.</span>
+                        <span className="group-hover:text-slate-950">
+                          Start at <strong className="underline decoration-emerald-500/50">{originPoint.name}</strong>
+                        </span>
+                      </button>
+
+                      {routeSteps && routeSteps.length > 2 ? (
+                        routeSteps.slice(1, -1).map((st: any, idx: number) => (
+                          <div key={idx} className="flex items-start gap-2 p-1.5 text-slate-700">
+                            <span className="font-bold text-sky-700 shrink-0">{idx + 2}.</span>
+                            <span>
+                              {st.maneuver?.type ? `${st.maneuver.type} ${st.maneuver.modifier || ''}` : 'Proceed'} {st.name ? `on ${st.name}` : 'along camp sector path'} ({Math.round(st.distance)}m)
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (mapRef.current && destinationPoint) {
+                              const midLat = (originPoint.lat + destinationPoint.lat) / 2;
+                              const midLng = (originPoint.lng + destinationPoint.lng) / 2;
+                              mapRef.current.setView([midLat, midLng], 16, { animate: true });
+                            }
+                          }}
+                          className="flex items-start gap-2 w-full text-left p-1.5 rounded-lg hover:bg-sky-100/80 transition-colors group cursor-pointer"
+                        >
+                          <span className="font-bold text-sky-700 shrink-0">2.</span>
+                          <span className="group-hover:text-slate-950">
+                            Follow M7 / Sector access road towards <strong className="underline decoration-sky-500/50">{destinationPoint.zone || 'Destination Area'}</strong>
+                          </span>
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (mapRef.current && destinationPoint) {
+                            mapRef.current.setView([destinationPoint.lat, destinationPoint.lng], 18, { animate: true });
+                          }
+                        }}
+                        className="flex items-start gap-2 w-full text-left p-1.5 rounded-lg hover:bg-sky-100/80 transition-colors group cursor-pointer"
+                      >
+                        <span className="font-bold text-rose-700 shrink-0">
+                          {routeSteps && routeSteps.length > 2 ? routeSteps.length : 3}.
+                        </span>
+                        <span className="group-hover:text-slate-950">
+                          Arrive at destination <strong className="underline decoration-rose-500/50">{destinationPoint.name}</strong>
+                        </span>
+                      </button>
                     </div>
                   </div>
                 )}
