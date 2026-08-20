@@ -337,7 +337,7 @@ const structuredData = {
                     <span class="inline-block h-2 w-2 rounded-full bg-slate-900"></span>
                     From today's featured article
                   </h2>
-                  <span class="text-xs font-semibold text-slate-400">Featured Entry</span>
+                  <span class="text-xs font-semibold text-slate-400">Featured entry</span>
                 </div>
                 <div class="mt-5 grid gap-5 sm:grid-cols-[200px_minmax(0,1fr)]">
                   {campEntry.data.image && (
@@ -372,7 +372,7 @@ const structuredData = {
                   </svg>
                   In the news & recent updates
                 </h2>
-                <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200">Live Updates</span>
+                <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200">Live updates</span>
               </div>
               <ul class="mt-4 space-y-4 divide-y divide-slate-100">
                 {combinedNews.map((newsItem) => (
@@ -389,7 +389,7 @@ const structuredData = {
                         {newsItem.isExternal && <span class="text-xs text-slate-400 font-normal">↗</span>}
                       </a>
                     </h3>
-                    <p class="mt-1.5 text-xs leading-relaxed text-slate-600 line-clamp-2">{newsItem.description}</p>
+                    <p class="mt-1.5 text-sm leading-relaxed text-slate-600 line-clamp-2">{newsItem.description}</p>
                   </li>
                 ))}
               </ul>
@@ -415,7 +415,7 @@ const structuredData = {
                   <a href={`#all-entries`} class="portal-card flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-3 hover:bg-slate-100 hover:border-slate-300 transition-colors">
                     <div>
                       <h3 class="text-sm font-bold text-slate-900">{cat.name}</h3>
-                      <p class="text-xs text-slate-500">{cat.count} articles</p>
+                      <p class="text-xs text-slate-500">{cat.count} {cat.count === 1 ? 'article' : 'articles'}</p>
                     </div>
                     <span class="text-xs font-semibold text-slate-700">Explore →</span>
                   </a>
@@ -437,7 +437,7 @@ const structuredData = {
                   </svg>
                   Did you know...
                 </h2>
-                <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Rotates Daily</span>
+                <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Rotates daily</span>
               </div>
               <ul class="mt-4 space-y-3.5 text-xs leading-relaxed text-slate-700 divide-y divide-slate-100">
                 {dykItems.map((dyk) => (
@@ -479,7 +479,7 @@ const structuredData = {
             <!-- Encyclopedia Editorial & API Info Card -->
             <section class="rounded-xl border border-slate-200 bg-slate-50 p-5">
               <h3 class="text-sm font-bold text-slate-900">About the Encyclopedia</h3>
-              <p class="mt-2 text-xs leading-relaxed text-slate-600">A community-maintained public reference. Every entry is backed by verified primary citations, academic studies, or demographic health surveys.</p>
+              <p class="mt-2 text-sm leading-relaxed text-slate-600">A community-maintained public reference. Every entry is backed by verified primary citations, academic studies, or demographic health surveys.</p>
               <div class="mt-4 flex flex-col gap-2 text-xs">
                 <a href="/encyclopedia/submit-correction?type=new-entry" class="font-semibold text-slate-900 hover:underline">Submit a new entry or correction →</a>
                 <a href="/encyclopedia/editorial-guidelines" class="font-semibold text-slate-700 hover:underline">Editorial guidelines & sources →</a>
@@ -509,20 +509,20 @@ const structuredData = {
               <a href={`/encyclopedia/${entry.id}`} class="group rounded-xl border border-slate-200 bg-white p-5 hover:border-slate-300 hover:shadow-sm">
                 <div class="flex items-center justify-between gap-2">
                   <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{entry.data.category}</p>
-                  <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">Demographic Data</span>
+                  <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">Demographic data</span>
                 </div>
                 <h3 class="mt-2 text-base font-bold leading-snug text-slate-950 group-hover:text-sky-700">{entry.data.title}</h3>
-                <p class="mt-2 line-clamp-3 text-xs leading-relaxed text-slate-600">{entry.data.summary}</p>
+                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">{entry.data.summary}</p>
               </a>
             ))}
             {entries.find(e => e.id === 'waiting-in-dzaleka-refugee-camp-thesis') && (
               <a href="/encyclopedia/waiting-in-dzaleka-refugee-camp-thesis" class="group rounded-xl border border-slate-200 bg-slate-50/50 p-5 hover:border-slate-300 hover:shadow-sm">
                 <div class="flex items-center justify-between gap-2">
                   <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">History & Sociology</p>
-                  <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">Academic Thesis</span>
+                  <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">Academic thesis</span>
                 </div>
                 <h3 class="mt-2 text-base font-bold leading-snug text-slate-950 group-hover:text-sky-700">Waiting in Dzaleka Refugee Camp (Thesis)</h3>
-                <p class="mt-2 line-clamp-3 text-xs leading-relaxed text-slate-600">Anna-Lena Stammen's 2025 Erfurt thesis analyzing refugee agency, waiting, coping mechanisms, social space mapping, and RLOs.</p>
+                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">Anna-Lena Stammen's 2025 Erfurt thesis analyzing refugee agency, waiting, coping mechanisms, social space mapping, and RLOs.</p>
               </a>
             )}
           </div>
@@ -588,7 +588,7 @@ const structuredData = {
                     {entry.data.status === 'developing' && <span class="text-amber-700">Developing</span>}
                   </div>
                   <h3 class="mt-1.5 text-base font-bold leading-snug text-slate-950 group-hover:text-sky-700">{entry.data.title}</h3>
-                  <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-600">{entry.data.summary}</p>
+                  <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600">{entry.data.summary}</p>
                 </div>
               </a>
             </article>
@@ -623,7 +623,7 @@ const structuredData = {
         </div>
         <div class="border-l-4 border-slate-900 pl-5">
           <h2 class="text-lg font-bold text-slate-950">Help document Dzaleka</h2>
-          <p class="mt-2 text-xs leading-relaxed text-slate-600">Residents, former residents, organisations, researchers, families, and photographers are welcome to propose entries or improve existing ones. Every submission is reviewed before publication.</p>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">Residents, former residents, organisations, researchers, families, and photographers are welcome to propose entries or improve existing ones. Every submission is reviewed before publication.</p>
           <div class="mt-4 flex flex-wrap gap-3">
             <a href="/encyclopedia/submit-correction?type=new-entry" class="inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Propose an entry</a>
             <a href="/encyclopedia/submit-correction" class="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100">Send a correction</a>
