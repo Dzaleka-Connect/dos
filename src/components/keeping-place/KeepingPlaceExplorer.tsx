@@ -1121,7 +1121,7 @@ export function KeepingPlaceExplorer() {
 
       {/* ADD SITE MODAL */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-[1000] bg-slate-900/60 flex items-center justify-center p-4">
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[1000] bg-slate-900/60 flex items-center justify-center p-4">
           <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-slate-200 text-slate-900">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-slate-900">Record Spatial Landmark</h3>

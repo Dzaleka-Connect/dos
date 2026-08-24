@@ -159,7 +159,7 @@ export default function LocationPickerMap({
   return (
     <div class="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+        <label className="block text-sm font-semibold text-slate-700">
           Interactive Pin Coordinate Picker <span className="text-red-500">*</span>
         </label>
         <span className="text-xs text-sky-700 font-mono font-semibold" id="coordDisplay">
@@ -178,7 +178,7 @@ export default function LocationPickerMap({
 
       <div className="grid grid-cols-2 gap-4 pt-1">
         <div>
-          <label htmlFor="lat" className="block text-[11px] font-bold text-slate-500 uppercase mb-1">
+          <label htmlFor="lat" className="block text-sm font-semibold text-slate-600 mb-1">
             Latitude
           </label>
           <input
@@ -193,7 +193,7 @@ export default function LocationPickerMap({
           />
         </div>
         <div>
-          <label htmlFor="lng" className="block text-[11px] font-bold text-slate-500 uppercase mb-1">
+          <label htmlFor="lng" className="block text-sm font-semibold text-slate-600 mb-1">
             Longitude
           </label>
           <input

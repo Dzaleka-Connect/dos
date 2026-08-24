@@ -89,6 +89,20 @@ export function DzalekaInteractiveMap() {
     submitterEmail: '',
   });
 
+  // Close whichever dialog is open when Escape is pressed. Without this a
+  // keyboard user has to tab to the close button to dismiss a modal.
+  useEffect(() => {
+    if (!showEmergencyModal && !showPrintModal && !showSubmissionModal) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setShowEmergencyModal(false);
+      setShowPrintModal(false);
+      setShowSubmissionModal(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [showEmergencyModal, showPrintModal, showSubmissionModal]);
+
   // DIRECTIONS & NAVIGATION STATE
   const [directionsMode, setDirectionsMode] = useState<boolean>(false);
   const [originPoint, setOriginPoint] = useState<{ name: string; lat: number; lng: number }>(DEFAULT_ORIGINS[0]);
@@ -278,11 +292,9 @@ export function DzalekaInteractiveMap() {
               <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.3;">${pt.name}</h4>
               <p style="margin: 0 0 8px 0; font-size: 11px; color: #475569; line-height: 1.4;">${pt.description}</p>
               ${pt.operator ? `<div style="font-size: 10px; color: #64748b; margin-bottom: 6px;"><strong>Operator:</strong> ${pt.operator}</div>` : ''}
-              <div style="font-size: 10px; font-family: monospace; color: #94a3b8; margin-bottom: 8px;">OSM ${pt.osmType.toUpperCase()} #${pt.osmId}</div>
+              ${/^\d+$/.test(String(pt.osmId)) ? `<div style="font-size: 10px; font-family: monospace; color: #94a3b8; margin-bottom: 8px;">OSM ${pt.osmType.toUpperCase()} #${pt.osmId}</div>` : `<div style="font-size: 10px; color: #94a3b8; margin-bottom: 8px;">Dzaleka Heritage Site Register</div>`}
               <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; border-top: 1px solid #f1f5f9; padding-top: 6px;">
-                <a href="https://www.openstreetmap.org/${pt.osmType}/${pt.osmId}" target="_blank" rel="noopener" style="font-weight: 600; color: #0284c7; text-decoration: none;">
-                  OpenStreetMap &rarr;
-                </a>
+                ${/^\d+$/.test(String(pt.osmId)) ? `<a href="https://www.openstreetmap.org/${pt.osmType}/${pt.osmId}" target="_blank" rel="noopener" style="font-weight: 600; color: #0284c7; text-decoration: none;">OpenStreetMap &rarr;</a>` : ''}
                 ${pt.encyclopediaUrl ? `<a href="${pt.encyclopediaUrl}" style="font-weight: 600; color: #0f172a; text-decoration: none;">Encyclopedia &rarr;</a>` : ''}
               </div>
             </div>
@@ -784,30 +796,29 @@ export function DzalekaInteractiveMap() {
               setSubmissionSuccess(false);
               setShowSubmissionModal(true);
             }}
-            className="flex items-center gap-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 text-xs font-bold shadow-lg transition-transform shrink-0 border border-emerald-500"
+            className="flex items-center gap-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 text-sm font-semibold shadow-md ring-1 ring-slate-900/10 shrink-0"
             title="Suggest a New Location Node or Update Place Details"
           >
             <span className="font-bold text-sm">+</span>
-            <span>Suggest a Place</span>
+            <span>Suggest a place</span>
           </button>
 
           {/* PRINTABLE PDF BUTTON */}
           <button
             onClick={() => setShowPrintModal(true)}
-            className="flex items-center gap-1 rounded-full bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 text-xs font-bold shadow-md shrink-0 border border-slate-800"
+            className="flex items-center gap-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 px-4 py-2 text-sm font-semibold shadow-md ring-1 ring-slate-200 shrink-0"
           >
-            <svg className="h-3.5 w-3.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
-            <span>PDF Map Sheet</span>
+            <span>PDF map sheet</span>
           </button>
 
           {/* EMERGENCY CONTACTS BUTTON */}
           <button
             onClick={() => setShowEmergencyModal(true)}
-            className="flex items-center gap-1 rounded-full bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 text-xs font-bold shadow-md shrink-0 border border-slate-800 cursor-pointer"
+            className="flex items-center gap-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-semibold shadow-md ring-1 ring-red-700/20 shrink-0 cursor-pointer"
           >
-            <span className="w-2 h-2 rounded-full bg-red-500"></span>
             <span>Emergency</span>
           </button>
 
@@ -816,7 +827,7 @@ export function DzalekaInteractiveMap() {
           {/* CATEGORY CHIPS */}
           <button
             onClick={() => setActiveCategory('all')}
-            className={`px-3 py-1 text-xs font-semibold rounded-full shrink-0 transition-colors ${
+            className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 ${
               activeCategory === 'all' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
             }`}
           >
@@ -824,7 +835,7 @@ export function DzalekaInteractiveMap() {
           </button>
           <button
             onClick={() => setActiveCategory('health')}
-            className={`px-3 py-1 text-xs font-semibold rounded-full shrink-0 transition-colors flex items-center gap-1 ${
+            className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
               activeCategory === 'health' ? 'bg-red-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
             }`}
           >
@@ -833,7 +844,7 @@ export function DzalekaInteractiveMap() {
           </button>
           <button
             onClick={() => setActiveCategory('education')}
-            className={`px-3 py-1 text-xs font-semibold rounded-full shrink-0 transition-colors flex items-center gap-1 ${
+            className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
               activeCategory === 'education' ? 'bg-sky-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
             }`}
           >
@@ -842,7 +853,7 @@ export function DzalekaInteractiveMap() {
           </button>
           <button
             onClick={() => setActiveCategory('market')}
-            className={`px-3 py-1 text-xs font-semibold rounded-full shrink-0 transition-colors flex items-center gap-1 ${
+            className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
               activeCategory === 'market' ? 'bg-emerald-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
             }`}
           >
@@ -851,7 +862,7 @@ export function DzalekaInteractiveMap() {
           </button>
           <button
             onClick={() => setActiveCategory('service')}
-            className={`px-3 py-1 text-xs font-semibold rounded-full shrink-0 transition-colors flex items-center gap-1 ${
+            className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
               activeCategory === 'service' ? 'bg-slate-800 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
             }`}
           >
@@ -860,7 +871,7 @@ export function DzalekaInteractiveMap() {
           </button>
           <button
             onClick={() => setActiveCategory('culture')}
-            className={`px-3 py-1 text-xs font-semibold rounded-full shrink-0 transition-colors flex items-center gap-1 ${
+            className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
               activeCategory === 'culture' ? 'bg-purple-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
             }`}
           >
@@ -1275,8 +1286,12 @@ export function DzalekaInteractiveMap() {
                     </button>
                   </div>
                   <div className="flex justify-between text-slate-600">
-                    <span className="font-semibold text-slate-500">OpenStreetMap:</span>
-                    <span className="font-mono">{selectedPoint.osmType.toUpperCase()} #{selectedPoint.osmId}</span>
+                    <span className="font-semibold text-slate-500">Source:</span>
+                    {/^\d+$/.test(String(selectedPoint.osmId)) ? (
+                      <span className="font-mono text-[0.9em]">OpenStreetMap {selectedPoint.osmType.toUpperCase()} #{selectedPoint.osmId}</span>
+                    ) : (
+                      <span>Dzaleka Heritage Site Register</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1290,7 +1305,7 @@ export function DzalekaInteractiveMap() {
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
-                  <span>Get Directions To Location</span>
+                  <span>Get directions</span>
                 </button>
                 <div className="flex gap-2">
                   <button
@@ -1311,20 +1326,22 @@ export function DzalekaInteractiveMap() {
                     <span>Open in Google Maps</span>
                   </a>
                 </div>
-                <a
-                  href={`https://www.openstreetmap.org/${selectedPoint.osmType}/${selectedPoint.osmId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors w-full"
-                >
-                  <span>View OpenStreetMap Node Record</span>
-                </a>
+                {/^\d+$/.test(String(selectedPoint.osmId)) && (
+                  <a
+                    href={`https://www.openstreetmap.org/${selectedPoint.osmType}/${selectedPoint.osmId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 w-full"
+                  >
+                    <span>View on OpenStreetMap</span>
+                  </a>
+                )}
                 {selectedPoint.encyclopediaUrl && (
                   <a
                     href={selectedPoint.encyclopediaUrl}
                     className="flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-900 hover:bg-slate-50 transition-colors w-full"
                   >
-                    <span>Read History Entry</span>
+                    <span>Read the history entry</span>
                   </a>
                 )}
               </div>
@@ -1396,7 +1413,7 @@ export function DzalekaInteractiveMap() {
 
       {/* COMMUNITY PLACE SUBMISSION FORM MODAL */}
       {showSubmissionModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto print-hidden">
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto print-hidden">
           <div className="w-full max-w-xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[90vh] flex flex-col">
             <div className="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0 border-b border-slate-800">
               <div className="flex items-center gap-2.5">
@@ -1638,7 +1655,7 @@ export function DzalekaInteractiveMap() {
 
       {/* PRINTABLE PDF MAP SHEET GENERATOR MODAL */}
       {showPrintModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto printable-sheet-modal">
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto printable-sheet-modal">
           <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[95vh] flex flex-col">
             
             {/* Modal Header Bar (Hidden in Print) */}
@@ -1771,7 +1788,7 @@ export function DzalekaInteractiveMap() {
 
       {/* EMERGENCY CONTACTS & RAPID RESPONSE MODAL */}
       {showEmergencyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto print-hidden">
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto print-hidden">
           <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[90vh] flex flex-col">
             
             {/* Modal Header */}
@@ -1834,7 +1851,7 @@ export function DzalekaInteractiveMap() {
                     href="tel:111"
                     className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shrink-0 shadow-2xs flex items-center gap-1.5"
                   >
-                    <svg className="h-3.5 w-3.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                     <span>Call 111</span>
