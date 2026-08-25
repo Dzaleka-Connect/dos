@@ -4,7 +4,27 @@ Disallow: /admin/
 Disallow: /private/
 
 # Content usage preferences for search and AI systems.
-Content-Signal: ai-train=no, search=yes, ai-input=no
+#
+# This site exists so that people can find accurate, current information about
+# Dzaleka Refugee Camp, including through assistants and agents. Our position:
+#
+#   search=yes     Index our pages and link to them.
+#   ai-input=yes   Use our content to answer questions about Dzaleka, provided
+#                  you attribute it and link to the source page. This is what
+#                  our public API, /llms.txt and MCP server are published for.
+#   ai-train=no    Do not use our content to train or fine-tune models. This is
+#                  a community's own record of itself; read it and cite it,
+#                  do not absorb it.
+#
+# Content is CC BY-SA 4.0 unless a page states otherwise. Some photographs and
+# artworks carry separate rights - check the credit on each item before reuse.
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# Agent and developer entry points
+# /llms.txt                     what this site covers and when to use it
+# /.well-known/api-catalog      machine-readable API discovery
+# /.well-known/mcp              Model Context Protocol server
+# /api/openapi.json             OpenAPI 3.1 description of the public API
 
 # Sitemaps
 Sitemap: https://services.dzaleka.com/sitemap.xml
