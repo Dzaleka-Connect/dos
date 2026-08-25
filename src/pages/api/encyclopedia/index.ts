@@ -66,7 +66,7 @@ export const GET: APIRoute = async ({ request, url }) => {
       url: 'https://services.dzaleka.com/open-license',
       attribution: 'Dzaleka Encyclopedia, Dzaleka Online Services',
     },
-  });
+  }, 200, {}, request);
 };
 
 export const OPTIONS = createOptionsHandler();

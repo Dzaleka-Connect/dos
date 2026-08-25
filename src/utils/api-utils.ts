@@ -1,80 +1,18 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { problemResponse } from './api-errors';
 
-// CORS headers for all API endpoints
-export const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json'
-};
+// Header, versioning and rate-limit logic lives in ./api-headers so it can be
+// imported (and tested) without pulling in the Astro content layer.
+export {
+  API_VERSION,
+  corsHeaders,
+  rateLimitHeaders,
+  apiHeaders,
+  checkRateLimit,
+} from './api-headers';
 
-// Rate limiting configuration
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const MAX_REQUESTS_PER_WINDOW = 60; // 60 requests per minute
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-
-/**
- * Rate limiting middleware for API endpoints
- * Limits requests based on IP address
- * @param request The incoming request
- * @returns null if allowed, Response if rate limited
- */
-export function checkRateLimit(request: Request): Response | null {
-  // Get client IP from headers (supports various proxy configurations)
-  const clientIP =
-    request.headers.get('x-forwarded-for')?.split(',')[0] ||
-    request.headers.get('x-real-ip') ||
-    request.headers.get('cf-connecting-ip') || // Cloudflare
-    'unknown';
-
-  const now = Date.now();
-  const rateLimitData = rateLimitMap.get(clientIP);
-
-  // Clean up expired entries periodically
-  if (Math.random() < 0.01) { // 1% chance to clean up
-    for (const [ip, data] of rateLimitMap.entries()) {
-      if (now > data.resetTime) {
-        rateLimitMap.delete(ip);
-      }
-    }
-  }
-
-  if (!rateLimitData || now > rateLimitData.resetTime) {
-    // First request or window expired
-    rateLimitMap.set(clientIP, {
-      count: 1,
-      resetTime: now + RATE_LIMIT_WINDOW
-    });
-    return null;
-  }
-
-  if (rateLimitData.count >= MAX_REQUESTS_PER_WINDOW) {
-    // Rate limit exceeded
-    const retryAfter = Math.ceil((rateLimitData.resetTime - now) / 1000);
-    return new Response(
-      JSON.stringify({
-        status: 'error',
-        message: 'Rate limit exceeded. Please try again later.',
-        retryAfter
-      }),
-      {
-        status: 429,
-        headers: {
-          ...corsHeaders,
-          'Retry-After': retryAfter.toString(),
-          'X-RateLimit-Limit': MAX_REQUESTS_PER_WINDOW.toString(),
-          'X-RateLimit-Remaining': '0',
-          'X-RateLimit-Reset': rateLimitData.resetTime.toString()
-        }
-      }
-    );
-  }
-
-  // Increment counter
-  rateLimitData.count++;
-  return null;
-}
+import { apiHeaders, checkRateLimit } from './api-headers';
 
 /**
  * Process collection data to standardize the response format
@@ -142,17 +80,15 @@ export function createGetHandler(collectionName: string): APIRoute {
             [collectionName]: processedData
           }
         }),
-        { status: 200, headers: corsHeaders }
+        { status: 200, headers: apiHeaders(request) }
       );
     } catch (error) {
       console.error(`Error in GET handler for ${collectionName}:`, error);
-      return new Response(
-        JSON.stringify({
-          status: 'error',
-          message: `Failed to fetch ${collectionName}`,
-          error: error instanceof Error ? error.message : String(error)
-        }),
-        { status: 500, headers: corsHeaders }
+      return problemResponse(
+        'internal_error',
+        `Failed to fetch ${collectionName}: ${error instanceof Error ? error.message : String(error)}`,
+        apiHeaders(request),
+        new URL(request.url).pathname
       );
     }
   };
@@ -163,10 +99,10 @@ export function createGetHandler(collectionName: string): APIRoute {
  * @returns An APIRoute handler for OPTIONS requests
  */
 export function createOptionsHandler(): APIRoute {
-  return async () => {
+  return async ({ request }) => {
     return new Response(null, {
       status: 204,
-      headers: corsHeaders
+      headers: apiHeaders(request, { Allow: 'GET, POST, OPTIONS' })
     });
   };
 }
@@ -231,17 +167,15 @@ export function createPostHandler(collectionName: string): APIRoute {
       // Return the response
       return new Response(
         JSON.stringify(response),
-        { status: 200, headers: corsHeaders }
+        { status: 200, headers: apiHeaders(request) }
       );
     } catch (error) {
       console.error(`Error in POST handler for ${collectionName}:`, error);
-      return new Response(
-        JSON.stringify({
-          status: 'error',
-          message: `Failed to fetch ${collectionName}`,
-          error: error instanceof Error ? error.message : String(error)
-        }),
-        { status: 500, headers: corsHeaders }
+      return problemResponse(
+        'internal_error',
+        `Failed to fetch ${collectionName}: ${error instanceof Error ? error.message : String(error)}`,
+        apiHeaders(request),
+        new URL(request.url).pathname
       );
     }
   };

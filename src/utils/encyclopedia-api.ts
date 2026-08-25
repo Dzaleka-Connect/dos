@@ -1,5 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
-import { corsHeaders } from './api-utils';
+import { corsHeaders, rateLimitHeaders } from './api-utils';
 
 export const ENCYCLOPEDIA_URL = 'https://services.dzaleka.com/encyclopedia';
 
@@ -9,10 +9,25 @@ export const encyclopediaHeaders = {
   'Cache-Control': 'public, max-age=300, s-maxage=900',
 };
 
-export function jsonResponse(data: unknown, status = 200, headers: Record<string, string> = {}) {
+/**
+ * Pass `request` to include the caller's rate-limit budget and API-Version in
+ * the response, which is what lets an agent self-throttle.
+ */
+export function jsonResponse(
+  data: unknown,
+  status = 200,
+  headers: Record<string, string> = {},
+  request?: Request
+) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
-    headers: { ...encyclopediaHeaders, ...headers },
+    headers: {
+      ...encyclopediaHeaders,
+      ...(request ? rateLimitHeaders(request) : {}),
+      // Rate-limit headers must not clobber the JSON content type.
+      'Content-Type': (headers['Content-Type'] as string) ?? encyclopediaHeaders['Content-Type'],
+      ...headers,
+    },
   });
 }
 

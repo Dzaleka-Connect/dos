@@ -1,5 +1,10 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { apiHeaders } from '../../utils/api-utils';
+import { problemResponse } from '../../utils/api-errors';
+
+// Server-rendered: this endpoint is request-dependent.
+export const prerender = false;
 
 const VALID_COLLECTIONS = [
   'services',
@@ -50,16 +55,16 @@ const buildApiDescription = () => ({
   },
 });
 
-export const OPTIONS: APIRoute = async () =>
+export const OPTIONS: APIRoute = async ({ request }) =>
   new Response(null, {
     status: 204,
-    headers: corsHeaders,
+    headers: apiHeaders(request, { Allow: 'GET, POST, OPTIONS' }),
   });
 
-export const GET: APIRoute = async () =>
+export const GET: APIRoute = async ({ request }) =>
   new Response(JSON.stringify(buildApiDescription()), {
     status: 200,
-    headers: corsHeaders,
+    headers: apiHeaders(request),
   });
 
 export const POST: APIRoute = async ({ request }) => {
@@ -117,21 +122,16 @@ export const POST: APIRoute = async ({ request }) => {
       }),
       {
         status: 200,
-        headers: corsHeaders,
+        headers: apiHeaders(request),
       }
     );
   } catch (error) {
     console.error('Export error:', error);
-    return new Response(
-      JSON.stringify({
-        status: 'error',
-        message: 'Failed to export data',
-        error: error instanceof Error ? error.message : String(error),
-      }),
-      {
-        status: 500,
-        headers: corsHeaders,
-      }
+    return problemResponse(
+      'internal_error',
+      `Failed to export data: ${error instanceof Error ? error.message : String(error)}`,
+      apiHeaders(request),
+      new URL(request.url).pathname
     );
   }
 };

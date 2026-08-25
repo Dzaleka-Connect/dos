@@ -1,6 +1,11 @@
 import type { APIRoute } from 'astro';
+import { apiHeaders } from '../../utils/api-utils';
 
-export const GET: APIRoute = async () => {
+// Server-rendered: prerendering emits an extension-less static file, which is
+// served as application/octet-stream and carries none of the API headers.
+export const prerender = false;
+
+export const GET: APIRoute = async ({ request }) => {
   const populationData = {
     total: 55425,
     newArrivals: 304,
@@ -25,8 +30,6 @@ export const GET: APIRoute = async () => {
 
   return new Response(JSON.stringify(populationData), {
     status: 200,
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    headers: apiHeaders(request)
   });
 }

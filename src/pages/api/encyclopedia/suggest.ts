@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { checkRateLimit, createOptionsHandler } from '../../../utils/api-utils';
+import { apiHeaders, checkRateLimit, createOptionsHandler } from '../../../utils/api-utils';
+import { problemResponse } from '../../../utils/api-errors';
 import { jsonResponse } from '../../../utils/encyclopedia-api';
 
 export const prerender = false;
@@ -10,7 +11,14 @@ export const GET: APIRoute = async ({ request, url }) => {
   if (limited) return limited;
 
   const q = url.searchParams.get('q')?.trim().toLowerCase() || '';
-  if (q.length < 2) return jsonResponse({ status: 'error', message: 'Query must contain at least 2 characters' }, 400);
+  if (q.length < 2) {
+    return problemResponse(
+      'bad_request',
+      'Query `q` must contain at least 2 characters.',
+      apiHeaders(request),
+      url.pathname
+    );
+  }
   const requestedLimit = Number.parseInt(url.searchParams.get('limit') || '8', 10);
   const limit = Math.min(20, Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : 8);
   const entries = await getCollection('encyclopedia');
@@ -35,7 +43,7 @@ export const GET: APIRoute = async ({ request, url }) => {
       url: `https://services.dzaleka.com/encyclopedia/${entry.id}`,
     }));
 
-  return jsonResponse({ status: 'success', query: q, count: suggestions.length, data: { suggestions } });
+  return jsonResponse({ status: 'success', query: q, count: suggestions.length, data: { suggestions } }, 200, {}, request);
 };
 
 export const OPTIONS = createOptionsHandler();

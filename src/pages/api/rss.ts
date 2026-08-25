@@ -1,5 +1,11 @@
 import { getCollection } from 'astro:content';
 import type { APIRoute } from 'astro';
+import { apiHeaders } from '../../utils/api-utils';
+import { problemResponse } from '../../utils/api-errors';
+
+// Server-rendered: prerendering emits an extension-less static file, which is
+// served as application/octet-stream instead of application/rss+xml.
+export const prerender = false;
 
 function escapeXml(value: string) {
   return value
@@ -10,7 +16,7 @@ function escapeXml(value: string) {
     .replace(/'/g, '&apos;');
 }
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
   try {
     const siteUrl = 'https://services.dzaleka.com';
     const localNews = await getCollection('news');
@@ -65,16 +71,18 @@ export const GET: APIRoute = async () => {
 
     return new Response(data, {
       status: 200,
-      headers: {
+      headers: apiHeaders(request, {
         'Content-Type': 'application/rss+xml; charset=utf-8',
         'Cache-Control': 'public, max-age=300',
-      },
+      }),
     });
   } catch (error) {
     console.error('Error generating combined RSS feed:', error);
-    return new Response(JSON.stringify({ error: 'Failed to generate combined RSS feed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return problemResponse(
+      'internal_error',
+      `Failed to generate combined RSS feed: ${error instanceof Error ? error.message : String(error)}`,
+      apiHeaders(request),
+      new URL(request.url).pathname
+    );
   }
 };

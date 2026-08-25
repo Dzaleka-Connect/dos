@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { corsHeaders, checkRateLimit } from '../../utils/api-utils';
+import { checkRateLimit, apiHeaders } from '../../utils/api-utils';
+import { problemResponse } from '../../utils/api-errors';
 
 export const prerender = false;
 
@@ -99,12 +100,11 @@ export const GET: APIRoute = async ({ request, url }) => {
 
     const query = url.searchParams.get('q');
     if (!query || query.trim().length < 2) {
-      return new Response(
-        JSON.stringify({
-          status: 'error',
-          message: 'Search query must be at least 2 characters long'
-        }),
-        { status: 400, headers: corsHeaders }
+      return problemResponse(
+        'bad_request',
+        'Search query `q` must be at least 2 characters long.',
+        apiHeaders(request),
+        url.pathname
       );
     }
 
@@ -135,7 +135,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         {
           status: 200,
           headers: {
-            ...corsHeaders,
+            ...apiHeaders(request),
             'X-Cache': 'HIT',
             'Cache-Control': 'public, max-age=300' // 5 minutes
           }
@@ -210,7 +210,7 @@ export const GET: APIRoute = async ({ request, url }) => {
       {
         status: 200,
         headers: {
-          ...corsHeaders,
+          ...apiHeaders(request),
           'X-Cache': 'MISS',
           'Cache-Control': 'public, max-age=300' // 5 minutes
         }
@@ -218,20 +218,18 @@ export const GET: APIRoute = async ({ request, url }) => {
     );
   } catch (error) {
     console.error('Search API error:', error);
-    return new Response(
-      JSON.stringify({
-        status: 'error',
-        message: 'Search failed',
-        error: error instanceof Error ? error.message : String(error)
-      }),
-      { status: 500, headers: corsHeaders }
+    return problemResponse(
+      'internal_error',
+      `Search failed: ${error instanceof Error ? error.message : String(error)}`,
+      apiHeaders(request),
+      new URL(request.url).pathname
     );
   }
 };
 
-export const OPTIONS: APIRoute = async () => {
+export const OPTIONS: APIRoute = async ({ request }) => {
   return new Response(null, {
     status: 204,
-    headers: corsHeaders
+    headers: apiHeaders(request, { Allow: 'GET, OPTIONS' })
   });
 };

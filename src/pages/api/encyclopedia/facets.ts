@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ request }) => {
       statuses: countValues(entries.map((entry) => entry.data.status)),
       letters: countValues(letters),
     },
-  });
+  }, 200, {}, request);
 };
 
 export const OPTIONS = createOptionsHandler();

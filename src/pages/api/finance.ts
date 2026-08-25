@@ -1,6 +1,12 @@
 import type { APIRoute } from 'astro';
+import { apiHeaders } from '../../utils/api-utils';
+import { problemResponse } from '../../utils/api-errors';
 
-export const GET: APIRoute = async () => {
+// Server-rendered: prerendering emits an extension-less static file, which is
+// served as application/octet-stream and carries none of the API headers.
+export const prerender = false;
+
+export const GET: APIRoute = async ({ request }) => {
   try {
     // UNHCR Malawi 2025 funding snapshot — as of 31 July 2025.
     // Source: UNHCR Global Focus, reporting.unhcr.org
@@ -14,18 +20,15 @@ export const GET: APIRoute = async () => {
 
     return new Response(JSON.stringify(data), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
-      }
+      headers: apiHeaders(request, { 'Cache-Control': 'public, max-age=3600' })
     });
   } catch (error) {
     console.error('Error with UNHCR data:', error);
-    return new Response(JSON.stringify({ error: 'Failed to get UNHCR data' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    return problemResponse(
+      'internal_error',
+      `Failed to get UNHCR funding data: ${error instanceof Error ? error.message : String(error)}`,
+      apiHeaders(request),
+      new URL(request.url).pathname
+    );
   }
 };
