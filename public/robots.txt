@@ -1,3 +1,4 @@
+# Default group. Applies to any crawler that does not match a group below.
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -20,11 +21,50 @@ Disallow: /private/
 # artworks carry separate rights - check the credit on each item before reuse.
 Content-Signal: search=yes, ai-input=yes, ai-train=no
 
+# AI assistants, agents, and search crawlers.
+#
+# These agents are already permitted by the wildcard group above. They are
+# listed explicitly so their access is stated rather than merely implied, since
+# tools that audit agent access look for a named group.
+#
+# Under RFC 9309 a crawler obeys only its most specific matching group and does
+# NOT inherit the wildcard group's rules, so the rules below deliberately
+# repeat them. Any change to the wildcard group must be mirrored here, or these
+# agents will diverge from it. This group grants no access the wildcard group
+# did not already grant.
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: Google-Extended
+User-agent: Googlebot
+User-agent: Googlebot-News
+User-agent: Bingbot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: DeepSeekBot
+User-agent: MistralAI-User
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Amazonbot
+User-agent: meta-externalagent
+User-agent: YouBot
+User-agent: cohere-ai
+User-agent: CCBot
+User-agent: ora-agent
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 # Agent and developer entry points
 # /llms.txt                     what this site covers and when to use it
 # /.well-known/api-catalog      machine-readable API discovery
 # /.well-known/mcp              Model Context Protocol server
 # /api/openapi.json             OpenAPI 3.1 description of the public API
+# /api/deprecation-policy       versioning and deprecation policy
 
 # Sitemaps
 Sitemap: https://services.dzaleka.com/sitemap.xml
