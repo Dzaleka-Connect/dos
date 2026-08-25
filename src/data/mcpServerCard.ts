@@ -12,9 +12,15 @@ export const MCP_SERVER_CARD_PATH = '/.well-known/mcp/server-card.json';
 export const MCP_SERVER_CARD_URL = `${SITE_URL}${MCP_SERVER_CARD_PATH}`;
 export const MCP_SERVER_CARD_CACHE_CONTROL = 'public, max-age=3600';
 export const MCP_PROTOCOL_VERSION = '2025-06-18';
-export const MCP_SERVER_NAME = 'dzaleka-online-services-webmcp';
-export const MCP_SERVER_TITLE = 'Dzaleka Online Services WebMCP';
-export const MCP_SERVER_VERSION = process.env.npm_package_version ?? '0.0.1';
+export const MCP_SERVER_NAME = 'dzaleka-online-services';
+export const MCP_SERVER_TITLE = 'Dzaleka Online Services MCP';
+/**
+ * Version of the MCP surface (tools and their schemas), not of the site build.
+ * Bump it when a tool is added, removed, or its input schema changes.
+ * Previously read from npm_package_version, which is undefined at runtime and
+ * so always reported 0.0.1.
+ */
+export const MCP_SERVER_VERSION = '1.0.0';
 export const MCP_TRANSPORT_ENDPOINT = '/';
 
 export const mcpServerCardDocument = {

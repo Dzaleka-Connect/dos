@@ -1,5 +1,5 @@
 ---
-title: Agent Access
+title: Dzaleka Online Services agent access and MCP
 slug: agent-access-guide
 description: Builder guide for discovering the public API, connecting over MCP, requesting markdown, loading agent skills, and using browser tools
 section: developers
@@ -268,14 +268,27 @@ you may send `API-Version` on a request to pin it.
 
 Breaking changes ship under a new major version. Endpoints scheduled for removal return the
 `Deprecation` header ([RFC 9745](https://www.rfc-editor.org/rfc/rfc9745)) and a `Sunset` header
-([RFC 8594](https://www.rfc-editor.org/rfc/rfc8594)) with the removal date, with at least six
-months of notice.
+([RFC 8594](https://www.rfc-editor.org/rfc/rfc8594)) with the removal date, plus a `Link` header
+carrying `rel="deprecation"` and, where a replacement exists, `rel="successor-version"`. Nothing is
+removed with less than six months of notice.
+
+The full policy is published in machine-readable form at
+[`/api/deprecation-policy`](https://services.dzaleka.com/api/deprecation-policy). It lists the
+signals, the notice period, and every endpoint currently scheduled for retirement, so you can check
+before integrating and again on a schedule:
+
+```bash
+curl https://services.dzaleka.com/api/deprecation-policy
+```
+
+`deprecated` is an empty array when nothing is scheduled for removal.
 
 ## MCP server
 
 `https://services.dzaleka.com/.well-known/mcp` is a live Model Context Protocol server using the
 Streamable HTTP transport. It is read-only, needs no authentication, and speaks protocol version
-`2025-06-18`.
+`2025-06-18`. The same server is also served at `https://services.dzaleka.com/mcp` for clients that
+expect a bare `/mcp` path; both run the same handlers, and `/.well-known/mcp` is the canonical URL.
 
 `GET` the URL to read a discovery document listing the transports and tools. `POST` JSON-RPC 2.0
 messages to the same URL to use it.

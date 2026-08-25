@@ -1,6 +1,6 @@
 ---
-title: API Documentation
-description: Public API, discovery endpoints, and agent access notes for Dzaleka Online Services
+title: Dzaleka Online Services API reference
+description: Endpoint reference for the Dzaleka Online Services public API, including discovery documents, the MCP server, and the DZDK CLI
 section: developers
 lastUpdated: 2026-08-25
 ---
@@ -17,6 +17,8 @@ Use this page when you need the stable routes and request patterns. Use the live
 - API catalog: `https://services.dzaleka.com/.well-known/api-catalog`
 - MCP Server Card: `https://services.dzaleka.com/.well-known/mcp/server-card.json`
 - Status: `https://services.dzaleka.com/api/status`
+- Deprecation policy: `https://services.dzaleka.com/api/deprecation-policy`
+- MCP server: `https://services.dzaleka.com/.well-known/mcp` (also at `/mcp`)
 
 ## Authentication and limits
 
@@ -25,6 +27,7 @@ Use this page when you need the stable routes and request patterns. Use the live
 - Successful responses carry `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `RateLimit-Policy`. A `429` adds `Retry-After`.
 - The current API version is `1.0.0`, echoed on every response in the `API-Version` header. Send `API-Version` on a request to pin it.
 - Errors are RFC 9457 problem documents served as `application/problem+json`, with a stable machine-readable `code`. See [Agent Access](/docs/agent-access-guide#error-responses).
+- Deprecated endpoints return `Deprecation` (RFC 9745) and `Sunset` (RFC 8594) headers with at least six months of notice. The policy is machine-readable at `/api/deprecation-policy`.
 - Most responses are JSON.
 - `GET /api/rss` returns XML.
 
@@ -168,7 +171,8 @@ For automated API discovery, use:
 
 - `/llms.txt`
 - `/.well-known/api-catalog`
-- `/.well-known/mcp`
+- `/.well-known/mcp` (also at `/mcp`)
+- `/api/deprecation-policy`
 - `/.well-known/mcp/server-card.json`
 - `/api/openapi.json`
 - `/api/status`

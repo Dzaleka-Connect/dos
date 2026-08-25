@@ -60,7 +60,9 @@ before presenting a listing as confirmed.
   \`RateLimit-Remaining\`, and \`RateLimit-Reset\`; a 429 adds \`Retry-After\`. Self-throttle on these.
 - Versioning: send an optional \`API-Version\` header to pin a version. The serving version is
   echoed on every response. Breaking changes ship a new major version, announced with
-  \`Deprecation\` and \`Sunset\` headers at least six months ahead.
+  \`Deprecation\` (RFC 9745) and \`Sunset\` (RFC 8594) headers at least six months ahead. Read the
+  full policy, and check whether anything you depend on is scheduled for removal, at
+  ${SITE_URL}/api/deprecation-policy.
 - Start from the OpenAPI spec; every operation has a unique \`operationId\` suitable for
   function calling.
 
@@ -70,6 +72,7 @@ before presenting a listing as confirmed.
 - [API documentation](${API_DOCS_URL}): human-readable endpoint reference and examples
 - [API catalog](${API_CATALOG_URL}): RFC 9727 linkset of machine-readable API descriptions
 - [API status](${API_STATUS_URL}): health and discovery status
+- [Deprecation policy](${SITE_URL}/api/deprecation-policy): how versioning and removals are signalled
 - [Encyclopedia developer guide](${ENCYCLOPEDIA_API_DOCS_URL}): querying the encyclopedia
 - [MCP server card](${SITE_URL}/.well-known/mcp): Model Context Protocol discovery document
 - [Agent skills index](${SITE_URL}/.well-known/agent-skills/index.json): installable agent skills

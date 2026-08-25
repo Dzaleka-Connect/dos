@@ -76,6 +76,13 @@ describe('/llms.txt', () => {
     expect(text).toContain('search=yes, ai-input=yes, ai-train=no');
   });
 
+  it('points at the deprecation policy and names the RFCs', async () => {
+    const { text } = await body();
+    expect(text).toContain('/api/deprecation-policy');
+    expect(text).toContain('RFC 9745');
+    expect(text).toContain('RFC 8594');
+  });
+
   it('points at the installable CLI', async () => {
     const { text } = await body();
     expect(text).toContain('pip install dzdk');

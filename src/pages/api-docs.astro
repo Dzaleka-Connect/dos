@@ -203,7 +203,14 @@ const discoveryEndpoints = [
     name: 'MCP server',
     path: '/.well-known/mcp',
     description:
-      'Live Model Context Protocol server over Streamable HTTP. GET returns a discovery document; POST JSON-RPC 2.0 to run the read-only tools.',
+      'Live Model Context Protocol server over Streamable HTTP, also served at /mcp. GET returns a discovery document; POST JSON-RPC 2.0 to run the read-only tools.',
+    contentType: 'application/json',
+  },
+  {
+    name: 'Deprecation policy',
+    path: '/api/deprecation-policy',
+    description:
+      'Machine-readable versioning and deprecation policy: how removals are signalled, the notice period, and any endpoint currently scheduled for retirement.',
     contentType: 'application/json',
   },
   {
@@ -253,7 +260,7 @@ const problemExample = JSON.stringify(
         <div class="max-w-4xl">
           <p class="text-sm font-medium text-gray-500">Developers</p>
           <h1 class="mt-2 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-            API documentation
+            Dzaleka Online Services API
           </h1>
           <p class="mt-4 text-base leading-7 text-gray-600">
             Public JSON endpoints for published content, dashboards, search, feeds, and selected submission workflows across Dzaleka Online Services.
@@ -427,7 +434,7 @@ const problemExample = JSON.stringify(
               <div id="versioning" class="scroll-mt-24 rounded-xl ring-1 ring-gray-200 p-5">
                 <h3 class="text-lg font-medium text-gray-900">Versioning</h3>
                 <p class="mt-2 text-sm leading-6 text-gray-600">
-                  The current version is <code>{API_VERSION}</code>, echoed on every response as <code>API-Version</code>. Send <code>API-Version</code> on a request to pin it. Breaking changes ship under a new major version; endpoints scheduled for removal return <code>Deprecation</code> and <code>Sunset</code> headers with at least six months of notice.
+                  The current version is <code>{API_VERSION}</code>, echoed on every response as <code>API-Version</code>. Send <code>API-Version</code> on a request to pin it. Breaking changes ship under a new major version; endpoints scheduled for removal return <code>Deprecation</code> (RFC 9745) and <code>Sunset</code> (RFC 8594) headers with at least six months of notice. The full policy, and anything currently scheduled for removal, is published at <a href="/api/deprecation-policy" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"><code>/api/deprecation-policy</code></a>.
                 </p>
               </div>
             </div>

@@ -1,5 +1,5 @@
 ---
-title: DZDK CLI Overview
+title: DZDK CLI for Dzaleka Online Services
 description: Install and use the DZDK command-line client for the public Dzaleka Online Services API
 section: developers
 lastUpdated: 2026-08-25
