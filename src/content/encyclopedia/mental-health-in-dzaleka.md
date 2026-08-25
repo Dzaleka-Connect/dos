@@ -23,6 +23,7 @@ facts:
   - label: "Global depression prevalence, for comparison"
     value: "About 3.8% (WHO)"
 relatedEntries: ["dzaleka-health-centre", "jesuit-refugee-service", "health-nutrition-and-population", "law-and-encampment-policy", "sport-in-dzaleka"]
+coverageTopics: ["mental health", "psychosocial", "counselling", "wellbeing"]
 sources:
   - title: "It is time to think about refugees' mental health: The case of Dzaleka Refugee Camp — Malawi"
     publisher: "Psychiatry Research (via PubMed)"

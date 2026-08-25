@@ -19,6 +19,7 @@ facts:
   - label: "Curriculum"
     value: "Malawi curriculum"
 relatedEntries: ["dzaleka-refugee-camp", "dzaleka-appfactory", "population-and-demography", "jesuit-refugee-service", "there-is-hope-malawi"]
+coverageTopics: ["education", "school", "scholarship", "students", "teachers", "learning"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

@@ -22,6 +22,8 @@ facts:
   - label: "August 2024 ration"
     value: "Raised from 50% to 75% of the planned general assistance level"
 relatedEntries: ["dzaleka-refugee-camp", "health-nutrition-and-population", "vaccination-nutrition-and-anaemia-mdhs-2024", "livelihoods-and-local-economy", "population-and-demography"]
+charts: ["food-ration-level"]
+coverageTopics: ["food", "rations", "WFP", "food assistance", "hunger", "cash transfers", "funding"]
 sources:
   - title: "Malawi"
     publisher: "World Food Programme"

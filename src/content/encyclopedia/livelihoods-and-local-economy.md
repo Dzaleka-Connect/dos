@@ -29,6 +29,7 @@ facts:
   - label: "2017 survey coverage"
     value: "802 refugee households in Dzaleka"
 relatedEntries: ["dzaleka-refugee-camp", "law-and-encampment-policy", "food-security-and-assistance", "social-development-mdhs-2024", "dzaleka-appfactory", "there-is-hope-malawi"]
+coverageTopics: ["livelihoods", "business", "trade", "market", "employment", "entrepreneurs", "income"]
 sources:
   - title: "UNHCR Malawi Fact Sheet"
     publisher: "UNHCR"

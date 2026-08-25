@@ -28,6 +28,7 @@ facts:
   - label: "Reference period"
     value: "UNHCR August 2024 fact sheet"
 relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "dzaleka-health-centre", "housing-and-overcrowding", "health-nutrition-and-population", "mdhs-household-conditions"]
+coverageTopics: ["water", "sanitation", "borehole", "hygiene", "latrine"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

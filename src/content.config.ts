@@ -821,6 +821,12 @@ const encyclopediaSchema = z.object({
     value: z.string(),
   })).optional(),
   relatedEntries: z.array(z.string()).optional(),
+  // Ids from src/data/campStatistics.ts. Each renders a sourced chart plus a
+  // server-rendered data table inside the entry.
+  charts: z.array(z.string()).optional(),
+  // Topic keywords used to match this entry to ongoing news and resource
+  // reporting. See src/utils/relatedCoverage.ts.
+  coverageTopics: z.array(z.string()).optional(),
   sources: z.array(z.object({
     title: z.string(),
     publisher: z.string(),

@@ -28,6 +28,8 @@ facts:
   - label: "Settlement pattern"
     value: "Dense residential sections with limited land for expansion"
 relatedEntries: ["dzaleka-refugee-camp", "population-and-demography", "water-and-sanitation", "health-nutrition-and-population", "mdhs-household-conditions"]
+charts: ["population-vs-capacity"]
+coverageTopics: ["housing", "shelter", "overcrowding", "congested", "accommodation"]
 sources:
   - title: "Malawi country overview"
     publisher: "UNHCR"

@@ -60,6 +60,8 @@ facts:
   - label: "Coordinates"
     value: "13.6628° S, 33.8704° E"
 relatedEntries: ["history-of-dzaleka", "population-and-demography", "housing-and-overcrowding", "law-and-encampment-policy", "livelihoods-and-local-economy", "education-in-dzaleka", "dzaleka-health-centre", "tumaini-festival", "waiting-in-dzaleka-refugee-camp-thesis"]
+charts: ["population-vs-capacity"]
+coverageTopics: ["population", "overcrowding", "encampment", "relocation"]
 sources:
   - title: "Waiting in Dzaleka Refugee Camp - Agency through self- and community organisation"
     publisher: "University of Applied Sciences Erfurt / DB-Thüringen"

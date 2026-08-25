@@ -28,6 +28,8 @@ facts:
   - label: "Dzaleka report"
     value: "May 2026; published by the Joint Data Center on 2 July 2026"
 relatedEntries: ["mdhs-household-conditions", "fertility-and-family-planning-mdhs-2024", "vaccination-nutrition-and-anaemia-mdhs-2024", "maternal-health-and-malaria-mdhs-2024", "social-development-mdhs-2024"]
+charts: ["nationalities-2024"]
+coverageTopics: ["health", "nutrition", "clinic", "malnutrition", "disease"]
 sources:
   - title: "Understanding the health, nutrition and population situation in Dzaleka Refugee Camp"
     publisher: "National Statistical Office, UNHCR and World Bank-UNHCR Joint Data Center"

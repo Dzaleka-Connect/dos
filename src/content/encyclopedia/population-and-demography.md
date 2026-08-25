@@ -21,6 +21,8 @@ facts:
   - label: "Reporting rule"
     value: "Always cite a date and geographic scope"
 relatedEntries: ["dzaleka-refugee-camp", "history-of-dzaleka", "housing-and-overcrowding", "health-nutrition-and-population", "mdhs-household-conditions", "education-in-dzaleka", "water-and-sanitation"]
+charts: ["population-vs-capacity", "nationalities-2024"]
+coverageTopics: ["population", "registration", "asylum-seekers", "new arrivals", "relocation"]
 sources:
   - title: "Malawi Fact Sheet, August 2024"
     publisher: "UNHCR"

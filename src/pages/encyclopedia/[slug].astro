@@ -2,6 +2,11 @@
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import EntryDataPanel from '../../components/encyclopedia/EntryDataPanel.astro';
+import RelatedCoverage from '../../components/encyclopedia/RelatedCoverage.astro';
+import { resolveStatSeries } from '../../data/campStatistics';
+import { rankCoverage, type CoverageCandidate } from '../../utils/relatedCoverage';
+import { getDzalekaFeed } from '../../utils/dzalekaFeed';
 
 export async function getStaticPaths() {
   const entries = await getCollection('encyclopedia');
@@ -15,6 +20,64 @@ const allEntries = await getCollection('encyclopedia');
 const relatedEntries = (entry.data.relatedEntries || [])
   .map((id) => allEntries.find((candidate) => candidate.id === id))
   .filter(Boolean);
+// Sourced statistical series declared in this entry's frontmatter.
+const entryCharts = resolveStatSeries(entry.data.charts);
+
+// Ongoing reporting matched at build time across news and resources, so the
+// sidebar refreshes whenever new items are published.
+const [newsItems, resourceItems, feedItems] = await Promise.all([
+  getCollection('news'),
+  getCollection('resources'),
+  getDzalekaFeed(),
+]);
+const coverageCandidates: CoverageCandidate[] = [
+  // dzaleka.com is the community's main news publication.
+  ...feedItems.map((item) => ({
+    id: item.link,
+    title: item.title,
+    description: item.description,
+    date: item.date,
+    tags: item.categories,
+    kind: 'dispatch' as const,
+    href: item.link,
+    publisher: 'dzaleka.com',
+    external: true,
+  })),
+  ...newsItems.map((item) => ({
+    id: item.id,
+    title: item.data.title,
+    description: item.data.description ?? '',
+    date: item.data.date,
+    category: item.data.category,
+    tags: item.data.tags,
+    kind: 'news' as const,
+    href: `/news/${item.id}`,
+    publisher: item.data.author,
+  })),
+  ...resourceItems.map((item) => ({
+    id: item.id,
+    title: item.data.title,
+    description: item.data.description ?? '',
+    date: item.data.date,
+    category: item.data.category,
+    tags: item.data.tags,
+    kind: 'resource' as const,
+    href: `/resources/${item.id}`,
+    publisher: item.data.author,
+  })),
+];
+const relatedCoverage = rankCoverage(
+  {
+    title: entry.data.title,
+    aliases: entry.data.aliases,
+    category: entry.data.category,
+    summary: entry.data.summary,
+    coverageTopics: entry.data.coverageTopics,
+    entryType: entry.data.entryType,
+  },
+  coverageCandidates
+);
+
 const canonical = `https://services.dzaleka.com/encyclopedia/${entry.id}`;
 const encyclopediaUrl = 'https://services.dzaleka.com/encyclopedia';
 const campEntityId = `${encyclopediaUrl}/dzaleka-refugee-camp#entity`;
@@ -412,6 +475,13 @@ const structuredData = {
                   </a>
                 </li>
               ))}
+              {entryCharts.length > 0 && (
+                <li>
+                  <a href="#data-heading" class="toc-link block py-1 text-slate-600 hover:text-primary-700 transition-colors">
+                    Data behind this entry
+                  </a>
+                </li>
+              )}
               {entry.data.gallery && (
                 <li>
                   <a href="#gallery-heading" class="toc-link block py-1 text-slate-600 hover:text-primary-700 transition-colors">
@@ -440,6 +510,18 @@ const structuredData = {
         <div class="encyclopedia-prose prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary-700 prose-a:underline prose-a:underline-offset-4 prose-p:leading-8 prose-li:leading-8">
           <Content />
         </div>
+
+        {entryCharts.length > 0 && (
+          <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="data-heading">
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Evidence</p>
+            <h2 id="data-heading" class="mt-2 text-2xl font-bold text-slate-950">Data behind this entry</h2>
+            <p class="mt-3 max-w-3xl text-base leading-7 text-slate-600">
+              Each figure below is plotted only where a cited source reports it. Open the table under any
+              chart to read the values and follow them back to the original report.
+            </p>
+            {entryCharts.map((series) => <EntryDataPanel series={series} />)}
+          </section>
+        )}
 
         {entry.data.gallery && entry.data.gallery.length > 0 && (
           <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="gallery-heading">
@@ -515,6 +597,8 @@ const structuredData = {
 
       <!-- Right Sidebar: Fact Sheet Infobox & Meta -->
       <aside class="space-y-6 lg:sticky lg:top-28 lg:h-fit">
+        <RelatedCoverage items={relatedCoverage} />
+
         {entry.data.facts && entry.data.facts.length > 0 && (
           <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
             <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 flex items-center justify-between">
