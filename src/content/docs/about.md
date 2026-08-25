@@ -4,9 +4,6 @@ description: What the site covers, who it is for, and what can be submitted or d
 section: about
 lastUpdated: 2026-04-18
 ---
-
-# About Dzaleka Online Services
-
 Dzaleka Online Services is a public information and publishing platform for Dzaleka. It combines practical help routes, public directories, community publishing, and open data access in one site.
 
 ## What you can do here

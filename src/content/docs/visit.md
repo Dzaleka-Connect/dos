@@ -3,9 +3,6 @@ title: Visit Dzaleka
 description: Guide to planning a visit through the public visit section
 section: visit
 ---
-
-# Visit Dzaleka
-
 The visit section explains how guided visits work and what guests should know before planning a trip.
 
 ## Useful planning pages

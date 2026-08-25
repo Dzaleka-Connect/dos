@@ -3,9 +3,6 @@ title: Service Provider Registration
 description: Guide to registering and updating a service listing
 section: services
 ---
-
-# Service Provider Registration
-
 This guide explains how organisations, programmes, and community initiatives can publish service information on the platform.
 
 ## Who can register

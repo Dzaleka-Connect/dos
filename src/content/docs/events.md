@@ -3,9 +3,6 @@ title: Community Events
 description: Guide to browsing and organizing events on the platform
 section: events
 ---
-
-# Community Events
-
 Use the events section to browse what is happening in Dzaleka and to share public events that should appear on the site.
 
 ## Browse events

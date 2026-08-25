@@ -2,10 +2,8 @@
 title: API Documentation
 description: Public API, discovery endpoints, and agent access notes for Dzaleka Online Services
 section: developers
-lastUpdated: 2026-04-19
+lastUpdated: 2026-08-25
 ---
-
-# Dzaleka Online Services API
 
 The public API exposes published collections, search, feeds, and selected action endpoints from Dzaleka Online Services.
 
@@ -22,8 +20,11 @@ Use this page when you need the stable routes and request patterns. Use the live
 
 ## Authentication and limits
 
-- Read access is public.
-- Collection and search endpoints are rate limited to 60 requests per minute per IP.
+- Read access is public. No key required.
+- Collection, search and MCP endpoints are rate limited to 60 requests per minute per IP.
+- Successful responses carry `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `RateLimit-Policy`. A `429` adds `Retry-After`.
+- The current API version is `1.0.0`, echoed on every response in the `API-Version` header. Send `API-Version` on a request to pin it.
+- Errors are RFC 9457 problem documents served as `application/problem+json`, with a stable machine-readable `code`. See [Agent Access](/docs/agent-access-guide#error-responses).
 - Most responses are JSON.
 - `GET /api/rss` returns XML.
 
@@ -165,10 +166,14 @@ These expect JSON request bodies and are tied to specific public workflows.
 
 For automated API discovery, use:
 
+- `/llms.txt`
 - `/.well-known/api-catalog`
+- `/.well-known/mcp`
 - `/.well-known/mcp/server-card.json`
 - `/api/openapi.json`
 - `/api/status`
+
+Every operation in `/api/openapi.json` has a unique `operationId`, so the spec can be bound directly to a function-calling tool definition.
 
 HTML pages also include `Link` response headers pointing to the catalog, OpenAPI document, docs page, and status endpoint.
 
@@ -180,6 +185,16 @@ Accept: text/markdown
 
 The browser default remains HTML.
 
+### MCP server
+
+`/.well-known/mcp` is a live Model Context Protocol server over Streamable HTTP, protocol version
+`2025-06-18`. `GET` it for a discovery document; `POST` JSON-RPC 2.0 to use it. It is read-only and
+unauthenticated, and exposes four tools: `search_dzaleka`, `list_dzaleka_collection`,
+`search_dzaleka_encyclopedia`, and `get_dzaleka_encyclopedia_entry`. Full walkthrough in
+[Agent Access](/docs/agent-access-guide#mcp-server).
+
+### WebMCP
+
 On supported browsers, the site also exposes read-only WebMCP tools for search, services search, weather summary, urgent help contacts, language support routes, and newcomer first steps.
 
 The MCP Server Card describes that browser-side tool surface and is published at `/.well-known/mcp/server-card.json`.
@@ -187,6 +202,7 @@ The MCP Server Card describes that browser-side tool surface and is published at
 ## Related pages
 
 - [API Docs](/api-docs)
+- [DZDK CLI](/docs/dzdk-cli) - command-line client, `pip install dzdk`
 - [Agent Access](/docs/agent-access-guide)
 - [Platform Principles](/docs/platform-principles)
 - [Documentation Roadmap](/docs/documentation-roadmap)

@@ -3,9 +3,6 @@ title: Cultural Events
 description: Quick guide to browsing and sharing community events
 section: community
 ---
-
-# Cultural Events
-
 The events section helps you discover workshops, celebrations, meetings, and other community activities taking place in and around Dzaleka.
 
 ## What you can do

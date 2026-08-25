@@ -3,9 +3,6 @@ title: Community Job Board
 description: Guide to finding and posting jobs on the platform
 section: community
 ---
-
-# Community Job Board
-
 The job board helps organisations publish vacancies and helps job seekers browse openings linked to Dzaleka and the wider community.
 
 ## What you can do

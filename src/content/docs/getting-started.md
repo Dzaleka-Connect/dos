@@ -4,9 +4,6 @@ description: Best first routes for help, services, language support, and contrib
 section: guides
 lastUpdated: 2026-04-18
 ---
-
-# Getting Started
-
 This is the quickest way to choose the right part of Dzaleka Online Services.
 
 ## Start with the route that matches your situation

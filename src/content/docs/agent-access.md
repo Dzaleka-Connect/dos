@@ -1,13 +1,10 @@
 ---
 title: Agent Access
 slug: agent-access-guide
-description: Builder guide for discovering the public API, requesting markdown, loading agent skills, and using browser tools
+description: Builder guide for discovering the public API, connecting over MCP, requesting markdown, loading agent skills, and using browser tools
 section: developers
-lastUpdated: 2026-04-19
+lastUpdated: 2026-08-25
 ---
-
-# Agent Access
-
 If you are building a search client, assistant, integration, or browser agent on top of Dzaleka Online Services, start here.
 
 This guide explains the public machine-readable surface, what is safe to build against, and what is only meant for site workflows.
@@ -18,6 +15,7 @@ This guide explains the public machine-readable surface, what is safe to build a
 - Fetch published content as JSON through the public API.
 - Request markdown instead of HTML when an agent needs cleaner page text.
 - Discover the API from well-known documents and `Link` response headers.
+- Connect an MCP client to a live read-only MCP server over Streamable HTTP.
 - Discover the browser-side WebMCP tool surface from an MCP Server Card.
 - Load published agent skills from a machine-readable index.
 - Use read-only WebMCP browser tools on supported browsers.
@@ -32,7 +30,9 @@ This guide explains the public machine-readable surface, what is safe to build a
 
 Use the discovery documents first instead of hardcoding route assumptions:
 
+- `/llms.txt`
 - `/.well-known/api-catalog`
+- `/.well-known/mcp`
 - `/.well-known/mcp/server-card.json`
 - `/api/openapi.json`
 - `/api/status`
@@ -49,10 +49,11 @@ Link: </api/status>; rel="status"; type="application/json"
 
 ### Recommended discovery flow
 
-1. Call `/api/status` to confirm the service is reachable.
-2. Read `/.well-known/api-catalog` for the published service relationships.
-3. Load `/api/openapi.json` if you need the current machine-readable contract.
-4. Use `/api-docs` or [API Reference](/docs/api-reference) for human-readable examples and caveats.
+1. Read `/llms.txt` for a short description of what this site covers and when to use it.
+2. Call `/api/status` to confirm the service is reachable.
+3. Read `/.well-known/api-catalog` for the published service relationships.
+4. Load `/api/openapi.json` if you need the current machine-readable contract. Every operation has a unique `operationId` you can bind directly to a function-calling tool.
+5. Use `/api-docs` or [API Reference](/docs/api-reference) for human-readable examples and caveats.
 
 ## Choose the right integration path
 
@@ -68,6 +69,10 @@ Choose this path for RAG pipelines, citation-friendly crawlers, or agents that n
 
 Choose this path when you want published instructions that help an agent route to the right pages, use the public API safely, or prioritize urgent support flows.
 
+### Use the MCP server when your runtime speaks Model Context Protocol
+
+Choose this path when your agent runtime can connect to an MCP server directly. Point it at `https://services.dzaleka.com/.well-known/mcp` and it gets four read-only tools without any HTTP plumbing on your side. See [MCP server](#mcp-server) below.
+
 ### Use the MCP Server Card when your runtime supports server discovery
 
 Choose this path when the runtime wants to detect the site's read-only browser WebMCP surface before opening the page and registering tools.
@@ -75,6 +80,11 @@ Choose this path when the runtime wants to detect the site's read-only browser W
 ### Use WebMCP when the agent is running inside the browser
 
 Choose this path when a browser-based agent should interact with the live site through explicit tools instead of trying to guess actions from the UI.
+
+### Use the CLI when you are working from a terminal or a script
+
+Install it with `pip install dzdk` and run `dzdk health` to check the API. See
+[DZDK CLI](/docs/dzdk-cli) for the command list.
 
 ## Public API quick start
 
@@ -203,14 +213,131 @@ curl -X POST "https://services.dzaleka.com/api/export" \
 
 ### Rate limits
 
-Collection endpoints and `/api/search` currently apply rate limiting at `60` requests per minute per IP.
+Collection endpoints, `/api/search` and the MCP endpoint apply rate limiting at `60` requests per
+minute per IP.
 
-If the limit is exceeded, the API returns `429` with:
+Every successful response carries the current budget so you can self-throttle before being cut off:
 
-- `Retry-After`
-- `X-RateLimit-Limit`
-- `X-RateLimit-Remaining`
-- `X-RateLimit-Reset`
+- `RateLimit-Limit` - requests allowed in the window
+- `RateLimit-Remaining` - requests left
+- `RateLimit-Reset` - seconds until the window resets
+- `RateLimit-Policy` - the policy, for example `60;w=60`
+
+The legacy `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers are still
+sent for older clients; note that `X-RateLimit-Reset` is a Unix timestamp while `RateLimit-Reset`
+is a count of seconds.
+
+If the limit is exceeded the API returns `429` with `Retry-After` alongside the headers above.
+
+### Error responses
+
+Every error is an [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) problem document served as
+`application/problem+json`. This includes unknown `/api/*` paths, which return JSON rather than the
+HTML 404 page.
+
+```json
+{
+  "type": "https://services.dzaleka.com/api-docs#error-not_found",
+  "title": "Resource not found",
+  "status": 404,
+  "code": "not_found",
+  "detail": "No encyclopedia entry with slug \"no-such-entry\".",
+  "resolution": "Verify the identifier, or list available records from the collection endpoint.",
+  "instance": "/api/encyclopedia/no-such-entry"
+}
+```
+
+Branch on `code`, which is stable across releases. `title` and `detail` are human-readable and may
+change. `resolution` is a short hint describing what to do next.
+
+| `code` | Status | Means |
+| --- | --- | --- |
+| `bad_request` | 400 | A query parameter is missing or malformed. |
+| `invalid_body` | 400 | The request body did not match the schema. |
+| `not_found` | 404 | No record with that identifier. |
+| `collection_not_found` | 404 | No such endpoint or collection. |
+| `method_not_allowed` | 405 | Wrong HTTP method; check the `Allow` header. |
+| `rate_limited` | 429 | Budget exhausted; wait for `Retry-After`. |
+| `upstream_unavailable` | 503 | A dependency failed. Retry with backoff. |
+| `internal_error` | 500 | Unexpected server error. |
+
+### Versioning
+
+The current API version is `1.0.0`. It is echoed on every response in the `API-Version` header, and
+you may send `API-Version` on a request to pin it.
+
+Breaking changes ship under a new major version. Endpoints scheduled for removal return the
+`Deprecation` header ([RFC 9745](https://www.rfc-editor.org/rfc/rfc9745)) and a `Sunset` header
+([RFC 8594](https://www.rfc-editor.org/rfc/rfc8594)) with the removal date, with at least six
+months of notice.
+
+## MCP server
+
+`https://services.dzaleka.com/.well-known/mcp` is a live Model Context Protocol server using the
+Streamable HTTP transport. It is read-only, needs no authentication, and speaks protocol version
+`2025-06-18`.
+
+`GET` the URL to read a discovery document listing the transports and tools. `POST` JSON-RPC 2.0
+messages to the same URL to use it.
+
+### Connecting
+
+Most MCP clients only need the URL. For a client configured by file:
+
+```json
+{
+  "mcpServers": {
+    "dzaleka": {
+      "type": "http",
+      "url": "https://services.dzaleka.com/.well-known/mcp"
+    }
+  }
+}
+```
+
+### Handshake
+
+```bash
+curl -X POST https://services.dzaleka.com/.well-known/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"my-agent","version":"1.0"}}}'
+```
+
+The server replies with its protocol version, capabilities, `serverInfo`, and an `instructions`
+string describing what the site covers. Send `notifications/initialized` afterwards; notifications
+receive `202` with no body, as JSON-RPC requires.
+
+### Tools
+
+| Tool | What it does |
+| --- | --- |
+| `search_dzaleka` | Full-text search across services, resources, events, jobs, news, and encyclopedia entries. Start here when you do not know which collection holds the answer. |
+| `list_dzaleka_collection` | Lists every published record in one collection. The `collection` argument is restricted to a published allow-list. |
+| `search_dzaleka_encyclopedia` | Resolves a name or topic to encyclopedia entries. |
+| `get_dzaleka_encyclopedia_entry` | Returns the full text and cited sources of one entry by slug. |
+
+Call `tools/list` for the current schemas rather than hardcoding them.
+
+```bash
+curl -X POST https://services.dzaleka.com/.well-known/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"search_dzaleka","arguments":{"query":"legal aid","limit":5}}}'
+```
+
+Each tool returns a single text content block holding the JSON body of the matching REST endpoint,
+so results are identical to calling the API directly. `isError` is `true` when the underlying call
+failed; the text then holds a problem document.
+
+### Limits
+
+The MCP endpoint shares the same 60 requests per minute per IP budget as the REST API. It exposes
+tools only, no resources or prompts, and it never writes. `resources/list` and `prompts/list` return
+empty lists rather than errors.
+
+### Browser WebMCP
+
+Separately from the HTTP server, every public page registers read-only tools through
+`navigator.modelContext` for agents running inside the browser. See [WebMCP browser tools](#webmcp-browser-tools).
 
 ## Markdown for agents
 

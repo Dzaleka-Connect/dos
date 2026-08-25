@@ -3,9 +3,6 @@ title: Frequently Asked Questions
 description: Common questions about Dzaleka Online Services
 section: help
 ---
-
-# Frequently Asked Questions
-
 ## What is Dzaleka Online Services?
 
 It is a public platform that brings together service information, resources, jobs, events, stories, opportunities, and community tools connected to Dzaleka.

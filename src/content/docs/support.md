@@ -4,9 +4,6 @@ description: Where to go for urgent help, general support, and section-specific 
 section: support
 lastUpdated: 2026-04-18
 ---
-
-# Support & Contact
-
 Use the support route that matches the type of help you need.
 
 ## If the problem is urgent

@@ -3,9 +3,6 @@ title: Skills Exchange
 description: Guide to sharing skills and requesting learning support
 section: community
 ---
-
-# Skills Exchange
-
 Skills Exchange connects people who can teach, offer, or share a skill with people who are looking to learn or find help.
 
 ## Main pages

@@ -25,6 +25,17 @@ module.exports = {
         tighter: '0',
         tight: '0',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            // The typography plugin wraps every inline <code> in literal
+            // backticks via ::before/::after. Inline code is already styled,
+            // so the backticks are visible noise.
+            'code::before': { content: 'none' },
+            'code::after': { content: 'none' },
+          },
+        },
+      },
     },
   },
   plugins: [

@@ -4,9 +4,6 @@ description: The working principles behind public pages, open discovery, agent s
 section: developers
 lastUpdated: 2026-04-19
 ---
-
-# Platform Principles
-
 These principles explain how Dzaleka Online Services is meant to work as a public information platform.
 
 They help maintainers decide what to publish, how to document it, and what kinds of integrations the public surface should support.

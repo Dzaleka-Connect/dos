@@ -3,9 +3,6 @@ title: Search Guide
 description: Guide to using site search
 section: search
 ---
-
-# Search Guide
-
 The site search helps you find published content across multiple sections of Dzaleka Online Services.
 
 ## Where search is useful

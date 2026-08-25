@@ -4,9 +4,6 @@ description: What the site includes for support, discovery, publishing, business
 section: features
 lastUpdated: 2026-04-18
 ---
-
-# Platform Features
-
 Dzaleka Online Services is not one tool. It is a public site made up of support routes, community publishing, directories, and developer access points.
 
 ## Help and orientation

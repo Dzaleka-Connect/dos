@@ -3,9 +3,6 @@ title: Online Resources
 description: Guide to browsing and sharing resources on the platform
 section: resources
 ---
-
-# Online Resources
-
 The resources section brings together reports, guides, toolkits, forms, research, and other useful material related to Dzaleka and refugee support work.
 
 ## What you can find

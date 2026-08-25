@@ -3,9 +3,6 @@ title: News & Updates
 description: Guide to reading community news and updates
 section: news
 ---
-
-# News & Updates
-
 The news section collects published stories, announcements, and updates related to Dzaleka and the platform.
 
 ## What you can find

@@ -3,9 +3,6 @@ title: Service Directory
 description: Guide to browsing and using service listings
 section: services
 ---
-
-# Service Directory
-
 The service directory helps residents, families, partners, and visitors find organisations and programmes working in and around Dzaleka.
 
 ## What you can do

@@ -3,9 +3,6 @@ title: Community Voice
 description: Guide to sharing stories and perspectives from Dzaleka
 section: community
 ---
-
-# Community Voice
-
 Community Voice is the storytelling section of the platform. It is where residents, contributors, and partners can share perspectives, memories, and reflections connected to Dzaleka.
 
 ## What works well here

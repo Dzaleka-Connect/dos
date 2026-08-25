@@ -4,9 +4,6 @@ description: Where documentation lives in the repo, how to update it safely, and
 section: developers
 lastUpdated: 2026-04-19
 ---
-
-# Documentation Contributions
-
 This page is for maintainers and contributors who are updating the documentation itself.
 
 If you want to submit a public story, event, service, or resource, use [How to Contribute](/docs/contribute) instead.

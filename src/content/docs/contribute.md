@@ -3,9 +3,6 @@ title: How to Contribute
 description: Practical ways to contribute information, stories, and resources
 section: guides
 ---
-
-# How to Contribute
-
 You can help keep Dzaleka Online Services useful by sharing accurate, community-relevant information. Contributions do not need to be formal or academic. They do need to be clear, respectful, and safe to publish.
 
 ## Common ways to contribute

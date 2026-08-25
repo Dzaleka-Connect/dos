@@ -3,9 +3,6 @@ title: Photo Gallery
 description: Guide to browsing and submitting community photographs
 section: content
 ---
-
-# Photo Gallery
-
 The photo gallery documents people, places, public life, and community history connected to Dzaleka.
 
 ## What you can do

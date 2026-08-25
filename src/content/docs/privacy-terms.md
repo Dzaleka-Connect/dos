@@ -3,9 +3,6 @@ title: Privacy & Terms
 description: Quick links to the platform privacy and terms pages
 section: legal
 ---
-
-# Privacy & Terms
-
 This page is a short guide to the platform's main legal and privacy references.
 
 ## Primary policy pages

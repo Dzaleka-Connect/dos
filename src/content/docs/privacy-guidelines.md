@@ -3,9 +3,6 @@ title: Privacy Guidelines
 description: Practical privacy guidance for contributors and users of the platform
 section: policies
 ---
-
-# Privacy Guidelines
-
 These guidelines explain the privacy expectations contributors should follow when sharing content on Dzaleka Online Services.
 
 ## Protect personal information

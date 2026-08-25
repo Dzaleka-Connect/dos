@@ -5,9 +5,6 @@ description: A detailed guide to the machine-readable instructions that help AI 
 section: developers
 lastUpdated: 2026-04-18
 ---
-
-# Agent Skills
-
 Agent Skills are machine-readable instruction sets that help AI agents, assistants, and RAG pipelines interact safely and effectively with Dzaleka Online Services.
 
 While the Public API provides the data, **Agent Skills** provide the "rules of engagement"—telling an agent when to use the API, which pages to prioritize in a crisis, and how to avoid common pitfalls like hallucinating contact information.

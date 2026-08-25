@@ -4,9 +4,6 @@ description: A working plan for how the docs are organized now, what tracks exis
 section: developers
 lastUpdated: 2026-04-19
 ---
-
-# Documentation Roadmap
-
 This page turns the site's documentation strategy into a concrete plan.
 
 The goal is to keep the docs useful for two very different audiences at the same time:
