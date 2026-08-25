@@ -9,6 +9,7 @@ import {
 } from '../../data/agentDiscovery';
 import { MCP_SERVER_CARD_URL } from '../../data/mcpServerCard';
 import { apiHeaders, API_VERSION } from '../../utils/api-utils';
+import { DEPRECATION_POLICY_PATH, MINIMUM_NOTICE_PERIOD } from '../../utils/api-deprecation';
 
 export const prerender = false;
 
@@ -29,6 +30,8 @@ export const GET: APIRoute = async ({ request }) =>
         mcpServerCard: MCP_SERVER_CARD_URL,
         self: API_STATUS_URL,
         rateLimit: { limit: 60, window: '60s', scope: 'per client IP' },
+        deprecationPolicy: `${SITE_URL}${DEPRECATION_POLICY_PATH}`,
+        deprecationNoticePeriod: MINIMUM_NOTICE_PERIOD,
         checkedAt: new Date().toISOString(),
       },
       null,

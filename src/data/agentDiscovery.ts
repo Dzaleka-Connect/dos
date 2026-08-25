@@ -1,5 +1,10 @@
 import { problemSchema } from '../utils/api-errors';
 import { API_VERSION } from '../utils/api-headers';
+import {
+  DEPRECATION_POLICY_PATH,
+  DEPRECATIONS,
+  MINIMUM_NOTICE_PERIOD,
+} from '../utils/api-deprecation';
 
 export const SITE_URL = 'https://services.dzaleka.com';
 export const API_BASE_URL = `${SITE_URL}/api`;
@@ -76,6 +81,11 @@ export const apiCatalogDocument = {
           href: `${SITE_URL}/.well-known/mcp`,
           type: 'application/json',
           title: 'Model Context Protocol server (Streamable HTTP)',
+        },
+        {
+          href: `${SITE_URL}${DEPRECATION_POLICY_PATH}`,
+          type: 'application/json',
+          title: 'API versioning and deprecation policy',
         },
       ],
     },
@@ -416,6 +426,17 @@ const openApiOperations: Record<string, OpenApiOperation[]> = {
       tags: ['Discovery'],
     },
   ],
+  [DEPRECATION_POLICY_PATH]: [
+    {
+      method: 'get',
+      summary: 'Get the versioning and deprecation policy',
+      description:
+        'Returns the machine-readable policy describing how the API is versioned, how removals are signalled ' +
+        '(Deprecation per RFC 9745, Sunset per RFC 8594), the minimum notice period, and any endpoints currently ' +
+        'scheduled for retirement.',
+      tags: ['Discovery'],
+    },
+  ],
 };
 
 /**
@@ -550,9 +571,11 @@ export function buildOpenApiDocument() {
         'Breaking changes ship under a new major version.',
       deprecation: {
         policy:
-          'Deprecated endpoints return the Deprecation header (RFC 9745) and a Sunset header (RFC 8594) with the removal date.',
-        minimumNoticePeriod: 'P6M',
+          'Deprecated endpoints return the Deprecation header (RFC 9745) and a Sunset header (RFC 8594) with the removal date, plus a Link header with rel="deprecation" and, where a replacement exists, rel="successor-version".',
+        minimumNoticePeriod: MINIMUM_NOTICE_PERIOD,
+        policyUrl: `${SITE_URL}${DEPRECATION_POLICY_PATH}`,
         announcementUrl: `${SITE_URL}/api-docs#versioning`,
+        currentlyDeprecated: DEPRECATIONS.map((entry) => entry.path),
       },
     },
     'x-rate-limit': {

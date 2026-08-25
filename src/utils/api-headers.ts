@@ -6,6 +6,7 @@
  */
 
 import { problemResponse } from './api-errors';
+import { DEPRECATION_POLICY_PATH, deprecationHeaders } from './api-deprecation';
 
 /**
  * Current API version. Agents may pin to this via the `API-Version` request
@@ -20,7 +21,7 @@ export const corsHeaders = {
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, API-Version',
   'Access-Control-Expose-Headers':
-    'RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After, API-Version, Deprecation, Sunset',
+    'RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, RateLimit-Policy, Retry-After, API-Version, Deprecation, Sunset, Link',
   'Content-Type': 'application/json'
 };
 
@@ -66,9 +67,23 @@ export function rateLimitHeaders(request: Request): Record<string, string> {
   };
 }
 
-/** Standard headers for any API response: CORS + rate limit + version. */
+/**
+ * Standard headers for any API response: CORS, rate limit, version, and the
+ * Deprecation/Sunset signals when the requested path is being retired.
+ *
+ * Deprecation headers are applied here rather than per-route so an endpoint
+ * starts advertising its retirement the moment it is added to DEPRECATIONS,
+ * with no change to the route itself.
+ */
 export function apiHeaders(request: Request, extra: Record<string, string> = {}) {
-  return { ...corsHeaders, ...rateLimitHeaders(request), ...extra };
+  let deprecation: Record<string, string> = {};
+  try {
+    const { pathname, origin } = new URL(request.url);
+    deprecation = deprecationHeaders(pathname, `${origin}${DEPRECATION_POLICY_PATH}`);
+  } catch {
+    // A malformed request URL must not break an otherwise valid response.
+  }
+  return { ...corsHeaders, ...rateLimitHeaders(request), ...deprecation, ...extra };
 }
 
 /**

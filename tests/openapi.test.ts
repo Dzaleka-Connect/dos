@@ -82,6 +82,21 @@ describe('OpenAPI document', () => {
     expect(doc['x-rate-limit'].headers).toContain('RateLimit-Remaining');
   });
 
+  it('publishes a deprecation policy agents can read before integrating', () => {
+    const dep = doc['x-version-policy'].deprecation;
+    expect(dep.policyUrl).toContain('/api/deprecation-policy');
+    expect(dep.minimumNoticePeriod).toMatch(/^P\d+[MY]$/);
+    expect(dep.policy).toContain('RFC 9745');
+    expect(dep.policy).toContain('RFC 8594');
+    expect(Array.isArray(dep.currentlyDeprecated)).toBe(true);
+  });
+
+  it('documents the deprecation policy endpoint itself', () => {
+    const op = operations.find(({ path }) => path === '/api/deprecation-policy');
+    expect(op).toBeDefined();
+    expect(op!.op.operationId).toBeTruthy();
+  });
+
   it('carries contact and licence metadata', () => {
     expect(doc.info.contact?.url).toBeTruthy();
     expect(doc.info.license?.name).toBeTruthy();

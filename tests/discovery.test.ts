@@ -23,6 +23,11 @@ describe('API catalog', () => {
     expect(hrefs).toContain(`${SITE_URL}/.well-known/mcp`);
   });
 
+  it('advertises the deprecation policy', () => {
+    const hrefs = apiAnchor.describedby.map((link: any) => link.href);
+    expect(hrefs).toContain(`${SITE_URL}/api/deprecation-policy`);
+  });
+
   it('gives every catalog link an absolute URL and a media type', () => {
     for (const entry of apiCatalogDocument.linkset as any[]) {
       for (const [rel, links] of Object.entries(entry)) {
