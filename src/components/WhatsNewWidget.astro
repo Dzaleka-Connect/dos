@@ -78,13 +78,21 @@ const getTypeLabel = (type: Update['type']) => {
     </button>
 
     <!-- Dropdown Panel -->
+    <!--
+        This panel sits in the site header, above the page's h1. Its title and
+        item titles are styled like headings but are not <h*> elements: heading
+        tags here would open every page's outline at h3 before the h1 is
+        reached. The panel is named for assistive tech via aria-labelledby.
+    -->
     <div
         id="whats-new-panel"
         class="absolute right-0 mt-2 w-72 bg-white rounded-lg border border-gray-200 shadow-sm z-50 hidden origin-top-right transition-all duration-200"
+        role="region"
+        aria-labelledby="whats-new-panel-title"
         data-whats-new-panel
     >
         <div class="p-4 border-b border-gray-100">
-            <h3 class="text-lg font-semibold text-gray-900">What's New</h3>
+            <div id="whats-new-panel-title" class="text-lg font-semibold text-gray-900">What's New</div>
             <p class="text-sm text-gray-500">Latest updates and announcements</p>
         </div>
         
@@ -95,7 +103,7 @@ const getTypeLabel = (type: Update['type']) => {
                         <div class={`flex-shrink-0 ${getTypeColor(update.type)}`} set:html={getTypeIcon(update.type)} />
                         <div>
                             <div class="flex items-center space-x-2">
-                                <h4 class="text-sm font-medium text-gray-900">{update.title}</h4>
+                                <div class="text-sm font-medium text-gray-900">{update.title}</div>
                                 <span class={`text-xs px-2 py-0.5 rounded-full ${getTypeBadgeClasses(update.type)}`}>
                                     {getTypeLabel(update.type)}
                                 </span>
