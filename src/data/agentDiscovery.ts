@@ -1,3 +1,6 @@
+import { problemSchema } from '../utils/api-errors';
+import { API_VERSION } from '../utils/api-headers';
+
 export const SITE_URL = 'https://services.dzaleka.com';
 export const API_BASE_URL = `${SITE_URL}/api`;
 export const API_CATALOG_PATH = '/.well-known/api-catalog';
@@ -11,6 +14,12 @@ export const API_STATUS_URL = `${SITE_URL}${API_STATUS_PATH}`;
 export const ENCYCLOPEDIA_API_DOCS_URL = `${SITE_URL}/encyclopedia/developers`;
 
 export const discoveryLinks = [
+  {
+    // Plain-text guidance on what this site covers and when an agent should use it.
+    href: '/llms.txt',
+    rel: 'describedby',
+    type: 'text/plain',
+  },
   {
     href: API_CATALOG_PATH,
     rel: 'api-catalog',
@@ -53,6 +62,20 @@ export const apiCatalogDocument = {
         {
           href: API_STATUS_URL,
           type: 'application/json',
+        },
+      ],
+      // `describedby` carries the agent-facing surfaces: plain-text guidance on
+      // when to use this API, and the live MCP endpoint.
+      describedby: [
+        {
+          href: `${SITE_URL}/llms.txt`,
+          type: 'text/plain',
+          title: 'Agent guidance: what this site covers and when to use it',
+        },
+        {
+          href: `${SITE_URL}/.well-known/mcp`,
+          type: 'application/json',
+          title: 'Model Context Protocol server (Streamable HTTP)',
         },
       ],
     },
@@ -395,6 +418,58 @@ const openApiOperations: Record<string, OpenApiOperation[]> = {
   ],
 };
 
+/**
+ * Build a stable, unique operationId from a path and method, e.g.
+ * `/api/encyclopedia/{slug}` + `get` -> `getApiEncyclopediaBySlug`.
+ * Function-calling clients use this as the tool name, so it must be unique
+ * and stable across releases.
+ */
+export function buildOperationId(path: string, method: string): string {
+  const segments = path
+    .split('/')
+    .filter(Boolean)
+    .map((segment) =>
+      segment.startsWith('{')
+        ? `By${capitalize(segment.replace(/[{}]/g, ''))}`
+        : capitalize(segment.replace(/[^a-zA-Z0-9]+(.)?/g, (_m, chr) => (chr ? chr.toUpperCase() : '')))
+    );
+  return method.toLowerCase() + segments.join('');
+}
+
+function capitalize(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+/** Shared error responses attached to every operation. */
+function errorResponses() {
+  const problem = { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } };
+  return {
+    '400': { description: 'Malformed request or invalid body.', content: problem },
+    '404': { description: 'Resource or collection not found.', content: problem },
+    '429': {
+      description: 'Rate limit exceeded. Retry after the number of seconds in Retry-After.',
+      headers: {
+        'Retry-After': { description: 'Seconds to wait before retrying.', schema: { type: 'integer' } },
+        'RateLimit-Limit': { description: 'Requests permitted per window.', schema: { type: 'integer' } },
+        'RateLimit-Remaining': { description: 'Requests left in the window.', schema: { type: 'integer' } },
+        'RateLimit-Reset': { description: 'Seconds until the window resets.', schema: { type: 'integer' } },
+      },
+      content: problem,
+    },
+    '500': { description: 'Unexpected server error.', content: problem },
+    '503': { description: 'Upstream dependency unavailable.', content: problem },
+  };
+}
+
+/** Rate-limit and version headers returned on every successful response. */
+const successHeaders = {
+  'RateLimit-Limit': { description: 'Requests permitted per window.', schema: { type: 'integer' } },
+  'RateLimit-Remaining': { description: 'Requests left in the current window.', schema: { type: 'integer' } },
+  'RateLimit-Reset': { description: 'Seconds until the window resets.', schema: { type: 'integer' } },
+  'RateLimit-Policy': { description: 'Policy expressed as limit;w=window-seconds.', schema: { type: 'string' } },
+  'API-Version': { description: 'API version that served this response.', schema: { type: 'string' } },
+};
+
 export function buildOpenApiDocument() {
   const paths = Object.fromEntries(
     Object.entries(openApiOperations).map(([path, operations]) => {
@@ -402,13 +477,25 @@ export function buildOpenApiDocument() {
         operations.map((operation) => [
           operation.method,
           {
+            operationId: buildOperationId(path, operation.method),
             tags: operation.tags,
             summary: operation.summary,
             description: operation.description,
-            ...(operation.parameters ? { parameters: operation.parameters } : {}),
+            parameters: [
+              ...(operation.parameters ?? []),
+              {
+                name: 'API-Version',
+                in: 'header',
+                required: false,
+                description:
+                  'Pin the API version for this request. Omit to use the current version.',
+                schema: { type: 'string', default: API_VERSION },
+              },
+            ],
             responses: {
               '200': {
                 description: 'Successful response',
+                headers: successHeaders,
                 content: {
                   'application/json': {
                     schema: {
@@ -418,6 +505,7 @@ export function buildOpenApiDocument() {
                   },
                 },
               },
+              ...errorResponses(),
             },
           },
         ])
@@ -431,9 +519,20 @@ export function buildOpenApiDocument() {
     openapi: '3.1.0',
     info: {
       title: 'Dzaleka Online Services Public API',
-      version: '1.0.0',
+      version: API_VERSION,
       description:
-        'Machine-readable description of the public endpoints exposed by Dzaleka Online Services.',
+        'Machine-readable description of the public endpoints exposed by Dzaleka Online Services. ' +
+        'All endpoints are read-only unless tagged Actions, require no authentication, and return JSON. ' +
+        'Errors use RFC 9457 problem+json with a stable machine-readable `code`.',
+      contact: {
+        name: 'Dzaleka Online Services',
+        email: 'dzalekaconnect@gmail.com',
+        url: `${SITE_URL}/contact`,
+      },
+      license: {
+        name: 'CC BY-SA 4.0',
+        url: 'https://creativecommons.org/licenses/by-sa/4.0/',
+      },
     },
     servers: [
       {
@@ -441,6 +540,41 @@ export function buildOpenApiDocument() {
         description: 'Production',
       },
     ],
+    'x-api-version': API_VERSION,
+    'x-version-policy': {
+      strategy: 'header',
+      header: 'API-Version',
+      current: API_VERSION,
+      description:
+        'Send an optional API-Version request header to pin a version; the serving version is echoed on every response. ' +
+        'Breaking changes ship under a new major version.',
+      deprecation: {
+        policy:
+          'Deprecated endpoints return the Deprecation header (RFC 9745) and a Sunset header (RFC 8594) with the removal date.',
+        minimumNoticePeriod: 'P6M',
+        announcementUrl: `${SITE_URL}/api-docs#versioning`,
+      },
+    },
+    'x-rate-limit': {
+      limit: 60,
+      window: '1 minute',
+      scope: 'per client IP',
+      headers: ['RateLimit-Limit', 'RateLimit-Remaining', 'RateLimit-Reset', 'RateLimit-Policy'],
+      retryHeader: 'Retry-After',
+      description:
+        'Successful responses carry RateLimit-* headers so clients can self-throttle. A 429 adds Retry-After.',
+    },
+    components: {
+      schemas: {
+        Problem: problemSchema,
+      },
+      responses: {
+        Problem: {
+          description: 'RFC 9457 problem details.',
+          content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } },
+        },
+      },
+    },
     externalDocs: {
       description: 'Human-readable API documentation',
       url: API_DOCS_URL,
