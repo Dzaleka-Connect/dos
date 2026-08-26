@@ -1,0 +1,146 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.200.0/schema/sveltia-cms.json
+
+# Sveltia CMS configuration for Dzaleka Online Services.
+#
+# Scope: the `news` collection only. Everything else stays developer-edited
+# markdown. The encyclopedia in particular is deliberately excluded: every entry
+# requires cited sources and a review date, and that record is worth keeping in
+# pull requests where corrections are diffable.
+#
+# IMPORTANT: the fields below must stay in step with `newsSchema` in
+# src/content.config.ts. Astro validates frontmatter with Zod at build time, so
+# a field that drifts here does not fail in the editor, it fails the next build
+# after someone publishes. tests/cms-config.test.ts asserts the two agree.
+
+backend:
+  name: github
+  repo: Dzaleka-Connect/dos
+  branch: main
+  # Commits made through the editor are attributed to the signed-in GitHub user.
+  commit_messages:
+    create: 'news: add {{collection}} entry "{{slug}}"'
+    update: 'news: update {{collection}} entry "{{slug}}"'
+    delete: 'news: remove {{collection}} entry "{{slug}}"'
+    uploadMedia: 'media: upload {{path}}'
+    deleteMedia: 'media: remove {{path}}'
+
+# Where uploads are written in the repo, and the URL they resolve to.
+# Existing articles reference images as `/images/...`, so these must match.
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: news
+    label: News and updates
+    label_singular: News article
+    description: >-
+      Articles published to /news. Publishing commits a Markdown file to the
+      repository, which triggers a rebuild; the article appears once the deploy
+      finishes.
+    folder: src/content/news
+    create: true
+    # Defaults, stated explicitly so a Sveltia default change cannot silently
+    # alter the on-disk format the existing 30 articles use.
+    format: yaml-frontmatter
+    extension: md
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [date, title, category]
+    view_groups:
+      - label: Category
+        field: category
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+
+      - name: description
+        label: Summary
+        widget: text
+        required: true
+        hint: One or two sentences. Shown on the news index and in search results.
+
+      - name: date
+        label: Publication date
+        widget: datetime
+        required: true
+        type: date
+        # Date-only, fixed to UTC. Without this the stored date can shift a day
+        # depending on the editor's timezone.
+        picker_utc: true
+        default: '{{now}}'
+
+      - name: updated
+        label: Last updated
+        widget: datetime
+        required: false
+        type: date
+        picker_utc: true
+        hint: Only set this if the article changed materially after publication.
+
+      # Must match the z.enum in newsSchema exactly. An unlisted value fails the build.
+      - name: category
+        label: Category
+        widget: select
+        required: true
+        options:
+          - { label: Announcement, value: announcement }
+          - { label: News, value: news }
+          - { label: Success story, value: success-story }
+          - { label: Business spotlight, value: business-spotlight }
+          - { label: Business guide, value: business-guide }
+          - { label: Education, value: education }
+
+      - name: featured
+        label: Feature this article
+        widget: boolean
+        required: false
+        default: false
+        hint: Featured articles are promoted on the news index.
+
+      - name: image
+        label: Cover image
+        widget: image
+        required: false
+
+      - name: author
+        label: Author
+        widget: string
+        required: false
+        default: Dzaleka Online Services
+
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+        hint: Used to relate this article to encyclopedia entries.
+
+      - name: businessName
+        label: Business name
+        widget: string
+        required: false
+        hint: Business spotlights only.
+
+      - name: businessOwner
+        label: Business owner
+        widget: string
+        required: false
+        hint: Business spotlights only.
+
+      - name: contactInfo
+        label: Contact details
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: email, label: Email, widget: string, required: false }
+          - { name: phone, label: Phone, widget: string, required: false }
+          - { name: website, label: Website, widget: string, required: false }
+
+      # Not part of newsSchema: this is the Markdown body below the frontmatter.
+      - name: body
+        label: Article
+        widget: markdown
+        required: true
