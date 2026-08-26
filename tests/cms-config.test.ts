@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import { z } from 'zod';
@@ -186,14 +186,18 @@ describe.each(cmsCollectionNames)('collection: %s', (name) => {
    * Existing entries store plain dates. Without picker_utc the stored value can
    * shift a day depending on the editor's timezone.
    */
-  it('stores every date field as a UTC-fixed date', () => {
+  /**
+   * Fixed to UTC so the stored value does not shift a day with the editor's
+   * timezone. Deliberately does not require `type: date`: forcing date-only is
+   * what discarded the time component on events.
+   */
+  it('fixes every date field to UTC', () => {
     for (const key of schemaKeys) {
       const inner = unwrap(shape[key]);
       const isDate = inner?._def?.typeName === 'ZodDate' || inner instanceof z.ZodDate;
       if (!isDate) continue;
       const field = fields.get(key)!;
       expect(field.widget, `${key}`).toBe('datetime');
-      expect(field.type, `${key}`).toBe('date');
       expect(field.picker_utc, `${key}`).toBe(true);
     }
   });
@@ -234,6 +238,60 @@ describe.each(cmsCollectionNames)('collection: %s', (name) => {
       if (!schema) continue;
       expect(schema.safeParse('2026-01-31').success, `${field.name} rejects a quoted date string`).toBe(true);
       expect(schema.safeParse(new Date('2026-01-31')).success, `${field.name} rejects a bare YAML date`).toBe(true);
+    }
+  });
+
+  /**
+   * Sveltia writes an empty string for an optional field the editor has
+   * cleared. `new Date('')` is an Invalid Date, so a coerced optional date
+   * rejected it and broke the build after publishing. This happened in
+   * production on registration.deadline.
+   */
+  it('treats an empty string as absent for every optional date field', () => {
+    // Walks nested objects: the break in production was on
+    // registration.deadline, which a top-level-only scan would have missed.
+    const failures: string[] = [];
+
+    const walk = (zodShape: Record<string, any>, cmsFields: any[], path: string) => {
+      const byName = new Map(cmsFields.map((f: any) => [f.name, f]));
+      for (const [key, schema] of Object.entries(zodShape)) {
+        const field = byName.get(key);
+        const here = path ? `${path}.${key}` : key;
+        const inner = unwrap(schema);
+
+        if (inner instanceof z.ZodObject && field?.fields) {
+          walk(inner.shape, field.fields, here);
+          continue;
+        }
+        if (!schema.isOptional() || field?.widget !== 'datetime') continue;
+        if (!schema.safeParse('').success) failures.push(here);
+      }
+    };
+
+    walk(shape, collection.fields, '');
+    expect(
+      failures,
+      `these optional date fields reject the empty string a cleared field produces: ${failures.join(', ')}`
+    ).toEqual([]);
+  });
+
+  /**
+   * Configuring a field as `type: date` discards any time component on save.
+   * Entries that carry a time must therefore not use date-only.
+   */
+  it('does not use date-only for fields whose entries carry a time', () => {
+    const dir = resolve(root, collection.folder);
+    const files = readdirSync(dir).filter((f) => f.endsWith('.md'));
+    for (const field of collection.fields) {
+      if (field.widget !== 'datetime' || field.type !== 'date') continue;
+      const withTime = files.filter((file) => {
+        const text = readFileSync(resolve(dir, file), 'utf8');
+        return new RegExp(`^${field.name}: .*T\\d{2}:\\d{2}`, 'm').test(text);
+      });
+      expect(
+        withTime,
+        `${field.name} is date-only but these entries carry a time: ${withTime.join(', ')}`
+      ).toEqual([]);
     }
   });
 

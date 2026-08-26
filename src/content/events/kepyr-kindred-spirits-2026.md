@@ -1,8 +1,8 @@
 ---
 title: 'KEPYR Kindred Spirits ’26: Voices from the Dzaleka Refugee Camp'
 description: A live in-person poetry event at Poetry House connecting New York audiences with young poets from Malawi's Dzaleka Refugee Camp through Shared Studios Live Portal technology.
-date: 2026-06-19
-endDate: 2026-06-19
+date: 2026-06-19T13:00:00Z
+endDate: 2026-06-19T15:00:00Z
 location: Stanley Kunitz Conference Room, Poetry House, 10 River Terrace, New York, NY 10282
 category: Live Event
 organizer: KEPYR / Poetry House
@@ -11,8 +11,6 @@ featured: true
 image: https://image.okayafrica.com/243506.webp?imageId=243506&width=2116&height=1412&format=webp
 contact:
   email: info@kepyr.org
-  phone: ''
-  whatsapp: ''
 registration:
   required: true
   url: https://www.kepyr.org/ny

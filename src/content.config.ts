@@ -1,6 +1,25 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+/**
+ * A date field that tolerates everything a CMS or a human may write.
+ *
+ * Astro's frontmatter parser reads a bare `2026-01-31` as a Date and a quoted
+ * "2026-01-31" as a string, so coercion handles both. Sveltia additionally
+ * writes an empty string for an optional field the editor has cleared, and
+ * `new Date('')` is an Invalid Date, which fails validation and breaks the
+ * build after publishing. Empty and null are therefore treated as absent.
+ */
+const optionalDate = () =>
+  z.preprocess(
+    (value) => (value === '' || value === null ? undefined : value),
+    z.coerce.date().optional()
+  );
+
+/** Required counterpart, coercing strings and bare dates alike. */
+const requiredDate = () => z.coerce.date();
+
+
 // Define the profile schema
 const profileSchema = z.object({
   name: z.string(),
@@ -100,7 +119,7 @@ const eventSchema = z.object({
   // Coerced so a quoted or bare date in frontmatter both validate. See the note
   // on newsSchema.
   date: z.coerce.date(),
-  endDate: z.coerce.date().optional(),
+  endDate: optionalDate(),
   location: z.string(),
   category: z.string(),
   featured: z.boolean().optional(),
@@ -115,7 +134,7 @@ const eventSchema = z.object({
   registration: z.object({
     required: z.boolean(),
     url: z.string().optional(),
-    deadline: z.coerce.date().optional(),
+    deadline: optionalDate(),
   }).optional(),
   panelists: z.array(z.object({
     name: z.string(),
@@ -188,7 +207,7 @@ const newsSchema = z.object({
   // a quoted "2026-04-20" as a string, and which one a CMS writes is not ours
   // to control. Coercion accepts both. Matches jobSchema, which already does.
   date: z.coerce.date(),
-  updated: z.coerce.date().optional(),
+  updated: optionalDate(),
   category: z.enum(['business-spotlight', 'announcement', 'success-story', 'business-guide', 'news', 'education']),
   featured: z.boolean().optional(),
   image: z.string().optional(),
@@ -320,7 +339,7 @@ const jobSchema = z.object({
     'other'
   ]),
   salary: z.string().optional(),
-  deadline: z.coerce.date().optional(),
+  deadline: optionalDate(),
   posted: z.coerce.date(),
   status: z.enum(['open', 'closed', 'draft']).default('open'),
   featured: z.boolean().default(false),

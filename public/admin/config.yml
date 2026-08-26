@@ -17,10 +17,12 @@ backend:
   repo: Dzaleka-Connect/dos
   branch: main
   # Commits made through the editor are attributed to the signed-in GitHub user.
+  # {{collection}} renders the singular label, so no hardcoded prefix here:
+  # every collection was previously committing under a "news:" prefix.
   commit_messages:
-    create: 'news: add {{collection}} entry "{{slug}}"'
-    update: 'news: update {{collection}} entry "{{slug}}"'
-    delete: 'news: remove {{collection}} entry "{{slug}}"'
+    create: 'content: add {{collection}} "{{slug}}"'
+    update: 'content: update {{collection}} "{{slug}}"'
+    delete: 'content: remove {{collection}} "{{slug}}"'
     uploadMedia: 'media: upload {{path}}'
     deleteMedia: 'media: remove {{path}}'
 
@@ -173,20 +175,20 @@ collections:
         widget: text
         required: true
 
+      # Events carry a start time, so this must be a full datetime. Configuring
+      # it as date-only silently discarded the time on save.
       - name: date
-        label: Date
+        label: Start
         widget: datetime
         required: true
-        type: date
         picker_utc: true
 
       - name: endDate
-        label: End date
+        label: End
         widget: datetime
         required: false
-        type: date
         picker_utc: true
-        hint: Only for events running across more than one day.
+        hint: When the event finishes. Leave blank for open-ended events.
 
       - name: location
         label: Location
@@ -247,7 +249,6 @@ collections:
             label: Registration deadline
             widget: datetime
             required: false
-            type: date
             picker_utc: true
 
       - name: panelists

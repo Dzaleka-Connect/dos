@@ -1,8 +1,8 @@
 ---
 title: International Yoga Day 2026
 description: Join Art for Hope and the Dzaleka community in celebrating the International Day of Yoga 2026. This event honors the journey of thousands using yoga for healing, recovery, and inner peace.
-date: 2026-06-21
-endDate: 2026-06-22
+date: 2026-06-21T09:00:00Z
+endDate: 2026-06-22T00:30:00Z
 location: Art for Hope, Kawale 1, Dzaleka Camp
 category: Live Performance
 organizer: Art for Hope
@@ -16,8 +16,6 @@ contact:
   website: https://artfohope.org/
 registration:
   required: false
-  url: ''
-  deadline: ''
 panelists: []
 tags:
   - International Yoga Day
