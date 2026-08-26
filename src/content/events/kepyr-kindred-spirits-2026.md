@@ -1,21 +1,30 @@
 ---
-title: "KEPYR Kindred Spirits ’26: Voices from the Dzaleka Refugee Camp"
-description: "A live in-person poetry event at Poetry House connecting New York audiences with young poets from Malawi's Dzaleka Refugee Camp through Shared Studios Live Portal technology."
-date: 2026-06-19T13:00:00Z
-endDate: 2026-06-19T15:00:00Z
-location: "Stanley Kunitz Conference Room, Poetry House, 10 River Terrace, New York, NY 10282"
-category: "Live Event"
+title: 'KEPYR Kindred Spirits ’26: Voices from the Dzaleka Refugee Camp'
+description: A live in-person poetry event at Poetry House connecting New York audiences with young poets from Malawi's Dzaleka Refugee Camp through Shared Studios Live Portal technology.
+date: 2026-06-19
+endDate: 2026-06-19
+location: Stanley Kunitz Conference Room, Poetry House, 10 River Terrace, New York, NY 10282
+category: Live Event
+organizer: KEPYR / Poetry House
+status: past
 featured: true
-image: "https://image.okayafrica.com/243506.webp?imageId=243506&width=2116&height=1412&format=webp"
-organizer: "KEPYR / Poetry House"
-status: "upcoming"
+image: https://image.okayafrica.com/243506.webp?imageId=243506&width=2116&height=1412&format=webp
 contact:
-  email: "info@kepyr.org"
+  email: info@kepyr.org
+  phone: ''
+  whatsapp: ''
 registration:
   required: true
-  url: "https://www.kepyr.org/ny"
+  url: https://www.kepyr.org/ny
   deadline: 2026-06-18
-tags: ["poetry", "refugee voices", "Malawi", "Dzaleka Refugee Camp", "Live Portal", "KEPYR"]
+panelists: []
+tags:
+  - poetry
+  - refugee voices
+  - Malawi
+  - Dzaleka Refugee Camp
+  - Live Portal
+  - KEPYR
 ---
 
 ![A pink poster featuring details about a 2026 Kepyr event with kids in the Dzaleka Refugee Camp.](https://poetshouse.org/wp-content/uploads/2026/05/Kepyr-Dzalenka-Event-Poster.jpg)
