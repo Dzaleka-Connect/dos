@@ -97,8 +97,10 @@ const resourceSchema = z.object({
 const eventSchema = z.object({
   title: z.string(),
   description: z.string(),
-  date: z.date(),
-  endDate: z.date().optional(),
+  // Coerced so a quoted or bare date in frontmatter both validate. See the note
+  // on newsSchema.
+  date: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
   location: z.string(),
   category: z.string(),
   featured: z.boolean().optional(),
@@ -113,7 +115,7 @@ const eventSchema = z.object({
   registration: z.object({
     required: z.boolean(),
     url: z.string().optional(),
-    deadline: z.date().optional(),
+    deadline: z.coerce.date().optional(),
   }).optional(),
   panelists: z.array(z.object({
     name: z.string(),
@@ -182,8 +184,11 @@ const pageSchema = z.object({
 const newsSchema = z.object({
   title: z.string(),
   description: z.string(),
-  date: z.date(),
-  updated: z.date().optional(),
+  // Coerced rather than z.date(): Astro reads a bare `2026-04-20` as a Date but
+  // a quoted "2026-04-20" as a string, and which one a CMS writes is not ours
+  // to control. Coercion accepts both. Matches jobSchema, which already does.
+  date: z.coerce.date(),
+  updated: z.coerce.date().optional(),
   category: z.enum(['business-spotlight', 'announcement', 'success-story', 'business-guide', 'news', 'education']),
   featured: z.boolean().optional(),
   image: z.string().optional(),
@@ -284,7 +289,13 @@ const talentsSchema = z.object({
 const communityVoiceSchema = z.object({
   title: z.string(),
   author: z.string(),
-  date: z.string(),
+  // Accepts a quoted string or a bare YAML date. Astro's frontmatter parser
+  // reads an unquoted `2021-12-06` as a Date, which a plain z.string() rejects
+  // and which would fail the build. Normalised to a YYYY-MM-DD string so
+  // consuming code, which calls `new Date(...)`, is unchanged.
+  date: z.union([z.string(), z.date()]).transform((value) =>
+    value instanceof Date ? value.toISOString().slice(0, 10) : value
+  ),
   category: z.string(),
   excerpt: z.string(),
   image: z.string().optional(),

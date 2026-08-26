@@ -210,6 +210,33 @@ describe.each(cmsCollectionNames)('collection: %s', (name) => {
     }
   });
 
+  /**
+   * A config-side invariant, so it holds even where the Zod type is not a plain
+   * ZodDate. Photos and community voices wrap their date in a union and a
+   * transform, which the Zod-driven check above cannot see through.
+   */
+  it('sets picker_utc on every date-only field in the config', () => {
+    const offenders = collection.fields
+      .filter((f: any) => f.widget === 'datetime' && f.type === 'date' && f.picker_utc !== true)
+      .map((f: any) => f.name);
+    expect(offenders, `date fields missing picker_utc: ${offenders.join(', ')}`).toEqual([]);
+  });
+
+  /**
+   * Astro's frontmatter parser reads an unquoted `2026-01-31` as a Date. A
+   * schema expecting a string would reject it and fail the build after an
+   * editor published, so any date-bearing field must accept both forms.
+   */
+  it('accepts both a quoted string and a bare YAML date for every date field', () => {
+    for (const field of collection.fields) {
+      if (field.widget !== 'datetime') continue;
+      const schema = shape[field.name];
+      if (!schema) continue;
+      expect(schema.safeParse('2026-01-31').success, `${field.name} rejects a quoted date string`).toBe(true);
+      expect(schema.safeParse(new Date('2026-01-31')).success, `${field.name} rejects a bare YAML date`).toBe(true);
+    }
+  });
+
   it('models arrays as lists', () => {
     for (const key of schemaKeys) {
       const inner = unwrap(shape[key]);

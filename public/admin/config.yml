@@ -408,3 +408,155 @@ collections:
         label: Full description
         widget: markdown
         required: false
+
+  - name: photos
+    label: Photo archive
+    label_singular: Photo
+    description: >-
+      Photographs published at /photos. Images may be uploaded or referenced by
+      URL: over half the archive credits external sources such as WFP.
+    folder: src/content/photos
+    create: true
+    format: yaml-frontmatter
+    extension: md
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [date, title]
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+
+      - name: description
+        label: Caption
+        widget: text
+        required: true
+
+      - name: date
+        label: Date taken
+        widget: datetime
+        required: true
+        type: date
+        picker_utc: true
+
+      # The schema accepts either a path under /images/ or an absolute URL, so
+      # uploading and linking are both valid.
+      - name: image
+        label: Photograph
+        widget: image
+        required: true
+        choose_url: true
+
+      # Required in the schema, and `name` within it is required too.
+      - name: photographer
+        label: Photographer
+        widget: object
+        required: true
+        fields:
+          - { name: name, label: Name, widget: string, required: true }
+          - { name: bio, label: Biography, widget: text, required: false }
+          - { name: instagram, label: Instagram handle, widget: string, required: false }
+          - { name: website, label: Website, widget: string, required: false }
+
+      - name: contributor
+        label: Contributor
+        widget: string
+        required: false
+        hint: The person who submitted this photo, if different from the photographer.
+
+      - name: location
+        label: Location
+        widget: string
+        required: false
+
+      - name: featured
+        label: Feature this photo
+        widget: boolean
+        required: false
+        default: false
+
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+
+      - name: gallery
+        label: Additional images
+        widget: list
+        required: false
+        field: { name: url, label: Image, widget: image, choose_url: true }
+
+      - name: body
+        label: About this photo
+        widget: markdown
+        required: false
+
+  - name: community-voices
+    label: Community voices
+    label_singular: Community voice
+    description: >-
+      First-person stories published at /community-voice. Submissions arriving
+      through the site form can be drafted here and published once reviewed.
+    folder: src/content/community-voices
+    create: true
+    format: yaml-frontmatter
+    extension: md
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}} - {{author}}'
+    sortable_fields: [date, title, author]
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+
+      - name: author
+        label: Author
+        widget: string
+        required: true
+        hint: The name the contributor wishes to be credited under.
+
+      - name: date
+        label: Date
+        widget: datetime
+        required: true
+        type: date
+        picker_utc: true
+
+      # Free text in the schema. Existing entries use "Stories".
+      - name: category
+        label: Category
+        widget: string
+        required: true
+        default: Stories
+
+      - name: excerpt
+        label: Pull quote
+        widget: text
+        required: true
+        hint: A short extract shown on the index. Often the story's opening line.
+
+      - name: image
+        label: Image
+        widget: image
+        required: false
+        choose_url: true
+
+      - name: featured
+        label: Feature this story
+        widget: boolean
+        required: false
+        default: false
+
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+
+      - name: body
+        label: Story
+        widget: markdown
+        required: true
