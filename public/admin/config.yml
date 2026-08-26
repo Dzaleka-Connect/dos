@@ -144,3 +144,267 @@ collections:
         label: Article
         widget: markdown
         required: true
+
+  - name: events
+    label: Events
+    label_singular: Event
+    description: >-
+      Community events listed at /events. Set the status to "past" once an event
+      has taken place so it moves out of the upcoming list.
+    folder: src/content/events
+    create: true
+    format: yaml-frontmatter
+    extension: md
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [date, title, status]
+    view_groups:
+      - label: Status
+        field: status
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+
+      - name: description
+        label: Summary
+        widget: text
+        required: true
+
+      - name: date
+        label: Date
+        widget: datetime
+        required: true
+        type: date
+        picker_utc: true
+
+      - name: endDate
+        label: End date
+        widget: datetime
+        required: false
+        type: date
+        picker_utc: true
+        hint: Only for events running across more than one day.
+
+      - name: location
+        label: Location
+        widget: string
+        required: true
+
+      # Free text in the schema, so no fixed option list. Existing values include
+      # Festival, Live Performance, Workshop, Webinar and Zoom Meeting.
+      - name: category
+        label: Category
+        widget: string
+        required: true
+
+      - name: organizer
+        label: Organiser
+        widget: string
+        required: true
+
+      - name: status
+        label: Status
+        widget: select
+        required: false
+        default: upcoming
+        options:
+          - { label: Upcoming, value: upcoming }
+          - { label: Past, value: past }
+
+      - name: featured
+        label: Feature this event
+        widget: boolean
+        required: false
+        default: false
+
+      - name: image
+        label: Image
+        widget: image
+        required: false
+
+      - name: contact
+        label: Contact details
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: email, label: Email, widget: string, required: false }
+          - { name: phone, label: Phone, widget: string, required: false }
+          - { name: whatsapp, label: WhatsApp, widget: string, required: false }
+
+      - name: registration
+        label: Registration
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: required, label: Registration required, widget: boolean, required: true, default: false }
+          - { name: url, label: Registration link, widget: string, required: false }
+          - name: deadline
+            label: Registration deadline
+            widget: datetime
+            required: false
+            type: date
+            picker_utc: true
+
+      - name: panelists
+        label: Speakers and panellists
+        widget: list
+        required: false
+        collapsed: true
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: Name, widget: string, required: true }
+          - { name: role, label: Role, widget: string, required: false }
+          - { name: bio, label: Biography, widget: text, required: false }
+          - { name: image, label: Photo, widget: image, required: false }
+          - { name: organization, label: Organisation, widget: string, required: false }
+          - name: socialMedia
+            label: Social media
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - { name: twitter, label: Twitter, widget: string, required: false }
+              - { name: instagram, label: Instagram, widget: string, required: false }
+              - { name: linkedin, label: LinkedIn, widget: string, required: false }
+              - { name: website, label: Website, widget: string, required: false }
+
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+
+      - name: body
+        label: Details
+        widget: markdown
+        required: false
+
+  - name: jobs
+    label: Jobs
+    label_singular: Job
+    description: >-
+      Opportunities listed at /jobs. Set the status to "closed" once a role is
+      filled or its deadline has passed.
+    folder: src/content/jobs
+    create: true
+    format: yaml-frontmatter
+    extension: md
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}} - {{organization}}'
+    sortable_fields: [posted, deadline, title, status]
+    view_groups:
+      - label: Status
+        field: status
+    fields:
+      - name: title
+        label: Job title
+        widget: string
+        required: true
+
+      - name: organization
+        label: Organisation
+        widget: string
+        required: true
+
+      - name: location
+        label: Location
+        widget: string
+        required: true
+
+      - name: type
+        label: Employment type
+        widget: select
+        required: true
+        options:
+          - { label: Full time, value: full-time }
+          - { label: Part time, value: part-time }
+          - { label: Contract, value: contract }
+          - { label: Volunteer, value: volunteer }
+          - { label: Internship, value: internship }
+
+      - name: category
+        label: Category
+        widget: select
+        required: true
+        options:
+          - { label: Education, value: education }
+          - { label: Healthcare, value: healthcare }
+          - { label: Technology, value: technology }
+          - { label: Community, value: community }
+          - { label: Business, value: business }
+          - { label: Arts, value: arts }
+          - { label: Services, value: services }
+          - { label: Other, value: other }
+
+      - name: posted
+        label: Date posted
+        widget: datetime
+        required: true
+        type: date
+        picker_utc: true
+        default: '{{now}}'
+
+      - name: deadline
+        label: Application deadline
+        widget: datetime
+        required: false
+        type: date
+        picker_utc: true
+
+      - name: status
+        label: Status
+        widget: select
+        required: false
+        default: open
+        options:
+          - { label: Open, value: open }
+          - { label: Closed, value: closed }
+          - { label: Draft, value: draft }
+
+      - name: featured
+        label: Feature this job
+        widget: boolean
+        required: false
+        default: false
+
+      - name: salary
+        label: Salary or stipend
+        widget: string
+        required: false
+
+      - name: skills
+        label: Skills
+        widget: list
+        required: true
+        hint: At least one skill. The schema requires this field.
+
+      # Required in the schema, and email is validated, so a blank or malformed
+      # address fails the build.
+      - name: contact
+        label: How to apply
+        widget: object
+        required: true
+        fields:
+          - name: email
+            label: Email
+            widget: string
+            required: true
+            pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', 'Enter a valid email address']
+          - { name: phone, label: Phone, widget: string, required: false }
+          - { name: website, label: Website, widget: string, required: false }
+
+      - name: description
+        label: Summary
+        widget: text
+        required: true
+        hint: Shown on the jobs index. The full description goes in the field below.
+
+      - name: body
+        label: Full description
+        widget: markdown
+        required: false
