@@ -1,23 +1,32 @@
 ---
-title: "International Yoga Day 2026"
-description: "Join Art for Hope and the Dzaleka community in celebrating the International Day of Yoga 2026. This event honors the journey of thousands using yoga for healing, recovery, and inner peace."
-date: 2026-06-21T09:00:00Z
-endDate: 2026-06-22T00:30:00Z
-location: "Art for Hope, Kawale 1, Dzaleka Camp"
-capacity: 350
-category: "Live Performance"
+title: International Yoga Day 2026
+description: Join Art for Hope and the Dzaleka community in celebrating the International Day of Yoga 2026. This event honors the journey of thousands using yoga for healing, recovery, and inner peace.
+date: 2026-06-21
+endDate: 2026-06-22
+location: Art for Hope, Kawale 1, Dzaleka Camp
+category: Live Performance
+organizer: Art for Hope
+status: past
 featured: true
 image: https://i0.wp.com/artfohope.org/wp-content/uploads/2026/03/IMG_6969-scaled.jpg?fit=2560%2C1920&ssl=1
-organizer: "Art for Hope"
-status: "upcoming"
 contact:
-  email: "artforhope89@gmail.com"
-  phone: "+265991306413"
-  whatsapp: "+265991306413"
-  website: "https://artfohope.org/"
+  email: artforhope89@gmail.com
+  phone: '+265991306413'
+  whatsapp: '+265991306413'
+  website: https://artfohope.org/
 registration:
   required: false
-tags: ["International Yoga Day", "Yoga for Healing", "Community Wellness", "Dzaleka Refugee Camp", "Art for Hope", "Mental Health"]
+  url: ''
+  deadline: ''
+panelists: []
+tags:
+  - International Yoga Day
+  - Yoga for Healing
+  - Community Wellness
+  - Dzaleka Refugee Camp
+  - Art for Hope
+  - Mental Health
+capacity: 350
 ---
 
 > Note: This is a free event with a capacity of 350 attendees.
