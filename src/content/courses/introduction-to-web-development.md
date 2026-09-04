@@ -291,7 +291,7 @@ getWeather("Lilongwe");
 ```
 
 ### 5.3 ES Modules
-Organizing code into multiple files.
+Organising code into multiple files.
 
 ```javascript
 // math.js

@@ -71,7 +71,7 @@ export function EmergencyAlerts() {
         setError(null);
       } catch (err) {
         console.error('Error fetching emergency alerts:', err);
-        setError('Failed to load alerts. Please try again later.');
+        setError('Failed to load alerts. Try again later.');
       } finally {
         setLoading(false);
       }

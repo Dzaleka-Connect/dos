@@ -23,7 +23,7 @@ Located just outside the Dzaleka Camp gates, TakenoLAB offers free courses in:
 Founded in 2015 by Burundian refugee Remy Gakwaya, who lived in the camp for over two decades before being resettled in the United States in 2022, TakenoLAB continues to thrive under the local direction of Deborah Ntakirutimana. The academy's impact is significant, with students describing it as a place that "made our dreams come true" and "took us from zero to hero."
 
 ### Business Development Programs
-Several organizations offer entrepreneurship training programs:
+Several organisations offer entrepreneurship training programs:
 - 6-month entrepreneurship courses with business proposal development
 - Market analysis training
 - Financial management workshops
@@ -32,14 +32,14 @@ Several organizations offer entrepreneurship training programs:
 ## Success Stories and Initiatives
 
 ### Salama Africa
-Founded in 2014 by Congolese brothers Toussaint and Fred Farini, Salama Africa has grown from a dance group to a comprehensive arts organization offering:
+Founded in 2014 by Congolese brothers Toussaint and Fred Farini, Salama Africa has grown from a dance group to a comprehensive arts organisation offering:
 - Professional dance training
 - Drawing classes
 - Photography workshops
 - Videography training
 - Technology skills development
 
-The organization has gained international recognition and helps young dancers gain visibility and income opportunities.
+The organisation has gained international recognition and helps young dancers gain visibility and income opportunities.
 
 ### Umoja Women Craft
 An association of fifteen women (ages 40-60) who:
@@ -198,7 +198,7 @@ Programs like the Tumaini Festival help by:
 ### Success Stories to Learn From
 
 - **TakenoLAB Graduates**: Students who transformed their skills into businesses
-- **Salama Africa**: Started as a dance group, now a comprehensive arts organization
+- **Salama Africa**: Started as a dance group, now a comprehensive arts organisation
 - **Umoja Women Craft**: Traditional basket weaving adapted to new materials
 - **Music Production Studio**: Self-taught skills turned into a business
 - **Photography Training**: Using artistic skills to create opportunities
@@ -221,13 +221,13 @@ Programs like the Tumaini Festival help by:
 ### Upcoming Events
 - [Tumaini Festival 2025](/events/tumaini-festival-2025) - Major cultural event
 
-For more detailed information about specific programs, services, and opportunities, please visit our [Services Directory](/services) or check our [Events Calendar](/events).
+For more detailed information about specific programs, services, and opportunities, visit our [Services Directory](/services) or check our [Events Calendar](/events).
 
 ## Conclusion
 
 Entrepreneurship in Dzaleka Camp continues to grow, with numerous success stories demonstrating the potential for business development. As noted by UNHCR Education Officer Priscilla Kalumo, these initiatives are "adding critically needed capacity to the camp" and helping both UNHCR and the Malawi government reach their goals of increasing opportunities for camp residents and Malawian citizens.
 
-For more information about specific programs and opportunities, visit our Services directory or contact the relevant organizations directly.
+For more information about specific programs and opportunities, visit our Services directory or contact the relevant organisations directly.
 
 ---
 

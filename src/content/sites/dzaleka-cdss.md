@@ -26,7 +26,7 @@ The school follows the Malawian National Curriculum, preparing students for the 
 
 ## Statement of Significance
 
-For most youth in Dzaleka, CDSS is the only pathway to higher education. It acts as a bridge to tertiary programs such as **Jesuit Worldwide Learning (JWL)** or specialized resettlement scholarships. Beyond academics, the school is a hub for innovation; students have won national honors, including the **Scientific and Technological Innovation Award**, for environmental engineering projects like creating lifejackets from recycled materials.
+For most youth in Dzaleka, CDSS is the only pathway to higher education. It acts as a bridge to tertiary programs such as **Jesuit Worldwide Learning (JWL)** or specialised resettlement scholarships. Beyond academics, the school is a hub for innovation; students have won national honors, including the **Scientific and Technological Innovation Award**, for environmental engineering projects like creating lifejackets from recycled materials.
 
 ## History & Background
 

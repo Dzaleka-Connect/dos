@@ -65,4 +65,4 @@ The BBC production highlights how the festival draws thousands of Malawian visit
 
 ## Critical Reception and Awards
 
-The documentary received wide praise across international broadcasting networks for portraying refugees not as passive victims of humanitarian crises, but as vibrant creators, organizers, and cultural leaders. It remains a major international media record of Dzaleka's artistic landscape.
+The documentary received wide praise across international broadcasting networks for portraying refugees not as passive victims of humanitarian crises, but as vibrant creators, organisers, and cultural leaders. It remains a major international media record of Dzaleka's artistic landscape.

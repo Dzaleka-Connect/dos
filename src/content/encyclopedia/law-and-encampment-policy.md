@@ -54,7 +54,7 @@ This article is a general reference, not legal advice. Current legal questions s
 
 ## Encampment policy
 
-Malawi's encampment policy generally requires refugees and asylum-seekers to live at Dzaleka unless authorised to reside or travel elsewhere. Exit permits can be important for education, specialised medical care, work, or other travel outside the camp. Sociological analysis (e.g. Stammen 2025) describes the encampment system as a spatial technology that enforces prolonged "waiting" and legal limbo, which residents counter through self-reliance initiatives and community organisations.
+Malawi's encampment policy generally requires refugees and asylum-seekers to live at Dzaleka unless authorised to reside or travel elsewhere. Exit permits can be important for education, specialised medical care, work, or other travel outside the camp. Sociological analysis (for example, Stammen 2025) describes the encampment system as a spatial technology that enforces prolonged "waiting" and legal limbo, which residents counter through self-reliance initiatives and community organisations.
 
 In March 2023, the Government directed refugees and asylum-seekers living in urban and rural areas to return to Dzaleka. UNHCR reported that the relocation increased pressure on an already congested settlement and called for rights and dignity to be protected during the process. Academic research records that the forced returns exacerbated housing shortages, heightened social tension, and displaced residents from urban livelihoods.
 

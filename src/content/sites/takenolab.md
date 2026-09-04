@@ -30,7 +30,7 @@ The lab functions as both a school and a community hub, where students from dive
 
 The founding of TakenoLAB is a powerful testament to refugee resilience. In its early days, the school operated with virtually no hardware, famously using **printed images of keyboards** to help students practice muscle memory for typing. Today, it stands as a global example of how localized, community-led tech education can transform lives in humanitarian settings.
 
-The organization's **Vision 2030** is ambitious: to train 10,000 tech professionals and create 5,000 jobs by 2030, eventually expanding its model to other refugee camps worldwide.
+The organisation's **Vision 2030** is ambitious: to train 10,000 tech professionals and create 5,000 jobs by 2030, eventually expanding its model to other refugee camps worldwide.
 
 ## History & Background
 

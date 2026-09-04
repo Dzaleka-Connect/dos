@@ -33,8 +33,8 @@ The campus is significant because it provides a dedicated, safe physical space f
 ## History & Background
 
 - **2006**: There Is Hope is founded by Innocent Magambi to provide educational and income-generating opportunities to refugees.
-- **Campus Development**: The organization established this operational base directly adjacent to the camp to maximize accessibility for residents while integrating members of the local Malawian host community into its programs.
+- **Campus Development**: The organisation established this operational base directly adjacent to the camp to maximise accessibility for residents while integrating members of the local Malawian host community into its programs.
 
 ## Condition & Preservation
 
-The campus is highly active and well-maintained by the organization. It functions as a modern educational facility, continuously adapting its classrooms and workshops to host newly integrated vocational skills and community programs.
+The campus is highly active and well-maintained by the organisation. It functions as a modern educational facility, continuously adapting its classrooms and workshops to host newly integrated vocational skills and community programs.

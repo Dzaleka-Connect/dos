@@ -15,7 +15,7 @@ At [Dzaleka Online Services](https://services.dzaleka.com), we're proud to offer
 
 ## What You'll Find in Our Resource Library
 
-Our resource collection is organized into several key categories, each serving different needs and interests:
+Our resource collection is organised into several key categories, each serving different needs and interests:
 
 ### 📊 **Research and Reports**
 
@@ -82,7 +82,7 @@ Find information on economic opportunities and challenges:
 Our resources are available in multiple formats:
 - **PDF Downloads** - For offline reading and reference
 - **Web Articles** - For online reading and sharing
-- **External Links** - Connecting to original sources and organizations
+- **External Links** - Connecting to original sources and organisations
 - **Multilingual Content** - Available in various languages
 
 ### **Stay Updated**
@@ -125,7 +125,7 @@ We welcome contributions to expand our resource collection:
 
 Our resource library is more than just a collection of documents—it's a living knowledge base that grows with our community. By making these resources easily accessible, we're supporting:
 
-- **Informed Decision Making**: Evidence-based choices for individuals and organizations
+- **Informed Decision Making**: Evidence-based choices for individuals and organisations
 - **Capacity Building**: Knowledge transfer and skill development
 - **Community Empowerment**: Access to information that supports self-advocacy
 - **Research and Innovation**: Foundation for new studies and initiatives

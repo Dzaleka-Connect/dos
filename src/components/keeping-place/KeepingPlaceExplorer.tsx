@@ -1139,7 +1139,7 @@ export function KeepingPlaceExplorer() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Dzaleka Youth Center"
+                  placeholder="For example, Dzaleka Youth Center"
                   value={newSiteName}
                   onChange={(e) => setNewSiteName(e.target.value)}
                   className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-slate-400 focus:outline-none shadow-sm"

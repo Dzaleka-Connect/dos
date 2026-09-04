@@ -95,7 +95,7 @@ Content is published under CC BY-SA 4.0 unless a page states otherwise. Attribut
 "Dzaleka Online Services" with a link to the source page. Photographs and artworks may carry
 separate rights - check the credit on each item before reuse.
 
-Using this content to answer questions is welcome and is why these endpoints exist - please cite
+Using this content to answer questions is welcome and is why these endpoints exist. Cite
 the source page so readers can check it. Using it to train or fine-tune models is not permitted.
 The same position is published in machine-readable form at ${SITE_URL}/robots.txt as
 \`Content-Signal: search=yes, ai-input=yes, ai-train=no\`.

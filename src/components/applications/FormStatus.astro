@@ -36,7 +36,7 @@ const { formId } = Astro.props;
       </svg>
       <div>
         <p class="font-medium" id={`${formId}-error-title`}>Submission Error</p>
-        <p class="text-sm mt-1" id={`${formId}-error-message`}>There was an error submitting your application. Please try again or contact support if the problem persists.</p>
+        <p class="text-sm mt-1" id={`${formId}-error-message`}>There was an error submitting your application. Try again or contact support if the problem persists.</p>
         <div class="mt-3">
           <p class="text-sm font-medium">Common solutions:</p>
           <ul class="mt-1 text-sm list-disc list-inside pl-2">
@@ -100,7 +100,7 @@ const { formId } = Astro.props;
 
           // Check if total file size exceeds 10MB
           if (totalSize > 10 * 1024 * 1024) {
-            throw new Error('Total file size exceeds 10MB limit. Please reduce file sizes and try again.');
+            throw new Error('Total file size exceeds 10MB limit. Reduce file sizes and try again.');
           }
 
           // Get form data
@@ -130,13 +130,13 @@ const { formId } = Astro.props;
             const formType = form.getAttribute('data-form-type') || 'default';
             window.location.href = `/thank-you?type=${formType}`;
           } else {
-            throw new Error(data.error || 'Form submission failed. Please try again.');
+            throw new Error(data.error || 'Form submission failed. Try again.');
           }
         } catch (error) {
           // Show error message
           errorDiv.classList.remove('hidden');
           errorTitle.textContent = 'Submission Error';
-          errorMessage.textContent = error.message || 'A system error occurred. Please try again later or contact support.';
+          errorMessage.textContent = error.message || 'A system error occurred. Try again later or contact support.';
           console.error('Form submission error:', error);
 
           // Reset button state
@@ -156,7 +156,7 @@ const { formId } = Astro.props;
           statusDiv.classList.remove('hidden');
           errorDiv.classList.remove('hidden');
           errorTitle.textContent = 'Validation Error';
-          errorMessage.textContent = 'Please fill in all required fields correctly.';
+          errorMessage.textContent = 'Fill in all required fields correctly.';
           statusDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
 

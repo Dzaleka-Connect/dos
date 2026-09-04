@@ -9,7 +9,7 @@ lastReviewed: 2026-07-22
 datePublished: 2022-06-15
 image: "https://services.dzaleka.com/images/encyclopedia/katudza-market.jpg"
 imageAlt: "Dzaleka commercial market area"
-imageCaption: "Commercial activity in Dzaleka, analyzed in the 2022 Erasmus University livelihood study."
+imageCaption: "Commercial activity in Dzaleka, analysed in the 2022 Erasmus University livelihood study."
 imageCredit: "Dzaleka Online Services"
 facts:
   - label: "Author"
@@ -47,7 +47,7 @@ relatedEntries:
 
 ***Refugees' Livelihood Strategies in a Setting of Long-term Encampment: The Case of Dzaleka Refugee Camp in Malawi*** is a 2022 academic master's thesis published by **Erasmus University Rotterdam**. The research offers a critical empirical examination of how long-term camp residents adapt, survive, and build economic agency despite severe legal restrictions on formal employment, business ownership, and land tenure under Malawi's 1989 Refugee Act.
 
-Drawing on extensive qualitative fieldwork inside Dzaleka, the study analyzes the divergence between humanitarian policy narratives of "self-reliance" and the day-to-day realities of navigating chronic economic vulnerability.
+Drawing on extensive qualitative fieldwork inside Dzaleka, the study analyses the divergence between humanitarian policy narratives of "self-reliance" and the day-to-day realities of navigating chronic economic vulnerability.
 
 ---
 
@@ -55,7 +55,7 @@ Drawing on extensive qualitative fieldwork inside Dzaleka, the study analyzes th
 
 ### 1. Social Capital as Survival Infrastructure
 The thesis documents that access to financial capital in Dzaleka is heavily reliant on informal social infrastructure rather than institutional credit. Residents rely on:
-* **Peer Mutual-Aid Associations (*Ikirimba*)**: Rotating savings and credit associations organized along nationality, language, or sector lines.
+* **Peer Mutual-Aid Associations (*Ikirimba*)**: Rotating savings and credit associations organised along nationality, language, or sector lines.
 * **Transnational Remittances**: Financial support from diaspora family networks in South Africa, North America, and Europe.
 * **Inter-Household Resource Sharing**: Informal food and cash borrowing between long-term residents and newly arrived asylum seekers.
 

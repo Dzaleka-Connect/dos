@@ -14,11 +14,11 @@ The **Refugee Regulations of 1990** provide the operational details for implemen
 
 ## Convention Travel Documents (CTDs)
 
-A **Convention Travel Document (CTD)**, often called a "Refugee Passport," allows a recognized refugee to travel internationally to countries that accept it (e.g., for education, medical treatment, or conferences).
+A **Convention Travel Document (CTD)**, often called a "Refugee Passport," allows a recognised refugee to travel internationally to countries that accept it (for example, for education, medical treatment, or conferences).
 
 ### Eligibility
-- Must be a recognized refugee with active status in Malawi.
-- Must have a valid reason for travel (e.g., educational scholarship overseas).
+- Must be a recognised refugee with active status in Malawi.
+- Must have a valid reason for travel (for example, educational scholarship overseas).
 
 ### Application Process (Current Reality)
 1.  **Written Application:** Submit a letter to the **Chief Immigration Officer**.

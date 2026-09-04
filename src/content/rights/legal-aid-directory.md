@@ -1,6 +1,6 @@
 ---
 title: "Legal Aid & Advocacy Directory"
-description: "Organizations in and around Dzaleka that provide legal assistance and counseling."
+description: "Organisations in and around Dzaleka that provide legal assistance and counseling."
 category: "resource"
 source: "Community Data"
 date: 2026-02-02
@@ -10,16 +10,16 @@ featured: true
 
 ## Where to Get Help
 
-If you have a legal problem, need help with your status determination, or have been arrested, the following organizations can assist.
+If you have a legal problem, need help with your status determination, or have been arrested, the following organisations can assist.
 
 ### 1. Inua Advocacy
 **Focus:** Legal aid, refugee rights advocacy, and awareness.
-Inua Advocacy is a refugee-led organization dedicated to legal empowerment. They provide professional legal assistance and work to dispel myths about refugee rights.
+Inua Advocacy is a refugee-led organisation dedicated to legal empowerment. They provide professional legal assistance and work to dispel myths about refugee rights.
 
 - **Services:**
     - Legal representation in court.
     - Advice on refugee status appeals.
-    - Advocacy for policy change (e.g., against the encampment policy).
+    - Advocacy for policy change (for example, against the encampment policy).
 - **Location:** Dzaleka Refugee Camp (near the market).
 - **Contact:** [Visit Website](https://inuaadvocacy.org)
 

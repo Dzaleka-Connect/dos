@@ -1,6 +1,6 @@
 ---
 title: Documentation Roadmap
-description: A working plan for how the docs are organized now, what tracks exist, and what should be added next
+description: A working plan for how the docs are organised now, what tracks exist, and what should be added next
 section: developers
 lastUpdated: 2026-04-19
 ---

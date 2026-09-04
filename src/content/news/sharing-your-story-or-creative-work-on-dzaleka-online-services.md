@@ -71,14 +71,14 @@ Share and celebrate our rich cultural heritage:
 
 ### For Success Stories
 1. Visit the [Success Stories](/success-stories) page
-2. Click "Share Your Story"
+2. Select "Share Your Story"
 3. Fill in the story submission form
 4. Add supporting media
 5. Submit for review
 
 ## Content Guidelines
 
-To ensure quality and relevance, please follow these guidelines:
+To ensure quality and relevance, follow these guidelines:
 - Content should be original and authentic
 - Respect community privacy and dignity
 - Use appropriate language and tone

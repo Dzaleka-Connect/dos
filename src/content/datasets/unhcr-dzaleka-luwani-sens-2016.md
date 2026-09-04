@@ -64,7 +64,7 @@ This release is useful when the research question sits at the intersection of Dz
 
 That makes it particularly useful for comparative review work, historical baselining, and health-and-food-security context building.
 
-## What the UNHCR record emphasizes
+## What the UNHCR record emphasises
 
 The UNHCR Microdata Library describes this as a 2016 Standardised Expanded Nutrition Survey for Dzaleka, Luwani, and host communities. The public entry says fieldwork ran from March 7, 2016 to March 28, 2016, and that the release includes modules on food security, mosquito nets, WASH, young children, and women aged 15 to 49.
 

@@ -49,7 +49,7 @@ Tumaini Letu — "Our Hope" in Swahili — is a non-profit organisation based in
 
 The organisation is best known for the [Tumaini Festival](/encyclopedia/tumaini-festival), which it has staged inside the camp since 2014 and which is widely described as the world's only arts festival held within a refugee camp. The festival is covered in its own entry; Tumaini Letu is the institution behind it.
 
-Beyond the festival, the organisation describes its mission as promoting the economic, social, and cultural inclusion of refugees in Malawi — through workshops and training, business and connection opportunities, and by opening Dzaleka to visitors. Academic research (Stammen 2025) emphasizes that Tumaini Letu's work actively counters both national and global marginalisation of refugees, serving as a platform for intercultural harmony and community agency.
+Beyond the festival, the organisation describes its mission as promoting the economic, social, and cultural inclusion of refugees in Malawi — through workshops and training, business and connection opportunities, and by opening Dzaleka to visitors. Academic research (Stammen 2025) emphasises that Tumaini Letu's work actively counters both national and global marginalisation of refugees, serving as a platform for intercultural harmony and community agency.
 
 ## Recognition
 

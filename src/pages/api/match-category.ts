@@ -26,7 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         return new Response(JSON.stringify({
             success: true,
-            message: `You have been matched with potential candidates in ${category}. Please browse the profiles below and contact them directly.`,
+            message: `You have been matched with potential candidates in ${category}. Browse the profiles below and contact them directly.`,
             timestamp: new Date().toISOString()
         }), {
             status: 200,

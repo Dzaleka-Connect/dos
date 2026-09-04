@@ -1,6 +1,6 @@
 ---
 title: Community Events
-description: Guide to browsing and organizing events on the platform
+description: Guide to browsing and organising events on the platform
 section: events
 ---
 Use the events section to browse what is happening in Dzaleka and to share public events that should appear on the site.
@@ -13,9 +13,9 @@ Use the events section to browse what is happening in Dzaleka and to share publi
 
 Event listings usually include the title, date, location, organiser, and a short summary.
 
-## Organize or list an event
+## Organise or list an event
 
-1. Open [Organize an event](/events/organize).
+1. Open [Organise an event](/events/organize).
 2. Add the event title, date, location, and description.
 3. Include organiser details and any registration link.
 4. Submit the form for review.
@@ -39,6 +39,6 @@ Event listings usually include the title, date, location, organiser, and a short
 ## Need help?
 
 - [Events](/events)
-- [Organize an event](/events/organize)
+- [Organise an event](/events/organize)
 - [Contact](/contact)
 - [Support](/support)

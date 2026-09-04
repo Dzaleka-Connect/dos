@@ -80,11 +80,11 @@ Dzaleka Refugee Camp, home to over 60,000 residents from 5 main nationalities (C
 
 ### Community Directory
 - Connect with essential services
-- Refugee-led organizations
+- Refugee-led organisations
 - Community support networks
 - Visit: [Community Directory](https://services.dzaleka.com/services)
 
-## Refugee-Led Organizations
+## Refugee-Led Organisations
 
 ### RELON Malawi (Refugees-led Organization Network Of Malawi)
 - Networking opportunities
@@ -93,7 +93,7 @@ Dzaleka Refugee Camp, home to over 60,000 residents from 5 main nationalities (C
 - Collective advocacy
 - Website: [RELON Malawi](https://relonmalawi.org)
 
-### Key Organizations
+### Key Organisations
 - **There is Hope**: Healthcare and education initiatives
   - Website: [There is Hope](https://thereishope.org)
 - **Tumaini Festival**: Cultural expression and economic opportunity

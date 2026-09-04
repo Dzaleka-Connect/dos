@@ -7,7 +7,7 @@ lastUpdated: 2026-04-18
 ---
 Agent Skills are machine-readable instruction sets that help AI agents, assistants, and RAG pipelines interact safely and effectively with Dzaleka Online Services.
 
-While the Public API provides the data, **Agent Skills** provide the "rules of engagement"—telling an agent when to use the API, which pages to prioritize in a crisis, and how to avoid common pitfalls like hallucinating contact information.
+While the Public API provides the data, **Agent Skills** provide the "rules of engagement"—telling an agent when to use the API, which pages to prioritise in a crisis, and how to avoid common pitfalls like hallucinating contact information.
 
 ## Discovery
 
@@ -24,7 +24,7 @@ Each skill is published as a markdown file with YAML frontmatter. This format is
 
 A typical `SKILL.md` includes:
 - **Name & Description**: Defining the skill's purpose.
-- **Compatibility**: The environment needed (e.g., "Standard JSON fetch").
+- **Compatibility**: The environment needed (for example, "Standard JSON fetch").
 - **When/Do Not Use**: Guardrails for the agent's routing logic.
 - **Working Sequence**: Step-by-step instructions for the task.
 - **Route/API Map**: Key URLs or endpoints relevant to the skill.
@@ -37,7 +37,7 @@ Dzaleka Online Services currently publishes three core skills:
 **Name:** `dzaleka-help-and-safety`  
 **Purpose:** Routing urgent protection, rights, and newcomer support requests.
 
-Use this skill when a user is in crisis or needs immediate guidance. It prioritizes the [Get Help Now](/get-help-now) and [Rights Navigator](/rights-navigator) routes above all other background information.
+Use this skill when a user is in crisis or needs immediate guidance. It prioritises the [Get Help Now](/get-help-now) and [Rights Navigator](/rights-navigator) routes above all other background information.
 
 ### 2. Public API
 **Name:** `dzaleka-public-api`  
@@ -49,7 +49,7 @@ Use this skill to prevent agents from scraping HTML when a structured JSON endpo
 **Name:** `dzaleka-site-navigation`  
 **Purpose:** Helping agents find the right public page for a human user.
 
-Use this skill to map user intent (e.g., "Where are the jobs?") to the correct page route (`/jobs/`). It includes "Routing Rules" to ensure agents don't bury urgent links under generic navigation menus.
+Use this skill to map user intent (for example, "Where are the jobs?") to the correct page route (`/jobs/`). It includes "Routing Rules" to ensure agents don't bury urgent links under generic navigation menus.
 
 ## Implementation Guide
 
@@ -76,7 +76,7 @@ async function loadAgentSkills() {
 When integrating these skills into an LLM-based agent, we recommend injecting the `SKILL.md` content into the system prompt or using it as a few-shot example for the agent's routing logic.
 
 **Example Routing Rule:**
-> "Before answering a question about Dzaleka, check the `dzaleka-site-navigation` skill. If the user's intent matches a listed route, prioritize that link in your response."
+> "Before answering a question about Dzaleka, check the `dzaleka-site-navigation` skill. If the user's intent matches a listed route, prioritise that link in your response."
 
 ## Guardrails & Safety
 
@@ -84,7 +84,7 @@ To ensure the safety of the Dzaleka community, all agents using these skills mus
 
 - **Trust the Live Page**: If a `SKILL.md` file and a live page disagree, the agent should trust the live response.
 - **Do Not Invent Contacts**: Never hallucinate phone numbers, office hours, or locations. Only use the exact strings provided in the skills or on the matching public pages.
-- **Prioritize the "Get Help Now" Route**: If a user's request sounds urgent (violence, health, protection), always lead with the [Get Help Now](/get-help-now) link.
+- **Prioritise the "Get Help Now" Route**: If a user's request sounds urgent (violence, health, protection), always lead with the [Get Help Now](/get-help-now) link.
 - **No Scraping when API Exists**: Prefer JSON endpoints over HTML scraping whenever the skill indicates an API path is available.
 
 ---

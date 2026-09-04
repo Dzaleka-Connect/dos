@@ -20,7 +20,7 @@ const infoData: Record<string, InfoItem> = {
     source: "UNHCR Malawi Fact Sheet - August 2024"
   },
   incidents: {
-    title: "Recent Major Events (2022-2024)",
+    title: "Recent Major Events (2022 to 2024)",
     content: [
       "November 22, 2022: Unrest at Dzaleka Camp over distribution of aid materials",
       "December 14, 2022: Grenade attack on Burundian community leader Butoyi Fideli",
@@ -28,7 +28,7 @@ const infoData: Record<string, InfoItem> = {
       "July 17, 2024: Malawi Defence Force raid targeting suspected human traffickers",
       "October 12, 2024: Second widespread raid resulting in arrests and injuries"
     ],
-    source: "Dzaleka Camp Security Reports, 2022-2024"
+    source: "Dzaleka Camp Security Reports, 2022 to 2024"
   },
   stakeholders: {
     title: "Key Stakeholders in Refugee Management",

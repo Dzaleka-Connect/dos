@@ -4,7 +4,7 @@ title: Jobs Board
 summary: "Published job opportunities, roles, and calls for participation shared on Dzaleka Online Services."
 description:
   - "This dataset exposes the public jobs collection used on the site. It is useful for opportunity boards, alert digests, and lightweight labor-market snapshots."
-  - "Records include public metadata such as organization, role type, deadline, and route path."
+  - "Records include public metadata such as organisation, role type, deadline, and route path."
 theme: "Livelihoods & opportunity"
 publisher: Dzaleka Online Services
 coverage: Jobs and opportunities relevant to Dzaleka and nearby partners
@@ -16,7 +16,7 @@ tags:
   - listings
 highlights:
   - Public job postings and deadlines
-  - Organization and role metadata
+  - Organisation and role metadata
   - Useful for job alerts and opportunity indexes
   - Links back to detailed job pages
 distributions:

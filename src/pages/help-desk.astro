@@ -64,7 +64,7 @@ const faqs = [
   },
   {
     question: "What information should I include in my request?",
-    answer: "Please include your full name, contact information, and a detailed description of your issue or question. For technical issues, please provide any relevant error messages or screenshots."
+    answer: "Include your full name, contact information, and a detailed description of your issue or question. For technical issues, provide any relevant error messages or screenshots."
   },
   {
     question: "What are your business hours?",
@@ -72,7 +72,7 @@ const faqs = [
   },
   {
     question: "What languages do you support?",
-    answer: "We provide support in English, French, and Swahili. Please indicate your preferred language in your request."
+    answer: "We provide support in English, French, and Swahili. Indicate your preferred language in your request."
   }
 ];
 
@@ -91,10 +91,10 @@ if (Astro.request.method === "POST") {
     
     // Validate the data
     if (typeof name !== "string" || name.length < 1) {
-      errors.name = "Please enter your name";
+      errors.name = "Enter your name";
     }
     if (typeof email !== "string" || !email.includes("@")) {
-      errors.email = "Please enter a valid email";
+      errors.email = "Enter a valid email";
     }
     if (typeof message !== "string" || message.length < 10) {
       errors.message = "Message must be at least 10 characters";

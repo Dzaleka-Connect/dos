@@ -41,7 +41,7 @@ This is the quickest way to choose the right part of Dzaleka Online Services.
 
 - [Submit Voice](/submit-voice)
 - [Photo submission](/photos/submit)
-- [Organize an event](/events/organize)
+- [Organise an event](/events/organize)
 - [Submit a resource](/resources/submit)
 - [Register a service](/services/register)
 

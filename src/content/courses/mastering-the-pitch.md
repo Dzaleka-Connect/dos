@@ -92,13 +92,13 @@ A standard pitch deck has 10-12 slides. Here is the proven structure:
 
 ### 3.5 Competition
 -   Who else is doing this?
--   **The Matrix**: Use a 2x2 grid to show where you sit compared to competitors (e.g., Affordable vs. Expensive, Simple vs. Complex).
+-   **The Matrix**: Use a 2x2 grid to show where you sit compared to competitors (for example, Affordable vs. Expensive, Simple vs. Complex).
 
 ### 3.6 Business Model
--   How do you make money? (e.g., Subscription, One-time purchase, Ads).
+-   How do you make money? (for example, Subscription, One-time purchase, Ads).
 
 ### 3.7 Go-to-Market Strategy
--   How will you get customers? (e.g., Social media, Sales team, Partnerships).
+-   How will you get customers? (for example, Social media, Sales team, Partnerships).
 
 ### 3.8 The Team
 -   Who is building this? Highlight relevant experience.
@@ -108,7 +108,7 @@ A standard pitch deck has 10-12 slides. Here is the proven structure:
 
 ### 3.10 The Ask
 -   How much money do you need?
--   What will you use it for? (e.g., 40% Product, 30% Marketing, 30% Hiring).
+-   What will you use it for? (for example, 40% Product, 30% Marketing, 30% Hiring).
 
 ---
 

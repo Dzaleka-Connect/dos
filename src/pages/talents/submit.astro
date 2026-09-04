@@ -45,7 +45,7 @@ const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET;
             id="category"
             required
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-            placeholder="e.g., Graphic Designer, Musician, Developer"
+            placeholder="For example, Graphic Designer, Musician, Developer"
           />
         </div>
 
@@ -189,7 +189,7 @@ if (profilePicInput) {
       submitButton.disabled = false;
     } catch (error) {
       console.error('Upload error:', error);
-      uploadStatus.textContent = 'Failed to upload image. Please try again.';
+      uploadStatus.textContent = 'Failed to upload image. Try again.';
       uploadStatus.className = 'mt-2 text-sm text-red-600';
       submitButton.disabled = true;
     }
@@ -201,7 +201,7 @@ if (form) {
   form.addEventListener('submit', async (e) => {
     if (!profilePicUrl.value) {
       e.preventDefault();
-      uploadStatus.textContent = 'Please upload a profile picture first.';
+      uploadStatus.textContent = 'Upload a profile picture first.';
       uploadStatus.className = 'mt-2 text-sm text-red-600';
     }
   });

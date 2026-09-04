@@ -551,7 +551,7 @@ export function DzalekaInteractiveMap() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.placeName || !formData.description) {
-      alert('Please fill in the place name and description.');
+      alert('Fill in the place name and description.');
       return;
     }
     setSubmitting(true);
@@ -566,7 +566,7 @@ export function DzalekaInteractiveMap() {
       if (res.ok && result.success) {
         setSubmissionSuccess(true);
       } else {
-        alert(result.message || 'Submission error. Please try again.');
+        alert(result.message || 'Submission error. Try again.');
       }
     } catch (err) {
       console.error('Error submitting location node:', err);
@@ -1493,7 +1493,7 @@ export function DzalekaInteractiveMap() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Hope Bakery & Cafe, Youth Tech Hub..."
+                    placeholder="For example, Hope Bakery & Cafe, Youth Tech Hub..."
                     value={formData.placeName}
                     onChange={(e) => setFormData({ ...formData, placeName: e.target.value })}
                     className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800 font-medium"
@@ -1526,7 +1526,7 @@ export function DzalekaInteractiveMap() {
                     <label className="block font-semibold text-slate-700 mb-1">Operator / Owner Name</label>
                     <input
                       type="text"
-                      placeholder="e.g. Community CBO, Local Enterprise..."
+                      placeholder="For example, Community CBO, Local Enterprise..."
                       value={formData.operator}
                       onChange={(e) => setFormData({ ...formData, operator: e.target.value })}
                       className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"
@@ -1539,7 +1539,7 @@ export function DzalekaInteractiveMap() {
                     <label className="block font-semibold text-slate-700 mb-1">Opening Hours</label>
                     <input
                       type="text"
-                      placeholder="e.g. Mon-Sat: 08:00 - 17:00"
+                      placeholder="For example, Mon-Sat: 08:00 - 17:00"
                       value={formData.openingHours}
                       onChange={(e) => setFormData({ ...formData, openingHours: e.target.value })}
                       className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"
@@ -1549,7 +1549,7 @@ export function DzalekaInteractiveMap() {
                     <label className="block font-semibold text-slate-700 mb-1">Contact Phone / WhatsApp</label>
                     <input
                       type="text"
-                      placeholder="e.g. +265 99 123 4567"
+                      placeholder="For example, +265 99 123 4567"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"

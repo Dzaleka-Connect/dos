@@ -8,14 +8,14 @@ date: 2025-04-21
 category: "business-spotlight"
 ---
 
-Dzaleka Refugee Camp in Malawi is a hub of resilience and innovation, where refugee-led organizations are transforming challenges into opportunities. Here are 11 standout initiatives making a significant impact:​
+Dzaleka Refugee Camp in Malawi is a hub of resilience and innovation, where refugee-led organisations are transforming challenges into opportunities. Here are 11 standout initiatives making a significant impact:​
 
 
 1. [ADAI Circle](https://services.dzaleka.com/services/adai-circle):
 Founded by Jospin Amisi Hassan, ADAI Circle offers mentorship and education programs in data science, AI, software development, and hardware design. Established in 2020, it aims to foster job creation and reduce poverty in Malawi through technology and innovation. The Innovation Hub provides internet access to anyone in need, encouraging hands-on learning and collaboration
 ​
 2. [Inua Advocacy](https://services.dzaleka.com/services/inua-advocacy/):
-Established by Innocent Magambi, Inua Advocacy provides legal support and advocacy services for refugees in Malawi. The organization empowers refugees by informing them of their rights and offering resources to navigate legal challenges. ​
+Established by Innocent Magambi, Inua Advocacy provides legal support and advocacy services for refugees in Malawi. The organisation empowers refugees by informing them of their rights and offering resources to navigate legal challenges. ​
 
 3. [There Is Hope Malawi](https://services.dzaleka.com/services/there-is-hope-malawi/):
 A faith-based NGO, There Is Hope Malawi offers education, vocational training, and income-generating activities to refugees and the host community. Their programs aim to help individuals escape poverty and become self-reliant. ​
@@ -44,4 +44,4 @@ A community-based organisation led by refugee women that work for the protection
 11. [TakenoLAB](https://services.dzaleka.com/services/takenolab/):
 Founded in 2015 by Burundian refugee Remy Gakwaya, TakenoLAB is an ICT academy and tech hub located just outside Dzaleka. It offers training in software development, entrepreneurship, and leadership skills, aiming to bridge the digital divide for underserved communities. 
 
-You can view a full list of refugee-led organizations and services [here](https://services.dzaleka.com/services/).
+You can view a full list of refugee-led organisations and services [here](https://services.dzaleka.com/services/).

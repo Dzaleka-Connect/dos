@@ -104,7 +104,7 @@ export function ResourcesWidget() {
         setError(null);
       } catch (err) {
         console.error('Error fetching resources:', err);
-        setError('Failed to load resources. Please try again later.');
+        setError('Failed to load resources. Try again later.');
       } finally {
         setLoading(false);
       }

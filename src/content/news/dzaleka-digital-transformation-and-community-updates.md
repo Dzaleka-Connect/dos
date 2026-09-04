@@ -35,7 +35,7 @@ The World Food Program (WFP) has raised concerns over a potential suspension of 
 
 ## 🧠 Mental Health: Addressing the Unseen Struggles
 
-A recent study highlights the prevalence of depression and suicidal tendencies among individuals living in Dzaleka Refugee Camp. The research emphasizes the importance of mental health support and the need for comprehensive services to address these challenges.
+A recent study highlights the prevalence of depression and suicidal tendencies among individuals living in Dzaleka Refugee Camp. The research emphasises the importance of mental health support and the need for comprehensive services to address these challenges.
 
 [Source: It is time to think about refugees' mental health: The case of Dzaleka Refugee Camp - Malawi](https://services.dzaleka.com/resources/it_is_time_to_think_about_refugees_mental_health_the_case_of_dzaleka_refugee_camp_-_malawi/)
 
@@ -46,4 +46,4 @@ A recent study highlights the prevalence of depression and suicidal tendencies a
 3. **Education**: Support local schools and vocational training programs
 4. **Mental Health**: Volunteer or donate to mental health support services
 
-For more information about these initiatives or to get involved, please contact our support team at dzalekaconnect@gmail.com. 
+For more information about these initiatives or to get involved, contact our support team at dzalekaconnect@gmail.com. 

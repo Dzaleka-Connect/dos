@@ -23,7 +23,7 @@ tags:
 highlights:
   - "RFC 7946 GeoJSON FeatureCollection format with full GPS coordinates"
   - "Tabular CSV export for QGIS, GeoPandas, and Excel analysis"
-  - "Categorized by 12+ administrative zones (Katubza, Kawale 1 & 2, Lisungwi, etc.)"
+  - "Categorised by 12+ administrative zones (Katubza, Kawale 1 & 2, Lisungwi)"
   - "Humanitarian operational indicators & WASH borehole metrics"
 distributions:
   - title: GeoJSON Spatial API

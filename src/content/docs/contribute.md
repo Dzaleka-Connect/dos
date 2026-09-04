@@ -19,7 +19,7 @@ You can help keep Dzaleka Online Services useful by sharing accurate, community-
 
 ### Events
 
-- [Organize or list an event](/events/organize)
+- [Organise or list an event](/events/organize)
 - Suitable for workshops, meetings, performances, and public activities
 
 ### Resources

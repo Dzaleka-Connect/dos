@@ -55,7 +55,7 @@ sourceNote: This page is manually curated from public external sources that are 
 license: Mixed upstream licenses; verify each source before reuse
 maintainer: Dzaleka Online Services editorial team
 sourceUrl: https://data.unhcr.org/en/country/mwi
-temporalCoverage: 1994-present, with strongest current-reference coverage for 2024-2026
+temporalCoverage: 1994-present, with strongest current-reference coverage for 2024 to 2026
 methodology:
   - Sources are selected for public accessibility, relevance to Dzaleka, and repeated citation value across research or briefing work.
   - The page favors stable publisher landing pages, official PDFs, and policy explainers over social posts or short-lived announcements.

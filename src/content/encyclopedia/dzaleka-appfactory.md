@@ -45,4 +45,4 @@ The programme combined hands-on software development, business skills, mentoring
 
 The AppFactory is part of a longer history of refugee-led digital learning in Dzaleka. It provided connectivity, devices, formal instruction, and international partnerships at a time when reliable access to these resources was limited.
 
-This entry is marked as developing because the programme's current operating status has not been confirmed from a recent primary source. The article records the documented 2017-2019 programme rather than implying that admissions are currently open.
+This entry is marked as developing because the programme's current operating status has not been confirmed from a recent primary source. The article records the documented 2017 to 2019 programme rather than implying that admissions are currently open.

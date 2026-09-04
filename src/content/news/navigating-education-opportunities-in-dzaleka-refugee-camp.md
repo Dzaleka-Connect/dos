@@ -38,7 +38,7 @@ Education is a cornerstone of hope and opportunity for residents of Dzaleka Refu
 
 ### Scholarships and Support
 
-- Some organizations and initiatives offer scholarships and academic support for secondary and post-secondary studies, including financial aid and mentorship.
+- Some organisations and initiatives offer scholarships and academic support for secondary and post-secondary studies, including financial aid and mentorship.
 - Special projects like the Naweza Project focus on empowering girls and improving access to education through sanitary packs, WASH facilities, and community engagement.
 
 ---
@@ -49,7 +49,7 @@ Education is a cornerstone of hope and opportunity for residents of Dzaleka Refu
    Ask about enrollment periods, required documents, and available space.
 
 2. **Contact Community Education Partners:**  
-   Organizations such as Jesuit Refugee Service (JRS), UNHCR, and local NGOs can provide information on programs and scholarships.
+   Organisations such as Jesuit Refugee Service (JRS), UNHCR, and local NGOs can provide information on programs and scholarships.
 
 3. **Apply Early:**  
    Due to high demand, enroll as soon as possible and follow up regularly.

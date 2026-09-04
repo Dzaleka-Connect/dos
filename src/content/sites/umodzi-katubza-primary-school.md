@@ -36,7 +36,7 @@ The school also serves as a model for community integration and sustainable deve
 ## History & Background
 
 - **2003**: The school became fully operational under the management of the **Jesuit Refugee Service (JRS)**, which took over educational oversight in the camp.
-- **2006**: Recognized as one of the top-performing schools in the district, with refugee students consistently outperforming local schools in national primary exams.
+- **2006**: Recognised as one of the top-performing schools in the district, with refugee students consistently outperforming local schools in national primary exams.
 - **August 14, 2013**: Formal handover of three new junior classroom blocks funded by the **Government of Japan** (USD 89,176) to manage the rapidly growing population.
 - **2019**: Equipped with solar power and tablets through UNICEF's **Connect My Schools** project, establishing the campus as a hub for digital learning in Dzaleka.
 

@@ -251,7 +251,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
     <!-- Error Message -->
     <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 border border-red-200 p-4">
-      <p class="text-sm font-medium text-red-800">Error submitting registration. Please try again.</p>
+      <p class="text-sm font-medium text-red-800">Error submitting registration. Try again.</p>
     </div>
   </div>
 </MainLayout>
@@ -299,7 +299,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
       }
     } catch (error) {
       console.error('Upload error:', error);
-      statusElement.textContent = 'Upload failed. Please try again.';
+      statusElement.textContent = 'Upload failed. Try again.';
       statusElement.classList.add('text-red-500');
       return null;
     }
@@ -353,7 +353,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
       console.error('Submission error:', error);
       const errorElement = errorMessage.querySelector('p');
       if (errorElement) {
-        errorElement.textContent = error.message || 'Error submitting registration. Please try again.';
+        errorElement.textContent = error.message || 'Error submitting registration. Try again.';
       }
       successMessage.classList.add('hidden');
       errorMessage.classList.remove('hidden');

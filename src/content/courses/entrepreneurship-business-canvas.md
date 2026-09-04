@@ -29,7 +29,7 @@ You will learn how to identify business opportunities, assess your own entrepren
 -   Identify your personal strengths and areas for growth.
 -   Understand the 9 building blocks of the Business Model Canvas.
 -   Create a complete business model for your own idea.
--   Learn the basics of financial planning and resource mobilization.
+-   Learn the basics of financial planning and resource mobilisation.
 
 ---
 
@@ -85,31 +85,31 @@ Not every idea is a good business opportunity. We will use a screening matrix to
 The core of this course. The BMC is a strategic management template for developing new business models. It has 9 building blocks:
 
 ### 3.1 Customer Segments
-Who are you creating value for? Who are your most important customers? (e.g., Mass market, Niche market).
+Who are you creating value for? Who are your most important customers? (for example, Mass market, Niche market).
 
 ### 3.2 Value Propositions
-What value do you deliver to the customer? Which one of our customer's problems are we helping to solve? (e.g., Newness, Performance, Customization, Price).
+What value do you deliver to the customer? Which one of our customer's problems are we helping to solve? (for example, Newness, Performance, Customization, Price).
 
 ### 3.3 Channels
-Through which channels do your customer segments want to be reached? How are we reaching them now? (e.g., Social media, Physical store, Wholesalers).
+Through which channels do your customer segments want to be reached? How are we reaching them now? (for example, Social media, Physical store, Wholesalers).
 
 ### 3.4 Customer Relationships
-What type of relationship does each of our customer segments expect us to establish and maintain with them? (e.g., Personal assistance, Self-service, Communities).
+What type of relationship does each of our customer segments expect us to establish and maintain with them? (for example, Personal assistance, Self-service, Communities).
 
 ### 3.5 Revenue Streams
-For what value are our customers really willing to pay? How are they currently paying? (e.g., Asset sale, Usage fee, Subscription fees).
+For what value are our customers really willing to pay? How are they currently paying? (for example, Asset sale, Usage fee, Subscription fees).
 
 ### 3.6 Key Resources
-What key resources do our Value Propositions require? (e.g., Physical, Intellectual, Human, Financial).
+What key resources do our Value Propositions require? (for example, Physical, Intellectual, Human, Financial).
 
 ### 3.7 Key Activities
-What key activities do our Value Propositions require? (e.g., Production, Problem solving, Platform/Network).
+What key activities do our Value Propositions require? (for example, Production, Problem solving, Platform/Network).
 
 ### 3.8 Key Partnerships
-Who are our key partners? Who are our key suppliers? (e.g., Strategic alliances, Coopetition, Joint ventures).
+Who are our key partners? Who are our key suppliers? (for example, Strategic alliances, Coopetition, Joint ventures).
 
 ### 3.9 Cost Structure
-What are the most important costs inherent in our business model? (e.g., Fixed costs, Variable costs).
+What are the most important costs inherent in our business model? (for example, Fixed costs, Variable costs).
 
 **Project**: You will fill out a blank Business Model Canvas for your chosen business idea.
 

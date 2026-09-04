@@ -1,7 +1,7 @@
 ---
 title: "Waiting in Dzaleka Refugee Camp: Agency through Self- and Community Organisation"
 sortName: "Waiting in Dzaleka Refugee Camp (Thesis)"
-summary: "A 2025 Master's thesis by Anna-Lena Stammen (University of Applied Sciences Erfurt) analyzing refugee agency, waiting, coping mechanisms, social space mapping, and refugee-led organisations under Malawi's encampment policy."
+summary: "A 2025 Master's thesis by Anna-Lena Stammen (University of Applied Sciences Erfurt) analysing refugee agency, waiting, coping mechanisms, social space mapping, and refugee-led organisations under Malawi's encampment policy."
 category: "History"
 entryType: "topic"
 schemaType: "Article"
@@ -49,10 +49,10 @@ The thesis bridges sociological theories of forced migration, camp urbanism, and
 
 The study employs qualitative social research methods, combining semi-structured interviews with **Social Space Analysis** (*Sozialraumanalyse*) and **Social Mapping** — a method adapted from Participatory Rural Appraisal (PRA).
 
-Through social mapping, the research analyzes the spatial geography, infrastructure, and neighborhood dynamics of Dzaleka:
+Through social mapping, the research analyses the spatial geography, infrastructure, and neighborhood dynamics of Dzaleka:
 * **Camp Neighborhoods**: The research documents how residents have named camp sectors after Malawian cities and Lilongwe neighborhoods (such as *Blantyre*, *Karonga*, *Kawale*, and *Likuni*), reflecting cultural integration and localized spatial identity.
 * **Katudza Sector**: Highlighted as a key institutional hub in the upper camp, Katudza houses the Katudza Primary and Secondary School (formerly managed by JRS, now Moravian), the camp filling station, the Katudza Tuesday Market, and several prominent RLO offices including [TakeNoLab](/encyclopedia/takenolab), [Inua Advocacy](/encyclopedia/inua-advocacy), and Solidarity of Refugee Women for the Social Welfare (SOFERES).
-* **Camp Urbanism**: Drawing on Michel Agier's concept of refugee camps as a duality between a *heterotopia* (an isolated, marginal space) and an emerging urban form, the thesis documents how Dzaleka operates as a dynamic "camp-city" with dense residential sectors, vibrant open-air markets, transport links to Lilongwe and Dowa, and self-organized social infrastructure.
+* **Camp Urbanism**: Drawing on Michel Agier's concept of refugee camps as a duality between a *heterotopia* (an isolated, marginal space) and an emerging urban form, the thesis documents how Dzaleka operates as a dynamic "camp-city" with dense residential sectors, vibrant open-air markets, transport links to Lilongwe and Dowa, and self-organised social infrastructure.
 * **Impact of 2023 Forced Relocation**: The research captures the immediate consequences of the Government of Malawi's 2023 directive that forcibly returned thousands of refugees from urban areas back to Dzaleka. This policy heightened overcrowding, put severe strain on water and shelter resources, and disrupted established livelihoods.
 
 ## The Politics of Waiting, Mental Health, and the "Duality of Hope"
@@ -73,9 +73,9 @@ In response to severe reductions in humanitarian assistance — such as World Fo
 
 The thesis evaluates Refugee-Led Organisations as vehicles for changing narratives and fostering intercultural peace:
 * **Tumaini Home Stay and Host Events**: [Tumaini Letu](/encyclopedia/tumaini-letu)'s flagship *Dzaleka Home Stay* program invites Malawian and international visitors to live with refugee families during the [Tumaini Festival](/encyclopedia/tumaini-festival). Supplemental initiatives like *Dining with Refugees* and *Tumaini Letu Cocktail Nights* in Lilongwe further dismantle social barriers.
-* **Peer Mentorship ("Leaders Talk")**: RLOs organize community forums where residents who have overcome severe hardship share their experiences, providing peer mentorship and practical inspiration to youth facing uncertainty.
+* **Peer Mentorship ("Leaders Talk")**: RLOs organise community forums where residents who have overcome severe hardship share their experiences, providing peer mentorship and practical inspiration to youth facing uncertainty.
 * **Artistic Pride and Equal Standing**: Artistic collectives enable refugee youth to perform alongside Malawian artists, fostering a sense of equal standing and self-worth: *"They just look at him and like: he's an artist just like me. We are all artists."*
 
 ## Academic Significance
 
-Stammen's thesis adds to the growing body of empirical literature documenting refugee agency in Southern Africa. It emphasizes that while encampment policies subject refugee bodies to strict institutional control, residents actively subvert passive victimhood by constructing vibrant community networks, creative platforms, and self-governing initiatives.
+Stammen's thesis adds to the growing body of empirical literature documenting refugee agency in Southern Africa. It emphasises that while encampment policies subject refugee bodies to strict institutional control, residents actively subvert passive victimhood by constructing vibrant community networks, creative platforms, and self-governing initiatives.

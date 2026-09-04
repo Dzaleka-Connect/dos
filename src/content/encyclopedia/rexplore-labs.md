@@ -55,7 +55,7 @@ Key researchers and engineers at Rexplore include **[Amisi Hassan Jospin](/encyc
 ## Technical Focus & Innovations
 
 ### 1. Low-Resource African Language Voice AI
-Rexplore Labs conducts specialized research in natural language processing (NLP) and speech synthesis for African languages. By building robust models designed for low-bandwidth and resource-constrained environments, the lab addresses infrastructure realities across the continent.
+Rexplore Labs conducts specialised research in natural language processing (NLP) and speech synthesis for African languages. By building robust models designed for low-bandwidth and resource-constrained environments, the lab addresses infrastructure realities across the continent.
 
 ### 2. Autonomous Multi-Agent Systems
 The lab designs intelligent agent architectures capable of multi-step decision-making, automated customer discovery, and CRM workflow automation.

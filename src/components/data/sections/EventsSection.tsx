@@ -77,7 +77,7 @@ const chartOptions = {
     },
     title: {
       display: true,
-      text: 'Timeline of Major Events (2022-2024)',
+      text: 'Timeline of Major Events (2022 to 2024)',
       padding: 20
     },
     tooltip: {

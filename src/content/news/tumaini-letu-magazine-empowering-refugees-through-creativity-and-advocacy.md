@@ -11,7 +11,7 @@ tags: ["Tumaini Letu", "Magazine", "Refugees", "Arts", "Culture", "Advocacy", "E
 
 # Tumaini Letu Magazine 2025: Highlights of Creativity, Advocacy, and Impact
 
-This article highlights the 2025 edition of the Tumaini Letu Magazine—a publication that celebrates the stories, talents, and achievements of refugees while showcasing the impact of Tumaini Letu’s year-round programs. Founded in 2012 by Trésor Nzengu Mpauni, a refugee from the Democratic Republic of Congo, Tumaini Letu is a non-profit organization based in Dzaleka Refugee Camp, Malawi, with a mission to promote the economic, social, and cultural inclusion of refugees through arts, culture, advocacy, and economic development. See the full magazine here: [PDF](https://tumainiletu.org/wp-content/uploads/2025/08/TUMAINI-LETU-MAGAZINE-1_compressed-1.pdf).
+This article highlights the 2025 edition of the Tumaini Letu Magazine—a publication that celebrates the stories, talents, and achievements of refugees while showcasing the impact of Tumaini Letu’s year-round programs. Founded in 2012 by Trésor Nzengu Mpauni, a refugee from the Democratic Republic of Congo, Tumaini Letu is a non-profit organisation based in Dzaleka Refugee Camp, Malawi, with a mission to promote the economic, social, and cultural inclusion of refugees through arts, culture, advocacy, and economic development. See the full magazine here: [PDF](https://tumainiletu.org/wp-content/uploads/2025/08/TUMAINI-LETU-MAGAZINE-1_compressed-1.pdf).
 
 ## Transforming Lives Creatively
 
@@ -29,7 +29,7 @@ Highlights from the 2025 Tumaini Letu Magazine feature inspiring profiles of ind
 
 ## Advocacy for Refugee Rights
 
-Tumaini Letu advocates for policies that empower refugees, urging leaders to see them as contributors rather than burdens. The organization believes in creating platforms for refugees to innovate, create, and thrive, proving that inclusion is transformative for societies.
+Tumaini Letu advocates for policies that empower refugees, urging leaders to see them as contributors rather than burdens. The organisation believes in creating platforms for refugees to innovate, create, and thrive, proving that inclusion is transformative for societies.
 
 ## Learn More / Get Involved
 

@@ -10,7 +10,7 @@ The events section helps you discover workshops, celebrations, meetings, and oth
 - Browse upcoming activities in [Events](/events)
 - Review older listings in [Past Events](/events/past/1)
 - Jump straight to future listings through [Upcoming Events](/events/upcoming/1)
-- Share an event through the [Organizer page](/events/organize)
+- Share an event through the [Organiser page](/events/organize)
 
 ## Before you submit an event
 
@@ -35,6 +35,6 @@ Prepare the details below before opening the form:
 ## Need help?
 
 - [Events](/events)
-- [Organizer guide and form](/events/organize)
+- [Organiser guide and form](/events/organize)
 - [Contact](/contact)
 - [Support](/support)

@@ -70,7 +70,7 @@ Gather these before you start:
 
 ### 2.1 Registration Steps
 1.  Go to [mbrs.gov.mw](https://mbrs.gov.mw).
-2.  Click **"CREATE ACCOUNT"**.
+2.  Select **"CREATE ACCOUNT"**.
 3.  Select **"Citizen"** or **"Non-Citizen"**.
     -   *Note: Citizens must use their National ID number.*
 4.  Fill in your personal details exactly as they appear on your ID.
@@ -100,13 +100,13 @@ Gather these before you start:
 
 ## Module 4: Incorporating a Limited Company
 
-*Best for: Growing businesses, startups seeking investment, and formal organizations.*
+*Best for: Growing businesses, startups seeking investment, and formal organisations.*
 
 ### 4.1 The Incorporation Process
 1.  Log in and select **"Company Incorporation"**.
 2.  **Company Details**:
-    -   Company Type (Private Limited, Public, etc.).
-    -   Share Capital (e.g., 100,000 shares).
+    -   Company Type (Private Limited, Public).
+    -   Share Capital (for example, 100,000 shares).
 3.  **Directors & Shareholders**:
     -   Add at least 2 Directors (for private companies).
     -   Add Shareholders and allocate shares.

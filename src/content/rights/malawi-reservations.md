@@ -40,9 +40,9 @@ Malawi has reserved against key articles that enable economic independence:
 
 ### 4. Education & Integration
 - **Public Education (Article 22):** No guarantee of equal access to secondary/tertiary education.
-- **Naturalization (Article 34):** Malawi explicitly reserves the right *not* to facilitate the naturalization (citizenship) of refugees, even after long-term residence.
+- **Naturalization (Article 34):** Malawi explicitly reserves the right *not* to facilitate the naturalisation (citizenship) of refugees, even after long-term residence.
 - **Right of Association (Article 15):** Limits the right to form non-political associations and trade unions.
 - **Exemption from Reciprocity (Article 7):** Limits refugees from receiving equal legal protection afforded to nationals.
 
 ## Advocacy
-Organizations like **Inua Advocacy** and **UNHCR** continue to advocate for the government to lift these reservations, arguing that allowing refugees to work and move freely would benefit the Malawian economy (the "self-reliance" model).
+Organisations like **Inua Advocacy** and **UNHCR** continue to advocate for the government to lift these reservations, arguing that allowing refugees to work and move freely would benefit the Malawian economy (the "self-reliance" model).

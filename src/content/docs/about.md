@@ -48,7 +48,7 @@ The site now includes clearer entry routes for common public needs:
 
 - [Register a service](/services/register)
 - [Submit a resource](/resources/submit)
-- [Organize an event](/events/organize)
+- [Organise an event](/events/organize)
 - [Submit a photo](/photos/submit)
 - [Share your voice](/submit-voice)
 - [Submit a grant or programme opportunity](/grants-and-programs/submit)

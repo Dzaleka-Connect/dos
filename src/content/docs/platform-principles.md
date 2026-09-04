@@ -46,8 +46,8 @@ The platform exists to improve access to practical information, but it should no
 
 Use this principle when deciding what to publish:
 
-- publish routes, guides, and organization details that help people act
-- minimize sensitive personal data
+- publish routes, guides, and organisation details that help people act
+- minimise sensitive personal data
 - require care, consent, and dignity for stories, photos, and community submissions
 
 ## 5. One stable route per need

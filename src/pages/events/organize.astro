@@ -198,7 +198,7 @@ const breadcrumbStructuredData = {
                       min={new Date().toISOString().slice(0, 16)}
                       class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
-                    <p class="mt-1 text-sm text-gray-500">Please select a future date and time</p>
+                    <p class="mt-1 text-sm text-gray-500">Select a future date and time</p>
                   </div>
                 </div>
 
@@ -427,7 +427,7 @@ const breadcrumbStructuredData = {
                       placeholder="+265-999-999-999"
                       class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
-                    <p class="mt-1 text-sm text-gray-500">Include country code (e.g., +265 for Malawi)</p>
+                    <p class="mt-1 text-sm text-gray-500">Include country code (for example, +265 for Malawi)</p>
                   </div>
                 </div>
               </div>
@@ -477,7 +477,7 @@ const breadcrumbStructuredData = {
 
         <!-- Error Message -->
         <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 border border-red-200 p-4">
-          <p class="text-sm font-medium text-red-800">Error submitting event. Please try again.</p>
+          <p class="text-sm font-medium text-red-800">Error submitting event. Try again.</p>
         </div>
       </div>
 
@@ -551,7 +551,7 @@ const breadcrumbStructuredData = {
       }
     } catch (error) {
       console.error('Upload error:', error);
-      uploadStatus.textContent = 'Failed to upload image. Please try again.';
+      uploadStatus.textContent = 'Failed to upload image. Try again.';
       uploadStatus.classList.remove('text-green-500');
       uploadStatus.classList.add('text-red-500');
     } finally {
@@ -566,7 +566,7 @@ const breadcrumbStructuredData = {
     
     // Check if image is still uploading
     if (!imageUrlInput.value && imageInput.files?.length) {
-      alert('Please wait for the image to finish uploading.');
+      alert('Wait for the image to finish uploading.');
       return;
     }
     
@@ -578,7 +578,7 @@ const breadcrumbStructuredData = {
     const now = new Date();
     
     if (selectedDate <= now) {
-      alert('Please select a future date and time for your event.');
+      alert('Select a future date and time for your event.');
       dateInput.focus();
       return;
     }

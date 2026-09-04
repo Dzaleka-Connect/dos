@@ -20,7 +20,7 @@ Company registration in Malawi is now done entirely online through the MBRS port
 ### Step 1: Create an Account
 
 1. Visit the official MBRS website: [https://mbrs.gov.mw](https://mbrs.gov.mw)
-2. Click on "CREATE ACCOUNT"
+2. Select "CREATE ACCOUNT"
 3. Choose between "Citizen" (requires National ID) or "Non-Citizen" (requires Passport number)
 4. Complete the registration form with your personal details
 

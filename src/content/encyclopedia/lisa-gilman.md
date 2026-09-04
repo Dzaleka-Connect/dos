@@ -44,7 +44,7 @@ relatedEntries:
 
 **Dr. Lisa Gilman** is a prominent American professor of folklore, anthropology, and English at **George Mason University** (Fairfax, Virginia). She is a leading academic researcher and cultural advocate who co-founded the **Dzaleka Art Project**, an collaborative initiative between camp-based refugee artists and international researchers.
 
-Dr. Gilman’s extensive field research in Malawi focuses on how displaced individuals utilize folklore, music, dance, theater, and visual art as mechanisms for self-definition, trauma recovery, economic survival, and political voice.
+Dr. Gilman’s extensive field research in Malawi focuses on how displaced individuals utilise folklore, music, dance, theater, and visual art as mechanisms for self-definition, trauma recovery, economic survival, and political voice.
 
 ---
 
@@ -58,11 +58,11 @@ Working closely with refugee community leaders, youth writers, painters, and dan
 
 ### 2. Scholarly Research on Performance and Encampment
 Dr. Gilman has published extensively in peer-reviewed journals of folklore and African studies, documenting:
-* **Dance and Empowerment**: Analyzing dance groups like **Salama Africa** and Burundian traditional ensembles as sites of community resilience.
+* **Dance and Empowerment**: Analysing dance groups like **Salama Africa** and Burundian traditional ensembles as sites of community resilience.
 * **Refugee Material Culture**: Documenting how artists adapt recycled materials, scrap metal, and local clays into fine art inside Dzaleka.
 
 ---
 
 ## Legacy
 
-Dr. Gilman’s collaborative approach to research emphasizes ethical representation, co-authorship with refugee partners, and direct economic support for artists living in protracted displacement.
+Dr. Gilman’s collaborative approach to research emphasises ethical representation, co-authorship with refugee partners, and direct economic support for artists living in protracted displacement.

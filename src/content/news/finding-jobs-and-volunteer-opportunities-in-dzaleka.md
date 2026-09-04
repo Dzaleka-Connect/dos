@@ -1,6 +1,6 @@
 ---
 title: "Finding Jobs and Volunteer Opportunities in Dzaleka"
-description: "A comprehensive guide to employment and volunteer opportunities in Dzaleka Refugee Camp, featuring current job openings, volunteer positions, and organizations offering work opportunities."
+description: "A comprehensive guide to employment and volunteer opportunities in Dzaleka Refugee Camp, featuring current job openings, volunteer positions, and organisations offering work opportunities."
 image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-pi2DmjLHW-8QJD34CUyrlitbjOxS5RwLKiR3OvxBhBrRFBxfyynHCy4BVjHn4mjnDAupgFykqvlgLImN6QelC1NygLgwt2aYO8YMLBZvjuvVxPMugdOgQAFwvlpRA53jHm9JTvv0bBc/s1024/Tour-of-takenoLAB.jpg"
 author: "Dzaleka Online Services"
 featured: true
@@ -9,13 +9,13 @@ category: "news"
 tags: ["Employment", "Volunteer", "Opportunities", "Jobs", "Career Development"]
 ---
 
-Dzaleka Refugee Camp offers various employment and volunteer opportunities through its diverse network of organizations and initiatives. Whether you're seeking paid employment or looking to contribute through volunteer work, there are numerous ways to get involved and develop your skills.
+Dzaleka Refugee Camp offers various employment and volunteer opportunities through its diverse network of organisations and initiatives. Whether you're seeking paid employment or looking to contribute through volunteer work, there are numerous ways to get involved and develop your skills.
 
 ## Success Story: From Student to Community Leader
 
 Emmanuel's journey exemplifies how education and community involvement can create opportunities for both personal growth and community development. After arriving in Dzaleka as a refugee from the Democratic Republic of Congo, Emmanuel accessed educational opportunities through JRS programs, including English and computer skills training. This led to his pursuit of a bachelor's degree in business management through an online learning program.
 
-Recognizing the challenges faced by other young refugees in accessing educational opportunities, Emmanuel co-founded **ATE-Hub**, a refugee-led organization that provides academic support and prepares students for higher education. The organization offers:
+Recognizing the challenges faced by other young refugees in accessing educational opportunities, Emmanuel co-founded **ATE-Hub**, a refugee-led organisation that provides academic support and prepares students for higher education. The organisation offers:
 - English academic writing skills training
 - Technical skills development
 - Soft skills enhancement
@@ -24,7 +24,7 @@ Recognizing the challenges faced by other young refugees in accessing educationa
 
 Today, ATE-Hub partners with an American university to provide degree programs for refugee students in Dzaleka, demonstrating how refugee-led initiatives can create sustainable educational pathways and employment opportunities.
 
-## Organizations Offering Employment
+## Organisations Offering Employment
 
 ### Educational Institutions
 - **Dzaleka Community Day Secondary School**: Teaching positions and administrative roles
@@ -60,7 +60,7 @@ Today, ATE-Hub partners with an American university to provide degree programs f
 ### Arts and Culture
 - **Salama Africa**: Dance and performance training
 - **Art for Hope**: Art program facilitators
-- **Tumaini Festival**: Event organization and cultural activities
+- **Tumaini Festival**: Event organisation and cultural activities
 
 ## How to Apply
 
@@ -75,15 +75,15 @@ Today, ATE-Hub partners with an American university to provide degree programs f
 4. Submit your application through the specified channel
 
 ### For Volunteer Positions
-1. Identify organizations matching your interests
-2. Contact the organization directly
+1. Identify organisations matching your interests
+2. Contact the organisation directly
 3. Discuss available volunteer roles
 4. Complete any required training
 5. Begin your volunteer work
 
 ## Skills Development
 
-Many organizations offer training and skill development:
+Many organisations offer training and skill development:
 - **ADAI Circle**: Tech and innovation skills
 - **Alpha Techverse**: Software development
 - **TakenoLAB**: Digital literacy and programming
@@ -93,7 +93,7 @@ Many organizations offer training and skill development:
 
 1. **Build Your Network**
    - Attend community events
-   - Join relevant organizations
+   - Join relevant organisations
    - Connect with other professionals
 
 2. **Develop Your Skills**
@@ -103,7 +103,7 @@ Many organizations offer training and skill development:
 
 3. **Stay Informed**
    - Check job boards regularly
-   - Follow organizations on social media
+   - Follow organisations on social media
    - Subscribe to newsletters
 
 4. **Prepare Your Application**

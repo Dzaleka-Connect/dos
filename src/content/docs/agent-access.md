@@ -67,7 +67,7 @@ Choose this path for RAG pipelines, citation-friendly crawlers, or agents that n
 
 ### Use the skills index when your agent supports Agent Skills
 
-Choose this path when you want published instructions that help an agent route to the right pages, use the public API safely, or prioritize urgent support flows.
+Choose this path when you want published instructions that help an agent route to the right pages, use the public API safely, or prioritise urgent support flows.
 
 ### Use the MCP server when your runtime speaks Model Context Protocol
 

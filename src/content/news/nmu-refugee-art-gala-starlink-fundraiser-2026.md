@@ -19,7 +19,7 @@ Northern Michigan University's Refugee Outreach Collective is hosting an art gal
 
 ## Bridging Michigan and Malawi
 
-Carter Hairston, President of the Refugee Outreach Collective at NMU, launched the chapter last year to support education opportunities in Dzaleka. He emphasizes the transformative power of education for refugees:
+Carter Hairston, President of the Refugee Outreach Collective at NMU, launched the chapter last year to support education opportunities in Dzaleka. He emphasises the transformative power of education for refugees:
 
 > "People spend their entire lives in the camp. Having an education, and one in which you can prove that you have, is a huge asset to getting out of the camp."
 

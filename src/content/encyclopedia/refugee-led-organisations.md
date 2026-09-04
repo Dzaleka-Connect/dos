@@ -26,7 +26,7 @@ sources:
     publisher: "University of Applied Sciences Erfurt / DB-Thüringen"
     url: "https://www.db-thueringen.de/servlets/MCRFileNodeServlet/dbt_derivate_00069597/Stammen_Anna_Lena.pdf"
     date: "31 January 2025"
-    note: "Master's thesis analyzing refugee agency, coping mechanisms, and RLO engagement in Dzaleka."
+    note: "Master's thesis analysing refugee agency, coping mechanisms, and RLO engagement in Dzaleka."
   - title: "Malawi Refugee Guide"
     publisher: "Inua Advocacy"
     url: "https://inuaadvocacy.org/2024/12/malawi-refugee-guide/"
@@ -44,7 +44,7 @@ sources:
 
 A refugee-led organisation is an organisation in which refugees have substantial leadership and decision-making power. At Dzaleka, these organisations range from registered non-profits and networks to community groups, social enterprises, schools, cultural organisations, and mutual-aid initiatives.
 
-They are not one sector with a single structure. Some work independently; others implement projects with UN agencies, international organisations, government departments, foundations, or Malawian civil-society groups. Sociological research on Dzaleka (e.g. Stammen 2025) emphasizes that RLOs serve as critical channels through which residents claim agency and self-determination amidst legal limbo and encampment constraints.
+They are not one sector with a single structure. Some work independently; others implement projects with UN agencies, international organisations, government departments, foundations, or Malawian civil-society groups. Sociological research on Dzaleka (for example, Stammen 2025) emphasises that RLOs serve as critical channels through which residents claim agency and self-determination amidst legal limbo and encampment constraints.
 
 ## Areas of work
 

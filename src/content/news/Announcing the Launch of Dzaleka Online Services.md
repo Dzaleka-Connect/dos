@@ -15,18 +15,18 @@ We are excited to introduce **Dzaleka Online Services**, a digital platform desi
 Our platform offers:
 
 - **Essential Services**: Easy access to vital community services to support daily needs.
-- **Refugee-Led Organization Listings**: A directory highlighting organizations led by refugees, fostering collaboration and support within our community.
+- **Refugee-Led Organisation Listings**: A directory highlighting organisations led by refugees, fostering collaboration and support within our community.
 - **Resource Hub**: A collection of valuable materials and information to assist with various aspects of life in the camp.
 - **Photo Gallery**: A space to share and celebrate the vibrant culture and stories of our community through images.
 - **Community Events and Learning Opportunities**: Stay informed about upcoming events and educational programs designed to empower and connect community members.
 
 **Join Us in Shaping the Future**
 
-As we launch, we invite you to explore the platform and become an active participant in its growth. Your feedback is invaluable in helping us improve and tailor the services to better meet your needs. Please share the platform with others in your network to maximize its reach and impact.
+As we launch, we invite you to explore the platform and become an active participant in its growth. Your feedback is invaluable in helping us improve and tailor the services to better meet your needs. Share the platform with others in your network to maximise its reach and impact.
 
 **Access the Platform**
 
-Visit [https://services.dzaleka.com/](https://services.dzaleka.com/) to start exploring. Please note that the platform is currently in its beta version, so some functions may not work as intended. Rest assured, we are committed to pushing updates at lightning speed to enhance your experience.
+Visit [https://services.dzaleka.com/](https://services.dzaleka.com/) to start exploring. Note that the platform is currently in its beta version, so some functions may not work as intended. Rest assured, we are committed to pushing updates at lightning speed to enhance your experience.
 
 We are excited about the possibilities this platform brings and look forward to your active participation in making it a valuable resource for all.
 

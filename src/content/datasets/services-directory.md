@@ -14,7 +14,7 @@ tags:
   - services
   - directory
   - support
-  - organizations
+  - organisations
 highlights:
   - "Public-facing service titles and summaries"
   - Category and listing metadata where published

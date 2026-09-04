@@ -35,7 +35,7 @@ The course aims to change mindsets and provide tools for self-sufficiency. Each 
 
 -   **Personal Motivations**: Increased self-confidence, goal setting, and positive thinking.
 -   **Human Rights & Conflict**: Advocating for rights and peacefully resolving conflicts.
--   **Financial Literacy**: Budgeting, prioritizing spending, and managing income.
+-   **Financial Literacy**: Budgeting, prioritising spending, and managing income.
 -   **Culture**: Peacebuilding and intercultural competency.
 -   **Wellbeing**: Stronger self-worth, identifying abuse, and healthy relationships.
 -   **Marketplace Literacy**: Understanding business basics and value chains.
@@ -75,7 +75,7 @@ Ask participants what they think these proverbs mean. We’ll come back to these
 Now I want us to go around the room and introduce ourselves. Say your name, and ask everyone else to share theirs.
 
 **2. Energiser: “Suddenly” Storytelling**
-Now let’s do an activity. Please sit in a circle. I will start telling a story with one sentence, for example: “Yesterday I was walking home from the market, and suddenly…”
+Now let’s do an activity. Sit in a circle. I will start telling a story with one sentence, for example: “Yesterday I was walking home from the market, and suddenly…”
 We will then go around the room and each person will add on a sentence to the story, finishing their sentence with “and suddenly…” In that way, we will tell a story all together as a class.
 
 *Lead the class in the exercise.*
@@ -100,7 +100,7 @@ Let’s try to keep the agreements positive-- let’s avoid using words like don
 When you’re finished, you can either keep them written up on the board for the remainder of the course, or if you wrote them on paper, you can stick them to the classroom wall.
 
 **4. Using our Journals**
-For your journey with A Good Start, we are going to give you a gift. This gift is a journal, a small book, that you will use throughout the course to write down or draw your ideas, thoughts, feelings and experiences. It is a very important part of the course, so please make sure that you keep your journal safe and carry it with you to all the classes.
+For your journey with A Good Start, we are going to give you a gift. This gift is a journal, a small book, that you will use throughout the course to write down or draw your ideas, thoughts, feelings and experiences. It is a very important part of the course, so make sure that you keep your journal safe and carry it with you to all the classes.
 
 *Distribute journals to participants.*
 
@@ -186,7 +186,7 @@ Now let’s have a look at a list of different items as a class, and decide whet
 *   A TV
 *   Rent for a house to live in
 *   A computer
-*   Meat (kuku, mbuzi etc)
+*   Meat (kuku, mbuzi)
 *   Crisps
 *   A PS4
 
@@ -222,7 +222,7 @@ Think about it and we’ll come back to it.
 Let’s play a game to learn about our personal values. First, I invite you all to stand in a line in front of me.
 *Get students to stand in a line.*
 
-The purpose of this game is to understand our different values. I will read a few statements, if you don’t agree with the statement take a step back. If you agree with the statement, take a step forward. Please respond to what applies to you personally, there is no need to agree with the rest and there is no right or wrong answer.
+The purpose of this game is to understand our different values. I will read a few statements, if you don’t agree with the statement take a step back. If you agree with the statement, take a step forward. Respond to what applies to you personally, there is no need to agree with the rest and there is no right or wrong answer.
 
 *Read the following statements:*
 *   My family is very important to me. I try to help them as much as I can.
@@ -238,7 +238,7 @@ The purpose of this game is to understand our different values. I will read a fe
 Now look around… why is everyone in a different place?
 *Get some answers/thoughts from students.*
 
-It is because we all have different values and beliefs as individuals. These different beliefs and values are what cause us to prioritize some things over others. This means a Want for some people may be a Need for others.
+It is because we all have different values and beliefs as individuals. These different beliefs and values are what cause us to prioritise some things over others. This means a Want for some people may be a Need for others.
 
 **3. Thinking More about our Values**
 Let’s now think a bit more about our values and beliefs and how they affect our wants and needs, and impact our decision-making.
@@ -260,14 +260,14 @@ This proverb states that even if we have a lot of money, we should not ignore ou
 ### Lesson 4: Prioritising Spending
 
 **1. Introduction**
-In the last seminar, we explored our personal values and how they impact our Wants and Needs. Today we are going to take that a step further by talking about prioritizing – that means choosing to spend our money on some Wants and Needs over others.
+In the last seminar, we explored our personal values and how they impact our Wants and Needs. Today we are going to take that a step further by talking about prioritising – that means choosing to spend our money on some Wants and Needs over others.
 
 Our proverb for today is:
 > "Roadside items are nice, but it takes money to buy"
 
 **2. What is Prioritising?**
-What do we mean by prioritizing? Prioritize means that something is more important than something else. To prioritize something means to put it first.
-How do we prioritize our Needs and Wants? It’s as easy as 1-2-3. Let’s look at the 1-2-3 system to help us explore our priorities and what is important for our health and wellbeing.
+What do we mean by prioritising? Prioritise means that something is more important than something else. To prioritise something means to put it first.
+How do we prioritise our Needs and Wants? It’s as easy as 1-2-3. Let’s look at the 1-2-3 system to help us explore our priorities and what is important for our health and wellbeing.
 
 **1 are Items that are essential for healthy living.**
 *Ask the class for examples.*
@@ -281,17 +281,17 @@ Let’s look at our list of Needs and Wants from Lesson 2. In pairs, I want you 
 *Divide the class into pairs and give them time to complete the exercise. Support them if necessary. Then ask some pairs to share their lists.*
 
 **4. Meaning of the Proverb**
-What a great seminar looking at prioritizing! I think we learned a lot about what is most important to us. Now let’s look at the proverb:
+What a great seminar looking at prioritising! I think we learned a lot about what is most important to us. Now let’s look at the proverb:
 > "Roadside items are nice, but it takes money to buy"
 
 Ask the class for ideas about what it means.
-This proverb reminds us that although some things may be nice, they are not always a priority. We must first prioritize the things that will meet our survival needs, before buying our wants.
+This proverb reminds us that although some things may be nice, they are not always a priority. We must first prioritise the things that will meet our survival needs, before buying our wants.
 
 Over the next few days, think more about the things that are important to you. If you want, take some time to draw them in your journal.
 ### Lesson 5: Budgeting
 
 **1. Introduction**
-In the last session we learned about prioritizing our spending. In this session we will discuss budgeting, which means planning our spending so all our needs are met.
+In the last session we learned about prioritising our spending. In this session we will discuss budgeting, which means planning our spending so all our needs are met.
 
 Our proverbs for today are:
 > "Better little than too little."
@@ -300,7 +300,7 @@ Our proverbs for today are:
 Think about them and we’ll come back to them at the end.
 
 **2. Defining Budgeting**
-An important way of learning how to manage our money is learning how to budget. Budgeting means figuring out how much money we have, the things we need or want, how much each item costs – and then prioritizing what we can buy with our money.
+An important way of learning how to manage our money is learning how to budget. Budgeting means figuring out how much money we have, the things we need or want, how much each item costs – and then prioritising what we can buy with our money.
 
 So why do we budget? Whether you have a lot of money or just a little, a budget can help you in many ways:
 *   If you have a budget and stick to it, you will be less likely to blow your money during random daily spending.
@@ -326,7 +326,7 @@ Now let’s explore an example budget.
 
 Amina has a monthly budget of 3000 MWK for her family of 5 people. Her father is ill, and cannot go without medication. Last month she spent almost all the money on medication because he was very ill. So the family is very low on rations, they haven’t eaten for two days.
 
-In groups of 4, I would like your group to use the 1-2-3 priority method to look at this basic list of things and decide how Amina should budget her money. Please decide what she will buy and add up the amount she has spent to make sure you don’t go over the 3000 MWK.
+In groups of 4, I would like your group to use the 1-2-3 priority method to look at this basic list of things and decide how Amina should budget her money. Decide what she will buy and add up the amount she has spent to make sure you don’t go over the 3000 MWK.
 
 *Write this list of items on the board and read it out:*
 *   Medicine for 1900 MWK
@@ -412,7 +412,7 @@ First, let’s work out how much the family makes:
 *   Liya makes 1400 MWK
 *   Kamali and Ife don’t make anything because they are both still babies.
 
-In your pairs, please work out the total the family makes.
+In your pairs, work out the total the family makes.
 Ask some pairs for the answer (5450 MWK)
 
 Now let’s make a budget for this 5450 MWK.

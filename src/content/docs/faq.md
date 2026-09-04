@@ -27,7 +27,7 @@ Yes. Visit [Photos](/photos) to browse the archive or use [Photo submission](/ph
 
 ## How do I list an event?
 
-Use [Organize an event](/events/organize) and include the date, location, organiser details, and a clear description.
+Use [Organise an event](/events/organize) and include the date, location, organiser details, and a clear description.
 
 ## How do organisations list services?
 

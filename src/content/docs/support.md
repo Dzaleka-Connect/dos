@@ -40,7 +40,7 @@ Use [Contact](/contact).
 
 - [Register a service](/services/register)
 - [Submit a resource](/resources/submit)
-- [Organize an event](/events/organize)
+- [Organise an event](/events/organize)
 - [Submit photos](/photos/submit)
 - [Share your voice](/submit-voice)
 - [Submit a grant or programme opportunity](/grants-and-programs/submit)

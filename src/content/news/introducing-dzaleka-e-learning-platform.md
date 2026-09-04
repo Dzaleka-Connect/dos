@@ -33,14 +33,14 @@ Our platform provides access to various online learning opportunities:
 
 ## Local Learning Opportunities
 
-We encourage our community to take advantage of the following local organizations in Dzaleka:
+We encourage our community to take advantage of the following local organisations in Dzaleka:
 
 - **[ADAI Circle](https://adaicircle.com)**: Empowering communities with AI, ML, and Data Science skills
 - **[TakenoLAB](https://takenolab.com)**: A tech hub offering programming and digital skills training
 - **[Jesuit Worldwide Learning (JWL)](https://www.facebook.com/JWLDzaleka/)**: Offers BA programs in General Studies with a concentration in Computer Information Systems, specifically for refugees from Dzaleka and other camps like Kakuma.
 - **[There is Hope Malawi](https://thereishopemalawi.org/)**: Supporting vocational training and entrepreneurship
 
-These organizations provide valuable in-person learning opportunities that complement our online platform.
+These organisations provide valuable in-person learning opportunities that complement our online platform.
 
 ## How to Get Started
 

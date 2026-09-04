@@ -29,7 +29,7 @@ sources:
     url: "https://yorkspace.library.yorku.ca"
     publisher: "YorkSpace Institutional Repository, York University"
     date: "2020"
-    note: "Master's thesis analyzing tertiary education access and refugee youth agency."
+    note: "Master's thesis analysing tertiary education access and refugee youth agency."
   - title: "Jesuit Worldwide Learning Global Report"
     url: "https://www.jwl.org"
     publisher: "JWL"
@@ -55,13 +55,13 @@ In a setting where less than 3% of refugees globally have access to higher educa
 The thesis explores how pursuing higher education functions as a vital mechanism for psychological resilience and forward-looking agency. Higher education allows youth to counteract the stasis of protracted encampment, transforming enforced waiting into active intellectual preparation.
 
 ### 2. Blended Digital Learning Infrastructure
-The study documents the impact of blended learning programs such as **Jesuit Worldwide Learning (JWL)**, **Coursera for Refugees**, and digital coding hubs (**TakeNoLab**, **Dzaleka AppFactory**). Key features analyzed include:
+The study documents the impact of blended learning programs such as **Jesuit Worldwide Learning (JWL)**, **Coursera for Refugees**, and digital coding hubs (**TakeNoLab**, **Dzaleka AppFactory**). Key features analysed include:
 * **Blended Classrooms**: Combining online video lectures with local face-to-face peer tutoring inside Dzaleka.
-* **Global Accreditation**: Earning recognized U.S. and European university credits while residing in Dowa District.
+* **Global Accreditation**: Earning recognised U.S. and European university credits while residing in Dowa District.
 * **Bandwidth & Solar Challenges**: Overcoming internet connectivity and power constraints through dedicated community learning centers.
 
 ### 3. Community Leadership and Mentorship
-The research emphasizes that graduates of tertiary programs frequently remain in Dzaleka to found community-led initiatives, teach primary and secondary school classes, work with international NGOs, or launch digital freelancing enterprises.
+The research emphasises that graduates of tertiary programs frequently remain in Dzaleka to found community-led initiatives, teach primary and secondary school classes, work with international NGOs, or launch digital freelancing enterprises.
 
 ---
 

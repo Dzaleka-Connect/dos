@@ -49,7 +49,7 @@ export function NewsWidget() {
         setError(null);
       } catch (err) {
         console.error('Error fetching news:', err);
-        setError('Failed to load news. Please try again later.');
+        setError('Failed to load news. Try again later.');
       } finally {
         setLoading(false);
       }
