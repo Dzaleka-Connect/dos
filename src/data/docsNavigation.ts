@@ -33,7 +33,7 @@ export const docsGroups = [
     id: 'policies',
     title: 'Policies & Contribution',
     description: 'Privacy, publishing expectations, and how to maintain documentation.',
-    items: ['privacy-terms', 'privacy-guidelines', 'contribute', 'documentation-contributions', 'photo-gallery'],
+    items: ['privacy-terms', 'privacy-guidelines', 'governance', 'contribute', 'documentation-contributions', 'photo-gallery'],
   },
 ] as const;
 
