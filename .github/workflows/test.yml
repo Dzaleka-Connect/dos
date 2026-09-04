@@ -1,0 +1,34 @@
+name: Tests
+
+# Runs on every push and pull request so a failing test is visible before it
+# reaches production. Enable branch protection on `main` requiring the "test"
+# check below to make that gate binding rather than advisory.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Matches the engine the site is developed and built against.
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        # Catches schema and content errors that the unit tests cannot see,
+        # such as frontmatter a collection schema rejects.
+        run: npm run build

@@ -131,7 +131,7 @@ These routes power public dashboards and utility pages:
 - `/api/weather-alerts`
 - `/api/geolocation`
 - `/api/charts`
-- `/api/analytics/pageviews`
+- `/api/analytics/pageviews` (deprecated, removal scheduled for 1 March 2027)
 
 Notes:
 

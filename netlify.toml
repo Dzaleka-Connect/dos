@@ -3,7 +3,9 @@
 # Build settings
 [build]
   publish = "dist"
-  command = "npm run build"
+  # Tests run before the build, so a failing test stops the deploy instead of
+  # following it. The same suite runs in CI via .github/workflows/test.yml.
+  command = "npm test && npm run build"
 
 [functions]
   directory = "netlify/functions"
@@ -21,6 +23,10 @@
 # Environment variables
 [build.environment]
   NODE_VERSION = "22"
+  # The build command runs `npm test` first, and vitest is a devDependency.
+  # Netlify sets NODE_ENV=production, which makes npm omit devDependencies and
+  # would make every deploy fail at the test step. This forces them in.
+  NPM_FLAGS = "--production=false"
 
 # Headers for security and CORS
 [[headers]]

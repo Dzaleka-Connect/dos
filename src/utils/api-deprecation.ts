@@ -5,10 +5,10 @@
  * the `deprecation`/`sunset` link relations). Both headers carry HTTP-date
  * values; RFC 9745 additionally defines `Deprecation` as an IMF-fixdate.
  *
- * `DEPRECATIONS` is the single source of truth. It is intentionally empty:
- * nothing is deprecated today. Adding an entry is all that is required for the
- * endpoint to start advertising its retirement, and for the policy page and the
- * OpenAPI document to list it.
+ * `DEPRECATIONS` is the single source of truth. Adding an entry is all that is
+ * required for the endpoint to start advertising its retirement, and for the
+ * policy page and the OpenAPI document to list it. Remove the route itself only
+ * after its sunset date has passed.
  */
 
 export const DEPRECATION_POLICY_PATH = '/api/deprecation-policy';
@@ -31,10 +31,18 @@ export type DeprecationRecord = {
 };
 
 /**
- * Currently deprecated endpoints. Empty means nothing is deprecated.
- * Keep entries here until the sunset date has passed and the route is removed.
+ * Currently deprecated endpoints. Keep an entry here until its sunset date has
+ * passed and the route has been removed.
  */
-export const DEPRECATIONS: DeprecationRecord[] = [];
+export const DEPRECATIONS: DeprecationRecord[] = [
+  {
+    path: '/api/analytics/pageviews',
+    deprecatedAt: '2026-08-26T00:00:00Z',
+    sunsetAt: '2027-03-01T00:00:00Z',
+    reason:
+      'The endpoint returns a hardcoded zero and never reported real data. Pageview figures come from the analytics the site loads in its layout, not from this route. It is being withdrawn rather than fixed because nothing consumes it.',
+  },
+];
 
 /**
  * Look up the deprecation record for a request path, if any.

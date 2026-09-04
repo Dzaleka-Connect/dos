@@ -113,6 +113,8 @@ type OpenApiOperation = {
   description: string;
   tags: string[];
   parameters?: Record<string, unknown>[];
+  /** Mirrors an entry in DEPRECATIONS. Emits `deprecated: true` in the spec. */
+  deprecated?: boolean;
 };
 
 function collectionOperations(summary: string, description: string): OpenApiOperation[] {
@@ -370,8 +372,10 @@ const openApiOperations: Record<string, OpenApiOperation[]> = {
     {
       method: 'get',
       summary: 'Get pageview analytics',
-      description: 'Returns a lightweight pageview total used by analytics widgets.',
+      description:
+        'Deprecated, and scheduled for removal on 1 March 2027. The endpoint returns a hardcoded zero and never reported real data. Do not build against it.',
       tags: ['Data'],
+      deprecated: true,
     },
   ],
   '/api/export': [
@@ -502,6 +506,7 @@ export function buildOpenApiDocument() {
             tags: operation.tags,
             summary: operation.summary,
             description: operation.description,
+            ...(operation.deprecated ? { deprecated: true } : {}),
             parameters: [
               ...(operation.parameters ?? []),
               {

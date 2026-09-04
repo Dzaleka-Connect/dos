@@ -28,13 +28,20 @@ describe('deprecation headers', () => {
     expect(deprecationHeaders('/api/services', POLICY_URL)).toEqual({});
   });
 
-  /** Run `fn` with a temporary entry, so the shipped list stays empty. */
+  /**
+   * Run `fn` with a temporary entry added, then restore the shipped list.
+   * Restores rather than empties: the list is no longer empty, and emptying it
+   * here would silently delete real entries for every test that follows.
+   */
   function withDeprecation(entry: DeprecationRecord, fn: () => void) {
+    const original = [...DEPRECATIONS];
+    DEPRECATIONS.length = 0;
     DEPRECATIONS.push(entry);
     try {
       fn();
     } finally {
       DEPRECATIONS.length = 0;
+      DEPRECATIONS.push(...original);
     }
   }
 
@@ -87,9 +94,38 @@ describe('deprecation headers', () => {
     });
   });
 
-  it('ships with nothing deprecated', () => {
-    expect(DEPRECATIONS).toEqual([]);
+  it('does not deprecate a path that is not deprecated', () => {
     expect(findDeprecation('/api/services')).toBeUndefined();
+  });
+
+  /**
+   * The published policy promises at least six months of notice. A shipped
+   * entry that breaks that promise is worse than no policy, so the list itself
+   * is checked rather than only the helper functions.
+   */
+  it.each(DEPRECATIONS.map((d) => [d.path, d] as const))(
+    'honours the published notice period for %s',
+    (path, entry) => {
+      expect(entry.reason.length, `${path} needs a reason`).toBeGreaterThan(20);
+      if (!entry.sunsetAt) return; // no removal date set yet, so no notice to check
+      const months =
+        (new Date(entry.sunsetAt).getTime() - new Date(entry.deprecatedAt).getTime()) /
+        (1000 * 60 * 60 * 24 * 30.44);
+      expect(months, `${path} gives only ${months.toFixed(1)} months notice`).toBeGreaterThanOrEqual(
+        MINIMUM_NOTICE_MONTHS
+      );
+    }
+  );
+
+  it('marks every deprecated path as deprecated in the OpenAPI document', async () => {
+    const { buildOpenApiDocument } = await import('../src/data/agentDiscovery');
+    const doc: any = buildOpenApiDocument();
+    for (const entry of DEPRECATIONS) {
+      const item = doc.paths[entry.path];
+      expect(item, `${entry.path} is deprecated but absent from the spec`).toBeDefined();
+      const flagged = Object.values(item).some((op: any) => op.deprecated === true);
+      expect(flagged, `${entry.path} is not flagged deprecated in the spec`).toBe(true);
+    }
   });
 });
 
@@ -123,9 +159,13 @@ describe('policy document', () => {
     }
   });
 
-  it('lists currently deprecated endpoints, empty when there are none', () => {
+  it('lists every currently deprecated endpoint', () => {
     expect(Array.isArray(doc.deprecated)).toBe(true);
-    expect(doc.deprecated).toEqual([]);
+    expect(doc.deprecated.map((d: any) => d.path)).toEqual(DEPRECATIONS.map((d) => d.path));
+    for (const entry of doc.deprecated) {
+      expect(entry.deprecationHeader, entry.path).toMatch(IMF_FIXDATE);
+      if (entry.sunsetAt) expect(entry.sunsetHeader, entry.path).toMatch(IMF_FIXDATE);
+    }
   });
 
   it('is self-describing via an absolute URL', () => {

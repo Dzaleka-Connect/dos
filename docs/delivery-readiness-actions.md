@@ -41,6 +41,26 @@ Those criteria are a useful readiness lens. The wider framework around them assu
 
 Two of the seven criteria rated moderate rather than weak, and both rest on documents written the same day as this list. They describe intended behaviour that has not happened yet, so they should be re-assessed once editors are actually publishing.
 
+## Progress
+
+Recorded 26 August 2026.
+
+| # | Status | Note |
+| --- | --- | --- |
+| 1 | Done | The privacy policy now discloses that forms are delivered by a third-party form service, and points to a direct contact route for anyone who would rather not use one. Moving the most sensitive routes off that service remains an open choice. |
+| 2 | Done | The Netlify build runs `npm test` before `npm run build`, so a failing test stops the deploy. `NPM_FLAGS` forces devDependency installation, without which the test step would fail every deploy. |
+| 3 | Partly done | A GitHub Actions workflow now runs the suite and a build on every push and pull request. Making the check binding needs branch protection enabling on `main`, which is a repository setting rather than a code change. |
+| 4 | Decision recorded | See below. |
+| 5 | Not started | Needs a person, not a change. |
+
+**Decision on action 4.** The advisories are not being cleared, for now.
+
+- `npm audit fix` cannot run: it aborts on a peer dependency conflict between the Node and Netlify adapters, and resolving that needs `--force` or `--legacy-peer-deps`
+- both affected packages are build-time only. `undici` arrives through the icon build tooling, `toml` through the Netlify adapter's packaging step. Neither is in the browser bundle or the request path, so the exposure is to the build machine rather than to visitors
+- forcing a resolution risks the deploy, and there is no staging environment to catch a broken build before it reaches production
+
+Revisit when the adapters next release compatible versions, or once a staging environment exists to test a forced resolution against. Whichever comes first.
+
 ## Review
 
 Re-check this list when the first three community editors have published, or in six months, whichever comes first.
