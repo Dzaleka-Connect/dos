@@ -87,12 +87,14 @@ Channels already in place, so cost is time rather than money.
 
 ## Scoring and evaluation
 
-Evaluation follows the six stages of the GCS Evaluation Cycle. Every measure below can be produced from the repository or the existing pageview endpoint, so none of it needs new tooling.
+Evaluation follows the six stages of the GCS Evaluation Cycle. Every measure below comes from the repository or from Google Analytics, which the site already loads, so none of it needs new tooling.
+
+Note: `/api/analytics/pageviews` is a stub that returns zero. Use Google Analytics for reach, not that endpoint.
 
 | Stage | What we measure | Source |
 | --- | --- | --- |
 | **Inputs** | The 12-month baseline above: 29 items, one author | `git log` |
-| **Outputs** | Views of the announcement article, feed pickup, social reach | Pageview endpoint, dzaleka.com |
+| **Outputs** | Views of the announcement article, feed pickup, social reach | Google Analytics, dzaleka.com |
 | **Outtakes** | People who ask about becoming an editor, or accept when approached | Direct record |
 | **Outcomes** | Editors onboarded, items published, distinct commit authors | `git shortlog -sne` |
 | **Impact** | Items published per month against baseline, and time from submission to publication | `git log`, form replies |
