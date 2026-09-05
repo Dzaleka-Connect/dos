@@ -148,8 +148,8 @@ const contactStats = calculateContactStats(collectionsWithContact);
 const socialBreakdown = calculateSocialBreakdown([...services, ...stores]);
 
 const allCollections = {
-  services, resources, events, photos, jobs, news, dancers, poets, sites, 
-  artists, artworks, profiles, stores, marketplace, stories, courses, talents, 
+  services, resources, events, photos, jobs, news, dancers, poets, sites,
+  artists, artworks, profiles, stores, marketplace, stories, courses, talents,
   docs, communityVoices
 };
 
@@ -230,7 +230,7 @@ const last7DaysTrend = Array.from({ length: 7 }, (_, i) => {
   const date = new Date();
   date.setDate(date.getDate() - (6 - i));
   const dateString = date.toISOString().split('T')[0];
-  
+
   // Count items created/updated on this date
   const count = [
     ...services.filter(s => (s.data.lastUpdated || s.data.date)?.toString().startsWith(dateString)),
@@ -305,10 +305,10 @@ const chartData = {
   digitalPresence: {
     labels: ['Email', 'Phone', 'WhatsApp', 'Social Media', 'Website'],
     values: [
-      contactStats.withEmail, 
-      contactStats.withPhone, 
-      contactStats.withWhatsApp, 
-      contactStats.withSocialMedia, 
+      contactStats.withEmail,
+      contactStats.withPhone,
+      contactStats.withWhatsApp,
+      contactStats.withSocialMedia,
       contactStats.withWebsite
     ]
   },
@@ -324,11 +324,11 @@ const chartData = {
 
 // Prepare all content for the client-side table
 const allContent = [
-  ...services.map(s => ({ 
+  ...services.map(s => ({
     id: s.id,
     slug: s.id,
-    type: 'service', 
-    title: s.data.title, 
+    type: 'service',
+    title: s.data.title,
     description: s.data.description,
     date: s.data.lastUpdated || s.data.date || new Date(),
     status: s.data.status || 'Active',
@@ -365,83 +365,83 @@ const allContent = [
     status: j.data.status,
     category: j.data.category
   })),
-  ...events.map(e => ({ 
+  ...events.map(e => ({
     id: e.id,
     slug: e.id,
-    type: 'event', 
-    title: e.data.title, 
+    type: 'event',
+    title: e.data.title,
     description: e.data.description,
     date: e.data.date,
     status: new Date(e.data.date) > new Date() ? 'Upcoming' : 'Past',
     category: e.data.category
   })),
-  ...photos.map(p => ({ 
+  ...photos.map(p => ({
     id: p.id,
     slug: p.id,
-    type: 'photo', 
-    title: p.data.title, 
+    type: 'photo',
+    title: p.data.title,
     description: p.data.description,
     date: p.data.date,
     status: 'Published',
     category: p.data.album || 'Uncategorized'
   })),
-  ...news.map(n => ({ 
+  ...news.map(n => ({
     id: n.id,
     slug: n.id,
-    type: 'news', 
-    title: n.data.title, 
+    type: 'news',
+    title: n.data.title,
     description: n.data.description || n.data.excerpt,
     date: n.data.date,
     status: 'Published',
     category: n.data.category
   })),
-  ...dancers.map(d => ({ 
+  ...dancers.map(d => ({
     id: d.id,
     slug: d.id,
-    type: 'dancer', 
-    title: d.data.title || d.data.name, 
+    type: 'dancer',
+    title: d.data.title || d.data.name,
     description: d.data.description || d.data.bio,
     date: d.data.date || new Date(),
     status: 'Active',
     category: 'Arts'
   })),
-  ...poets.map(p => ({ 
+  ...poets.map(p => ({
     id: p.id,
     slug: p.id,
-    type: 'poet', 
-    title: p.data.title || p.data.name, 
+    type: 'poet',
+    title: p.data.title || p.data.name,
     description: p.data.description || p.data.bio,
     date: p.data.date || new Date(),
     status: 'Active',
     category: 'Arts'
   })),
-  ...sites.map(s => ({ 
+  ...sites.map(s => ({
     id: s.id,
     slug: s.id,
-    type: 'site', 
-    title: s.data.title || s.data.name, 
+    type: 'site',
+    title: s.data.title || s.data.name,
     description: s.data.description,
     date: s.data.date || new Date(),
     status: 'Active',
     category: 'Places',
     urlPrefix: '/site-register'
   })),
-  ...artists.map(a => ({ 
+  ...artists.map(a => ({
     id: a.id,
     slug: a.id,
-    type: 'artist', 
-    title: a.data.title || a.data.name, 
+    type: 'artist',
+    title: a.data.title || a.data.name,
     description: a.data.description || a.data.bio,
     date: a.data.date || new Date(),
     status: 'Active',
     category: 'Arts',
     urlPrefix: '/public-art-catalogue/artist'
   })),
-  ...artworks.map(a => ({ 
+  ...artworks.map(a => ({
     id: a.id,
     slug: a.id,
-    type: 'artwork', 
-    title: a.data.title, 
+    type: 'artwork',
+    title: a.data.title,
     description: a.data.description,
     date: a.data.date || new Date(),
     status: 'Published',
@@ -547,7 +547,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
     .animation-delay-100 { animation-delay: 100ms; }
     .animation-delay-200 { animation-delay: 200ms; }
     .animation-delay-300 { animation-delay: 300ms; }
-    
+
     /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
@@ -589,7 +589,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             <div class="mt-6 flex flex-wrap gap-3">
               <button
                 id="refreshDashboard"
-                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 aria-label="Refresh dashboard data"
               >
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -599,7 +599,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </button>
               <a
                 href="/staff"
-                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               >
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -609,22 +609,22 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
           </div>
 
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <div class="rounded border border-slate-200 bg-slate-50 p-6">
             <h2 class="text-lg font-semibold text-slate-900">Current snapshot</h2>
             <div class="mt-5 grid grid-cols-2 gap-4">
-              <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <div class="rounded border border-slate-200 bg-white p-4">
                 <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Total content</p>
                 <p class="mt-2 text-2xl font-bold text-slate-900">{totalContentItems}</p>
               </div>
-              <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <div class="rounded border border-slate-200 bg-white p-4">
                 <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">30-day activity</p>
                 <p class="mt-2 text-2xl font-bold text-slate-900">{totalActivity.last30Days}</p>
               </div>
-              <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <div class="rounded border border-slate-200 bg-white p-4">
                 <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Content health</p>
                 <p class="mt-2 text-2xl font-bold text-slate-900">{healthPercentage}%</p>
               </div>
-              <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <div class="rounded border border-slate-200 bg-white p-4">
                 <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Core APIs</p>
                 <p class="mt-2 text-2xl font-bold text-slate-900">{systemHealthPercentage}%</p>
               </div>
@@ -635,7 +635,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
     </section>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="mb-8 rounded-lg border border-slate-200 bg-white p-2">
+      <div class="mb-8 rounded border border-slate-200 bg-white p-2">
         <div class="flex gap-1 overflow-x-auto rounded-md bg-slate-100 p-1 custom-scrollbar" role="tablist" aria-label="Dashboard sections">
           <button
             class={`${tabClass} ${activeTabClass}`}
@@ -715,14 +715,14 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         <!-- Key Metrics -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <!-- Total Content -->
-          <div class="rounded-lg border border-slate-200 bg-white p-6">
+          <div class="rounded border border-slate-200 bg-white p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Total Content</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{totalContentItems}</p>
                 <p class="text-xs text-gray-500 mt-1">Across all collections</p>
               </div>
-              <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 bg-blue-50 rounded flex items-center justify-center">
                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
@@ -737,14 +737,14 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Active Services -->
-          <div class="rounded-lg border border-slate-200 bg-white p-6 animation-delay-100 animate-fade-in-up">
+          <div class="rounded border border-slate-200 bg-white p-6 animation-delay-100 animate-fade-in-up">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Active Services</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{stats.services.active}</p>
                 <p class="text-xs text-gray-500 mt-1">of {stats.services.total} total</p>
               </div>
-              <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 bg-green-50 rounded flex items-center justify-center">
                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -758,14 +758,14 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Upcoming Events -->
-          <div class="rounded-lg border border-slate-200 bg-white p-6 animation-delay-200 animate-fade-in-up">
+          <div class="rounded border border-slate-200 bg-white p-6 animation-delay-200 animate-fade-in-up">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Upcoming Events</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{stats.events.upcoming}</p>
                 <p class="text-xs text-gray-500 mt-1">in next 30 days</p>
               </div>
-              <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 bg-purple-50 rounded flex items-center justify-center">
                 <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -777,7 +777,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Content Health -->
-          <div class="rounded-lg border border-slate-200 bg-white p-6 animation-delay-300 animate-fade-in-up">
+          <div class="rounded border border-slate-200 bg-white p-6 animation-delay-300 animate-fade-in-up">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">System Health</p>
@@ -791,7 +791,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
             </div>
             <div class="mt-4">
-              <button onclick="document.getElementById('health-tab')?.click()" class="text-sm text-primary-600 hover:text-primary-700 font-medium">View details →</button>
+              <button onclick="document.getElementById('health-tab')?.click()" class="min-h-[44px] text-sm text-primary-600 hover:text-primary-700 font-medium">View details →</button>
             </div>
           </div>
         </div>
@@ -800,7 +800,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Recent Activity -->
           <div class="lg:col-span-2 animate-fade-in-up animation-delay-200">
-            <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+            <div class="bg-white rounded border border-slate-200 overflow-hidden">
               <div class="p-6 border-b border-slate-200 bg-slate-50">
                 <div class="flex items-center justify-between">
                   <h2 class="text-lg font-semibold text-gray-900">Recent Activity</h2>
@@ -808,7 +808,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                     <input
                       type="search"
                       placeholder="Search activity..."
-                      class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      class="px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       id="activitySearch"
                       aria-label="Search recent activity"
                     />
@@ -864,7 +864,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                 ))}
               </div>
               <div class="p-4 border-t border-gray-200 text-center">
-                <button id="loadMoreActivity" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                <button id="loadMoreActivity" class="min-h-[44px] text-sm text-primary-600 hover:text-primary-700 font-medium">
                   Load more activity
                 </button>
               </div>
@@ -874,7 +874,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           <!-- Quick Stats -->
           <div class="space-y-6">
             <!-- Collection Breakdown -->
-            <div class="bg-white rounded-lg border border-slate-200 p-6">
+            <div class="bg-white rounded border border-slate-200 p-6">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Content Breakdown</h3>
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
@@ -905,28 +905,28 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
 
             <!-- Quick Actions -->
-            <div class="bg-white rounded-lg border border-slate-200 p-6">
+            <div class="bg-white rounded border border-slate-200 p-6">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
               <div class="space-y-2">
-                <a href="/events/organize" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="/events/organize" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
                   <svg class="w-5 h-5 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Create Event
                 </a>
-                <a href="/services/register" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="/services/register" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
                   <svg class="w-5 h-5 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   Add Service
                 </a>
-                <a href="/photos/submit" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="/photos/submit" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
                   <svg class="w-5 h-5 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Upload Photo
                 </a>
-                <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" target="_blank" rel="noopener noreferrer" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" target="_blank" rel="noopener noreferrer" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
                   <svg class="w-5 h-5 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
@@ -936,7 +936,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
 
             <!-- Top Categories -->
-            <div class="bg-white rounded-lg border border-slate-200 p-6">
+            <div class="bg-white rounded border border-slate-200 p-6">
               <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Top Categories</h3>
               <div class="space-y-3">
                 {topCategories.map(([category, count]) => (
@@ -955,7 +955,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       <div id="analytics-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="analytics-tab">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <!-- Activity Trend Chart -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Activity Trend</h3>
             <div class="h-64 sm:h-80">
               <canvas id="activityTrendChart" aria-label="Activity trend chart showing last 7 days"></canvas>
@@ -963,7 +963,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Content Overview Chart -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Content Overview</h3>
             <div class="h-64 sm:h-80">
               <canvas id="contentOverviewChart" aria-label="Content overview pie chart"></canvas>
@@ -971,7 +971,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Service Status Chart -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Service Status</h3>
             <div class="h-48 sm:h-64">
               <canvas id="serviceStatusChart" aria-label="Service status doughnut chart"></canvas>
@@ -979,7 +979,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Event Status Chart -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Event Status</h3>
             <div class="h-48 sm:h-64">
               <canvas id="eventStatusChart" aria-label="Event status doughnut chart"></canvas>
@@ -987,7 +987,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Top Categories Chart -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Service Categories</h3>
             <div class="h-64">
               <canvas id="topCategoriesChart" aria-label="Top categories bar chart"></canvas>
@@ -995,7 +995,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Arts & Culture Breakdown -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Arts & Culture Breakdown</h3>
             <div class="h-64">
               <canvas id="artsBreakdownChart" aria-label="Arts and culture breakdown pie chart"></canvas>
@@ -1003,7 +1003,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
            <!-- Digital Presence Chart -->
-           <div class="bg-white rounded-lg border border-slate-200 p-6 lg:col-span-2">
+           <div class="bg-white rounded border border-slate-200 p-6 lg:col-span-2">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Digital Presence (Services & Stores)</h3>
             <div class="h-64">
               <canvas id="digitalPresenceChart" aria-label="Digital presence bar chart"></canvas>
@@ -1011,15 +1011,15 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
 
           <!-- Verification Status Chart -->
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Service Verification</h3>
             <div class="h-64">
               <canvas id="verificationStatusChart" aria-label="Verification status doughnut chart"></canvas>
             </div>
           </div>
-          
+
            <!-- Featured Content Chart -->
-           <div class="bg-white rounded-lg border border-slate-200 p-6 lg:col-span-3">
+           <div class="bg-white rounded border border-slate-200 p-6 lg:col-span-3">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Featured Content Distribution (All Collections)</h3>
             <div class="h-80">
               <canvas id="featuredContentChart" aria-label="Featured content pie chart"></canvas>
@@ -1033,13 +1033,13 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Resource Analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div class="bg-white rounded-lg border border-slate-200 p-6">
+              <div class="bg-white rounded border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Top Resource Categories</h4>
                 <div class="h-64">
                   <canvas id="resourceCategoriesChart"></canvas>
                 </div>
               </div>
-              <div class="bg-white rounded-lg border border-slate-200 p-6">
+              <div class="bg-white rounded border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Resource Activity</h4>
                 <div class="flex items-center justify-between mb-6">
                   <div>
@@ -1051,7 +1051,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                     <p class="text-2xl font-bold text-green-600">+{stats.resources.recent}</p>
                   </div>
                 </div>
-                <div class="overflow-hidden rounded-lg border border-gray-200">
+                <div class="overflow-hidden rounded border border-gray-200">
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
@@ -1079,7 +1079,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Skills Exchange Analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div class="bg-white rounded-lg border border-slate-200 p-6">
+              <div class="bg-white rounded border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Skills Distribution</h4>
                 <div class="h-48">
                   <canvas id="skillsDistributionChart"></canvas>
@@ -1095,7 +1095,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   </div>
                 </div>
               </div>
-              <div class="bg-white rounded-lg border border-slate-200 p-6 lg:col-span-2">
+              <div class="bg-white rounded border border-slate-200 p-6 lg:col-span-2">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Top Skill Categories</h4>
                 <div class="h-64">
                   <canvas id="skillCategoriesChart"></canvas>
@@ -1108,15 +1108,15 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Jobs Analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div class="bg-white rounded-lg border border-slate-200 p-6">
+              <div class="bg-white rounded border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Jobs Status</h4>
                 <div class="h-64">
                   <canvas id="jobStatusChart"></canvas>
                 </div>
               </div>
-              <div class="bg-white rounded-lg border border-slate-200 p-6">
+              <div class="bg-white rounded border border-slate-200 p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Recent Job Activity</h4>
-                <div class="overflow-hidden rounded-lg border border-gray-200">
+                <div class="overflow-hidden rounded border border-gray-200">
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
@@ -1148,18 +1148,18 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
       <!-- Content Tab -->
       <div id="content-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="content-tab">
-        <div class="bg-white rounded-lg border border-slate-200">
+        <div class="bg-white rounded border border-slate-200">
           <div class="p-6 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Content Management</h2>
             <div class="flex flex-col sm:flex-row gap-4">
               <input
                 type="search"
                 placeholder="Search content..."
-                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                class="flex-1 px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 id="contentSearch"
                 aria-label="Search content"
               />
-              <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" id="contentFilter" aria-label="Filter content by type">
+              <select class="px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-transparent" id="contentFilter" aria-label="Filter content by type">
                 <option value="all">All Content</option>
                 <option value="services">Services</option>
                 <option value="resources">Resources</option>
@@ -1175,7 +1175,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </select>
               <button
                 id="exportButton"
-                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+                class="min-h-[44px] inline-flex items-center px-4 py-2 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
               >
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -1205,10 +1205,10 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               Showing <span id="contentStart">1</span> to <span id="contentEnd">10</span> of <span id="contentTotal">0</span> results
             </p>
             <div class="flex gap-2">
-              <button id="prevPage" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+              <button id="prevPage" class="min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                 Previous
               </button>
-              <button id="nextPage" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+              <button id="nextPage" class="min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                 Next
               </button>
             </div>
@@ -1220,7 +1220,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       <div id="health-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="health-tab">
         <!-- Content Health Overview -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Healthy Content</p>
@@ -1234,7 +1234,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Missing Images</p>
@@ -1248,7 +1248,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Incomplete Metadata</p>
@@ -1262,7 +1262,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Broken Links</p>
@@ -1279,14 +1279,14 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
         <!-- Content Health Chart & Details -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Content Health Distribution</h3>
             <div class="h-64">
               <canvas id="contentHealthChart" aria-label="Content health distribution chart"></canvas>
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-slate-200 p-6">
+          <div class="bg-white rounded border border-slate-200 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Health by Collection</h3>
             <div class="space-y-4">
               {Object.entries(contentHealthData).map(([collection, data]) => {
@@ -1315,7 +1315,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           <h3 class="text-xl font-bold text-gray-900 mb-4">System Health Monitoring</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(apiStatus).map(([serviceName, statusData]) => (
-              <div class="bg-white rounded-lg border border-slate-200 p-6">
+              <div class="bg-white rounded border border-slate-200 p-6">
                 <div class="flex items-center justify-between mb-3">
                   <h4 class="text-lg font-semibold text-gray-900 capitalize">{serviceName} API</h4>
                   <span class={`px-2 py-0.5 rounded-full text-xs font-medium ${statusData.status === 'operational' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -1333,7 +1333,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
             ))}
           </div>
-          <div class="mt-6 p-4 bg-blue-50 rounded-xl text-blue-800 text-sm flex items-center">
+          <div class="mt-6 p-4 bg-blue-50 rounded text-blue-800 text-sm flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -1344,12 +1344,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
       <!-- Export Tab -->
       <div id="export-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="export-tab">
-        <div class="bg-white rounded-lg border border-slate-200 p-6">
+        <div class="bg-white rounded border border-slate-200 p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-4">Data Export Tools</h2>
           <p class="text-gray-600 mb-6">Select the type of data you wish to export. Data will be provided in CSV format.</p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+            <div class="border border-gray-200 rounded p-5 flex flex-col items-center text-center">
               <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -1357,12 +1357,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
               <h4 class="font-medium text-gray-900 mb-2">Services Data</h4>
               <p class="text-sm text-gray-500 mb-4">Export all registered services and their details.</p>
-              <button data-export-type="services" class="start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+              <button data-export-type="services" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Services
               </button>
             </div>
 
-            <div class="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+            <div class="border border-gray-200 rounded p-5 flex flex-col items-center text-center">
               <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1370,12 +1370,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
               <h4 class="font-medium text-gray-900 mb-2">Events Data</h4>
               <p class="text-sm text-gray-500 mb-4">Download details of all upcoming and past events.</p>
-              <button data-export-type="events" class="start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+              <button data-export-type="events" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Events
               </button>
             </div>
 
-            <div class="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+            <div class="border border-gray-200 rounded p-5 flex flex-col items-center text-center">
               <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -1383,12 +1383,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
               <h4 class="font-medium text-gray-900 mb-2">News Articles</h4>
               <p class="text-sm text-gray-500 mb-4">Get a CSV of all published news and announcements.</p>
-              <button data-export-type="news" class="start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+              <button data-export-type="news" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export News
               </button>
             </div>
 
-            <div class="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+            <div class="border border-gray-200 rounded p-5 flex flex-col items-center text-center">
               <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -1396,12 +1396,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
               <h4 class="font-medium text-gray-900 mb-2">Jobs Listings</h4>
               <p class="text-sm text-gray-500 mb-4">Export all job postings, active and inactive.</p>
-              <button data-export-type="jobs" class="start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+              <button data-export-type="jobs" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Jobs
               </button>
             </div>
 
-            <div class="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+            <div class="border border-gray-200 rounded p-5 flex flex-col items-center text-center">
               <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1409,12 +1409,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
               <h4 class="font-medium text-gray-900 mb-2">Photos Data</h4>
               <p class="text-sm text-gray-500 mb-4">Download metadata for all uploaded photos.</p>
-              <button data-export-type="photos" class="start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+              <button data-export-type="photos" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Photos
               </button>
             </div>
 
-            <div class="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+            <div class="border border-gray-200 rounded p-5 flex flex-col items-center text-center">
               <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
                 <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4" />
@@ -1422,7 +1422,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
               </div>
               <h4 class="font-medium text-gray-900 mb-2">All Content</h4>
               <p class="text-sm text-gray-500 mb-4">Export a consolidated CSV of all content types.</p>
-              <button data-export-type="all" class="start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+              <button data-export-type="all" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export All
               </button>
             </div>
@@ -1449,14 +1449,14 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
     tabButtons.forEach(button => {
       button.addEventListener('click', () => {
         const tabId = button.getAttribute('data-tab');
-        
+
         // Update buttons
         tabButtons.forEach(btn => {
           btn.setAttribute('aria-selected', 'false');
           // Remove active classes
           btn.className = tabClass + " " + inactiveTabClass;
         });
-        
+
         button.setAttribute('aria-selected', 'true');
         // Add active classes
         button.className = tabClass + " " + activeTabClass;
@@ -1485,11 +1485,11 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       // Manually trigger click on first tab to set initial state
       const firstTab = tabButtons[0];
       const tabId = firstTab.getAttribute('data-tab');
-      
+
       // Set initial classes
       tabButtons.forEach(btn => btn.className = tabClass + " " + inactiveTabClass);
       firstTab.className = tabClass + " " + activeTabClass;
-      
+
       tabPanels.forEach(panel => {
         panel.classList.add('hidden');
         if (panel.id === `${tabId}-panel`) panel.classList.remove('hidden');
@@ -1534,7 +1534,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       const activityTrendCtx = document.getElementById('activityTrendChart');
       if (activityTrendCtx) {
         destroyChart('activityTrendChart');
-        
+
         // Create gradient
         const gradient = activityTrendCtx.getContext('2d').createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
@@ -2051,7 +2051,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             datasets: [{
               data: chartData.featuredContent.values,
               backgroundColor: [
-                colors.primary[0], colors.teal, colors.purple, colors.pink, 
+                colors.primary[0], colors.teal, colors.purple, colors.pink,
                 colors.warning, colors.success, colors.orange, '#64748B', '#94A3B8'
               ],
               borderWidth: 1,
@@ -2088,7 +2088,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
     toast.innerHTML = `
       <span class="flex-1">${message}</span>
-      <button onclick="this.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+      <button onclick="this.parentElement.remove()" class="min-h-[44px] ml-4 text-white hover:text-gray-200">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -2211,12 +2211,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
     container.innerHTML = visibleItems.map((item) => `
       <div class="p-4 hover:bg-gray-50 transition-colors activity-item">
         <div class="flex items-start space-x-3">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-            item.type === 'service' ? 'bg-blue-100' :
-            item.type === 'event' ? 'bg-purple-100' :
-            item.type === 'news' ? 'bg-green-100' :
-            'bg-yellow-100'
-          }">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${ item.type === 'service' ? 'bg-blue-100' : item.type === 'event' ? 'bg-purple-100' : item.type === 'news' ? 'bg-green-100' : 'bg-yellow-100' }">
             ${getIconForType(item.type)}
           </div>
           <div class="flex-1 min-w-0">
@@ -2256,7 +2251,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       allContent = JSON.parse(allContentJSON);
       activityItems = JSON.parse(activityItemsJSON);
       filteredContent = [...allContent];
-      
+
       const searchInput = document.getElementById('contentSearch');
       const filterSelect = document.getElementById('contentFilter');
       const prevBtn = document.getElementById('prevPage');
@@ -2349,7 +2344,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         ];
         csvRows.push(row.join(','));
       });
-      
+
       const csvContent = csvRows.join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -2395,13 +2390,13 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
   function filterContent(searchTerm, typeFilter) {
     searchTerm = searchTerm.toLowerCase();
-    
+
     filteredContent = allContent.filter(item => {
-      const matchesSearch = item.title.toLowerCase().includes(searchTerm) || 
+      const matchesSearch = item.title.toLowerCase().includes(searchTerm) ||
                             (item.category && item.category.toLowerCase().includes(searchTerm)) ||
                             (item.description && item.description.toLowerCase().includes(searchTerm));
       const matchesType = typeFilter === 'all' || item.type === typeFilter || item.type + 's' === typeFilter;
-      
+
       return matchesSearch && matchesType;
     });
 
@@ -2439,14 +2434,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       <tr class="hover:bg-gray-50 transition-colors">
         <td class="px-6 py-4 whitespace-nowrap">
           <div class="flex items-center">
-            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full ${
-              item.type === 'service' ? 'bg-blue-100 text-blue-600' :
-              item.type === 'resource' ? 'bg-indigo-100 text-indigo-600' :
-              item.type === 'event' ? 'bg-purple-100 text-purple-600' :
-              item.type === 'photo' ? 'bg-pink-100 text-pink-600' :
-              item.type === 'job' ? 'bg-yellow-100 text-yellow-600' :
-              'bg-green-100 text-green-600'
-            }">
+            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full ${ item.type === 'service' ? 'bg-blue-100 text-blue-600' : item.type === 'resource' ? 'bg-indigo-100 text-indigo-600' : item.type === 'event' ? 'bg-purple-100 text-purple-600' : item.type === 'photo' ? 'bg-pink-100 text-pink-600' : item.type === 'job' ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600' }">
               ${getIconForType(item.type)}
             </div>
             <div class="ml-4">
@@ -2456,14 +2444,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
-          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-            item.type === 'service' ? 'bg-blue-100 text-blue-800' :
-            item.type === 'resource' ? 'bg-indigo-100 text-indigo-800' :
-            item.type === 'event' ? 'bg-purple-100 text-purple-800' :
-            item.type === 'photo' ? 'bg-pink-100 text-pink-800' :
-            item.type === 'job' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-green-100 text-green-800'
-          }">
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${ item.type === 'service' ? 'bg-blue-100 text-blue-800' : item.type === 'resource' ? 'bg-indigo-100 text-indigo-800' : item.type === 'event' ? 'bg-purple-100 text-purple-800' : item.type === 'photo' ? 'bg-pink-100 text-pink-800' : item.type === 'job' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }">
             ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}
           </span>
         </td>
@@ -2471,11 +2452,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           ${new Date(item.date).toLocaleDateString()}
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
-          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-            item.status === 'Active' || item.status === 'Published' || item.status === 'open' || item.status === 'Upcoming' ? 'bg-green-100 text-green-800' :
-            item.status === 'Past' || item.status === 'closed' ? 'bg-gray-100 text-gray-800' :
-            'bg-yellow-100 text-yellow-800'
-          }">
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${ item.status === 'Active' || item.status === 'Published' || item.status === 'open' || item.status === 'Upcoming' ? 'bg-green-100 text-green-800' : item.status === 'Past' || item.status === 'closed' ? 'bg-gray-100 text-gray-800' : 'bg-yellow-100 text-yellow-800' }">
             ${item.status}
           </span>
         </td>
@@ -2484,7 +2461,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         </td>
       </tr>
     `).join('');
-    
+
     if (total === 0) {
       tbody.innerHTML = `
         <tr>

@@ -1,5 +1,12 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import RecordGallery from '../../components/records/RecordGallery.astro';
+import RecordFacts from '../../components/records/RecordFacts.astro';
+import RecordTools from '../../components/records/RecordTools.astro';
+import RecordResources from '../../components/records/RecordResources.astro';
+import RelatedRecords from '../../components/records/RelatedRecords.astro';
+import { recordImages, recordCoordinates, formatRecordDate, sameRecordValue } from '../../utils/recordMedia';
+import '../../styles/records.css';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
 // Generate static paths for all sites
@@ -11,7 +18,7 @@ export async function getStaticPaths() {
     console.error('Error loading sites:', error);
     sites = [];
   }
-  
+
   return sites.map((site) => {
     const slug = site.file.split('/').pop().replace('.md', '');
     return {
@@ -27,9 +34,9 @@ const { frontmatter, Content } = site;
 // Get related sites based on category and location
 const allSites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
 const relatedSites = allSites
-  .filter(s => 
-    s.file !== site.file && 
-    (s.frontmatter.category === frontmatter.category || s.frontmatter.campZone === frontmatter.campZone)
+  .filter(s =>
+    s.file !== site.file &&
+    (sameRecordValue(s.frontmatter.category, frontmatter.category) || sameRecordValue(s.frontmatter.campZone, frontmatter.campZone))
   )
   .slice(0, 3);
 
@@ -57,31 +64,26 @@ const seo = {
   }
 };
 
-// Prepare images array
-const images = [
-  frontmatter.image,
-  ...(frontmatter.additionalImages || []),
-  ...(frontmatter.beforeImages || []),
-  ...(frontmatter.afterImages || [])
-].filter(Boolean);
-
-const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(seo.canonical)}`;
-
-// Helper to format dates
-const formatDate = (dateStr) => {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-};
+const slug = site.file.split('/').pop().replace('.md', '');
+const images = recordImages(frontmatter.image, frontmatter.additionalImages || []);
+const beforeImages = recordImages(frontmatter.beforeImages || []);
+const afterImages = recordImages(frontmatter.afterImages || []);
+const coordinates = recordCoordinates(frontmatter.latitude, frontmatter.longitude);
+const mapHref = coordinates ? `/map?lat=${coordinates.lat}&lng=${coordinates.lng}` : undefined;
+const params = new URLSearchParams({ siteName: frontmatter.title, location: frontmatter.specificLocation || frontmatter.campZone || '' });
+const facts = [
+  { label: 'Record number', value: frontmatter.referenceId },
+  { label: 'Category', value: frontmatter.category },
+  { label: 'Area', value: frontmatter.campZone },
+  { label: 'Location', value: frontmatter.specificLocation },
+  { label: 'Established', value: frontmatter.yearEstablished },
+  { label: 'Status or ownership', value: frontmatter.legalStatus },
+  { label: 'Recorded condition', value: frontmatter.condition },
+  { label: 'Date documented', value: formatRecordDate(frontmatter.inscriptionDate) },
+  { label: 'Coordinates', value: coordinates ? `${coordinates.lat}, ${coordinates.lng}` : undefined, href: mapHref },
+];
 ---
-
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
-  image={seo.image} 
-  type={seo.type} 
-  canonical={seo.canonical} 
-  openGraph={seo.openGraph}
->
+<MainLayout title={seo.title} description={seo.description} image={seo.image} type={seo.type} canonical={seo.canonical} openGraph={seo.openGraph}>
   {/* Schema.org Place / Landmark Structured Data */}
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -90,10 +92,10 @@ const formatDate = (dateStr) => {
     "description": seo.description,
     "url": seo.canonical,
     "image": frontmatter.image ? [frontmatter.image] : undefined,
-    "geo": frontmatter.latitude && frontmatter.longitude ? {
+    "geo": coordinates ? {
       "@type": "GeoCoordinates",
-      "latitude": frontmatter.latitude,
-      "longitude": frontmatter.longitude
+      "latitude": coordinates.lat,
+      "longitude": coordinates.lng
     } : undefined,
     "containedInPlace": {
       "@type": "AdministrativeArea",
@@ -105,293 +107,29 @@ const formatDate = (dateStr) => {
       }
     }
   })} />
-  <div class="bg-white border-b border-slate-200">
+  <div class="record-detail bg-white">
+    <header class="border-b border-slate-200 bg-slate-50"><div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Site Register', href: '/site-register' }, { label: frontmatter.title }]} />
+      <div class="mt-5 max-w-4xl"><p class="text-sm font-medium text-slate-600">{frontmatter.category}{frontmatter.referenceId && <> · {frontmatter.referenceId}</>}</p><h1 class="mt-2 text-primary-900">{frontmatter.title}</h1>{frontmatter.description && <p class="mt-4 text-base leading-7 text-slate-700">{frontmatter.description}</p>}{frontmatter.alternativeNames && <p class="mt-3 text-sm text-slate-600">Also known as {frontmatter.alternativeNames}</p>}</div>
+    </div></header>
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <Breadcrumb
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Site Register', href: '/site-register' },
-          { label: frontmatter.title }
-        ]}
-      />
-    </div>
-  </div>
-
-  <div class="bg-slate-50 min-h-screen py-10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-8">
-          
-          <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
-            {frontmatter.image && (
-              <div class="aspect-video w-full bg-slate-100 border-b border-slate-200">
-                <img src={frontmatter.image} alt={frontmatter.title} class="w-full h-full object-cover" />
-              </div>
-            )}
-            <div class="p-8">
-              <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-                <div class="flex items-center gap-2 flex-wrap">
-                  {frontmatter.category && (
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200">
-                      {frontmatter.category}
-                    </span>
-                  )}
-                  {frontmatter.referenceId && (
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-mono border border-slate-200 text-slate-600 bg-slate-50">
-                      ID: {frontmatter.referenceId}
-                    </span>
-                  )}
-                </div>
-                <a
-                  href="/explore"
-                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200 px-3 py-1 rounded-md hover:bg-sky-100 transition-colors"
-                >
-                  View on GIS Map &rarr;
-                </a>
-              </div>
-              
-              <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-                {frontmatter.title}
-              </h1>
-              
-              {frontmatter.alternativeNames && (
-                <p class="text-lg text-slate-500 mb-6">
-                  Also known as: {frontmatter.alternativeNames}
-                </p>
-              )}
-
-              <div class="prose prose-slate max-w-none mt-8">
-                <Content />
-              </div>
-            </div>
-          </div>
-
-          <!-- Significance Criteria (Clean style) -->
-          {frontmatter.significanceCriteria && frontmatter.significanceCriteria.length > 0 && (
-            <div class="bg-white p-8 rounded-lg border border-slate-200">
-              <h2 class="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
-                <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" /></svg>
-                Heritage Significance
-              </h2>
-              <div class="space-y-4">
-                {frontmatter.significanceCriteria.map((criterion, idx) => (
-                  <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
-                      {idx + 1}
-                    </div>
-                    <p class="text-slate-700">{criterion}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <!-- Gallery -->
-          {images.length > 1 && (
-            <div class="bg-white p-8 rounded-lg border border-slate-200">
-              <h2 class="text-xl font-semibold text-slate-900 mb-6">Visual Archives</h2>
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {images.map((img, idx) => (
-                  <a href={img} target="_blank" class="block aspect-square overflow-hidden bg-slate-100 rounded-lg border border-slate-200 hover:opacity-90 transition-opacity">
-                    <img src={img} alt={`${frontmatter.title} - Image ${idx + 1}`} class="w-full h-full object-cover" loading="lazy" />
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <!-- Before/After Restoration -->
-          {frontmatter.beforeImages && frontmatter.afterImages && (
-            <div class="bg-white p-8 rounded-lg border border-slate-200">
-              <h2 class="text-xl font-semibold text-slate-900 mb-6">Restoration Record</h2>
-              <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 class="text-sm font-semibold text-slate-500 mb-3 uppercase tracking-wider">Prior Condition</h3>
-                  <img src={frontmatter.beforeImages[0]} alt="Before" class="w-full aspect-video object-cover rounded-lg border border-slate-200" />
-                </div>
-                <div>
-                  <h3 class="text-sm font-semibold text-slate-500 mb-3 uppercase tracking-wider">Current State</h3>
-                  <img src={frontmatter.afterImages[0]} alt="After" class="w-full aspect-video object-cover rounded-lg border border-slate-200" />
-                </div>
-              </div>
-            </div>
-          )}
-
+      <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-10">
+        <div class="min-w-0 space-y-8">
+          {images.length > 0 && <RecordGallery images={images} title={frontmatter.title} />}
+          <article class="record-prose prose prose-slate max-w-none"><Content /></article>
+          {frontmatter.significanceCriteria?.length > 0 && <section class="record-section"><h2 class="text-primary-900">Heritage significance</h2><ul class="list-disc space-y-3 pl-5 text-base leading-7 text-slate-700">{frontmatter.significanceCriteria.map(criterion => <li>{criterion}</li>)}</ul></section>}
+          {(frontmatter.integrity || frontmatter.authenticity || frontmatter.preservationNeeds) && <section class="record-section"><h2 class="text-primary-900">Condition and preservation</h2><RecordFacts facts={[{ label: 'Integrity', value: frontmatter.integrity }, { label: 'Authenticity', value: frontmatter.authenticity }, { label: 'Preservation needs', value: frontmatter.preservationNeeds }]} /></section>}
+          {frontmatter.associatedEvents && <section class="record-section"><h2 class="text-primary-900">Associated events</h2><p class="text-base leading-7 text-slate-700">{frontmatter.associatedEvents}</p></section>}
+          {(beforeImages.length > 0 || afterImages.length > 0) && <section class="record-section"><h2 class="text-primary-900">Before and after photographs</h2><div class="grid gap-6 sm:grid-cols-2">{beforeImages.length > 0 && <div><h3 class="mb-3 text-lg text-slate-900">Before</h3><RecordGallery images={beforeImages} title={`${frontmatter.title} — before`} compact /></div>}{afterImages.length > 0 && <div><h3 class="mb-3 text-lg text-slate-900">After</h3><RecordGallery images={afterImages} title={`${frontmatter.title} — after`} compact /></div>}</div></section>}
+          <RecordResources resources={frontmatter.educationalResources} />
         </div>
-
-        <!-- Sidebar -->
-        <div class="space-y-6">
-          
-          <!-- Quick Facts -->
-          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
-            <div class="bg-slate-50 border-b border-slate-200 px-6 py-4">
-              <h2 class="text-base font-semibold text-slate-900">Site Information</h2>
-            </div>
-            <div class="p-6 space-y-5 text-sm">
-              {frontmatter.referenceId && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Archive Reference</span>
-                  <span class="font-mono text-slate-900 font-medium">{frontmatter.referenceId}</span>
-                </div>
-              )}
-              {frontmatter.campZone && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Sector / Zone</span>
-                  <span class="text-slate-900 font-semibold">{frontmatter.campZone}</span>
-                </div>
-              )}
-              {frontmatter.specificLocation && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Specific Location</span>
-                  <span class="text-slate-700">{frontmatter.specificLocation}</span>
-                </div>
-              )}
-              {frontmatter.latitude && frontmatter.longitude && (
-                <div>
-                  <span class="block text-slate-500 mb-1">GPS Coordinates</span>
-                  <span class="font-mono text-xs text-slate-800 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">
-                    {frontmatter.latitude}, {frontmatter.longitude}
-                  </span>
-                </div>
-              )}
-              {frontmatter.yearEstablished && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Year Established</span>
-                  <span class="text-slate-900">{frontmatter.yearEstablished}</span>
-                </div>
-              )}
-              {frontmatter.condition && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Physical Condition</span>
-                  <span class="inline-block px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 rounded capitalize">
-                    {frontmatter.condition}
-                  </span>
-                </div>
-              )}
-              {frontmatter.legalStatus && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Status / Ownership</span>
-                  <span class="text-slate-900">{frontmatter.legalStatus}</span>
-                </div>
-              )}
-              {frontmatter.inscriptionDate && (
-                <div>
-                  <span class="block text-slate-500 mb-1">Date Documented</span>
-                  <span class="text-slate-900">{formatDate(frontmatter.inscriptionDate)}</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <!-- Documents / Resources -->
-          {frontmatter.educationalResources && frontmatter.educationalResources.length > 0 && (
-            <div class="bg-white border border-slate-200 rounded-lg">
-              <div class="bg-slate-50 border-b border-slate-200 px-6 py-4">
-                <h2 class="text-base font-semibold text-slate-900">Related Resources</h2>
-              </div>
-              <div class="p-4 space-y-3">
-                {frontmatter.educationalResources.map((res) => (
-                  <a href={res.url} target="_blank" rel="noopener noreferrer" class="flex items-start gap-3.5 p-3.5 border border-slate-200 hover:border-slate-300 rounded-xl hover:bg-slate-50 transition-all group">
-                    <div class="p-2.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 shrink-0 group-hover:bg-sky-100 group-hover:text-sky-800 transition-colors">
-                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <div class="font-bold text-slate-900 text-sm mb-1 group-hover:text-sky-700 transition-colors flex items-center justify-between gap-2">
-                        <span>{res.title}</span>
-                        <svg class="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </div>
-                      {res.description && <div class="text-xs text-slate-600 leading-relaxed line-clamp-2">{res.description}</div>}
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <!-- Actions Card -->
-          <div class="bg-white border border-slate-200 rounded-xl p-6 space-y-3 shadow-sm">
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Record tools & actions</h2>
-            
-            <a href="/explore" class="w-full flex items-center justify-center gap-2 bg-slate-900 text-white px-4 py-2.5 rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm">
-              Explore on GIS Map &rarr;
-            </a>
-
-            <a href="/site-register/submit-update" class="w-full flex items-center justify-center gap-2 border border-slate-300 bg-white text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-slate-50 transition-colors">
-              Submit Record Update
-            </a>
-
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
-              <button onclick="showQRCode()" class="flex items-center justify-center gap-1.5 border border-slate-200 bg-slate-50 text-slate-700 py-1.5 px-2 rounded-lg text-xs font-medium hover:bg-slate-100 transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
-                QR Code
-              </button>
-              <a href={`/site-register/${site.file.split('/').pop().replace('.md', '')}/print`} class="flex items-center justify-center gap-1.5 border border-slate-200 bg-slate-50 text-slate-700 py-1.5 px-2 rounded-lg text-xs font-medium hover:bg-slate-100 transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-                Print Record
-              </a>
-            </div>
-
-            <div class="pt-2 text-center">
-              <a href="/site-register/report-issue" class="text-xs text-red-600 hover:text-red-700 hover:underline">
-                Report Data Issue &rarr;
-              </a>
-            </div>
-          </div>
-
-        </div>
+        <aside class="min-w-0 space-y-8" aria-label="Site record information">
+          <section class="record-meta"><h2 class="text-primary-900">Site information</h2><RecordFacts facts={facts} />{mapHref && <a href={mapHref} class="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded bg-primary-900 px-4 py-3 text-sm font-medium text-white hover:bg-primary-800">View this place on the map →</a>}</section>
+          <RecordTools title={frontmatter.title} url={seo.canonical} printHref={`/site-register/${slug}/print`} updateHref={`/site-register/submit-update?${params}`} reportHref={`/site-register/report-issue?${params}`} />
+          <a href="/site-register/license" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Record licence and usage policy →</a>
+        </aside>
       </div>
-    </div>
-  </div>
-
-  <!-- QR Code Modal -->
-  <div id="qr-modal" class="fixed inset-0 bg-slate-900/80 z-50 hidden flex items-center justify-center">
-    <div class="bg-white rounded-lg p-8 max-w-sm mx-4 shadow-sm relative border border-gray-200">
-      <button onclick="closeQRModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-      </button>
-      <div class="text-center">
-        <h3 class="text-lg font-semibold text-slate-900 mb-2">Site archive code</h3>
-        <p class="text-sm text-slate-500 mb-6">Scan to view the community heritage record for {frontmatter.title}</p>
-        <div class="bg-white p-4 border border-slate-200 rounded inline-block mb-6">
-          <img src={qrCodeUrl} alt="QR Code" class="w-48 h-48" />
-        </div>
-        <p class="text-xs text-slate-400 uppercase tracking-widest">{frontmatter.referenceId || 'UNVERIFIED'}</p>
-      </div>
+      <div class="mt-12"><RelatedRecords title="Explore related places" items={relatedSites.map(record => ({ title: record.frontmatter.title, href: `/site-register/${record.file.split('/').pop().replace('.md', '')}`, image: record.frontmatter.image, meta: [record.frontmatter.category, record.frontmatter.campZone].filter(Boolean).join(' · ') }))} /></div>
     </div>
   </div>
 </MainLayout>
-
-<script>
-  window.showQRCode = function() {
-    const modal = document.getElementById('qr-modal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-  };
-
-  window.closeQRModal = function() {
-    const modal = document.getElementById('qr-modal');
-    if (modal) {
-      modal.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }
-  };
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') window.closeQRModal();
-  });
-
-  const qrModal = document.getElementById('qr-modal');
-  if (qrModal) {
-    qrModal.addEventListener('click', function(e) {
-      if (e.target === this) window.closeQRModal();
-    });
-  }
-</script>

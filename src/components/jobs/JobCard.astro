@@ -13,8 +13,8 @@ const isClosed = job.data.status === 'closed' || isExpired;
 
 <article
   class:list={[
-    'group flex flex-col sm:flex-row gap-4 sm:items-start justify-between rounded-xl border border-gray-200 bg-white p-5 sm:p-6 transition hover:border-gray-300 hover:shadow-sm',
-    isClosed && 'opacity-60 grayscale-[50%]'
+    'group flex flex-col sm:flex-row gap-4 sm:items-start justify-between rounded border border-gray-200 bg-white p-5 sm:p-6 ',
+    isClosed && 'bg-slate-50'
   ]}
 >
   <div class="flex-1 min-w-0">
@@ -23,23 +23,23 @@ const isClosed = job.data.status === 'closed' || isExpired;
         {job.data.organization}
       </span>
       {featured && (
-        <span class="inline-flex rounded bg-slate-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+        <span class="inline-flex rounded bg-slate-900 px-2 py-0.5 text-sm font-medium text-white">
           Featured
         </span>
       )}
       {isClosed ? (
-        <span class="inline-flex rounded bg-slate-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-700">
+        <span class="inline-flex rounded bg-slate-200 px-2 py-0.5 text-sm font-medium text-slate-700">
           Closed
         </span>
       ) : (
-        <span class="inline-flex rounded border border-green-200 bg-green-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-800">
+        <span class="inline-flex rounded border border-green-200 bg-green-50 px-2 py-0.5 text-sm font-medium text-green-800">
           Open
         </span>
       )}
     </div>
 
-    <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 leading-tight">
-      <a href={`/jobs/${job.id}`} class="hover:underline hover:text-slate-700">
+    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2 leading-tight">
+      <a href={`/jobs/${job.id}`} class="text-primary-800 underline underline-offset-4 hover:text-primary-900">
         {job.data.title}
       </a>
     </h3>
@@ -50,7 +50,7 @@ const isClosed = job.data.status === 'closed' || isExpired;
       </p>
     )}
 
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-gray-500">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
       <div class="inline-flex items-center gap-1.5">
         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -72,16 +72,6 @@ const isClosed = job.data.status === 'closed' || isExpired;
       </div>
     </div>
   </div>
-  
-  <div class="sm:mt-2 hidden sm:block">
-    <a
-      href={`/jobs/${job.id}`}
-      class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-slate-900 group/link"
-    >
-      View details
-      <svg class="w-4 h-4 ml-1 transition-transform group-hover/link:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    </a>
-  </div>
+
+
 </article>

@@ -81,10 +81,10 @@ const pagination = {
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#artworks" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
+            <a href="#artworks" class="min-h-[44px] inline-flex items-center px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 transition-colors font-medium">
               Browse artworks
             </a>
-            <a href="/public-art-catalogue/submit" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-gray-900 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
+            <a href="/public-art-catalogue/submit" class="min-h-[44px] inline-flex items-center px-6 py-3 border-2 border-gray-900 text-gray-900 bg-white rounded hover:bg-slate-50 transition-colors font-medium">
               Submit Artwork
             </a>
           </div>
@@ -104,7 +104,7 @@ const pagination = {
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentArtworks.length > 0 ? (
             currentArtworks.map((artwork) => (
-              <article class="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors duration-150 hover:border-slate-400">
+              <article class="group flex min-w-0 flex-col overflow-hidden rounded border border-gray-200 bg-white transition-colors duration-150 hover:border-slate-400">
                 <div class="relative h-64 bg-gray-100">
                   {artwork.frontmatter.image ? (
                     <img src={artwork.frontmatter.image} alt={artwork.frontmatter.title} class="w-full h-full object-cover transition-opacity duration-700" />
@@ -117,7 +117,7 @@ const pagination = {
                   )}
                   <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div class="absolute top-4 left-4 max-w-[calc(100%-2rem)]">
-                    <span class="inline-flex w-fit max-w-full truncate bg-white text-slate-700 px-3 py-1 rounded-full text-xs font-medium shadow-sm border border-slate-200">
+                    <span class="inline-flex w-fit max-w-full truncate bg-white text-slate-700 px-3 py-1 rounded-full text-xs font-medium border border-slate-200">
                       {artwork.frontmatter.category}
                     </span>
                   </div>
@@ -167,7 +167,7 @@ const pagination = {
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">No artworks yet</h3>
                 <p class="text-gray-600 mb-6">Submit the first public artwork, mural, artist profile, or visual record.</p>
-                <a href="/public-art-catalogue/submit" class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                <a href="/public-art-catalogue/submit" class="min-h-[44px] inline-flex items-center bg-primary-900 text-white px-6 py-3 rounded font-semibold hover:bg-primary-800 transition-colors">
                   Submit First Artwork
                   <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -191,21 +191,21 @@ const pagination = {
               <div class="flex flex-wrap items-center gap-2">
                 {/* Previous button */}
                 {pagination.hasPrevPage ? (
-                  <a href={`/public-art-catalogue?page=${pagination.prevPage}`} class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                  <a href={`/public-art-catalogue?page=${pagination.prevPage}`} class="min-h-[44px] inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                     Previous
                   </a>
                 ) : (
-                  <button disabled class="inline-flex items-center px-3 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                  <button disabled class="min-h-[44px] inline-flex items-center px-3 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                     Previous
                   </button>
                 )}
-                
+
                 {/* Page numbers */}
                 <div class="hidden md:flex flex-wrap items-center gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
@@ -214,23 +214,23 @@ const pagination = {
                         {pageNum}
                       </span>
                     ) : (
-                      <a href={`/public-art-catalogue?page=${pageNum}`} class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                      <a href={`/public-art-catalogue?page=${pageNum}`} class="min-h-[44px] inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                         {pageNum}
                       </a>
                     )
                   ))}
                 </div>
-                
+
                 {/* Next button */}
                 {pagination.hasNextPage ? (
-                  <a href={`/public-art-catalogue?page=${pagination.nextPage}`} class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                  <a href={`/public-art-catalogue?page=${pagination.nextPage}`} class="min-h-[44px] inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                     Next
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                   </a>
                 ) : (
-                  <button disabled class="inline-flex items-center px-3 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
+                  <button disabled class="min-h-[44px] inline-flex items-center px-3 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50 cursor-not-allowed">
                     Next
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -243,7 +243,7 @@ const pagination = {
         )}
 
         <div class="text-center mt-12">
-          <a href="/public-art-catalogue/submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md">
+          <a href="/public-art-catalogue/submit" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-primary-900 text-white font-medium rounded hover:bg-primary-800 transition-colors shadow-sm hover:shadow-md">
             Submit New Artwork
           </a>
         </div>
@@ -267,7 +267,7 @@ const pagination = {
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {spotlightArtists.length > 0 ? (
             spotlightArtists.map((artist) => (
-              <article class="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors duration-150 hover:border-slate-400">
+              <article class="group flex min-w-0 flex-col overflow-hidden rounded border border-gray-200 bg-white transition-colors duration-150 hover:border-slate-400">
                 <div class="relative h-48 bg-gray-100">
                   {artist.frontmatter.image ? (
                     <img src={artist.frontmatter.image} alt={artist.frontmatter.artistName} class="w-full h-full object-cover transition-opacity duration-700" />
@@ -321,7 +321,7 @@ const pagination = {
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">No featured artists yet</h3>
                 <p class="text-gray-600 mb-6">Submit an artist profile or public art record for review.</p>
-                <a href="/public-art-catalogue/submit" class="inline-flex items-center bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                <a href="/public-art-catalogue/submit" class="min-h-[44px] inline-flex items-center bg-primary-900 text-white px-6 py-3 rounded font-semibold hover:bg-primary-800 transition-colors">
                   Submit Your Artwork
                   <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -341,10 +341,10 @@ const pagination = {
         <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Submit a public artwork, artist profile, correction, location detail, or photo record.</p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/public-art-catalogue/submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors">
+          <a href="/public-art-catalogue/submit" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-primary-900 text-white font-medium rounded hover:bg-primary-800 transition-colors">
             Submit Artwork
           </a>
-          <a href="/photo-guidelines" class="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 border border-gray-300 font-medium rounded-lg hover:bg-gray-50 transition-colors">
+          <a href="/photo-guidelines" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 border border-gray-300 font-medium rounded hover:bg-gray-50 transition-colors">
             View Guidelines
           </a>
         </div>

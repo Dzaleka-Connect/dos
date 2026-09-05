@@ -11,7 +11,7 @@ const danceGroups = dancers.filter(dancer => dancer.data.type === 'group');
 const individualDancers = dancers.filter(dancer => dancer.data.type === 'individual');
 
 // Filter dancers with contact information
-const dancersWithContact = dancers.filter(dancer => 
+const dancersWithContact = dancers.filter(dancer =>
   dancer.data.email || dancer.data.phone || dancer.data.whatsapp
 );
 
@@ -30,13 +30,13 @@ const description = "Book performances from talented dancers and dance groups fr
           Connect with talented dancers and dance groups from Dzaleka for your events, festivals, and special occasions.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/dancers" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
+          <a href="/dancers" class="min-h-[44px] inline-flex items-center px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 transition-colors font-medium">
             Browse All Dancers
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </a>
-          <a href="/contact" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
+          <a href="/contact" class="min-h-[44px] inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded hover:bg-slate-50 transition-colors font-medium">
             Contact Us
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -55,10 +55,10 @@ const description = "Book performances from talented dancers and dance groups fr
             Contact the dancers directly using the information provided below. Most dancers are available for performances, workshops, and special events.
           </p>
         </div>
-        
+
         <div class="grid md:grid-cols-3 gap-6 mb-12">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+          <div class="bg-white p-6 rounded border border-gray-100">
+            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-4">
               <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -66,9 +66,9 @@ const description = "Book performances from talented dancers and dance groups fr
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Contact Directly</h3>
             <p class="text-gray-600 text-sm">Use the contact information provided for each dancer to reach out directly about booking.</p>
           </div>
-          
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+
+          <div class="bg-white p-6 rounded border border-gray-100">
+            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-4">
               <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -76,9 +76,9 @@ const description = "Book performances from talented dancers and dance groups fr
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Plan Ahead</h3>
             <p class="text-gray-600 text-sm">Contact dancers at least 2-3 weeks in advance to ensure availability and proper preparation.</p>
           </div>
-          
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+
+          <div class="bg-white p-6 rounded border border-gray-100">
+            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-4">
               <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
@@ -94,14 +94,14 @@ const description = "Book performances from talented dancers and dance groups fr
     <section class="py-12 bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Dance groups available for booking</h2>
-        
+
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {danceGroups.map(group => (
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
+            <div class="bg-white rounded transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
               <div class="relative h-48 overflow-hidden bg-gray-100">
                 {group.data.image ? (
-                  <img 
-                    src={group.data.image} 
+                  <img
+                    src={group.data.image}
                     alt={group.data.title}
                     class="w-full h-full object-cover"
                   />
@@ -118,11 +118,11 @@ const description = "Book performances from talented dancers and dance groups fr
                   </span>
                 </div>
               </div>
-              
+
               <div class="p-5 flex flex-col flex-grow">
                 <h3 class="text-lg font-bold text-gray-900 mb-2">{group.data.title}</h3>
                 <p class="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{group.data.description}</p>
-                
+
                 {/* Dance Styles */}
                 <div class="flex flex-wrap gap-2 mb-4">
                   {group.data.danceStyles?.slice(0, 3).map(style => (
@@ -131,7 +131,7 @@ const description = "Book performances from talented dancers and dance groups fr
                     </span>
                   ))}
                 </div>
-                
+
                 {/* Contact Information */}
                 <div class="space-y-2 mb-4 pt-4 border-t border-gray-50">
                   {group.data.email && (
@@ -144,7 +144,7 @@ const description = "Book performances from talented dancers and dance groups fr
                       </a>
                     </div>
                   )}
-                  
+
                   {group.data.phone && (
                     <div class="flex items-center text-sm">
                       <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,7 +155,7 @@ const description = "Book performances from talented dancers and dance groups fr
                       </a>
                     </div>
                   )}
-                  
+
                   {group.data.whatsapp && (
                     <div class="flex items-center text-sm">
                       <svg class="w-4 h-4 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
@@ -167,7 +167,7 @@ const description = "Book performances from talented dancers and dance groups fr
                     </div>
                   )}
                 </div>
-                
+
                 <div class="flex items-center justify-between mt-auto">
                   <a href={`/dancers/${group.id}`} class="text-slate-700 hover:text-slate-700 font-medium text-sm">
                     View Full Profile →
@@ -187,14 +187,14 @@ const description = "Book performances from talented dancers and dance groups fr
     <section class="py-12 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Individual dancers available for booking</h2>
-        
+
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {individualDancers.map(dancer => (
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
+            <div class="bg-white rounded transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
               <div class="relative h-48 overflow-hidden bg-gray-100">
                 {dancer.data.image ? (
-                  <img 
-                    src={dancer.data.image} 
+                  <img
+                    src={dancer.data.image}
                     alt={dancer.data.title}
                     class="w-full h-full object-cover"
                   />
@@ -211,11 +211,11 @@ const description = "Book performances from talented dancers and dance groups fr
                   </span>
                 </div>
               </div>
-              
+
               <div class="p-5 flex flex-col flex-grow">
                 <h3 class="text-lg font-bold text-gray-900 mb-2">{dancer.data.title}</h3>
                 <p class="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{dancer.data.description}</p>
-                
+
                 {/* Dance Styles */}
                 <div class="flex flex-wrap gap-2 mb-4">
                   {dancer.data.danceStyles?.slice(0, 3).map(style => (
@@ -224,7 +224,7 @@ const description = "Book performances from talented dancers and dance groups fr
                     </span>
                   ))}
                 </div>
-                
+
                 {/* Contact Information */}
                 <div class="space-y-2 mb-4 pt-4 border-t border-gray-50">
                   {dancer.data.email && (
@@ -237,7 +237,7 @@ const description = "Book performances from talented dancers and dance groups fr
                       </a>
                     </div>
                   )}
-                  
+
                   {dancer.data.phone && (
                     <div class="flex items-center text-sm">
                       <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -248,7 +248,7 @@ const description = "Book performances from talented dancers and dance groups fr
                       </a>
                     </div>
                   )}
-                  
+
                   {dancer.data.whatsapp && (
                     <div class="flex items-center text-sm">
                       <svg class="w-4 h-4 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
@@ -260,7 +260,7 @@ const description = "Book performances from talented dancers and dance groups fr
                     </div>
                   )}
                 </div>
-                
+
                 <div class="flex items-center justify-between mt-auto">
                   <a href={`/dancers/${dancer.id}`} class="text-slate-700 hover:text-slate-700 font-medium text-sm">
                     View Full Profile →
@@ -275,7 +275,7 @@ const description = "Book performances from talented dancers and dance groups fr
         </div>
       </div>
     </section>
-    
+
     <!-- Call to Action -->
     <section class="py-12 bg-white">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -284,13 +284,13 @@ const description = "Book performances from talented dancers and dance groups fr
           Contact the dancers directly or reach out to us for assistance with booking arrangements, event planning, and coordination.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/dancers" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
+          <a href="/dancers" class="min-h-[44px] inline-flex items-center px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 transition-colors font-medium">
             Browse All Dancers
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </a>
-          <a href="/contact" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
+          <a href="/contact" class="min-h-[44px] inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded hover:bg-slate-50 transition-colors font-medium">
             Contact Us for Help
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

@@ -1,4 +1,5 @@
 ---
+import FormHeader from '../../components/ui/FormHeader.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -57,60 +58,27 @@ const breadcrumbStructuredData = {
 };
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
   keywords={seo.keywords}
-  type={seo.type} 
-  canonical={seo.canonical} 
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
-  <!-- Breadcrumb Navigation -->
-  <nav class="bg-gray-50 border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center space-x-4 py-3">
-        <a href="/" class="text-gray-500 hover:text-gray-700 text-sm">
-          Home
-        </a>
-        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-        <a href="/events" class="text-gray-500 hover:text-gray-700 text-sm">
-          Events
-        </a>
-        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-        <span class="text-gray-900 text-sm font-medium">Organize Event</span>
-      </div>
-    </div>
-  </nav>
-
+  <FormHeader title="Submit your event" description="Share a cultural, educational, community, arts, sports or business event with Dzaleka." parent="Events" href="/events" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
 
   <div class="bg-white">
-    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-20 lg:px-8">
-      <div class="max-w-3xl mx-auto text-center mb-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Submit Your Event
-        </h1>
-        <p class="text-lg text-gray-600 mb-6">
-          Share your event with the Dzaleka community. We welcome cultural, educational, community, arts, sports, and business events.
-        </p>
-        <div class="bg-primary-50 rounded-lg p-4 border border-primary-200">
-          <p class="text-sm text-primary-800">
-            <strong>Free to submit</strong> • Quick approval (24-48 hours) • Community-focused events only
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-12">
-        <form id="eventForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <p class="mb-6 text-sm text-slate-600">Free to submit. Events are reviewed before publication. Fields marked * are required.</p>
+      <div>
+        <form id="eventForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
           <!-- Add hidden field for form name -->
           <input type="hidden" name="_subject" value="New Event Submission" />
           <input type="hidden" name="imageUrl" id="imageUrlInput" />
-          
+
           <div class="space-y-8 divide-y divide-gray-200">
             <div class="space-y-6 sm:space-y-5">
               <div>
@@ -133,7 +101,7 @@ const breadcrumbStructuredData = {
                       name="title"
                       id="title"
                       required
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -148,7 +116,7 @@ const breadcrumbStructuredData = {
                       name="description"
                       rows="4"
                       required
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     ></textarea>
                   </div>
                 </div>
@@ -196,7 +164,7 @@ const breadcrumbStructuredData = {
                       id="date"
                       required
                       min={new Date().toISOString().slice(0, 16)}
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                     <p class="mt-1 text-sm text-gray-500">Select a future date and time</p>
                   </div>
@@ -212,7 +180,7 @@ const breadcrumbStructuredData = {
                       name="endDate"
                       id="endDate"
                       min={new Date().toISOString().slice(0, 16)}
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                     <p class="mt-1 text-sm text-gray-500">Leave empty if same as start date</p>
                   </div>
@@ -228,7 +196,7 @@ const breadcrumbStructuredData = {
                       name="location"
                       id="location"
                       required
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -243,7 +211,7 @@ const breadcrumbStructuredData = {
                       name="capacity"
                       id="capacity"
                       min="1"
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -287,7 +255,7 @@ const breadcrumbStructuredData = {
                       name="registrationUrl"
                       id="registrationUrl"
                       placeholder="https://events.dzaleka.com/register"
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -302,7 +270,7 @@ const breadcrumbStructuredData = {
                       name="registrationDeadline"
                       id="registrationDeadline"
                       min={new Date().toISOString().slice(0, 16)}
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -333,7 +301,7 @@ const breadcrumbStructuredData = {
                       name="tags"
                       id="tags"
                       placeholder="refugee, community, education, culture"
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                     <p class="mt-1 text-sm text-gray-500">Separate tags with commas</p>
                   </div>
@@ -381,7 +349,7 @@ const breadcrumbStructuredData = {
                       name="organizerName"
                       id="organizerName"
                       required
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -396,7 +364,7 @@ const breadcrumbStructuredData = {
                       name="organizerEmail"
                       id="organizerEmail"
                       required
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -410,7 +378,7 @@ const breadcrumbStructuredData = {
                       type="tel"
                       name="organizerPhone"
                       id="organizerPhone"
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -425,7 +393,7 @@ const breadcrumbStructuredData = {
                       name="organizerWhatsApp"
                       id="organizerWhatsApp"
                       placeholder="+265-999-999-999"
-                      class="block w-full shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
+                      class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded-md"
                     />
                     <p class="mt-1 text-sm text-gray-500">Include country code (for example, +265 for Malawi)</p>
                   </div>
@@ -442,14 +410,14 @@ const breadcrumbStructuredData = {
               <button
                 type="button"
                 id="cancelButton"
-                class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                class="min-h-[44px] bg-white py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 id="submitButton"
-                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                class="min-h-[44px] ml-3 inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               >
                 <span id="submitText">New Event</span>
                 <span id="submitSpinner" class="hidden ml-2">Submitting...</span>
@@ -459,7 +427,7 @@ const breadcrumbStructuredData = {
         </form>
 
         <!-- Privacy Policy and Terms Notice -->
-        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+        <div class="mt-6 p-4 bg-gray-50 rounded">
           <p class="text-xs text-gray-600 text-center">
             By submitting this event, you agree to our{' '}
             <a href="/privacy" class="text-primary-600 hover:text-primary-700 underline">Privacy Policy</a>
@@ -507,7 +475,7 @@ const breadcrumbStructuredData = {
       const isRequired = (e.target as HTMLInputElement).value === 'yes';
       registrationUrlField.style.display = isRequired ? 'grid' : 'none';
       registrationDeadlineField.style.display = isRequired ? 'grid' : 'none';
-      
+
       // Clear fields when hiding
       if (!isRequired) {
         (document.getElementById('registrationUrl') as HTMLInputElement).value = '';
@@ -540,7 +508,7 @@ const breadcrumbStructuredData = {
       );
 
       const data = await response.json();
-      
+
       if (data.secure_url) {
         imageUrlInput.value = data.secure_url;
         uploadStatus.textContent = 'Image uploaded successfully!';
@@ -563,38 +531,38 @@ const breadcrumbStructuredData = {
   // Form validation and submission
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     // Check if image is still uploading
     if (!imageUrlInput.value && imageInput.files?.length) {
       alert('Wait for the image to finish uploading.');
       return;
     }
-    
+
     // Validate start date
     const dateInput = document.getElementById('date') as HTMLInputElement;
     const endDateInput = document.getElementById('endDate') as HTMLInputElement;
     const selectedDate = new Date(dateInput.value);
     const selectedEndDate = endDateInput.value ? new Date(endDateInput.value) : null;
     const now = new Date();
-    
+
     if (selectedDate <= now) {
       alert('Select a future date and time for your event.');
       dateInput.focus();
       return;
     }
-    
+
     // Validate end date if provided
     if (selectedEndDate && selectedEndDate <= selectedDate) {
       alert('End date must be after the start date.');
       endDateInput.focus();
       return;
     }
-    
+
     // Show loading state
     submitButton.disabled = true;
     submitText.classList.add('hidden');
     submitSpinner.classList.remove('hidden');
-    
+
     try {
       // Submit the form using FormData
       const formData = new FormData(form);
@@ -605,15 +573,15 @@ const breadcrumbStructuredData = {
           'Accept': 'application/json',
         },
       });
-      
+
       if (response.ok) {
         // Show success message
         successMessage.classList.remove('hidden');
         errorMessage.classList.add('hidden');
-        
+
         // Reset form
         form.reset();
-        
+
         // Scroll to success message
         successMessage.scrollIntoView({ behavior: 'smooth' });
       } else {

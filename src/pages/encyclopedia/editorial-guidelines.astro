@@ -12,9 +12,9 @@ const description = 'How the Dzaleka Encyclopedia evaluates sources, records unc
     <header class="border-b border-slate-200 bg-slate-50">
       <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' }]} />
-        <p class="mt-8 text-sm font-semibold uppercase tracking-widest text-slate-500">Editorial guidance</p>
-        <h1 class="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">Sources, evidence, and corrections</h1>
-        <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-600 sm:text-xl">The central question is practical: does the source support the specific claim, in the context and period in which it is used?</p>
+        <p class="mt-8 text-sm font-semibold text-slate-500">Editorial guidance</p>
+        <h1 class="mt-3 max-w-3xl text-4xl font-semibold text-slate-950 sm:text-5xl">Sources, evidence, and corrections</h1>
+        <p class="mt-5 max-w-3xl text-base leading-7 text-slate-600">The central question is practical: does the source support the specific claim, in the context and period in which it is used?</p>
         <nav class="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Encyclopedia information">
           <a href="/encyclopedia/about" class="font-semibold text-primary-700 hover:text-primary-800">About</a>
           <a href="/encyclopedia/submit-correction" class="font-semibold text-primary-700 hover:text-primary-800">Submit information</a>
@@ -24,8 +24,8 @@ const description = 'How the Dzaleka Encyclopedia evaluates sources, records unc
     </header>
 
     <div class="mx-auto grid max-w-5xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:px-8 lg:py-14">
-      <aside class="lg:sticky lg:top-28 lg:h-fit">
-        <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">On this page</p>
+      <aside class="lg:sticky lg:top-44 lg:h-fit">
+        <p class="text-sm font-semibold text-slate-500">On this page</p>
         <nav class="mt-4 border-l border-slate-200 pl-4 text-sm" aria-label="Page contents">
           <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#source-types">Source types</a>
           <a class="block py-1.5 font-medium text-primary-700 hover:text-primary-800" href="#living-people">Living people and safety</a>
@@ -35,10 +35,10 @@ const description = 'How the Dzaleka Encyclopedia evaluates sources, records unc
         </nav>
       </aside>
 
-      <main class="min-w-0 space-y-12">
+      <div class="min-w-0 space-y-12">
         <section id="source-types" class="scroll-mt-28">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Source types</p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Use the best evidence available for the claim</h2>
+          <p class="text-sm font-semibold text-slate-500">Source types</p>
+          <h2 class="mt-2 text-3xl font-semibold text-slate-950">Use the best evidence available for the claim</h2>
           <div class="mt-6 space-y-6">
             {[
               ['Primary and direct records', 'Laws, official datasets, court or government records, organisational documents, direct interviews, photographs with known provenance, and creator or project pages. These are strongest for what a record says or what an organisation states about itself.'],
@@ -48,9 +48,9 @@ const description = 'How the Dzaleka Encyclopedia evaluates sources, records unc
               ['Social posts and temporary notices', 'Useful for current notices and leads, but posts can disappear or lack context. Important claims should be preserved with a date and supported by a more durable record where possible.'],
             ].map(([heading, text], index) => (
               <div class="grid gap-3 border-b border-slate-200 pb-6 sm:grid-cols-[2rem_minmax(0,1fr)]">
-                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{index + 1}</span>
+                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-600">{index + 1}</span>
                 <div>
-                  <h3 class="font-bold text-slate-950">{heading}</h3>
+                  <h3 class="font-semibold text-slate-950">{heading}</h3>
                   <p class="mt-2 leading-7 text-slate-700">{text}</p>
                 </div>
               </div>
@@ -60,40 +60,40 @@ const description = 'How the Dzaleka Encyclopedia evaluates sources, records unc
         </section>
 
         <section id="living-people" class="scroll-mt-28 border-t border-slate-200 pt-10">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Care and safety</p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Living people require stronger care</h2>
+          <p class="text-sm font-semibold text-slate-500">Care and safety</p>
+          <h2 class="mt-2 text-3xl font-semibold text-slate-950">Living people require stronger care</h2>
           <p class="mt-5 leading-8 text-slate-700">Claims about living people should be relevant, fairly stated, and supported by clear evidence. Private addresses, case details, identity records, medical information, and information that may expose someone to protection risks are not published. Images require a clear public source or permission appropriate to their use.</p>
         </section>
 
         <section id="changing-claims" class="scroll-mt-28 border-t border-slate-200 pt-10">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Time and context</p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Current information must carry a date</h2>
+          <p class="text-sm font-semibold text-slate-500">Time and context</p>
+          <h2 class="mt-2 text-3xl font-semibold text-slate-950">Current information must carry a date</h2>
           <p class="mt-5 leading-8 text-slate-700">Population totals, operating services, funding levels, leadership, infrastructure counts, and policy implementation can change. Entries identify the reporting period and avoid presenting an old figure as a current fact. An official source may be authoritative but still out of date.</p>
         </section>
 
         <section id="corrections" class="scroll-mt-28 border-t border-slate-200 pt-10">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Review pathways</p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Corrections are different from additions</h2>
+          <p class="text-sm font-semibold text-slate-500">Review pathways</p>
+          <h2 class="mt-2 text-3xl font-semibold text-slate-950">Corrections are different from additions</h2>
           <div class="mt-6 grid gap-5 sm:grid-cols-2">
-            <div class="rounded-xl border border-slate-200 bg-white p-5">
-              <h3 class="font-bold text-slate-950">Correct an error of fact</h3>
+            <div class="rounded border border-slate-200 bg-white p-5">
+              <h3 class="font-semibold text-slate-950">Correct an error of fact</h3>
               <p class="mt-2 text-sm leading-6 text-slate-600">Identify the exact statement and provide evidence showing why it is inaccurate. Primary evidence is preferred; credible independent evidence may be accepted where a primary record is unavailable.</p>
             </div>
-            <div class="rounded-xl border border-slate-200 bg-white p-5">
-              <h3 class="font-bold text-slate-950">Add information or an entry</h3>
+            <div class="rounded border border-slate-200 bg-white p-5">
+              <h3 class="font-semibold text-slate-950">Add information or an entry</h3>
               <p class="mt-2 text-sm leading-6 text-slate-600">Missing context, new topics, photographs, and proposed profiles are reviewed for scope, sourcing, safety, and lasting reference value. They are additions, not corrections.</p>
             </div>
           </div>
-          <a href="/encyclopedia/submit-correction" class="mt-6 inline-flex rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">Submit a correction or contribution</a>
+          <a href="/encyclopedia/submit-correction" class="min-h-[44px] mt-6 inline-flex rounded bg-primary-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-800">Submit a correction or contribution</a>
         </section>
 
         <section id="uncertainty" class="scroll-mt-28 border-t border-slate-200 pt-10">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Uncertainty</p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Do not force a false certainty</h2>
+          <p class="text-sm font-semibold text-slate-500">Uncertainty</p>
+          <h2 class="mt-2 text-3xl font-semibold text-slate-950">Do not force a false certainty</h2>
           <p class="mt-5 leading-8 text-slate-700">When credible records disagree, the entry should describe the disagreement, identify the dates and sources, and avoid selecting one version without a sound reason. Developing entries are labelled when important current details remain unconfirmed.</p>
           <p class="mt-4 leading-8 text-slate-700">Constructive comments, questions, and suggestions are welcome. The volunteer team cannot research private family histories, identify or value artefacts, or provide casework. Review and response times depend on available capacity.</p>
         </section>
-      </main>
+      </div>
     </div>
   </div>
 </MainLayout>

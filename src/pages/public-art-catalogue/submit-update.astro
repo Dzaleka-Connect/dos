@@ -24,7 +24,7 @@ const description = "Submit updates, corrections, or additional information for 
             <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Submit an update</h1>
             <p class="mt-4 text-lg leading-8 text-slate-600">Help keep the Public Art Catalogue accurate and up to date.</p>
           </div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <div class="rounded border border-slate-200 bg-slate-50 p-6">
             <h2 class="text-lg font-semibold text-slate-900">What helps most</h2>
             <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
               <li>Identify the artwork clearly so the listing can be found.</li>
@@ -39,12 +39,12 @@ const description = "Submit updates, corrections, or additional information for 
     <!-- Form Section -->
     <section class="py-10">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg border border-slate-200 p-8">
-          <form id="updateForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+        <div class="bg-white rounded border border-slate-200 p-5 sm:p-8">
+          <form id="updateForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
             <!-- Artwork Information -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Artwork Information</h2>
-              
+
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="artworkTitle" class="block text-sm font-medium text-gray-700 mb-2">
@@ -92,7 +92,7 @@ const description = "Submit updates, corrections, or additional information for 
             <!-- Update Type -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Type of Update</h2>
-              
+
               <div class="space-y-4">
                 <div>
                   <label for="updateType" class="block text-sm font-medium text-gray-700 mb-2">
@@ -134,7 +134,7 @@ const description = "Submit updates, corrections, or additional information for 
             <!-- Specific Updates -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Specific Information to Update</h2>
-              
+
               <div class="space-y-6">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-3">
@@ -154,8 +154,8 @@ const description = "Submit updates, corrections, or additional information for 
                       <label for="updateLocation" class="ml-2 text-sm text-gray-700">Location</label>
                     </div>
                     <div class="flex items-center">
-                      <input type="checkbox" id="updateDescription" name="updateFields" value="description" class="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 rounded">
-                      <label for="updateDescription" class="ml-2 text-sm text-gray-700">Description</label>
+                      <input type="checkbox" id="updateDescriptionOption" name="updateFields" value="description" class="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 rounded">
+                      <label for="updateDescriptionOption" class="ml-2 text-sm text-gray-700">Description</label>
                     </div>
                     <div class="flex items-center">
                       <input type="checkbox" id="updateHistory" name="updateFields" value="history" class="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 rounded">
@@ -190,12 +190,12 @@ const description = "Submit updates, corrections, or additional information for 
             <!-- Photos -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">New Photos (if applicable)</h2>
-              
+
               <div>
                 <label for="photos" class="block text-sm font-medium text-gray-700 mb-2">
                   Upload New Photos
                 </label>
-                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <div class="border-2 border-dashed border-gray-300 rounded p-6 text-center">
                   <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
@@ -218,7 +218,7 @@ const description = "Submit updates, corrections, or additional information for 
             <!-- Contact Information -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Your contact information</h2>
-              
+
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="contributorName" class="block text-sm font-medium text-gray-700 mb-2">
@@ -266,7 +266,7 @@ const description = "Submit updates, corrections, or additional information for 
             <!-- Additional Information -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Additional Information</h2>
-              
+
               <div class="space-y-6">
                 <div>
                   <label for="sourceInfo" class="block text-sm font-medium text-gray-700 mb-2">
@@ -301,7 +301,7 @@ const description = "Submit updates, corrections, or additional information for 
               <button
                 type="submit"
                 id="submitButton"
-                class="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50"
+                class="min-h-[44px] bg-primary-900 text-white px-8 py-3 rounded font-semibold hover:bg-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50"
               >
                 <span id="submitText">Submit Update</span>
                 <span id="submitSpinner" class="hidden">
@@ -346,6 +346,7 @@ const description = "Submit updates, corrections, or additional information for 
     </section>
 
   <script>
+    import { prefillRecordForm } from '../../utils/recordForm';
     const form = document.getElementById('updateForm') as HTMLFormElement;
     const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
     const submitText = document.getElementById('submitText') as HTMLElement;
@@ -374,7 +375,7 @@ const description = "Submit updates, corrections, or additional information for 
         );
 
         const data = await response.json();
-        
+
         if (data.secure_url) {
           statusElement.textContent = 'Upload successful!';
           statusElement.classList.add('text-green-500');
@@ -450,5 +451,7 @@ const description = "Submit updates, corrections, or additional information for 
         }
       });
     }
+
+    if (form) prefillRecordForm(form, new URLSearchParams(window.location.search), ['artworkTitle', 'artistName', 'artworkLocation']);
   </script>
 </MainLayout>

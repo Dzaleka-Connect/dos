@@ -49,13 +49,13 @@ const { Content } = await render(doc);
           <div class="mt-6 flex flex-wrap gap-3">
             <a
               href="/docs"
-              class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              class="min-h-[44px] inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               All docs
             </a>
             <a
               href="/search"
-              class="inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+              class="min-h-[44px] inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
             >
               Search the site
             </a>
@@ -69,7 +69,7 @@ const { Content } = await render(doc);
         <div class="lg:hidden">
           <label for="docs-nav" class="sr-only">Select documentation page</label>
           <select id="docs-nav"
-                  class="block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-primary-500 focus:ring-primary-500" 
+                  class="block w-full rounded border-gray-300 bg-white focus:border-primary-500 focus:ring-primary-500"
                   onchange="window.location.href=this.value">
             {groupedDocs.map((group) => (
               <optgroup label={group.title}>
@@ -84,9 +84,9 @@ const { Content } = await render(doc);
         </div>
 
         <aside class="hidden lg:block lg:w-72 lg:flex-none">
-          <nav class="sticky top-6 space-y-4" aria-label="Documentation">
+          <nav class="sticky top-24 lg:top-44 space-y-4" aria-label="Documentation">
             {groupedDocs.map((group) => (
-              <div class="rounded-xl border border-gray-200 bg-white">
+              <div class="rounded border border-gray-200 bg-white">
                 <div class="border-b border-gray-200 px-4 py-3">
                   <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">
                     {group.title}
@@ -113,21 +113,21 @@ const { Content } = await render(doc);
           </nav>
         </aside>
 
-        <main class="min-w-0 flex-1 space-y-8">
-          <article class="rounded-xl border border-gray-200 bg-white p-8 lg:p-10">
+        <div class="min-w-0 flex-1 space-y-8">
+          <article class="rounded border border-gray-200 bg-white p-5 sm:p-8 lg:p-10">
             <div class="prose max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-a:text-primary-700 prose-a:no-underline hover:prose-a:underline">
               <Content />
             </div>
           </article>
 
           {relatedDocs.length > 0 && (
-            <section class="rounded-xl border border-gray-200 bg-white p-8">
+            <section class="rounded border border-gray-200 bg-white p-5 sm:p-8">
               <h2 class="text-lg font-semibold text-gray-900">Related guides</h2>
               <div class="mt-5 grid gap-4 sm:grid-cols-2">
                 {relatedDocs.map((d) => (
                   <a
                     href={`/docs/${d.id}`}
-                    class="rounded-lg border border-gray-200 p-5 transition hover:border-primary-200 hover:bg-gray-50"
+                    class="rounded border border-gray-200 p-5 transition hover:border-primary-200 hover:bg-gray-50"
                   >
                     <h3 class="text-base font-medium text-gray-900">{d.data.title}</h3>
                     {d.data.description && (
@@ -139,7 +139,7 @@ const { Content } = await render(doc);
             </section>
           )}
 
-          <section class="rounded-xl border border-gray-200 bg-white p-8">
+          <section class="rounded border border-gray-200 bg-white p-5 sm:p-8">
             <h2 class="text-lg font-semibold text-gray-900">Need help?</h2>
             <p class="mt-2 text-sm leading-6 text-gray-600">
               If the guide does not answer your question, use the support or contact pages for follow-up help.
@@ -147,19 +147,19 @@ const { Content } = await render(doc);
             <div class="mt-4 flex flex-wrap gap-3">
               <a
                 href="/support"
-                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                class="min-h-[44px] inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Support
               </a>
               <a
                 href="/contact"
-                class="inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                class="min-h-[44px] inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
               >
                 Contact
               </a>
             </div>
           </section>
-        </main>
+        </div>
       </div>
     </div>
   </div>

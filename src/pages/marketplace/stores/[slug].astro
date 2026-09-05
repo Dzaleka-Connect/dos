@@ -84,7 +84,7 @@ const schemaData = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
-  <main class="bg-gray-50">
+  <div class="bg-gray-50">
     <section class="border-b border-gray-200 bg-white">
       <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <nav class="mb-5 text-sm text-gray-500">
@@ -99,7 +99,7 @@ const schemaData = {
 
         <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
           <div class="grid gap-6 md:grid-cols-[180px_minmax(0,1fr)]">
-            <div class="overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+            <div class="overflow-hidden rounded border border-gray-200 bg-gray-100">
               {store.data.logo ? (
                 <img src={store.data.logo} alt={store.data.name} class="h-full w-full object-cover" />
               ) : (
@@ -109,11 +109,11 @@ const schemaData = {
 
             <div class="max-w-3xl">
               <div class="flex flex-wrap gap-2">
-                <span class="rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                <span class="rounded bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
                   {typeLabels[store.data.type]}
                 </span>
                 {store.data.featured && (
-                  <span class="rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+                  <span class="rounded bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
                     Featured
                   </span>
                 )}
@@ -123,22 +123,22 @@ const schemaData = {
               <p class="mt-4 text-lg leading-8 text-gray-600">{store.data.description}</p>
 
               <div class="mt-6 flex flex-wrap gap-2 text-sm text-gray-600">
-                <span class="rounded-lg bg-gray-100 px-3 py-1.5">{store.data.location.address}</span>
+                <span class="rounded bg-gray-100 px-3 py-1.5">{store.data.location.address}</span>
                 {store.data.location.zone && (
-                  <span class="rounded-lg bg-gray-100 px-3 py-1.5">Zone: {store.data.location.zone}</span>
+                  <span class="rounded bg-gray-100 px-3 py-1.5">Zone: {store.data.location.zone}</span>
                 )}
                 {store.data.location.landmark && (
-                  <span class="rounded-lg bg-gray-100 px-3 py-1.5">Near {store.data.location.landmark}</span>
+                  <span class="rounded bg-gray-100 px-3 py-1.5">Near {store.data.location.landmark}</span>
                 )}
               </div>
             </div>
           </div>
 
-          <aside class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <aside class="rounded border border-gray-200 bg-gray-50 p-5">
             <h2 class="text-lg font-semibold text-gray-900">Contact business</h2>
             <div class="mt-4 space-y-3">
               {store.data.owner.phone && (
-                <a href={`tel:${store.data.owner.phone}`} class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-4 py-3 font-medium text-white hover:bg-primary-800">
+                <a href={`tel:${store.data.owner.phone}`} class="min-h-[44px] flex w-full items-center justify-center rounded bg-primary-700 px-4 py-3 font-medium text-white hover:bg-primary-800">
                   Call now
                 </a>
               )}
@@ -147,13 +147,13 @@ const schemaData = {
                   href={`https://wa.me/${store.data.owner.whatsapp.replace(/[^0-9]/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex w-full items-center justify-center rounded-lg bg-green-600 px-4 py-3 font-medium text-white hover:bg-green-700"
+                  class="min-h-[44px] flex w-full items-center justify-center rounded bg-green-600 px-4 py-3 font-medium text-white hover:bg-green-700"
                 >
                   WhatsApp
                 </a>
               )}
               {store.data.owner.email && (
-                <a href={`mailto:${store.data.owner.email}`} class="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 hover:border-primary-300 hover:text-primary-700">
+                <a href={`mailto:${store.data.owner.email}`} class="min-h-[44px] flex w-full items-center justify-center rounded border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 hover:border-primary-300 hover:text-primary-700">
                   Email
                 </a>
               )}
@@ -161,7 +161,7 @@ const schemaData = {
                 href={`https://maps.google.com/?q=${encodeURIComponent(store.data.location.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 hover:border-primary-300 hover:text-primary-700"
+                class="min-h-[44px] flex w-full items-center justify-center rounded border border-gray-300 bg-white px-4 py-3 font-medium text-gray-700 hover:border-primary-300 hover:text-primary-700"
               >
                 Get directions
               </a>
@@ -175,7 +175,7 @@ const schemaData = {
       <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:px-8">
         <div class="space-y-6">
           {store.data.menu && store.data.menu.length > 0 && (
-            <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <section class="rounded border border-gray-200 bg-white p-6">
               <h2 class="text-xl font-semibold text-gray-900">Menu</h2>
               <div class="mt-6 space-y-8">
                 {store.data.menu.map((category) => (
@@ -203,11 +203,11 @@ const schemaData = {
           )}
 
           {store.data.services && store.data.services.length > 0 && (
-            <section class="rounded-xl border border-gray-200 bg-white p-6">
+            <section class="rounded border border-gray-200 bg-white p-6">
               <h2 class="text-xl font-semibold text-gray-900">Services</h2>
               <div class="mt-5 space-y-4">
                 {store.data.services.map((service) => (
-                  <div class="rounded-lg bg-gray-50 p-4">
+                  <div class="rounded bg-gray-50 p-4">
                     <div class="flex items-start justify-between gap-4">
                       <div class="flex-1">
                         <h3 class="font-medium text-gray-900">{service.name}</h3>
@@ -222,7 +222,7 @@ const schemaData = {
             </section>
           )}
 
-          <section class="rounded-xl border border-gray-200 bg-white p-6">
+          <section class="rounded border border-gray-200 bg-white p-6">
             <h2 class="text-xl font-semibold text-gray-900">About this business</h2>
             <div class="prose prose-gray mt-4 max-w-none">
               <Content />
@@ -231,7 +231,7 @@ const schemaData = {
         </div>
 
         <aside class="space-y-6">
-          <section class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <section class="rounded border border-gray-200 bg-gray-50 p-5">
             <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-gray-700">Business hours</h2>
             {sortedHours && sortedHours.length > 0 ? (
               <div class="mt-4 space-y-2 text-sm">
@@ -250,7 +250,7 @@ const schemaData = {
           </section>
 
           {(store.data.paymentMethods?.length > 0 || store.data.deliveryOptions?.length > 0) && (
-            <section class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <section class="rounded border border-gray-200 bg-gray-50 p-5">
               {store.data.paymentMethods?.length > 0 && (
                 <div>
                   <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-gray-700">Payment methods</h2>
@@ -275,7 +275,7 @@ const schemaData = {
             </section>
           )}
 
-          <section class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <section class="rounded border border-gray-200 bg-gray-50 p-5">
             <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-gray-700">Owner details</h2>
             <div class="mt-4 space-y-2 text-sm text-gray-600">
               <p><span class="font-medium text-gray-900">Owner:</span> {store.data.owner.name}</p>
@@ -286,5 +286,5 @@ const schemaData = {
         </aside>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>

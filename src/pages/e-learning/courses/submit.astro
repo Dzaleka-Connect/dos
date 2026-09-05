@@ -17,15 +17,15 @@ const categories = [
 ---
 
 <MainLayout title={pageTitle} description={description}>
-  <main class="min-h-screen bg-gray-50 py-16">
+  <div class="min-h-screen bg-gray-50 py-16">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-10">
+      <div class="bg-white rounded border border-gray-200 p-8 md:p-10">
         <div class="text-center mb-10">
           <h1 class="text-3xl font-bold text-gray-900 mb-3">Submit a Course</h1>
           <p class="text-gray-600 max-w-lg mx-auto">Share your knowledge and help others learn. Your course will be reviewed by our team before publishing.</p>
         </div>
 
-        <form id="courseForm" class="space-y-8">
+        <form id="courseForm" class="submission-form space-y-8">
           <!-- Course Title -->
           <div>
             <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Course Title *</label>
@@ -34,7 +34,7 @@ const categories = [
               id="title"
               name="title"
               required
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
               placeholder="For example, Introduction to Python Programming"
             />
           </div>
@@ -48,7 +48,7 @@ const categories = [
                 id="author"
                 name="author"
                 required
-                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
                 placeholder="Your name"
               />
             </div>
@@ -59,7 +59,7 @@ const categories = [
                 id="authorEmail"
                 name="authorEmail"
                 required
-                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
                 placeholder="your@email.com"
               />
             </div>
@@ -73,7 +73,7 @@ const categories = [
               name="description"
               rows="3"
               required
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
               placeholder="A brief summary of what students will learn..."
             ></textarea>
           </div>
@@ -87,7 +87,7 @@ const categories = [
                   id="category"
                   name="category"
                   required
-                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent appearance-none transition-all"
+                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent appearance-none transition-all"
                 >
                   <option value="">Select a category</option>
                   {categories.map(cat => (
@@ -108,7 +108,7 @@ const categories = [
                   id="level"
                   name="level"
                   required
-                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent appearance-none transition-all"
+                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent appearance-none transition-all"
                 >
                   <option value="">Select level</option>
                   <option value="beginner">Beginner</option>
@@ -132,7 +132,7 @@ const categories = [
               id="duration"
               name="duration"
               required
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
               placeholder="For example, 4 weeks, 10 hours, 2 days"
             />
           </div>
@@ -146,7 +146,7 @@ const categories = [
               name="content"
               rows="12"
               required
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent font-mono text-sm transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent font-mono text-sm transition-all"
               placeholder="## Course Overview
 
 Write an introduction to your course here...
@@ -180,7 +180,7 @@ Content for module 2...
               type="url"
               id="videoUrl"
               name="videoUrl"
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
               placeholder="https://www.youtube.com/embed/..."
             />
             <p class="text-xs text-gray-500 mt-1.5">YouTube embed URL for course intro video</p>
@@ -193,7 +193,7 @@ Content for module 2...
               type="url"
               id="externalLink"
               name="externalLink"
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
               placeholder="https://..."
             />
             <p class="text-xs text-gray-500 mt-1.5">Link to your course on an external platform</p>
@@ -206,7 +206,7 @@ Content for module 2...
               type="text"
               id="tags"
               name="tags"
-              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
               placeholder="python, programming, beginner, coding (comma separated)"
             />
           </div>
@@ -215,7 +215,7 @@ Content for module 2...
           <div class="pt-4">
             <button
               type="submit"
-              class="w-full bg-slate-900 text-white py-4 px-6 rounded-lg font-semibold hover:bg-slate-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+              class="min-h-[44px] w-full bg-primary-900 text-white py-4 px-6 rounded font-semibold hover:bg-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
             >
               Submit Course for Review
             </button>
@@ -235,7 +235,7 @@ Content for module 2...
         </a>
       </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>

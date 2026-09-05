@@ -7,104 +7,9 @@ const entries = (await getCollection('encyclopedia')).sort((a, b) =>
   (a.data.sortName || a.data.title).localeCompare(b.data.sortName || b.data.title)
 );
 
-// Pull local news updates from dzaleka.com news collection
-const localNews = (await getCollection('news')).map((item) => ({
-  title: item.data.title,
-  description: item.data.description,
-  date: new Date(item.data.date),
-  category: item.data.category,
-  link: `/news/${item.id}`,
-  isExternal: false,
-}));
-
-// Fetch live RSS items from https://www.dzaleka.com/feeds/posts/default?alt=rss
-let remoteRssItems: Array<{ title: string; description: string; date: Date; category: string; link: string; isExternal: boolean }> = [];
-try {
-  const rssRes = await fetch('https://www.dzaleka.com/feeds/posts/default?alt=rss', {
-    headers: { 'User-Agent': 'DzalekaOnlineServices/1.0' },
-  });
-  if (rssRes.ok) {
-    const xml = await rssRes.text();
-    const itemRegex = /<item>([\s\S]*?)<\/item>/g;
-    let match;
-    while ((match = itemRegex.exec(xml)) !== null) {
-      const content = match[1];
-      const titleM = content.match(/<title>([\s\S]*?)<\/title>/);
-      const linkM = content.match(/<link>([\s\S]*?)<\/link>/);
-      const dateM = content.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
-      const descM = content.match(/<description>([\s\S]*?)<\/description>/);
-      const catM = content.match(/<category[^>]*>([\s\S]*?)<\/category>/);
-
-      if (titleM && linkM) {
-        let rawDesc = descM ? descM[1] : '';
-        // Unescape HTML entities first (e.g. &lt;div... -> <div...)
-        rawDesc = rawDesc
-          .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-          .replace(/&lt;/g, '<')
-          .replace(/&gt;/g, '>')
-          .replace(/&quot;/g, '"')
-          .replace(/&#39;/g, "'")
-          .replace(/&apos;/g, "'")
-          .replace(/&amp;/g, '&')
-          .replace(/&nbsp;/g, ' ');
-
-        // Strip HTML tags to leave clean readable plain text
-        rawDesc = rawDesc.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-
-        remoteRssItems.push({
-          title: titleM[1].replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim(),
-          link: linkM[1].trim(),
-          date: dateM ? new Date(dateM[1]) : new Date(),
-          description: rawDesc.slice(0, 140) + (rawDesc.length > 140 ? '...' : ''),
-          category: catM ? catM[1].trim() : 'dzaleka.com',
-          isExternal: true,
-        });
-      }
-    }
-  }
-} catch (e) {
-  console.warn('Could not fetch live dzaleka.com Blogger RSS feed:', e);
-}
-
-const combinedNews = [...remoteRssItems, ...localNews]
-  .sort((a, b) => b.date.getTime() - a.date.getTime())
-  .slice(0, 4);
-
-// Daily rotation logic for Featured Article (TFA)
-const featuredPool = [
-  'dzaleka-refugee-camp',
-  'history-of-dzaleka',
-  'tumaini-festival',
-  'waiting-in-dzaleka-refugee-camp-thesis',
-  'law-and-encampment-policy',
-  'refugee-led-organisations',
-  'adai-circle',
-  'livelihoods-and-local-economy'
-];
-const now = new Date();
-const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-const featuredIndex = dayOfYear % featuredPool.length;
-const campEntry = entries.find((entry) => entry.id === featuredPool[featuredIndex]) || entries[0];
-
-// Rotating Did You Know (DYK) trivia pool
-const triviaPool = [
-  { text: "that Dzaleka was originally constructed as a maximum-security political prison facility in the 1970s before being converted into a refugee camp by UNHCR in 1994?", link: "/encyclopedia/history-of-dzaleka", label: "Dzaleka History" },
-  { text: "that ADAI Circle co-piloted MIT's Responsible AI for Computational Action curriculum inside the camp, teaching students chatbot development and natural language processing?", link: "/encyclopedia/adai-circle", label: "ADAI Circle" },
-  { text: "that Tumaini Festival, founded by poet Menes La Plume in 2014, is the world's only major annual arts festival hosted entirely inside a refugee camp?", link: "/encyclopedia/tumaini-festival", label: "Tumaini Festival" },
-  { text: "that Rexplore Research Labs builds low-resource African language voice AI models and autonomous multi-agent software out of Lilongwe and Dzaleka?", link: "/encyclopedia/rexplore-labs", label: "Rexplore Labs" },
-  { text: "that over 100 refugee-led and international humanitarian organizations operate programs serving Dzaleka residents?", link: "/encyclopedia/refugee-led-organisations", label: "RLOs" },
-  { text: "that a 2022 Erasmus University thesis revealed informal peer savings networks (Ikirimba) sustain resident livelihoods under encampment restrictions?", link: "/encyclopedia/dzaleka-livelihood-strategies-thesis", label: "Livelihood Study" },
-  { text: "that a 2016 UNISA doctoral dissertation analyzed forest biomass, groundwater tables, and agricultural trade across villages surrounding Dzaleka?", link: "/encyclopedia/dzaleka-environmental-impact-dissertation", label: "UNISA PhD Study" },
-  { text: "that refugee students in Dzaleka earn accredited U.S. and European university diplomas through blended online hubs like Jesuit Worldwide Learning (JWL)?", link: "/encyclopedia/dzaleka-higher-education-thesis", label: "Higher Education" }
-];
-
-// Rotate 4 trivia items daily
-const dykItems = Array.from({ length: 4 }, (_, i) => triviaPool[(dayOfYear + i) % triviaPool.length]);
-
-// Pull photos from the photo archive collection
-const archivePhotos = await getCollection('photos');
-const photoIndex = dayOfYear % (archivePhotos.length || 1);
-const featuredPhoto = archivePhotos[photoIndex];
+const campEntry = entries.find((entry) => entry.id === 'dzaleka-refugee-camp');
+const featuredEntries = ['history-of-dzaleka', 'tumaini-festival', 'refugee-led-organisations']
+  .map((id) => entries.find((entry) => entry.id === id)).filter(Boolean);
 
 const categories = [...new Set(entries.map((entry) => entry.data.category))]
   .sort()
@@ -247,603 +152,99 @@ const structuredData = {
     },
   }}
 >
-  <div class="bg-white">
-    <header class="relative bg-slate-950 text-white">
-      <img
-        src="/images/encyclopedia/camp-panorama.jpg"
-        alt=""
-        class="absolute inset-0 h-full w-full object-cover object-center opacity-45"
-        fetchpriority="high"
-      />
-      <div class="absolute inset-0 bg-slate-950/70"></div>
-      <div class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: title }]} light />
-        <div class="mt-8 max-w-3xl">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-300">Reference and public record</p>
-          <h1 class="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">Dzaleka Encyclopedia</h1>
-          <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-100 sm:text-xl">
-            A sourced guide to the camp's history, people, institutions, culture, services, law, and everyday life.
-          </p>
-
-          <div class="mt-8">
-            <label for="encyclopedia-search" class="sr-only">Search the encyclopedia</label>
-            <div id="search-control" class="relative z-30">
-              <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-              </svg>
-              <input
-                id="encyclopedia-search"
-                type="search"
-                placeholder="Search people, places, books, films, organisations, and topics"
-                autocomplete="off"
-                aria-controls="search-suggestions"
-                aria-expanded="false"
-                class="w-full rounded-lg border border-white bg-white py-3.5 pl-12 pr-20 text-base text-slate-950 shadow-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-400"
-              />
-              <div class="pointer-events-none absolute right-3.5 top-1/2 hidden -translate-y-1/2 items-center gap-1 rounded border border-slate-200 bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500 shadow-2xs sm:flex">
-                <kbd class="font-sans">⌘K</kbd><span class="text-slate-300">/</span><kbd class="font-sans">/</kbd>
-              </div>
-              <div id="search-suggestions" class="absolute inset-x-0 top-full mt-2 hidden overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-950 shadow-lg" role="region" aria-label="Search suggestions">
-                <div id="search-suggestion-list" class="max-h-80 overflow-y-auto"></div>
-                <a id="view-search-results" href="#all-entries" class="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100">
-                  <span>View all matching entries</span>
-                  <span id="search-suggestion-count" class="text-slate-500"></span>
-                </a>
-              </div>
-            </div>
-
-            <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
-              <span class="font-semibold text-slate-400">Popular:</span>
-              <button type="button" class="quick-topic-btn rounded-md bg-white/10 px-2.5 py-1 text-slate-200 hover:bg-white/20 hover:text-white transition-colors">Dzaleka</button>
-              <button type="button" class="quick-topic-btn rounded-md bg-white/10 px-2.5 py-1 text-slate-200 hover:bg-white/20 hover:text-white transition-colors">Tumaini Letu</button>
-              <button type="button" class="quick-topic-btn rounded-md bg-white/10 px-2.5 py-1 text-slate-200 hover:bg-white/20 hover:text-white transition-colors">TakeNoLab</button>
-              <button type="button" class="quick-topic-btn rounded-md bg-white/10 px-2.5 py-1 text-slate-200 hover:bg-white/20 hover:text-white transition-colors">Salama Africa</button>
-              <button type="button" class="quick-topic-btn rounded-md bg-white/10 px-2.5 py-1 text-slate-200 hover:bg-white/20 hover:text-white transition-colors">2024 Health Survey</button>
-            </div>
-
-            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-              <p class="text-slate-300">{entries.length} entries · {sourceCount} linked sources · reviewed through {reviewLabel}</p>
-              <a href="/encyclopedia/submit-correction?type=new-entry" class="font-semibold text-white underline decoration-slate-500 underline-offset-4 hover:decoration-white">Contribute an entry</a>
-            </div>
-            <nav class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm" aria-label="Encyclopedia information">
-              <a href="/encyclopedia/about" class="font-semibold text-slate-100 hover:text-white">About</a>
-              <a href="/encyclopedia/editorial-guidelines" class="font-semibold text-slate-100 hover:text-white">Sources and editorial guidance</a>
-              <a href="/encyclopedia/developers" class="font-semibold text-slate-100 hover:text-white">Developer API</a>
-              <a href="/api/rss" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-semibold text-amber-300 hover:text-amber-200">
-                <svg class="h-3.5 w-3.5 text-amber-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/>
-                </svg>
-                <span>RSS Feed</span>
-              </a>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Wikipedia/Grokipedia Portal Section -->
-    <section class="border-b border-slate-200 bg-slate-50/50 py-10 lg:py-14">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-8 lg:grid-cols-[1fr_360px]">
-          
-          <!-- Left Column: Featured Article, News/Research & Subject Portals -->
-          <div class="space-y-8">
-            
-            <!-- From Today's Featured Article (TFA) -->
-            {campEntry && (
-              <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-500 flex items-center gap-2">
-                    <span class="inline-block h-2 w-2 rounded-full bg-slate-900"></span>
-                    From today's featured article
-                  </h2>
-                  <span class="text-xs font-semibold text-slate-400">Featured entry</span>
-                </div>
-                <div class="mt-5 grid gap-5 sm:grid-cols-[200px_minmax(0,1fr)]">
-                  {campEntry.data.image && (
-                    <div class="overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
-                      <img src={campEntry.data.image} alt="" class="h-full w-full object-cover aspect-[4/3]" loading="eager" />
-                    </div>
-                  )}
-                  <div class="min-w-0">
-                    <h3 class="text-xl font-bold tracking-tight text-slate-950">
-                      <a href={`/encyclopedia/${campEntry.id}`} class="hover:text-sky-700">{campEntry.data.title}</a>
-                    </h3>
-                    <p class="mt-2.5 text-sm leading-relaxed text-slate-600 line-clamp-4">{campEntry.data.summary}</p>
-                    <div class="mt-4 flex items-center gap-3">
-                      <a href={`/encyclopedia/${campEntry.id}`} class="inline-flex items-center gap-1 text-sm font-semibold text-slate-900 hover:text-sky-700">
-                        <span>Read full article</span>
-                        <span aria-hidden="true">→</span>
-                      </a>
-                      <span class="text-slate-300">•</span>
-                      <a href="/encyclopedia/history-of-dzaleka" class="text-xs font-medium text-slate-500 hover:text-slate-900">History of Dzaleka</a>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            )}
-
-            <!-- In the News & Recent Research (ITN) -->
-            <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-500 flex items-center gap-2">
-                  <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
-                  In the news & recent updates
-                </h2>
-                <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200">Live updates</span>
-              </div>
-              <ul class="mt-4 space-y-4 divide-y divide-slate-100">
-                {combinedNews.map((newsItem) => (
-                  <li class="pt-3.5 first:pt-0">
-                    <div class="flex items-center justify-between gap-2 text-xs text-slate-400">
-                      <span class="font-semibold text-slate-500 uppercase tracking-wider text-[11px]">{newsItem.category}</span>
-                      <time datetime={newsItem.date.toISOString()}>
-                        {newsItem.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </time>
-                    </div>
-                    <h3 class="mt-1 text-base font-bold text-slate-900 leading-snug">
-                      <a href={newsItem.link} target={newsItem.isExternal ? "_blank" : undefined} rel={newsItem.isExternal ? "noopener noreferrer" : undefined} class="hover:text-sky-700 flex items-center justify-between gap-1">
-                        <span>{newsItem.title}</span>
-                        {newsItem.isExternal && <span class="text-xs text-slate-400 font-normal">↗</span>}
-                      </a>
-                    </h3>
-                    <p class="mt-1.5 text-sm leading-relaxed text-slate-600 line-clamp-2">{newsItem.description}</p>
-                  </li>
-                ))}
-              </ul>
-              <div class="mt-4 border-t border-slate-100 pt-3 flex items-center justify-between text-xs">
-                <a href="/news" class="font-semibold text-slate-900 hover:text-sky-700">View all news articles →</a>
-                <a href="/api/rss" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 hover:bg-slate-200">
-                  <svg class="h-3 w-3 text-slate-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/>
-                  </svg>
-                  <span>RSS 2.0</span>
-                </a>
-              </div>
-            </section>
-
-            <!-- Subject Portals Grid -->
-            <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
-              <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-                <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-500">Browse by subject portal</h2>
-                <span class="text-xs text-slate-400">{categories.length} portals</span>
-              </div>
-              <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                {categories.map((cat) => (
-                  <a href={`#all-entries`} class="portal-card flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-3 hover:bg-slate-100 hover:border-slate-300 transition-colors">
-                    <div>
-                      <h3 class="text-sm font-bold text-slate-900">{cat.name}</h3>
-                      <p class="text-xs text-slate-500">{cat.count} {cat.count === 1 ? 'article' : 'articles'}</p>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-700">Explore →</span>
-                  </a>
-                ))}
-              </div>
-            </section>
-
-          </div>
-
-          <!-- Right Column: Did You Know (DYK), Featured Picture & Info -->
-          <div class="space-y-8">
-            
-            <!-- Did You Know... (DYK - Rotating Daily) -->
-            <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
-              <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-                <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
-                  <svg class="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                  Did you know...
-                </h2>
-                <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Rotates daily</span>
-              </div>
-              <ul class="mt-4 space-y-3.5 text-xs leading-relaxed text-slate-700 divide-y divide-slate-100">
-                {dykItems.map((dyk) => (
-                  <li class="pt-2.5 first:pt-0">
-                    ... {dyk.text} <strong><a href={dyk.link} class="text-slate-900 hover:underline">[{dyk.label}]</a></strong>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <!-- Today's Featured Picture (TFP - Loaded from Photo Archive) -->
-            {featuredPhoto && (
-              <section class="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-                <div class="border-b border-slate-100 bg-slate-50 px-4 py-3 flex items-center justify-between">
-                  <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
-                    <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Featured picture
-                  </h2>
-                  <span class="text-xs font-semibold text-slate-400">Photo Archive</span>
-                </div>
-                <div class="p-4">
-                  <div class="overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
-                    <a href={`/photos/${featuredPhoto.id}`}>
-                      <img src={featuredPhoto.data.image} alt={featuredPhoto.data.title} class="aspect-[4/3] w-full object-cover hover:scale-102 transition-transform duration-300" loading="lazy" />
-                    </a>
-                  </div>
-                  <figcaption class="mt-3 text-xs leading-relaxed text-slate-600">
-                    <strong class="text-slate-900">{featuredPhoto.data.title}</strong>: {featuredPhoto.data.description}
-                    {featuredPhoto.data.photographer?.name && (
-                      <span class="block mt-1 text-[11px] text-slate-400">Photo: {featuredPhoto.data.photographer.name}. <a href={`/photos/${featuredPhoto.id}`} class="text-slate-900 hover:underline">View in photo archive →</a></span>
-                    )}
-                  </figcaption>
-                </div>
-              </section>
-            )}
-
-            <!-- Encyclopedia Editorial & API Info Card -->
-            <section class="rounded-xl border border-slate-200 bg-slate-50 p-5">
-              <h3 class="text-sm font-bold text-slate-900">About the Encyclopedia</h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-600">A community-maintained public reference. Every entry is backed by verified primary citations, academic studies, or demographic health surveys.</p>
-              <div class="mt-4 flex flex-col gap-2 text-xs">
-                <a href="/encyclopedia/submit-correction?type=new-entry" class="font-semibold text-slate-900 hover:underline">Submit a new entry or correction →</a>
-                <a href="/encyclopedia/editorial-guidelines" class="font-semibold text-slate-700 hover:underline">Editorial guidelines & sources →</a>
-                <a href="/reference/public-api-and-agents" class="font-semibold text-slate-700 hover:underline">Public JSON-LD & REST API →</a>
-              </div>
-            </section>
-
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    {surveyEntries.length > 0 && (
-      <section class="border-b border-slate-200 bg-white">
-        <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-          <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div class="max-w-3xl">
-              <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Demographic & Academic Studies</p>
-              <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Primary research & health surveys</h2>
-              <p class="mt-3 text-base leading-relaxed text-slate-600">Curated records analyzing household conditions, public health, maternal care, livelihoods, refugee agency, and socio-spatial encampment dynamics at Dzaleka.</p>
-            </div>
-            <span class="rounded-md bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 border border-slate-200 w-fit">Peer-Reviewed & Survey Data</span>
-          </div>
-          <div class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {surveyEntries.map((entry) => entry && (
-              <a href={`/encyclopedia/${entry.id}`} class="group rounded-xl border border-slate-200 bg-white p-5 hover:border-slate-300 hover:shadow-sm">
-                <div class="flex items-center justify-between gap-2">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{entry.data.category}</p>
-                  <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">Demographic data</span>
-                </div>
-                <h3 class="mt-2 text-base font-bold leading-snug text-slate-950 group-hover:text-sky-700">{entry.data.title}</h3>
-                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">{entry.data.summary}</p>
-              </a>
-            ))}
-            {entries.find(e => e.id === 'waiting-in-dzaleka-refugee-camp-thesis') && (
-              <a href="/encyclopedia/waiting-in-dzaleka-refugee-camp-thesis" class="group rounded-xl border border-slate-200 bg-slate-50/50 p-5 hover:border-slate-300 hover:shadow-sm">
-                <div class="flex items-center justify-between gap-2">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">History & Sociology</p>
-                  <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">Academic thesis</span>
-                </div>
-                <h3 class="mt-2 text-base font-bold leading-snug text-slate-950 group-hover:text-sky-700">Waiting in Dzaleka Refugee Camp (Thesis)</h3>
-                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">Anna-Lena Stammen's 2025 Erfurt thesis analyzing refugee agency, waiting, coping mechanisms, social space mapping, and RLOs.</p>
-              </a>
-            )}
-          </div>
-        </div>
-      </section>
-    )}
-
-    <section id="all-entries" class="mx-auto max-w-6xl scroll-mt-24 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-      <div class="border-b border-slate-200 pb-6">
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Browse the collection</p>
-            <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">All entries</h2>
-          </div>
-          <p class="text-sm text-slate-600" aria-live="polite"><span id="result-count">{entries.length}</span> matching entries</p>
-        </div>
-
-        <div id="category-filters" class="mt-6 flex flex-wrap gap-2" aria-label="Filter by subject">
-          <button type="button" class="category-filter rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white" data-category="all" aria-pressed="true">All <span class="ml-1 text-slate-300">{entries.length}</span></button>
-          {categories.map((category) => (
-            <button type="button" class="category-filter rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" data-category={category.name.toLowerCase()} aria-pressed="false">
-              {category.name} <span class="ml-1 text-slate-400">{category.count}</span>
-            </button>
-          ))}
-        </div>
-
-        <div id="type-filters" class="mt-5 flex flex-wrap items-center gap-2" aria-label="Filter by entry type">
-          <span class="mr-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Entry type</span>
-          <button type="button" class="type-filter rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white" data-type="all" aria-pressed="true">All types</button>
-          {entryTypes.map((entryType) => (
-            <button type="button" class="type-filter rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" data-type={entryType.type} aria-pressed="false">
-              {entryType.label} <span class="ml-1 text-slate-400">{entryType.count}</span>
-            </button>
-          ))}
-        </div>
-
-        <div id="letter-filters" class="mt-5 flex flex-wrap items-center gap-1" aria-label="Filter by first letter">
-          <button type="button" class="letter-filter mr-1 rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-white" data-letter="all" aria-pressed="true">A-Z</button>
-          {alphabet.map((letter) => availableLetters.has(letter) ? (
-            <button type="button" class="letter-filter min-w-8 rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" data-letter={letter} aria-pressed="false">{letter}</button>
-          ) : (
-            <span class="min-w-8 px-2 py-1.5 text-center text-xs font-semibold text-slate-300" aria-hidden="true">{letter}</span>
-          ))}
-        </div>
-      </div>
-
-      <div id="entry-list" class="mt-7 grid gap-4 md:grid-cols-2">
-        {entries.map((entry) => {
-          const searchText = [entry.data.title, entry.data.summary, entry.data.category, ...(entry.data.aliases || []), entry.body || ''].join(' ').toLowerCase();
-          const firstLetter = (entry.data.sortName || entry.data.title).charAt(0).toUpperCase();
-          const isLogo = entry.data.image?.toLowerCase().includes('logo');
-          return (
-            <article class="encyclopedia-entry rounded-xl border border-slate-200 bg-white p-5 hover:border-slate-300 hover:shadow-sm" data-search={searchText} data-category={entry.data.category.toLowerCase()} data-type={entry.data.entryType} data-letter={firstLetter} data-title={entry.data.title} data-url={`/encyclopedia/${entry.id}`}>
-              <a href={`/encyclopedia/${entry.id}`} class="group grid h-full gap-4 sm:grid-cols-[96px_minmax(0,1fr)]">
-                {entry.data.image ? (
-                  <img src={entry.data.image} alt="" class:list={['h-24 w-full rounded-lg bg-slate-100 sm:w-24', isLogo ? 'object-contain p-2' : 'object-cover']} loading="lazy" />
-                ) : (
-                  <div class="hidden h-24 w-24 items-center justify-center rounded-lg bg-slate-100 text-2xl font-bold text-slate-400 sm:flex" aria-hidden="true">{firstLetter}</div>
-                )}
-                <div>
-                  <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                    <span>{entry.data.category}</span>
-                    {entry.data.status === 'developing' && <span class="text-amber-700">Developing</span>}
-                  </div>
-                  <h3 class="mt-1.5 text-base font-bold leading-snug text-slate-950 group-hover:text-sky-700">{entry.data.title}</h3>
-                  <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600">{entry.data.summary}</p>
-                </div>
-              </a>
-            </article>
-          );
-        })}
-      </div>
-
-      <div id="no-results" class="mt-8 hidden rounded-xl border border-slate-200 bg-slate-50 px-5 py-12 text-center">
-        <h3 class="text-lg font-bold text-slate-950">No matching entries</h3>
-        <p class="mt-2 text-slate-600">Try another term or clear the browse filters.</p>
-        <button id="clear-filters" type="button" class="mt-5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Clear filters</button>
-      </div>
-
-      <nav id="pagination" class="mt-8 hidden flex-col gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between" aria-label="Encyclopedia pages">
-        <p id="page-status" class="text-sm text-slate-600" aria-live="polite">Page 1</p>
-        <div class="flex flex-wrap items-center gap-2">
-          <button id="pagination-prev" type="button" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
-          <div id="pagination-pages" class="flex flex-wrap gap-1" aria-label="Choose a page"></div>
-          <button id="pagination-next" type="button" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">Next</button>
-        </div>
-      </nav>
-    </section>
-
-    <section class="border-t border-slate-200 bg-slate-50">
-      <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:px-8">
+  <header class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: title }]} />
+      <div class="mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Editorial standard</p>
-          <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Dated claims, visible sources, open corrections</h2>
-          <p class="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600">
-            Entries separate historical evidence from current service information. Population figures, programme status, and infrastructure counts carry a reporting date so older records are not mistaken for current conditions.
-          </p>
+          <p class="text-sm font-medium text-primary-800">Dzaleka’s people, history and public life</p>
+          <h1 class="mt-3 text-primary-900">Dzaleka Encyclopedia</h1>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-slate-700">Discover the stories, places and knowledge connected to Dzaleka Refugee Camp. Explore a community-informed reference with visible sources and room for new voices.</p>
+          <p class="mt-5 text-sm text-slate-600">{entries.length} entries · {sourceCount} linked sources · latest review {reviewLabel}</p>
+          <a href="#all-entries" class="mt-5 inline-flex min-h-[44px] items-center rounded bg-primary-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800">Search and browse entries <span class="ml-3" aria-hidden="true">↓</span></a>
         </div>
-        <div class="border-l-4 border-slate-900 pl-5">
-          <h2 class="text-lg font-bold text-slate-950">Help document Dzaleka</h2>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">Residents, former residents, organisations, researchers, families, and photographers are welcome to propose entries or improve existing ones. Every submission is reviewed before publication.</p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <a href="/encyclopedia/submit-correction?type=new-entry" class="inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Propose an entry</a>
-            <a href="/encyclopedia/submit-correction" class="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100">Send a correction</a>
+        {campEntry?.data.image && <figure class="overflow-hidden rounded border border-slate-200 bg-white">
+          <a href={`/encyclopedia/${campEntry.id}`} aria-label="Explore Dzaleka Refugee Camp"><img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={campEntry.data.image} alt={campEntry.data.imageAlt || campEntry.data.title} width="720" height="480" fetchpriority="high" class="aspect-[3/2] w-full object-cover" /></a>
+          <figcaption class="px-4 py-3 text-sm leading-6 text-slate-600">{campEntry.data.imageCaption || 'Dzaleka Refugee Camp'}{campEntry.data.imageCredit && <span class="block">Photo: {campEntry.data.imageCredit}</span>}</figcaption>
+        </figure>}
+      </div>
+      <nav class="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-200 pt-4 text-sm" aria-label="Encyclopedia information">
+        <a href="/encyclopedia/about" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">About the encyclopedia</a>
+        <a href="/encyclopedia/editorial-guidelines" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Editorial guidance</a>
+        <a href="/encyclopedia/submit-correction" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Contribute or correct an entry</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8" aria-labelledby="featured-heading">
+    <div class="mb-5 flex flex-wrap items-baseline justify-between gap-3"><h2 id="featured-heading" class="text-primary-900">Discover Dzaleka</h2><p class="text-sm text-slate-600">History, culture and community</p></div>
+    <div class="grid gap-6 sm:grid-cols-3">
+      {featuredEntries.map((entry) => entry && <article class="min-w-0">
+        <a href={`/encyclopedia/${entry.id}`} class="group block">
+          {entry.data.image && <div class="relative aspect-[3/2] overflow-hidden rounded bg-slate-100"><img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={entry.data.image} alt={entry.data.imageAlt || ''} width="600" height="400" loading="lazy" class="absolute inset-0 h-full w-full object-cover" /></div>}
+          <p class="mt-4 text-sm text-slate-600">{entry.data.category}</p>
+          <h3 class="mt-2 text-xl font-semibold text-primary-800 underline underline-offset-4 group-hover:text-primary-900">{entry.data.title}</h3>
+        </a>
+        <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-700">{entry.data.summary}</p>
+      </article>)}
+    </div>
+  </section>
+
+  <section id="all-entries" class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8" aria-labelledby="entries-heading">
+    <h2 id="entries-heading" tabindex="-1" class="text-primary-900">Browse the encyclopedia</h2>
+    <form id="encyclopedia-search-form" action="/encyclopedia#all-entries" method="get" role="search" class="mt-5 max-w-2xl">
+      <label for="encyclopedia-search" class="mb-2 block text-sm font-semibold text-slate-900">Search entries</label>
+      <div class="flex">
+        <input id="encyclopedia-search" name="q" type="search" placeholder="Name, place or topic" class="min-w-0 flex-1 rounded-l border border-slate-400 bg-white px-3 py-2 text-slate-900" />
+        <button type="submit" class="min-h-[44px] shrink-0 rounded-r bg-primary-900 px-5 py-2 text-sm font-medium text-white hover:bg-primary-800">Search</button>
+      </div>
+    </form>
+    <div class="mt-5 grid gap-4 sm:grid-cols-3">
+      <div><label for="encyclopedia-category" class="mb-2 block text-sm font-medium text-slate-900">Subject</label><select id="encyclopedia-category" class="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">All subjects</option>{categories.map((category) => <option value={category.name.toLowerCase()}>{category.name} ({category.count})</option>)}</select></div>
+      <div><label for="encyclopedia-type" class="mb-2 block text-sm font-medium text-slate-900">Entry type</label><select id="encyclopedia-type" class="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">All types</option>{entryTypes.map((entryType) => <option value={entryType.type}>{entryType.label} ({entryType.count})</option>)}</select></div>
+      <div><label for="encyclopedia-letter" class="mb-2 block text-sm font-medium text-slate-900">Starts with</label><select id="encyclopedia-letter" class="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">A–Z</option>{alphabet.filter((letter) => availableLetters.has(letter)).map((letter) => <option value={letter}>{letter}</option>)}</select></div>
+    </div>
+    <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
+      <p id="result-count" class="text-sm text-slate-600" role="status">{entries.length} entries</p>
+      <button id="clear-filters" type="button" class="min-h-[44px] text-sm font-medium text-primary-800 underline underline-offset-4">Clear search and filters</button>
+    </div>
+    <div id="entry-list" class="grid gap-x-8 md:grid-cols-2">
+      {entries.map((entry) => <article class="encyclopedia-entry min-w-0 border-b border-slate-200 py-6" data-search={[entry.data.title, entry.data.summary, entry.data.category, ...(entry.data.aliases || []), entry.body || ''].join(' ').toLowerCase()} data-category={entry.data.category.toLowerCase()} data-type={entry.data.entryType} data-letter={(entry.data.sortName || entry.data.title).charAt(0).toUpperCase()}>
+        <div class="grid grid-cols-[80px_minmax(0,1fr)] items-start gap-4">
+          <a href={`/encyclopedia/${entry.id}`} tabindex="-1" aria-hidden="true" class="relative aspect-square overflow-hidden rounded bg-slate-100">
+            {entry.data.image ? <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={entry.data.image} alt="" width="160" height="160" loading="lazy" class:list={['absolute inset-0 h-full w-full', /\b(?:logo|poster|book cover|book jacket|cover of)\b/i.test(entry.data.imageAlt || '') ? 'object-contain p-1' : entry.data.entryType === 'person' ? 'object-cover object-[50%_25%]' : 'object-cover']} /> : <span class="flex h-full items-center justify-center text-2xl font-semibold text-primary-900">{entry.data.title.charAt(0)}</span>}
+          </a>
+          <div class="min-w-0">
+            <p class="text-sm text-slate-600">{entry.data.category}{entry.data.status === 'developing' && <span> · Developing entry</span>}</p>
+            <h3 class="mt-2 text-lg"><a href={`/encyclopedia/${entry.id}`} class="text-primary-800 underline underline-offset-4 hover:text-primary-900">{entry.data.title}</a></h3>
+            <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-700">{entry.data.summary}</p>
           </div>
         </div>
+      </article>)}
+    </div>
+    <div id="no-results" hidden class="hidden border-b border-slate-200 py-8"><h3 class="text-lg text-slate-900">No matching entries</h3><p class="mt-2 text-slate-600">Try another name or topic, or clear the search and filters above.</p></div>
+    <nav id="pagination" hidden class="hidden mt-6 flex-wrap items-center justify-between gap-4" aria-label="Encyclopedia pages">
+      <p id="page-status" class="text-sm text-slate-600">Page 1</p>
+      <div class="flex flex-wrap gap-3">
+        <button id="pagination-prev" type="button" class="min-h-[44px] rounded border border-slate-400 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">Previous</button>
+        <button id="pagination-next" type="button" class="min-h-[44px] rounded border border-slate-400 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">Next</button>
       </div>
-    </section>
-  </div>
+    </nav>
+  </section>
+
+  <section class="border-t border-slate-200 bg-slate-50" aria-labelledby="exploring-heading">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <h2 id="exploring-heading" class="text-primary-900">Start exploring</h2>
+      <div class="mt-5 grid gap-8 md:grid-cols-2">
+        {campEntry && <article><h3 class="text-lg"><a href={`/encyclopedia/${campEntry.id}`} class="text-primary-800 underline underline-offset-4">{campEntry.data.title}</a></h3><p class="mt-3 text-sm leading-6 text-slate-700">{campEntry.data.summary}</p><a href="/encyclopedia/history-of-dzaleka" class="mt-2 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Read the history of Dzaleka</a></article>}
+        <div><h3 class="text-lg text-slate-900">Research and health surveys</h3><ul class="mt-2">{surveyEntries.map((entry) => entry && <li><a href={`/encyclopedia/${entry.id}`} class="inline-flex min-h-[44px] items-center py-2 text-sm text-primary-800 underline underline-offset-4">{entry.data.title}</a></li>)}</ul></div>
+      </div>
+      <p class="mt-8 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">Entries show review dates and sources. To reuse the collection, read the <a href="/encyclopedia/developers" class="text-primary-800 underline underline-offset-4">API documentation</a> and <a href="/open-license" class="text-primary-800 underline underline-offset-4">open license</a>.</p>
+    </div>
+  </section>
 </MainLayout>
 
 <script>
-  const searchInput = document.getElementById('encyclopedia-search') as HTMLInputElement | null;
-  const searchControl = document.getElementById('search-control');
-  const searchSuggestions = document.getElementById('search-suggestions');
-  const suggestionList = document.getElementById('search-suggestion-list');
-  const suggestionCount = document.getElementById('search-suggestion-count');
-  const entryElements = Array.from(document.querySelectorAll<HTMLElement>('.encyclopedia-entry'));
-  const categoryButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.category-filter'));
-  const typeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.type-filter'));
-  const letterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.letter-filter'));
-  const resultCount = document.getElementById('result-count');
-  const noResults = document.getElementById('no-results');
-  const clearButton = document.getElementById('clear-filters');
-  const pagination = document.getElementById('pagination');
-  const pageStatus = document.getElementById('page-status');
-  const pageButtons = document.getElementById('pagination-pages');
-  const previousButton = document.getElementById('pagination-prev') as HTMLButtonElement | null;
-  const nextButton = document.getElementById('pagination-next') as HTMLButtonElement | null;
-  const pageSize = 10;
-  let activeCategory = 'all';
-  let activeType = 'all';
-  let activeLetter = 'all';
-  let currentPage = 1;
-
-  const getMatchingEntries = () => {
-    const query = searchInput?.value.trim().toLowerCase() || '';
-    return entryElements.filter((entry) => (
-      (!query || entry.dataset.search?.includes(query))
-        && (activeCategory === 'all' || entry.dataset.category === activeCategory)
-        && (activeType === 'all' || entry.dataset.type === activeType)
-        && (activeLetter === 'all' || entry.dataset.letter === activeLetter)
-    ));
-  };
-
-  const hideSearchSuggestions = () => {
-    searchSuggestions?.classList.add('hidden');
-    searchInput?.setAttribute('aria-expanded', 'false');
-  };
-
-  const updateSearchSuggestions = (matchingEntries: HTMLElement[]) => {
-    const query = searchInput?.value.trim() || '';
-    if (query.length < 2) {
-      hideSearchSuggestions();
-      suggestionList?.replaceChildren();
-      return;
-    }
-
-    const suggestions = matchingEntries.slice(0, 5).map((entry) => {
-      const link = document.createElement('a');
-      link.href = entry.dataset.url || '#all-entries';
-      link.className = 'block border-b border-slate-100 px-4 py-3 last:border-b-0 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none';
-
-      const title = document.createElement('span');
-      title.className = 'block font-semibold text-slate-950';
-      title.textContent = entry.dataset.title || '';
-
-      const metaRow = document.createElement('div');
-      metaRow.className = 'mt-1 flex items-center justify-between gap-2 text-xs';
-
-      const category = document.createElement('span');
-      category.className = 'font-semibold uppercase tracking-wider text-slate-500';
-      category.textContent = entry.dataset.category || '';
-
-      const typeBadge = document.createElement('span');
-      const entryType = entry.dataset.type || '';
-      const isThesis = (entry.dataset.title || '').toLowerCase().includes('thesis') || (entry.dataset.url || '').includes('thesis');
-      typeBadge.className = isThesis
-        ? 'rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-900 border border-sky-200'
-        : 'rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700';
-      typeBadge.textContent = isThesis ? 'Academic Thesis' : (entryType ? entryType.charAt(0).toUpperCase() + entryType.slice(1) : '');
-
-      metaRow.append(category, typeBadge);
-      link.append(title, metaRow);
-      return link;
-    });
-
-    if (suggestionList) {
-      suggestionList.replaceChildren(...suggestions);
-      if (matchingEntries.length === 0) {
-        const empty = document.createElement('p');
-        empty.className = 'px-4 py-4 text-sm text-slate-600';
-        empty.textContent = `No entries match “${query}”.`;
-        suggestionList.append(empty);
-      }
-    }
-    if (suggestionCount) suggestionCount.textContent = String(matchingEntries.length);
-    searchSuggestions?.classList.remove('hidden');
-    searchInput?.setAttribute('aria-expanded', 'true');
-  };
-
-  const updateButtons = (buttons: HTMLButtonElement[], active: HTMLButtonElement) => {
-    buttons.forEach((button) => {
-      const selected = button === active;
-      button.setAttribute('aria-pressed', String(selected));
-      button.classList.toggle('bg-slate-900', selected);
-      button.classList.toggle('text-white', selected);
-      button.classList.toggle('border-slate-900', selected);
-      button.classList.toggle('bg-white', !selected);
-      button.classList.toggle('text-slate-700', !selected);
-      button.classList.toggle('border-slate-300', !selected);
-    });
-  };
-
-  const showPage = () => {
-    const matchingEntries = getMatchingEntries();
-    const totalPages = Math.max(1, Math.ceil(matchingEntries.length / pageSize));
-    currentPage = Math.min(currentPage, totalPages);
-    const pageStart = (currentPage - 1) * pageSize;
-    const visibleEntries = new Set(matchingEntries.slice(pageStart, pageStart + pageSize));
-
-    entryElements.forEach((entry) => {
-      entry.classList.toggle('hidden', !visibleEntries.has(entry));
-    });
-    if (resultCount) resultCount.textContent = String(matchingEntries.length);
-    noResults?.classList.toggle('hidden', matchingEntries.length !== 0);
-    pagination?.classList.toggle('hidden', matchingEntries.length === 0);
-    if (pageStatus) pageStatus.textContent = matchingEntries.length > 0
-      ? `Page ${currentPage} of ${totalPages} · ${pageStart + 1}-${Math.min(pageStart + pageSize, matchingEntries.length)} of ${matchingEntries.length}`
-      : '';
-    if (previousButton) previousButton.disabled = currentPage === 1;
-    if (nextButton) nextButton.disabled = currentPage === totalPages;
-
-    pageButtons?.replaceChildren(...Array.from({ length: totalPages }, (_, index) => {
-      const page = index + 1;
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.textContent = String(page);
-      button.setAttribute('aria-label', `Page ${page}`);
-      button.setAttribute('aria-current', page === currentPage ? 'page' : 'false');
-      button.className = page === currentPage
-        ? 'min-h-10 min-w-10 rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white'
-        : 'min-h-10 min-w-10 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50';
-      button.addEventListener('click', () => {
-        currentPage = page;
-        showPage();
-        document.getElementById('all-entries')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      return button;
-    }));
-    updateSearchSuggestions(matchingEntries);
-  };
-
-  categoryButtons.forEach((button) => button.addEventListener('click', () => {
-    activeCategory = button.dataset.category || 'all';
-    currentPage = 1;
-    updateButtons(categoryButtons, button);
-    showPage();
-  }));
-  typeButtons.forEach((button) => button.addEventListener('click', () => {
-    activeType = button.dataset.type || 'all';
-    currentPage = 1;
-    updateButtons(typeButtons, button);
-    showPage();
-  }));
-  letterButtons.forEach((button) => button.addEventListener('click', () => {
-    activeLetter = button.dataset.letter || 'all';
-    currentPage = 1;
-    updateButtons(letterButtons, button);
-    showPage();
-  }));
-  searchInput?.addEventListener('input', () => {
-    currentPage = 1;
-    showPage();
-  });
-  searchInput?.addEventListener('focus', () => updateSearchSuggestions(getMatchingEntries()));
-  searchInput?.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') hideSearchSuggestions();
-  });
-  document.addEventListener('keydown', (event) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
-      event.preventDefault();
-      searchInput?.focus();
-    } else if (event.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
-      event.preventDefault();
-      searchInput?.focus();
-    }
-  });
-  document.querySelectorAll('.quick-topic-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (searchInput) {
-        searchInput.value = btn.textContent || '';
-        currentPage = 1;
-        showPage();
-        searchInput.focus();
-        updateSearchSuggestions(getMatchingEntries());
-      }
-    });
-  });
-  document.addEventListener('click', (event) => {
-    if (event.target instanceof Node && !searchControl?.contains(event.target)) hideSearchSuggestions();
-  });
-  previousButton?.addEventListener('click', () => {
-    if (currentPage > 1) currentPage -= 1;
-    showPage();
-  });
-  nextButton?.addEventListener('click', () => {
-    currentPage += 1;
-    showPage();
-  });
-  clearButton?.addEventListener('click', () => {
-    if (searchInput) searchInput.value = '';
-    activeCategory = 'all';
-    activeType = 'all';
-    activeLetter = 'all';
-    currentPage = 1;
-    if (categoryButtons[0]) updateButtons(categoryButtons, categoryButtons[0]);
-    if (typeButtons[0]) updateButtons(typeButtons, typeButtons[0]);
-    if (letterButtons[0]) updateButtons(letterButtons, letterButtons[0]);
-    showPage();
-    searchInput?.focus();
-  });
-  showPage();
+  import { initEncyclopediaBrowser } from '../../utils/encyclopediaBrowser';
+  initEncyclopediaBrowser(document, window);
 </script>

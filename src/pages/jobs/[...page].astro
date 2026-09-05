@@ -6,14 +6,14 @@ import { isJobExpired } from '../../utils/dateHelpers';
 
 export async function getStaticPaths({ paginate }) {
   const allJobs = await getCollection('jobs');
-  
+
   // Open listings first, closed after, each by most recent
   const isOpen = (job: any) => job.data.status === 'open' && !isJobExpired(job.data.deadline);
   const sortedJobs = [...allJobs].sort((a, b) => {
     if (isOpen(a) !== isOpen(b)) return isOpen(a) ? -1 : 1;
     return new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime();
   });
-  
+
   return paginate(sortedJobs, { pageSize: 6 });
 }
 
@@ -22,7 +22,7 @@ const currentSort = Astro.url.searchParams.get('sort') || 'recent';
 
 // Get all jobs for count
 const allJobs = await getCollection('jobs');
-const activeJobs = allJobs.filter(job => 
+const activeJobs = allJobs.filter(job =>
   job.data.status === 'open' && !isJobExpired(job.data.deadline)
 );
 
@@ -42,17 +42,17 @@ sortedJobs = sortedJobs.sort((a, b) => {
 function getPaginationUrl(pageNum: number) {
   const basePath = '/jobs';
   const queryParams = new URLSearchParams();
-  
+
   if (currentSort && currentSort !== 'recent') {
     queryParams.set('sort', currentSort);
   }
-  
+
   const queryString = queryParams.toString();
-  
+
   if (pageNum === 1) {
     return `${basePath}${queryString ? `?${queryString}` : ''}`;
   }
-  
+
   return `${basePath}/${pageNum}${queryString ? `?${queryString}` : ''}`;
 }
 ---
@@ -80,13 +80,13 @@ function getPaginationUrl(pageNum: number) {
         <div class="shrink-0">
           <a
             href="/jobs/post"
-            class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+            class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-800"
           >
             Post a job
           </a>
         </div>
       </div>
-      
+
       <div class="mt-8 flex flex-wrap items-center gap-3 text-sm text-gray-600">
         <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-800">
           {activeJobs.length} active opportunities
@@ -103,12 +103,12 @@ function getPaginationUrl(pageNum: number) {
         Job listings
         <span class="ml-2 text-sm font-medium text-gray-500">{activeJobs.length} active {activeJobs.length === 1 ? 'opportunity' : 'opportunities'}</span>
       </h2>
-      
+
       <div class="flex items-center gap-3">
         <label for="sort-select" class="text-sm font-medium text-gray-700">Sort by:</label>
         <select
           id="sort-select"
-          class="block w-48 pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 rounded-lg"
+          class="block w-48 pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 rounded"
           onchange="window.location.href = this.value === 'recent' ? '/jobs' : '/jobs?sort=' + this.value"
         >
           <option value="recent" selected={currentSort === 'recent'}>Most Recent</option>
@@ -122,7 +122,7 @@ function getPaginationUrl(pageNum: number) {
       <div class="space-y-4">
         <div class="flex flex-col gap-4">
           {sortedJobs.map(job => (
-            <JobCard 
+            <JobCard
               job={job}
               isExpired={isJobExpired(job.data.deadline)}
             />
@@ -130,7 +130,7 @@ function getPaginationUrl(pageNum: number) {
         </div>
 
         {sortedJobs.length === 0 && (
-          <div class="text-center py-16 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+          <div class="text-center py-16 bg-gray-50 rounded border-2 border-dashed border-gray-200">
             <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
@@ -164,7 +164,7 @@ function getPaginationUrl(pageNum: number) {
                     <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
                   </svg>
                 </a>
-                
+
                 {Array.from({ length: page.lastPage }, (_, i) => i + 1).map(pageNum => (
                   <a
                     href={getPaginationUrl(pageNum)}

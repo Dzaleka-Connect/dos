@@ -28,7 +28,7 @@ const categories = [
 ---
 
 <MainLayout title="Community Voice - Dzaleka Online Services">
-  <main class="min-h-screen">
+  <div class="min-h-screen">
     <!-- Hero Section -->
     <div class="border-b border-gray-200 bg-white">
       <div class="container mx-auto px-4 py-16 sm:py-20">
@@ -51,7 +51,7 @@ const categories = [
           <div class="flex flex-col gap-3 sm:flex-row">
             <a
               href="/submit-voice"
-              class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-slate-800"
+              class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-primary-800"
             >
               Share Your Story
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,7 +60,7 @@ const categories = [
             </a>
             <a
               href="#stories"
-              class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+              class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50"
             >
               Browse stories
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,7 +82,7 @@ const categories = [
           <p class="text-lg text-gray-600 mb-12">Highlighted voices from our community</p>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {featuredVoices.map(voice => (
-              <article class="group relative bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-slate-400 transition-colors duration-200">
+              <article class="group relative bg-white border border-gray-200 rounded overflow-hidden hover:border-slate-400 transition-colors duration-200">
                 <div class="aspect-w-16 aspect-h-9 bg-gray-200">
                   <img
                     src={voice.data.image || '/images/placeholder-voice.jpg'}
@@ -104,8 +104,8 @@ const categories = [
                   <p class="text-white line-clamp-2 mb-4">{voice.data.excerpt}</p>
                   <div class="flex items-center justify-between">
                     <span class="text-sm text-white">By {voice.data.author}</span>
-                    <a 
-                      href={`/community-voices/${voice.id}`} 
+                    <a
+                      href={`/community-voices/${voice.id}`}
                       class="inline-flex items-center text-white font-medium hover:text-slate-300 transition-colors"
                     >
                       Read More
@@ -148,7 +148,7 @@ const categories = [
         <p class="text-lg text-gray-600 mb-12">Published contributions, newest first.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sortedVoices.map((voice) => (
-            <article class="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-slate-400 transition-colors duration-200">
+            <article class="group bg-white border border-gray-200 rounded overflow-hidden hover:border-slate-400 transition-colors duration-200">
               <div class="aspect-w-3 aspect-h-2 bg-gray-200">
                 <img
                   src={voice.data.image || '/images/placeholder-voice.jpg'}
@@ -169,8 +169,8 @@ const categories = [
                 <p class="text-gray-600 mb-4 line-clamp-2">{voice.data.excerpt}</p>
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-gray-500">By {voice.data.author}</span>
-                  <a 
-                    href={`/community-voices/${voice.id}`} 
+                  <a
+                    href={`/community-voices/${voice.id}`}
                     class="inline-flex items-center text-slate-700 font-medium group-hover:text-slate-900"
                   >
                     Read More
@@ -186,5 +186,5 @@ const categories = [
       </div>
     </section>
     </div>
-  </main>
+  </div>
 </MainLayout>

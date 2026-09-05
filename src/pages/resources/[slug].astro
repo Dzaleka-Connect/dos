@@ -142,7 +142,7 @@ const breadcrumbStructuredData = {
   <script type="application/ld+json" set:html={JSON.stringify(resourceStructuredData)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
 
-  <main class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50">
     {/* Breadcrumb Navigation */}
     <div class="bg-white border-b border-gray-200">
       <div class="container mx-auto px-4 py-3">
@@ -174,14 +174,14 @@ const breadcrumbStructuredData = {
               </svg>
               {resource.data.category}
             </span>
-            <span class="inline-flex items-center text-sm text-gray-600 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200">
+            <span class="inline-flex items-center text-sm text-gray-600 px-3 py-1.5 bg-gray-50 rounded border border-gray-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               {formattedDate}
             </span>
             {resource.data.featured && (
-              <span class="inline-flex items-center px-3 py-1.5 bg-amber-100 text-amber-800 rounded-lg text-xs font-semibold border border-amber-200">
+              <span class="inline-flex items-center px-3 py-1.5 bg-amber-100 text-amber-800 rounded text-xs font-semibold border border-amber-200">
                 Featured
               </span>
             )}
@@ -193,7 +193,7 @@ const breadcrumbStructuredData = {
           </h1>
 
           {/* Description */}
-          <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
+          <p class="text-base text-gray-600 leading-relaxed mb-6">
             {resource.data.description}
           </p>
 
@@ -239,7 +239,7 @@ const breadcrumbStructuredData = {
           <div class="lg:col-span-2">
             {/* Document Preview (if available) */}
             {resource.data.thumbnail && (
-              <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+              <div class="bg-white rounded border border-gray-200 overflow-hidden mb-8">
                 <img
                   src={resource.data.thumbnail}
                   alt={`Preview of ${resource.data.title}`}
@@ -249,7 +249,7 @@ const breadcrumbStructuredData = {
             )}
 
             {/* Document Content */}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-10">
+            <div class="min-w-0">
               <div class="prose prose-lg prose-primary max-w-none">
                 <Content />
               </div>
@@ -260,7 +260,7 @@ const breadcrumbStructuredData = {
                   <h3 class="text-sm font-semibold text-gray-900 mb-4">Tags</h3>
                   <div class="flex flex-wrap gap-2">
                     {resource.data.tags.map(tag => (
-                      <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
+                      <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm font-medium hover:bg-gray-200 transition-colors">
                         #{tag}
                       </span>
                     ))}
@@ -271,11 +271,11 @@ const breadcrumbStructuredData = {
           </div>
 
           {/* Sidebar - Sticky */}
-          <div class="space-y-6 lg:sticky lg:top-6 self-start">
-            {/* Access Document Card */}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="space-y-6 lg:sticky lg:top-44 self-start">
+            {/* Access this resource Card */}
+            <div class="border-t-4 border-primary-800 bg-slate-50 p-5 sm:p-6">
               <h2 class="text-lg font-bold text-gray-900 mb-4">
-                Access Document
+                Access this resource
               </h2>
 
               <div class="space-y-3">
@@ -284,7 +284,7 @@ const breadcrumbStructuredData = {
                     href={resource.data.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center justify-center w-full px-5 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium border border-transparent"
+                    class="min-h-[44px] flex items-center justify-center w-full px-5 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 transition-colors font-medium border border-transparent"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -297,7 +297,7 @@ const breadcrumbStructuredData = {
                     href={resource.data.resourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center justify-center w-full px-5 py-3 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    class="min-h-[44px] flex items-center justify-center w-full px-5 py-3 bg-white text-gray-700 border border-gray-300 rounded hover:bg-gray-50 transition-colors font-medium"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -309,7 +309,7 @@ const breadcrumbStructuredData = {
             </div>
 
             {/* Document Information Card */}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="border-t-4 border-primary-800 bg-slate-50 p-5 sm:p-6">
               <h3 class="text-lg font-bold text-gray-900 mb-4">
                 Document Info
               </h3>
@@ -355,7 +355,7 @@ const breadcrumbStructuredData = {
             </div>
 
             {/* Share Card */}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="border-t-4 border-primary-800 bg-slate-50 p-5 sm:p-6">
               <h3 class="text-lg font-bold text-gray-900 mb-4">
                 Share Resource
               </h3>
@@ -365,7 +365,7 @@ const breadcrumbStructuredData = {
                   id="shareTwitter"
                   data-url={Astro.url.toString()}
                   data-title={resource.data.title}
-                  class="flex-1 flex items-center justify-center p-3 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1a8cd8] transition-colors"
+                  class="min-h-[44px] flex-1 flex items-center justify-center p-3 bg-[#1DA1F2] text-white rounded hover:bg-[#1a8cd8] transition-colors"
                   aria-label="Share on Twitter"
                   title="Share on Twitter"
                 >
@@ -377,7 +377,7 @@ const breadcrumbStructuredData = {
                   id="shareLinkedIn"
                   data-url={Astro.url.toString()}
                   data-title={resource.data.title}
-                  class="flex-1 flex items-center justify-center p-3 bg-[#0A66C2] text-white rounded-lg hover:bg-[#094c8f] transition-colors"
+                  class="min-h-[44px] flex-1 flex items-center justify-center p-3 bg-[#0A66C2] text-white rounded hover:bg-[#094c8f] transition-colors"
                   aria-label="Share on LinkedIn"
                   title="Share on LinkedIn"
                 >
@@ -387,7 +387,7 @@ const breadcrumbStructuredData = {
                 </button>
                 <button
                   id="copyLink"
-                  class="flex-1 flex items-center justify-center p-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                  class="min-h-[44px] flex-1 flex items-center justify-center p-3 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
                   aria-label="Copy link to clipboard"
                   title="Copy link"
                 >
@@ -421,7 +421,7 @@ const breadcrumbStructuredData = {
                   href={`/resources/${related.id}`}
                   class="group block"
                 >
-                  <article class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-gray-300 transition-colors overflow-hidden h-full">
+                  <article class="bg-white rounded border border-gray-200 hover:border-gray-300 transition-colors overflow-hidden h-full">
                     <div class="p-6">
                       <div class="flex items-center justify-between mb-4">
                         <span class={`px-3 py-1 rounded-lg text-xs font-semibold ${
@@ -430,7 +430,7 @@ const breadcrumbStructuredData = {
                           {related.data.category}
                         </span>
                         {related.data.featured && (
-                          <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-semibold border border-amber-200">
+                          <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded text-xs font-semibold border border-amber-200">
                             Featured
                           </span>
                         )}
@@ -456,7 +456,7 @@ const breadcrumbStructuredData = {
         </div>
       </section>
     )}
-  </main>
+  </div>
 </MainLayout>
 
 <script>

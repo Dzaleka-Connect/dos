@@ -1,0 +1,13 @@
+---
+import { providerLogo } from '../../utils/providerLogo';
+import { getCloudinaryUrl } from '../../utils/cloudinary';
+interface Props { title: string; logo?: string; size?: 'small' | 'large'; }
+const { title, logo, size = 'small' } = Astro.props;
+const source = providerLogo(title, logo);
+const image = source ? getCloudinaryUrl(source, { width: 200, height: 200, crop: 'fit', quality: 'auto:good' }) : undefined;
+const initials = title.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join('');
+---
+<div class:list={['relative flex shrink-0 items-center justify-center overflow-hidden rounded border border-slate-200 bg-white font-semibold text-primary-900', size === 'large' ? 'h-14 w-14 text-xl sm:h-20 sm:w-20 sm:text-2xl' : 'h-14 w-14 text-xl']} aria-hidden="true">
+  <span>{initials}</span>
+  {image && <img src={image} alt="" class="absolute inset-0 h-full w-full bg-white object-contain p-1" loading={size === 'large' ? 'eager' : 'lazy'} onerror="this.hidden=true" />}
+</div>

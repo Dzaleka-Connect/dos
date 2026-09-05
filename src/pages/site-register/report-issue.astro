@@ -27,11 +27,11 @@ const seo = {
 };
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
 >
   <section class="border-b border-slate-200 bg-white">
@@ -57,8 +57,8 @@ const seo = {
 
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div class="bg-white rounded-lg border border-slate-200 p-8">
-        <form id="reportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
+      <div class="bg-white rounded border border-slate-200 p-5 sm:p-8">
+        <form id="reportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-6">
           <!-- Site Information -->
           <div>
             <label for="site-name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -68,7 +68,7 @@ const seo = {
               id="site-name"
               name="siteName"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
             >
               <option value="">Select a registered site...</option>
               {sites.map(site => (
@@ -88,7 +88,7 @@ const seo = {
               type="text"
               id="other-site-name"
               name="otherSiteName"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               placeholder="Enter the name of the site"
             />
           </div>
@@ -102,7 +102,7 @@ const seo = {
               id="issue-type"
               name="issueType"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
             >
               <option value="">Select an issue type</option>
               <option value="damage">Structural Damage</option>
@@ -125,7 +125,7 @@ const seo = {
               name="description"
               rows="4"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               placeholder="Provide a detailed description of the issue, including location, severity, and any relevant details..."
             ></textarea>
           </div>
@@ -139,7 +139,7 @@ const seo = {
               type="text"
               id="location"
               name="location"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               placeholder="Camp zone, block number, or specific location details"
             />
           </div>
@@ -153,7 +153,7 @@ const seo = {
               id="condition"
               name="condition"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
             >
               <option value="">Select observed condition</option>
               <option value="excellent">Excellent</option>
@@ -173,7 +173,7 @@ const seo = {
               id="urgency"
               name="urgency"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
             >
               <option value="">Select urgency level</option>
               <option value="low">Low - Minor issue, no immediate action needed</option>
@@ -193,7 +193,7 @@ const seo = {
                 type="text"
                 id="name"
                 name="name"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                 placeholder="Your full name"
               />
             </div>
@@ -205,7 +205,7 @@ const seo = {
                 type="email"
                 id="email"
                 name="email"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                 placeholder="name@domain.com"
               />
             </div>
@@ -220,7 +220,7 @@ const seo = {
               type="tel"
               id="phone"
               name="phone"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               placeholder="+265 XXX XXX XXX"
             />
           </div>
@@ -230,7 +230,7 @@ const seo = {
             <button
               type="submit"
               id="submitButton"
-              class="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
+              class="min-h-[44px] px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
             >
               <span id="submitText">Submit Report</span>
               <span id="submitSpinner" class="hidden">
@@ -273,7 +273,7 @@ const seo = {
       </div>
 
       <!-- Additional Information -->
-      <div class="mt-8 bg-slate-50 rounded-xl border border-slate-200 p-6">
+      <div class="mt-8 bg-slate-50 rounded border border-slate-200 p-6">
         <h3 class="text-lg font-semibold text-slate-900 mb-3">What happens next?</h3>
         <ul class="space-y-2 text-slate-700">
           <li class="flex items-start">
@@ -306,6 +306,7 @@ const seo = {
   </div>
 
   <script>
+    import { prefillRecordForm } from '../../utils/recordForm';
     const form = document.getElementById('reportForm') as HTMLFormElement;
     const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
     const submitText = document.getElementById('submitText') as HTMLElement;
@@ -371,7 +372,7 @@ const seo = {
     siteSelect?.addEventListener('change', (e) => {
       const select = e.target as HTMLSelectElement;
       const selectedOption = select.options[select.selectedIndex];
-      
+
       if (select.value === 'other') {
         otherSiteContainer?.classList.remove('hidden');
         if (otherSiteInput) otherSiteInput.required = true;
@@ -383,7 +384,7 @@ const seo = {
           otherSiteInput.required = false;
           otherSiteInput.value = '';
         }
-        
+
         // Auto-populate location if available
         const location = selectedOption.getAttribute('data-location');
         if (locationInput) {
@@ -397,5 +398,7 @@ const seo = {
         }
       }
     });
+
+    if (form) prefillRecordForm(form, new URLSearchParams(window.location.search), ['siteName', 'location']);
   </script>
 </MainLayout>

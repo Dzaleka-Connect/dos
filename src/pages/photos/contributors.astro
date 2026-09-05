@@ -12,7 +12,7 @@ const photographers = allPhotos.reduce((acc, photo) => {
   if (!photographer?.name) return acc;
 
   const key = photographerSlug(photo.data.contributor, photographer.name);
-  
+
   if (!acc[key]) {
     acc[key] = {
       slug: key,
@@ -31,7 +31,7 @@ const photographers = allPhotos.reduce((acc, photo) => {
 
   const photographerData = acc[key];
   photographerData.photoCount++;
-  
+
   // Update dates
   const photoDate = new Date(photo.data.date);
   if (photoDate < photographerData.firstPhotoDate) {
@@ -131,7 +131,7 @@ const title = "Photographers | Dzaleka Online Services";
 
       <!-- Search and Filter Section with modern design -->
       <div class="mb-12">
-        <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+        <div class="bg-white rounded p-6 transition-all duration-300 border border-gray-100">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Search with enhanced styling -->
             <div>
@@ -140,7 +140,7 @@ const title = "Photographers | Dzaleka Online Services";
                 <input
                   type="text"
                   id="search"
-                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
                   placeholder="Search by name, bio, or tags..."
                 />
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -158,7 +158,7 @@ const title = "Photographers | Dzaleka Online Services";
                 <div class="flex overflow-x-auto gap-2 pb-2 scrollbar-hide">
                   {Array.from(allTags).map(tag => (
                     <button
-                      class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-primary-50 hover:text-primary-700 transition-colors whitespace-nowrap flex-shrink-0 border border-gray-200"
+                      class="min-h-[44px] px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm hover:bg-primary-50 hover:text-primary-700 transition-colors whitespace-nowrap flex-shrink-0 border border-gray-200"
                       data-tag={tag}
                     >
                       {tag}
@@ -180,15 +180,15 @@ const title = "Photographers | Dzaleka Online Services";
       <!-- Photographers Grid with enhanced cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8" id="photographersGrid">
         {sortedPhotographers.map(photographer => (
-          <article 
-            class="bg-white rounded-xl shadow-sm overflow-hidden transition-colors duration-200 hover:border-gray-300 border border-gray-200"
+          <article
+            class="bg-white rounded overflow-hidden transition-colors duration-200 hover:border-gray-300 border border-gray-200"
             data-photographer={photographer.name.toLowerCase()}
             data-tags={Array.from(photographer.tags).join(' ')}
           >
             <a href={`/photos/contributor/${photographerSlug(photographer.slug, photographer.name)}`} class="block">
               <div class="relative">
-                <img 
-                  src={photographer.latestPhoto.data.image} 
+                <img
+                  src={photographer.latestPhoto.data.image}
                   alt={`Latest photo by ${photographer.name}`}
                   class="w-full h-56 object-cover"
                   loading="lazy"
@@ -211,26 +211,26 @@ const title = "Photographers | Dzaleka Online Services";
                     {photographer.bio}
                   </p>
                 )}
-                
+
                 {photographer.tags.size > 0 && (
                   <div class="flex flex-wrap gap-2 mb-4">
                     {Array.from(photographer.tags).slice(0, 3).map(tag => (
-                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs border border-gray-200">
+                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs border border-gray-200">
                         {tag}
                       </span>
                     ))}
                     {photographer.tags.size > 3 && (
-                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs border border-gray-200">
+                      <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs border border-gray-200">
                         +{photographer.tags.size - 3} more
                       </span>
                     )}
                   </div>
                 )}
-                
+
                 <div class="flex items-center justify-between text-sm text-gray-500">
                   <div class="flex gap-3">
                     {photographer.instagram && (
-                      <a 
+                      <a
                         href={`https://instagram.com/${photographer.instagram}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -243,7 +243,7 @@ const title = "Photographers | Dzaleka Online Services";
                       </a>
                     )}
                     {photographer.website && (
-                      <a 
+                      <a
                         href={photographer.website}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -264,7 +264,7 @@ const title = "Photographers | Dzaleka Online Services";
       <div class="flex justify-center items-center gap-2 mb-12">
         <button
           id="prevPage"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          class="min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           disabled
         >
           Previous
@@ -277,7 +277,7 @@ const title = "Photographers | Dzaleka Online Services";
         </div>
         <button
           id="nextPage"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          class="min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           disabled={totalPages <= 1}
         >
           Next
@@ -286,7 +286,7 @@ const title = "Photographers | Dzaleka Online Services";
 
       <!-- No Results Message with enhanced styling -->
       <div id="noResults" class="hidden text-center py-16">
-        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-lg mx-auto">
+        <div class="bg-white rounded p-5 sm:p-8 border border-gray-100 max-w-lg mx-auto">
           <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -298,15 +298,15 @@ const title = "Photographers | Dzaleka Online Services";
       </div>
 
       <!-- Archive Stats Section -->
-      <div class="mt-16 bg-gray-50 rounded-2xl p-8 border border-gray-100">
+      <div class="mt-16 bg-gray-50 rounded p-5 sm:p-8 border border-gray-100">
         <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Archive Overview</h2>
-        
+
         <!-- Basic Stats with improved layout -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
-          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div class="bg-white rounded p-4 transition-all duration-300 border border-gray-100">
             <div class="flex items-center justify-between mb-2">
               <div class="text-2xl font-bold text-primary-600">{totalPhotographers}</div>
-              <div class="p-2 bg-primary-50 rounded-lg">
+              <div class="p-2 bg-primary-50 rounded">
                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
@@ -314,10 +314,10 @@ const title = "Photographers | Dzaleka Online Services";
             </div>
             <div class="text-sm font-medium text-gray-600">Total Photographers</div>
           </div>
-          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div class="bg-white rounded p-4 transition-all duration-300 border border-gray-100">
             <div class="flex items-center justify-between mb-2">
               <div class="text-2xl font-bold text-primary-600">{totalPhotos}</div>
-              <div class="p-2 bg-primary-50 rounded-lg">
+              <div class="p-2 bg-primary-50 rounded">
                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -325,10 +325,10 @@ const title = "Photographers | Dzaleka Online Services";
             </div>
             <div class="text-sm font-medium text-gray-600">Total Photos</div>
           </div>
-          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div class="bg-white rounded p-4 transition-all duration-300 border border-gray-100">
             <div class="flex items-center justify-between mb-2">
               <div class="text-2xl font-bold text-primary-600">{yearsOfCoverage}</div>
-              <div class="p-2 bg-primary-50 rounded-lg">
+              <div class="p-2 bg-primary-50 rounded">
                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -336,10 +336,10 @@ const title = "Photographers | Dzaleka Online Services";
             </div>
             <div class="text-sm font-medium text-gray-600">Years of Coverage</div>
           </div>
-          <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div class="bg-white rounded p-4 transition-all duration-300 border border-gray-100">
             <div class="flex items-center justify-between mb-2">
               <div class="text-2xl font-bold text-primary-600">{totalLocations}</div>
-              <div class="p-2 bg-primary-50 rounded-lg">
+              <div class="p-2 bg-primary-50 rounded">
                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -353,7 +353,7 @@ const title = "Photographers | Dzaleka Online Services";
         <!-- Detailed Stats with modern cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           <!-- Most Active Photographers -->
-          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div class="bg-white rounded p-6 transition-all duration-300 border border-gray-100">
             <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -362,7 +362,7 @@ const title = "Photographers | Dzaleka Online Services";
             </h3>
             <div class="space-y-4">
               {mostActivePhotographers.map(({ name, count }) => (
-                <div class="flex items-center justify-between group p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center justify-between group p-2 rounded hover:bg-gray-50 transition-colors">
                   <span class="text-gray-700 group-hover:text-primary-600 transition-colors font-medium">{name}</span>
                   <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{count} photos</span>
                 </div>
@@ -371,7 +371,7 @@ const title = "Photographers | Dzaleka Online Services";
           </div>
 
           <!-- Most Common Tags -->
-          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+          <div class="bg-white rounded p-6 transition-all duration-300 border border-gray-100">
             <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -380,7 +380,7 @@ const title = "Photographers | Dzaleka Online Services";
             </h3>
             <div class="space-y-4">
               {mostCommonTags.map(({ tag, count }) => (
-                <div class="flex items-center justify-between group p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center justify-between group p-2 rounded hover:bg-gray-50 transition-colors">
                   <span class="text-gray-700 group-hover:text-primary-600 transition-colors font-medium">{tag}</span>
                   <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{count} photos</span>
                 </div>
@@ -408,7 +408,7 @@ const title = "Photographers | Dzaleka Online Services";
   const noResults = document.getElementById('noResults');
   const activeFilters = document.getElementById('activeFilters');
   const tagButtons = document.querySelectorAll('[data-tag]');
-  
+
   let selectedTags = new Set();
 
   // Search function
@@ -419,12 +419,12 @@ const title = "Photographers | Dzaleka Online Services";
     Array.from(photographerCards).forEach(card => {
       const photographerName = card.dataset.photographer;
       const tags = card.dataset.tags.toLowerCase();
-      const isVisible = 
-        photographerName.includes(searchTerm) || 
+      const isVisible =
+        photographerName.includes(searchTerm) ||
         tags.includes(searchTerm);
 
       // Check if card matches selected tags
-      const matchesTags = selectedTags.size === 0 || 
+      const matchesTags = selectedTags.size === 0 ||
         Array.from(selectedTags).some(tag => tags.includes(tag.toLowerCase()));
 
       if (isVisible && matchesTags) {
@@ -443,7 +443,7 @@ const title = "Photographers | Dzaleka Online Services";
   tagButtons.forEach(button => {
     button.addEventListener('click', () => {
       const tag = button.dataset.tag;
-      
+
       if (selectedTags.has(tag)) {
         selectedTags.delete(tag);
         button.classList.remove('bg-primary-100', 'text-primary-700');
@@ -456,7 +456,7 @@ const title = "Photographers | Dzaleka Online Services";
 
       // Update active filters display
       updateActiveFilters();
-      
+
       // Perform search with new filters
       performSearch();
     });
@@ -467,8 +467,8 @@ const title = "Photographers | Dzaleka Online Services";
     activeFilters.innerHTML = Array.from(selectedTags).map(tag => `
       <span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
         ${tag}
-        <button 
-          class="hover:text-primary-900"
+        <button
+          class="min-h-[44px] hover:text-primary-900"
           onclick="removeFilter('${tag}')"
         >
           ×
@@ -495,7 +495,7 @@ const title = "Photographers | Dzaleka Online Services";
   // Pagination functionality
   let currentPage = 1;
   const photographersPerPage = 8;
-  
+
   const prevPageBtn = document.getElementById('prevPage');
   const nextPageBtn = document.getElementById('nextPage');
   const currentPageSpan = document.getElementById('currentPage');
@@ -505,7 +505,7 @@ const title = "Photographers | Dzaleka Online Services";
     // Get all cards
     const allCards = Array.from(photographerCards);
     const actualTotalPages = Math.max(1, Math.ceil(allCards.length / photographersPerPage));
-    
+
     // Update page numbers
     currentPageSpan.textContent = currentPage;
     totalPagesSpan.textContent = actualTotalPages;
@@ -539,7 +539,7 @@ const title = "Photographers | Dzaleka Online Services";
   nextPageBtn.addEventListener('click', () => {
     const allCards = Array.from(photographerCards);
     const actualTotalPages = Math.max(1, Math.ceil(allCards.length / photographersPerPage));
-    
+
     if (currentPage < actualTotalPages) {
       currentPage++;
       updatePagination();

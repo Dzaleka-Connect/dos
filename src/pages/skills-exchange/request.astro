@@ -39,7 +39,7 @@ const skillCategories = [
           </p>
         </div>
 
-        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+        <div class="rounded border border-slate-200 bg-slate-50 p-6">
           <h2 class="text-lg font-semibold text-slate-900">Before you submit</h2>
           <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
             <li>Explain the exact skill or help you are looking for.</li>
@@ -52,8 +52,8 @@ const skillCategories = [
   </section>
 
   <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-3xl rounded-lg border border-slate-200 bg-white p-6 sm:p-8">
-      <form id="requestForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+    <div class="mx-auto max-w-3xl rounded border border-slate-200 bg-white p-6 sm:p-8">
+      <form id="requestForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
         <input type="hidden" name="_subject" value="New Skills Request Submission" />
         <input type="hidden" name="_next" value="/skills-exchange/thank-you" />
 
@@ -64,7 +64,7 @@ const skillCategories = [
             name="name"
             id="name"
             required
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           />
         </div>
 
@@ -75,7 +75,7 @@ const skillCategories = [
             name="email"
             id="email"
             required
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           />
         </div>
 
@@ -85,7 +85,7 @@ const skillCategories = [
             id="skillCategory"
             name="skillCategory"
             required
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           >
             <option value="">Select a category</option>
             {skillCategories.map((category) => (
@@ -102,7 +102,7 @@ const skillCategories = [
             id="skillRequested"
             required
             placeholder="What would you like to learn?"
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           />
         </div>
 
@@ -114,7 +114,7 @@ const skillCategories = [
             rows="4"
             required
             placeholder="Describe what you want to learn and your current skill level."
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           ></textarea>
         </div>
 
@@ -126,7 +126,7 @@ const skillCategories = [
             rows="3"
             required
             placeholder="When are you available for learning sessions?"
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           ></textarea>
         </div>
 
@@ -136,7 +136,7 @@ const skillCategories = [
             id="preferredContact"
             name="preferredContact"
             required
-            class="block w-full rounded-lg border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+            class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           >
             <option value="email">Email</option>
             <option value="phone">Phone</option>
@@ -148,20 +148,20 @@ const skillCategories = [
           <button
             type="button"
             onclick="window.location.href='/skills-exchange'"
-            class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
+            class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700"
+            class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700"
           >
             Submit request
           </button>
         </div>
       </form>
 
-      <div id="successMessage" class="hidden mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+      <div id="successMessage" class="hidden mt-6 rounded border border-emerald-200 bg-emerald-50 p-4">
         <p class="text-sm font-medium text-emerald-800">Request submitted successfully.</p>
       </div>
     </div>

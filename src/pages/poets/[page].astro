@@ -7,12 +7,12 @@ export async function getStaticPaths() {
   const totalPoets = poetProfiles.length;
   const poetsPerPage = 6;
   const totalPages = Math.ceil(totalPoets / poetsPerPage);
-  
+
   const paths = [];
   for (let page = 2; page <= totalPages; page++) {
     paths.push({ params: { page: page.toString() } });
   }
-  
+
   return paths;
 }
 
@@ -70,8 +70,8 @@ const structuredData = {
 };
 ---
 
-<MainLayout 
-  title={pageTitle} 
+<MainLayout
+  title={pageTitle}
   description={pageDescription}
   keywords={pageKeywords}
   canonical={canonicalURL}
@@ -99,13 +99,13 @@ const structuredData = {
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#browse-poets" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
+          <a href="#browse-poets" class="min-h-[44px] inline-flex items-center px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 transition-colors font-medium">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
             Browse Poets
           </a>
-          <a href="/poets/submit" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded-lg hover:bg-slate-50 transition-colors font-medium">
+          <a href="/poets/submit" class="min-h-[44px] inline-flex items-center px-6 py-3 border-2 border-gray-900 text-slate-700 bg-white rounded hover:bg-slate-50 transition-colors font-medium">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -132,11 +132,11 @@ const structuredData = {
       <!-- Poets Grid -->
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {currentPagePoets.map(poet => (
-          <a href={`/poets/${poet.id}`} 
-             class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
+          <a href={`/poets/${poet.id}`}
+             class="group bg-white rounded transition-all duration-200 border border-gray-100 hover:border-slate-200 overflow-hidden flex flex-col">
             <div class="relative h-48 overflow-hidden bg-gray-100">
               {poet.data.image ? (
-                <img src={poet.data.image} alt={poet.data.title} 
+                <img src={poet.data.image} alt={poet.data.title}
                      class="w-full h-full object-cover" />
               ) : (
                 <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
@@ -178,47 +178,47 @@ const structuredData = {
               ← Previous
             </a>
           )}
-          
+
           {currentPage > 3 && (
-            <a href="/poets" 
+            <a href="/poets"
                class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               1
             </a>
           )}
-          
+
           {currentPage > 4 && (
             <span class="px-2 py-2 text-sm text-gray-500">...</span>
           )}
-          
+
           {currentPage > 2 && (
             <a href={`/poets/${currentPage - 1}`}
                class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               {currentPage - 1}
             </a>
           )}
-          
-          <span class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-50 border-2 border-gray-900 rounded-lg">
+
+          <span class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-50 border-2 border-gray-900 rounded">
             {currentPage}
           </span>
-          
+
           {currentPage < totalPages && (
             <a href={`/poets/${currentPage + 1}`}
                class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               {currentPage + 1}
             </a>
           )}
-          
+
           {currentPage < totalPages - 2 && (
             <span class="px-2 py-2 text-sm text-gray-500">...</span>
           )}
-          
+
           {currentPage < totalPages - 1 && (
             <a href={`/poets/${totalPages}`}
                class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               {totalPages}
             </a>
           )}
-          
+
           {currentPage < totalPages && (
             <a href={`/poets/${currentPage + 1}`}
                class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
@@ -239,9 +239,9 @@ const structuredData = {
           Our poets give voice to the community, preserve stories, and create opportunities for cultural expression
         </p>
       </div>
-      
+
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="text-center bg-white p-6 rounded-lg border border-gray-100">
+        <div class="text-center bg-white p-6 rounded border border-gray-100">
           <div class="bg-slate-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
             <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -250,8 +250,8 @@ const structuredData = {
           <h3 class="text-lg font-semibold text-gray-900 mb-2">Community Voice</h3>
           <p class="text-gray-600 text-sm">Giving voice to stories and experiences through poetry</p>
         </div>
-        
-        <div class="text-center bg-white p-6 rounded-lg border border-gray-100">
+
+        <div class="text-center bg-white p-6 rounded border border-gray-100">
           <div class="bg-slate-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
             <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -260,8 +260,8 @@ const structuredData = {
           <h3 class="text-lg font-semibold text-gray-900 mb-2">Cultural Expression</h3>
           <p class="text-gray-600 text-sm">Preserving heritage through spoken word and written poetry</p>
         </div>
-        
-        <div class="text-center bg-white p-6 rounded-lg border border-gray-100">
+
+        <div class="text-center bg-white p-6 rounded border border-gray-100">
           <div class="bg-slate-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-3">
             <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -282,13 +282,13 @@ const structuredData = {
         Book a reading, contact a poet, or add your profile to the directory.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/contact" class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors font-medium">
+        <a href="/contact" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 rounded bg-primary-900 text-white hover:bg-primary-800 transition-colors font-medium">
           Book a Reading
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
         </a>
-        <a href="/poets/submit" class="inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-gray-900 text-slate-700 bg-white hover:bg-slate-50 transition-colors font-medium">
+        <a href="/poets/submit" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 rounded border-2 border-gray-900 text-slate-700 bg-white hover:bg-slate-50 transition-colors font-medium">
           Add Your Profile
           <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7m0 0l-7 7m7-7H3" />

@@ -1,0 +1,116 @@
+/* Shared public-service typography and layout across every site page. */
+.site-shell {
+  --site-heading: #0c4a6e;
+  --site-link: #075985;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.site-shell h1 {
+  font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: normal;
+  overflow-wrap: break-word;
+}
+
+.site-shell h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: normal;
+}
+
+.site-shell :is(h3, h4, h5, h6) {
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+.site-shell :is(h1, h2, h3, h4, h5, h6) a {
+  text-underline-offset: 0.2em;
+}
+
+.site-shell .container:not([class*='max-w-']) {
+  max-width: 80rem;
+}
+
+.site-shell .container {
+  padding-inline: 1rem;
+}
+
+.site-shell .grid > *,
+.site-shell :is(main, article, form, fieldset) {
+  min-width: 0;
+}
+
+.site-shell :is(input:not([type]), input[type='text'], input[type='email'], input[type='tel'], input[type='password'], input[type='search'], input[type='url'], input[type='number'], input[type='date'], select, textarea) {
+  min-height: 2.75rem;
+  max-width: 100%;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}
+
+.site-shell .prose {
+  font-size: 1rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.site-shell .prose :is(h1, h2, h3, h4) {
+  margin-top: 1.75em;
+  margin-bottom: 0.6em;
+}
+
+.site-shell .prose a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.site-shell .prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.site-shell .prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.site-shell nav[aria-label='Pagination'] {
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-shell nav[aria-label='Pagination'] ul {
+  flex-wrap: wrap;
+}
+
+.site-shell nav[aria-label='Pagination'] a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-shell footer :focus-visible {
+  outline-color: white;
+}
+
+html {
+  scroll-padding-top: 6rem;
+}
+
+@media (min-width: 640px) {
+  .site-shell .container { padding-inline: 1.5rem; }
+  .site-shell :is(input:not([type]), input[type='text'], input[type='email'], input[type='tel'], input[type='password'], input[type='search'], input[type='url'], input[type='number'], input[type='date'], select, textarea) { font-size: 0.875rem; }
+}
+
+@media (min-width: 1024px) {
+  .site-shell .container { padding-inline: 2rem; }
+  html { scroll-padding-top: 10rem; }
+}

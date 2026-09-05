@@ -69,7 +69,7 @@ const eLearningStructuredData = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(eLearningStructuredData)} />
 
-  <main class="min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-hidden">
     <!-- Hero Section -->
     <div class="relative min-h-[500px] flex items-center justify-center text-white overflow-hidden">
       {/* Background Image */}
@@ -94,19 +94,19 @@ const eLearningStructuredData = {
         <div class="flex flex-wrap justify-center gap-4">
           <a
             href="/e-learning/courses"
-            class="px-6 py-3 bg-white text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors duration-200"
+            class="px-6 py-3 bg-white text-slate-700 hover:bg-slate-50 rounded font-medium transition-colors duration-200"
           >
             Browse Courses
           </a>
           <a
             href="/e-learning/courses/submit"
-            class="px-6 py-3 border border-white/30 hover:bg-white/10 rounded-lg text-white/90 hover:text-white transition-colors duration-200"
+            class="px-6 py-3 border border-white/30 hover:bg-white/10 rounded text-white/90 hover:text-white transition-colors duration-200"
           >
             Submit a Course
           </a>
           <a
             href="#featured-initiatives"
-            class="px-6 py-3 border border-white/30 hover:bg-white/10 rounded-lg text-white/90 hover:text-white transition-colors duration-200"
+            class="px-6 py-3 border border-white/30 hover:bg-white/10 rounded text-white/90 hover:text-white transition-colors duration-200"
           >
             Local Initiatives
           </a>
@@ -124,8 +124,8 @@ const eLearningStructuredData = {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm text-center transition-colors duration-200 hover:border-gray-300">
-            <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div class="bg-white rounded border border-gray-200 p-6 text-center transition-colors duration-200 hover:border-gray-300">
+            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5m0 0l9-5-9-5-9 5 9 5m0 0v6" />
               </svg>
@@ -134,8 +134,8 @@ const eLearningStructuredData = {
             <p class="text-gray-600">Free courses created by local educators covering various topics and skills</p>
           </div>
 
-          <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm text-center transition-colors duration-200 hover:border-gray-300">
-            <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div class="bg-white rounded border border-gray-200 p-6 text-center transition-colors duration-200 hover:border-gray-300">
+            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -144,8 +144,8 @@ const eLearningStructuredData = {
             <p class="text-gray-600">Practical skills in IT, business, and digital technologies through structured learning</p>
           </div>
 
-          <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm text-center transition-colors duration-200 hover:border-gray-300">
-            <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div class="bg-white rounded border border-gray-200 p-6 text-center transition-colors duration-200 hover:border-gray-300">
+            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
@@ -177,11 +177,11 @@ const eLearningStructuredData = {
             {featuredCourses.map((course) => (
               <a
                 href={`/e-learning/courses/${course.id}`}
-                class="course-card flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-colors duration-200 group hover:border-gray-300"
+                class="course-card flex flex-col bg-white rounded border border-gray-200 overflow-hidden transition-colors duration-200 group hover:border-gray-300"
               >
                 <div class="aspect-video bg-gray-100 relative overflow-hidden">
                   {course.data.thumbnail ? (
-                    <img src={course.data.thumbnail} alt={course.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={course.data.thumbnail} alt={course.data.title} class="w-full h-full object-cover transition-transform duration-500" />
                   ) : (
                     <div class="w-full h-full flex items-center justify-center bg-slate-50 transition-colors">
                       <svg class="w-16 h-16 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,7 +189,7 @@ const eLearningStructuredData = {
                       </svg>
                     </div>
                   )}
-                  <span class="absolute top-4 right-4 bg-white text-amber-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-amber-100 flex items-center gap-1">
+                  <span class="absolute top-4 right-4 bg-white text-amber-600 text-xs font-bold px-3 py-1.5 rounded-full border border-amber-100 flex items-center gap-1">
                     <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     Featured
                   </span>
@@ -240,14 +240,14 @@ const eLearningStructuredData = {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Adai Circle -->
           <a href="https://adaicircle.com/" target="_blank" rel="noopener noreferrer"
-             class="group relative bg-white rounded-xl shadow-sm border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
+             class="group relative bg-white rounded border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
             <div class="relative h-64 overflow-hidden">
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               <img src="https://raisely-images.imgix.net/dzaleka-fundraising/uploads/f-01-x-2-h-wa-aw-dij-7-jpeg-9bf1fc.jpeg?fm=jpg&fit=max&w=700&auto=format&q=62&dpr=2"
                    alt="Adai Circle"
-                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                   class="w-full h-full object-cover transform transition-transform duration-700"
               />
-              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200 shadow-sm">
+              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200">
                 Digital Skills
               </div>
             </div>
@@ -272,14 +272,14 @@ const eLearningStructuredData = {
 
           <!-- Jesuit Worldwide Learning -->
           <a href="https://www.jwl.org/" target="_blank" rel="noopener noreferrer"
-             class="group relative bg-white rounded-xl shadow-sm border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
+             class="group relative bg-white rounded border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
             <div class="relative h-64 overflow-hidden">
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               <img src="https://images.squarespace-cdn.com/content/v1/55cb874ce4b05b9a72d3fb90/1487807079219-80GH93UA212UQABP99VK/MALAWI+-+DZALEKA+-+TRESOR+IN+THE+COMPUTER+ROOM+OF+JRS+COMPOUND+-+PHOTO+BY+GIULIO+D%27ERCOLE+-+3390.jpg?format=1500w"
                    alt="Jesuit Worldwide Learning"
-                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                   class="w-full h-full object-cover transform transition-transform duration-700"
               />
-              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200 shadow-sm">
+              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200">
                 Higher Education
               </div>
             </div>
@@ -304,14 +304,14 @@ const eLearningStructuredData = {
 
           <!-- Takenolab -->
           <a href="https://takenolab.com/" target="_blank" rel="noopener noreferrer"
-             class="group relative bg-white rounded-xl shadow-sm border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
+             class="group relative bg-white rounded border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
             <div class="relative h-64 overflow-hidden">
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               <img src="https://takenolab.com/images/tknlb27.jpeg"
                    alt="Takenolab"
-                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                   class="w-full h-full object-cover transform transition-transform duration-700"
               />
-              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200 shadow-sm">
+              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200">
                 Programming Skills
               </div>
             </div>
@@ -336,14 +336,14 @@ const eLearningStructuredData = {
 
           <!-- ATE-Hub -->
           <a href="https://www.atehub.org/" target="_blank" rel="noopener noreferrer"
-             class="group relative bg-white rounded-xl shadow-sm border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
+             class="group relative bg-white rounded border border-gray-200 transition-colors duration-200 hover:border-gray-300 overflow-hidden flex flex-col">
             <div class="relative h-64 overflow-hidden">
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               <img src="https://images.cdn-files-a.com/uploads/6638854/2000_6421401c0a743.jpg"
                    alt="ATE-Hub"
-                   class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                   class="w-full h-full object-cover transform transition-transform duration-700"
               />
-              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200 shadow-sm">
+              <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-medium text-slate-700 z-20 border border-gray-200">
                 Tech Education
               </div>
             </div>
@@ -378,9 +378,9 @@ const eLearningStructuredData = {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- UNHCR Opportunities -->
           <a href="https://services.unhcr.org/opportunities/search" target="_blank" rel="noopener noreferrer"
-             class="group bg-white rounded-xl border border-gray-200 p-6 shadow-sm transition-colors duration-200 hover:border-gray-300">
+             class="group bg-white rounded border border-gray-200 p-6 transition-colors duration-200 hover:border-gray-300">
             <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+              <div class="w-12 h-12 bg-blue-100 rounded flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                 <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -392,9 +392,9 @@ const eLearningStructuredData = {
 
           <!-- Coursera -->
           <a href="https://www.coursera.org/courses?query=free" target="_blank" rel="noopener noreferrer"
-             class="group bg-white rounded-xl border border-gray-200 p-6 shadow-sm transition-colors duration-200 hover:border-gray-300">
+             class="group bg-white rounded border border-gray-200 p-6 transition-colors duration-200 hover:border-gray-300">
             <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+              <div class="w-12 h-12 bg-blue-100 rounded flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                 <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5m0 0l9-5-9-5-9 5 9 5m0 0v6" />
                 </svg>
@@ -406,9 +406,9 @@ const eLearningStructuredData = {
 
           <!-- edX -->
           <a href="https://www.edx.org/courses?q=free+online+courses" target="_blank" rel="noopener noreferrer"
-             class="group bg-white rounded-xl border border-gray-200 p-6 shadow-sm transition-colors duration-200 hover:border-gray-300">
+             class="group bg-white rounded border border-gray-200 p-6 transition-colors duration-200 hover:border-gray-300">
             <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
+              <div class="w-12 h-12 bg-red-100 rounded flex items-center justify-center group-hover:bg-red-200 transition-colors">
                 <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
@@ -420,9 +420,9 @@ const eLearningStructuredData = {
 
           <!-- Khan Academy -->
           <a href="https://www.khanacademy.org" target="_blank" rel="noopener noreferrer"
-             class="group bg-white rounded-xl border border-gray-200 p-6 shadow-sm transition-colors duration-200 hover:border-gray-300">
+             class="group bg-white rounded border border-gray-200 p-6 transition-colors duration-200 hover:border-gray-300">
             <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+              <div class="w-12 h-12 bg-green-100 rounded flex items-center justify-center group-hover:bg-green-200 transition-colors">
                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                 </svg>
@@ -435,7 +435,7 @@ const eLearningStructuredData = {
       </div>
 
       <!-- Call to Action -->
-      <div class="bg-slate-900 rounded-xl shadow-sm overflow-hidden">
+      <div class="bg-slate-900 rounded shadow-sm overflow-hidden">
         <div class="px-6 py-12 md:p-12 text-center">
           <h2 class="text-3xl font-bold text-white mb-4">Ready to Start Learning?</h2>
           <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
@@ -443,14 +443,14 @@ const eLearningStructuredData = {
           </p>
           <div class="flex flex-wrap justify-center gap-4">
             <a href="/e-learning/courses"
-               class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-slate-700 bg-white hover:bg-gray-50 transition-all duration-300">
+               class="min-h-[44px] inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-slate-700 bg-white hover:bg-gray-50 transition-all duration-300">
               Browse Courses
               <svg class="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </a>
             <a href="/e-learning/courses/submit"
-               class="inline-flex items-center px-8 py-4 border-2 border-white text-lg font-medium rounded-md text-white hover:bg-white/10 transition-all duration-300">
+               class="min-h-[44px] inline-flex items-center px-8 py-4 border-2 border-white text-lg font-medium rounded-md text-white hover:bg-white/10 transition-all duration-300">
               Submit a Course
             </a>
           </div>
@@ -462,7 +462,7 @@ const eLearningStructuredData = {
         <p>Course availability may vary. External platform courses may have different terms and conditions.</p>
       </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <style>

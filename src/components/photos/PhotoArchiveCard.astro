@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { photo: CollectionEntry<'photos'>; heading?: 'h2' | 'h3'; }
+const { photo, heading: Heading = 'h3' } = Astro.props;
+const photographer = typeof photo.data.photographer === 'string' ? photo.data.photographer : photo.data.photographer?.name;
+const date = new Date(photo.data.date);
+---
+<article class="photo-archive-card flex h-full min-w-0 flex-col overflow-hidden rounded border border-slate-200 bg-white">
+  <a href={`/photos/${photo.id}`} class="group flex h-full flex-col hover:bg-slate-50">
+    <div class="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-slate-100">
+      <img src={photo.data.image} alt="" width="800" height="600" loading="lazy" class="absolute inset-0 h-full w-full object-cover" onerror="this.onerror=null;this.src='/images/unavailable-image.svg'" />
+    </div>
+    <div class="flex flex-1 flex-col p-5">
+      <Heading class="card-title min-h-[3.15rem] line-clamp-2 text-lg font-semibold text-primary-800 underline underline-offset-4 group-hover:text-primary-900">{photo.data.title}</Heading>
+      <time datetime={date.toISOString()} class="mt-3 text-sm text-slate-600">{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
+      {photo.data.description && <p class="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{photo.data.description}</p>}
+      <div class="mt-auto pt-4 text-sm text-slate-600">
+        {photographer && <p class="[overflow-wrap:anywhere]">Photo: {photographer}</p>}
+        {photo.data.gallery?.length > 0 && <p class="mt-1">Photo collection</p>}
+      </div>
+    </div>
+  </a>
+</article>
+<style>
+  .photo-archive-card .card-title { font-size: 1.125rem; line-height: 1.55; }
+</style>

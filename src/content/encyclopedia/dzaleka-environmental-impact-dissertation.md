@@ -7,7 +7,7 @@ entryType: "book"
 schemaType: "Article"
 lastReviewed: 2026-07-22
 datePublished: 2016-11-20
-image: "https://services.dzaleka.com/images/encyclopedia/camp-panorama.jpg"
+image: "/images/encyclopedia/camp-panorama.jpg"
 imageAlt: "Aerial panorama of Dzaleka Refugee Camp and surrounding landscape"
 imageCaption: "Dzaleka Refugee Camp and adjacent host agricultural lands in Dowa District, Malawi."
 imageCredit: "Dzaleka Online Services"

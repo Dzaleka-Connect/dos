@@ -7,10 +7,10 @@ entryType: "book"
 schemaType: "Article"
 lastReviewed: 2026-07-22
 datePublished: 2022-06-15
-image: "https://services.dzaleka.com/images/encyclopedia/katudza-market.jpg"
-imageAlt: "Dzaleka commercial market area"
-imageCaption: "Commercial activity in Dzaleka, analysed in the 2022 Erasmus University livelihood study."
-imageCredit: "Dzaleka Online Services"
+image: "/images/encyclopedia/commercial-road.jpg"
+imageAlt: "A busy commercial road with pedestrians, bicycles and motorcycles in Dzaleka"
+imageCaption: "Trade and transport activity on a commercial road inside Dzaleka. Context photograph for this research entry."
+imageCredit: "Dzaleka Online Services archive"
 facts:
   - label: "Author"
     value: "Academic Research Team"

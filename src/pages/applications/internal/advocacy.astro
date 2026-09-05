@@ -10,8 +10,8 @@ const formId = 'advocacy-campaign-form';
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto">
         <div class="mb-6">
-          <a 
-            href="/applications" 
+          <a
+            href="/applications"
             class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -21,7 +21,7 @@ const formId = 'advocacy-campaign-form';
           </a>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-8">
+        <div class="bg-white rounded shadow-sm p-5 sm:p-8">
           <header class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Advocacy Campaign Request</h1>
             <p class="text-gray-600">
@@ -35,7 +35,7 @@ const formId = 'advocacy-campaign-form';
             id={formId}
             action="https://formspree.io/f/xqaaajae"
             method="POST"
-            class="space-y-6"
+            class="submission-form space-y-6"
             enctype="multipart/form-data"
             data-netlify-recaptcha="true"
           >
@@ -43,16 +43,16 @@ const formId = 'advocacy-campaign-form';
             <input type="text" name="_gotcha" style="display:none" />
 
             {/* Form Subject */}
-            <input 
-              type="hidden" 
-              name="_subject" 
-              value="New Advocacy Campaign Request" 
+            <input
+              type="hidden"
+              name="_subject"
+              value="New Advocacy Campaign Request"
             />
 
             {/* Contact Information */}
             <div class="space-y-6">
               <h2 class="text-xl font-semibold text-gray-900">Contact Information</h2>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
@@ -61,10 +61,10 @@ const formId = 'advocacy-campaign-form';
                     name="firstName"
                     id="firstName"
                     required
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                    class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                   />
                 </div>
-                
+
                 <div>
                   <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
                   <input
@@ -72,7 +72,7 @@ const formId = 'advocacy-campaign-form';
                     name="lastName"
                     id="lastName"
                     required
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                    class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                   />
                 </div>
               </div>
@@ -84,7 +84,7 @@ const formId = 'advocacy-campaign-form';
                   name="email"
                   id="email"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                 />
               </div>
 
@@ -94,7 +94,7 @@ const formId = 'advocacy-campaign-form';
                   type="text"
                   name="organization"
                   id="organization"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                 />
               </div>
             </div>
@@ -102,14 +102,14 @@ const formId = 'advocacy-campaign-form';
             {/* Campaign Information */}
             <div class="space-y-6 pt-6 border-t">
               <h2 class="text-xl font-semibold text-gray-900">Campaign Information</h2>
-              
+
               <div>
                 <label for="campaignType" class="block text-sm font-medium text-gray-700">Type of Advocacy</label>
                 <select
                   name="campaignType"
                   id="campaignType"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                 >
                   <option value="">Select type of advocacy</option>
                   <option value="policy">Policy Change</option>
@@ -128,7 +128,7 @@ const formId = 'advocacy-campaign-form';
                   id="issue"
                   rows="4"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                   placeholder="Describe the issue you want to address..."
                 ></textarea>
               </div>
@@ -140,7 +140,7 @@ const formId = 'advocacy-campaign-form';
                   id="objective"
                   rows="4"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                   placeholder="What do you hope to achieve with this campaign?"
                 ></textarea>
               </div>
@@ -152,7 +152,7 @@ const formId = 'advocacy-campaign-form';
                   name="targetAudience"
                   id="targetAudience"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                   placeholder="For example, Policy makers, Local community, General public"
                 />
               </div>
@@ -161,7 +161,7 @@ const formId = 'advocacy-campaign-form';
             {/* File Upload Section */}
             <div class="space-y-6 pt-6 border-t">
               <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
-              
+
               <div class="space-y-4">
                 <div>
                   <label for="documentLinks" class="block text-sm font-medium text-gray-700">
@@ -174,7 +174,7 @@ const formId = 'advocacy-campaign-form';
                     name="documentLinks"
                     id="documentLinks"
                     rows="3"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                    class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                     placeholder="Paste your document links here, one per line..."
                   ></textarea>
                 </div>
@@ -184,13 +184,13 @@ const formId = 'advocacy-campaign-form';
             {/* Support Needed */}
             <div class="space-y-6 pt-6 border-t">
               <h2 class="text-xl font-semibold text-gray-900">Support Needed</h2>
-              
+
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Type of Support Required</label>
                 <div class="space-y-2">
                   <div class="flex items-start">
                     <div class="flex items-center h-5">
-                      <input
+                      <input aria-label="research"
                         type="checkbox"
                         name="supportNeeded"
                         value="research"
@@ -203,7 +203,7 @@ const formId = 'advocacy-campaign-form';
                   </div>
                   <div class="flex items-start">
                     <div class="flex items-center h-5">
-                      <input
+                      <input aria-label="media"
                         type="checkbox"
                         name="supportNeeded"
                         value="media"
@@ -216,7 +216,7 @@ const formId = 'advocacy-campaign-form';
                   </div>
                   <div class="flex items-start">
                     <div class="flex items-center h-5">
-                      <input
+                      <input aria-label="networking"
                         type="checkbox"
                         name="supportNeeded"
                         value="networking"
@@ -229,7 +229,7 @@ const formId = 'advocacy-campaign-form';
                   </div>
                   <div class="flex items-start">
                     <div class="flex items-center h-5">
-                      <input
+                      <input aria-label="resources"
                         type="checkbox"
                         name="supportNeeded"
                         value="resources"
@@ -250,7 +250,7 @@ const formId = 'advocacy-campaign-form';
                   name="timeline"
                   id="timeline"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                   placeholder="For example, 3 months, 6 months, 1 year"
                 />
               </div>
@@ -259,7 +259,7 @@ const formId = 'advocacy-campaign-form';
             {/* Consent */}
             <div class="space-y-6 pt-6 border-t">
               <h2 class="text-xl font-semibold text-gray-900">Consent</h2>
-              
+
               <div class="space-y-4">
                 <div class="flex items-start">
                   <div class="flex items-center h-5">
@@ -282,10 +282,10 @@ const formId = 'advocacy-campaign-form';
             <div class="pt-6">
               {/* reCAPTCHA */}
               <div class="mb-6" data-netlify-recaptcha="true"></div>
-              
+
               <button
                 type="submit"
-                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                class="min-h-[44px] w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               >
                 Submit Campaign Request
               </button>
@@ -302,11 +302,11 @@ const formId = 'advocacy-campaign-form';
   window.addEventListener('load', function() {
     const form = document.getElementById(formId);
     const formStatus = document.getElementById('form-status');
-    
+
     if (form) {
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         const requiredFields = form.querySelectorAll('[required]');
         let isValid = true;
 

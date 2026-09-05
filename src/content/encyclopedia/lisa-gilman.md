@@ -6,7 +6,7 @@ category: "People"
 entryType: "person"
 lastReviewed: 2026-07-22
 datePublished: 2021-03-15
-image: "https://services.dzaleka.com/images/encyclopedia/dzaleka-art-project.jpg"
+image: "/images/encyclopedia/dzaleka-art-project.jpg"
 imageAlt: "Refugee artwork in Dzaleka Art Project exhibit"
 imageCaption: "Visual artwork documented as part of the Dzaleka Art Project co-founded by Prof. Lisa Gilman."
 imageCredit: "Dzaleka Online Services"

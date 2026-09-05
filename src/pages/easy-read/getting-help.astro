@@ -95,7 +95,7 @@ const schema = {
 ---
 
 <MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
-  <main class="bg-stone-50">
+  <div class="bg-stone-50">
     <section class="border-b border-slate-200 bg-white">
       <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
@@ -111,13 +111,13 @@ const schema = {
         <div class="mt-8 flex flex-wrap gap-3">
           <a
             href="/get-help-now"
-            class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+            class="min-h-[44px] inline-flex items-center rounded bg-primary-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-800"
           >
             Open Get help now
           </a>
           <a
             href="/easy-read"
-            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            class="min-h-[44px] inline-flex items-center rounded border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
           >
             Back to Easy Read
           </a>
@@ -126,7 +126,7 @@ const schema = {
     </section>
 
     <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <section class="rounded-2xl border border-red-200 bg-red-50 px-6 py-6 sm:px-8">
+      <section class="rounded border border-red-200 bg-red-50 px-6 py-6 sm:px-8">
         <h2 class="text-2xl font-semibold text-slate-900">If the problem is urgent</h2>
         <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
           {urgentSteps.map((step) => (
@@ -138,11 +138,11 @@ const schema = {
         </ul>
       </section>
 
-      <section class="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+      <section class="mt-8 rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
         <h2 class="text-2xl font-semibold text-slate-900">Call these contacts</h2>
         <div class="mt-6 grid gap-4 md:grid-cols-2">
           {contacts.map((contact) => (
-            <article class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-5">
+            <article class="rounded border border-slate-200 bg-slate-50 px-5 py-5">
               <h3 class="text-lg font-semibold text-slate-900">{contact.title}</h3>
               <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">{contact.value}</p>
               <p class="mt-2 text-sm leading-6 text-slate-600">{contact.detail}</p>
@@ -151,7 +151,7 @@ const schema = {
         </div>
       </section>
 
-      <section class="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+      <section class="mt-8 rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
         <h2 class="text-2xl font-semibold text-slate-900">Know these things before you call</h2>
         <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
           {beforeYouCall.map((item) => (
@@ -163,7 +163,7 @@ const schema = {
         </ul>
       </section>
 
-      <section class="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+      <section class="mt-8 rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
         <h2 class="text-2xl font-semibold text-slate-900">Useful next pages</h2>
         <div class="mt-6 grid gap-4 md:grid-cols-3">
           {nextPages.map((page) => (
@@ -206,5 +206,5 @@ const schema = {
         </ul>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>

@@ -39,8 +39,8 @@ const schema = {
 };
 ---
 
-<MainLayout 
-  title={`${entry.data.title} | Rights Navigator`} 
+<MainLayout
+  title={`${entry.data.title} | Rights Navigator`}
   description={entry.data.description}
   schema={schema}
   openGraph={{
@@ -56,11 +56,11 @@ const schema = {
   }}
 >
   <div class="min-h-screen bg-gray-50">
-    
+
     <!-- Hero / Header Section -->
     <div class="bg-gray-900 border-b border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        
+
         <!-- Breadcrumb -->
         <nav class="flex mb-6 text-sm font-medium text-gray-400">
             <a href="/rights-navigator" class="hover:text-white transition-colors">Rights Navigator</a>
@@ -79,11 +79,11 @@ const schema = {
                  </span>
                )}
              </div>
-             
+
              <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 font-heading leading-tight">
                {entry.data.title}
              </h1>
-             
+
              <p class="text-xl text-gray-300 leading-relaxed">
                {entry.data.description}
              </p>
@@ -93,12 +93,12 @@ const schema = {
 
     <!-- Main Content Area -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
+
           <!-- Sidebar / Table of Contents -->
           <div class="lg:col-span-3">
-            <div class="sticky top-8">
+            <div class="sticky top-24 lg:top-44">
               <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Table of Contents</h3>
               <nav id="toc" class="space-y-1 border-l border-gray-200">
                 <!-- TOC is generated via JS -->
@@ -114,13 +114,13 @@ const schema = {
 
           <!-- Article Content -->
           <div class="lg:col-span-9">
-            <div class="bg-white rounded-xl border border-gray-200 p-8 md:p-12">
+            <div class="bg-white rounded border border-gray-200 p-8 md:p-12">
                 <article id="article-content" class="prose prose-lg prose-slate max-w-none">
                 <Content />
                 </article>
-                
+
                 {entry.data.source && (
-                <div class="mt-12 pt-6 border-t border-gray-100 flex items-center text-sm text-gray-500 bg-gray-50 p-4 rounded-xl">
+                <div class="mt-12 pt-6 border-t border-gray-100 flex items-center text-sm text-gray-500 bg-gray-50 p-4 rounded">
                     <span class="font-bold mr-2 text-gray-700">Source:</span> {entry.data.source}
                 </div>
                 )}
@@ -142,7 +142,7 @@ const schema = {
     // 1. Generate TOC
     const headings = article.querySelectorAll('h2');
     const tocContainer = document.querySelector('#toc');
-    
+
     if (tocContainer) {
         if (headings.length > 0) {
             headings.forEach((heading, index) => {
@@ -155,7 +155,7 @@ const schema = {
                 link.href = `#${heading.id}`;
                 link.textContent = heading.textContent;
                 link.className = `block pl-4 py-2 text-sm text-gray-600 hover:text-slate-900 hover:border-l-2 hover:border-slate-800 transition-colors border-l-2 border-transparent`;
-                
+
                 // Highlight active on scroll (Basic implementation)
                 link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -173,7 +173,7 @@ const schema = {
     // 2. Interactive Accordions for H2 sections
     headings.forEach(heading => {
       heading.classList.add('cursor-pointer', 'flex', 'items-center', 'justify-between', 'group', 'pb-2', 'border-b', 'border-gray-100');
-      
+
       // Add indicator icon
       const icon = document.createElement('span');
       icon.innerHTML = `<svg class="w-5 h-5 text-gray-400 group-hover:text-slate-900 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
@@ -182,7 +182,7 @@ const schema = {
       // Wrap content between this H2 and the next H2
       const contentNodes = [];
       let sibling = heading.nextElementSibling;
-      
+
       while (sibling && sibling.tagName !== 'H2') {
         contentNodes.push(sibling);
         sibling = sibling.nextElementSibling;
@@ -191,10 +191,10 @@ const schema = {
       // Create wrapper
       const wrapper = document.createElement('div');
       wrapper.className = 'section-content mt-4 mb-8'; // Add spacing
-      
+
       // Insert wrapper after heading
       heading.parentNode?.insertBefore(wrapper, heading.nextSibling);
-      
+
       // Move nodes into wrapper
       contentNodes.forEach(node => wrapper.appendChild(node));
 

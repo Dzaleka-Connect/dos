@@ -6,10 +6,10 @@ category: "Culture"
 entryType: "film"
 lastReviewed: 2026-07-22
 datePublished: 2020-11-15
-image: "https://services.dzaleka.com/images/encyclopedia/tumaini-festival.jpg"
-imageAlt: "Musicians performing live at the Tumaini Festival in Dzaleka"
-imageCaption: "Live performance at the Tumaini Festival, featured in the BBC World Service documentary."
-imageCredit: "Dzaleka Online Services"
+image: "/images/tumaini_festival_cover.jpeg"
+imageAlt: "A crowd and performers at Tumaini Festival in Dzaleka"
+imageCaption: "Tumaini Festival in Dzaleka. Context photograph for this documentary entry."
+imageCredit: "Dzaleka Online Services archive"
 facts:
   - label: "Producer"
     value: "Bairbre Flood"

@@ -1,4 +1,5 @@
 ---
+import FormHeader from '../../components/ui/FormHeader.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
 import LocationPickerMap from '../../components/keeping-place/LocationPickerMap';
 
@@ -16,50 +17,28 @@ const seo = {
   keywords={seo.keywords}
   canonical={seo.canonical}
 >
-  <div class="min-h-screen bg-slate-50 text-slate-900 pb-16">
-    <!-- Header Section -->
-    <div class="bg-slate-900 text-white border-b border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto">
-        <nav class="flex items-center space-x-2 text-xs font-medium text-slate-400 mb-4" aria-label="Breadcrumb">
-          <a href="/" class="hover:text-white transition-colors">Home</a>
-          <span>/</span>
-          <a href="/explore" class="hover:text-white transition-colors">GIS Explorer</a>
-          <span>/</span>
-          <span class="text-sky-400 font-semibold">Submit Location</span>
-        </nav>
-        
-        <p class="text-xs font-semibold tracking-widest uppercase text-sky-400 mb-2">
-          Open Community Mapping Protocol
-        </p>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
-          Submit a community location
-        </h1>
-        <p class="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
-          Help keep Dzaleka's community map fresh, accurate, and self-maintained. Submit local businesses, youth centers, schools, or landmarks for community review.
-        </p>
-      </div>
-    </div>
+  <div class="bg-white text-slate-900 pb-8">
+    <FormHeader title="Suggest a place" description="Add a business, school, community facility or landmark to the Dzaleka map, or suggest a correction." parent="Map" href="/map" />
 
     <!-- Main Submission Container -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-        
+      <div class="bg-white rounded border border-slate-200 p-6 sm:p-8">
+
         <!-- Submission Guidelines Callout -->
-        <div class="mb-8 p-4 rounded-lg bg-sky-50 border border-sky-200 text-sky-900 text-xs sm:text-sm leading-relaxed">
+        <div class="mb-8 p-4 rounded bg-sky-50 border border-sky-200 text-sky-900 text-xs sm:text-sm leading-relaxed">
           <h2 class="font-bold text-sky-950 mb-1 flex items-center gap-2">
             <svg class="w-4 h-4 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Community review and verification notice
+            Before you submit
           </h2>
           <p>
-            All submitted locations are staged locally on your device and routed to project contact 
-            <strong class="font-semibold underline">dzalekaconnect@gmail.com</strong> for open verification. Ensure accurate GPS coordinates.
+            Prepare your suggestion, then open the email draft and send it to dzalekaconnect@gmail.com for review. A copy can be saved on this device for your map preview.
           </p>
         </div>
 
-        <form id="mapSubmitForm" class="space-y-6">
-          
+        <form id="mapSubmitForm" class="submission-form space-y-6">
+
           <!-- Location Name & Category -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
@@ -72,7 +51,7 @@ const seo = {
                 name="locationName"
                 required
                 placeholder="For example, Hope Vocational Workshop"
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               />
             </div>
 
@@ -84,7 +63,7 @@ const seo = {
                 id="category"
                 name="category"
                 required
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               >
                 <option value="public_service">Public Service / Healthcare / Legal</option>
                 <option value="wash_water">Water & Sanitation (Borehole / WASH Point)</option>
@@ -107,7 +86,7 @@ const seo = {
                 id="zone"
                 name="zone"
                 required
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               >
                 <option value="Katubza Zone">Katubza Zone</option>
                 <option value="New Katubza Zone">New Katubza Zone</option>
@@ -136,7 +115,7 @@ const seo = {
                 id="custodian"
                 name="custodian"
                 placeholder="For example, Local Community Cooperative"
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               />
             </div>
           </div>
@@ -145,7 +124,7 @@ const seo = {
           <LocationPickerMap client:only="react" />
 
           <!-- Operational Status & Water / WASH Indicators -->
-          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-4">
+          <div class="p-4 rounded border border-slate-200 bg-slate-50 space-y-4">
             <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
               <svg class="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -161,7 +140,7 @@ const seo = {
                 <select
                   id="operationalStatus"
                   name="operationalStatus"
-                  class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-sky-500 outline-none"
+                  class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-sky-500 outline-none"
                 >
                   <option value="Operational / Functional">Operational / Functional</option>
                   <option value="Needs Maintenance">Needs Maintenance / Repair</option>
@@ -177,7 +156,7 @@ const seo = {
                 <select
                   id="washType"
                   name="washType"
-                  class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-sky-500 outline-none"
+                  class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-sky-500 outline-none"
                 >
                   <option value="Not Applicable">N/A (General Facility)</option>
                   <option value="Borehole with Handpump">Borehole (Handpump)</option>
@@ -196,7 +175,7 @@ const seo = {
                   id="capacityStats"
                   name="capacityStats"
                   placeholder="For example, ~1,200 households daily"
-                  class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-sky-500 outline-none"
+                  class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-sky-500 outline-none"
                 />
               </div>
             </div>
@@ -236,7 +215,7 @@ const seo = {
                 id="contactPhone"
                 name="contactPhone"
                 placeholder="For example, +265 999 000 000"
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               />
             </div>
 
@@ -250,7 +229,7 @@ const seo = {
                 name="submitterName"
                 required
                 placeholder="Your name or YouthMappers team"
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               />
             </div>
           </div>
@@ -267,7 +246,7 @@ const seo = {
                 name="summary"
                 required
                 placeholder="Brief 1-sentence overview of the facility, borehole, or business"
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               />
             </div>
 
@@ -280,7 +259,7 @@ const seo = {
                 name="detailedDescription"
                 rows="4"
                 placeholder="Provide details on languages spoken (Swahili, French, English), operating schedule, services provided, or historical notes..."
-                class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
+                class="w-full rounded border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-colors"
               ></textarea>
             </div>
           </div>
@@ -289,7 +268,7 @@ const seo = {
           <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
             <a
               href="/explore"
-              class="w-full sm:w-auto text-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              class="w-full sm:w-auto text-center rounded border border-slate-300 bg-white px-5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
             >
               Cancel & Return to Map
             </a>
@@ -297,29 +276,29 @@ const seo = {
             <button
               type="submit"
               id="submitBtn"
-              class="w-full sm:w-auto rounded-lg bg-slate-900 px-6 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition-colors shadow-sm"
+              class="min-h-[44px] w-full sm:w-auto rounded bg-primary-900 px-6 py-2.5 text-xs font-bold text-white hover:bg-primary-800 transition-colors"
             >
-              Submit Location Record
+              Prepare suggestion
             </button>
           </div>
 
-          <div id="statusMessage" class="hidden p-4 rounded-lg text-xs font-semibold"></div>
+          <div id="statusMessage" role="status" tabindex="-1" class="hidden p-4 rounded text-sm"></div>
         </form>
 
       </div>
 
       <!-- About this Project Card -->
-      <div class="mt-8 rounded-xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+      <div class="mt-8 rounded border border-slate-200 bg-white p-6 sm:p-8">
         <div class="flex items-center gap-2 mb-3">
           <span class="rounded-md bg-sky-100 text-sky-800 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5">
             Project Lineage & Open GIS Protocol
           </span>
         </div>
-        
+
         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
           About the Dzaleka community mapping initiative
         </h2>
-        
+
         <p class="text-sm text-slate-600 leading-relaxed mb-4">
           Established in 1994 by UNHCR in response to regional displacement, Dzaleka Refugee Camp has grown from an initial capacity of 10,000 to over 50,000 registered residents living across 12 distinct administrative zones, including Katubza, Kawale 1 & 2, Likuni 1 & 2, Lisungwi, Zomba, Blantyre, and Dzaleka Hill.
         </p>
@@ -414,30 +393,32 @@ const seo = {
             tags: [formData.get('zone') as string, 'Community Submission', opStatus, washType].filter((t) => t && t !== 'N/A')
           };
 
+          let savedLocally = false;
           try {
             const existing = JSON.parse(localStorage.getItem('dzaleka_keeping_place_custom_records') || '[]');
             existing.push(newRecord);
             localStorage.setItem('dzaleka_keeping_place_custom_records', JSON.stringify(existing));
+            savedLocally = true;
           } catch (err) {
             console.warn('Unable to write to localStorage', err);
-          }
-
-          if (statusMsg) {
-            statusMsg.className = 'p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold block';
-            statusMsg.innerHTML = `
-              Location <strong>"${newRecord.name}"</strong> submitted successfully! 
-              Staged for review and added to your interactive map preview.
-            `;
           }
 
           const mailSubject = encodeURIComponent(`[HOT Community Map Submission] ${newRecord.name}`);
           const mailBody = encodeURIComponent(
             `New Location Submission Details:\n\nName: ${newRecord.name}\nCategory: ${newRecord.category} (${catLabel})\nSector/Zone: ${newRecord.zone}\nGPS Coordinates: ${latVal}, ${lngVal}\nOperator/Custodian: ${newRecord.custodian}\nOperational Status: ${opStatus}\nWASH Point Type: ${washType}\nCapacity/Catchment: ${capacity}\nMapper Name: ${submitter}\nContact Phone: ${phone}\nShort Summary: ${newRecord.summary}\nDetailed Notes: ${newRecord.detailedDescription}\n\nSubmitted via services.dzaleka.com`
           );
-          
-          setTimeout(() => {
-            window.location.href = `mailto:dzalekaconnect@gmail.com?subject=${mailSubject}&body=${mailBody}`;
-          }, 1500);
+
+          if (statusMsg) {
+            statusMsg.className = 'rounded-lg border border-primary-200 bg-primary-50 p-5 text-sm leading-6 text-slate-800';
+            const message = document.createElement('p');
+            message.textContent = savedLocally ? 'Your suggestion is saved on this device. Send the email draft below to submit it for review.' : 'Your suggestion is ready, but could not be saved on this device. Send the email draft below to submit it for review.';
+            const link = document.createElement('a');
+            link.href = `mailto:dzalekaconnect@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+            link.textContent = 'Open email draft';
+            link.className = 'mt-3 inline-flex min-h-[44px] items-center rounded bg-primary-900 px-4 py-2 font-semibold text-white';
+            statusMsg.replaceChildren(message, link);
+            statusMsg.focus();
+          }
         });
       }
     });

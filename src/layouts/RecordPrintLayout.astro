@@ -1,0 +1,32 @@
+---
+interface Props { title: string; collection: string; href: string; description?: string; }
+const { title, collection, href, description } = Astro.props;
+const canonical = new URL(href, 'https://services.dzaleka.com').href;
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>{title} — print record | Dzaleka Online Services</title><meta name="robots" content="noindex, follow" /><link rel="canonical" href={canonical} /><link rel="icon" href="/images/dzaleka-digital-heritage.png" /></head>
+<body class="record-print-page">
+  <nav class="print-toolbar" aria-label="Print actions"><a href={href}>← Back to record</a><button type="button" onclick="window.print()">Print or save as PDF</button></nav>
+  <main class="print-record"><header><p class="print-brand">Dzaleka Online Services · {collection}</p><h1>{title}</h1>{description && <p>{description}</p>}</header><slot /><footer><p>Source record: <a href={canonical}>{canonical}</a></p><p>Refer to the source record for image credits, usage information and updates.</p></footer></main>
+</body></html>
+<style is:global>
+  .record-print-page { margin: 0; background: #f1f5f9; color: #0f172a; font: 15px/1.7 system-ui, sans-serif; }
+  .print-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; max-width: 52rem; margin: auto; padding: 1rem; }
+  .print-toolbar :is(a, button) { display: inline-flex; align-items: center; min-height: 44px; color: #075985; }
+  .print-toolbar button { border: 0; border-radius: 4px; background: #0c4a6e; color: white; padding: 0.5rem 1rem; font: inherit; cursor: pointer; }
+  .print-record { max-width: 52rem; margin: 0 auto 3rem; background: white; padding: clamp(1rem, 5vw, 3rem); overflow-wrap: anywhere; }
+  .print-record header { border-bottom: 1px solid #cbd5e1; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .print-record .print-brand { color: #475569; font-size: 14px; }
+  .print-record h1 { font-size: 2rem; line-height: 1.25; font-weight: 600; }
+  .print-record h2 { font-size: 1.4rem; line-height: 1.4; font-weight: 600; margin-top: 2rem; }
+  .print-record h3 { font-size: 1.1rem; font-weight: 600; }
+  .print-record figure { margin: 1.5rem 0; break-inside: avoid; }
+  .print-record img { display: block; max-width: 100%; max-height: 22cm; width: auto; height: auto; object-fit: contain; margin: auto; }
+  .print-record figcaption { margin-top: 0.6rem; color: #475569; font-size: 14px; }
+  .print-record dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #cbd5e1; }
+  .print-record dt { font-weight: 600; color: #334155; }
+  .print-record dd { margin: 0; }
+  .print-record a { color: #075985; text-underline-offset: 3px; }
+  .print-record footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #cbd5e1; color: #475569; font-size: 13px; }
+  @media print { @page { margin: 18mm; } .record-print-page { background: white; font-size: 11pt; } .print-toolbar { display: none; } .print-record { margin: 0; padding: 0; max-width: none; } .print-record :is(h1, h2, h3) { break-after: avoid; } .print-record a { color: inherit; } }
+</style>

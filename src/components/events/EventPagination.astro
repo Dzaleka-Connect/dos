@@ -20,14 +20,11 @@ const pageNumbers = Array.from(
 
 // Function to generate page URL
 function getPageUrl(page: number) {
-  return baseUrl.replace('[page]', page.toString());
+  return baseUrl.includes('[page]')
+    ? baseUrl.replace('[page]', page.toString())
+    : `${baseUrl.replace(/\/$/, '')}/${page}`;
 }
 
-// Common button styles
-const buttonBase = "relative inline-flex items-center px-4 py-2 text-sm font-medium border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2";
-const buttonEnabled = "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 cursor-pointer";
-const buttonDisabled = "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed";
-const buttonActive = "z-10 bg-primary-600 text-white border-primary-600 hover:bg-primary-700";
 ---
 
 <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 mt-8" aria-label="Pagination">

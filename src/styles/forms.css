@@ -1,0 +1,31 @@
+/* Opt-in styling for contribution forms; map controls and search forms stay separate. */
+.site-shell .submission-form { font-size: 1rem; line-height: 1.6; }
+.site-shell .submission-form :is(input:not([type]), input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea) {
+  min-height: 3rem;
+  border-color: #94a3b8;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  color: #0f172a;
+  background-color: white;
+}
+.site-shell .submission-form textarea { min-height: 8rem; resize: vertical; line-height: 1.7; }
+.submission-form :is(input, textarea)::placeholder { color: #64748b; opacity: 1; }
+.site-shell .submission-form :is(label, legend) { color: #334155; font-size: 0.9375rem; line-height: 1.6; }
+.submission-form label[for]:not(.sr-only) { cursor: pointer; }
+.submission-form :is(input, select, textarea, button):focus-visible { outline: 3px solid #075985; outline-offset: 3px; }
+.submission-form label:has(> input:is([type="radio"], [type="checkbox"]):focus-visible) { outline: 3px solid #075985; outline-offset: 3px; }
+.submission-form label:has(input[type="file"]:focus-visible) { outline: 3px solid #075985; outline-offset: 3px; }
+.submission-form label:has(> input[type="radio"]:checked) { border-color: #075985; background: #f0f9ff; }
+.submission-form :is(input[type="checkbox"], input[type="radio"]) { accent-color: #075985; }
+.submission-form label:has(> input:is([type="radio"], [type="checkbox"])) { min-height: 2.75rem; }
+.site-shell .submission-form button { min-height: 2.75rem; font-size: 0.9375rem; }
+.site-shell .submission-form button[type="submit"] { background: #0c4a6e; color: white; border-radius: 0.25rem; padding: 0.75rem 1.5rem; }
+.site-shell .submission-form button[type="submit"]:hover { background: #075985; }
+.site-shell .submission-form button:disabled { opacity: 0.6; cursor: wait; }
+.submission-form input[type="file"] { max-width: 100%; font-size: 0.875rem; }
+.submission-form input[type="file"]::file-selector-button { min-height: 2.75rem; margin-right: 0.75rem; padding: 0.5rem 1rem; border: 1px solid #94a3b8; border-radius: 0.25rem; background: #f8fafc; color: #0c4a6e; cursor: pointer; }
+.submission-form .form-section { border-top: 1px solid #cbd5e1; padding-top: 2rem; }
+.submission-form .form-section > legend { float: left; width: 100%; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600; color: #0c4a6e; }
+.submission-form .form-section > legend + * { clear: both; }
+.submission-form .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; border-top: 1px solid #cbd5e1; padding-top: 1.5rem; }
+@media (max-width: 639px) { .submission-form .form-actions > :is(button, a) { width: 100%; justify-content: center; text-align: center; } }

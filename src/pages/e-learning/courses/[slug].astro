@@ -34,7 +34,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
   description={course.data.description}
   image={course.data.thumbnail}
 >
-  <main class="min-h-screen bg-white">
+  <div class="min-h-screen bg-white">
     <!-- Header -->
     <header class="relative bg-gradient-to-br from-slate-50 to-white border-b border-gray-100 pt-12 pb-16">
       <div class="absolute inset-0 bg-grid-slate-900/[0.04] -z-10"></div>
@@ -53,10 +53,10 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
           <span class={`text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide ${levelColors[course.data.level || 'beginner']}`}>
             {course.data.level || 'Beginner'}
           </span>
-          <span class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-full capitalize shadow-sm">
+          <span class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-full capitalize">
             {course.data.category.replace('-', ' ')}
           </span>
-          <span class="flex items-center text-xs font-medium text-gray-500 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
+          <span class="flex items-center text-xs font-medium text-gray-500 bg-white border border-gray-200 px-3 py-1.5 rounded-full">
             <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
@@ -67,7 +67,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
         <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
           {course.data.title}
         </h1>
-        
+
         <div class="flex items-center gap-4 text-gray-600">
           <div class="flex items-center gap-2">
             <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-sm">
@@ -83,16 +83,16 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="lg:grid lg:grid-cols-12 lg:gap-12">
-        
+
         <!-- Sidebar Navigation (Desktop) -->
         <aside class="hidden lg:block lg:col-span-3">
-          <div class="sticky top-24">
+          <div class="sticky top-24 lg:top-44">
             <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Course Modules</h3>
             <nav class="space-y-1" id="course-nav">
               {moduleHeadings.map((heading) => (
-                <a 
+                <a
                   href={`#${heading.id}`}
-                  class="group flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-slate-700 transition-colors border-l-2 border-transparent"
+                  class="min-h-[44px] group flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded hover:bg-gray-50 hover:text-slate-700 transition-colors border-l-2 border-transparent"
                   data-target={heading.id}
                 >
                   <span class="truncate">{heading.text}</span>
@@ -114,7 +114,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
         <!-- Main Content -->
         <article class="lg:col-span-9">
           <!-- Mobile Table of Contents -->
-          <div class="lg:hidden mb-8 bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div class="lg:hidden mb-8 bg-gray-50 rounded p-4 border border-gray-100">
             <details class="group">
               <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
                 <span>Table of Contents</span>
@@ -135,7 +135,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
           </div>
 
           {course.data.videoUrl && (
-            <div class="aspect-video mb-12 rounded-xl overflow-hidden shadow-sm ring-1 ring-gray-900/5">
+            <div class="aspect-video mb-12 rounded overflow-hidden shadow-sm ring-1 ring-gray-900/5">
               <iframe
                 src={course.data.videoUrl}
                 class="w-full h-full"
@@ -160,7 +160,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
                   href={course.data.externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center bg-slate-900 text-white px-8 py-4 rounded-lg font-semibold hover:bg-slate-800 transition-colors shadow-sm w-full sm:w-auto justify-center"
+                  class="min-h-[44px] inline-flex items-center bg-primary-900 text-white px-8 py-4 rounded font-semibold hover:bg-primary-800 transition-colors shadow-sm w-full sm:w-auto justify-center"
                 >
                   Access External Course
                   <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,7 +173,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
         </article>
       </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>
@@ -249,7 +249,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
     padding-left: 1.5rem;
     list-style-type: disc;
   }
-  
+
   .course-content ol {
     list-style-type: decimal;
   }
@@ -350,7 +350,7 @@ const formattedDate = new Date(course.data.datePublished).toLocaleDateString('en
     margin: 2rem 0;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
-  
+
   /* Legacy Module Nav Support (Optional, can be hidden if desired) */
   .module-nav {
     display: none; /* Hiding the manual nav since we have the sidebar now */

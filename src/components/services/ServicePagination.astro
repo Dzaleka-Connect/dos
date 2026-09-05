@@ -22,22 +22,22 @@ const pageNumbers = Array.from(
 function getPageUrl(pageNumber: number) {
   // baseUrl should be like /services/category/business
   // Remove trailing integers or slash if present to be safe, though usage usually passes clean base
-  const cleanBase = baseUrl.replace(/\/$/, '').replace(/\/\d+$/, '');
-  
+  const cleanBase = new URL(baseUrl, Astro.site || 'http://localhost.com').pathname.replace(/\/$/, '').replace(/\/\d+$/, '');
+
   const url = new URL(baseUrl, Astro.site || 'http://localhost.com');
   const searchParams = new URLSearchParams(url.search);
-  
+
   // Remove the page query parameter if it exists (legacy support)
   searchParams.delete('page');
-  
+
   const queryString = searchParams.toString();
   const queryPart = queryString ? `?${queryString}` : '';
-  
+
   // For page 1, return base
   if (pageNumber === 1) {
     return `${cleanBase}${queryPart}`;
   }
-  
+
   // Use path-based pagination for other pages
   return `${cleanBase}/${pageNumber}${queryPart}`;
 }

@@ -22,8 +22,8 @@ const isClosed = job.data.status === 'closed' || isExpired;
 // Get related jobs
 const allJobs = await getCollection('jobs');
 const relatedJobs = allJobs
-  .filter(j => 
-    j.id !== job.id && 
+  .filter(j =>
+    j.id !== job.id &&
     !isClosed &&
     (j.data.category === job.data.category || j.data.type === job.data.type)
   )
@@ -225,23 +225,23 @@ const breadcrumbStructuredData = {
 };
 ---
 
-<MainLayout 
+<MainLayout
   title={job.data.title}
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jobStructuredData)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
-  
+
   <!-- Header Section -->
   <section class="border-b border-gray-200 bg-white">
-    <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:py-10 sm:px-6 lg:px-8">
       <div class="mb-8">
-        <a 
-          href="/jobs" 
+        <a
+          href="/jobs"
           class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
         >
           <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,17 +250,17 @@ const breadcrumbStructuredData = {
           Back to Jobs
         </a>
       </div>
-      
+
       <div class="flex flex-wrap items-center gap-2 mb-4">
-        <span class="text-sm font-semibold uppercase tracking-widest text-slate-500">
+        <span class="text-sm font-semibold text-slate-500">
           {job.data.organization}
         </span>
         {isClosed ? (
-          <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-200 text-slate-700">
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-700">
             Closed
           </span>
         ) : (
-          <span class="inline-flex items-center px-2 py-0.5 rounded border border-green-200 bg-green-50 text-[10px] font-bold uppercase tracking-wider text-green-800">
+          <span class="inline-flex items-center px-2 py-0.5 rounded border border-green-200 bg-green-50 text-sm font-medium text-green-800">
             Open
           </span>
         )}
@@ -269,7 +269,7 @@ const breadcrumbStructuredData = {
       <h1 class="text-3xl sm:text-5xl font-bold text-gray-900 tracking-tight max-w-3xl">
         {job.data.title}
       </h1>
-      
+
       <div class="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-600">
         <div class="inline-flex items-center gap-2">
           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -286,9 +286,9 @@ const breadcrumbStructuredData = {
   </section>
 
   <!-- Main Content -->
-  <div class="max-w-6xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-12 lg:gap-16">
-      
+  <div class="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_20rem] gap-8 lg:gap-12">
+
       <!-- Main Column -->
       <div class="order-2 lg:order-1">
         <div class="prose prose-lg prose-slate max-w-none text-gray-700">
@@ -301,9 +301,9 @@ const breadcrumbStructuredData = {
             <h2 class="text-xl font-bold text-gray-900 mb-6">Similar Opportunities</h2>
             <div class="flex flex-col border-t border-gray-200">
               {relatedJobs.map(relatedJob => (
-                <a 
+                <a
                   href={`/jobs/${relatedJob.id}`}
-                  class="block py-4 border-b border-gray-200 hover:bg-slate-50 transition-colors -mx-4 px-4 sm:mx-0 sm:px-2 rounded-lg sm:rounded-none sm:hover:bg-transparent group"
+                  class="block py-4 border-b border-gray-200 hover:bg-slate-50 transition-colors -mx-4 px-4 sm:mx-0 sm:px-2 rounded sm:rounded-none sm:hover:bg-transparent group"
                 >
                   <h3 class="font-bold text-gray-900 group-hover:underline">{relatedJob.data.title}</h3>
                   <div class="mt-1 flex items-center gap-3 text-sm text-gray-500">
@@ -322,21 +322,21 @@ const breadcrumbStructuredData = {
       <div class="order-1 lg:order-2 space-y-10">
         <!-- Apply Block -->
         {!isClosed && (
-          <div class="rounded-xl border border-blue-200 bg-blue-50 p-6">
+          <div class="rounded border border-blue-200 bg-blue-50 p-6">
             <h3 class="font-semibold text-gray-900 mb-2">Interested in applying?</h3>
             <p class="text-sm text-gray-700 mb-4">Submit your application before the deadline.</p>
-            <a 
+            <a
               href={`mailto:${job.data.contact.email}?subject=Application for ${job.data.title}`}
-              class="flex w-full items-center justify-center rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-800"
+              class="min-h-[44px] flex w-full items-center justify-center rounded bg-primary-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-800"
             >
               Apply now via email
             </a>
             {job.data.contact.website && (
-              <a 
+              <a
                 href={job.data.contact.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="mt-3 flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                class="min-h-[44px] mt-3 flex w-full items-center justify-center rounded border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Visit website
               </a>
@@ -345,7 +345,7 @@ const breadcrumbStructuredData = {
         )}
 
         {isClosed && (
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center text-sm font-medium text-gray-600">
+          <div class="rounded border border-gray-200 bg-gray-50 p-6 text-center text-sm font-medium text-gray-600">
             This position is no longer accepting applications.
           </div>
         )}

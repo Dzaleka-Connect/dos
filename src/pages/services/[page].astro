@@ -144,42 +144,39 @@ const seo = {
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
   </slot>
   <!-- Hero Section -->
-  <div class="relative border-b border-gray-200 overflow-hidden bg-gray-900">
-    <div class="absolute inset-0 z-0">
-      <img src="/images/dzaleka-hero.jpeg" alt="Dzaleka Community Services" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gray-900/60"></div>
-    </div>
+  <div class="relative border-b border-gray-200 overflow-hidden bg-slate-50">
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-      <div class="max-w-3xl mx-auto text-center">
-        <div class="mb-6 flex justify-center">
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <div class="max-w-3xl">
+        <div class="mb-2">
           <Breadcrumb
             items={[
               { label: 'Home', href: '/' },
               { label: 'Services', href: '/services' },
               { label: `Page ${currentPage}` }
             ]}
-            light={true}
+            light={false}
           />
         </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold text-primary-900 mb-3">
           Find a service in Dzaleka
         </h1>
-        <p class="text-lg text-gray-200 mb-8 leading-relaxed">
+        <p class="text-sm text-slate-600 mb-6 leading-6">
           Page {currentPage} of {totalPages}, sorted by the current directory order.
         </p>
 
         <!-- Search and Filter Row -->
-        <div class="bg-white p-2 rounded-xl border border-gray-200 mb-8 max-w-2xl mx-auto text-left shadow-md">
+        <div class="mb-5 max-w-2xl text-left">
           <div class="flex flex-col sm:flex-row gap-2">
             <!-- Search Bar -->
             <div class="flex-1 relative">
               <input
                 type="text"
-                id="serviceSearch"
+                id="serviceSearch" aria-label="Search services"
                 placeholder="Search services on this page..."
-                class="w-full px-4 py-3 pl-11 rounded-lg border-0 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:outline-none transition-colors"
+                class="w-full px-4 py-3 pl-11 rounded border border-slate-400 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:outline-none transition-colors"
               />
               <svg class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -189,8 +186,8 @@ const seo = {
             <!-- Category Filter -->
             <div class="w-full sm:w-48">
               <select
-                id="categoryFilter"
-                class="w-full px-4 py-3 rounded-lg border-0 text-gray-900 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary-500 focus:outline-none transition-colors cursor-pointer"
+                id="categoryFilter" aria-label="Filter by category"
+                class="w-full px-4 py-3 rounded border border-slate-400 text-gray-900 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary-500 focus:outline-none transition-colors cursor-pointer"
               >
                 <option value="all">All Categories</option>
                 {sortedCategories.map(category => (
@@ -203,7 +200,7 @@ const seo = {
 
         <a
           href="/services/register"
-          class="inline-flex items-center px-6 py-3 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors shadow-sm"
+          class="min-h-[44px] inline-flex items-center px-6 py-3 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -215,7 +212,7 @@ const seo = {
   </div>
 
   <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
     <!-- Results Header -->
     <div class="mb-6 sm:mb-8">
       <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
@@ -241,8 +238,8 @@ const seo = {
           </label>
 
           <select
-            id="sortFilter"
-            class="w-full sm:w-auto px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            id="sortFilter" aria-label="Sort services"
+            class="w-full sm:w-auto px-3 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="featured" selected={sortBy === 'featured'}>Featured First</option>
             <option value="name" selected={sortBy === 'name'}>Name (A-Z)</option>
@@ -332,11 +329,11 @@ const seo = {
           return (
             <a
               href={`/services/category/${categorySlug}`}
-              class="group block min-w-0 rounded-lg border border-gray-200 bg-white p-4 transition-all duration-200 hover:border-primary-300 hover:shadow-sm"
+              class="group block min-w-0 rounded border border-gray-200 bg-white p-4 transition-all duration-200 hover:border-primary-300"
             >
               <div class="flex min-w-0 items-center justify-between gap-3">
                 <div class="flex min-w-0 items-center gap-3">
-                  <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary-100 transition-colors group-hover:bg-primary-200">
+                  <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-primary-100 transition-colors group-hover:bg-primary-200">
                     <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={getCategoryIcon(category)} />
                     </svg>
@@ -361,19 +358,19 @@ const seo = {
 
 
     <!-- Register CTA -->
-    <div class="mt-12 border border-gray-200 rounded-lg p-6 text-center">
+    <div class="mt-12 border border-gray-200 rounded p-6 text-center">
       <h3 class="text-lg font-semibold text-gray-900 mb-2">Provide a service in Dzaleka?</h3>
       <p class="text-gray-600 mb-4 text-sm">
         Add your organization to the directory.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/services/register" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm">
+        <a href="/services/register" class="min-h-[44px] inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 transition-colors text-sm">
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           Register
         </a>
-        <a href="/contact" class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+        <a href="/contact" class="min-h-[44px] inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors text-sm">
           Contact Us
         </a>
       </div>

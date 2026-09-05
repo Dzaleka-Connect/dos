@@ -268,19 +268,19 @@ const problemExample = JSON.stringify(
           <div class="mt-6 flex flex-wrap gap-3">
             <a
               href="/docs/api-reference"
-              class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              class="min-h-[44px] inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Docs version
             </a>
             <a
               href="/open-data-platform"
-              class="inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+              class="min-h-[44px] inline-flex items-center rounded-md border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
             >
               Open data platform
             </a>
             <a
               href="/encyclopedia/developers"
-              class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              class="min-h-[44px] inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Encyclopedia API
             </a>
@@ -288,19 +288,19 @@ const problemExample = JSON.stringify(
         </div>
 
         <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <div class="rounded border border-gray-200 bg-gray-50 p-5">
             <p class="text-sm font-medium text-gray-500">Base URL</p>
             <p class="mt-2 break-all font-mono text-sm text-gray-900">{baseApiUrl}</p>
           </div>
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <div class="rounded border border-gray-200 bg-gray-50 p-5">
             <p class="text-sm font-medium text-gray-500">Authentication</p>
             <p class="mt-2 text-sm leading-6 text-gray-900">Read access is public. Some action endpoints accept JSON submissions without account auth.</p>
           </div>
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <div class="rounded border border-gray-200 bg-gray-50 p-5">
             <p class="text-sm font-medium text-gray-500">Format</p>
             <p class="mt-2 text-sm leading-6 text-gray-900">JSON responses by default. RSS is available at <code>/api/rss</code>.</p>
           </div>
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <div class="rounded border border-gray-200 bg-gray-50 p-5">
             <p class="text-sm font-medium text-gray-500">Rate limiting</p>
             <p class="mt-2 text-sm leading-6 text-gray-900">Collection and search endpoints are limited to 60 requests per minute per IP.</p>
           </div>
@@ -311,8 +311,8 @@ const problemExample = JSON.stringify(
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div class="space-y-8 lg:flex lg:items-start lg:gap-8 lg:space-y-0">
         <aside class="hidden lg:block lg:w-72 lg:flex-none">
-          <nav class="sticky top-6 space-y-4" aria-label="API navigation">
-            <div class="rounded-xl border border-gray-200 bg-white p-5">
+          <nav class="sticky top-24 lg:top-44 space-y-4" aria-label="API navigation">
+            <div class="rounded border border-gray-200 bg-white p-5">
               <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">On this page</h2>
               <ul class="mt-4 space-y-3 text-sm">
                 <li><a class="text-primary-700 hover:text-primary-800" href="#collections">Collection endpoints</a></li>
@@ -323,7 +323,7 @@ const problemExample = JSON.stringify(
                 <li><a class="text-primary-700 hover:text-primary-800" href="#examples">Examples</a></li>
               </ul>
             </div>
-            <div class="rounded-xl border border-gray-200 bg-white p-5">
+            <div class="rounded border border-gray-200 bg-white p-5">
               <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">Notes</h2>
               <ul class="mt-4 space-y-3 text-sm leading-6 text-gray-600">
                 <li>Collection endpoints expose published content collections only.</li>
@@ -334,8 +334,8 @@ const problemExample = JSON.stringify(
           </nav>
         </aside>
 
-        <main class="min-w-0 flex-1 space-y-10">
-          <section id="discovery" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+        <div class="min-w-0 flex-1 space-y-10">
+          <section id="discovery" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <div class="max-w-3xl">
               <h2 class="text-2xl font-semibold text-gray-900">Discovery</h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
@@ -345,7 +345,7 @@ const problemExample = JSON.stringify(
 
             <div class="mt-6 grid gap-4 lg:grid-cols-3">
               {discoveryEndpoints.map((endpoint) => (
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded border border-gray-200 p-5">
                   <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
                   <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
                   <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
@@ -357,7 +357,7 @@ const problemExample = JSON.stringify(
             <div class="mt-6 space-y-4">
               <div>
                 <h3 class="text-lg font-medium text-gray-900">Homepage Link header</h3>
-                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{linkHeaderExample}</pre>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{linkHeaderExample}</pre>
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">Markdown negotiation</h3>
@@ -370,7 +370,7 @@ const problemExample = JSON.stringify(
                 <p class="mt-2 text-sm leading-6 text-gray-600">
                   <code>/.well-known/mcp</code> is a live Model Context Protocol server over Streamable HTTP, protocol version <code>{MCP_PROTOCOL_VERSION}</code>. Send a <code>GET</code> for a discovery document, or <code>POST</code> JSON-RPC 2.0 to run its read-only tools: {mcpToolDescriptors.map((tool, index) => (<>{index > 0 ? ', ' : ''}<code>{tool.name}</code></>))}. It is unauthenticated and shares the same rate limit as the REST API.
                 </p>
-                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{mcpHandshakeExample}</pre>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{mcpHandshakeExample}</pre>
                 <p class="mt-2 text-sm leading-6 text-gray-600">
                   Full walkthrough in the <a href="/docs/agent-access-guide#mcp-server" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900">agent access guide</a>.
                 </p>
@@ -390,7 +390,7 @@ const problemExample = JSON.stringify(
             </div>
           </section>
 
-          <section id="errors" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+          <section id="errors" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <div class="max-w-3xl">
               <h2 class="text-2xl font-semibold text-gray-900">Errors and versioning</h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
@@ -398,9 +398,9 @@ const problemExample = JSON.stringify(
               </p>
             </div>
 
-            <pre class="mt-6 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{problemExample}</pre>
+            <pre class="mt-6 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{problemExample}</pre>
 
-            <div class="mt-6 overflow-x-auto rounded-xl ring-1 ring-gray-200">
+            <div class="mt-6 overflow-x-auto rounded ring-1 ring-gray-200">
               <table class="min-w-full divide-y divide-gray-200 text-sm">
                 <thead class="bg-gray-50">
                   <tr>
@@ -425,13 +425,13 @@ const problemExample = JSON.stringify(
             </div>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
-              <div id="rate-limits" class="scroll-mt-24 rounded-xl ring-1 ring-gray-200 p-5">
+              <div id="rate-limits" class="scroll-mt-24 rounded ring-1 ring-gray-200 p-5">
                 <h3 class="text-lg font-medium text-gray-900">Rate limits</h3>
                 <p class="mt-2 text-sm leading-6 text-gray-600">
                   60 requests per minute per IP. Successful responses carry <code>RateLimit-Limit</code>, <code>RateLimit-Remaining</code>, <code>RateLimit-Reset</code> (seconds) and <code>RateLimit-Policy</code>, so clients can self-throttle. A <code>429</code> adds <code>Retry-After</code>. The legacy <code>X-RateLimit-*</code> headers are still sent, but <code>X-RateLimit-Reset</code> is a Unix timestamp rather than a duration.
                 </p>
               </div>
-              <div id="versioning" class="scroll-mt-24 rounded-xl ring-1 ring-gray-200 p-5">
+              <div id="versioning" class="scroll-mt-24 rounded ring-1 ring-gray-200 p-5">
                 <h3 class="text-lg font-medium text-gray-900">Versioning</h3>
                 <p class="mt-2 text-sm leading-6 text-gray-600">
                   The current version is <code>{API_VERSION}</code>, echoed on every response as <code>API-Version</code>. Send <code>API-Version</code> on a request to pin it. Breaking changes ship under a new major version; endpoints scheduled for removal return <code>Deprecation</code> (RFC 9745) and <code>Sunset</code> (RFC 8594) headers with at least six months of notice. The full policy, and anything currently scheduled for removal, is published at <a href="/api/deprecation-policy" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"><code>/api/deprecation-policy</code></a>.
@@ -440,7 +440,7 @@ const problemExample = JSON.stringify(
             </div>
           </section>
 
-          <section id="collections" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+          <section id="collections" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <div class="max-w-3xl">
               <h2 class="text-2xl font-semibold text-gray-900">Collection endpoints</h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
@@ -448,7 +448,7 @@ const problemExample = JSON.stringify(
               </p>
             </div>
 
-            <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
+            <div class="mt-6 overflow-hidden rounded border border-gray-200">
               <div class="hidden grid-cols-[minmax(0,1.1fr)_7rem_9rem_minmax(0,1fr)] gap-4 bg-gray-50 px-5 py-3 text-sm font-medium text-gray-700 md:grid">
                 <div>Endpoint</div>
                 <div>Methods</div>
@@ -484,11 +484,11 @@ const problemExample = JSON.stringify(
             </div>
           </section>
 
-          <section id="search-and-feeds" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+          <section id="search-and-feeds" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <h2 class="text-2xl font-semibold text-gray-900">Search and feeds</h2>
             <div class="mt-6 space-y-5">
               {searchEndpoints.map((endpoint) => (
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded border border-gray-200 p-5">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
@@ -510,7 +510,7 @@ const problemExample = JSON.stringify(
                       ))}
                     </ul>
                   )}
-                  <div class="mt-4 rounded-lg bg-gray-900 p-4">
+                  <div class="mt-4 rounded bg-gray-900 p-4">
                     <code class="break-all text-sm text-green-400">{endpoint.example}</code>
                   </div>
                 </div>
@@ -518,11 +518,11 @@ const problemExample = JSON.stringify(
             </div>
           </section>
 
-          <section id="data-snapshots" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+          <section id="data-snapshots" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <h2 class="text-2xl font-semibold text-gray-900">Data snapshots and dashboard endpoints</h2>
             <div class="mt-6 grid gap-4 lg:grid-cols-2">
               {dataEndpoints.map((endpoint) => (
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded border border-gray-200 p-5">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
@@ -537,7 +537,7 @@ const problemExample = JSON.stringify(
                     </div>
                   </div>
                   <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
-                  <div class="mt-4 rounded-lg bg-gray-900 p-4">
+                  <div class="mt-4 rounded bg-gray-900 p-4">
                     <code class="break-all text-sm text-green-400">{endpoint.example}</code>
                   </div>
                 </div>
@@ -545,14 +545,14 @@ const problemExample = JSON.stringify(
             </div>
           </section>
 
-          <section id="actions" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+          <section id="actions" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <h2 class="text-2xl font-semibold text-gray-900">Action and submission endpoints</h2>
             <p class="mt-2 text-sm leading-6 text-gray-600">
               These endpoints accept request bodies and are used for export flows, skills matching, visit booking confirmations, and community voice submissions.
             </p>
             <div class="mt-6 space-y-5">
               {actionEndpoints.map((endpoint) => (
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded border border-gray-200 p-5">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
@@ -574,7 +574,7 @@ const problemExample = JSON.stringify(
                       ))}
                     </ul>
                   )}
-                  <div class="mt-4 rounded-lg bg-gray-900 p-4">
+                  <div class="mt-4 rounded bg-gray-900 p-4">
                     <code class="block whitespace-pre-wrap break-words text-sm text-green-400">{endpoint.example}</code>
                   </div>
                 </div>
@@ -582,24 +582,24 @@ const problemExample = JSON.stringify(
             </div>
           </section>
 
-          <section id="examples" class="rounded-xl border border-gray-200 bg-white p-6 lg:p-8">
+          <section id="examples" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
             <h2 class="text-2xl font-semibold text-gray-900">Example responses</h2>
             <div class="mt-6 space-y-6">
               <div>
                 <h3 class="text-lg font-medium text-gray-900">Collection response shape</h3>
-                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(commonResponse, null, 2)}</pre>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(commonResponse, null, 2)}</pre>
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">Search response shape</h3>
-                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(searchResponse, null, 2)}</pre>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(searchResponse, null, 2)}</pre>
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">Export response shape</h3>
-                <pre class="mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(exportResponse, null, 2)}</pre>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(exportResponse, null, 2)}</pre>
               </div>
             </div>
           </section>
-        </main>
+        </div>
       </div>
     </div>
   </div>

@@ -98,7 +98,7 @@ const schema = {
 ---
 
 <MainLayout title={pageTitle} description={description} canonical={canonical} schema={schema}>
-  <main class="bg-slate-50">
+  <div class="bg-slate-50">
     <section class="border-b border-slate-200 bg-white">
       <div class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
@@ -107,8 +107,8 @@ const schema = {
             Start here if you need another language
           </h1>
           <p class="mt-4 text-lg leading-8 text-slate-600">
-            Dzaleka is home to over 60,000 residents from the Great Lakes region. 
-            While most official info is in English, this page helps you find easier English, 
+            Dzaleka is home to over 60,000 residents from the Great Lakes region.
+            While most official info is in English, this page helps you find easier English,
             radio updates, or a reply in another language.
           </p>
         </div>
@@ -118,15 +118,15 @@ const schema = {
     <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <div class="space-y-8">
         <!-- New Multilingual Context Section in Original Style -->
-        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+        <section class="rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
           <h2 class="text-2xl font-semibold text-slate-900">The multilingual heart of Dzaleka</h2>
           <p class="mt-4 text-base leading-7 text-slate-600">
-            Swahili is the <i>lingua franca</i> of the camp, connecting people from different backgrounds. 
+            Swahili is the <i>lingua franca</i> of the camp, connecting people from different backgrounds.
             Within communities, you will also hear Lingala, Kinyarwanda, Kirundi, and French.
           </p>
           <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {demographics.map((item) => (
-              <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <div class="p-3 bg-slate-50 rounded border border-slate-200">
                 <div class="font-semibold text-slate-900">{item.label}</div>
                 <div class="text-sm text-slate-500">{item.note}</div>
               </div>
@@ -134,7 +134,7 @@ const schema = {
           </div>
         </section>
 
-        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+        <section class="rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
           <h2 class="text-2xl font-semibold text-slate-900">Where to start</h2>
           <div class="mt-6 grid gap-4">
             {supportRoutes.map((route) => (
@@ -145,7 +145,7 @@ const schema = {
                   {route.links.map((link) => (
                     <a
                       href={link.href}
-                      class="inline-flex items-center rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-white"
+                      class="min-h-[44px] inline-flex items-center rounded border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-white"
                     >
                       {link.label}
                     </a>
@@ -157,7 +157,7 @@ const schema = {
         </section>
 
         <!-- New Practical Phrases Section in Original Style -->
-        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+        <section class="rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
           <h2 class="text-2xl font-semibold text-slate-900">Practical Phrases</h2>
           <p class="mt-4 text-base leading-7 text-slate-600">
             Essential words to help you navigate daily life in and around the camp.
@@ -179,7 +179,7 @@ const schema = {
           </div>
         </section>
 
-        <section class="rounded-2xl border border-slate-200 bg-white px-6 py-6 sm:px-8">
+        <section class="rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
           <h2 class="text-2xl font-semibold text-slate-900">Important note</h2>
           <p class="mt-4 text-base leading-7 text-slate-600">
             Not every service on this website can reply in more than one language. If you need
@@ -194,7 +194,7 @@ const schema = {
         <div class="max-w-3xl">
           <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900">Where this information came from</h2>
           <p class="mt-4 text-base leading-7 text-slate-600">
-            Checked on {checkedDate}. The information on this page is sourced from community demographics, 
+            Checked on {checkedDate}. The information on this page is sourced from community demographics,
             local radio broadcast data, and UNHCR reporting.
           </p>
         </div>
@@ -216,5 +216,5 @@ const schema = {
         </ul>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>

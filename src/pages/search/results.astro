@@ -1,6 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import SearchBar from '../../components/ui/SearchBar.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 
 // Static mode for Netlify
 export const prerender = true;
@@ -10,27 +10,24 @@ const pageDescription = "Search results for services, events, resources, and com
 ---
 
 <MainLayout title={pageTitle} description={pageDescription}>
-  <main class="container mx-auto px-4 py-12 min-h-screen">
+  <div class="container mx-auto px-4 py-12 min-h-screen">
     <div class="max-w-4xl mx-auto">
+      <PageHeader title="Search" description="Find services, events, resources and community stories." />
       <!-- Search Bar -->
       <div class="mb-8">
-        <form id="results-search-form" class="relative">
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-              <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-            </div>
+        <form id="results-search-form" role="search" aria-label="Search the site" class="relative">
+          <label for="results-search-input" class="sr-only">Search the site</label>
+          <div class="flex rounded ring-1 ring-slate-400">
             <input
-              type="text"
+              type="search"
               id="results-search-input"
-              class="block w-full p-4 pl-12 text-base text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 shadow-sm transition-shadow"
+              class="block min-w-0 flex-1 border-0 bg-white px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary-700"
               placeholder="Search for services, resources, events..."
               required
             />
             <button
               type="submit"
-              class="absolute right-2 bottom-2 top-2 px-6 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 transition-colors"
+              class="min-h-[48px] shrink-0 rounded-r bg-primary-900 px-4 py-3 text-sm font-medium text-white hover:bg-primary-800 sm:px-6"
             >
               Search
             </button>
@@ -46,7 +43,7 @@ const pageDescription = "Search results for services, events, resources, and com
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>
@@ -88,7 +85,7 @@ const pageDescription = "Search results for services, events, resources, and com
 
     if (!query.trim()) {
       resultsContainer.innerHTML = `
-        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+        <div class="text-center py-12 bg-white rounded border border-gray-100">
           <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -100,14 +97,14 @@ const pageDescription = "Search results for services, events, resources, and com
     }
 
     const normalizedQuery = query.toLowerCase();
-    
+
     // Simple fuzzy search
     const results = searchIndex.filter(item => {
       const titleMatch = item.title?.toLowerCase().includes(normalizedQuery);
       const descMatch = item.description?.toLowerCase().includes(normalizedQuery);
       const tagMatch = item.tags?.some(tag => tag.toLowerCase().includes(normalizedQuery));
       const typeMatch = item.type?.toLowerCase().includes(normalizedQuery);
-      
+
       return titleMatch || descMatch || tagMatch || typeMatch;
     });
 
@@ -118,7 +115,7 @@ const pageDescription = "Search results for services, events, resources, and com
   function renderResults(results, query) {
     if (results.length === 0) {
       resultsContainer.innerHTML = `
-        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+        <div class="text-center py-12 bg-white rounded border border-gray-100">
           <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -143,31 +140,31 @@ const pageDescription = "Search results for services, events, resources, and com
             Found ${results.length} result${results.length === 1 ? '' : 's'} for "${query}"
           </h2>
         </div>
-        
+
         ${Object.entries(groupedResults).map(([type, items]) => `
-          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div class="border-t border-slate-200 bg-white pt-6">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center capitalize">
               <span class="w-1.5 h-6 bg-primary-500 rounded-full mr-3"></span>
               ${type.endsWith('s') ? type : type + 's'} <span class="ml-2 text-sm font-normal text-gray-500">(${items.length})</span>
             </h3>
             <div class="space-y-4">
               ${items.map(item => `
-                <a href="${item.url}" class="block p-4 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200 group">
+                <a href="${item.url}" class="group block rounded py-4 hover:bg-slate-50">
                   <div class="flex items-start gap-4">
                     ${item.image ? `
-                      <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                        <img 
-                          src="${item.image}" 
-                          alt="${item.title}" 
+                      <div class="w-16 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                        <img
+                          src="${item.image}"
+                          alt="${item.title}"
                           class="w-full h-full object-cover"
                           onerror="this.style.display='none'"
                         />
                       </div>
                     ` : ''}
-                    <div class="flex-grow">
+                    <div class="min-w-0 flex-grow">
                       <div class="flex justify-between items-start">
                         <div>
-                          <h4 class="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">${item.title}</h4>
+                          <h4 class="font-semibold text-primary-800 underline underline-offset-4 mb-1 group-hover:text-primary-900">${item.title}</h4>
                           <p class="text-sm text-gray-600 line-clamp-2">${item.description || 'No description available.'}</p>
                           <div class="flex flex-wrap gap-2 mt-2">
                             ${item.category ? `<span class="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-md">${item.category}</span>` : ''}
@@ -200,7 +197,7 @@ const pageDescription = "Search results for services, events, resources, and com
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set('q', newQuery);
     window.history.pushState({}, '', newUrl);
-    
+
     performSearch(newQuery);
   });
 </script>

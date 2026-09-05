@@ -88,10 +88,10 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
       </div>
 
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/skills-exchange/request" class="inline-flex items-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-medium text-white hover:bg-primary-700">
+        <a href="/skills-exchange/request" class="min-h-[44px] inline-flex items-center rounded bg-primary-600 px-5 py-3 text-sm font-medium text-white hover:bg-primary-700">
           Request a skill
         </a>
-        <a href="/skills-exchange/skills-offered" class="inline-flex items-center rounded-lg border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
+        <a href="/skills-exchange/skills-offered" class="min-h-[44px] inline-flex items-center rounded border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900">
           Browse skills offered
         </a>
       </div>
@@ -142,10 +142,10 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
         {currentProfiles.map((profile) => (
           <a
             href={`/skills-exchange/profile/${profile.id.replace('.md', '')}`}
-            class="block overflow-hidden rounded-lg border border-slate-200 bg-white transition-colors hover:border-slate-300 hover:bg-slate-50"
+            class="block overflow-hidden rounded border border-slate-200 bg-white transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
             <div class="aspect-[16/10] bg-slate-100">
-              <img src={profile.data.profileImage} alt={profile.data.name} class="h-full w-full object-cover" />
+              <img onerror="this.onerror=null; this.src='/images/unavailable-image.svg'; this.alt='Image unavailable';" src={profile.data.profileImage} alt={profile.data.name} class="h-full w-full object-cover" />
             </div>
 
             <div class="p-5">
@@ -171,7 +171,7 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
       </div>
 
       {currentProfiles.length === 0 && (
-        <div class="rounded-lg border border-slate-200 bg-white px-6 py-12 text-center">
+        <div class="rounded border border-slate-200 bg-white px-6 py-12 text-center">
           <h2 class="text-2xl font-semibold text-slate-900">No requests found</h2>
           <p class="mt-3 text-slate-600">There are no open learning requests in this category yet.</p>
         </div>

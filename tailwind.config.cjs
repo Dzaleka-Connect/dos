@@ -3,6 +3,13 @@ module.exports = {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
+      // The legacy aspect-ratio plugin replaces Tailwind's named ratios.
+      // Restore them for native image frames used throughout the site.
+      aspectRatio: {
+        auto: 'auto',
+        square: '1 / 1',
+        video: '16 / 9',
+      },
       colors: {
         primary: {
           50: '#f0f9ff',

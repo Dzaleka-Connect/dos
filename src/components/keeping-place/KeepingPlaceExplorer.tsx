@@ -1,9 +1,11 @@
+import Modal from '../ui/Modal';
+import 'leaflet/dist/leaflet.css';
 import { useState, useEffect, useRef, type FormEvent } from 'react';
-import { 
-  KEEPING_PLACE_DATASET, 
-  type KeepingPlaceRecord, 
-  type CulturalProtocolLevel, 
-  type RecordCategory 
+import {
+  KEEPING_PLACE_DATASET,
+  type KeepingPlaceRecord,
+  type CulturalProtocolLevel,
+  type RecordCategory
 } from '../../data/keepingPlaceDataset';
 
 type ViewMode = 'map' | 'table' | 'relationships';
@@ -21,7 +23,7 @@ export function KeepingPlaceExplorer() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRecord, setSelectedRecord] = useState<KeepingPlaceRecord | null>(null);
   const [expandedModalRecord, setExpandedModalRecord] = useState<KeepingPlaceRecord | null>(null);
-  const [activeTileLayer, setActiveTileLayer] = useState<'street' | 'satellite' | 'topo'>('satellite');
+  const [activeTileLayer, setActiveTileLayer] = useState<'street' | 'satellite' | 'topo'>('street');
   const [showBoundaries, setShowBoundaries] = useState<boolean>(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [customRecords, setCustomRecords] = useState<KeepingPlaceRecord[]>([]);
@@ -113,19 +115,12 @@ export function KeepingPlaceExplorer() {
       const L = (await import('leaflet')).default;
       if (isCancelled || !mapContainerRef.current) return;
 
-      if (!document.getElementById('leaflet-css-link')) {
-        const link = document.createElement('link');
-        link.id = 'leaflet-css-link';
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-        document.head.appendChild(link);
-      }
-
       if (!mapInstanceRef.current) {
         const map = L.map(mapContainerRef.current, {
           center: [-13.6592, 33.8705],
           zoom: 15,
-          zoomControl: true
+          zoomControl: true,
+          scrollWheelZoom: false
         });
         mapInstanceRef.current = map;
       }
@@ -160,8 +155,8 @@ export function KeepingPlaceExplorer() {
         maxNativeZoom = 17;
       }
 
-      L.tileLayer(tileUrl, { 
-        attribution, 
+      L.tileLayer(tileUrl, {
+        attribution,
         maxZoom: 20,
         maxNativeZoom
       }).addTo(map);
@@ -228,7 +223,7 @@ export function KeepingPlaceExplorer() {
 
         const popupContent = `
           <div style="font-family: inherit; padding: 2px;">
-            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: ${pinColor}; margin-bottom: 2px;">
+            <div style="font-size: 10px; font-weight: 700; text-transform: ; color: ${pinColor}; margin-bottom: 2px;">
               ${rec.categoryLabel}
             </div>
             <h4 style="font-size: 13px; font-weight: 700; margin: 0 0 4px 0; color: #0f172a;">
@@ -237,7 +232,7 @@ export function KeepingPlaceExplorer() {
             <p style="font-size: 11px; color: #475569; margin: 0 0 8px 0; line-height: 1.3;">
               ${rec.summary}
             </p>
-            <button 
+            <button
               id="btn-inspect-${rec.id}"
               style="
                 background: #0f172a;
@@ -437,207 +432,43 @@ export function KeepingPlaceExplorer() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-50 text-slate-900 overflow-hidden font-sans">
-      
-      {/* TOP TOOLBAR */}
-      <header className="bg-white border-b border-slate-200 px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-sm">
-        <div className="flex items-center gap-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
-            Dzaleka Keeping Place GIS
-          </span>
-          <span className="text-slate-300 hidden sm:inline">|</span>
-          <div className="hidden sm:flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 text-xs">
-            <span className="text-slate-500 font-semibold">Protocol:</span>
-            <button
-              onClick={() => setActiveProtocol('public')}
-              className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
-                activeProtocol === 'public' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Public
-            </button>
-            <button
-              onClick={() => setActiveProtocol('community')}
-              className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
-                activeProtocol === 'community' ? 'bg-amber-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Community
-            </button>
-            <button
-              onClick={() => setActiveProtocol('restricted')}
-              className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
-                activeProtocol === 'restricted' ? 'bg-red-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Restricted
-            </button>
-          </div>
+    <div className="explore-browser w-full h-full min-h-0 flex flex-col bg-slate-50 text-slate-900 overflow-hidden font-sans">
+
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white p-4">
+        <div className="flex flex-wrap gap-2" aria-label="Explore display">
+          {([['map', 'Map'], ['table', 'Places'], ['relationships', 'Related records']] as const).map(([view, label]) => <button key={view} type="button" aria-pressed={activeView === view} onClick={() => setActiveView(view)} className={`min-h-[44px] rounded border px-4 py-2 text-sm font-medium ${activeView === view ? 'border-primary-900 bg-primary-900 text-white' : 'border-slate-300 bg-white text-primary-900 hover:bg-slate-50'}`}>{label}</button>)}
         </div>
-
-        <div className="flex items-center gap-2">
-          <div className="inline-flex rounded-lg bg-slate-100 p-1 border border-slate-200 text-xs">
-            <button
-              onClick={() => setActiveView('map')}
-              className={`px-3 py-1 rounded-md font-semibold transition-colors ${
-                activeView === 'map' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Map View
-            </button>
-            <button
-              onClick={() => setActiveView('table')}
-              className={`px-3 py-1 rounded-md font-semibold transition-colors ${
-                activeView === 'table' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Table View
-            </button>
-            <button
-              onClick={() => setActiveView('relationships')}
-              className={`px-3 py-1 rounded-md font-semibold transition-colors ${
-                activeView === 'relationships' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Relationship Engine
-            </button>
+        <details className="relative">
+          <summary className="cursor-pointer rounded border border-slate-300 px-4 py-2.5 text-sm font-medium text-primary-900">More tools</summary>
+          <div className="absolute right-0 top-full z-[600] mt-2 w-56 rounded border border-slate-300 bg-white p-2 ">
+            <a href="/map/submit" className="block px-3 py-3 text-sm text-primary-800 underline underline-offset-4">Suggest a place</a>
+            <button type="button" onClick={() => setIsAddModalOpen(true)} className="block w-full px-3 py-3 text-left text-sm text-primary-800">Quick submission</button>
+            <button type="button" onClick={handleExportGeoJSON} className="block w-full px-3 py-3 text-left text-sm text-primary-800">Download GeoJSON</button>
+            <button type="button" onClick={handleExportCSV} className="block w-full px-3 py-3 text-left text-sm text-primary-800">Download CSV</button>
           </div>
-
-          <a
-            href="/map/submit"
-            className="rounded-lg bg-sky-700 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-sky-600 transition-colors shadow-sm inline-flex items-center gap-1.5"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            <span>Submit Location</span>
-          </a>
-
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
-          >
-            Quick Record
-          </button>
-          
-          <div className="inline-flex rounded-lg border border-slate-200 bg-white text-xs overflow-hidden shadow-sm">
-            <button
-              onClick={handleExportGeoJSON}
-              className="px-2.5 py-1.5 font-semibold text-slate-700 hover:bg-slate-50 transition-colors border-r border-slate-200"
-            >
-              GeoJSON
-            </button>
-            <button
-              onClick={handleExportCSV}
-              className="px-2.5 py-1.5 font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-            >
-              CSV
-            </button>
-          </div>
-        </div>
+        </details>
       </header>
-
-      {/* FILTER SUB-BAR */}
-      <div className="bg-slate-50 border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
-        <div className="flex items-center gap-2 flex-1 min-w-[200px] max-w-md">
-          <input
-            type="text"
-            placeholder="Search spatial feature, zone, custodian..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:border-slate-400 focus:outline-none shadow-sm"
-          />
+      <div className="shrink-0 border-b border-slate-200 bg-slate-50 p-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div><label htmlFor="explore-search" className="mb-2 block text-sm font-medium text-slate-900">Search places and records</label><input id="explore-search" type="search" placeholder="Name, place or topic" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} className="w-full border border-slate-400 bg-white px-3 py-2" /></div>
+          <div><label htmlFor="explore-category" className="mb-2 block text-sm font-medium text-slate-900">Category</label><select id="explore-category" value={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)} className="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">All categories</option><option value="cultural_site">Cultural sites</option><option value="land_tenement">Land boundaries</option><option value="heritage_survey">Surveys</option><option value="oral_history">Oral histories</option><option value="public_service">Public services</option></select></div>
+          <div><label htmlFor="explore-zone" className="mb-2 block text-sm font-medium text-slate-900">Area</label><select id="explore-zone" value={selectedZone} onChange={(event) => setSelectedZone(event.target.value)} className="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">All areas</option>{uniqueZones.map((zone) => <option key={zone} value={zone}>{zone}</option>)}</select></div>
+          <div><label htmlFor="explore-sharing" className="mb-2 block text-sm font-medium text-slate-900">Sharing category</label><select id="explore-sharing" value={activeProtocol} onChange={(event) => setActiveProtocol(event.target.value as CulturalProtocolLevel)} className="w-full border border-slate-400 bg-white px-3 py-2"><option value="public">Public</option><option value="community">Community</option><option value="restricted">Restricted</option></select></div>
         </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500 font-semibold">Category:</span>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-800 focus:border-slate-400 focus:outline-none shadow-sm"
-            >
-              <option value="all">All Categories ({allRecords.length})</option>
-              <option value="cultural_site">Cultural Sites</option>
-              <option value="land_tenement">Land Boundaries</option>
-              <option value="heritage_survey">Spatial Surveys</option>
-              <option value="oral_history">Oral Histories</option>
-              <option value="public_service">Public Services</option>
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500 font-semibold">Sector:</span>
-            <select
-              value={selectedZone}
-              onChange={(e) => setSelectedZone(e.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-800 focus:border-slate-400 focus:outline-none shadow-sm"
-            >
-              <option value="all">All Sectors</option>
-              {uniqueZones.map(z => (
-                <option key={z} value={z}>{z}</option>
-              ))}
-            </select>
-          </div>
-
-          <span className="text-slate-500 font-medium">
-            <strong className="text-slate-900">{filteredRecords.length}</strong> features
-          </span>
-        </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-sm text-slate-600">{filteredRecords.length} matching records</p><button type="button" onClick={() => { setSearchQuery(''); setSelectedCategory('all'); setSelectedZone('all'); setActiveProtocol('public'); }} className="text-sm text-primary-800 underline underline-offset-4">Clear filters</button></div>
       </div>
 
       {/* MAIN CANVAS */}
-      <div className="relative flex-1 w-full h-full overflow-hidden">
-        
+      <div className="relative min-h-0 flex-1 w-full overflow-hidden">
+
         {/* MAP CANVAS VIEW */}
         <div className={`relative w-full h-full ${activeView === 'map' ? 'block' : 'hidden'}`}>
-          
-          {/* Floating Map Controls */}
-          <div className="absolute top-4 right-4 z-[400] flex flex-col items-end gap-2">
-            <div className="bg-white border border-slate-200 rounded-lg p-1 shadow-md flex gap-1 text-xs">
-              <button
-                onClick={() => setActiveTileLayer('satellite')}
-                className={`px-3 py-1 rounded font-semibold transition-colors ${
-                  activeTileLayer === 'satellite' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Satellite
-              </button>
-              <button
-                onClick={() => setActiveTileLayer('street')}
-                className={`px-3 py-1 rounded font-semibold transition-colors ${
-                  activeTileLayer === 'street' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Street
-              </button>
-              <button
-                onClick={() => setActiveTileLayer('topo')}
-                className={`px-3 py-1 rounded font-semibold transition-colors ${
-                  activeTileLayer === 'topo' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Topo
-              </button>
-            </div>
 
-            <div className="flex gap-1 bg-white border border-slate-200 rounded-lg p-1 shadow-md text-xs">
-              <button
-                onClick={handleResetMapBounds}
-                className="px-2.5 py-1 rounded font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
-                title="Reset zoom to center of Dzaleka Camp"
-              >
-                Center Camp
-              </button>
-              <button
-                onClick={() => setShowBoundaries(!showBoundaries)}
-                className={`px-2.5 py-1 rounded font-semibold transition-colors ${
-                  showBoundaries ? 'bg-slate-100 text-slate-900' : 'text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                Polygons: {showBoundaries ? 'ON' : 'OFF'}
-              </button>
-            </div>
+          <div className="absolute top-3 right-3 z-[400] flex max-w-[calc(100%-4.5rem)] flex-wrap justify-end gap-2">
+            <label className="sr-only" htmlFor="explore-layer">Map style</label>
+            <select id="explore-layer" value={activeTileLayer} onChange={(event) => setActiveTileLayer(event.target.value as 'street' | 'satellite' | 'topo')} className="max-w-40 rounded border border-slate-400 bg-white py-2 pl-3 pr-8 text-sm"><option value="street">Street map</option><option value="satellite">Satellite</option><option value="topo">Terrain</option></select>
+            <button type="button" onClick={handleResetMapBounds} className="rounded border border-slate-400 bg-white px-3 py-2 text-sm text-primary-900">Reset view</button>
+            <button type="button" aria-pressed={showBoundaries} onClick={() => setShowBoundaries(!showBoundaries)} className="rounded border border-slate-400 bg-white px-3 py-2 text-sm text-primary-900">{showBoundaries ? 'Hide boundaries' : 'Show boundaries'}</button>
           </div>
 
           <div ref={mapContainerRef} className="w-full h-full z-10" />
@@ -645,46 +476,46 @@ export function KeepingPlaceExplorer() {
 
         {/* TABLE VIEW */}
         {activeView === 'table' && (
-          <div className="w-full h-full p-6 overflow-y-auto bg-slate-50">
-            <div className="max-w-7xl mx-auto bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-              <table className="w-full text-left text-xs border-collapse">
+          <div className="w-full h-full p-4 overflow-auto bg-white sm:p-6">
+            <div className="max-w-7xl mx-auto overflow-x-auto border border-slate-200 bg-white">
+              <table className="w-full min-w-[700px] text-left text-sm border-collapse"><caption className="sr-only">Places matching your search and filters</caption>
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-100 text-slate-600 font-semibold uppercase tracking-wider">
-                    <th className="py-3 px-4">Feature Name</th>
-                    <th className="py-3 px-4">Category</th>
-                    <th className="py-3 px-4">Protocol</th>
-                    <th className="py-3 px-4">Zone</th>
-                    <th className="py-3 px-4">Custodian</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
+                  <tr className="border-b border-slate-200 bg-slate-100 text-slate-600 font-semibold ">
+                    <th scope="col" className="py-3 px-4">Place or record</th>
+                    <th scope="col" className="py-3 px-4">Category</th>
+                    <th scope="col" className="py-3 px-4">Protocol</th>
+                    <th scope="col" className="py-3 px-4">Zone</th>
+                    <th scope="col" className="py-3 px-4">Custodian</th>
+                    <th scope="col" className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {filteredRecords.map((rec) => (
                     <tr key={rec.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="py-3.5 px-4 font-bold text-slate-900">
+                      <td className="py-3.5 px-4 font-semibold text-slate-900">
                         {rec.siteRegisterSlug ? (
-                          <a href={`/site-register/${rec.siteRegisterSlug}`} className="hover:underline text-sky-700 font-bold">
+                          <a href={`/site-register/${rec.siteRegisterSlug}`} className="hover:underline text-sky-700 font-semibold">
                             {rec.name}
                           </a>
                         ) : rec.encyclopediaSlug ? (
-                          <a href={`/encyclopedia/${rec.encyclopediaSlug}`} className="hover:underline text-sky-700 font-bold">
+                          <a href={`/encyclopedia/${rec.encyclopediaSlug}`} className="hover:underline text-sky-700 font-semibold">
                             {rec.name}
                           </a>
                         ) : (
                           <span>{rec.name}</span>
                         )}
                         {rec.referenceId && (
-                          <span className="ml-2 text-[10px] bg-slate-100 text-slate-600 border border-slate-200 px-1.5 py-0.5 rounded font-mono font-medium">
+                          <span className="ml-2 text-sm bg-slate-100 text-slate-600 border border-slate-200 px-1.5 py-0.5 rounded font-mono font-medium">
                             {rec.referenceId}
                           </span>
                         )}
-                        <div className="text-[11px] font-normal text-slate-500 line-clamp-1 mt-0.5">
+                        <div className="text-sm font-normal text-slate-500 line-clamp-1 mt-0.5">
                           {rec.summary}
                         </div>
                       </td>
                       <td className="py-3.5 px-4 text-slate-700 font-medium">{rec.categoryLabel}</td>
                       <td className="py-3.5 px-4">
-                        <span className={`inline-block rounded-md px-2.5 py-0.5 text-[10px] font-bold ${
+                        <span className={`inline-block rounded px-2.5 py-0.5 text-sm font-semibold ${
                           rec.protocol === 'public' ? 'bg-sky-50 text-sky-700 border border-sky-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
                         }`}>
                           {rec.protocolBadge}
@@ -695,13 +526,13 @@ export function KeepingPlaceExplorer() {
                       <td className="py-3.5 px-4 text-right space-x-2">
                         <button
                           onClick={() => setExpandedModalRecord(rec)}
-                          className="rounded-lg bg-slate-100 border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-200"
+                          className="rounded bg-slate-100 border border-slate-200 px-3 py-1 text-sm font-semibold text-slate-700 hover:bg-slate-200"
                         >
                           Full Report
                         </button>
                         <button
                           onClick={() => handleFocusRecord(rec)}
-                          className="rounded-lg bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white hover:bg-slate-800"
+                          className="rounded bg-slate-900 px-3 py-1 text-sm font-semibold text-white hover:bg-slate-800"
                         >
                           Focus Map
                         </button>
@@ -716,19 +547,19 @@ export function KeepingPlaceExplorer() {
 
         {/* RELATIONSHIP ENGINE VIEW */}
         {activeView === 'relationships' && (
-          <div className="w-full h-full p-6 overflow-y-auto bg-slate-50">
+          <div className="w-full h-full p-4 overflow-auto bg-white sm:p-6">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredRecords.map((rec) => (
-                <div key={rec.id} className="rounded-xl border border-slate-200 bg-white p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+                <div key={rec.id} className="rounded border border-slate-200 bg-white p-5 flex flex-col justify-between transition-shadow">
                   <div>
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <span className="text-sm font-semibold text-sky-700">
                         {rec.categoryLabel}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-medium">{rec.zone}</span>
+                      <span className="text-sm text-slate-500 font-medium">{rec.zone}</span>
                     </div>
 
-                    <h3 className="text-base font-bold text-slate-900 mb-1">
+                    <h3 className="text-base font-semibold text-slate-900 mb-1">
                       {rec.siteRegisterSlug ? (
                         <a href={`/site-register/${rec.siteRegisterSlug}`} className="hover:underline hover:text-sky-700 transition-colors">
                           {rec.name}
@@ -741,25 +572,25 @@ export function KeepingPlaceExplorer() {
                         rec.name
                       )}
                       {rec.referenceId && (
-                        <span className="ml-2 text-[10px] bg-slate-100 text-slate-600 border border-slate-200 px-1.5 py-0.5 rounded font-mono font-medium">
+                        <span className="ml-2 text-sm bg-slate-100 text-slate-600 border border-slate-200 px-1.5 py-0.5 rounded font-mono font-medium">
                           {rec.referenceId}
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-slate-600 mb-3 line-clamp-2">{rec.summary}</p>
+                    <p className="text-sm text-slate-600 mb-3 line-clamp-2">{rec.summary}</p>
 
                     <div className="space-y-2 border-t border-slate-100 pt-3">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <div className="text-sm font-semibold text-slate-600">
                         Linked Primary Data ({rec.relationships.length}):
                       </div>
                       {rec.relationships.map((rel) => (
-                        <div key={rel.id} className="bg-slate-50 rounded-lg p-2.5 text-xs border border-slate-200">
+                        <div key={rel.id} className="bg-slate-50 rounded p-2.5 text-sm border border-slate-200">
                           <div className="font-semibold text-slate-800">
                             {rel.url ? (
                               <a href={rel.url} className="hover:underline text-sky-700">{rel.title}</a>
                             ) : rel.title}
                           </div>
-                          <div className="text-[11px] text-slate-500 mt-0.5">{rel.summary}</div>
+                          <div className="text-sm text-slate-500 mt-0.5">{rel.summary}</div>
                         </div>
                       ))}
                     </div>
@@ -768,13 +599,13 @@ export function KeepingPlaceExplorer() {
                   <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-100">
                     <button
                       onClick={() => setExpandedModalRecord(rec)}
-                      className="flex-1 rounded-lg bg-slate-100 border border-slate-200 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-200"
+                      className="flex-1 rounded bg-slate-100 border border-slate-200 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-200"
                     >
                       Full Report
                     </button>
                     <button
                       onClick={() => handleFocusRecord(rec)}
-                      className="flex-1 rounded-lg bg-slate-900 py-1.5 text-xs font-semibold text-white hover:bg-slate-800"
+                      className="flex-1 rounded bg-slate-900 py-1.5 text-sm font-semibold text-white hover:bg-slate-800"
                     >
                       Focus Location
                     </button>
@@ -787,21 +618,21 @@ export function KeepingPlaceExplorer() {
 
         {/* FLOATING SIDE DRAWER FOR SELECTED RECORD */}
         {selectedRecord && (
-          <div className="absolute top-0 right-0 h-full w-full max-w-sm bg-white border-l border-slate-200 p-6 overflow-y-auto z-[500] shadow-2xl flex flex-col justify-between">
+          <div className="absolute top-0 right-0 h-full w-full max-w-sm bg-white border-l border-slate-200 p-6 overflow-y-auto z-[500] flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <span className="text-sm font-semibold text-slate-500">
                   {selectedRecord.categoryLabel}
                 </span>
                 <button
                   onClick={() => setSelectedRecord(null)}
-                  className="rounded-lg px-2.5 py-1 text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 hover:text-slate-900 hover:bg-slate-200"
+                  className="rounded px-2.5 py-1 text-sm font-semibold bg-slate-100 text-slate-600 border border-slate-200 hover:text-slate-900 hover:bg-slate-200"
                 >
                   Close
                 </button>
               </div>
 
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 {selectedRecord.siteRegisterSlug ? (
                   <a href={`/site-register/${selectedRecord.siteRegisterSlug}`} className="hover:underline hover:text-sky-700 transition-colors">
                     {selectedRecord.name}
@@ -814,51 +645,51 @@ export function KeepingPlaceExplorer() {
                   selectedRecord.name
                 )}
                 {selectedRecord.referenceId && (
-                  <span className="ml-2 text-xs bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded font-mono font-medium">
+                  <span className="ml-2 text-sm bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded font-mono font-medium">
                     {selectedRecord.referenceId}
                   </span>
                 )}
               </h3>
 
               <div className="mb-4">
-                <span className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-bold ${
+                <span className={`inline-block rounded px-2.5 py-0.5 text-sm font-semibold ${
                   selectedRecord.protocol === 'public' ? 'bg-sky-50 text-sky-700 border border-sky-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
                 }`}>
                   {selectedRecord.protocolBadge}
                 </span>
               </div>
 
-              <div className="space-y-2 text-xs text-slate-600 mb-4 border-t border-slate-100 pt-3">
+              <div className="space-y-2 text-sm text-slate-600 mb-4 border-t border-slate-100 pt-3">
                 <div><strong className="text-slate-800">Zone:</strong> {selectedRecord.zone}</div>
                 <div><strong className="text-slate-800">Custodian:</strong> {selectedRecord.custodian}</div>
                 <div><strong className="text-slate-800">Coordinates:</strong> {selectedRecord.lat.toFixed(5)}, {selectedRecord.lng.toFixed(5)}</div>
               </div>
 
               {selectedRecord.capacityOrStats && (
-                <div className="mb-4 bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-700">
-                  <strong className="block font-bold text-slate-900 mb-0.5">Empirical Catchment / Capacity:</strong>
+                <div className="mb-4 bg-slate-50 border border-slate-200 rounded p-3 text-sm text-slate-700">
+                  <strong className="block font-semibold text-slate-900 mb-0.5">Empirical Catchment / Capacity:</strong>
                   {selectedRecord.capacityOrStats}
                 </div>
               )}
 
               <div className="border-t border-slate-100 pt-3 mb-4">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Details</h4>
-                <p className="text-xs text-slate-600 leading-relaxed">{selectedRecord.detailedDescription}</p>
+                <h4 className="text-sm font-semibold text-slate-600 mb-1">Details</h4>
+                <p className="text-sm text-slate-600 leading-relaxed">{selectedRecord.detailedDescription}</p>
               </div>
 
               <div className="border-t border-slate-100 pt-3 mb-4">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                <h4 className="text-sm font-semibold text-slate-600 mb-2">
                   Linked References ({selectedRecord.relationships.length})
                 </h4>
                 <div className="space-y-2">
                   {selectedRecord.relationships.map((rel) => (
-                    <div key={rel.id} className="rounded-lg bg-slate-50 p-2.5 text-xs border border-slate-200">
+                    <div key={rel.id} className="rounded bg-slate-50 p-2.5 text-sm border border-slate-200">
                       <div className="font-semibold text-slate-800">
                         {rel.url ? (
                           <a href={rel.url} className="hover:underline text-sky-700">{rel.title}</a>
                         ) : rel.title}
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-0.5">{rel.summary}</p>
+                      <p className="text-sm text-slate-500 mt-0.5">{rel.summary}</p>
                     </div>
                   ))}
                 </div>
@@ -868,7 +699,7 @@ export function KeepingPlaceExplorer() {
             <div className="space-y-2 pt-3 border-t border-slate-100">
               <button
                 onClick={() => setExpandedModalRecord(selectedRecord)}
-                className="w-full rounded-lg bg-slate-900 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition-colors shadow-sm"
+                className="w-full rounded bg-slate-900 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-colors "
               >
                 Expand Full Research Report
               </button>
@@ -876,10 +707,10 @@ export function KeepingPlaceExplorer() {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => handleShareLocation(selectedRecord)}
-                  className="rounded-lg border border-slate-200 bg-white py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                  className="rounded border border-slate-200 bg-white py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 "
                 >
                   {copyFeedback === selectedRecord.id ? (
-                    <span className="text-emerald-600 font-bold">Link Copied!</span>
+                    <span className="text-emerald-600 font-semibold">Link Copied!</span>
                   ) : (
                     <>
                       <svg className="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -893,7 +724,7 @@ export function KeepingPlaceExplorer() {
                   href={`https://www.google.com/maps/search/?api=1&query=${selectedRecord.lat},${selectedRecord.lng}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-lg border border-slate-200 bg-white py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                  className="rounded border border-slate-200 bg-white py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 "
                 >
                   <svg className="w-3.5 h-3.5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -906,7 +737,7 @@ export function KeepingPlaceExplorer() {
               {selectedRecord.siteRegisterSlug && (
                 <a
                   href={`/site-register/${selectedRecord.siteRegisterSlug}`}
-                  className="block text-center w-full rounded-lg border border-slate-200 bg-slate-50 py-2 text-xs font-semibold text-sky-700 hover:bg-slate-100"
+                  className="block text-center w-full rounded border border-slate-200 bg-slate-50 py-2 text-sm font-semibold text-sky-700 hover:bg-slate-100"
                 >
                   View Site Register Listing {selectedRecord.referenceId ? `(${selectedRecord.referenceId})` : ''}
                 </a>
@@ -914,7 +745,7 @@ export function KeepingPlaceExplorer() {
               {selectedRecord.encyclopediaSlug && (
                 <a
                   href={`/encyclopedia/${selectedRecord.encyclopediaSlug}`}
-                  className="block text-center w-full rounded-lg border border-slate-200 bg-white py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  className="block text-center w-full rounded border border-slate-200 bg-white py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   Read Encyclopedia Article
                 </a>
@@ -927,14 +758,14 @@ export function KeepingPlaceExplorer() {
 
       {/* FULL EXPANDED RESEARCH & SPATIAL REPORT MODAL */}
       {expandedModalRecord && (
-        <div className="fixed inset-0 z-[1000] bg-slate-900/60 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-3xl rounded-xl bg-white p-6 sm:p-8 border border-slate-200 text-slate-900 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <Modal label="Record details" onClose={() => setExpandedModalRecord(null)}>
+          <div className="w-full max-w-3xl rounded bg-white p-6 sm:p-8 border border-slate-200 text-slate-900 max-h-[90vh] overflow-y-auto">
             <div className="flex items-start justify-between gap-4 border-b border-slate-200 pb-4 mb-6">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                <span className="text-sm font-semibold text-slate-500">
                   {expandedModalRecord.categoryLabel} &bull; {expandedModalRecord.zone}
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+                <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 mt-1">
                   {expandedModalRecord.siteRegisterSlug ? (
                     <a href={`/site-register/${expandedModalRecord.siteRegisterSlug}`} className="hover:underline hover:text-sky-700 transition-colors">
                       {expandedModalRecord.name}
@@ -953,10 +784,10 @@ export function KeepingPlaceExplorer() {
                   )}
                 </h2>
                 <div className="flex items-center gap-2 mt-2">
-                  <span className="bg-sky-50 text-sky-700 border border-sky-200 text-xs px-2.5 py-0.5 rounded-md font-semibold">
+                  <span className="bg-sky-50 text-sky-700 border border-sky-200 text-sm px-2.5 py-0.5 rounded font-semibold">
                     {expandedModalRecord.protocolBadge}
                   </span>
-                  <span className="text-xs text-slate-500 font-mono">
+                  <span className="text-sm text-slate-500 font-mono">
                     GPS: {expandedModalRecord.lat.toFixed(6)}, {expandedModalRecord.lng.toFixed(6)}
                   </span>
                 </div>
@@ -964,13 +795,13 @@ export function KeepingPlaceExplorer() {
               <div className="flex gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                  className="rounded border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
                 >
                   Print Report
                 </button>
                 <button
                   onClick={() => setExpandedModalRecord(null)}
-                  className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="rounded border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
                 >
                   Close Report
                 </button>
@@ -980,16 +811,16 @@ export function KeepingPlaceExplorer() {
             <div className="space-y-6 text-sm">
               {/* Capacity / Stats Highlight */}
               {expandedModalRecord.capacityOrStats && (
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-800">
-                  <strong className="block font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">Empirical Metrics & Catchment</strong>
+                <div className="bg-slate-50 border border-slate-200 rounded p-4 text-slate-800">
+                  <strong className="block font-semibold text-slate-900 text-sm mb-1">Empirical Metrics & Catchment</strong>
                   <p className="text-sm leading-relaxed text-slate-700">{expandedModalRecord.capacityOrStats}</p>
                 </div>
               )}
 
               {/* Full Description */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Detailed Operational Overview</h3>
-                <p className="text-slate-700 leading-relaxed text-sm bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <h3 className="text-sm font-semibold text-slate-500 mb-2">Detailed Operational Overview</h3>
+                <p className="text-slate-700 leading-relaxed text-sm bg-slate-50 p-4 rounded border border-slate-200">
                   {expandedModalRecord.detailedDescription}
                 </p>
               </div>
@@ -997,8 +828,8 @@ export function KeepingPlaceExplorer() {
               {/* Academic Notes & Citations */}
               {expandedModalRecord.academicNotes && (
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Academic Research & Survey Citations</h3>
-                  <p className="text-slate-700 leading-relaxed text-sm bg-slate-50 p-4 rounded-xl border border-slate-200 italic">
+                  <h3 className="text-sm font-semibold text-slate-500 mb-2">Academic Research & Survey Citations</h3>
+                  <p className="text-slate-700 leading-relaxed text-sm bg-slate-50 p-4 rounded border border-slate-200 italic">
                     "{expandedModalRecord.academicNotes}"
                   </p>
                 </div>
@@ -1006,19 +837,19 @@ export function KeepingPlaceExplorer() {
 
               {/* Connected Relationships & Publications */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Linked Primary Sources & Publications</h3>
+                <h3 className="text-sm font-semibold text-slate-500 mb-3">Linked Primary Sources & Publications</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {expandedModalRecord.relationships.map((rel) => (
-                    <div key={rel.id} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                      <div className="font-bold text-slate-900 text-xs flex items-center justify-between gap-2">
+                    <div key={rel.id} className="bg-slate-50 p-4 rounded border border-slate-200">
+                      <div className="font-semibold text-slate-900 text-sm flex flex-wrap items-center justify-between gap-2">
                         <span>{rel.title}</span>
-                        {rel.publisher && <span className="text-[10px] text-slate-500 font-normal">{rel.publisher}</span>}
+                        {rel.publisher && <span className="text-sm text-slate-500 font-normal">{rel.publisher}</span>}
                       </div>
-                      <p className="text-xs text-slate-600 mt-1 line-clamp-2">{rel.summary}</p>
+                      <p className="text-sm text-slate-600 mt-1 line-clamp-2">{rel.summary}</p>
                       {rel.url && (
                         <a
                           href={rel.url}
-                          className="inline-block text-xs text-sky-700 font-semibold mt-2 hover:underline"
+                          className="inline-block text-sm text-sky-700 font-semibold mt-2 hover:underline"
                         >
                           Access Reference Link
                         </a>
@@ -1030,8 +861,8 @@ export function KeepingPlaceExplorer() {
 
               {/* Raw Spatial Geometry Inspector */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Spatial GeoJSON Feature Definition</h3>
-                <pre className="bg-slate-900 p-4 rounded-xl text-[11px] text-slate-200 font-mono overflow-x-auto">
+                <h3 className="text-sm font-semibold text-slate-500 mb-2">Spatial GeoJSON Feature Definition</h3>
+                <pre className="bg-slate-900 p-4 rounded text-sm text-slate-200 font-mono overflow-x-auto">
 {JSON.stringify({
   type: "Feature",
   geometry: { type: "Point", coordinates: [expandedModalRecord.lng, expandedModalRecord.lat] },
@@ -1054,7 +885,7 @@ export function KeepingPlaceExplorer() {
                 {expandedModalRecord.siteRegisterSlug && (
                   <a
                     href={`/site-register/${expandedModalRecord.siteRegisterSlug}`}
-                    className="rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-600 transition-colors shadow-sm"
+                    className="rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-600 transition-colors "
                   >
                   View Site Register Entry {expandedModalRecord.referenceId ? `(${expandedModalRecord.referenceId})` : ''}
                   </a>
@@ -1062,17 +893,17 @@ export function KeepingPlaceExplorer() {
                 {expandedModalRecord.encyclopediaSlug && (
                   <a
                     href={`/encyclopedia/${expandedModalRecord.encyclopediaSlug}`}
-                    className="rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition-colors shadow-sm"
+                    className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors "
                   >
                     Read Encyclopedia Article
                   </a>
                 )}
                 <button
                   onClick={() => handleShareLocation(expandedModalRecord)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-sm"
+                  className="rounded border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5 "
                 >
                   {copyFeedback === expandedModalRecord.id ? (
-                    <span className="text-emerald-600 font-bold">Link Copied!</span>
+                    <span className="text-emerald-600 font-semibold">Link Copied!</span>
                   ) : (
                     <>
                       <svg className="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1086,7 +917,7 @@ export function KeepingPlaceExplorer() {
                   href={`https://www.google.com/maps/search/?api=1&query=${expandedModalRecord.lat},${expandedModalRecord.lng}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-sm"
+                  className="rounded border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5 "
                 >
                   <svg className="w-3.5 h-3.5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -1102,13 +933,13 @@ export function KeepingPlaceExplorer() {
                     handleFocusRecord(expandedModalRecord);
                     setExpandedModalRecord(null);
                   }}
-                  className="rounded-lg bg-slate-100 border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-200 transition-colors"
+                  className="rounded bg-slate-100 border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-200 transition-colors"
                 >
                   Focus Location on Map
                 </button>
                 <button
                   onClick={() => setExpandedModalRecord(null)}
-                  className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="rounded border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Close Report
                 </button>
@@ -1116,43 +947,43 @@ export function KeepingPlaceExplorer() {
             </div>
 
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* ADD SITE MODAL */}
       {isAddModalOpen && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[1000] bg-slate-900/60 flex items-center justify-center p-4">
-          <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-slate-200 text-slate-900">
+        <Modal label="Suggest a place or record" onClose={() => setIsAddModalOpen(false)}>
+          <div className="w-full max-w-lg rounded bg-white p-6 border border-slate-200 text-slate-900">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-slate-900">Record Spatial Landmark</h3>
+              <h3 className="text-lg font-semibold text-slate-900">Suggest a place or record</h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-500 hover:text-slate-900"
+                className="rounded border border-slate-200 bg-slate-50 px-2.5 py-1 text-sm font-semibold text-slate-500 hover:text-slate-900"
               >
                 Close
               </button>
             </div>
 
-            <form onSubmit={handleCreateRecord} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateRecord} className="space-y-4 text-sm">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Landmark / Site Name *</label>
+                <label htmlFor="newSiteName" className="block font-semibold text-slate-700 mb-1">Landmark / Site Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="For example, Dzaleka Youth Center"
-                  value={newSiteName}
+                  id="newSiteName" value={newSiteName}
                   onChange={(e) => setNewSiteName(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-slate-400 focus:outline-none shadow-sm"
+                  className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-slate-400 focus:outline-none "
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Category</label>
+                  <label htmlFor="newSiteCategory" className="block font-semibold text-slate-700 mb-1">Category</label>
                   <select
-                    value={newSiteCategory}
+                    id="newSiteCategory" value={newSiteCategory}
                     onChange={(e) => setNewSiteCategory(e.target.value as RecordCategory)}
-                    className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-slate-400 focus:outline-none shadow-sm"
+                    className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "
                   >
                     <option value="cultural_site">Cultural Site</option>
                     <option value="land_tenement">Land Boundary</option>
@@ -1162,11 +993,11 @@ export function KeepingPlaceExplorer() {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Protocol Access</label>
+                  <label htmlFor="newSiteProtocol" className="block font-semibold text-slate-700 mb-1">Protocol Access</label>
                   <select
-                    value={newSiteProtocol}
+                    id="newSiteProtocol" value={newSiteProtocol}
                     onChange={(e) => setNewSiteProtocol(e.target.value as CulturalProtocolLevel)}
-                    className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-slate-400 focus:outline-none shadow-sm"
+                    className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "
                   >
                     <option value="public">Public Access</option>
                     <option value="community">Community Access</option>
@@ -1177,45 +1008,45 @@ export function KeepingPlaceExplorer() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Latitude</label>
+                  <label htmlFor="newSiteLat" className="block font-semibold text-slate-700 mb-1">Latitude</label>
                   <input
                     type="number"
                     step="0.0001"
-                    value={newSiteLat}
+                    id="newSiteLat" value={newSiteLat}
                     onChange={(e) => setNewSiteLat(parseFloat(e.target.value))}
-                    className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-slate-400 focus:outline-none shadow-sm"
+                    className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Longitude</label>
+                  <label htmlFor="newSiteLng" className="block font-semibold text-slate-700 mb-1">Longitude</label>
                   <input
                     type="number"
                     step="0.0001"
-                    value={newSiteLng}
+                    id="newSiteLng" value={newSiteLng}
                     onChange={(e) => setNewSiteLng(parseFloat(e.target.value))}
-                    className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-slate-400 focus:outline-none shadow-sm"
+                    className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Zone / Sector</label>
+                <label htmlFor="newSiteZone" className="block font-semibold text-slate-700 mb-1">Zone / Sector</label>
                 <input
                   type="text"
-                  value={newSiteZone}
+                  id="newSiteZone" value={newSiteZone}
                   onChange={(e) => setNewSiteZone(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-slate-400 focus:outline-none shadow-sm"
+                  className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Field Notes</label>
+                <label htmlFor="newSiteSummary" className="block font-semibold text-slate-700 mb-1">Field Notes</label>
                 <textarea
                   rows={3}
                   placeholder="Record spatial notes..."
-                  value={newSiteSummary}
+                  id="newSiteSummary" value={newSiteSummary}
                   onChange={(e) => setNewSiteSummary(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-slate-400 focus:outline-none shadow-sm"
+                  className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "
                 />
               </div>
 
@@ -1224,13 +1055,13 @@ export function KeepingPlaceExplorer() {
                   <button
                     type="button"
                     onClick={() => setIsAddModalOpen(false)}
-                    className="rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-xs text-slate-700 hover:bg-slate-100"
+                    className="rounded border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-sm text-slate-700 hover:bg-slate-100"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="rounded-lg bg-sky-700 px-4 py-1.5 text-xs font-bold text-white hover:bg-sky-600 transition-colors shadow-sm"
+                    className="rounded bg-sky-700 px-4 py-1.5 text-sm font-semibold text-white hover:bg-sky-600 transition-colors "
                   >
                     Submit Record via Email & Save
                   </button>
@@ -1238,7 +1069,7 @@ export function KeepingPlaceExplorer() {
                 <div className="text-center pt-1">
                   <a
                     href="/site-register/submit"
-                    className="text-[11px] text-slate-500 hover:text-sky-700 hover:underline"
+                    className="text-sm text-slate-500 hover:text-sky-700 hover:underline"
                   >
                     Or use the complete Site Register Web Submission Form &rarr;
                   </a>
@@ -1246,7 +1077,7 @@ export function KeepingPlaceExplorer() {
               </div>
             </form>
           </div>
-        </div>
+        </Modal>
       )}
 
     </div>

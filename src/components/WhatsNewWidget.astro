@@ -62,7 +62,7 @@ const getTypeLabel = (type: Update['type']) => {
     <button
         type="button"
         class="p-1.5 text-gray-600 hover:text-gray-900 focus:outline-none focus:text-gray-900"
-        aria-haspopup="true"
+        aria-label="What’s new"
         aria-expanded="false"
         aria-controls="whats-new-panel"
         data-whats-new-trigger
@@ -95,14 +95,14 @@ const getTypeLabel = (type: Update['type']) => {
             <div id="whats-new-panel-title" class="text-lg font-semibold text-gray-900">What's New</div>
             <p class="text-sm text-gray-500">Latest updates and announcements</p>
         </div>
-        
+
         <div class="max-h-96 overflow-y-auto">
             {recentUpdates.map((update) => (
                 <div class="p-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0">
                     <div class="flex items-start space-x-3">
                         <div class={`flex-shrink-0 ${getTypeColor(update.type)}`} set:html={getTypeIcon(update.type)} />
                         <div>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex flex-wrap items-center gap-2">
                                 <div class="text-sm font-medium text-gray-900">{update.title}</div>
                                 <span class={`text-xs px-2 py-0.5 rounded-full ${getTypeBadgeClasses(update.type)}`}>
                                     {getTypeLabel(update.type)}
@@ -164,8 +164,9 @@ const getTypeLabel = (type: Update['type']) => {
         });
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
+            if (event.key === 'Escape' && !panel.classList.contains('hidden')) {
                 setOpen(false);
+                trigger.focus();
             }
         });
     });

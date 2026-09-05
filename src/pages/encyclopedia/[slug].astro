@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import EntryContents from '../../components/encyclopedia/EntryContents.astro';
 import EntryDataPanel from '../../components/encyclopedia/EntryDataPanel.astro';
 import RelatedCoverage from '../../components/encyclopedia/RelatedCoverage.astro';
 import { resolveStatSeries } from '../../data/campStatistics';
@@ -77,6 +78,13 @@ const relatedCoverage = rankCoverage(
   },
   coverageCandidates
 );
+
+const contentsLinks = [
+  ...toc.map((heading) => ({ href: `#${heading.slug}`, label: heading.text })),
+  ...(entryCharts.length ? [{ href: '#data-heading', label: 'Data behind this entry' }] : []),
+  ...(entry.data.gallery?.length ? [{ href: '#gallery-heading', label: 'Photographs' }] : []),
+  { href: '#sources-heading', label: 'Sources' },
+];
 
 const canonical = `https://services.dzaleka.com/encyclopedia/${entry.id}`;
 const encyclopediaUrl = 'https://services.dzaleka.com/encyclopedia';
@@ -357,103 +365,45 @@ const structuredData = {
           { label: 'Home', href: '/' },
           { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' },
         ]} />
-        <div class:list={[
-          'mt-7',
-          hasHeaderMedia
-            ? isCoverMedia
-              ? 'grid gap-8 sm:grid-cols-[minmax(0,1fr)_240px] sm:items-start lg:grid-cols-[minmax(0,1fr)_280px]'
-              : 'grid gap-8 sm:grid-cols-[minmax(0,1fr)_176px] sm:items-start lg:grid-cols-[minmax(0,1fr)_208px]'
-            : 'max-w-4xl',
-        ]}>
-          <div class="max-w-4xl">
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
-              <span class="font-semibold uppercase tracking-widest text-slate-500">{entry.data.category}</span>
-              <span class="text-slate-300" aria-hidden="true">/</span>
-              <span class="text-slate-500">{readingMinutes} min read</span>
-              {isScholarly && (
-                <span class="rounded-md bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-900 border border-sky-200">Academic Research</span>
-              )}
-              {entry.data.status === 'developing' && (
-                <span class="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">Developing entry</span>
-              )}
+        <div class:list={['mt-6 grid items-start gap-7 sm:gap-10', hasHeaderMedia ? 'sm:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[minmax(0,1fr)_260px]' : 'max-w-4xl']}>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-primary-800">{isPerson ? 'People of Dzaleka and its wider community' : entry.data.category}</p>
+            <h1 class="mt-3 text-primary-900">{entry.data.title}</h1>
+            {entry.data.aliases?.length > 0 && <p class="mt-3 text-sm text-slate-600">Also known as {entry.data.aliases.join(', ')}</p>}
+            <p class="mt-5 max-w-3xl text-base leading-7 text-slate-700">{entry.data.summary}</p>
+            <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+              <p>{readingMinutes} min read</p>
+              <p>Reviewed <time datetime={entry.data.lastReviewed.toISOString()}>{reviewedDate}</time></p>
+              {isScholarly && <p>Academic research</p>}
+              {entry.data.status === 'developing' && <p class="text-amber-800">Developing entry</p>}
             </div>
-            <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">{entry.data.title}</h1>
-            {hasHeaderMedia && entry.data.image && (
-              <figure class:list={[
-                'mt-6 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:hidden',
-                isCoverMedia && 'mx-auto max-w-sm',
-              ]}>
-                <img
-                  src={entry.data.image}
-                  alt={entry.data.imageAlt || entry.data.title}
-                  class:list={[
-                    isCoverMedia ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-square w-full object-cover',
-                  ]}
-                  fetchpriority="high"
-                />
-                {(entry.data.imageCaption || entry.data.imageCredit) && (
-                  <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">
-                    {imageCaption}{imageCaptionSeparator}{entry.data.imageCredit && <span>{isCoverMedia ? 'Credit' : 'Photo'}: {entry.data.imageCredit}.</span>}
-                  </figcaption>
-                )}
-              </figure>
-            )}
-            {entry.data.aliases && entry.data.aliases.length > 0 && (
-              <p class="mt-3 text-sm text-slate-500">Also known as {entry.data.aliases.join(', ')}</p>
-            )}
-            <p class="mt-5 text-lg leading-8 text-slate-700 sm:text-xl">{entry.data.summary}</p>
-            <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500">
-              <span>Last reviewed {reviewedDate}</span>
-              <span class="text-slate-300" aria-hidden="true">•</span>
-              <span>{entry.data.sources.length} {entry.data.sources.length === 1 ? 'source' : 'sources'}</span>
-              <span class="text-slate-300" aria-hidden="true">•</span>
-              <button id="open-cite-dialog" type="button" class="inline-flex items-center gap-1.5 font-semibold text-primary-700 hover:text-primary-800">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                </svg>
-                Cite entry
-              </button>
-              <span class="text-slate-300" aria-hidden="true">•</span>
-              <a href={`/api/encyclopedia/${entry.id}?format=jsonld`} target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-600 hover:text-slate-900">
-                JSON-LD
-              </a>
-            </div>
+            <nav class="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-200 pt-3" aria-label="Entry tools">
+              <a href="#sources-heading" class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4">{entry.data.sources.length} {entry.data.sources.length === 1 ? 'source' : 'sources'}</a>
+              <button id="open-cite-dialog" type="button" class="min-h-[44px] text-sm font-medium text-primary-800 underline underline-offset-4">Cite this entry</button>
+              <a href={correctionUrl} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Suggest a correction</a>
+            </nav>
           </div>
-          {hasHeaderMedia && entry.data.image && (
-            <figure class:list={[
-              'hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:block',
-              isCoverMedia ? 'w-60 lg:w-[280px]' : 'w-44 lg:w-52',
-            ]}>
-              <img
-                src={entry.data.image}
-                alt={entry.data.imageAlt || entry.data.title}
-                class:list={[
-                  isCoverMedia ? 'mx-auto max-h-[420px] w-auto max-w-full object-contain' : 'aspect-[4/5] w-full object-cover',
-                ]}
-                fetchpriority="high"
-              />
-              {(entry.data.imageCaption || entry.data.imageCredit) && (
-                <figcaption class="border-t border-slate-200 px-3 py-2 text-xs leading-5 text-slate-500">
-                  {imageCaption}{imageCaptionSeparator}{entry.data.imageCredit && <span>{isCoverMedia ? 'Credit' : 'Photo'}: {entry.data.imageCredit}.</span>}
-                </figcaption>
-              )}
-            </figure>
-          )}
+          {hasHeaderMedia && entry.data.image && <figure class="entry-portrait w-full max-w-[260px] justify-self-start sm:justify-self-end">
+            <div class="overflow-hidden rounded border border-slate-200 bg-white p-2">
+              <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={entry.data.image} alt={entry.data.imageAlt || entry.data.title} fetchpriority="high" class="block h-auto max-h-[360px] w-full object-contain" />
+            </div>
+            {(entry.data.imageCaption || entry.data.imageCredit) && <figcaption class="mt-3 text-sm leading-6 text-slate-600">{imageCaption}{imageCaptionSeparator}{entry.data.imageCredit && <span>Credit: {entry.data.imageCredit}.</span>}</figcaption>}
+          </figure>}
         </div>
       </div>
     </header>
 
     {entry.data.image && !isPerson && !isCoverMedia && (
       <div class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 lg:px-8">
-        <figure class="overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+        <figure class="overflow-hidden rounded border border-slate-200 bg-slate-100">
           <img
             src={entry.data.image}
             alt={entry.data.imageAlt || entry.data.title}
-            class:list={['w-full', isLogoImage ? 'h-64 bg-white object-contain p-10 sm:h-72 sm:p-14' : 'max-h-[620px] aspect-[16/8] object-cover']}
+            class:list={['w-full', isLogoImage ? 'h-64 bg-white object-contain p-10 sm:h-72 sm:p-14' : 'max-h-[360px] aspect-[16/8] object-cover']}
             fetchpriority="high"
           />
           {(entry.data.imageCaption || entry.data.imageCredit) && (
-            <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-500">
+            <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-sm leading-5 text-slate-500">
               {entry.data.imageCaption}{entry.data.imageCaption && entry.data.imageCredit ? ' ' : ''}{entry.data.imageCredit && <span>Photo: {entry.data.imageCredit}.</span>}
             </figcaption>
           )}
@@ -461,60 +411,27 @@ const structuredData = {
       </div>
     )}
 
-    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)_280px] lg:px-8 lg:py-14">
-      <!-- Left Sidebar: Table of Contents (Desktop) -->
-      <aside class="hidden lg:block lg:sticky lg:top-28 lg:h-fit">
-        {toc.length > 0 && (
-          <nav aria-label="On this page">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Contents</h2>
-            <ol class="mt-4 space-y-2 text-sm leading-5">
-              {toc.map((heading) => (
-                <li>
-                  <a href={`#${heading.slug}`} class="toc-link block py-1 text-slate-600 hover:text-primary-700 transition-colors">
-                    {heading.text}
-                  </a>
-                </li>
-              ))}
-              {entryCharts.length > 0 && (
-                <li>
-                  <a href="#data-heading" class="toc-link block py-1 text-slate-600 hover:text-primary-700 transition-colors">
-                    Data behind this entry
-                  </a>
-                </li>
-              )}
-              {entry.data.gallery && (
-                <li>
-                  <a href="#gallery-heading" class="toc-link block py-1 text-slate-600 hover:text-primary-700 transition-colors">
-                    Photographs
-                  </a>
-                </li>
-              )}
-              <li>
-                <a href="#sources-heading" class="toc-link block py-1 text-slate-600 hover:text-primary-700 transition-colors">
-                  Sources
-                </a>
-              </li>
-            </ol>
-          </nav>
-        )}
-      </aside>
-
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:px-8 lg:py-14">
       <!-- Center Column: Main Article Body -->
       <div class="min-w-0">
+        <details class="mb-6 rounded border border-slate-200 px-4 lg:hidden">
+          <summary class="cursor-pointer py-3 text-base font-semibold text-primary-800">On this page</summary>
+          <EntryContents links={contentsLinks} />
+        </details>
         {entry.data.status === 'developing' && (
           <div class="mb-8 border-l-4 border-amber-500 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
             This entry preserves verified historical information, but a recent primary source has not confirmed every current operational detail.
           </div>
         )}
 
-        <div class="encyclopedia-prose prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary-700 prose-a:underline prose-a:underline-offset-4 prose-p:leading-8 prose-li:leading-8">
+        <div class="encyclopedia-prose prose prose-slate max-w-prose prose-headings:font-semibold prose-a:text-primary-800 prose-a:underline prose-a:underline-offset-4 prose-p:leading-8 prose-li:leading-8">
           <Content />
         </div>
 
         {entryCharts.length > 0 && (
           <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="data-heading">
-            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Evidence</p>
-            <h2 id="data-heading" class="mt-2 text-2xl font-bold text-slate-950">Data behind this entry</h2>
+            <p class="text-sm font-semibold text-slate-500">Evidence</p>
+            <h2 id="data-heading" class="mt-2 text-2xl font-semibold text-slate-950">Data behind this entry</h2>
             <p class="mt-3 max-w-3xl text-base leading-7 text-slate-600">
               Each figure below is plotted only where a cited source reports it. Open the table under any
               chart to read the values and follow them back to the original report.
@@ -525,14 +442,14 @@ const structuredData = {
 
         {entry.data.gallery && entry.data.gallery.length > 0 && (
           <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="gallery-heading">
-            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Visual record</p>
-            <h2 id="gallery-heading" class="mt-2 text-2xl font-bold text-slate-950">Photographs</h2>
+            <p class="text-sm font-semibold text-slate-500">Visual record</p>
+            <h2 id="gallery-heading" class="mt-2 text-2xl font-semibold text-slate-950">Photographs</h2>
             <div class="mt-6 grid gap-5 sm:grid-cols-2">
               {entry.data.gallery.map((image, index) => (
-                <figure class:list={['overflow-hidden rounded-xl border border-slate-200 bg-slate-50', index === 0 && entry.data.gallery && entry.data.gallery.length % 2 === 1 ? 'sm:col-span-2' : '']}>
-                  <img src={image.src} alt={image.alt} class="aspect-[4/3] w-full object-cover" loading="lazy" />
+                <figure class:list={['overflow-hidden rounded border border-slate-200 bg-slate-50', index === 0 && entry.data.gallery && entry.data.gallery.length % 2 === 1 ? 'sm:col-span-2' : '']}>
+                  <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={image.src} alt={image.alt} class="aspect-[4/3] w-full object-cover" loading="lazy" />
                   {(image.caption || image.credit) && (
-                    <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-500">
+                    <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-sm leading-5 text-slate-500">
                       {image.caption}{image.caption && image.credit ? ' ' : ''}{image.credit && <span>Photo: {image.credit}.</span>}
                     </figcaption>
                   )}
@@ -543,16 +460,16 @@ const structuredData = {
         )}
 
         <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="sources-heading">
-          <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">References</p>
-          <h2 id="sources-heading" class="mt-2 text-2xl font-bold text-slate-950">Sources</h2>
+          <p class="text-sm font-semibold text-slate-500">References</p>
+          <h2 id="sources-heading" class="mt-2 text-2xl font-semibold text-slate-950">Sources</h2>
           <ol class="mt-6 space-y-5">
             {entry.data.sources.map((source, index) => (
               <li class="grid grid-cols-[2rem_minmax(0,1fr)] gap-3 text-sm leading-6">
-                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-500">{index + 1}</span>
+                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-500">{index + 1}</span>
                 <div>
                   <a href={source.url} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">{source.title}</a>
                   <p class="text-slate-600">{source.publisher}{source.date ? `, ${source.date}` : ''}</p>
-                  {source.note && <p class="mt-1 text-xs text-slate-500">{source.note}</p>}
+                  {source.note && <p class="mt-1 text-sm text-slate-500">{source.note}</p>}
                 </div>
               </li>
             ))}
@@ -561,13 +478,13 @@ const structuredData = {
 
         {relatedEntries.length > 0 && (
           <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="related-heading">
-            <h2 id="related-heading" class="text-2xl font-bold text-slate-950">Related entries</h2>
-            <div class="mt-5 grid gap-3 sm:grid-cols-2">
+            <h2 id="related-heading" class="text-2xl font-semibold text-slate-950">Related entries</h2>
+            <div class="mt-5 grid gap-3">
               {relatedEntries.map((related) => related && (
-                <a href={`/encyclopedia/${related.id}`} class="group flex gap-4 rounded-xl border border-slate-200 bg-white p-4 hover:border-slate-300 hover:shadow-sm">
-                  <div class="h-20 w-20 flex-none overflow-hidden rounded-lg bg-slate-100">
+                <a href={`/encyclopedia/${related.id}`} class="group flex gap-4 rounded border border-slate-200 bg-white p-4 hover:border-slate-300">
+                  <div class="h-20 w-20 flex-none overflow-hidden rounded bg-slate-100">
                     {related.data.image ? (
-                      <img src={related.data.image} alt="" class="h-full w-full object-cover" loading="lazy" />
+                      <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={related.data.image} alt="" class:list={['h-full w-full', related.data.entryType === 'person' ? 'object-contain' : 'object-cover']} loading="lazy" />
                     ) : (
                       <div class="flex h-full w-full items-center justify-center text-slate-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -577,8 +494,8 @@ const structuredData = {
                     )}
                   </div>
                   <div class="min-w-0">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{related.data.category}</p>
-                    <h3 class="mt-1 font-bold text-slate-950 group-hover:text-primary-700">{related.data.title}</h3>
+                    <p class="text-sm font-semibold text-slate-500">{related.data.category}</p>
+                    <h3 class="mt-1 font-semibold text-slate-950 group-hover:text-primary-700">{related.data.title}</h3>
                     <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{related.data.summary}</p>
                   </div>
                 </a>
@@ -587,33 +504,33 @@ const structuredData = {
           </section>
         )}
 
-        <section class="mt-12 rounded-xl border border-slate-200 bg-slate-50 p-6">
-          <h2 class="text-xl font-bold text-slate-950">Help improve this entry</h2>
+        <section class="mt-12 rounded border border-slate-200 bg-slate-50 p-6">
+          <h2 class="text-xl font-semibold text-slate-950">Help improve this entry</h2>
           <p class="mt-2 text-sm leading-6 text-slate-600">Send a correction, a stronger source, a missing detail, or a photograph. Submissions are reviewed against the encyclopedia's editorial guidance before the public record changes.</p>
-          <a href={correctionUrl} class="mt-4 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Submit a correction</a>
-          <a href="/encyclopedia/editorial-guidelines" class="mt-4 ml-3 inline-flex text-sm font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">Read the editorial guidelines</a>
+          <div class="flex flex-wrap items-center gap-x-5"><a href={correctionUrl} class="min-h-[44px] mt-4 inline-flex rounded bg-primary-900 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800">Submit a correction</a>
+          <a href="/encyclopedia/editorial-guidelines" class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">Read the editorial guidelines</a></div>
         </section>
       </div>
 
       <!-- Right Sidebar: Fact Sheet Infobox & Meta -->
-      <aside class="space-y-6 lg:sticky lg:top-28 lg:h-fit">
-        <RelatedCoverage items={relatedCoverage} />
+      <aside class="space-y-8">
+        <div class="hidden border-b border-slate-200 pb-6 lg:block"><h2 class="text-primary-900">On this page</h2><EntryContents links={contentsLinks} /></div>
 
         {entry.data.facts && entry.data.facts.length > 0 && (
-          <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
+          <section class="overflow-hidden rounded border border-slate-200 bg-white">
             <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 flex items-center justify-between">
-              <h2 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+              <h2 class="text-sm font-semibold text-slate-600 flex items-center gap-1.5">
                 <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Fact Sheet
+                Key facts
               </h2>
-              <span class="text-[11px] font-semibold text-slate-400">{entry.data.facts.length} items</span>
+              <span class="text-sm font-semibold text-slate-600">{entry.data.facts.length} items</span>
             </div>
             <dl class="divide-y divide-slate-100 px-4 py-1">
               {entry.data.facts.map((fact) => (
                 <div class="py-2.5 transition-colors hover:bg-slate-50/70">
-                  <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">{fact.label}</dt>
+                  <dt class="text-sm font-semibold text-slate-500">{fact.label}</dt>
                   <dd class="mt-0.5 text-sm font-medium leading-6 text-slate-900">{fact.value}</dd>
                 </div>
               ))}
@@ -622,24 +539,26 @@ const structuredData = {
         )}
 
         {entry.data.officialWebsite && (
-          <a href={entry.data.officialWebsite} target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-4 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+          <a href={entry.data.officialWebsite} target="_blank" rel="noopener noreferrer" class="min-h-[44px] flex items-center justify-between gap-4 rounded border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
             <span>Official website</span><span aria-hidden="true">↗</span>
           </a>
         )}
 
-        <p class="text-xs leading-5 text-slate-500">This entry is part of a community-maintained reference work. Service details may change between reviews. <a href="/encyclopedia/about" class="underline underline-offset-2 hover:text-primary-700">About the encyclopedia</a>.</p>
+        <RelatedCoverage items={relatedCoverage} />
+
+        <p class="text-sm leading-6 text-slate-600">This entry is part of a community-maintained reference work. Service details may change between reviews. <a href="/encyclopedia/about" class="underline underline-offset-2 hover:text-primary-700">About the encyclopedia</a>.</p>
       </aside>
     </div>
   </article>
-  <dialog id="cite-dialog" class="rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-950/50 max-w-lg w-full">
+  <dialog id="cite-dialog" aria-labelledby="cite-dialog-title" class="rounded border border-slate-200 bg-white p-0 backdrop:bg-slate-950/50 max-w-[calc(100%-2rem)] w-[36rem] max-h-[85dvh] overflow-y-auto">
     <div class="border-b border-slate-200 bg-slate-50 px-6 py-4 flex items-center justify-between">
-      <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
+      <h2 id="cite-dialog-title" class="text-base font-semibold text-slate-950 flex items-center gap-2">
         <svg class="h-5 w-5 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
         </svg>
         Cite this entry
-      </h3>
-      <button id="close-cite-dialog" type="button" class="rounded-md p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-700">
+      </h2>
+      <button id="close-cite-dialog" type="button" aria-label="Close citation dialog" class="min-h-[44px] min-w-[44px] rounded p-2 text-slate-600 hover:bg-slate-200 hover:text-slate-700">
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -647,28 +566,28 @@ const structuredData = {
     </div>
     <div class="p-6 space-y-5">
       <div>
-        <label class="text-xs font-bold uppercase tracking-wider text-slate-500">APA Format</label>
-        <div class="mt-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-800 select-all font-mono">
+        <h3 class="text-sm font-semibold text-slate-700">APA format</h3>
+        <div class="mt-1.5 rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-5 text-slate-800 select-all [overflow-wrap:anywhere]">
           {apaCitation}
         </div>
       </div>
       <div>
-        <label class="text-xs font-bold uppercase tracking-wider text-slate-500">MLA Format</label>
-        <div class="mt-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-800 select-all font-mono">
+        <h3 class="text-sm font-semibold text-slate-700">MLA format</h3>
+        <div class="mt-1.5 rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-5 text-slate-800 select-all [overflow-wrap:anywhere]">
           {mlaCitation}
         </div>
       </div>
       <div>
         <div class="flex items-center justify-between">
-          <label class="text-xs font-bold uppercase tracking-wider text-slate-500">BibTeX Format</label>
-          <button id="copy-bibtex-btn" type="button" class="text-xs font-semibold text-primary-700 hover:underline">
-            <span id="copy-bibtex-text">Copy BibTeX</span>
+          <h3 class="text-sm font-semibold text-slate-700">BibTeX format</h3>
+          <button id="copy-bibtex-btn" type="button" class="min-h-[44px] text-sm font-semibold text-primary-700 hover:underline">
+            <span id="copy-bibtex-text" role="status">Copy BibTeX</span>
           </button>
         </div>
-        <pre id="bibtex-text" class="mt-1.5 rounded-lg border border-slate-200 bg-slate-900 p-3 text-xs leading-5 text-slate-100 overflow-x-auto select-all font-mono">{bibtexCitation}</pre>
+        <pre id="bibtex-text" class="mt-1.5 rounded border border-slate-200 bg-slate-900 p-3 text-sm leading-5 text-slate-100 overflow-x-auto select-all [overflow-wrap:anywhere]">{bibtexCitation}</pre>
       </div>
     </div>
-    <div class="border-t border-slate-200 bg-slate-50 px-6 py-3 flex items-center justify-between text-xs">
+    <div class="border-t border-slate-200 bg-slate-50 px-6 py-3 flex items-center justify-between text-sm">
       <a href={`/api/encyclopedia/${entry.id}?format=jsonld`} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary-700 hover:underline flex items-center gap-1">
         <span>View raw JSON-LD schema</span><span aria-hidden="true">↗</span>
       </a>
@@ -683,9 +602,11 @@ const structuredData = {
         const id = obsEntry.target.id;
         document.querySelectorAll('.toc-link').forEach((link) => {
           if (link.getAttribute('href') === `#${id}`) {
+            link.setAttribute('aria-current', 'location');
             link.classList.add('font-semibold', 'text-primary-700', 'border-l-2', 'border-primary-700', '-ml-2', 'pl-2');
             link.classList.remove('text-slate-600');
           } else {
+            link.removeAttribute('aria-current');
             link.classList.remove('font-semibold', 'text-primary-700', 'border-l-2', 'border-primary-700', '-ml-2', 'pl-2');
             link.classList.add('text-slate-600');
           }
@@ -694,7 +615,7 @@ const structuredData = {
     });
   }, { rootMargin: '-10% 0px -70% 0px' });
 
-  document.querySelectorAll('.encyclopedia-prose h2').forEach((heading) => {
+  document.querySelectorAll('.encyclopedia-prose h2, #data-heading, #gallery-heading, #sources-heading').forEach((heading) => {
     observer.observe(heading);
   });
 
@@ -705,8 +626,10 @@ const structuredData = {
 
   openCiteBtn?.addEventListener('click', () => citeDialog?.showModal());
   closeCiteBtn?.addEventListener('click', () => citeDialog?.close());
+  citeDialog?.addEventListener('close', () => openCiteBtn?.focus());
   citeDialog?.addEventListener('click', (e) => {
-    if (e.target === citeDialog) citeDialog.close();
+    const bounds = citeDialog.getBoundingClientRect();
+    if (e.target === citeDialog && (e.clientX < bounds.left || e.clientX > bounds.right || e.clientY < bounds.top || e.clientY > bounds.bottom)) citeDialog.close();
   });
 
   copyBibtexBtn?.addEventListener('click', async () => {
@@ -717,7 +640,8 @@ const structuredData = {
       if (copyText) copyText.textContent = 'Copied!';
       setTimeout(() => { if (copyText) copyText.textContent = 'Copy BibTeX'; }, 2000);
     } catch (err) {
-      console.error('Failed to copy', err);
+      const copyText = document.getElementById('copy-bibtex-text');
+      if (copyText) copyText.textContent = 'Copy failed. Select and copy the text below.';
     }
   });
 </script>
@@ -727,7 +651,7 @@ const structuredData = {
     margin-top: 2.75rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgb(226 232 240);
-    scroll-margin-top: 7rem;
+
   }
   .encyclopedia-prose :global(h2:first-child) {
     margin-top: 0;

@@ -20,12 +20,12 @@ export interface Props {
 const { items, light = false } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class="mb-6 overflow-x-auto -mx-1 px-1">
-  <ol class="flex items-center space-x-2 text-sm whitespace-nowrap">
+<nav aria-label="Breadcrumb" class="mb-5 -mx-1 px-1">
+  <ol class="flex flex-wrap items-center gap-y-1 text-sm">
     {items.map((item, index) => (
-      <li class="flex items-center">
+      <li class="flex min-w-0 items-center">
         {index > 0 && (
-          <svg class:list={["w-4 h-4 mx-2", light ? "text-white/70" : "text-gray-400"]} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <svg class:list={["w-4 h-4 mx-2 shrink-0", light ? "text-white/70" : "text-gray-400"]} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
           </svg>
         )}
@@ -33,14 +33,14 @@ const { items, light = false } = Astro.props;
           <a
             href={item.href}
             class:list={[
-              "transition-colors",
+              "inline-flex min-h-[32px] items-center underline underline-offset-4",
               light ? "text-white/90 hover:text-white" : "text-gray-600 hover:text-primary-600"
             ]}
           >
             {item.label}
           </a>
         ) : (
-          <span class:list={["font-medium", light ? "text-white" : "text-gray-900"]} aria-current="page">
+          <span class:list={["font-medium break-words", light ? "text-white" : "text-gray-900"]} aria-current="page">
             {item.label}
           </span>
         )}

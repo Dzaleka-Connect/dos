@@ -133,9 +133,9 @@ const faqStructuredData = {
 };
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
   additionalMetaTags={seo.additionalMetaTags}
@@ -143,7 +143,7 @@ const faqStructuredData = {
   <script type="application/ld+json" set:html={JSON.stringify(structuredData, null, 2)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData, null, 2)} />
 
-  <main class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50">
     {/* Back Button & Login */}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
       <a href="/visit" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600">
@@ -152,7 +152,7 @@ const faqStructuredData = {
         </svg>
         Back to Visit
       </a>
-      <a href="https://visit.dzaleka.com/login" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-lg transition-colors">
+      <a href="https://visit.dzaleka.com/login" target="_blank" rel="noopener noreferrer" class="min-h-[44px] inline-flex items-center px-4 py-2 bg-primary-900 hover:bg-primary-800 text-white text-sm font-medium rounded transition-colors">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
         </svg>
@@ -181,10 +181,10 @@ const faqStructuredData = {
       <div class="mb-12">
         <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-3">Choose your tour package</h2>
         <p class="text-gray-600 text-center mb-8">All packages include guided tour and community support</p>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {/* Solo Package */}
-          <div class="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-6 hover:border-primary-500 transition-all duration-300">
+          <div class="bg-white rounded border-2 border-gray-200 p-6 hover:border-primary-500 transition-all duration-300">
             <div class="text-center">
               <h3 class="text-lg font-semibold text-gray-900 mb-2">Solo Explorer</h3>
               <div class="mb-4">
@@ -213,13 +213,13 @@ const faqStructuredData = {
                 <span>Flexible schedule</span>
               </li>
             </ul>
-            <button onclick="selectPackage(1, 15000)" class="w-full bg-gray-100 hover:bg-slate-900 hover:text-white text-gray-900 py-2 rounded-lg transition-colors font-medium">
+            <button onclick="selectPackage(1, 15000)" class="min-h-[44px] w-full bg-gray-100 hover:bg-primary-900 hover:text-white text-gray-900 py-2 rounded transition-colors font-medium">
               Select
             </button>
           </div>
 
           {/* Small Group Package - POPULAR */}
-          <div class="bg-white rounded-xl shadow-sm border-2 border-primary-500 p-6 relative transition-all duration-300 transform">
+          <div class="bg-white rounded border-2 border-primary-500 p-6 relative transition-all duration-300 transform">
             <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <span class="bg-slate-900 text-white px-4 py-1 rounded-full text-xs font-semibold">MOST POPULAR</span>
             </div>
@@ -257,13 +257,13 @@ const faqStructuredData = {
                 <span>Group interaction</span>
               </li>
             </ul>
-            <button onclick="selectPackage(2, 50000)" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2 rounded-lg transition-colors font-medium">
+            <button onclick="selectPackage(2, 50000)" class="min-h-[44px] w-full bg-primary-900 hover:bg-primary-800 text-white py-2 rounded transition-colors font-medium">
               Select
             </button>
           </div>
 
           {/* Medium Group Package */}
-          <div class="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-6 hover:border-primary-500 transition-all duration-300">
+          <div class="bg-white rounded border-2 border-gray-200 p-6 hover:border-primary-500 transition-all duration-300">
             <div class="text-center">
               <h3 class="text-lg font-semibold text-gray-900 mb-2">Medium Group</h3>
               <div class="mb-4">
@@ -292,13 +292,13 @@ const faqStructuredData = {
                 <span>Great for families</span>
               </li>
             </ul>
-            <button onclick="selectPackage(6, 80000)" class="w-full bg-gray-100 hover:bg-slate-900 hover:text-white text-gray-900 py-2 rounded-lg transition-colors font-medium">
+            <button onclick="selectPackage(6, 80000)" class="min-h-[44px] w-full bg-gray-100 hover:bg-primary-900 hover:text-white text-gray-900 py-2 rounded transition-colors font-medium">
               Select
             </button>
           </div>
 
           {/* Large Group Package */}
-          <div class="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-6 hover:border-primary-500 transition-all duration-300">
+          <div class="bg-white rounded border-2 border-gray-200 p-6 hover:border-primary-500 transition-all duration-300">
             <div class="text-center">
               <h3 class="text-lg font-semibold text-gray-900 mb-2">Large Group</h3>
               <div class="mb-4">
@@ -327,7 +327,7 @@ const faqStructuredData = {
                 <span>Perfect for schools</span>
               </li>
             </ul>
-            <button onclick="selectPackage(11, 100000)" class="w-full bg-gray-100 hover:bg-slate-900 hover:text-white text-gray-900 py-2 rounded-lg transition-colors font-medium">
+            <button onclick="selectPackage(11, 100000)" class="min-h-[44px] w-full bg-gray-100 hover:bg-primary-900 hover:text-white text-gray-900 py-2 rounded transition-colors font-medium">
               Select
             </button>
           </div>
@@ -335,7 +335,7 @@ const faqStructuredData = {
       </div>
 
       {/* Pricing Calculator Section */}
-      <div id="pricing-calculator" class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div id="pricing-calculator" class="bg-white rounded shadow-sm overflow-hidden">
         {/* Progress Indicator */}
         <div class="bg-slate-900 px-8 py-6">
           <div class="flex items-center justify-between max-w-3xl mx-auto">
@@ -356,9 +356,9 @@ const faqStructuredData = {
           </div>
         </div>
 
-        <div class="p-8">
+        <div class="p-5 sm:p-8">
           <h2 class="text-2xl font-semibold text-gray-900 mb-6">Customize Your Tour</h2>
-          
+
           {/* Pricing Notice */}
           <div class="mb-8 bg-amber-50 border-l-4 border-amber-400 p-4">
             <div class="flex">
@@ -381,10 +381,10 @@ const faqStructuredData = {
               {/* Step 1: Select Package */}
               <div class="booking-step" data-step="1">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Step 1: Select Your Package</h3>
-                
+
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Group Size</label>
-                  <select id="groupSize" class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-lg">
+                  <select id="groupSize" aria-label="Number of visitors" class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded">
                     <option value="1">1 person (MWK 15,000)</option>
                     <option value="2">2-5 people (MWK 50,000)</option>
                     <option value="6">6-10 people (MWK 80,000)</option>
@@ -392,7 +392,7 @@ const faqStructuredData = {
                   </select>
                 </div>
 
-                <button onclick="nextStep(2)" class="mt-6 w-full bg-slate-900 hover:bg-slate-800 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                <button onclick="nextStep(2)" class="min-h-[44px] mt-6 w-full bg-primary-900 hover:bg-primary-800 text-white py-3 px-6 rounded font-medium transition-colors">
                   Continue to Customize
                 </button>
               </div>
@@ -400,14 +400,14 @@ const faqStructuredData = {
               {/* Step 2: Customize */}
               <div class="booking-step hidden" data-step="2">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Step 2: Customize Your Experience</h3>
-                
+
                 {/* Date Selection */}
                 <div class="mb-6">
                   <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Visit Date</label>
-                  <input 
-                    type="date" 
-                    id="visitDate" 
-                    class="mt-1 block w-full px-4 py-3 border-gray-300 focus:ring-primary-500 focus:border-primary-500 rounded-lg"
+                  <input
+                    type="date"
+                    id="visitDate"
+                    class="mt-1 block w-full px-4 py-3 border-gray-300 focus:ring-primary-500 focus:border-primary-500 rounded"
                   />
                   <p class="mt-1 text-xs text-gray-500">Bookings must be made at least 48 hours in advance</p>
                 </div>
@@ -416,11 +416,11 @@ const faqStructuredData = {
                 <div class="mb-6">
                   <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Start Time</label>
                   <div class="grid grid-cols-2 gap-4">
-                    <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 cursor-pointer transition-colors">
+                    <label class="flex items-center p-4 border-2 border-gray-200 rounded hover:border-primary-500 cursor-pointer transition-colors">
                       <input type="radio" name="visitTime" value="10:00" class="w-5 h-5 text-primary-600 focus:ring-primary-500" checked />
                       <span class="ml-3 text-gray-900 font-medium">10:00 AM</span>
                     </label>
-                    <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 cursor-pointer transition-colors">
+                    <label class="flex items-center p-4 border-2 border-gray-200 rounded hover:border-primary-500 cursor-pointer transition-colors">
                       <input type="radio" name="visitTime" value="14:00" class="w-5 h-5 text-primary-600 focus:ring-primary-500" />
                       <span class="ml-3 text-gray-900 font-medium">2:00 PM</span>
                     </label>
@@ -447,7 +447,7 @@ const faqStructuredData = {
                 </div>
 
                 {/* Refer a Friend Discount */}
-                <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                <div class="mb-6 bg-green-50 border border-green-200 rounded p-4">
                   <div class="flex items-start">
                     <svg class="w-5 h-5 text-green-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
@@ -456,9 +456,9 @@ const faqStructuredData = {
                       <h4 class="text-sm font-medium text-green-900">Refer a Friend - Get 10% Off!</h4>
                       <p class="text-xs text-green-700 mt-1">If someone you referred has visited in the past 3 months, enter their booking reference for a discount.</p>
                       <div class="mt-3">
-                        <input 
-                          type="text" 
-                          id="referralCode" 
+                        <input
+                          type="text"
+                          id="referralCode"
                           placeholder="Enter referral code (optional)"
                           class="w-full px-3 py-2 border-green-300 focus:ring-green-500 focus:border-green-500 rounded-md text-sm"
                         />
@@ -469,10 +469,10 @@ const faqStructuredData = {
                 </div>
 
                 <div class="flex gap-4">
-                  <button onclick="previousStep(1)" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 px-6 rounded-lg font-medium transition-colors">
+                  <button onclick="previousStep(1)" class="min-h-[44px] flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 px-6 rounded font-medium transition-colors">
                     Back
                   </button>
-                  <button onclick="nextStep(3)" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                  <button onclick="nextStep(3)" class="min-h-[44px] flex-1 bg-primary-900 hover:bg-primary-800 text-white py-3 px-6 rounded font-medium transition-colors">
                     Continue to Confirm
                   </button>
                 </div>
@@ -481,8 +481,8 @@ const faqStructuredData = {
               {/* Step 3: Confirm */}
               <div class="booking-step hidden" data-step="3">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Step 3: Confirm Your Booking</h3>
-                
-                <div class="bg-gray-50 rounded-lg p-6 mb-6">
+
+                <div class="bg-gray-50 rounded p-6 mb-6">
                   <h4 class="font-semibold text-gray-900 mb-4">Booking Summary</h4>
                   <div class="space-y-3 text-sm">
                     <div class="flex justify-between">
@@ -508,7 +508,7 @@ const faqStructuredData = {
                   </div>
                 </div>
 
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
                   <div class="flex">
                     <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -528,10 +528,10 @@ const faqStructuredData = {
                 </div>
 
                 <div class="flex gap-4">
-                  <button onclick="previousStep(2)" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 px-6 rounded-lg font-medium transition-colors">
+                  <button onclick="previousStep(2)" class="min-h-[44px] flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 px-6 rounded font-medium transition-colors">
                     Back
                   </button>
-                  <a href="/visit/#planTripForm" id="bookVisitBtn" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-center py-3 px-6 rounded-lg font-medium transition-colors">
+                  <a href="/visit/#planTripForm" id="bookVisitBtn" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-center py-3 px-6 rounded font-medium transition-colors">
                     Complete Booking
                   </a>
                 </div>
@@ -540,9 +540,9 @@ const faqStructuredData = {
 
             {/* Sticky Booking Summary Sidebar */}
             <div class="lg:col-span-1">
-              <div class="sticky top-4 bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <div class="sticky top-24 lg:top-44 bg-gray-50 rounded p-6 border border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Booking Summary</h3>
-                
+
                 <div class="space-y-4 mb-6">
                   <div class="flex justify-between text-sm">
                     <span class="text-gray-600">Base Price:</span>
@@ -580,7 +580,7 @@ const faqStructuredData = {
                   <p class="mt-2 text-xs text-gray-500">Exchange rates are approximate</p>
                 </div>
 
-                <div class="mt-6 p-3 bg-white rounded-lg border border-gray-200">
+                <div class="mt-6 p-3 bg-white rounded border border-gray-200">
                   <p class="text-xs text-gray-600">
                     <strong class="text-gray-900">Payment on Arrival</strong><br/>
                     No online payment required. Pay when you arrive using mobile money or cash.
@@ -691,14 +691,14 @@ const faqStructuredData = {
           </div>
 
           {/* Contact Form Link */}
-          <div class="mt-8 bg-gray-50 rounded-xl p-6">
+          <div class="mt-8 bg-gray-50 rounded p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-2">Need a Custom Quote?</h3>
             <p class="text-gray-600 mb-4">For specialized tours or group arrangements, reach out to us:</p>
             <div class="space-y-3">
-              <a href="/contact" class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-center hover:border-primary-500 hover:text-primary-600 transition-colors">
+              <a href="/contact" class="block w-full bg-white border border-gray-300 rounded px-4 py-3 text-center hover:border-primary-500 hover:text-primary-600 transition-colors">
                 Contact Us Form
               </a>
-              <a href="mailto:dzalekaconnect@gmail.com" class="block w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-center hover:border-primary-500 hover:text-primary-600 transition-colors">
+              <a href="mailto:dzalekaconnect@gmail.com" class="block w-full bg-white border border-gray-300 rounded px-4 py-3 text-center hover:border-primary-500 hover:text-primary-600 transition-colors">
                 Email: dzalekaconnect@gmail.com
               </a>
             </div>
@@ -706,7 +706,7 @@ const faqStructuredData = {
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
   <script>
     // Price configuration
@@ -739,7 +739,7 @@ const faqStructuredData = {
     // Multi-step wizard state
     let currentStep = 1;
     let hasReferralDiscount = false;
-    
+
     // Currency exchange rates (Wise mid-market rates - updated Jan 2025)
     const exchangeRates = {
       USD: 0.0006,  // 1 MWK = 0.0006 USD
@@ -766,7 +766,7 @@ const faqStructuredData = {
         const stepNum = index + 1;
         const circle = indicator.querySelector('.step-circle');
         const label = indicator.querySelector('.step-label');
-        
+
         if (stepNum < step) {
           circle.classList.remove('bg-primary-400', 'bg-white');
           circle.classList.add('bg-green-500', 'text-white');
@@ -786,25 +786,25 @@ const faqStructuredData = {
     function populateConfirmation() {
       const groupSizeText = groupSizeSelect.options[groupSizeSelect.selectedIndex].text.split('(')[0].trim();
       document.getElementById('confirmGroupSize').textContent = groupSizeText;
-      
+
       const visitDate = document.getElementById('visitDate');
       if (visitDate.value) {
         const date = new Date(visitDate.value);
-        document.getElementById('confirmDate').textContent = date.toLocaleDateString('en-US', { 
-          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        document.getElementById('confirmDate').textContent = date.toLocaleDateString('en-US', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
       } else {
         document.getElementById('confirmDate').textContent = 'Not selected';
       }
-      
+
       const visitTime = document.querySelector('input[name="visitTime"]:checked');
       if (visitTime) {
         document.getElementById('confirmTime').textContent = visitTime.value === '10:00' ? '10:00 AM' : '2:00 PM';
       }
-      
+
       const totalHours = 2 + additionalHours;
       document.getElementById('confirmDuration').textContent = `${totalHours} hour${totalHours > 1 ? 's' : ''}`;
-      
+
       const basePrice = prices[groupSizeSelect.value];
       const additionalCost = additionalHours * additionalHourRate;
       let total = basePrice + additionalCost;
@@ -848,7 +848,7 @@ const faqStructuredData = {
       const basePrice = prices[groupSizeSelect.value];
       const additionalCost = additionalHours * additionalHourRate;
       let total = basePrice + additionalCost;
-      
+
       // Apply referral discount
       let discount = 0;
       if (hasReferralDiscount) {
@@ -863,10 +863,10 @@ const faqStructuredData = {
       basePriceDisplay.textContent = formatCurrency(basePrice);
       additionalCostDisplay.textContent = formatCurrency(additionalCost);
       totalCostDisplay.textContent = formatCurrency(total);
-      
+
       // Update currency conversions
       updateCurrencyConversion(total);
-      
+
       // Add visual feedback animation
       totalCostDisplay.classList.add('scale-110', 'text-primary-700');
       setTimeout(() => {
@@ -898,16 +898,16 @@ const faqStructuredData = {
     window.selectPackage = (groupValue, basePrice) => {
       groupSizeSelect.value = groupValue;
       updateTotal();
-      
+
       // Scroll to calculator
       const groupSizeElement = document.querySelector('#groupSize');
       if (groupSizeElement) {
-        groupSizeElement.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
+        groupSizeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
         });
       }
-      
+
       // Highlight the calculator briefly
       const calculator = document.querySelector('#pricing-calculator');
       if (calculator) {
@@ -923,18 +923,18 @@ const faqStructuredData = {
     if (bookVisitBtn) {
       bookVisitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        
+
         // Get current selections
         const groupSize = groupSizeSelect.value;
         const hours = additionalHours;
         const basePrice = prices[groupSize];
         const totalCost = basePrice + (hours * additionalHourRate);
-        
+
         // Get date and time selections
         const visitDate = document.getElementById('visitDate')?.value || '';
         const visitTimeRadio = document.querySelector('input[name="visitTime"]:checked');
         const visitTime = visitTimeRadio ? visitTimeRadio.value : '10:00';
-        
+
         // Map group size value to form option
         const groupSizeMap = {
           '1': '1',
@@ -942,13 +942,13 @@ const faqStructuredData = {
           '6': '6-10',
           '11': '10+'
         };
-        
+
         // Determine tour type based on hours
         let tourType = 'standard';
         if (hours > 0) {
           tourType = hours === 1 || hours === 2 ? 'extended' : 'custom';
         }
-        
+
         // Build URL with parameters including date and time
         const params = new URLSearchParams({
           groupSize: groupSizeMap[groupSize],
@@ -958,7 +958,7 @@ const faqStructuredData = {
           visitDate: visitDate,
           visitTime: visitTime
         });
-        
+
         // Navigate to booking form with parameters (params BEFORE hash)
         window.location.href = `/visit/?${params.toString()}#planTripForm`;
       });
@@ -973,7 +973,7 @@ const faqStructuredData = {
     .booking-step {
       animation: fadeIn 0.3s ease-in;
     }
-    
+
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -984,21 +984,21 @@ const faqStructuredData = {
         transform: translateY(0);
       }
     }
-    
+
     /* Progress indicator animations */
     .step-circle {
       transition: all 0.3s ease;
     }
-    
+
     .step-label {
       transition: all 0.3s ease;
     }
-    
+
     /* Radio button styling for time selection */
     input[type="radio"]:checked + span {
       color: #4F46E5;
     }
-    
+
     input[type="radio"]:checked {
       background-color: #4F46E5;
       border-color: #4F46E5;

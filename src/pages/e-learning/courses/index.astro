@@ -34,7 +34,7 @@ const levelColors = {
 ---
 
 <MainLayout title={pageTitle} description={description}>
-  <main class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50">
     <!-- Hero -->
     <section class="relative bg-gray-900 border-b border-gray-800 py-20 overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -46,7 +46,7 @@ const levelColors = {
         </p>
         <a
           href="/e-learning/courses/submit"
-          class="inline-flex items-center bg-slate-900 text-white border border-slate-900 px-8 py-4 rounded-lg font-medium hover:bg-slate-800 transition-colors"
+          class="min-h-[44px] inline-flex items-center bg-primary-900 text-white border border-slate-900 px-8 py-4 rounded font-medium hover:bg-primary-800 transition-colors"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -57,12 +57,12 @@ const levelColors = {
     </section>
 
     <!-- Filters -->
-    <section class="py-6 bg-white border-b border-gray-200 sticky top-0 z-30 bg-white/95">
+    <section class="py-6 bg-white border-b border-gray-200 sticky top-24 lg:top-44 z-30 bg-white/95">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center gap-4">
           <div class="relative">
             <select
-              id="categoryFilter"
+              id="categoryFilter" aria-label="Filter courses by category"
               class="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md focus:ring-2 focus:ring-slate-500 focus:border-transparent text-gray-700 font-medium cursor-pointer hover:bg-gray-100 transition-colors"
             >
               {categories.map(cat => (
@@ -75,10 +75,10 @@ const levelColors = {
               </svg>
             </div>
           </div>
-          
+
           <div class="relative">
             <select
-              id="levelFilter"
+              id="levelFilter" aria-label="Filter courses by level"
               class="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md focus:ring-2 focus:ring-slate-500 focus:border-transparent text-gray-700 font-medium cursor-pointer hover:bg-gray-100 transition-colors"
             >
               <option value="all">All Levels</option>
@@ -104,7 +104,7 @@ const levelColors = {
             <div class="text-6xl mb-6">📚</div>
             <h3 class="text-2xl font-bold text-gray-900 mb-3">No courses yet</h3>
             <p class="text-gray-500 mb-8 max-w-md mx-auto">Be the first to share your knowledge with the community. Creating a course is easy!</p>
-            <a href="/e-learning/courses/submit" class="inline-flex items-center bg-white text-slate-700 border border-slate-300 px-6 py-3 rounded-lg font-semibold hover:bg-slate-50 transition-colors">
+            <a href="/e-learning/courses/submit" class="min-h-[44px] inline-flex items-center bg-white text-slate-700 border border-slate-300 px-6 py-3 rounded font-semibold hover:bg-slate-50 transition-colors">
               Start Creating
             </a>
           </div>
@@ -113,7 +113,7 @@ const levelColors = {
             {publishedCourses.map((course) => (
               <a
                 href={`/e-learning/courses/${course.id}`}
-                class="course-card flex flex-col bg-white border border-gray-200 rounded-xl hover:border-slate-400 transition-colors duration-200 group overflow-hidden"
+                class="course-card flex flex-col bg-white border border-gray-200 rounded hover:border-slate-400 transition-colors duration-200 group overflow-hidden"
                 data-category={course.data.category}
                 data-level={course.data.level}
               >
@@ -167,13 +167,13 @@ const levelColors = {
               </a>
             ))}
           </div>
-          
+
           <!-- No Results Message (Client-side) -->
           <div id="noResultsMessage" class="hidden text-center py-20">
             <div class="text-4xl mb-4">🔍</div>
             <h3 class="text-xl font-bold text-gray-900 mb-2">No courses found</h3>
             <p class="text-gray-500">Try adjusting your filters to find what you're looking for.</p>
-            <button id="clearFilters" class="mt-6 text-slate-700 font-medium hover:text-slate-700 hover:underline transition-colors">
+            <button id="clearFilters" class="min-h-[44px] mt-6 text-slate-700 font-medium hover:text-slate-700 hover:underline transition-colors">
               Clear all filters
             </button>
           </div>
@@ -195,7 +195,7 @@ const levelColors = {
         </a>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>
 
 <script>
@@ -232,7 +232,7 @@ const levelColors = {
 
     function render() {
       const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
-      
+
       // Toggle No Results Message
       if (filteredCards.length === 0) {
         if (noResultsMessage) noResultsMessage.classList.remove('hidden');
@@ -250,13 +250,13 @@ const levelColors = {
       const start = (currentPage - 1) * itemsPerPage;
       const end = start + itemsPerPage;
       const visibleCards = filteredCards.slice(start, end);
-      
+
       visibleCards.forEach(card => card.style.display = 'flex');
 
       // Render Pagination Controls
       if (paginationContainer) {
         paginationContainer.innerHTML = '';
-        
+
         if (totalPages > 1) {
             // Previous Button
             const prevBtn = document.createElement('button');
@@ -312,7 +312,7 @@ const levelColors = {
 
     categoryFilter?.addEventListener('change', filterCourses);
     levelFilter?.addEventListener('change', filterCourses);
-    
+
     clearFiltersBtn?.addEventListener('click', () => {
         categoryFilter.value = 'all';
         levelFilter.value = 'all';

@@ -31,12 +31,12 @@ const schema = {
         ]} />
         <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
           <div>
-            <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Corrections and contributions</p>
-            <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">Improve the encyclopedia</h1>
+            <p class="text-sm font-semibold text-slate-500">Corrections and contributions</p>
+            <h1 class="mt-3 text-4xl font-semibold text-slate-950 sm:text-5xl">Improve the encyclopedia</h1>
             <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">We welcome constructive comments, questions, corrections, suggestions, new entry proposals, and photographs that can strengthen the public record.</p>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 class="font-bold text-slate-950">What helps editors</h2>
+          <div class="rounded border border-slate-200 bg-white p-5">
+            <h2 class="font-semibold text-slate-950">What helps editors</h2>
             <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-600">
               <li>Name the exact entry or topic.</li>
               <li>Explain what should change and why.</li>
@@ -51,10 +51,10 @@ const schema = {
 
     <div class="mx-auto grid max-w-5xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:px-8 lg:py-14">
       <div>
-        <div id="correction-success" class="hidden rounded-xl border border-green-200 bg-green-50 p-6" role="status" tabindex="-1">
-          <h2 class="text-xl font-bold text-green-950">Submission received</h2>
+        <div id="correction-success" class="hidden rounded border border-green-200 bg-green-50 p-6" role="status" tabindex="-1">
+          <h2 class="text-xl font-semibold text-green-950">Submission received</h2>
           <p class="mt-2 leading-7 text-green-900">Thank you. An editor will review the information and its sources before changing the public record.</p>
-          <a href="/encyclopedia" class="mt-5 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Return to the encyclopedia</a>
+          <a href="/encyclopedia" class="min-h-[44px] mt-5 inline-flex rounded bg-primary-900 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800">Return to the encyclopedia</a>
         </div>
 
         <form
@@ -62,14 +62,14 @@ const schema = {
           action="https://formspree.io/f/xqaaajae"
           method="POST"
           enctype="multipart/form-data"
-          class="space-y-7"
+          class="submission-form space-y-7"
         >
           <input type="hidden" name="subject" value="Dzaleka Encyclopedia correction or contribution" />
           <input type="hidden" id="submission-page" name="submissionPage" value="" />
           <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
 
           <fieldset>
-            <legend class="text-base font-bold text-slate-950">What are you submitting? <span class="text-red-700">*</span></legend>
+            <legend class="text-base font-semibold text-slate-950">What are you submitting? <span class="text-red-700">*</span></legend>
             <div class="mt-3 grid gap-3 sm:grid-cols-2">
               {[
                 ['correction', 'Correction to an entry'],
@@ -80,7 +80,7 @@ const schema = {
                 ['question', 'A question or suggestion'],
                 ['other', 'Something else'],
               ].map(([value, label]) => (
-                <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                <label class="flex cursor-pointer items-start gap-3 rounded border border-slate-200 bg-white p-3 hover:bg-slate-50">
                   <input type="radio" name="submissionType" value={value} required class="mt-1 h-4 w-4 border-slate-300 text-slate-900 focus:ring-slate-500" />
                   <span class="text-sm font-medium text-slate-800">{label}</span>
                 </label>
@@ -90,7 +90,7 @@ const schema = {
 
           <div>
             <label for="entry" class="block text-sm font-semibold text-slate-800">Encyclopedia entry</label>
-            <select id="entry" name="entry" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500">
+            <select id="entry" name="entry" class="mt-2 w-full rounded border border-slate-300 bg-white px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500">
               <option value="">General contribution or proposed new entry</option>
               {entries.map((entry) => <option value={entry.id}>{entry.data.title}</option>)}
             </select>
@@ -99,42 +99,42 @@ const schema = {
           <div>
             <label for="current-information" class="block text-sm font-semibold text-slate-800">Current information</label>
             <p class="mt-1 text-sm text-slate-500">Quote or describe the text, fact, name, or image that needs attention.</p>
-            <textarea id="current-information" name="currentInformation" rows="4" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500"></textarea>
+            <textarea id="current-information" name="currentInformation" rows="4" class="mt-2 w-full rounded border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500"></textarea>
           </div>
 
           <div>
             <label for="proposed-information" class="block text-sm font-semibold text-slate-800">Correction or contribution <span class="text-red-700">*</span></label>
             <p class="mt-1 text-sm text-slate-500">Write the corrected information, missing context, or proposed entry as clearly as possible.</p>
-            <textarea id="proposed-information" name="proposedInformation" rows="7" required class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500"></textarea>
+            <textarea id="proposed-information" name="proposedInformation" rows="7" required class="mt-2 w-full rounded border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500"></textarea>
           </div>
 
           <div>
             <label for="source-urls" class="block text-sm font-semibold text-slate-800">Sources or evidence</label>
             <p class="mt-1 text-sm text-slate-500">Factual corrections need supporting evidence. Primary records are preferred; credible independent reporting, attributed interviews, and direct community knowledge may also help editors assess a claim.</p>
-            <textarea id="source-urls" name="sources" rows="4" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500" placeholder="One source or evidence note per line"></textarea>
+            <textarea id="source-urls" name="sources" rows="4" class="mt-2 w-full rounded border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500" placeholder="One source or evidence note per line"></textarea>
             <p id="correction-evidence-note" class="mt-2 hidden text-sm font-medium text-red-700">Add at least one source or evidence note for a factual correction.</p>
           </div>
 
           <div>
             <label for="supporting-file" class="block text-sm font-semibold text-slate-800">Supporting file</label>
-            <input id="supporting-file" name="supportingFile" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" class="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 file:mr-4 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:font-semibold file:text-slate-700 hover:file:bg-slate-200" />
-            <p class="mt-2 text-xs text-slate-500">PDF, Word, JPG, PNG, or WebP. Do not upload confidential documents or photographs without permission.</p>
+            <input id="supporting-file" name="supportingFile" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" class="mt-2 block w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 file:mr-4 file:rounded file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:font-semibold file:text-slate-700 hover:file:bg-slate-200" />
+            <p class="mt-2 text-sm text-slate-500">PDF, Word, JPG, PNG, or WebP. Do not upload confidential documents or photographs without permission.</p>
           </div>
 
           <div class="grid gap-5 sm:grid-cols-2">
             <div>
               <label for="contributor-name" class="block text-sm font-semibold text-slate-800">Your name</label>
-              <input id="contributor-name" name="name" type="text" autocomplete="name" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500" />
+              <input id="contributor-name" name="name" type="text" autocomplete="name" class="mt-2 w-full rounded border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500" />
             </div>
             <div>
               <label for="contributor-email" class="block text-sm font-semibold text-slate-800">Email for follow-up</label>
-              <input id="contributor-email" name="email" type="email" autocomplete="email" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500" />
+              <input id="contributor-email" name="email" type="email" autocomplete="email" class="mt-2 w-full rounded border border-slate-300 px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500" />
             </div>
           </div>
 
           <div>
             <label for="relationship" class="block text-sm font-semibold text-slate-800">Relationship to this information</label>
-            <select id="relationship" name="relationship" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500">
+            <select id="relationship" name="relationship" class="mt-2 w-full rounded border border-slate-300 bg-white px-3 py-2.5 text-slate-900 focus:border-slate-500 focus:ring-slate-500">
               <option value="">Prefer not to say</option>
               <option value="resident">Current or former Dzaleka resident</option>
               <option value="subject">Person or organisation named in the entry</option>
@@ -144,7 +144,7 @@ const schema = {
             </select>
           </div>
 
-          <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <label class="flex items-start gap-3 rounded border border-slate-200 bg-slate-50 p-4">
             <input type="checkbox" name="reviewConsent" required class="mt-1 h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500" />
             <span class="text-sm leading-6 text-slate-700">I confirm that this submission may be reviewed and used to update the encyclopedia. I have permission to share any attached files. <span class="text-red-700">*</span></span>
           </label>
@@ -153,16 +153,16 @@ const schema = {
             The submission could not be sent. Check your connection and try again, or email dzalekaconnect@gmail.com.
           </div>
 
-          <button id="submit-correction" type="submit" class="inline-flex min-w-44 items-center justify-center rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-wait disabled:opacity-60">
+          <button id="submit-correction" type="submit" class="min-h-[44px] inline-flex min-w-44 items-center justify-center rounded bg-primary-900 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-800 disabled:cursor-wait disabled:opacity-60">
             <span id="submit-label">Send for review</span>
             <span id="submit-loading" class="hidden">Sending…</span>
           </button>
         </form>
       </div>
 
-      <aside class="space-y-7 lg:sticky lg:top-28 lg:h-fit">
+      <aside class="space-y-7 lg:sticky lg:top-44 lg:h-fit">
         <section class="border-b border-slate-200 pb-6">
-          <h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500">Review process</h2>
+          <h2 class="text-sm font-semibold text-slate-500">Review process</h2>
           <ol class="mt-4 space-y-4 text-sm leading-6 text-slate-600">
             <li><strong class="text-slate-900">1. Check.</strong> Editors compare the submission with available evidence.</li>
             <li><strong class="text-slate-900">2. Clarify.</strong> We may contact you if important context is missing.</li>
@@ -170,15 +170,15 @@ const schema = {
           </ol>
         </section>
         <section class="border-b border-slate-200 pb-6">
-          <h2 class="font-bold text-slate-950">What this form cannot do</h2>
+          <h2 class="font-semibold text-slate-950">What this form cannot do</h2>
           <p class="mt-2 text-sm leading-6 text-slate-600">The volunteer editorial team cannot research private family histories, identify or value artefacts, or provide legal, medical, protection, or emergency casework.</p>
         </section>
         <section class="border-b border-slate-200 pb-6">
-          <h2 class="font-bold text-slate-950">Corrections and additions</h2>
+          <h2 class="font-semibold text-slate-950">Corrections and additions</h2>
           <p class="mt-2 text-sm leading-6 text-slate-600">A correction changes an inaccurate fact and must be supported by evidence. New context and proposed entries are reviewed as additions, not treated as corrections.</p>
         </section>
         <section>
-          <h2 class="font-bold text-slate-950">Privacy and safety</h2>
+          <h2 class="font-semibold text-slate-950">Privacy and safety</h2>
           <p class="mt-2 text-sm leading-6 text-slate-600">Do not include private case details, identity documents, medical records, or information that could put someone at risk. Use the appropriate protection or emergency channel for urgent cases.</p>
           <p class="mt-3 text-sm leading-6 text-slate-600">We aim to acknowledge useful submissions, but volunteer capacity means we cannot promise individual research or an immediate response.</p>
         </section>

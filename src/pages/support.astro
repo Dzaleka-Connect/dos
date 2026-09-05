@@ -47,7 +47,7 @@ const quickLinks = [
 ---
 
 <MainLayout title="Support">
-  <main>
+  <div>
     <!-- Hero Section -->
     <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
       <div class="container mx-auto px-4 pt-8 pb-16">
@@ -76,7 +76,7 @@ const quickLinks = [
         <!-- Support Categories -->
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
           {supportCategories.map(category => (
-            <div class="min-w-0 rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
+            <div class="min-w-0 rounded border border-gray-100 bg-white p-6 transition-shadow duration-200">
               <h2 class="text-xl font-bold text-gray-900 mb-2 break-words">{category.title}</h2>
               <p class="text-gray-600 break-words">{category.description}</p>
             </div>
@@ -90,7 +90,7 @@ const quickLinks = [
             {quickLinks.map(link => (
               <a
                 href={link.href}
-                class="group block min-w-0 rounded-xl bg-gray-50 p-6 transition-colors hover:bg-gray-100"
+                class="group block min-w-0 rounded bg-gray-50 p-6 transition-colors hover:bg-gray-100"
               >
                 <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 mb-1 break-words">
                   {link.title}
@@ -108,13 +108,13 @@ const quickLinks = [
         </section>
 
         <!-- Support Form -->
-        <section class="bg-white rounded-xl shadow-sm p-6 sm:p-8 border border-gray-100">
+        <section class="bg-white rounded p-6 sm:p-8 border border-gray-100">
           <h2 class="text-2xl font-bold text-gray-900 mb-6">Still need help?</h2>
           <p class="text-gray-600 mb-8">
             Send a clear message with the page, service, or issue you are asking about. If the situation is urgent, use <a href="/get-help-now" class="font-medium text-primary-700 underline">Get help now</a> first.
           </p>
 
-          <form id="supportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-6">
+          <form id="supportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-6">
             <div class="grid gap-6 md:grid-cols-2">
               <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Name *</label>
@@ -123,7 +123,7 @@ const quickLinks = [
                   id="name"
                   name="name"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                 />
               </div>
 
@@ -134,7 +134,7 @@ const quickLinks = [
                   id="email"
                   name="email"
                   required
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                 />
               </div>
             </div>
@@ -146,7 +146,7 @@ const quickLinks = [
                 id="subject"
                 name="subject"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
               />
             </div>
 
@@ -155,7 +155,7 @@ const quickLinks = [
               <select
                 id="category"
                 name="category"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
               >
                 <option value="general">General Inquiry</option>
                 <option value="technical">Technical Issue</option>
@@ -170,7 +170,7 @@ const quickLinks = [
               <select
                 id="priority"
                 name="priority"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
               >
                 <option value="low">Low - General Question</option>
                 <option value="medium">Medium - Need Assistance</option>
@@ -185,7 +185,7 @@ const quickLinks = [
                 name="message"
                 rows="4"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
               ></textarea>
             </div>
 
@@ -193,7 +193,7 @@ const quickLinks = [
               <button
                 type="submit"
                 id="submitButton"
-                class="inline-flex w-full items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto"
+                class="min-h-[44px] inline-flex w-full items-center justify-center px-6 py-3 border border-transparent rounded-md text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto"
               >
                 <span id="submitText">Send Message</span>
                 <svg
@@ -223,7 +223,7 @@ const quickLinks = [
         </section>
       </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>

@@ -10,12 +10,12 @@ interface Props {
 const { document } = Astro.props;
 ---
 
-<article class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
-  <h2 class="text-xl font-bold mb-2 text-gray-900">{document.title}</h2>
+<article class="bg-white rounded-lg shadow-md p-4  transition-shadow">
+  <h2 class="text-xl font-semibold mb-2 text-gray-900">{document.title}</h2>
   <div class="prose prose-sm mb-3 text-gray-700" set:html={document.description} />
   <div class="flex items-center gap-2 mb-4">
     <Badge variant="green">{document.category}</Badge>
-    <time 
+    <time
       class="text-gray-500 text-sm"
       datetime={document.year.toISOString()}
     >

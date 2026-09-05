@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getSeasonalFallbackAlerts, type WeatherAlert } from '../../data/weather';
 
+export const prerender = false;
+
 function stripXml(value: string) {
   return value
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')

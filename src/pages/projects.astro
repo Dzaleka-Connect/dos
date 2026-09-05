@@ -111,17 +111,17 @@ const projectsStructuredData = {
 };
 ---
 
-<MainLayout 
+<MainLayout
   title="Projects - MIT Solve Solutions"
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(projectsStructuredData)} />
-  
-  <main>
+
+  <div>
     <!-- Hero Section -->
     <div class="relative overflow-hidden bg-gray-900 border-b border-gray-800">
       <div class="relative z-10 max-w-7xl mx-auto px-4 py-16 sm:py-24 sm:px-6 lg:px-8 text-center">
@@ -135,27 +135,27 @@ const projectsStructuredData = {
         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
           Innovative solutions from Dzaleka
         </h1>
-        
+
         <p class="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
           Discover how our community is addressing global challenges through technology, culture, and social enterprise.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a 
+          <a
             href="#projects"
-            class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-full hover:bg-gray-800 transition-colors"
+            class="min-h-[44px] w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-primary-900 hover:bg-primary-800 text-white font-bold rounded-full hover:bg-primary-800 transition-colors"
           >
             <span>View Projects</span>
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </a>
-          
-          <a 
-            href="https://solve.mit.edu/challenges" 
-            target="_blank" 
+
+          <a
+            href="https://solve.mit.edu/challenges"
+            target="_blank"
             rel="noopener noreferrer"
-            class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 font-bold rounded-xl border border-gray-200 hover:border-gray-300 transition-colors duration-150 border border-gray-200 hover:border-slate-400"
+            class="min-h-[44px] w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 font-bold rounded border border-gray-200 hover:border-gray-300 transition-colors duration-150 border border-gray-200 hover:border-slate-400"
           >
             <span>MIT Solve Challenges</span>
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +171,7 @@ const projectsStructuredData = {
       <section class="mb-20 -mt-12 relative z-10">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {highlights.map(stat => (
-            <div class="bg-white rounded-xl border border-gray-200 p-6 transition-colors duration-150">
+            <div class="bg-white rounded border border-gray-200 p-6 transition-colors duration-150">
               <div class="text-4xl font-bold text-gray-900 mb-2 animate-count">{stat.number}</div>
               <div class="text-gray-600 font-medium">{stat.label}</div>
             </div>
@@ -181,7 +181,7 @@ const projectsStructuredData = {
 
       <!-- Featured Initiative Banner: Connecting Dzaleka -->
       <section class="mb-16">
-        <div class="bg-slate-900 text-white rounded-2xl p-8 md:p-10 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="bg-slate-900 text-white rounded p-8 md:p-10 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div class="max-w-2xl">
             <span class="text-xs font-semibold tracking-widest uppercase text-sky-400 block mb-2">
               FEATURED CONNECTIVITY INITIATIVE
@@ -193,7 +193,7 @@ const projectsStructuredData = {
           </div>
           <a
             href="/connecting-dzaleka"
-            class="px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm transition-colors shrink-0"
+            class="px-6 py-3 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm transition-colors shrink-0"
           >
             Explore Project Page →
           </a>
@@ -210,7 +210,7 @@ const projectsStructuredData = {
         </div>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {projectCategories.map(category => (
-            <div class="group bg-white p-8 rounded-xl border border-gray-200 hover:border-slate-400 transition-colors duration-150 relative overflow-hidden">
+            <div class="group bg-white p-5 sm:p-8 rounded border border-gray-200 hover:border-slate-400 transition-colors duration-150 relative overflow-hidden">
               <div class="absolute inset-0 bg-gradient-to-br from-gray-100 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div class="relative">
                 <div class="flex items-center mb-4">
@@ -241,8 +241,8 @@ const projectsStructuredData = {
         </div>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
-            <article 
-              class="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-slate-400 transition-colors duration-150"
+            <article
+              class="group bg-white rounded border border-gray-200 overflow-hidden hover:border-slate-400 transition-colors duration-150"
             >
               <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
@@ -263,7 +263,7 @@ const projectsStructuredData = {
                   ))}
                 </div>
                 <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                  <a 
+                  <a
                     href={`/projects/${project.id}`}
                     class="inline-flex items-center text-gray-900 hover:text-gray-900 font-medium"
                   >
@@ -272,9 +272,9 @@ const projectsStructuredData = {
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                   </a>
-                  <a 
-                    href={project.data.mitSolve?.solutionUrl} 
-                    target="_blank" 
+                  <a
+                    href={project.data.mitSolve?.solutionUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center text-gray-500 hover:text-gray-700"
                   >
@@ -304,20 +304,20 @@ const projectsStructuredData = {
             Join our community of innovators and submit your solution to MIT Solve. Together, we can create positive change and lives.
           </p>
           <div class="flex flex-wrap gap-4 justify-center">
-            <a 
-              href="https://solve.mit.edu/submit-solution" 
-              target="_blank" 
+            <a
+              href="https://solve.mit.edu/submit-solution"
+              target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full text-base font-medium text-white bg-gray-900 hover:bg-gray-800 transition-colors duration-150"
+              class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full text-base font-medium text-white bg-primary-900 hover:bg-primary-800 transition-colors duration-150"
             >
               Submit Your Solution
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
-            <a 
-              href="/contact" 
-              class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150"
+            <a
+              href="/contact"
+              class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150"
             >
               Contact Us
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -328,5 +328,5 @@ const projectsStructuredData = {
         </div>
       </section>
     </div>
-  </main>
+  </div>
 </MainLayout>

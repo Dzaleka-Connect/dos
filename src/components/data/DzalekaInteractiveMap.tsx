@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Map as LeafletMap, Marker as LeafletMarker, Polyline as LeafletPolyline, TileLayer } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import Modal from '../ui/Modal';
+import { parseMapRoute, type MapRoute } from '../../utils/mapRoute';
 import rawOsmPoints from '../../data/dzalekaOsmPoints.json';
 
 export interface MapPoint {
@@ -66,42 +69,7 @@ export function DzalekaInteractiveMap() {
   const [sharedLink, setSharedLink] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [showEmergencyModal, setShowEmergencyModal] = useState<boolean>(false);
   const [showPrintModal, setShowPrintModal] = useState<boolean>(false);
-
-  // COMMUNITY PLACE SUBMISSION FORM STATE
-  const [showSubmissionModal, setShowSubmissionModal] = useState<boolean>(false);
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
-  const [formData, setFormData] = useState({
-    submissionType: 'new',
-    placeName: '',
-    category: 'service',
-    zone: 'Katubiza Area',
-    operator: '',
-    openingHours: 'Mon - Sat: 08:00 - 17:00',
-    phone: '',
-    description: '',
-    lat: '-13.6592',
-    lng: '33.8705',
-    submitterName: '',
-    submitterRole: 'Enterprise Owner',
-    submitterEmail: '',
-  });
-
-  // Close whichever dialog is open when Escape is pressed. Without this a
-  // keyboard user has to tab to the close button to dismiss a modal.
-  useEffect(() => {
-    if (!showEmergencyModal && !showPrintModal && !showSubmissionModal) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      setShowEmergencyModal(false);
-      setShowPrintModal(false);
-      setShowSubmissionModal(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [showEmergencyModal, showPrintModal, showSubmissionModal]);
 
   // DIRECTIONS & NAVIGATION STATE
   const [directionsMode, setDirectionsMode] = useState<boolean>(false);
@@ -110,119 +78,32 @@ export function DzalekaInteractiveMap() {
   const [travelMode, setTravelMode] = useState<'driving' | 'walking' | 'transit'>('driving');
   const [locatingUser, setLocatingUser] = useState<boolean>(false);
 
-  // LIVE ANIMATED ROUTE NAVIGATION SIMULATION STATE
-  const [isNavigating, setIsNavigating] = useState<boolean>(false);
-  const [navProgress, setNavProgress] = useState<number>(0);
-  const navMarkerRef = useRef<any>(null);
-  const animFrameRef = useRef<number | null>(null);
-
-  const startLiveNavigation = async () => {
-    if (!originPoint || !destinationPoint || !mapRef.current) return;
-    const L = (await import('leaflet')).default;
-
-    setIsNavigating(true);
-    setNavProgress(0);
-
-    if (navMarkerRef.current) {
-      try {
-        mapRef.current.removeLayer(navMarkerRef.current);
-      } catch (e) {}
-    }
-
-    // High visibility pulsing traveler beacon
-    const travelerIcon = L.divIcon({
-      className: 'live-traveler-beacon',
-      html: `
-        <div style="
-          position: relative;
-          width: 32px;
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        ">
-          <div style="
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: rgba(2, 132, 199, 0.4);
-            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-          "></div>
-          <div style="
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: #0284c7;
-            border: 3px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-          "></div>
-        </div>
-      `,
-      iconSize: [32, 32],
-      iconAnchor: [16, 16]
-    });
-
-    const marker = L.marker([originPoint.lat, originPoint.lng], { icon: travelerIcon, zIndexOffset: 1000 }).addTo(mapRef.current);
-    navMarkerRef.current = marker;
-
-    const durationMs = 7000;
-    const startMs = performance.now();
-
-    const animate = (now: number) => {
-      const elapsed = now - startMs;
-      const progress = Math.min(elapsed / durationMs, 1);
-      setNavProgress(Math.round(progress * 100));
-
-      const currentLat = originPoint.lat + (destinationPoint.lat - originPoint.lat) * progress;
-      const currentLng = originPoint.lng + (destinationPoint.lng - originPoint.lng) * progress;
-
-      if (navMarkerRef.current) {
-        navMarkerRef.current.setLatLng([currentLat, currentLng]);
-        mapRef.current?.setView([currentLat, currentLng], Math.max(mapRef.current.getZoom(), 16), { animate: true });
-      }
-
-      if (progress < 1) {
-        animFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        setIsNavigating(false);
-      }
-    };
-
-    animFrameRef.current = requestAnimationFrame(animate);
-  };
-
-  const stopLiveNavigation = () => {
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-      animFrameRef.current = null;
-    }
-    if (navMarkerRef.current && mapRef.current) {
-      try {
-        mapRef.current.removeLayer(navMarkerRef.current);
-      } catch (e) {}
-      navMarkerRef.current = null;
-    }
-    setIsNavigating(false);
-    setNavProgress(0);
+  const appRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+  const [feedback, setFeedback] = useState('');
+  const [mapError, setMapError] = useState(false);
+  useEffect(() => {
+    const update = () => { setIsFullscreen(document.fullscreenElement === appRef.current); mapRef.current?.invalidateSize(); };
+    document.addEventListener('fullscreenchange', update);
+    return () => document.removeEventListener('fullscreenchange', update);
+  }, []);
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else if (appRef.current?.requestFullscreen) await appRef.current.requestFullscreen();
+      else setFeedback('Fullscreen is unavailable in this browser. You can still pan and zoom the map.');
+    } catch { setFeedback('Fullscreen could not open. You can still pan and zoom the map.'); }
   };
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     let isMounted = true;
+    let resize: ResizeObserver | undefined;
 
     const initMap = async () => {
       if (!mapContainerRef.current || mapRef.current) return;
 
       const L = (await import('leaflet')).default;
-
-      if (!document.getElementById('leaflet-css-link')) {
-        const link = document.createElement('link');
-        link.id = 'leaflet-css-link';
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-        document.head.appendChild(link);
-      }
 
       if (!isMounted) return;
 
@@ -257,6 +138,9 @@ export function DzalekaInteractiveMap() {
 
         tileLayerRef.current = tileLayer;
         mapRef.current = map;
+        resize = new ResizeObserver(() => map.invalidateSize());
+        resize.observe(mapContainerRef.current);
+        setReady(true);
 
         setTimeout(() => {
           if (mapRef.current) {
@@ -300,16 +184,11 @@ export function DzalekaInteractiveMap() {
             </div>
           `;
 
-          const marker = L.marker([pt.lat, pt.lng], { icon: customIcon })
+          const marker = L.marker([pt.lat, pt.lng], { icon: customIcon, title: pt.name, alt: pt.name, keyboard: true })
             .bindPopup(popupHtml)
             .addTo(map);
 
-          marker.on('click', () => {
-            setSelectedPoint(pt);
-            setDestinationPoint(pt);
-            setSidebarOpen(true);
-            map.flyTo([pt.lat, pt.lng], 18, { duration: 1.2 });
-          });
+          marker.on('click', () => selectAndFly(pt));
 
           markersMap.set(pt.id, marker);
         });
@@ -330,7 +209,7 @@ export function DzalekaInteractiveMap() {
           } else {
             const lat = parseFloat(params.get('lat') || '');
             const lng = parseFloat(params.get('lng') || '');
-            if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            if (Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180) {
               map.setView([lat, lng], 18);
             }
           }
@@ -349,7 +228,7 @@ export function DzalekaInteractiveMap() {
           });
         });
       } catch (err) {
-        console.warn('Map initialization safely handled:', err);
+        if (isMounted) setMapError(true);
       }
     };
 
@@ -357,6 +236,8 @@ export function DzalekaInteractiveMap() {
 
     return () => {
       isMounted = false;
+      resize?.disconnect();
+      markersRef.current.clear();
       if (mapRef.current) {
         try {
           mapRef.current.remove();
@@ -368,84 +249,37 @@ export function DzalekaInteractiveMap() {
     };
   }, []);
 
-  // UPDATE ROUTE POLYLINE WHEN IN DIRECTIONS MODE
-  // State for OSRM real road route data
-  const [routeSteps, setRouteSteps] = useState<any[]>([]);
-  const [realDistanceKm, setRealDistanceKm] = useState<string>('');
-  const [realDurationMin, setRealDurationMin] = useState<number>(0);
-
+  const [route, setRoute] = useState<MapRoute | null>(null);
+  const [routeStatus, setRouteStatus] = useState<'idle' | 'loading' | 'ready' | 'error' | 'external'>('idle');
   useEffect(() => {
-    if (!mapRef.current) return;
-
-    const drawRoute = async () => {
-      const L = (await import('leaflet')).default;
-
-      if (routePolylineRef.current) {
-        try {
-          mapRef.current?.removeLayer(routePolylineRef.current);
-        } catch (e) {
-          // Ignore removal error
-        }
-        routePolylineRef.current = null;
-      }
-
-      if (directionsMode && originPoint && destinationPoint) {
-        try {
-          const profile = travelMode === 'walking' ? 'foot' : 'driving';
-          const osrmUrl = `https://router.project-osrm.org/route/v1/${profile}/${originPoint.lng},${originPoint.lat};${destinationPoint.lng},${destinationPoint.lat}?overview=full&geometries=geojson&steps=true`;
-          
-          const res = await fetch(osrmUrl);
-          const data = await res.json();
-
-          let routeCoords: [number, number][] = [
-            [originPoint.lat, originPoint.lng],
-            [destinationPoint.lat, destinationPoint.lng]
-          ];
-
-          if (data.code === 'Ok' && data.routes && data.routes[0]) {
-            const route = data.routes[0];
-            if (route.geometry && route.geometry.coordinates) {
-              routeCoords = route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]);
-            }
-            if (route.legs && route.legs[0] && route.legs[0].steps) {
-              setRouteSteps(route.legs[0].steps);
-            }
-            setRealDistanceKm((route.distance / 1000).toFixed(2));
-            setRealDurationMin(Math.ceil(route.duration / 60));
-          } else {
-            setRouteSteps([]);
-            setRealDistanceKm(distKm.toFixed(2));
-            setRealDurationMin(parseInt(estTime) || 5);
-          }
-
-          const polyline = L.polyline(routeCoords, {
-            color: '#0284c7',
-            weight: 5,
-            opacity: 0.9,
-            lineCap: 'round',
-            lineJoin: 'round'
-          }).addTo(mapRef.current);
-
-          routePolylineRef.current = polyline;
-          mapRef.current.fitBounds(polyline.getBounds().pad(0.25));
-        } catch (e) {
-          // Fallback if network fails
-          const polyline = L.polyline(
-            [
-              [originPoint.lat, originPoint.lng],
-              [destinationPoint.lat, destinationPoint.lng],
-            ],
-            { color: '#0284c7', weight: 4, opacity: 0.8 }
-          ).addTo(mapRef.current);
-
-          routePolylineRef.current = polyline;
-          mapRef.current.fitBounds(polyline.getBounds().pad(0.25));
-        }
+    routePolylineRef.current?.remove();
+    routePolylineRef.current = null;
+    setRoute(null);
+    setRouteStatus('idle');
+    if (!ready || !directionsMode || !destinationPoint) return;
+    if (travelMode !== 'driving') { setRouteStatus('external'); return; }
+    const controller = new AbortController();
+    setRouteStatus('loading');
+    const loadRoute = async () => {
+      try {
+        const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${originPoint.lng},${originPoint.lat};${destinationPoint.lng},${destinationPoint.lat}?overview=full&geometries=geojson&steps=true`, { signal: controller.signal });
+        if (!response.ok) throw new Error('Route unavailable');
+        const result = parseMapRoute(await response.json());
+        if (!result) throw new Error('No road route found');
+        const L = (await import('leaflet')).default;
+        if (controller.signal.aborted || !mapRef.current) return;
+        const line = L.polyline(result.coordinates, { color: '#0284c7', weight: 5, opacity: 0.9 }).addTo(mapRef.current);
+        routePolylineRef.current = line;
+        mapRef.current.fitBounds(line.getBounds(), { paddingTopLeft: window.innerWidth >= 768 ? [410, 130] : [30, 130], paddingBottomRight: [45, window.innerWidth >= 768 ? 50 : 260] });
+        setRoute(result);
+        setRouteStatus('ready');
+      } catch {
+        if (!controller.signal.aborted) setRouteStatus('error');
       }
     };
-
-    drawRoute();
-  }, [directionsMode, originPoint, destinationPoint, travelMode]);
+    loadRoute();
+    return () => { controller.abort(); routePolylineRef.current?.remove(); routePolylineRef.current = null; };
+  }, [ready, directionsMode, originPoint, destinationPoint, travelMode]);
 
   const changeTileLayer = async (newLayer: 'satellite' | 'streets' | 'humanitarian') => {
     setActiveLayer(newLayer);
@@ -474,25 +308,25 @@ export function DzalekaInteractiveMap() {
     }
   };
 
-  const filteredPoints = MAP_POINTS.filter((pt) => {
-    const matchesCat = activeCategory === 'all' || pt.type === activeCategory;
-    const matchesSearch =
-      searchQuery === '' ||
-      pt.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pt.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pt.zone.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pt.osmId.includes(searchQuery);
-    return matchesCat && matchesSearch;
-  });
+  const filteredPoints = filterMapPoints(MAP_POINTS, searchQuery, activeCategory);
+  const filteredIds = filteredPoints.map((point) => point.id).join('|');
+  useEffect(() => {
+    if (!ready || !mapRef.current) return;
+    const visible = new Set(filteredPoints.map((point) => point.id));
+    markersRef.current.forEach((marker, id) => {
+      if (visible.has(id)) marker.addTo(mapRef.current!); else marker.remove();
+    });
+  }, [ready, filteredIds]);
 
   const suggestions = searchQuery.trim() === ''
-    ? MAP_POINTS.slice(0, 5)
+    ? filteredPoints.slice(0, 5)
     : filteredPoints.slice(0, 8);
 
   const selectAndFly = (pt: MapPoint) => {
     setSelectedPoint(pt);
     setDestinationPoint(pt);
     setSearchFocused(false);
+    window.history.replaceState(null, '', shareUrlFor(pt));
     setSidebarOpen(true);
     if (mapRef.current) {
       mapRef.current.flyTo([pt.lat, pt.lng], 18, { duration: 1.2 });
@@ -516,7 +350,7 @@ export function DzalekaInteractiveMap() {
 
   const handleGetUserLocation = () => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
+      setFeedback('Your browser does not support location access. Choose a start point instead.');
       return;
     }
     setLocatingUser(true);
@@ -531,49 +365,11 @@ export function DzalekaInteractiveMap() {
         setLocatingUser(false);
       },
       () => {
-        alert('Could not retrieve your GPS location. Defaulting to Lilongwe City Center.');
+        setFeedback('Your location could not be retrieved. Choose a start point instead.');
         setLocatingUser(false);
-      }
+      },
+      { timeout: 10000, maximumAge: 60000 }
     );
-  };
-
-  const handleFetchCurrentCenter = () => {
-    if (mapRef.current) {
-      const center = mapRef.current.getCenter();
-      setFormData({
-        ...formData,
-        lat: center.lat.toFixed(5),
-        lng: center.lng.toFixed(5),
-      });
-    }
-  };
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.placeName || !formData.description) {
-      alert('Fill in the place name and description.');
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const res = await fetch('/api/map-submission', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const result = await res.json();
-      setSubmitting(false);
-      if (res.ok && result.success) {
-        setSubmissionSuccess(true);
-      } else {
-        alert(result.message || 'Submission error. Try again.');
-      }
-    } catch (err) {
-      console.error('Error submitting location node:', err);
-      setSubmitting(false);
-      // Fallback success for offline/decoupled environments
-      setSubmissionSuccess(true);
-    }
   };
 
   const handleZoomIn = () => {
@@ -590,11 +386,9 @@ export function DzalekaInteractiveMap() {
     }
   };
 
-  const copyCoordinates = (lat: number, lng: number) => {
-    const text = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-    navigator.clipboard.writeText(text);
-    setCopiedCoords(true);
-    setTimeout(() => setCopiedCoords(false), 2000);
+  const copyCoordinates = async (lat: number, lng: number) => {
+    try { await navigator.clipboard.writeText(`${lat.toFixed(6)}, ${lng.toFixed(6)}`); setCopiedCoords(true); setTimeout(() => setCopiedCoords(false), 2000); }
+    catch { setFeedback('Could not copy. Select the displayed coordinates to copy them.'); }
   };
 
   // Build a link that reopens the map focused on this place.
@@ -630,7 +424,7 @@ export function DzalekaInteractiveMap() {
         setSharedLink(true);
         setTimeout(() => setSharedLink(false), 2000);
       } catch {
-        // Nothing further we can do; leave the UI unchanged.
+        setFeedback('Could not share. Copy the place link from your address bar.');
       }
     }
   };
@@ -639,21 +433,12 @@ export function DzalekaInteractiveMap() {
     window.print();
   };
 
-  // DISTANCE & TRAVEL TIME CALCULATOR
-  const distKm = (originPoint && destinationPoint)
-    ? calculateDistanceKm(originPoint.lat, originPoint.lng, destinationPoint.lat, destinationPoint.lng)
-    : 0;
-  
-  const estTime = estimateTravelTime(distKm, travelMode);
-
   return (
-    <div
-      className={`relative w-full h-full bg-slate-900 overflow-hidden ${
-        isFullscreen ? 'fixed inset-0 z-50 h-screen w-screen' : ''
-      }`}
-    >
+    <div ref={appRef} className="map-browser relative w-full h-full bg-slate-900 overflow-hidden">
+      {feedback && <div role="status" className="absolute top-32 right-3 left-3 md:left-auto md:max-w-sm z-40 rounded-lg bg-white p-3 text-sm text-slate-800 shadow-md">{feedback}<button type="button" aria-label="Dismiss message" onClick={() => setFeedback('')} className="ml-2 px-2">×</button></div>}
+      {mapError && <p role="alert" className="absolute inset-x-3 top-32 z-40 rounded-lg bg-white p-4 text-sm">The map could not load. Open the places menu or browse the directory below.</p>}
       {/* GLOBAL PRINT STYLES FOR CLEAN PDF OUTPUT */}
-      <style>{`
+      {showPrintModal && <style>{`
         @media print {
           body * {
             visibility: hidden !important;
@@ -672,28 +457,41 @@ export function DzalekaInteractiveMap() {
             box-shadow: none !important;
             border: none !important;
           }
+          dialog:has(.printable-sheet-modal), .printable-sheet-modal * {
+            max-height: none !important;
+            overflow: visible !important;
+          }
+          dialog:has(.printable-sheet-modal) {
+            position: absolute !important;
+            inset: 0 auto auto 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+          }
+          dialog:has(.printable-sheet-modal)::backdrop { display: none; }
           .print-hidden {
             display: none !important;
           }
         }
-      `}</style>
+      `}</style>}
 
       {/* MAP CANVAS CONTAINER */}
-      <div ref={mapContainerRef} className="h-full w-full z-0 print-hidden" style={{ height: '100%', width: '100%' }} />
+      <div ref={mapContainerRef} role="region" aria-label="Interactive map of Dzaleka: drag to explore or use the zoom controls" className="h-full w-full z-0 print-hidden" style={{ height: '100%', width: '100%' }} />
 
       {/* TOP FLOATING CONTROLS WRAPPER (MOBILE SWIPEABLE CAROUSEL & DESKTOP FLEX) */}
       <div className="absolute top-3 left-3 right-3 z-30 pointer-events-none flex flex-col gap-2 print-hidden">
-        
+
         {/* FLOATING PILL SEARCH BAR */}
         <div className="pointer-events-auto relative w-full md:max-w-md">
-          <div className="rounded-full bg-white backdrop-blur-md shadow-md border border-slate-200 h-11 px-3.5 flex items-center gap-2">
+          <div className="rounded-full bg-white  shadow-md border border-slate-200 focus-within:ring-2 focus-within:ring-primary-800 h-14 px-2 flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
               <svg className="h-3.5 w-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
-              type="text"
+              type="search"
+              aria-label="Search Dzaleka places"
+              onKeyDown={(event) => { if (event.key === 'Escape') setSearchFocused(false); }}
               placeholder="Search Dzaleka places & directions..."
               value={searchQuery}
               onFocus={() => setSearchFocused(true)}
@@ -702,12 +500,12 @@ export function DzalekaInteractiveMap() {
                 setSearchFocused(true);
               }}
               style={{ outline: 'none', border: 'none', boxShadow: 'none' }}
-              className="w-full bg-transparent text-[16px] sm:text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-0 font-medium border-0 outline-none"
+              className="w-full bg-transparent text-[16px] sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-0 font-medium border-0 outline-none"
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
-                className="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-[10px] font-bold shrink-0"
+                aria-label="Clear search" onClick={() => setSearchQuery('')}
+                className="w-11 h-11 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-xs font-bold shrink-0"
               >
                 ✕
               </button>
@@ -729,8 +527,8 @@ export function DzalekaInteractiveMap() {
             </button>
             <div className="h-5 w-px bg-slate-200 shrink-0"></div>
             <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors shrink-0 ${
+              aria-expanded={sidebarOpen} aria-controls="map-place-panel" onClick={() => setSidebarOpen(!sidebarOpen)}
+              className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors shrink-0 ${
                 sidebarOpen ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
               title="Toggle Directory Sidebar"
@@ -744,7 +542,7 @@ export function DzalekaInteractiveMap() {
           {/* Autocomplete Suggestions Dropdown */}
           {searchFocused && (
             <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
-              <div className="px-3.5 py-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between text-[11px]">
+              <div className="px-3.5 py-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between text-xs">
                 <span className="font-semibold text-slate-500 uppercase tracking-wider">
                   {searchQuery ? `Matching Places (${filteredPoints.length})` : 'Popular Locations'}
                 </span>
@@ -762,11 +560,11 @@ export function DzalekaInteractiveMap() {
                   </div>
                 ) : (
                   suggestions.map((pt) => (
-                    <div
+                    <button type="button"
                       key={pt.id}
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => selectAndFly(pt)}
-                      className="p-3 hover:bg-sky-50/70 cursor-pointer transition-colors flex items-center gap-3 group"
+                      className="w-full text-left p-3 hover:bg-sky-50/70 cursor-pointer transition-colors flex items-center gap-3 group"
                     >
                       <div className="shrink-0" dangerouslySetInnerHTML={{ __html: getPinSvgOnly(pt.type) }} />
                       <div className="min-w-0 flex-1">
@@ -774,13 +572,13 @@ export function DzalekaInteractiveMap() {
                           <h5 className="text-xs font-bold text-slate-900 group-hover:text-sky-700 truncate">
                             {pt.name}
                           </h5>
-                          <span className="text-[10px] text-slate-400 font-mono shrink-0">#{pt.osmId}</span>
+                          <span className="text-xs text-slate-400 font-mono shrink-0">#{pt.osmId}</span>
                         </div>
-                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                        <p className="text-xs text-slate-500 truncate mt-0.5">
                           {pt.categoryLabel} {pt.zone ? `• ${pt.zone}` : ''}
                         </p>
                       </div>
-                    </div>
+                    </button>
                   ))
                 )}
               </div>
@@ -791,17 +589,13 @@ export function DzalekaInteractiveMap() {
         {/* MOBILE HORIZONTALLY SWIPEABLE ACTION CHIPS & CATEGORY CAROUSEL */}
         <div className="pointer-events-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 max-w-full">
           {/* COMMUNITY PLACE SUBMISSION FORM BUTTON */}
-          <button
-            onClick={() => {
-              setSubmissionSuccess(false);
-              setShowSubmissionModal(true);
-            }}
+          <a href="/map/submit"
             className="flex items-center gap-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 text-sm font-semibold shadow-md ring-1 ring-slate-900/10 shrink-0"
-            title="Suggest a New Location Node or Update Place Details"
+            title="Suggest a place or update its details"
           >
             <span className="font-bold text-sm">+</span>
             <span>Suggest a place</span>
-          </button>
+          </a>
 
           {/* PRINTABLE PDF BUTTON */}
           <button
@@ -811,71 +605,70 @@ export function DzalekaInteractiveMap() {
             <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
-            <span>PDF map sheet</span>
+            <span>Print directory</span>
           </button>
 
           {/* EMERGENCY CONTACTS BUTTON */}
-          <button
-            onClick={() => setShowEmergencyModal(true)}
+          <a href="/get-help-now"
             className="flex items-center gap-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-semibold shadow-md ring-1 ring-red-700/20 shrink-0 cursor-pointer"
           >
             <span>Emergency</span>
-          </button>
+          </a>
 
           <div className="h-4 w-px bg-slate-300/60 shrink-0 mx-0.5"></div>
 
           {/* CATEGORY CHIPS */}
           <button
-            onClick={() => setActiveCategory('all')}
+            aria-pressed={activeCategory === 'all'} onClick={() => setActiveCategory('all')}
             className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 ${
-              activeCategory === 'all' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
+              activeCategory === 'all' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-white text-slate-700 border border-slate-200'
             }`}
           >
             All ({MAP_POINTS.length})
           </button>
           <button
-            onClick={() => setActiveCategory('health')}
+            aria-pressed={activeCategory === 'health'} onClick={() => setActiveCategory('health')}
             className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
-              activeCategory === 'health' ? 'bg-red-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
+              activeCategory === 'health' ? 'bg-red-600 text-white shadow-2xs' : 'bg-white text-slate-700 border border-slate-200'
             }`}
           >
             <span className="inline-block w-2 h-2 rounded-full bg-red-500"></span>
             Healthcare
           </button>
           <button
-            onClick={() => setActiveCategory('education')}
+            aria-pressed={activeCategory === 'education'} onClick={() => setActiveCategory('education')}
             className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
-              activeCategory === 'education' ? 'bg-sky-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
+              activeCategory === 'education' ? 'bg-sky-600 text-white shadow-2xs' : 'bg-white text-slate-700 border border-slate-200'
             }`}
           >
             <span className="inline-block w-2 h-2 rounded-full bg-sky-500"></span>
             Education
           </button>
           <button
-            onClick={() => setActiveCategory('market')}
+            aria-pressed={activeCategory === 'market'} onClick={() => setActiveCategory('market')}
             className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
-              activeCategory === 'market' ? 'bg-emerald-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
+              activeCategory === 'market' ? 'bg-green-600 text-white shadow-2xs' : 'bg-white text-slate-700 border border-slate-200'
             }`}
           >
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
             Commerce
           </button>
           <button
-            onClick={() => setActiveCategory('service')}
+            aria-pressed={activeCategory === 'service'} onClick={() => setActiveCategory('service')}
             className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
-              activeCategory === 'service' ? 'bg-slate-800 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
+              activeCategory === 'service' ? 'bg-slate-800 text-white shadow-2xs' : 'bg-white text-slate-700 border border-slate-200'
             }`}
           >
             <span className="inline-block w-2 h-2 rounded-full bg-slate-400"></span>
             Services
           </button>
           <button
-            onClick={() => setActiveCategory('culture')}
+            aria-pressed={activeCategory === 'culture'} onClick={() => setActiveCategory('culture')}
             className={`px-3.5 py-1.5 text-sm font-semibold rounded-full shrink-0 flex items-center gap-1 ${
-              activeCategory === 'culture' ? 'bg-purple-600 text-white shadow-2xs' : 'bg-white/95 text-slate-700 border border-slate-200'
+              activeCategory === 'culture' ? 'bg-amber-600 text-white shadow-2xs' : 'bg-white text-slate-700 border border-slate-200'
             }`}
           >
-            <span className="inline-block w-2 h-2 rounded-full bg-purple-500"></span>
+            <span className="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
             Culture
           </button>
         </div>
@@ -883,9 +676,9 @@ export function DzalekaInteractiveMap() {
 
       {/* FLOATING MAP LAYER SWITCHER (LEFT BOTTOM CORNER ON MOBILE) */}
       <div className="absolute left-3 bottom-8 z-20 print-hidden">
-        <div className="flex items-center bg-white/95 backdrop-blur-md rounded-full shadow-lg border border-slate-200 p-1 text-[11px] font-semibold">
+        <div className="flex items-center bg-white  rounded-full shadow-lg border border-slate-200 p-1 text-xs font-semibold">
           <button
-            onClick={() => changeTileLayer('satellite')}
+            aria-pressed={activeLayer === 'satellite'} onClick={() => changeTileLayer('satellite')}
             className={`px-2.5 py-1 rounded-full transition-colors ${
               activeLayer === 'satellite' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-700 hover:bg-slate-100'
             }`}
@@ -893,7 +686,7 @@ export function DzalekaInteractiveMap() {
             Satellite
           </button>
           <button
-            onClick={() => changeTileLayer('streets')}
+            aria-pressed={activeLayer === 'streets'} onClick={() => changeTileLayer('streets')}
             className={`px-2.5 py-1 rounded-full transition-colors ${
               activeLayer === 'streets' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-700 hover:bg-slate-100'
             }`}
@@ -901,12 +694,12 @@ export function DzalekaInteractiveMap() {
             Map
           </button>
           <button
-            onClick={() => changeTileLayer('humanitarian')}
+            aria-pressed={activeLayer === 'humanitarian'} onClick={() => changeTileLayer('humanitarian')}
             className={`px-2.5 py-1 rounded-full transition-colors ${
               activeLayer === 'humanitarian' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-700 hover:bg-slate-100'
             }`}
           >
-            HOT
+            Humanitarian
           </button>
         </div>
       </div>
@@ -915,7 +708,7 @@ export function DzalekaInteractiveMap() {
       <div className="absolute right-3 bottom-8 z-20 flex flex-col gap-2 print-hidden">
         <button
           onClick={handleRecenter}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 backdrop-blur-md text-slate-800 shadow-lg border border-slate-200 hover:bg-slate-100 transition-colors"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-white  text-slate-800 shadow-lg border border-slate-200 hover:bg-slate-100 transition-colors"
           title="Center Map on Dzaleka"
         >
           <svg className="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -925,21 +718,21 @@ export function DzalekaInteractiveMap() {
         </button>
         <button
           onClick={handleZoomIn}
-          className="flex h-10 w-10 items-center justify-center rounded-t-xl bg-white/95 backdrop-blur-md text-slate-800 shadow-lg border border-slate-200 hover:bg-slate-100 transition-colors font-bold text-lg"
+          className="flex h-11 w-11 items-center justify-center rounded-t-xl bg-white  text-slate-800 shadow-lg border border-slate-200 hover:bg-slate-100 transition-colors font-bold text-lg"
           title="Zoom In"
         >
           +
         </button>
         <button
           onClick={handleZoomOut}
-          className="flex h-10 w-10 items-center justify-center rounded-b-xl bg-white/95 backdrop-blur-md text-slate-800 shadow-lg border border-slate-200 border-t-0 hover:bg-slate-100 transition-colors font-bold text-lg"
+          className="flex h-11 w-11 items-center justify-center rounded-b-xl bg-white  text-slate-800 shadow-lg border border-slate-200 border-t-0 hover:bg-slate-100 transition-colors font-bold text-lg"
           title="Zoom Out"
         >
           −
         </button>
         <button
-          onClick={() => setIsFullscreen(!isFullscreen)}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 backdrop-blur-md text-slate-800 shadow-lg border border-slate-200 hover:bg-slate-100 transition-colors mt-1"
+          onClick={toggleFullscreen}
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-white  text-slate-800 shadow-lg border border-slate-200 hover:bg-slate-100 transition-colors mt-1"
           title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Map'}
         >
           <svg className="h-4 w-4 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -950,8 +743,8 @@ export function DzalekaInteractiveMap() {
 
       {/* RESPONSIVE SIDEBAR / MOBILE BOTTOM DRAWER */}
       {sidebarOpen && (
-        <div className="absolute inset-x-3 bottom-3 top-auto max-h-[60vh] md:top-28 md:bottom-8 md:left-3 md:right-auto md:w-96 rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden z-20 print-hidden">
-          
+        <div id="map-place-panel" className="absolute inset-x-3 bottom-3 top-auto max-h-[55%] md:max-h-none md:top-32 md:bottom-8 md:left-3 md:right-auto md:w-96 rounded-2xl bg-white shadow-lg border border-slate-200/90 flex flex-col overflow-hidden z-20 print-hidden">
+
           {/* Mobile Handle Drag Line */}
           <div className="w-12 h-1 bg-slate-300 rounded-full mx-auto my-2 md:hidden"></div>
 
@@ -961,13 +754,13 @@ export function DzalekaInteractiveMap() {
               <div>
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
+                    <span className="w-2 h-2 rounded-full bg-sky-600 "></span>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-                      Turn-by-Turn Directions
+                      Directions
                     </h3>
                   </div>
                   <button
-                    onClick={() => setDirectionsMode(false)}
+                    onClick={() => { setDirectionsMode(false); setSidebarOpen(false); }}
                     className="text-xs font-semibold text-slate-400 hover:text-slate-700"
                   >
                     Close ✕
@@ -977,7 +770,7 @@ export function DzalekaInteractiveMap() {
                 {/* Travel Mode Pills */}
                 <div className="mt-3 grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 text-xs font-semibold">
                   <button
-                    onClick={() => setTravelMode('driving')}
+                    aria-pressed={travelMode === 'driving'} onClick={() => setTravelMode('driving')}
                     className={`py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       travelMode === 'driving' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
                     }`}
@@ -989,7 +782,7 @@ export function DzalekaInteractiveMap() {
                     Driving
                   </button>
                   <button
-                    onClick={() => setTravelMode('walking')}
+                    aria-pressed={travelMode === 'walking'} onClick={() => setTravelMode('walking')}
                     className={`py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       travelMode === 'walking' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
                     }`}
@@ -1000,7 +793,7 @@ export function DzalekaInteractiveMap() {
                     Walking
                   </button>
                   <button
-                    onClick={() => setTravelMode('transit')}
+                    aria-pressed={travelMode === 'transit'} onClick={() => setTravelMode('transit')}
                     className={`py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       travelMode === 'transit' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
                     }`}
@@ -1016,19 +809,20 @@ export function DzalekaInteractiveMap() {
                 <div className="mt-4 space-y-2.5">
                   {/* Origin A */}
                   <div className="rounded-xl border border-slate-200 p-2.5 bg-slate-50/70">
-                    <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 mb-1">
-                      <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+                      <span className="flex items-center gap-1.5 text-green-700 font-bold">
+                        <span className="w-2.5 h-2.5 rounded-full bg-green-600 inline-block"></span>
                         START POINT (A)
                       </span>
                       <button
                         onClick={handleGetUserLocation}
-                        className="text-sky-700 hover:underline flex items-center gap-1 text-[11px]"
+                        className="text-sky-700 hover:underline flex items-center gap-1 text-xs"
                       >
                         {locatingUser ? 'Locating...' : '📍 My GPS'}
                       </button>
                     </div>
                     <select
+                      aria-label="Start point"
                       value={originPoint.name}
                       onChange={(e) => {
                         const allOptions = [
@@ -1038,8 +832,9 @@ export function DzalekaInteractiveMap() {
                         const found = allOptions.find((o) => o.name === e.target.value);
                         if (found) setOriginPoint(found);
                       }}
-                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none focus:border-sky-500"
+                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-sm text-slate-900 font-semibold focus:outline-none focus:border-sky-500"
                     >
+                      {!DEFAULT_ORIGINS.some((point) => point.name === originPoint.name) && !MAP_POINTS.some((point) => point.name === originPoint.name) && <option value={originPoint.name}>{originPoint.name}</option>}
                       <optgroup label="Primary Gates & Centers">
                         {DEFAULT_ORIGINS.map((orig) => (
                           <option key={orig.name} value={orig.name}>
@@ -1074,11 +869,9 @@ export function DzalekaInteractiveMap() {
                         });
 
                         const matchingDest = MAP_POINTS.find(p => p.name === prevOriginName || (p.lat === prevOriginLat && p.lng === prevOriginLng));
-                        if (matchingDest) {
-                          setDestinationPoint(matchingDest);
-                        }
+                        setDestinationPoint(matchingDest || { id: 'custom-origin', name: prevOriginName, lat: prevOriginLat, lng: prevOriginLng, type: 'service', categoryLabel: 'Start point', description: '', zone: '', osmId: '', osmType: '' });
                       }}
-                      className="rounded-full bg-white border border-slate-300 p-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-50 shadow-xs transition-colors flex items-center gap-1 text-[11px] font-bold px-3"
+                      className="rounded-full bg-white border border-slate-300 p-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-50 shadow-xs transition-colors flex items-center gap-1 text-xs font-bold px-3"
                       title="Swap Start (A) and Destination (B)"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1090,11 +883,12 @@ export function DzalekaInteractiveMap() {
 
                   {/* Destination B */}
                   <div className="rounded-xl border border-slate-200 p-2.5 bg-slate-50/70">
-                    <div className="text-[11px] font-semibold text-rose-700 flex items-center gap-1.5 mb-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-rose-600 inline-block"></span>
+                    <div className="text-xs font-semibold text-red-700 flex items-center gap-1.5 mb-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
                       DESTINATION (B)
                     </div>
                     <select
+                      aria-label="Destination"
                       value={destinationPoint?.id || ''}
                       onChange={(e) => {
                         const found = MAP_POINTS.find((p) => p.id === e.target.value);
@@ -1103,8 +897,9 @@ export function DzalekaInteractiveMap() {
                           setSelectedPoint(found);
                         }
                       }}
-                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-xs text-slate-900 font-semibold focus:outline-none focus:border-sky-500"
+                      className="w-full bg-white rounded-lg border border-slate-300 p-1.5 text-[16px] sm:text-sm text-slate-900 font-semibold focus:outline-none focus:border-sky-500"
                     >
+                      {destinationPoint?.id === 'custom-origin' && <option value="custom-origin">{destinationPoint.name}</option>}
                       {MAP_POINTS.map((pt) => (
                         <option key={`dest-${pt.id}`} value={pt.id}>
                           {pt.name} ({pt.categoryLabel})
@@ -1114,96 +909,16 @@ export function DzalekaInteractiveMap() {
                   </div>
                 </div>
 
-                {/* Distance & Travel Time Result Card */}
-                {destinationPoint && (
-                  <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-900 shadow-xs">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-700">
-                          Road Travel Time ({travelMode})
-                        </span>
-                        <h4 className="text-2xl font-bold text-slate-950 font-mono mt-0.5">
-                          {realDurationMin ? `${realDurationMin} mins` : estTime}
-                        </h4>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                          Road Distance
-                        </span>
-                        <p className="text-lg font-bold text-slate-900 font-mono mt-0.5">
-                          {realDistanceKm ? `${realDistanceKm} km` : `${distKm} km`}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Step-by-Step Waypoint Guidance */}
-                    <div className="mt-4 pt-3 border-t border-sky-200/80 text-xs space-y-2 text-slate-700">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                        OpenStreetMap Ground-Truth Route:
-                      </div>
-                      
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (mapRef.current) {
-                            mapRef.current.setView([originPoint.lat, originPoint.lng], 18, { animate: true });
-                          }
-                        }}
-                        className="flex items-start gap-2 w-full text-left p-1.5 rounded-lg hover:bg-sky-100/80 transition-colors group cursor-pointer"
-                      >
-                        <span className="font-bold text-emerald-700 shrink-0">1.</span>
-                        <span className="group-hover:text-slate-950">
-                          Start at <strong className="underline decoration-emerald-500/50">{originPoint.name}</strong>
-                        </span>
-                      </button>
-
-                      {routeSteps && routeSteps.length > 2 ? (
-                        routeSteps.slice(1, -1).map((st: any, idx: number) => (
-                          <div key={idx} className="flex items-start gap-2 p-1.5 text-slate-700">
-                            <span className="font-bold text-sky-700 shrink-0">{idx + 2}.</span>
-                            <span>
-                              {st.maneuver?.type ? `${st.maneuver.type} ${st.maneuver.modifier || ''}` : 'Proceed'} {st.name ? `on ${st.name}` : 'along camp sector path'} ({Math.round(st.distance)}m)
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (mapRef.current && destinationPoint) {
-                              const midLat = (originPoint.lat + destinationPoint.lat) / 2;
-                              const midLng = (originPoint.lng + destinationPoint.lng) / 2;
-                              mapRef.current.setView([midLat, midLng], 16, { animate: true });
-                            }
-                          }}
-                          className="flex items-start gap-2 w-full text-left p-1.5 rounded-lg hover:bg-sky-100/80 transition-colors group cursor-pointer"
-                        >
-                          <span className="font-bold text-sky-700 shrink-0">2.</span>
-                          <span className="group-hover:text-slate-950">
-                            Follow M7 / Sector access road towards <strong className="underline decoration-sky-500/50">{destinationPoint.zone || 'Destination Area'}</strong>
-                          </span>
-                        </button>
-                      )}
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (mapRef.current && destinationPoint) {
-                            mapRef.current.setView([destinationPoint.lat, destinationPoint.lng], 18, { animate: true });
-                          }
-                        }}
-                        className="flex items-start gap-2 w-full text-left p-1.5 rounded-lg hover:bg-sky-100/80 transition-colors group cursor-pointer"
-                      >
-                        <span className="font-bold text-rose-700 shrink-0">
-                          {routeSteps && routeSteps.length > 2 ? routeSteps.length : 3}.
-                        </span>
-                        <span className="group-hover:text-slate-950">
-                          Arrive at destination <strong className="underline decoration-rose-500/50">{destinationPoint.name}</strong>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+                <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700" role="status">
+                  {routeStatus === 'loading' && <p>Finding a road route…</p>}
+                  {routeStatus === 'error' && <p>A road route could not be loaded. Open Google Maps below to check directions.</p>}
+                  {routeStatus === 'external' && <p>Open Google Maps below for {travelMode === 'walking' ? 'walking directions' : 'available transit options'}.</p>}
+                  {routeStatus === 'ready' && route && <>
+                    <p className="text-lg font-semibold text-slate-900">{Math.ceil(route.duration / 60)} min <span className="font-normal text-slate-600">· {(route.distance / 1000).toFixed(1)} km</span></p>
+                    <p className="mt-1">Estimated driving route · OSRM / OpenStreetMap</p>
+                    <ol className="mt-4 space-y-3 list-decimal pl-5">{route.steps.map((step, index) => <li key={index}><span className="capitalize">{step.maneuver.type} {step.maneuver.modifier || ''}</span>{step.name ? ` on ${step.name}` : ''}{step.distance > 0 ? ` · ${Math.round(step.distance)} m` : ''}</li>)}</ol>
+                  </>}
+                </div>
               </div>
 
               {/* Navigation Launch Action Buttons */}
@@ -1218,14 +933,14 @@ export function DzalekaInteractiveMap() {
                     <svg className="h-4 w-4 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
-                    <span>Open in Google Maps App</span>
+                    <span>Open in Google Maps</span>
                   </a>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  {travelMode === 'driving' && <div className="grid grid-cols-2 gap-2 text-xs">
                     <a
                       href={`https://maps.apple.com/?saddr=${originPoint.lat},${originPoint.lng}&daddr=${destinationPoint.lat},${destinationPoint.lng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1 rounded-lg border border-slate-300 bg-white py-2 text-[11px] font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
+                      className="flex items-center justify-center gap-1 rounded-lg border border-slate-300 bg-white py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
                     >
                       <span>Apple Maps</span>
                     </a>
@@ -1233,11 +948,11 @@ export function DzalekaInteractiveMap() {
                       href={`https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${originPoint.lat}%2C${originPoint.lng}%3B${destinationPoint.lat}%2C${destinationPoint.lng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1 rounded-lg border border-slate-300 bg-white py-2 text-[11px] font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
+                      className="flex items-center justify-center gap-1 rounded-lg border border-slate-300 bg-white py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
                     >
                       <span>OpenStreetMap</span>
                     </a>
-                  </div>
+                  </div>}
                 </div>
               )}
             </div>
@@ -1246,7 +961,7 @@ export function DzalekaInteractiveMap() {
             <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                     {selectedPoint.categoryLabel}
                   </span>
                   <button
@@ -1265,27 +980,27 @@ export function DzalekaInteractiveMap() {
                 </p>
 
                 <div className="mt-4 space-y-2 rounded-xl bg-slate-50 p-3 text-xs border border-slate-200/80">
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-slate-600">
                     <span className="font-semibold text-slate-500">Zone / Sector:</span>
                     <span>{selectedPoint.zone || 'Dzaleka Sector'}</span>
                   </div>
                   {selectedPoint.operator && (
-                    <div className="flex justify-between text-slate-600">
+                    <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-slate-600">
                       <span className="font-semibold text-slate-500">Operator:</span>
                       <span>{selectedPoint.operator}</span>
                     </div>
                   )}
-                  <div className="flex justify-between items-center text-slate-600">
+                  <div className="flex flex-wrap justify-between items-center gap-x-4 gap-y-1 text-slate-600">
                     <span className="font-semibold text-slate-500">GPS Coordinates:</span>
                     <button
                       onClick={() => copyCoordinates(selectedPoint.lat, selectedPoint.lng)}
-                      className="font-mono text-[11px] text-sky-700 hover:underline flex items-center gap-1"
+                      className="font-mono text-xs text-sky-700 hover:underline flex items-center gap-1"
                     >
                       {selectedPoint.lat.toFixed(5)}, {selectedPoint.lng.toFixed(5)}
                       <span>{copiedCoords ? '(Copied)' : '📋'}</span>
                     </button>
                   </div>
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-slate-600">
                     <span className="font-semibold text-slate-500">Source:</span>
                     {/^\d+$/.test(String(selectedPoint.osmId)) ? (
                       <span className="font-mono text-[0.9em]">OpenStreetMap {selectedPoint.osmType.toUpperCase()} #{selectedPoint.osmId}</span>
@@ -1349,20 +1064,16 @@ export function DzalekaInteractiveMap() {
           ) : (
             /* LIST OF ALL FACILITIES */
             <div className="flex-1 overflow-y-auto p-2 divide-y divide-slate-100 space-y-1">
-              <div className="p-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between text-[11px]">
+              <div className="p-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between text-xs">
                 <span className="font-semibold text-slate-500 uppercase tracking-wider">
                   Dzaleka Infrastructure
                 </span>
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      setSubmissionSuccess(false);
-                      setShowSubmissionModal(true);
-                    }}
-                    className="px-2 py-0.5 rounded bg-emerald-600 text-white font-bold text-[10px] hover:bg-emerald-700"
+                  <a href="/map/submit"
+                    className="px-2 py-0.5 rounded bg-green-600 text-white font-bold text-xs hover:bg-green-700"
                   >
                     + Suggest Place
-                  </button>
+                  </a>
                   <span className="font-mono text-slate-400">{filteredPoints.length}</span>
                 </div>
               </div>
@@ -1374,23 +1085,22 @@ export function DzalekaInteractiveMap() {
                 filteredPoints.map((pt) => (
                   <div
                     key={pt.id}
-                    onClick={() => selectAndFly(pt)}
                     className="p-2.5 rounded-lg cursor-pointer transition-colors hover:bg-slate-50 flex items-start justify-between gap-2"
                   >
-                    <div className="min-w-0 flex-1">
+                    <button type="button" onClick={() => selectAndFly(pt)} className="min-w-0 flex-1 text-left">
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                           {pt.categoryLabel}
                         </span>
-                        <span className="text-[10px] text-slate-400 font-mono">#{pt.osmId}</span>
+                        <span className="text-xs text-slate-400 font-mono">#{pt.osmId}</span>
                       </div>
                       <h4 className="mt-1 font-bold text-slate-900 text-xs hover:text-sky-700 truncate">
                         {pt.name}
                       </h4>
-                      <p className="mt-0.5 text-[11px] leading-4 text-slate-600 line-clamp-1">
+                      <p className="mt-0.5 text-xs leading-4 text-slate-600 line-clamp-1">
                         {pt.description}
                       </p>
-                    </div>
+                    </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -1411,253 +1121,11 @@ export function DzalekaInteractiveMap() {
         </div>
       )}
 
-      {/* COMMUNITY PLACE SUBMISSION FORM MODAL */}
-      {showSubmissionModal && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto print-hidden">
-          <div className="w-full max-w-xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[90vh] flex flex-col">
-            <div className="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0 border-b border-slate-800">
-              <div className="flex items-center gap-2.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                <div>
-                  <h3 className="font-bold text-sm tracking-tight text-white">
-                    Community Place & Node Submission
-                  </h3>
-                  <p className="text-[11px] text-slate-300 font-normal">
-                    Suggest a new location or update existing facility details
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowSubmissionModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded font-bold text-xs"
-              >
-                ✕
-              </button>
-            </div>
-
-            {submissionSuccess ? (
-              <div className="p-8 text-center space-y-4 overflow-y-auto">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 font-bold text-xl flex items-center justify-center mx-auto border border-emerald-200">
-                  ✓
-                </div>
-                <h3 className="text-lg font-bold text-slate-950">
-                  Submission Received
-                </h3>
-                <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                  Thank you for contributing to the Dzaleka infrastructure directory. Your suggestion for <strong>"{formData.placeName}"</strong> has been queued for verification.
-                </p>
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-left font-mono text-[11px] text-slate-600 max-w-md mx-auto space-y-1">
-                  <div><strong>Reference Code:</strong> DZK-OSM-{Math.floor(100000 + Math.random() * 900000)}</div>
-                  <div><strong>Submitting Role:</strong> {formData.submitterRole}</div>
-                  <div><strong>Target Coordinates:</strong> {formData.lat}, {formData.lng}</div>
-                </div>
-                <button
-                  onClick={() => setShowSubmissionModal(false)}
-                  className="mt-4 px-5 py-2.5 rounded-lg bg-slate-900 text-white font-semibold text-xs hover:bg-slate-800 transition-colors"
-                >
-                  Return to Map
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleFormSubmit} className="p-5 space-y-3.5 text-xs overflow-y-auto flex-1">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Submission Type</label>
-                    <select
-                      value={formData.submissionType}
-                      onChange={(e) => setFormData({ ...formData, submissionType: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 bg-white text-slate-900 font-medium focus:outline-none focus:border-slate-800"
-                    >
-                      <option value="new">Suggest New Location Node</option>
-                      <option value="update">Update Existing Place Details</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Category</label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 bg-white text-slate-900 font-medium focus:outline-none focus:border-slate-800"
-                    >
-                      <option value="market">Market / Commerce / Enterprise</option>
-                      <option value="education">Education / School / Academy</option>
-                      <option value="health">Healthcare / Clinic / Aid Station</option>
-                      <option value="service">Service / CBO / NGO Office</option>
-                      <option value="culture">Culture / Youth / Worship</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Place / Organization Name *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="For example, Hope Bakery & Cafe, Youth Tech Hub..."
-                    value={formData.placeName}
-                    onChange={(e) => setFormData({ ...formData, placeName: e.target.value })}
-                    className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800 font-medium"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Zone / Sector</label>
-                    <select
-                      value={formData.zone}
-                      onChange={(e) => setFormData({ ...formData, zone: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 bg-white text-slate-900 font-medium focus:outline-none focus:border-slate-800"
-                    >
-                      <option value="Katubiza Area">Katubiza / Katudza Area</option>
-                      <option value="New Katubiza">New Katubiza Extension</option>
-                      <option value="Kawale 1">Kawale 1 Sector</option>
-                      <option value="Kawale 2">Kawale 2 Sector (Market Spine)</option>
-                      <option value="Likuni 1">Likuni 1 Area</option>
-                      <option value="Likuni 2">Likuni 2 Area</option>
-                      <option value="Lisungwi Area">Lisungwi Area</option>
-                      <option value="Zomba Sector">Zomba Sector</option>
-                      <option value="Blantyre Sector">Blantyre Sector</option>
-                      <option value="Dzaleka Hill">Dzaleka Hill Area</option>
-                      <option value="Woodlot Area">Woodlot Extension Site</option>
-                      <option value="Main Gate Sector">Main Gate / Administration Sector</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Operator / Owner Name</label>
-                    <input
-                      type="text"
-                      placeholder="For example, Community CBO, Local Enterprise..."
-                      value={formData.operator}
-                      onChange={(e) => setFormData({ ...formData, operator: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Opening Hours</label>
-                    <input
-                      type="text"
-                      placeholder="For example, Mon-Sat: 08:00 - 17:00"
-                      value={formData.openingHours}
-                      onChange={(e) => setFormData({ ...formData, openingHours: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Contact Phone / WhatsApp</label>
-                    <input
-                      type="text"
-                      placeholder="For example, +265 99 123 4567"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Description & Services Offered *</label>
-                  <textarea
-                    required
-                    rows={3}
-                    placeholder="Describe services, products sold, target community, or changes needed..."
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 focus:outline-none focus:border-slate-800"
-                  />
-                </div>
-
-                {/* GPS Coordinates selection */}
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold text-slate-700">GPS Coordinates</span>
-                    <button
-                      type="button"
-                      onClick={handleFetchCurrentCenter}
-                      className="text-sky-700 hover:underline font-semibold text-[11px]"
-                    >
-                      Set to Map Center
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <span className="text-[10px] text-slate-500 font-semibold">LATITUDE</span>
-                      <input
-                        type="text"
-                        value={formData.lat}
-                        onChange={(e) => setFormData({ ...formData, lat: e.target.value })}
-                        className="w-full rounded border border-slate-300 p-1.5 font-mono text-slate-900 bg-white"
-                      />
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-slate-500 font-semibold">LONGITUDE</span>
-                      <input
-                        type="text"
-                        value={formData.lng}
-                        onChange={(e) => setFormData({ ...formData, lng: e.target.value })}
-                        className="w-full rounded border border-slate-300 p-1.5 font-mono text-slate-900 bg-white"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Your Name</label>
-                    <input
-                      type="text"
-                      placeholder="Your full name"
-                      value={formData.submitterName}
-                      onChange={(e) => setFormData({ ...formData, submitterName: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 text-slate-900"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">Your Role / Capacity</label>
-                    <select
-                      value={formData.submitterRole}
-                      onChange={(e) => setFormData({ ...formData, submitterRole: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 p-2 bg-white text-slate-900 font-medium"
-                    >
-                      <option value="Enterprise Owner">Enterprise / Business Owner</option>
-                      <option value="CBO Director">Refugee CBO Director</option>
-                      <option value="School Admin">School Administrator</option>
-                      <option value="Healthcare Worker">Healthcare Worker</option>
-                      <option value="Resident">Dzaleka Resident</option>
-                      <option value="Visitor">Visitor / Humanitarian Staff</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setShowSubmissionModal(false)}
-                    className="px-4 py-2 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold transition-colors shadow-2xs"
-                  >
-                    {submitting ? 'Submitting...' : 'Submit Location Node'}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* PRINTABLE PDF MAP SHEET GENERATOR MODAL */}
       {showPrintModal && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto printable-sheet-modal">
+        <Modal label="Printable place directory" onClose={() => setShowPrintModal(false)}><div className="printable-sheet-modal">
           <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[95vh] flex flex-col">
-            
+
             {/* Modal Header Bar (Hidden in Print) */}
             <div className="p-4 bg-slate-900 text-white flex items-center justify-between print-hidden shrink-0 border-b border-slate-800">
               <div className="flex items-center gap-2">
@@ -1665,7 +1133,7 @@ export function DzalekaInteractiveMap() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                 </svg>
                 <h3 className="font-bold text-sm tracking-tight text-white">
-                  Printable PDF Field Map Sheet
+                  Printable place directory
                 </h3>
               </div>
               <div className="flex items-center gap-2">
@@ -1676,7 +1144,7 @@ export function DzalekaInteractiveMap() {
                   Print / Save as PDF
                 </button>
                 <button
-                  onClick={() => setShowPrintModal(false)}
+                  aria-label="Close print directory" onClick={() => setShowPrintModal(false)}
                   className="text-slate-400 hover:text-white p-1 rounded font-bold text-xs"
                 >
                   ✕
@@ -1686,50 +1154,31 @@ export function DzalekaInteractiveMap() {
 
             {/* Printable Map Sheet Document Content */}
             <div className="p-6 md:p-8 space-y-6 text-slate-900 bg-white overflow-y-auto flex-1">
-              
+
               {/* Document Title Header */}
               <div className="border-b-2 border-slate-900 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
                 <div>
                   <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-                    Humanitarian Field Operations Directory
+                    Dzaleka Online Services
                   </span>
-                  <h1 className="text-2xl font-bold tracking-tight text-slate-950 mt-1">
-                    Dzaleka Refugee Camp Official Field Map & Directory
-                  </h1>
+                  <h2 className="text-2xl font-bold tracking-tight text-slate-950 mt-1">
+                    Dzaleka place directory
+                  </h2>
                   <p className="text-xs text-slate-600 mt-1">
-                    Empirical OpenStreetMap Infrastructure Registry & Emergency Navigation Index
+                    Places and coordinates from OpenStreetMap and the heritage register.
                   </p>
                 </div>
                 <div className="text-left md:text-right font-mono text-xs text-slate-600">
-                  <div><strong>GPS Center:</strong> -13.6592° S, 33.8705° E</div>
+                  <div><strong>GPS Center:</strong> 13.6592° S, 33.8705° E</div>
                   <div><strong>Location:</strong> Dowa District, Central Region, Malawi</div>
-                  <div><strong>Dataset Version:</strong> 2026 OpenStreetMap Live Nodes</div>
-                </div>
-              </div>
 
-              {/* Emergency Hotline Callout Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-red-600">Police Detachment</span>
-                  <h4 className="text-sm font-bold text-slate-900">Malawi Police Post</h4>
-                  <p className="text-xs font-mono text-slate-700 font-semibold">Emergency Call: 111</p>
-                </div>
-                <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-red-600">Health Sector</span>
-                  <h4 className="text-sm font-bold text-slate-900">Dzaleka Healthcare Center</h4>
-                  <p className="text-xs font-mono text-slate-700 font-semibold">Ambulance Hotline: 999</p>
-                </div>
-                <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-700">UNHCR Field Desk</span>
-                  <h4 className="text-sm font-bold text-slate-900">Camp Security & Protection</h4>
-                  <p className="text-xs font-mono text-slate-700 font-semibold">Phone: +265 1 774 000</p>
                 </div>
               </div>
 
               {/* Key Facilities Table */}
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">
-                  Key Registered Infrastructure Facilities ({MAP_POINTS.length} Empirical Nodes)
+                  Places ({MAP_POINTS.length})
                 </h3>
                 <div className="overflow-x-auto border border-slate-200 rounded-xl">
                   <table className="w-full text-left text-xs">
@@ -1747,15 +1196,15 @@ export function DzalekaInteractiveMap() {
                         <tr key={pt.id} className="hover:bg-slate-50">
                           <td className="py-2 px-3 font-semibold text-slate-900">{pt.name}</td>
                           <td className="py-2 px-3">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-slate-100 border border-slate-200 text-slate-700">
+                            <span className="px-2 py-0.5 rounded text-xs font-semibold uppercase bg-slate-100 border border-slate-200 text-slate-700">
                               {pt.categoryLabel}
                             </span>
                           </td>
                           <td className="py-2 px-3 text-slate-600">{pt.zone || 'Dzaleka Sector'}</td>
-                          <td className="py-2 px-3 font-mono text-[11px] text-slate-700">
+                          <td className="py-2 px-3 font-mono text-xs text-slate-700">
                             {pt.lat.toFixed(4)}, {pt.lng.toFixed(4)}
                           </td>
-                          <td className="py-2 px-3 font-mono text-[11px] text-slate-600">
+                          <td className="py-2 px-3 font-mono text-xs text-slate-600">
                             #{pt.osmId}
                           </td>
                         </tr>
@@ -1765,193 +1214,23 @@ export function DzalekaInteractiveMap() {
                 </div>
               </div>
 
-              {/* Driving Directions Section */}
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-800 mb-1">
-                  Driving & Logistics Access Directions
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  From Lilongwe City Center, proceed north via the paved <strong>M7 Highway</strong> toward Dowa District for approximately 41 kilometers. Turn right onto the Dzaleka access road at the South Gate checkpoint (GPS Coordinates: -13.6637, 33.8689).
-                </p>
-              </div>
-
               {/* Footer Stamp */}
-              <div className="pt-4 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-400">
-                <span>Services.dzaleka.com Official Map Print Sheet</span>
+              <div className="pt-4 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400">
+                <span>services.dzaleka.com/map</span>
                 <span>OpenStreetMap &copy; Contributors | Esri World Imagery</span>
               </div>
             </div>
 
           </div>
-        </div>
+        </div></Modal>
       )}
 
-      {/* EMERGENCY CONTACTS & RAPID RESPONSE MODAL */}
-      {showEmergencyModal && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto print-hidden">
-          <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[90vh] flex flex-col">
-            
-            {/* Modal Header */}
-            <div className="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0 border-b border-slate-800">
-              <div className="flex items-center gap-2.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-                <div>
-                  <h3 className="font-bold text-sm tracking-tight text-white">
-                    Emergency Contacts & Security Desk
-                  </h3>
-                  <p className="text-[11px] text-slate-300 font-normal">
-                    Dzaleka Refugee Camp Direct Hotlines
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowEmergencyModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded font-bold text-xs"
-              >
-                ✕
-              </button>
-            </div>
 
-            {/* Emergency Content */}
-            <div className="p-5 space-y-4 overflow-y-auto flex-1 text-slate-900">
-              <div className="p-3.5 bg-red-50/80 border-l-4 border-red-600 rounded-r-lg border-y border-r border-red-200/60">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-red-700">Urgent Assistance Callout</span>
-                <p className="text-xs text-slate-800 mt-1 leading-relaxed">
-                  For immediate life safety, crime reporting, or medical evacuation, contact the field dispatch numbers below.
-                </p>
-              </div>
-
-              <div className="space-y-2.5">
-                {/* Healthcare & Ambulance */}
-                <div className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 flex items-center justify-between gap-3 shadow-2xs">
-                  <div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-red-600">Medical Emergency</span>
-                    <h4 className="text-sm font-bold text-slate-950">Dzaleka Healthcare Center & Ambulance</h4>
-                    <p className="text-xs text-slate-500 mt-0.5">24/7 Field Clinic & Dispatch</p>
-                  </div>
-                  <a
-                    href="tel:999"
-                    className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shrink-0 shadow-2xs flex items-center gap-1.5"
-                  >
-                    <svg className="h-3.5 w-3.5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <span>Call 999</span>
-                  </a>
-                </div>
-
-                {/* Malawi Police Post */}
-                <div className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 flex items-center justify-between gap-3 shadow-2xs">
-                  <div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Police Detachment</span>
-                    <h4 className="text-sm font-bold text-slate-950">Malawi Police Dzaleka Post</h4>
-                    <p className="text-xs text-slate-500 mt-0.5">Camp Security & Law Enforcement</p>
-                  </div>
-                  <a
-                    href="tel:111"
-                    className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shrink-0 shadow-2xs flex items-center gap-1.5"
-                  >
-                    <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <span>Call 111</span>
-                  </a>
-                </div>
-
-                {/* UNHCR Protection Desk */}
-                <div className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 flex items-center justify-between gap-3 shadow-2xs">
-                  <div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-700">Protection Desk</span>
-                    <h4 className="text-sm font-bold text-slate-950">UNHCR Field Protection & Safety</h4>
-                    <p className="text-xs text-slate-500 mt-0.5">Refugee Protection Hotline</p>
-                  </div>
-                  <a
-                    href="tel:+2651774000"
-                    className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shrink-0 shadow-2xs flex items-center gap-1.5"
-                  >
-                    <svg className="h-3.5 w-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <span>Call Desk</span>
-                  </a>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100">
-                <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-2">
-                  Map Quick Highlights
-                </span>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <button
-                    onClick={() => {
-                      setShowEmergencyModal(false);
-                      const healthPt = MAP_POINTS.find((p) => p.type === 'health');
-                      if (healthPt) selectAndFly(healthPt);
-                    }}
-                    className="p-2.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-900 font-semibold text-left transition-colors"
-                  >
-                    Center Healthcare Station &rarr;
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowEmergencyModal(false);
-                      const servicePt = MAP_POINTS.find((p) => p.name.toLowerCase().includes('police'));
-                      if (servicePt) selectAndFly(servicePt);
-                    }}
-                    className="p-2.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-900 font-semibold text-left transition-colors"
-                  >
-                    Center Police Post &rarr;
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-3 bg-slate-50 border-t border-slate-200 flex justify-end">
-              <button
-                onClick={() => setShowEmergencyModal(false)}
-                className="px-4 py-2 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition-colors"
-              >
-                Close Emergency Window
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
 // HAVERSINE DISTANCE CALCULATOR IN KM
-function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371;
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLon = (lon2 - lon1) * (Math.PI / 180);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return Math.round(R * c * 10) / 10;
-}
-
-// ESTIMATED TRAVEL TIME
-function estimateTravelTime(distKm: number, mode: 'driving' | 'walking' | 'transit'): string {
-  if (distKm < 0.1) return '< 1 min';
-  if (mode === 'driving') {
-    const hours = distKm / (distKm > 5 ? 50 : 25);
-    const mins = Math.round(hours * 60);
-    return mins >= 60 ? `${Math.floor(mins / 60)} hr ${mins % 60} min` : `${mins} min`;
-  } else if (mode === 'walking') {
-    const mins = Math.round((distKm / 4.5) * 60);
-    return mins >= 60 ? `${Math.floor(mins / 60)} hr ${mins % 60} min` : `${mins} min`;
-  } else {
-    const mins = Math.round((distKm / 35) * 60);
-    return mins >= 60 ? `${Math.floor(mins / 60)} hr ${mins % 60} min` : `${mins} min`;
-  }
-}
-
 // GOOGLE MAPS STYLE PIN WITH SVG BADGE + LOCATION NAME PILL
 function getPinSvgWithName(type: MapPoint['type'], name: string): string {
   const badgeHtml = getPinSvgOnly(type);
@@ -2117,4 +1396,10 @@ function getPinSvgOnly(type: MapPoint['type']): string {
         </svg>
       </div>`;
   }
+}
+
+export function filterMapPoints(points: MapPoint[], query: string, category: string) {
+  const text = query.trim().toLowerCase();
+  return points.filter((point) => (category === 'all' || point.type === category)
+    && (!text || [point.name, point.categoryLabel, point.description, point.zone, point.osmId].join(' ').toLowerCase().includes(text)));
 }

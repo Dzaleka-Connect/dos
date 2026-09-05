@@ -21,8 +21,8 @@ const schema = {
 };
 ---
 
-<MainLayout 
-  title="Dzaleka Rights Navigator" 
+<MainLayout
+  title="Dzaleka Rights Navigator"
   description="Know your rights, access legal aid, and understand the laws governing Dzaleka regarding the 1951 Geneva Convention."
   schema={schema}
   openGraph={{
@@ -33,7 +33,7 @@ const schema = {
   }}
 >
    <div class="min-h-screen bg-gray-50">
-    
+
     <!-- Hero Section: Cleaner, Lighter -->
     <div class="bg-gray-900 border-b border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 text-center">
@@ -50,7 +50,7 @@ const schema = {
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      
+
       <!-- Search Bar -->
       <div class="max-w-2xl mx-auto mb-16 relative">
         <label for="rights-search" class="sr-only">Search rights, legislation, and resources</label>
@@ -60,19 +60,19 @@ const schema = {
               <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
             </svg>
           </div>
-          <input 
-            type="text" 
-            id="rights-search" 
-            class="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 sm:text-lg  transition" 
+          <input
+            type="text"
+            id="rights-search"
+            class="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 sm:text-lg transition"
             placeholder="Search for 'work', 'movement', or 'legal aid'..."
           >
         </div>
       </div>
-      
+
       <!-- Rights Reality Dashboard (Cards) - Simplified -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
         <!-- Card 1 -->
-        <div class="bg-white rounded-xl  border border-gray-200 p-6">
+        <div class="bg-white rounded border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="font-bold text-gray-900 text-lg">Freedom of Movement</h3>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,9 +85,9 @@ const schema = {
             Requires Gate Pass
           </div>
         </div>
-        
+
         <!-- Card 2 -->
-        <div class="bg-white rounded-xl  border border-gray-200 p-6">
+        <div class="bg-white rounded border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
              <h3 class="font-bold text-gray-900 text-lg">Right to Work</h3>
              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,7 +102,7 @@ const schema = {
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-white rounded-xl  border border-gray-200 p-6">
+        <div class="bg-white rounded border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
              <h3 class="font-bold text-gray-900 text-lg">Right to Asylum</h3>
              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -120,13 +120,13 @@ const schema = {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <!-- Main Content Column -->
         <div class="lg:col-span-2 space-y-12">
-          
+
           <!-- Legislation Section -->
           <section>
             <h2 class="text-2xl font-bold text-gray-900 font-heading mb-6 border-b border-gray-200 pb-2">Primary Legislation</h2>
             <div class="grid gap-4">
               {legislation.map(doc => (
-                <a href={`/rights-navigator/${doc.id}`} class="group block bg-white p-6 rounded-lg  border border-gray-200 hover:border-slate-400 hover: transition duration-200">
+                <a href={`/rights-navigator/${doc.id}`} class="group block bg-white p-6 rounded border border-gray-200 hover:border-slate-400 hover: transition duration-200">
                   <div class="flex flex-col md:flex-row md:items-start justify-between">
                     <div>
                       <span class="text-slate-700 font-semibold text-xs tracking-wider uppercase mb-1 block">
@@ -148,7 +148,7 @@ const schema = {
             <h2 class="text-2xl font-bold text-gray-900 font-heading mb-6 border-b border-gray-200 pb-2">Legal Analysis</h2>
             <div class="grid gap-4">
               {analysis.map(doc => (
-                 <a href={`/rights-navigator/${doc.id}`} class="group block bg-white p-6 rounded-lg  border border-gray-200 hover:border-slate-400 hover: transition duration-200">
+                 <a href={`/rights-navigator/${doc.id}`} class="group block bg-white p-6 rounded border border-gray-200 hover:border-slate-400 hover: transition duration-200">
                      <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-700 transition mb-2">
                       {doc.data.title}
                     </h3>
@@ -162,9 +162,9 @@ const schema = {
 
         <!-- Sidebar -->
         <div class="space-y-8">
-          
+
           <!-- Resources Widget -->
-          <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div class="bg-gray-50 p-6 rounded border border-gray-200">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center font-heading">
               Resource Hub
             </h3>
@@ -187,18 +187,18 @@ const schema = {
           </div>
 
           <!-- Incident Reporting Call to Action -->
-          <div class="bg-gray-900 text-white p-6 rounded-xl border border-gray-200 ">
+          <div class="bg-gray-900 text-white p-6 rounded border border-gray-200">
             <h3 class="text-lg font-bold mb-2 font-heading">Report a rights violation</h3>
             <p class="text-gray-300 mb-4 text-sm leading-relaxed">
               Issues with gate passes, status determination, or authorities?
             </p>
-            <a href="/rights-navigator/incident-report" class="block w-full text-center bg-white text-slate-700 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-150 text-sm">
+            <a href="/rights-navigator/incident-report" class="block w-full text-center bg-white text-slate-700 py-2.5 rounded font-semibold hover:bg-gray-100 transition-colors duration-150 text-sm">
               Open Incident Tracker
             </a>
           </div>
 
           <!-- Lawyer/Help Box -->
-          <div class="bg-white p-6 rounded-xl  border border-gray-200">
+          <div class="bg-white p-6 rounded border border-gray-200">
              <h3 class="text-gray-900 font-bold mb-2">Need Professional Help?</h3>
              <p class="text-sm text-gray-500 mb-3">Connect with Inua Advocacy for free legal representation.</p>
              <a href="/rights-navigator/legal-aid-directory" class="text-slate-700 font-bold text-sm hover:underline">View Legal Directory &rarr;</a>
@@ -226,12 +226,12 @@ const schema = {
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         const term = (e.target as HTMLInputElement).value.toLowerCase();
-        
+
         cards.forEach(card => {
           const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
           const desc = card.querySelector('p')?.textContent?.toLowerCase() || '';
           const text = title + ' ' + desc;
-          
+
           if (text.includes(term)) {
             (card as HTMLElement).style.display = '';
           } else {

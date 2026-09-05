@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import remarkToc from 'remark-toc';
 import remarkSlug from 'remark-slug';
+import remarkContentHeadings from './src/plugins/remark-content-headings.mjs';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 
@@ -23,7 +24,7 @@ export default defineConfig({
     react()
   ],
   markdown: {
-    remarkPlugins: [remarkSlug, [remarkToc, { tight: true }]],
+    remarkPlugins: [remarkContentHeadings, remarkSlug, [remarkToc, { tight: true }]],
     shikiConfig: {
       theme: 'dracula',
       wrap: true

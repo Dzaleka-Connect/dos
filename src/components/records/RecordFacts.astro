@@ -1,0 +1,6 @@
+---
+export interface Fact { label: string; value?: string | number | string[] | null; href?: string; }
+interface Props { facts: Fact[]; }
+const facts = Astro.props.facts.filter(fact => fact.value !== undefined && fact.value !== null && String(fact.value).trim() !== '');
+---
+<dl class="record-facts divide-y divide-slate-200">{facts.map(({ label, value, href }) => <div class="py-4 first:pt-0 last:pb-0"><dt class="text-sm text-slate-600">{label}</dt><dd class="mt-1 text-base leading-6 text-slate-900 [overflow-wrap:anywhere]">{href ? <a href={href} class="text-primary-800 underline underline-offset-4">{Array.isArray(value) ? value.join(', ') : value}</a> : Array.isArray(value) ? value.join(', ') : value}</dd></div>)}</dl>

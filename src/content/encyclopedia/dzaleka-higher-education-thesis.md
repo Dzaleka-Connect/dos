@@ -7,10 +7,10 @@ entryType: "book"
 schemaType: "Article"
 lastReviewed: 2026-07-22
 datePublished: 2020-05-10
-image: "https://services.dzaleka.com/images/encyclopedia/education.jpg"
-imageAlt: "Digital classroom and students in Dzaleka"
-imageCaption: "Tertiary digital learning center in Dzaleka, highlighted in the York University study."
-imageCredit: "Dzaleka Online Services"
+image: "/images/encyclopedia/jesuit-worldwide-learning.jpg"
+imageAlt: "Jesuit Worldwide Learning graduates in Malawi at a diploma ceremony"
+imageCaption: "JWL diploma graduates in Malawi, from Regis University’s 2019 announcement. Context photograph for this research entry."
+imageCredit: "Regis University"
 facts:
   - label: "Institution"
     value: "York University (Toronto, Canada)"

@@ -31,12 +31,12 @@ const description = "Submit information about a cultural, historical, or communi
     <!-- Form Section -->
     <section class="py-10">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg border border-slate-200 p-8">
-          <form id="submitForm" action="https://formspree.io/f/xqaaajae" method="POST" class="space-y-8">
+        <div class="bg-white rounded border border-slate-200 p-5 sm:p-8">
+          <form id="submitForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
             <!-- Basic Information -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Basic Information</h2>
-              
+
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="siteName" class="block text-sm font-medium text-gray-700 mb-2">
@@ -85,7 +85,7 @@ const description = "Submit information about a cultural, historical, or communi
             <!-- Description -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Description</h2>
-              
+
               <div class="space-y-6">
                 <div>
                   <label for="siteDescription" class="block text-sm font-medium text-gray-700 mb-2">
@@ -133,7 +133,7 @@ const description = "Submit information about a cultural, historical, or communi
             <!-- Location & Status -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Location & Status</h2>
-              
+
               <div>
                 <label for="campZone" class="block text-sm font-medium text-gray-700 mb-2">
                   Camp Zone Location
@@ -169,7 +169,7 @@ const description = "Submit information about a cultural, historical, or communi
             <!-- Condition & Heritage Value -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Condition & heritage value</h2>
-              
+
               <div class="space-y-6">
                 <div>
                   <label for="condition" class="block text-sm font-medium text-gray-700 mb-2">
@@ -247,17 +247,17 @@ const description = "Submit information about a cultural, historical, or communi
             <!-- Photos -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Photos</h2>
-              
+
               <div>
                 <label for="photos" class="block text-sm font-medium text-gray-700 mb-2">
                   Upload Photos *
                 </label>
-                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <div class="border-2 border-dashed border-gray-300 rounded p-6 text-center">
                   <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                   <div class="mt-4">
-                    <label for="photo-upload" class="cursor-pointer rounded-lg bg-gray-900 text-white px-4 py-2 hover:bg-gray-800 transition-colors">
+                    <label for="photo-upload" class="cursor-pointer rounded bg-gray-900 text-white px-4 py-2 hover:bg-gray-800 transition-colors">
                       Choose Files
                     </label>
                     <input id="photo-upload" name="photos" type="file" multiple accept="image/*" class="hidden" required />
@@ -275,7 +275,7 @@ const description = "Submit information about a cultural, historical, or communi
             <!-- Contributor Information -->
             <div>
               <h2 class="text-2xl font-bold text-gray-900 mb-6">Contributor Information</h2>
-              
+
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="contributorName" class="block text-sm font-medium text-gray-700 mb-2">
@@ -327,7 +327,7 @@ const description = "Submit information about a cultural, historical, or communi
               <button
                 type="submit"
                 id="submitButton"
-                class="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50"
+                class="min-h-[44px] bg-primary-900 text-white px-8 py-3 rounded font-semibold hover:bg-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50"
               >
                 <span id="submitText">Submit Site</span>
                 <span id="submitSpinner" class="hidden">
@@ -400,7 +400,7 @@ const description = "Submit information about a cultural, historical, or communi
         );
 
         const data = await response.json();
-        
+
         if (data.secure_url) {
           statusElement.textContent = 'Upload successful!';
           statusElement.classList.add('text-green-500');

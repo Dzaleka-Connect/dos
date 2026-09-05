@@ -53,6 +53,7 @@ const inputId = `input-${name}`;
 
   <div class="relative">
     <input
+      aria-describedby={[helpText && `${inputId}-help`, `${inputId}-error`].filter(Boolean).join(' ')}
       type={type}
       id={inputId}
       name={name}
@@ -62,36 +63,17 @@ const inputId = `input-${name}`;
       pattern={pattern}
       minlength={minlength}
       maxlength={maxlength}
-      class="peer w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors invalid:border-red-300 focus:invalid:ring-red-500 focus:invalid:border-red-500"
+      class="peer w-full px-4 py-2.5 min-h-[44px] text-sm border border-slate-400 rounded focus:ring-2 focus:ring-primary-700 focus:border-primary-700 aria-[invalid=true]:border-red-600"
     />
 
-    <!-- Success Icon (shown when valid) -->
-    <svg
-      class="hidden peer-valid:[&:not(:placeholder-shown)]:block absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500 pointer-events-none"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-    </svg>
-
-    <!-- Error Icon (shown when invalid and touched) -->
-    <svg
-      class="hidden peer-invalid:[&:not(:placeholder-shown)]:block absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-red-500 pointer-events-none"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
   </div>
 
   {helpText && (
-    <p class="mt-1 text-sm text-gray-500">{helpText}</p>
+    <p id={`${inputId}-help`} class="mt-2 text-sm text-slate-600">{helpText}</p>
   )}
 
   <!-- Error message (shown via JavaScript) -->
-  <p id={`${inputId}-error`} class="hidden mt-1 text-sm text-red-600"></p>
+  <p id={`${inputId}-error`} aria-live="polite" class="hidden mt-2 text-sm text-red-700"></p>
 </div>
 
 <script define:vars={{ inputId, label }}>
@@ -100,7 +82,7 @@ const inputId = `input-${name}`;
 
   if (input) {
     input.addEventListener('invalid', (e) => {
-      e.preventDefault();
+      input.setAttribute('aria-invalid', 'true');
       const errorEl = document.getElementById(`${inputId}-error`);
 
       if (errorEl) {
@@ -125,6 +107,7 @@ const inputId = `input-${name}`;
     input.addEventListener('input', () => {
       const errorEl = document.getElementById(`${inputId}-error`);
       if (errorEl && input.validity.valid) {
+        input.removeAttribute('aria-invalid');
         errorEl.classList.add('hidden');
       }
     });

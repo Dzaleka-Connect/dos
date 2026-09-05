@@ -28,8 +28,8 @@ const allUpcomingEvents = events
   .filter(event => isEventTBA(event) || isUpcoming(event.data.date))
   .map(event => ({
     ...event,
-    data: { 
-      ...event.data, 
+    data: {
+      ...event.data,
       status: 'upcoming',
       isTBA: isEventTBA(event)
     }
@@ -46,8 +46,8 @@ const allPastEvents = events
   .filter(event => !isEventTBA(event) && !isUpcoming(event.data.date))
   .map(event => ({
     ...event,
-    data: { 
-      ...event.data, 
+    data: {
+      ...event.data,
       status: 'past',
       isTBA: false
     }
@@ -179,19 +179,19 @@ const eventsStructuredData = {
 };
 ---
 
-<MainLayout 
-  title={seo.title} 
-  description={seo.description} 
-  type={seo.type} 
-  canonical={seo.canonical} 
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
   <script type="application/ld+json" set:html={JSON.stringify(eventsStructuredData)} />
 
-  <main class="min-h-screen">
+  <div class="min-h-screen">
     <section class="border-b border-gray-200 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <div class="max-w-3xl">
           <div class="mb-6">
             <Breadcrumb items={[
@@ -200,16 +200,16 @@ const eventsStructuredData = {
             ]} />
           </div>
 
-          <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-4">
+          <h1 class="text-4xl font-semibold text-slate-900 sm:text-5xl mb-4">
             What's On in Dzaleka
           </h1>
-          <p class="text-lg leading-8 text-slate-600 mb-8 max-w-2xl">
+          <p class="text-sm leading-6 text-slate-600 mb-8 max-w-2xl">
             Cultural festivals, performances, webinars, workshops, and community gatherings in and beyond Dzaleka.
           </p>
 
           <a
             href="/events/organize"
-            class="inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition-colors shadow-sm"
+            class="min-h-[44px] inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded text-slate-700 bg-white hover:bg-slate-50 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -224,7 +224,7 @@ const eventsStructuredData = {
       <!-- Upcoming Events -->
     <section class="mb-20">
       <div class="mb-10 max-w-2xl">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 mb-3">Upcoming events</h2>
+        <h2 class="text-3xl font-semibold text-gray-900 mb-3">Upcoming events</h2>
         <p class="text-lg text-gray-600">Dates, venues, organizers, and registration links where available.</p>
       </div>
 
@@ -235,7 +235,7 @@ const eventsStructuredData = {
             <div class="mt-12 text-center">
               <a
                 href="/events/upcoming/1"
-                class="inline-flex items-center text-gray-900 bg-white border border-gray-300 hover:bg-gray-50 font-medium px-6 py-3 rounded-lg shadow-sm transition-colors text-sm"
+                class="min-h-[44px] inline-flex items-center text-gray-900 bg-white border border-gray-300 hover:bg-gray-50 font-medium px-6 py-3 rounded transition-colors text-sm"
               >
                 Explore All Upcoming Events ({allUpcomingEvents.length})
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -246,7 +246,7 @@ const eventsStructuredData = {
           )}
         </div>
       ) : (
-        <div class="rounded-xl border border-gray-200 bg-white p-8">
+        <div class="rounded border border-gray-200 bg-white p-5 sm:p-8">
           <p class="text-lg font-semibold text-gray-900">No upcoming events listed right now.</p>
           <p class="mt-2 text-gray-600">
             Check the <a href="/events/past/1" class="font-semibold text-gray-900 underline underline-offset-2 hover:text-gray-600">past events archive</a>, or
@@ -260,7 +260,7 @@ const eventsStructuredData = {
     <section class="bg-gray-50 py-16 -mx-4 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="mb-10 max-w-2xl">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 mb-3">Past events</h2>
+          <h2 class="text-3xl font-semibold text-gray-900 mb-3">Past events</h2>
           <p class="text-lg text-gray-600">Recent gatherings, talks, festivals, performances, and community meetings.</p>
         </div>
         {allPastEvents.length > 0 ? (
@@ -270,7 +270,7 @@ const eventsStructuredData = {
               <div class="mt-12 text-center">
                 <a
                   href="/events/past/1"
-                  class="inline-flex items-center text-gray-600 border border-gray-300 hover:bg-gray-50 font-medium px-6 py-3 rounded-lg shadow-sm bg-white transition-colors text-sm"
+                  class="min-h-[44px] inline-flex items-center text-gray-600 border border-gray-300 hover:bg-gray-50 font-medium px-6 py-3 rounded bg-white transition-colors text-sm"
                 >
                   View All Past Events ({allPastEvents.length})
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -281,12 +281,12 @@ const eventsStructuredData = {
             )}
           </div>
         ) : (
-          <div class="text-center bg-white p-12 rounded-xl border border-gray-200">
+          <div class="text-center bg-white p-5 sm:p-8 rounded border border-gray-200">
             <p class="text-gray-700 text-lg">No past events to display yet.</p>
           </div>
         )}
       </div>
     </section>
     </div>
-  </main>
+  </div>
 </MainLayout>

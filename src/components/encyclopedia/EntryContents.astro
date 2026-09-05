@@ -1,0 +1,7 @@
+---
+interface Props { links: { href: string; label: string }[]; }
+const { links } = Astro.props;
+---
+<nav aria-label="On this page" class="py-3">
+  <ol class="space-y-1 text-sm leading-6">{links.map((link) => <li><a href={link.href} class="toc-link block min-h-[44px] py-2.5 text-slate-600 underline underline-offset-4 hover:text-primary-800">{link.label}</a></li>)}</ol>
+</nav>

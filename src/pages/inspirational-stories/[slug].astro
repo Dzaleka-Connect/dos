@@ -17,7 +17,7 @@ const currentUrl = Astro.url.href;
 const htmlContent = `<p class="mb-5">${content
   .replace(/^### (.*$)/gim, '</p><h3 class="mt-8 text-xl font-semibold text-gray-900">$1</h3><p class="mb-5">')
   .replace(/^## (.*$)/gim, '</p><h2 class="mt-10 text-2xl font-semibold text-gray-900">$1</h2><p class="mb-5">')
-  .replace(/^# (.*$)/gim, '</p><h1 class="mt-10 text-3xl font-semibold text-gray-900">$1</h1><p class="mb-5">')
+  .replace(/^# (.*$)/gim, '</p><h2 class="mt-10 text-2xl font-semibold text-gray-900">$1</h2><p class="mb-5">')
   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
   .replace(/\*(.*?)\*/g, '<em>$1</em>')
   .replace(/\n\n/g, '</p><p class="mb-5">')}</p>`
@@ -82,7 +82,7 @@ const shareLinks = {
         </nav>
 
         <div class="grid gap-8 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
-          <div class="overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+          <div class="overflow-hidden rounded border border-gray-200 bg-gray-100">
             {personImage ? (
               <img src={personImage} alt={name} class="h-full w-full object-cover" />
             ) : (
@@ -100,9 +100,9 @@ const shareLinks = {
             <p class="mt-4 text-lg leading-8 text-gray-600">{description}</p>
 
             <div class="mt-6 flex flex-wrap gap-2 text-sm text-gray-600">
-              <span class="rounded-lg bg-gray-100 px-3 py-1.5">{country}</span>
-              {age && <span class="rounded-lg bg-gray-100 px-3 py-1.5">{age} years old</span>}
-              <time class="rounded-lg bg-gray-100 px-3 py-1.5">
+              <span class="rounded bg-gray-100 px-3 py-1.5">{country}</span>
+              {age && <span class="rounded bg-gray-100 px-3 py-1.5">{age} years old</span>}
+              <time class="rounded bg-gray-100 px-3 py-1.5">
                 {new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
             </div>
@@ -117,7 +117,7 @@ const shareLinks = {
           <div class="prose prose-gray max-w-none text-[17px] leading-8 text-gray-700 story-content" set:html={htmlContent} />
 
           {tags && tags.length > 0 && (
-            <section class="mt-10 rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <section class="mt-10 rounded border border-gray-200 bg-gray-50 p-5">
               <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-gray-700">Topics</h2>
               <div class="mt-4 flex flex-wrap gap-2">
                 {tags.map((tag) => (
@@ -128,7 +128,7 @@ const shareLinks = {
           )}
 
           {contact && (
-            <section class="mt-8 rounded-xl border border-gray-200 bg-white p-5">
+            <section class="mt-8 rounded border border-gray-200 bg-white p-5">
               <h2 class="text-lg font-semibold text-gray-900">Contact information</h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
                 If contact details are shared here, use them respectfully and only for appropriate outreach.
@@ -140,7 +140,7 @@ const shareLinks = {
                     href={`https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
+                    class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
                     WhatsApp: {contact.whatsapp}
                   </a>
@@ -148,7 +148,7 @@ const shareLinks = {
                 {contact.email && (
                   <a
                     href={`mailto:${contact.email}`}
-                    class="rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
+                    class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
                     Email: {contact.email}
                   </a>
@@ -158,7 +158,7 @@ const shareLinks = {
                     href={`https://twitter.com/${contact.twitter.replace('@', '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
+                    class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
                     Twitter: {contact.twitter}
                   </a>
@@ -168,7 +168,7 @@ const shareLinks = {
                     href={contact.website.startsWith('http') ? contact.website : `https://${contact.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
+                    class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
                     Website: {contact.website}
                   </a>
@@ -177,21 +177,21 @@ const shareLinks = {
             </section>
           )}
 
-          <section class="mt-8 rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <section class="mt-8 rounded border border-gray-200 bg-gray-50 p-5">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 class="text-lg font-semibold text-gray-900">Share this story</h2>
                 <p class="mt-1 text-sm text-gray-600">Help other people find this profile.</p>
               </div>
               <div class="flex flex-wrap gap-2">
-                <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Twitter</a>
-                <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Facebook</a>
-                <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">WhatsApp</a>
+                <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Twitter</a>
+                <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Facebook</a>
+                <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">WhatsApp</a>
               </div>
             </div>
           </section>
 
-          <section class="mt-8 rounded-xl border border-gray-200 bg-white p-5">
+          <section class="mt-8 rounded border border-gray-200 bg-white p-5">
             <h2 class="text-lg font-semibold text-gray-900">More stories</h2>
             <p class="mt-2 text-sm text-gray-600">Go back to the full list to keep exploring profiles from across the community.</p>
             <a href="/inspirational-stories" class="mt-4 inline-flex text-sm font-medium text-primary-700 hover:text-primary-800">

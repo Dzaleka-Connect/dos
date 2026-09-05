@@ -373,69 +373,23 @@ const paginationStructuredData = {
     })}
   />
 
-  <main class="min-h-screen bg-white">
-    {/* Hero Section */}
-    <div class="relative border-b border-gray-200 overflow-hidden bg-gray-900 mb-12">
-      <div class="absolute inset-0 z-0">
-        <img src="/images/dzaleka-hero.jpeg" alt="Dzaleka Resources Hub" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gray-900/60"></div>
-      </div>
-
-      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <div class="max-w-3xl mx-auto text-center">
-          <div class="mb-6 flex justify-center">
-            <Breadcrumb items={[
-              { label: 'Home', href: '/' },
-              { label: 'Resources', href: '/resources' },
-              ...(page.currentPage > 1 ? [{ label: `Page ${page.currentPage}` }] : [])
-            ]} light={true} />
-          </div>
-
-          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
-            Dzaleka Resource Hub
-          </h1>
-          <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Search {allResources.length}+ reports, policies, legal materials, studies, guides, and community records connected to Dzaleka.
-          </p>
-
-          <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#resourceFilterForm"
-              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-gray-900 bg-white hover:bg-gray-50 transition-colors shadow-sm"
-            >
-              Browse resources
-            </a>
-            <a
-              href="/resources/submit"
-              class="inline-flex items-center px-6 py-3 border border-white/30 text-sm font-medium rounded-lg text-white hover:bg-white/10 transition-colors shadow-sm"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 01-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-              </svg>
-              Submit a Resource
-            </a>
-          </div>
-
-          <div class="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-gray-100">
-            <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-medium">
-              {sortedResources.length} shown on this page
-            </span>
-            <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-medium">
-              {categories.length} categories
-            </span>
-            {(search || category) && (
-              <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-medium">
-                {totalFilteredResources} filtered results
-              </span>
-            )}
-          </div>
+  <div class="min-h-screen bg-white">
+    <section class="border-b border-slate-200 bg-slate-50 py-8 sm:py-10">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Resources' }, ...(page.currentPage > 1 ? [{ label: `Page ${page.currentPage}` }] : [])]} />
+        <h1 class="text-3xl font-semibold text-primary-900 sm:text-4xl">Dzaleka resource hub</h1>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Search {allResources.length}+ reports, policies, legal materials, studies, guides, and community records connected to Dzaleka.</p>
+        <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a href="#resourceFilterForm" class="inline-flex min-h-[44px] items-center rounded bg-primary-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800">Browse resources</a>
+          <a href="/resources/submit" class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4 hover:text-primary-900">Submit a resource</a>
+          <span class="text-sm text-slate-600">{categories.length} categories</span>
         </div>
       </div>
-    </div>
+    </section>
 
     <div class="container mx-auto px-4 py-8">
-    <section id="resourceFilterForm" class="mb-14 scroll-mt-24">
-      <div class="max-w-5xl mx-auto rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
+    <section id="resourceFilterForm" class="mb-8 scroll-mt-40">
+      <div class="border-b border-slate-200 bg-white pb-6">
         <form
           action="/resources"
           method="GET"
@@ -451,7 +405,7 @@ const paginationStructuredData = {
                   id="resourceSearch"
                   placeholder="Search by title, author, or keyword"
                   value={search || ''}
-                  class="w-full rounded-lg border border-gray-300 px-4 py-3 pl-11 text-gray-900 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  class="w-full rounded border border-gray-300 px-4 py-3 pl-11 text-gray-900 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -465,8 +419,8 @@ const paginationStructuredData = {
               <label for="categoryFilter" class="mb-2 block text-sm font-medium text-gray-700">Category</label>
               <select
                 name="category"
-                id="categoryFilter"
-                class="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                id="categoryFilter" aria-label="Filter by category"
+                class="w-full rounded border border-gray-300 px-4 py-3 text-gray-900 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200"
               >
                 <option value="">All categories</option>
                 {categories.map(cat => (
@@ -478,7 +432,7 @@ const paginationStructuredData = {
             <div class="md:self-end">
               <button
                 type="submit"
-                class="inline-flex w-full items-center justify-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800 md:w-auto"
+                class="min-h-[44px] inline-flex w-full items-center justify-center rounded bg-primary-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-800 md:w-auto"
               >
                 Search
               </button>
@@ -509,15 +463,15 @@ const paginationStructuredData = {
 
     {/* Resource Types Overview - Only show when not searching/filtering */}
     {!search && !category && (
-      <section class="mb-20 container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Browse by Collection</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Start with the document collection closest to your question.</p>
+      <section class="mb-10">
+        <div class="mb-6">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Browse by collection</h2>
+          <p class="text-sm leading-6 text-slate-600 max-w-2xl">Start with the document collection closest to your question.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {resourceTypes.map(type => (
-            <a href={`/resources?category=${encodeURIComponent(type.categories[0])}`} class="group flex h-full min-w-0 flex-col rounded-xl border border-gray-200 bg-white px-6 py-6 transition-colors hover:border-gray-300 hover:shadow-sm">
+            <a href={`/resources?category=${encodeURIComponent(type.categories[0])}`} class="group flex h-full min-w-0 flex-col border-t border-slate-200 bg-white py-5">
                 {/* Icon Container */}
                 <div class={`w-10 h-10 rounded-lg mb-4 flex items-center justify-center bg-gray-50 text-gray-600 border border-gray-200`}>
                   <div class="w-5 h-5 flex items-center justify-center">
@@ -525,7 +479,7 @@ const paginationStructuredData = {
                   </div>
                 </div>
 
-                <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors break-words">
+                <h3 class="text-lg font-semibold text-primary-800 underline underline-offset-4 mb-2 group-hover:text-primary-900 break-words">
                   {type.title}
                 </h3>
                 <p class="text-sm text-gray-600 leading-relaxed break-words">
@@ -535,22 +489,6 @@ const paginationStructuredData = {
           ))}
         </div>
 
-        {/* Categories Quick Links */}
-        <div class="mt-10 flex flex-wrap justify-center gap-3">
-          {categories.slice(0, 8).map(cat => (
-             <a
-               href={`/resources?category=${encodeURIComponent(cat)}`}
-               class="px-4 py-2 bg-gray-50 text-gray-600 rounded-full text-sm font-medium hover:bg-white hover:text-primary-600 hover:shadow-sm border border-transparent hover:border-gray-200 transition-all"
-             >
-               {cat}
-             </a>
-          ))}
-          {categories.length > 8 && (
-             <a href="#resourceFilterForm" class="px-4 py-2 text-primary-600 text-sm font-medium hover:text-primary-700 transition-colors">
-               + {categories.length - 8} more
-             </a>
-          )}
-        </div>
       </section>
     )}
 
@@ -565,16 +503,16 @@ const paginationStructuredData = {
         <>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {sortedResources.map(resource => (
-              <article class="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors hover:border-gray-300">
+              <article class="group relative flex h-full min-w-0 flex-col overflow-hidden rounded border border-gray-200 bg-white transition-colors hover:border-gray-300">
                 {/* Card Header with File Type Badge */}
                 <div class="p-5 pb-0">
                   <div class="mb-3 flex items-start justify-between gap-3">
                     <div class="flex min-w-0 flex-wrap items-center gap-2">
-                       <span class={`max-w-full break-words px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase ${categoryColors[resource.data.category] || categoryColors.default} bg-opacity-10 border-opacity-20`}>
+                       <span class={`max-w-full break-words px-2 py-0.5 rounded text-sm font-medium ${categoryColors[resource.data.category] || categoryColors.default} bg-opacity-10 border-opacity-20`}>
                         {resource.data.category}
                       </span>
                       {resource.data.featured && (
-                        <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide uppercase bg-amber-50 text-amber-700 border border-amber-100">
+                        <span class="px-2 py-0.5 rounded text-sm font-medium bg-amber-50 text-amber-700 border border-amber-100">
                           Featured
                         </span>
                       )}
@@ -691,9 +629,9 @@ const paginationStructuredData = {
     <section class="mt-16 mb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* History Card */}
-        <div class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
+        <div class="group bg-white border border-gray-200 rounded p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
           <div class="relative z-10 flex-grow flex flex-col">
-            <div class="w-10 h-10 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
+            <div class="w-10 h-10 bg-gray-50 rounded border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -706,9 +644,9 @@ const paginationStructuredData = {
         </div>
 
         {/* Mission & Scope Card */}
-        <div class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
+        <div class="group bg-white border border-gray-200 rounded p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
           <div class="relative z-10 flex-grow flex flex-col">
-            <div class="w-10 h-10 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
+            <div class="w-10 h-10 bg-gray-50 rounded border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
@@ -721,9 +659,9 @@ const paginationStructuredData = {
         </div>
 
         {/* Our audience Card */}
-        <div class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
+        <div class="group bg-white border border-gray-200 rounded p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
           <div class="relative z-10 flex-grow flex flex-col">
-             <div class="w-10 h-10 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
+             <div class="w-10 h-10 bg-gray-50 rounded border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -736,9 +674,9 @@ const paginationStructuredData = {
         </div>
 
         {/* Contact Us Card */}
-        <a href="/contact" class="group bg-white border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
+        <a href="/contact" class="group bg-white border border-gray-200 rounded p-6 hover:border-gray-300 transition-colors flex flex-col h-full relative overflow-hidden">
           <div class="relative z-10 flex-grow flex flex-col">
-             <div class="w-10 h-10 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
+             <div class="w-10 h-10 bg-gray-50 rounded border border-gray-200 flex items-center justify-center text-gray-600 mb-4 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -758,7 +696,7 @@ const paginationStructuredData = {
       </div>
     </section>
    </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>

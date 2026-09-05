@@ -116,10 +116,10 @@ const currentMessage = messages[formType] || messages.default;
 <MainLayout title={currentMessage.title}>
   <!-- Hidden data element for messages -->
   <script id="thank-you-messages" type="application/json" set:html={JSON.stringify(messages)}></script>
-  
-  <main class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
+
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
     <div class="max-w-3xl w-full mx-auto relative z-10">
-      <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12 border border-gray-200">
+      <div class="bg-white rounded p-8 md:p-12 border border-gray-200">
         {/* Success Icon with Animation */}
         <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-8 animate-bounce-slow">
           <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@ const currentMessage = messages[formType] || messages.default;
         </p>
 
         {/* Next Steps */}
-        <div id="thank-you-next-steps" class="bg-white/50 rounded-2xl p-8 mb-10 border border-gray-100 hidden">
+        <div id="thank-you-next-steps" class="bg-white/50 rounded p-5 sm:p-8 mb-10 border border-gray-100 hidden">
           <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center justify-center">
             <span class="bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mr-3">What Happens Next</span>
           </h2>
@@ -148,9 +148,9 @@ const currentMessage = messages[formType] || messages.default;
 
         {/* CTA */}
         <div id="thank-you-cta" class="text-center hidden">
-          <a 
-            href="/" 
-            class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-lg text-white bg-slate-900 hover:bg-slate-800 transition-colors duration-200 shadow-sm"
+          <a
+            href="/"
+            class="min-h-[44px] inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded text-white bg-primary-900 hover:bg-primary-800 transition-colors duration-200"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -160,7 +160,7 @@ const currentMessage = messages[formType] || messages.default;
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </MainLayout>
 
 <script>
@@ -169,31 +169,31 @@ const currentMessage = messages[formType] || messages.default;
     // Get the form type from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const formType = urlParams.get('type') || 'default';
-    
+
     // Get messages from the hidden data element
     const messagesElement = document.getElementById('thank-you-messages');
     if (!messagesElement) return;
-    
+
     const messages = JSON.parse(messagesElement.textContent);
     const currentMessage = messages[formType] || messages.default;
-    
+
     // Update the page content
     if (currentMessage) {
       // Update title
       document.title = currentMessage.title;
-      
+
       // Update heading
       const heading = document.getElementById('thank-you-title');
       if (heading) {
         heading.textContent = currentMessage.title;
       }
-      
+
       // Update message
       const message = document.getElementById('thank-you-message');
       if (message) {
         message.textContent = currentMessage.message || currentMessage.description;
       }
-      
+
       // Update next steps if they exist
       if (currentMessage.nextSteps) {
         const nextStepsContainer = document.getElementById('thank-you-next-steps');
@@ -202,7 +202,7 @@ const currentMessage = messages[formType] || messages.default;
           const nextStepsList = document.getElementById('next-steps-list');
           if (nextStepsList) {
             nextStepsList.innerHTML = currentMessage.nextSteps.map((step, index) => `
-              <li class="flex items-start p-3 rounded-lg hover:bg-white transition-colors duration-200">
+              <li class="flex items-start p-3 rounded hover:bg-white transition-colors duration-200">
                 <div class="flex-shrink-0 h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-sm mr-4">
                   ${index + 1}
                 </div>
@@ -212,7 +212,7 @@ const currentMessage = messages[formType] || messages.default;
           }
         }
       }
-      
+
       // Update CTA if it exists
       if (currentMessage.cta) {
         const ctaContainer = document.getElementById('thank-you-cta');

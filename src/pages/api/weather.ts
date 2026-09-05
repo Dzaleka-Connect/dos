@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getSeasonalFallbackWeather } from '../../data/weather';
 
+export const prerender = false;
+
 function cleanCell(cell: string) {
   return cell
     .replace(/<[^>]*>/g, '')
@@ -91,8 +93,8 @@ export const GET: APIRoute = async () => {
           maxTemp: current.maxTemp || '',
           condition: current.condition || 'Unknown',
           time: current.time || '',
-          rainfall: current.rainfall || '0',
-          windSpeed: current.windSpeed || '0',
+          rainfall: current.rainfall || '',
+          windSpeed: current.windSpeed || '',
           windDirection: current.windDirection || '',
         },
         hourly,

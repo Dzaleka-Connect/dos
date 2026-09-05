@@ -271,7 +271,7 @@ const paymentMethodFields = [
           </p>
         </div>
 
-        <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+        <div class="rounded border border-slate-200 bg-slate-50 p-6">
           <h2 class="text-lg font-semibold text-slate-900">Before you submit</h2>
           <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
             <li>Choose the skill and category that describe your work most clearly.</li>
@@ -284,13 +284,13 @@ const paymentMethodFields = [
   </section>
 
   <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-    <div class="rounded-lg border border-slate-200 bg-white">
+    <div class="rounded border border-slate-200 bg-white">
       <div class="px-4 py-6 sm:p-8">
 
-        <form 
-          action="https://formspree.io/f/xqaaajae" 
-          method="POST" 
-          class="space-y-8"
+        <form
+          action="https://formspree.io/f/xqaaajae"
+          method="POST"
+          class="submission-form space-y-8"
           data-thankyou-url="/thank-you?type=profile"
           id="profileForm"
         >
@@ -301,15 +301,15 @@ const paymentMethodFields = [
             </label>
             <div class="flex items-center space-x-4">
               <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center">
-                <img id="preview" class="w-24 h-24 rounded-full object-cover hidden">
+                <img onerror="this.onerror=null; this.src='/images/unavailable-image.svg'; this.alt='Image unavailable';" alt="Selected photo preview" id="preview" class="w-24 h-24 rounded-full object-cover hidden">
                 <svg id="placeholder" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
               <div>
-                <input 
-                  type="file" 
-                  id="imageUpload" 
+                <input
+                  type="file"
+                  id="imageUpload" aria-label="Upload a profile photo"
                   accept="image/*"
                   class="sr-only"
                 >
@@ -317,7 +317,7 @@ const paymentMethodFields = [
                 <button
                   type="button"
                   onclick="document.getElementById('imageUpload').click()"
-                  class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  class="min-h-[44px] inline-flex items-center rounded border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 >
                   Upload Photo
                 </button>
@@ -350,7 +350,7 @@ const paymentMethodFields = [
                     name={field.name}
                     required={field.required}
                     rows={4}
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    class="mt-1 block w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                   />
                 ) : (
                   <input
@@ -358,7 +358,7 @@ const paymentMethodFields = [
                     id={field.name}
                     name={field.name}
                     required={field.required}
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    class="mt-1 block w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                   />
                 )}
               </div>
@@ -380,7 +380,7 @@ const paymentMethodFields = [
               required
               maxlength="150"
               placeholder="Brief description of your skills (max 150 characters)"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             />
           </div>
 
@@ -397,7 +397,7 @@ const paymentMethodFields = [
               rows="4"
               required
               placeholder="Describe your skills, experience, and what you offer"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             ></textarea>
           </div>
 
@@ -429,7 +429,7 @@ const paymentMethodFields = [
                       name={field.name}
                       required={field.required}
                       placeholder={field.placeholder}
-                      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      class="mt-1 block w-full border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     />
                   )}
                 </div>
@@ -441,7 +441,7 @@ const paymentMethodFields = [
           <div class="pt-6">
             <button
               type="submit"
-              class="w-full rounded-lg bg-primary-600 px-4 py-3 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              class="min-h-[44px] w-full rounded bg-primary-600 px-4 py-3 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
             >
               List My Skills
             </button>
@@ -462,7 +462,7 @@ const paymentMethodFields = [
     const preview = document.getElementById('preview');
     const placeholder = document.getElementById('placeholder');
     const reader = new FileReader();
-    
+
     reader.onload = function(e) {
       preview.src = e.target.result;
       preview.classList.remove('hidden');
@@ -497,10 +497,10 @@ const paymentMethodFields = [
 
   // Form submission
   const form = document.getElementById('profileForm');
-  
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await fetch(form.action, {
         method: 'POST',
@@ -509,7 +509,7 @@ const paymentMethodFields = [
           'Accept': 'application/json'
         }
       });
-      
+
       if (response.ok) {
         window.location.href = form.dataset.thankyouUrl;
       } else {
@@ -524,7 +524,7 @@ const paymentMethodFields = [
   // Handle payment type selection
   const serviceTypeSelect = document.querySelector('select[name="service_type"]');
   const paidFields = document.querySelectorAll('[data-show-when="paid"]');
-  
+
   function updatePaymentFields() {
     const isPaid = serviceTypeSelect.value.toLowerCase() === 'paid';
     paidFields.forEach(field => {
@@ -539,7 +539,7 @@ const paymentMethodFields = [
       }
     });
   }
-  
+
   serviceTypeSelect.addEventListener('change', updatePaymentFields);
   // Run once on page load
   updatePaymentFields();

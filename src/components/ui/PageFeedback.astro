@@ -1,37 +1,37 @@
 ---
 ---
 
-<div class="bg-gray-50 border-t border-b border-gray-200 py-12 mt-16">
-  <div class="max-w-3xl mx-auto px-4 text-center" id="feedback-container">
-    
+<div class="bg-slate-50 border-t border-slate-200 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="feedback-container">
+
     <!-- State 1: Initial Prompt -->
-    <div id="feedback-prompt" class="transition-opacity duration-300">
-      <h3 class="text-xl font-bold text-gray-900 mb-6">Was this page useful?</h3>
+    <div id="feedback-prompt" class="flex flex-wrap items-center gap-x-6 gap-y-4">
+      <h3 class="text-lg font-semibold text-slate-900">Was this page useful?</h3>
       <div class="flex justify-center gap-4">
-        <button id="btn-feedback-yes" class="px-6 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:text-primary-600 transition-colors font-medium">
+        <button id="btn-feedback-yes" class="min-h-[44px] px-5 py-2 bg-white border border-primary-800 rounded text-sm text-primary-900 hover:bg-primary-50 font-medium">
           Yes
         </button>
-        <button id="btn-feedback-no" class="px-6 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors font-medium">
+        <button id="btn-feedback-no" class="min-h-[44px] px-5 py-2 bg-white border border-primary-800 rounded text-sm text-primary-900 hover:bg-primary-50 font-medium">
           No
         </button>
       </div>
     </div>
 
     <!-- State 2: Success Message -->
-    <div id="feedback-success" class="hidden transition-opacity duration-300">
+    <div id="feedback-success" role="status" tabindex="-1" class="hidden transition-opacity duration-300">
       <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
         <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <h3 class="text-xl font-bold text-gray-900">Thank you for your feedback.</h3>
+      <h3 class="text-xl font-semibold text-gray-900">Thank you for your feedback.</h3>
     </div>
 
     <!-- State 3: Negative Feedback Form -->
-    <div id="feedback-form-container" class="hidden text-left bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-xl mx-auto transition-opacity duration-300">
-      <h3 class="text-lg font-bold text-gray-900 mb-2">Help us improve this page</h3>
+    <div id="feedback-form-container" class="hidden max-w-xl text-left">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Help us improve this page</h3>
       <p class="text-gray-600 text-sm mb-4">Tell us why it wasn't useful*</p>
-      
+
       <form id="feedback-form" action="https://formspree.io/f/xqaaajae" method="POST">
         <!-- Hidden fields to give context to the email -->
         <input type="hidden" name="subject" id="feedback-subject" value="Website Feedback: Page Not Useful" />
@@ -71,14 +71,14 @@
         </div>
 
         <div class="flex gap-4">
-          <button type="submit" id="btn-feedback-submit" class="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-flex justify-center items-center">
+          <button type="submit" id="btn-feedback-submit" class="min-h-[44px] flex-1 text-sm bg-primary-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-flex justify-center items-center">
             <span id="feedback-submit-text">Submit</span>
             <svg id="feedback-submit-spinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </button>
-          <button type="button" id="btn-feedback-cancel" class="flex-1 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+          <button type="button" id="btn-feedback-cancel" class="min-h-[44px] flex-1 text-sm bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors">
             Cancel
           </button>
         </div>
@@ -96,17 +96,17 @@
   const otherContainer = document.getElementById('feedback-other-container');
   const otherTextArea = document.getElementById('feedback-other-text') as HTMLTextAreaElement;
   const radioButtons = document.querySelectorAll('.feedback-radio') as NodeListOf<HTMLInputElement>;
-  
+
   const btnYes = document.getElementById('btn-feedback-yes');
   const btnNo = document.getElementById('btn-feedback-no');
   const btnCancel = document.getElementById('btn-feedback-cancel');
-  
+
   const form = document.getElementById('feedback-form') as HTMLFormElement;
   const urlInput = document.getElementById('feedback-url') as HTMLInputElement;
   const submitText = document.getElementById('feedback-submit-text');
   const submitSpinner = document.getElementById('feedback-submit-spinner');
   const submitBtn = document.getElementById('btn-feedback-submit') as HTMLButtonElement;
-  
+
   // Set the current URL so we know which page triggered the feedback
   if (urlInput) {
     urlInput.value = window.location.href;
@@ -133,18 +133,21 @@
   btnYes?.addEventListener('click', () => {
     promptDiv?.classList.add('hidden');
     successDiv?.classList.remove('hidden');
+    successDiv?.focus();
   });
 
   // Handle "No" click -> Show Form
   btnNo?.addEventListener('click', () => {
     promptDiv?.classList.add('hidden');
     formDiv?.classList.remove('hidden');
+    (radioButtons[0] as HTMLInputElement | undefined)?.focus();
   });
 
   // Handle "Cancel" click -> Go back to prompt
   btnCancel?.addEventListener('click', () => {
     formDiv?.classList.add('hidden');
     promptDiv?.classList.remove('hidden');
+    btnNo?.focus();
     form?.reset();
     otherContainer?.classList.add('hidden');
     if (otherTextArea) otherTextArea.required = false;
@@ -172,6 +175,7 @@
         // Show success state
         formDiv?.classList.add('hidden');
         successDiv?.classList.remove('hidden');
+    successDiv?.focus();
       } else {
         throw new Error('Form submission failed');
       }

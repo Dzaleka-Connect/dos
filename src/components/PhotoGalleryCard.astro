@@ -18,7 +18,7 @@ const placeholderImage = (originalImage && optimizedImage !== originalImage)
   : null;
 ---
 
-<article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+<article class="bg-white rounded-lg shadow-md overflow-hidden  transition-shadow">
   <div class="relative">
     <img
       src={placeholderImage || optimizedImage}
@@ -27,7 +27,7 @@ const placeholderImage = (originalImage && optimizedImage !== originalImage)
       class={`${placeholderImage ? 'lazy-load' : ''} w-full h-48 object-cover transition-opacity duration-300`}
       loading="lazy"
     />
-    <time 
+    <time
       class="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm"
       datetime={photo.date.toISOString()}
     >
@@ -35,7 +35,7 @@ const placeholderImage = (originalImage && optimizedImage !== originalImage)
     </time>
   </div>
   <div class="p-4">
-    <h2 class="text-xl font-bold mb-2 text-gray-900">{photo.title}</h2>
+    <h2 class="text-xl font-semibold mb-2 text-gray-900">{photo.title}</h2>
     <div class="prose prose-sm mb-3 text-gray-700" set:html={photo.description} />
     <div class="flex flex-wrap gap-2">
       {photo.tags.map(tag => (

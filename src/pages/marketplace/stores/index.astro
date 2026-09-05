@@ -40,7 +40,7 @@ const typeIcons = {
 ---
 
 <MainLayout title={pageTitle} description={description} image={image} canonical="https://services.dzaleka.com/marketplace/stores">
-  <main class="bg-gray-50">
+  <div class="bg-gray-50">
     <section class="relative overflow-hidden bg-gray-900 py-16 sm:py-24">
       <!-- Background Image with Overlay -->
       <div class="absolute inset-0 z-0">
@@ -62,7 +62,7 @@ const typeIcons = {
             <span class="text-white">Restaurants and shops</span>
           </nav>
 
-          <span class="inline-block rounded-lg border border-white/20 bg-white/10 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+          <span class="inline-block rounded border border-white/20 bg-white/10 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
             Business Directory
           </span>
           <h1 class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -75,13 +75,13 @@ const typeIcons = {
           <div class="mt-10 flex flex-wrap gap-4">
             <a
               href="/marketplace/stores/register"
-              class="inline-flex items-center rounded-xl bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
+              class="min-h-[44px] inline-flex items-center rounded bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
             >
               Register a business
             </a>
             <a
               href="/marketplace"
-              class="inline-flex items-center rounded-lg border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/50"
+              class="min-h-[44px] inline-flex items-center rounded border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/50"
             >
               Back to marketplace
             </a>
@@ -90,7 +90,7 @@ const typeIcons = {
       </div>
     </section>
 
-    <section class="sticky top-0 z-10 border-b border-gray-200 bg-white">
+    <section class="sticky top-24 lg:top-44 z-10 border-b border-gray-200 bg-white">
       <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-2 overflow-x-auto pb-1">
           {storeTypes.map((type) => (
@@ -109,12 +109,12 @@ const typeIcons = {
     <section class="bg-white">
       <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {activeStores.length === 0 ? (
-          <div class="rounded-xl border border-gray-200 bg-gray-50 px-6 py-12 text-center">
+          <div class="rounded border border-gray-200 bg-gray-50 px-6 py-12 text-center">
             <h2 class="text-xl font-semibold text-gray-900">No business profiles are published yet</h2>
             <p class="mt-2 text-sm text-gray-600">Register a shop, café, or local business to create the first profile.</p>
             <a
               href="/marketplace/stores/register"
-              class="mt-5 inline-flex rounded-lg bg-primary-700 px-5 py-3 text-sm font-medium text-white hover:bg-primary-800"
+              class="mt-5 inline-flex rounded bg-primary-700 px-5 py-3 text-sm font-medium text-white hover:bg-primary-800"
             >
               Register a business
             </a>
@@ -125,7 +125,7 @@ const typeIcons = {
               {activeStores.map((store) => (
                 <a
                   href={`/marketplace/stores/${store.id}`}
-                  class="store-card overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:border-primary-200 hover:shadow-sm"
+                  class="store-card overflow-hidden rounded border border-gray-200 bg-white transition hover:border-primary-200"
                   data-type={store.data.type}
                 >
                   <div class="aspect-[4/3] bg-gray-100">
@@ -140,11 +140,11 @@ const typeIcons = {
 
                   <div class="p-5">
                     <div class="flex flex-wrap gap-2">
-                      <span class="rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 capitalize">
+                      <span class="rounded bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 capitalize">
                         {store.data.type}
                       </span>
                       {store.data.featured && (
-                        <span class="rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+                        <span class="rounded bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
                           Featured
                         </span>
                       )}
@@ -159,11 +159,11 @@ const typeIcons = {
             </div>
 
             <div id="pagination" class="mt-8 flex items-center justify-center gap-2">
-              <button id="prevPage" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
+              <button id="prevPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Previous
               </button>
               <span id="pageInfo" class="px-3 py-2 text-sm text-gray-600"></span>
-              <button id="nextPage" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
+              <button id="nextPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Next
               </button>
             </div>
@@ -174,22 +174,22 @@ const typeIcons = {
 
     <section class="border-t border-gray-200 bg-gray-50">
       <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">What profiles can include</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">Business details, opening hours, menu items, payment methods, delivery options, and direct contact information.</p>
         </article>
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">Who can register</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">Restaurants, cafés, bakeries, grocery shops, salons, repair workshops, retail businesses, and similar local services.</p>
         </article>
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">Need a simple listing instead?</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">For a one-off product or service, use the general marketplace listing form instead of a full business profile.</p>
           <a href="/marketplace/submit" class="mt-4 inline-flex text-sm font-medium text-primary-700 hover:text-primary-800">Create a marketplace listing</a>
         </article>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>
 
 <script>

@@ -64,7 +64,7 @@ const paginationRange = getPaginationRange(pageNum, totalPages);
 ---
 
 <MainLayout title={`Updates - Page ${pageNum} | Dzaleka Online Services`}>
-    <main class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50">
         <section class="border-b border-gray-200 bg-white">
             <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
                 <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary-700">Updates</p>
@@ -78,7 +78,7 @@ const paginationRange = getPaginationRange(pageNum, totalPages);
         </section>
 
         <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-            <div class="overflow-hidden rounded-xl border border-gray-200 bg-white">
+            <div class="overflow-hidden rounded border border-gray-200 bg-white">
                 {currentUpdates.map((update, index) => {
                     const style = getTypeStyle(update.type);
                     const globalIndex = (pageNum - 1) * 5 + index;
@@ -137,7 +137,7 @@ const paginationRange = getPaginationRange(pageNum, totalPages);
                         {pageNum > 1 && (
                             <a
                                 href={`/updates/${pageNum - 1}`}
-                                class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
+                                class="min-h-[44px] inline-flex items-center rounded border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
                             >
                                 Previous
                             </a>
@@ -163,7 +163,7 @@ const paginationRange = getPaginationRange(pageNum, totalPages);
                         {pageNum < totalPages && (
                             <a
                                 href={`/updates/${pageNum + 1}`}
-                                class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
+                                class="min-h-[44px] inline-flex items-center rounded border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
                             >
                                 Next
                             </a>
@@ -172,5 +172,5 @@ const paginationRange = getPaginationRange(pageNum, totalPages);
                 </nav>
             )}
         </section>
-    </main>
+    </div>
 </MainLayout>

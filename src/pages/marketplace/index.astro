@@ -38,7 +38,7 @@ const quickStats = [
 ---
 
 <MainLayout title={pageTitle} description={description} image={image} canonical="https://services.dzaleka.com/marketplace">
-  <main class="bg-gray-50">
+  <div class="bg-gray-50">
     <section class="relative overflow-hidden bg-gray-900 py-16 sm:py-24">
       <!-- Background Image with Overlay -->
       <div class="absolute inset-0 z-0">
@@ -58,7 +58,7 @@ const quickStats = [
             <span class="text-white">Marketplace</span>
           </nav>
 
-          <span class="inline-block rounded-lg border border-white/20 bg-white/10 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+          <span class="inline-block rounded border border-white/20 bg-white/10 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
             Community Commerce
           </span>
           <h1 class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -71,13 +71,13 @@ const quickStats = [
           <div class="mt-10 flex flex-wrap gap-4">
             <a
               href="/marketplace/submit"
-              class="inline-flex items-center rounded-xl bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
+              class="min-h-[44px] inline-flex items-center rounded bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
             >
               Add a listing
             </a>
             <a
               href="/marketplace/stores"
-              class="inline-flex items-center rounded-lg border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/50"
+              class="min-h-[44px] inline-flex items-center rounded border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/50"
             >
               View stores
             </a>
@@ -86,25 +86,25 @@ const quickStats = [
       </div>
     </section>
 
-    <section class="sticky top-0 z-10 border-b border-gray-200 bg-white">
+    <section class="sticky top-24 lg:top-44 z-10 border-b border-gray-200 bg-white">
       <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex flex-wrap items-center gap-2">
             <button
               data-filter="all"
-              class="filter-btn rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white"
+              class="min-h-[44px] filter-btn rounded bg-primary-700 px-4 py-2 text-sm font-medium text-white"
             >
               All ({activeListings.length})
             </button>
             <button
               data-filter="product"
-              class="filter-btn rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
+              class="min-h-[44px] filter-btn rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
             >
               Products ({products.length})
             </button>
             <button
               data-filter="service"
-              class="filter-btn rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
+              class="min-h-[44px] filter-btn rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
             >
               Services ({services.length})
             </button>
@@ -114,7 +114,7 @@ const quickStats = [
             <label for="categoryFilter" class="sr-only">Filter by category</label>
             <select
               id="categoryFilter"
-              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+              class="w-full rounded border border-gray-300 px-4 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             >
               {categories.map((cat) => (
                 <option value={cat.value}>{cat.label}</option>
@@ -128,12 +128,12 @@ const quickStats = [
     <section class="bg-white">
       <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {activeListings.length === 0 ? (
-          <div class="rounded-xl border border-gray-200 bg-gray-50 px-6 py-12 text-center">
+          <div class="rounded border border-gray-200 bg-gray-50 px-6 py-12 text-center">
             <h2 class="text-xl font-semibold text-gray-900">No listings are published yet</h2>
             <p class="mt-2 text-sm text-gray-600">Use the marketplace form to add the first product or service.</p>
             <a
               href="/marketplace/submit"
-              class="mt-5 inline-flex rounded-lg bg-primary-700 px-5 py-3 text-sm font-medium text-white hover:bg-primary-800"
+              class="mt-5 inline-flex rounded bg-primary-700 px-5 py-3 text-sm font-medium text-white hover:bg-primary-800"
             >
               Create a listing
             </a>
@@ -160,7 +160,7 @@ const quickStats = [
                 return (
                   <a
                     href={`/marketplace/${listing.id}`}
-                    class="listing-card overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:border-primary-200 hover:shadow-sm"
+                    class="listing-card overflow-hidden rounded border border-gray-200 bg-white transition hover:border-primary-200"
                     data-type={listing.data.type}
                     data-category={listing.data.category}
                   >
@@ -182,11 +182,11 @@ const quickStats = [
 
                     <div class="p-5">
                       <div class="flex flex-wrap gap-2">
-                        <span class="rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                        <span class="rounded bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
                           {listingTypeLabel}
                         </span>
                         {listing.data.featured && (
-                          <span class="rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+                          <span class="rounded bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
                             Featured
                           </span>
                         )}
@@ -206,11 +206,11 @@ const quickStats = [
             </div>
 
             <div id="pagination" class="mt-8 flex items-center justify-center gap-2">
-              <button id="prevPage" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
+              <button id="prevPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Previous
               </button>
               <span id="pageInfo" class="px-3 py-2 text-sm text-gray-600"></span>
-              <button id="nextPage" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
+              <button id="nextPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Next
               </button>
             </div>
@@ -221,20 +221,20 @@ const quickStats = [
 
     <section class="border-t border-gray-200 bg-gray-50">
       <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">How listings work</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">
             Listings include a description, image, and vendor details. Local listings show a price when provided;
             external listings link to the seller's current price and terms.
           </p>
         </article>
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">What you can add</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">
             Products, services, books, crafts, repairs, tutoring, and other legitimate community-based offers.
           </p>
         </article>
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">Need a full business profile?</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">
             Restaurants, cafés, shops, and similar businesses can register a dedicated store profile.
@@ -243,7 +243,7 @@ const quickStats = [
             Register a store
           </a>
         </article>
-        <article class="rounded-xl border border-gray-200 bg-white p-5">
+        <article class="rounded border border-gray-200 bg-white p-5">
           <h2 class="text-lg font-semibold text-gray-900">Need planning help?</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">
             Use simple startup templates for marketing, action planning, cash flow forecasting, and risk planning.
@@ -254,7 +254,7 @@ const quickStats = [
         </article>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>
 
 <script>

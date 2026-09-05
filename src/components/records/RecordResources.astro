@@ -1,0 +1,5 @@
+---
+interface Props { resources?: { title: string; description?: string; url: string }[]; }
+const resources = Astro.props.resources?.filter(resource => resource.title && resource.url) || [];
+---
+{resources.length > 0 && <section class="record-section"><h2 class="text-primary-900">Resources and further reading</h2><ul class="divide-y divide-slate-200">{resources.map(resource => <li class="py-4 first:pt-0"><a href={resource.url} class="inline-flex min-h-[44px] items-center text-base font-medium text-primary-800 underline underline-offset-4">{resource.title}<span class="ml-2" aria-hidden="true">↗</span></a>{resource.description && <p class="mt-1 text-sm leading-6 text-slate-600">{resource.description}</p>}</li>)}</ul></section>}

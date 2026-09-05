@@ -289,8 +289,8 @@ const structuredData = {
 
 <MainLayout title={seo.title} description={seo.description} openGraph={seo.openGraph} twitter={seo.twitter}>
   <script type="application/ld+json" set:html={JSON.stringify(structuredData, null, 2)} />
-  
-  <main class="min-h-screen bg-gray-50">
+
+  <div class="min-h-screen bg-gray-50">
     {/* Hero Section */}
     <div class="border-b border-gray-200 bg-white py-12 lg:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -309,19 +309,19 @@ const structuredData = {
 
         {/* Quick Guidelines Icons */}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto">
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center text-slate-800">
+          <div class="bg-slate-50 border border-slate-200 rounded p-3 text-center text-slate-800">
             <div class="text-2xl mb-1">🤝</div>
             <div class="text-xs font-medium">Cultural Sensitivity</div>
           </div>
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center text-slate-800">
+          <div class="bg-slate-50 border border-slate-200 rounded p-3 text-center text-slate-800">
             <div class="text-2xl mb-1">📸</div>
             <div class="text-xs font-medium">Photography Rules</div>
           </div>
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center text-slate-800">
+          <div class="bg-slate-50 border border-slate-200 rounded p-3 text-center text-slate-800">
             <div class="text-2xl mb-1">👕</div>
             <div class="text-xs font-medium">Dress Code</div>
           </div>
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center text-slate-800">
+          <div class="bg-slate-50 border border-slate-200 rounded p-3 text-center text-slate-800">
             <div class="text-2xl mb-1">🏥</div>
             <div class="text-xs font-medium">Health & Safety</div>
           </div>
@@ -341,7 +341,7 @@ const structuredData = {
       {/* Guidelines Grid */}
       <div class="grid md:grid-cols-2 gap-8 mb-16">
         {guidelines.map(section => (
-          <div class="bg-white rounded-xl shadow-sm p-8 transition-all duration-300">
+          <div class="bg-white rounded shadow-sm p-5 sm:p-8 transition-all duration-300">
             <div class="flex items-center gap-4 mb-6">
               <span class="text-4xl">{section.icon}</span>
               <h2 class="text-2xl font-bold text-gray-900">{section.category}</h2>
@@ -365,7 +365,7 @@ const structuredData = {
         <h2 class="text-3xl font-bold text-center mb-12">Practical Tips</h2>
         <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
           {practicalTips.map(tip => (
-            <div class="bg-white rounded-xl p-6 text-center transition-all duration-300">
+            <div class="bg-white rounded p-6 text-center transition-all duration-300">
               <span class="text-4xl mb-4 block">{tip.icon}</span>
               <h3 class="font-bold text-gray-900 mb-2">{tip.title}</h3>
               <p class="text-gray-600 text-sm">{tip.description}</p>
@@ -376,7 +376,7 @@ const structuredData = {
 
       {/* Dos and Don'ts */}
       <div class="grid md:grid-cols-2 gap-8 mb-16">
-        <div class="bg-white rounded-xl shadow-sm p-8 border-t-4 border-green-500">
+        <div class="bg-white rounded p-5 sm:p-8 border-t-4 border-green-500">
           <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
             <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -395,7 +395,7 @@ const structuredData = {
           </ul>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-8 border-t-4 border-red-500">
+        <div class="bg-white rounded p-5 sm:p-8 border-t-4 border-red-500">
           <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
             <svg class="w-6 h-6 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -416,40 +416,40 @@ const structuredData = {
       </div>
 
       {/* Call to Action */}
-      <div class="bg-primary-50 rounded-xl p-8 text-center">
+      <div class="bg-primary-50 rounded p-5 sm:p-8 text-center">
         <h2 class="text-2xl font-bold text-primary-900 mb-4">Ready to Visit?</h2>
         <p class="text-primary-800 mb-6 max-w-2xl mx-auto">
           Now that you're familiar with our guidelines, book your visit to Dzaleka Refugee Camp and experience our vibrant community.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a 
+          <a
             href="https://visit.dzaleka.com/login"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+            class="min-h-[44px] inline-flex items-center px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded hover:bg-slate-50 transition-colors"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
             Login / Sign Up
           </a>
-          <a 
-            href="/visit#planTripForm" 
-            class="inline-flex items-center px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors group"
+          <a
+            href="/visit#planTripForm"
+            class="min-h-[44px] inline-flex items-center px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 transition-colors group"
           >
             Book Your Visit
             <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
-          <a 
-            href="/visit/travel-guide" 
-            class="inline-flex items-center px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+          <a
+            href="/visit/travel-guide"
+            class="min-h-[44px] inline-flex items-center px-6 py-3 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 transition-colors"
           >
             View Travel Guide
           </a>
         </div>
       </div>
     </div>
-  </main>
-</MainLayout> 
+  </div>
+</MainLayout>

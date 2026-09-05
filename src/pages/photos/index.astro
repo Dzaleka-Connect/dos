@@ -1,12 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import { format } from 'date-fns';
-import { InstagramStoriesViewer } from '../../components/photos/InstagramStoriesViewer';
-
-// Get URL parameters
-const { searchParams } = Astro.url;
-const PHOTOS_PER_PAGE = 9;
+import PhotoArchiveCard from '../../components/photos/PhotoArchiveCard.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import Button from '../../components/ui/Button.astro';
 
 // Get all photos
 const photos = await getCollection('photos');
@@ -25,27 +22,6 @@ const photosByYear = photos.reduce((acc, photo) => {
 const years = Object.keys(photosByYear)
   .map(Number)
   .sort((a, b) => b - a);
-
-// Transform photos by year for Instagram-style Stories Viewer
-const yearGroups = years.map((year) => {
-  const sortedPhotos = photosByYear[year].sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-  );
-  return {
-    year,
-    photos: sortedPhotos.map((p) => ({
-      slug: p.id || p.slug,
-      title: p.data.title,
-      description: p.data.description || p.body?.slice(0, 160) || '',
-      date: p.data.date,
-      image: p.data.image,
-      photographerName: typeof p.data.photographer === 'string'
-        ? p.data.photographer
-        : (p.data.photographer?.name || 'Dzaleka Community Photographers'),
-      location: p.data.location || 'Dzaleka Refugee Camp'
-    }))
-  };
-});
 
 const siteUrl = "https://services.dzaleka.com";
 const toAbsoluteUrl = (value?: string) => {
@@ -70,13 +46,6 @@ const previewPhotosByYear = years.reduce((acc, year) => {
   photos: typeof photos,
   totalPhotos: number
 }>);
-
-// Function to generate pagination URL
-function getPaginationUrl(year: number, page: number) {
-  const params = new URLSearchParams(searchParams);
-  params.set(`${year}Page`, page.toString());
-  return `?${params.toString()}#${year}`;
-}
 
 // Create SEO metadata
 const seo = {
@@ -180,163 +149,33 @@ const galleryStructuredData = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(galleryStructuredData)} />
 
-  <main class="min-h-screen">
-    <!-- Hero Section -->
-    <div class="bg-white border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div class="max-w-3xl mx-auto text-center">
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 tracking-tight">
-            Photo Archive
-          </h1>
-          <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Photographs by year, with dates, photographers, tags, captions, and stories where available.
-          </p>
-
-          {/* Submit Photo Button */}
-          <a
-            href="/photos/submit"
-            class="inline-flex items-center px-6 py-3 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors shadow-sm"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            Submit a photo record
-          </a>
-
-          {/* Instagram-Style Year Story Highlights */}
-          <div class="mt-10 pt-6 border-t border-slate-200 text-center flex flex-col items-center">
-            <div class="flex items-center justify-center gap-3 px-1 mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
-                Interactive Year Stories (Tap to Watch)
-              </span>
-              <span class="text-[11px] font-semibold text-slate-400">
-                • {years.length} Years Archived
-              </span>
-            </div>
-            <InstagramStoriesViewer client:load yearGroups={yearGroups} />
-          </div>
+  <header class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Photo Archive' }]} />
+      <div class="mt-5 flex flex-wrap items-end justify-between gap-5">
+        <div class="max-w-2xl">
+          <h1 class="text-primary-900">Photo Archive</h1>
+          <p class="mt-4 text-base leading-7 text-slate-600">Explore photographs of Dzaleka’s daily life, culture and community history. Open a photograph for its caption, date and photographer credits.</p>
         </div>
+        <Button href="/photos/submit" variant="secondary">Contribute a photograph</Button>
       </div>
+      <nav class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label="Photo Archive information">
+        <a href="/photos/contributors" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Photographers</a>
+        <a href="/photos/license" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Using archive photographs</a>
+      </nav>
     </div>
-
-    <div class="container mx-auto px-4 py-12">
-      {/* QUICK YEAR JUMP NAVIGATION BAR */}
-      <div class="mb-14 flex flex-wrap items-center justify-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 mr-2 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          Archive Years:
-        </span>
-        {years.map((y) => (
-          <a
-            href={`#${y}`}
-            class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 hover:bg-slate-900 hover:text-white border border-slate-200/90 transition-colors shadow-xs"
-          >
-            {y} <span class="text-[10px] text-slate-400 font-normal">({previewPhotosByYear[y].totalPhotos})</span>
-          </a>
-        ))}
+  </header>
+  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <nav class="mb-10 border-b border-slate-200 pb-6" aria-label="Browse photographs by year">
+      <p class="mb-3 text-sm font-semibold text-slate-900">Browse by year</p>
+      <ul class="flex flex-wrap gap-2">{years.map((year) => <li><a href={`#${year}`} class="inline-flex min-h-[44px] items-center rounded border border-slate-300 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50">{year}</a></li>)}</ul>
+    </nav>
+    {years.map((year) => <section class="mb-12" id={year.toString()} aria-labelledby={`year-${year}`}>
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div><h2 id={`year-${year}`} class="text-primary-900">{year}</h2><p class="mt-1 text-sm text-slate-600">{previewPhotosByYear[year].totalPhotos} archive {previewPhotosByYear[year].totalPhotos === 1 ? 'entry' : 'entries'}</p></div>
+        <a href={`/photos/${year}`} class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4">View all {year} photographs <span class="ml-2" aria-hidden="true">→</span></a>
       </div>
-
-    {years.map(year => {
-      const { photos, totalPhotos } = previewPhotosByYear[year];
-      return (
-        <div class="mb-20 scroll-reveal" id={year.toString()}>
-          <div class="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 class="font-heading text-4xl font-bold text-gray-900 flex items-center gap-4">
-                {year}
-              </h2>
-              <p class="font-body text-lg text-gray-600 mt-2">{totalPhotos} photographs in the archive</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 items-start">
-            {photos.map((photo, index) => {
-              const isGallery = photo.data.gallery && photo.data.gallery.length > 0;
-              return (
-                <a
-                  href={`/photos/${photo.id}`}
-                  class="group block min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors hover:border-gray-300 hover:shadow-sm"
-                >
-                  <div class="relative flex-shrink-0 border-b border-gray-100">
-                    {/* Main Image Container */}
-                    <div class="aspect-w-4 aspect-h-3 bg-gray-100 relative overflow-hidden">
-                      <img
-                        src={photo.data.image}
-                        alt={photo.data.title}
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* Gallery Indicator Badge */}
-                    {isGallery && (
-                      <div class="absolute top-3 right-3 z-20">
-                        <div class="bg-white text-gray-900 px-2 py-1 rounded-md text-xs font-semibold border border-gray-200 shadow-sm flex items-center gap-1.5">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                          {photo.data.gallery.length} Photos
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div class="p-5">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight line-clamp-2 break-words">
-                      {photo.data.title}
-                    </h3>
-                    <div class="mt-2 flex min-w-0 flex-wrap items-center gap-3 text-sm text-gray-500">
-                      <span>{format(new Date(photo.data.date), 'MMMM d, yyyy')}</span>
-                      {photo.data.photographer && (
-                        <span class="flex min-w-0 items-center gap-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          <span class="min-w-0 truncate">
-                            {typeof photo.data.photographer === 'string'
-                              ? photo.data.photographer
-                              : photo.data.photographer.name}
-                          </span>
-                        </span>
-                      )}
-                    </div>
-                    <p class="mt-3 text-sm text-gray-600 line-clamp-2 leading-relaxed break-words">
-                      {photo.data.description}
-                    </p>
-                    {photo.data.tags && (
-                      <div class="mt-4 flex flex-wrap gap-2">
-                        {photo.data.tags.slice(0, 3).map(tag => (
-                          <span class="px-2 py-1 bg-gray-50 text-gray-600 border border-gray-200 rounded text-xs font-medium">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-
-          {totalPhotos > 3 && (
-            <div class="text-center">
-              <a
-                href={`/photos/${year}`}
-                class="inline-flex items-center px-6 py-3 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors shadow-sm"
-              >
-                Explore All {year} Photos
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          )}
-        </div>
-      );
-    })}
-    </div>
-  </main>
+      <div class="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">{previewPhotosByYear[year].photos.map((photo) => <PhotoArchiveCard photo={photo} />)}</div>
+    </section>)}
+  </div>
 </MainLayout>

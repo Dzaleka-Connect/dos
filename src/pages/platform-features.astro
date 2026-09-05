@@ -124,7 +124,7 @@ function iconMarkup(icon) {
   title="Platform Features - Dzaleka Online Services"
   description="Overview of the service areas, tools, and public records available across Dzaleka Online Services."
 >
-  <main class="min-h-screen bg-slate-50">
+  <div class="min-h-screen bg-slate-50">
     <section class="border-b border-slate-200 bg-white">
       <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div class="mb-8">
@@ -147,16 +147,16 @@ function iconMarkup(icon) {
             </p>
           </div>
 
-          <aside class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <aside class="rounded border border-slate-200 bg-slate-50 p-6">
             <h2 class="text-lg font-semibold text-slate-900">Quick links</h2>
             <div class="mt-4 space-y-3">
-              <a href="/start-here" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              <a href="/start-here" class="block rounded border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
                 Start Here
               </a>
-              <a href="/services" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              <a href="/services" class="block rounded border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
                 Browse services
               </a>
-              <a href="/data" class="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              <a href="/data" class="block rounded border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
                 View data hub
               </a>
             </div>
@@ -178,15 +178,15 @@ function iconMarkup(icon) {
 
       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {serviceAreas.map((area) => (
-          <section class="rounded-lg border border-slate-200 bg-white p-6">
+          <section class="rounded border border-slate-200 bg-white p-6">
             <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-700" set:html={iconMarkup(area.icon)} />
+              <div class="flex h-10 w-10 items-center justify-center rounded bg-primary-50 text-primary-700" set:html={iconMarkup(area.icon)} />
               <h3 class="text-lg font-semibold text-slate-900">{area.title}</h3>
             </div>
             <p class="mt-4 text-sm leading-6 text-slate-600">{area.description}</p>
             <div class="mt-5 space-y-2">
               {area.links.map((link) => (
-                <a href={link.href} class="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <a href={link.href} class="min-h-[44px] flex items-center justify-between rounded border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
                   <span>{link.label}</span>
                   <span class="text-slate-400">→</span>
                 </a>
@@ -204,7 +204,7 @@ function iconMarkup(icon) {
             <h2 class="text-2xl font-bold tracking-tight text-slate-900">What the platform supports</h2>
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
               {platformCapabilities.map((item) => (
-                <div class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+                <div class="rounded border border-slate-200 bg-slate-50 p-5">
                   <h3 class="text-base font-semibold text-slate-900">{item.title}</h3>
                   <p class="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
                 </div>
@@ -212,12 +212,12 @@ function iconMarkup(icon) {
             </div>
           </div>
 
-          <aside class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+          <aside class="rounded border border-slate-200 bg-slate-50 p-6">
             <p class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">Current focus</p>
             <h2 class="mt-2 text-xl font-semibold text-slate-900">What the platform is improving</h2>
             <div class="mt-5 space-y-3">
               {currentFocus.map((item) => (
-                <div class="flex gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+                <div class="flex gap-3 rounded border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
                   <span class="mt-0.5 text-primary-700">•</span>
                   <span>{item}</span>
                 </div>
@@ -229,7 +229,7 @@ function iconMarkup(icon) {
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div class="rounded-lg border border-slate-200 bg-white p-8">
+      <div class="rounded border border-slate-200 bg-white p-5 sm:p-8">
         <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
           <div>
             <h2 class="text-2xl font-bold tracking-tight text-slate-900">Need help choosing where to go?</h2>
@@ -239,15 +239,15 @@ function iconMarkup(icon) {
             </p>
           </div>
           <div class="flex flex-wrap gap-3">
-            <a href="/start-here" class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-medium text-white hover:bg-primary-700">
+            <a href="/start-here" class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-600 px-5 py-3 text-sm font-medium text-white hover:bg-primary-700">
               Go to Start Here
             </a>
-            <a href="/contact" class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <a href="/contact" class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
               Contact support
             </a>
           </div>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </MainLayout>
