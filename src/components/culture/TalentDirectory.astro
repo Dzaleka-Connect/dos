@@ -1,0 +1,20 @@
+---
+import { getEntry } from 'astro:content';
+import CollectionHeader from '../ui/CollectionHeader.astro';
+import DirectoryCard from '../ui/DirectoryCard.astro';
+import Pagination from '../ui/Pagination.astro';
+const { currentPage = 1 } = Astro.props;
+const data = await getEntry('talents', 'data/talents');
+const talents = data?.data.talents || [];
+const totalPages = Math.max(1, Math.ceil(talents.length / 6));
+const start = (currentPage - 1) * 6;
+const visible = talents.slice(start, start + 6);
+---
+<CollectionHeader title="Dzaleka talents" description="Discover people working in business, technology, design and the arts. Explore their work and connect through their published profiles." action={{ label: 'Add your profile', href: '/talents/submit' }} />
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <section><div class="mb-6 flex flex-wrap items-baseline justify-between gap-3"><h2 class="text-primary-900">Talent directory</h2><p class="text-sm text-slate-600">{talents.length ? `${start + 1}–${Math.min(start + 6, talents.length)} of ${talents.length} profiles` : 'No profiles published yet'}</p></div>
+    {talents.length ? <div class="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">{visible.map(talent => <DirectoryCard title={talent.name} href={talent.user || undefined} image={talent.profilePic} description={talent.bio} meta={talent.category} portrait contain><div class="flex flex-wrap gap-x-4">{[{ label: 'LinkedIn', href: talent.linkedin }, { label: 'X / Twitter', href: talent.twitter }, { label: 'Instagram', href: talent.instagram }].filter(link => link.href).map(link => <a href={link.href} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4" aria-label={`${talent.name} on ${link.label}`}>{link.label} ↗</a>)}</div></DirectoryCard>)}</div> : <p class="rounded border border-slate-200 bg-slate-50 p-6 text-base text-slate-700">Profiles will appear here after publication. You can submit a profile using the link above.</p>}
+    {totalPages > 1 && <div class="mt-8 border-t border-slate-200 pt-6"><Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/talents" urlStyle="path" /></div>}
+  </section>
+  <aside class="mt-10 border-t border-slate-200 pt-6"><h2 class="text-primary-900">Creative communities</h2><div class="mt-3 flex flex-wrap gap-x-6">{[{ label: 'Visual artists', href: '/public-art-catalogue/visual-arts-community' }, { label: 'Poets', href: '/poets' }, { label: 'Dance groups', href: '/dancers' }, { label: 'Skills exchange', href: '/skills-exchange' }].map(link => <a href={link.href} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{link.label} →</a>)}</div></aside>
+</div>

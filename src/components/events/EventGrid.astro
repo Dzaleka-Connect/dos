@@ -1,12 +1,13 @@
 ---
-import { format } from 'date-fns';
+import { formatDateInCAT } from '../../utils/eventDate';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   events: CollectionEntry<'events'>[];
+  showStatus?: boolean;
 }
 
-const { events } = Astro.props;
+const { events, showStatus = true } = Astro.props;
 
 // Function to format location
 function formatLocation(location: any) {
@@ -14,17 +15,7 @@ function formatLocation(location: any) {
   return location.venue && location.city ? `${location.venue}, ${location.city}` : location.venue || location.city || 'Location TBA';
 }
 
-// Function to format date in CAT timezone (UTC+2)
-function formatDateInCAT(date: Date, formatString: string) {
-  try {
-    // Create a new date object and add 2 hours for CAT timezone
-    const catDate = new Date(date.getTime() + (2 * 60 * 60 * 1000));
-    return format(catDate, formatString);
-  } catch (error) {
-    // Fallback to original date if conversion fails
-    return format(date, formatString);
-  }
-}
+
 ---
 
 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -57,12 +48,12 @@ function formatDateInCAT(date: Date, formatString: string) {
             </time>
 
             {/* Status indicator */}
-            <span class="inline-flex w-fit flex-none rounded-full px-2 py-1 text-xs font-medium capitalize" class:list={{
+            {showStatus && <span class="inline-flex w-fit flex-none rounded-full px-2 py-1 text-xs font-medium capitalize" class:list={{
               'bg-gray-100 text-gray-700 border border-gray-200': event.data.status === 'upcoming',
               'bg-gray-50 text-gray-600 border border-gray-100': event.data.status === 'past'
             }}>
               {event.data.status}
-            </span>
+            </span>}
 
             {/* Panelist indicator */}
             {event.data.panelists && event.data.panelists.length > 0 && (
@@ -87,7 +78,7 @@ function formatDateInCAT(date: Date, formatString: string) {
                 'text-sm font-body',
                 event.data.isTBA ? 'text-amber-700 font-medium' : ''
               ]}>
-                {event.data.isTBA ? 'Time TBA' : formatDateInCAT(event.data.date, 'h:mm a')}
+                {event.data.isTBA ? 'Time TBA' : `${formatDateInCAT(event.data.date, 'h:mm a')} CAT`}
               </time>
             </div>
             <div class="flex min-w-0 items-start text-gray-500">

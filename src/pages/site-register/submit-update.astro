@@ -1,6 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import FormHeader from '../../components/ui/FormHeader.astro';
 
 const seo = {
   title: "Submit Update - Dzaleka Online Services",
@@ -25,38 +25,7 @@ const seo = {
   canonical={seo.canonical}
   openGraph={seo.openGraph}
 >
-  <section class="border-b border-slate-200 bg-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="mb-8">
-        <Breadcrumb
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Site Register', href: '/site-register' },
-            { label: 'Submit update' }
-          ]}
-        />
-      </div>
-
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">Corrections and additions</p>
-          <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Submit an update</h1>
-          <p class="mt-4 text-lg leading-8 text-slate-600">
-            Help keep the Site Register accurate by sending corrections, additions, or condition updates.
-          </p>
-        </div>
-
-        <div class="rounded border border-slate-200 bg-slate-50 p-6">
-          <h2 class="text-lg font-semibold text-slate-900">What helps most</h2>
-          <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-            <li>Name the site clearly so the listing can be found quickly.</li>
-            <li>Show what is changing and what the updated information should be.</li>
-            <li>Include a source or note explaining how you know the update is correct.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+  <FormHeader title="Update a site record" description="Name the site, explain what should change and include a source or note supporting your correction." parent="Site Register" href="/site-register" />
 
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -263,7 +232,7 @@ const seo = {
           </div>
 
           <!-- Success Message -->
-          <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
+          <div id="successMessage" role="status" tabindex="-1" class="hidden mt-4 rounded-md bg-green-50 p-4">
             <div class="flex">
               <div class="flex-shrink-0">
                 <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
@@ -277,7 +246,7 @@ const seo = {
           </div>
 
           <!-- Error Message -->
-          <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
+          <div id="errorMessage" role="alert" tabindex="-1" class="hidden mt-4 rounded-md bg-red-50 p-4">
             <div class="flex">
               <div class="flex-shrink-0">
                 <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -360,9 +329,7 @@ const seo = {
             // Show success message
             form.reset();
             successMessage.classList.remove('hidden');
-            setTimeout(() => {
-              successMessage.classList.add('hidden');
-            }, 5000);
+            successMessage.focus();
           } else {
             throw new Error(data.error || 'Error submitting update');
           }
@@ -370,9 +337,7 @@ const seo = {
           // Show error message
           console.error('Submission error:', error);
           errorMessage.classList.remove('hidden');
-          setTimeout(() => {
-            errorMessage.classList.add('hidden');
-          }, 5000);
+          errorMessage.focus();
         } finally {
           // Reset button state
           submitButton.disabled = false;

@@ -1,40 +1,13 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import FormHeader from '../../components/ui/FormHeader.astro';
 
 const title = "Submit Artwork - Dzaleka Online Services";
 const description = "Submit information about public artworks in Dzaleka Refugee Camp for inclusion in our art catalogue.";
 ---
 
 <MainLayout title={title} description={description}>
-    <section class="border-b border-slate-200 bg-white">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="mb-8">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Public Art Catalogue', href: '/public-art-catalogue' },
-              { label: 'Submit artwork' }
-            ]}
-          />
-        </div>
-        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.9fr)] lg:items-start">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500">New submission</p>
-            <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Submit artwork</h1>
-            <p class="mt-4 text-lg leading-8 text-slate-600">Help document and celebrate public artworks in Dzaleka Refugee Camp.</p>
-          </div>
-          <div class="rounded border border-slate-200 bg-slate-50 p-6">
-            <h2 class="text-lg font-semibold text-slate-900">Before you submit</h2>
-            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-              <li>Include the artwork title, artist, and exact location if known.</li>
-              <li>Add history and cultural meaning, not just a short description.</li>
-              <li>Upload clear photos showing the full work and important details.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+    <FormHeader title="Submit an artwork" description="Help document public art in Dzaleka. Add the artist, location, photographs and the story behind the work where known." parent="Public Art Catalogue" href="/public-art-catalogue" />
 
     <!-- Form Section -->
     <section class="py-10">
@@ -287,15 +260,13 @@ const description = "Submit information about public artworks in Dzaleka Refugee
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                   <div class="mt-4">
-                    <label for="photo-upload" class="cursor-pointer bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
-                      Choose Files
-                    </label>
-                    <input id="photo-upload" name="photos" type="file" multiple accept="image/*" class="hidden" required />
+                    <label for="photo-upload" class="mb-2 block text-sm font-medium text-slate-700">Select photographs</label>
+                    <input id="photo-upload" name="photos" type="file" multiple accept="image/*" class="block w-full" aria-describedby="photoUploadStatus" required />
                   </div>
                   <p class="mt-2 text-sm text-gray-600">
                     Upload multiple photos: full view + detail shots showing different angles and important elements
                   </p>
-                  <p id="photoUploadStatus" class="text-sm mt-2"></p>
+                  <p id="photoUploadStatus" role="status" class="text-sm mt-2"></p>
                 </div>
               </div>
               <!-- Hidden field for uploaded photo URLs -->
@@ -370,7 +341,7 @@ const description = "Submit information about public artworks in Dzaleka Refugee
             </div>
 
             <!-- Success Message -->
-            <div id="successMessage" class="hidden mt-4 rounded-md bg-green-50 p-4">
+            <div id="successMessage" role="status" tabindex="-1" class="hidden mt-4 rounded-md bg-green-50 p-4">
               <div class="flex">
                 <div class="flex-shrink-0">
                   <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
@@ -384,7 +355,7 @@ const description = "Submit information about public artworks in Dzaleka Refugee
             </div>
 
             <!-- Error Message -->
-            <div id="errorMessage" class="hidden mt-4 rounded-md bg-red-50 p-4">
+            <div id="errorMessage" role="alert" tabindex="-1" class="hidden mt-4 rounded-md bg-red-50 p-4">
               <div class="flex">
                 <div class="flex-shrink-0">
                   <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -485,9 +456,7 @@ const description = "Submit information about public artworks in Dzaleka Refugee
             // Show success message
             form.reset();
             successMessage.classList.remove('hidden');
-            setTimeout(() => {
-              successMessage.classList.add('hidden');
-            }, 5000);
+            successMessage.focus();
           } else {
             throw new Error(data.error || 'Error submitting artwork');
           }
@@ -495,9 +464,7 @@ const description = "Submit information about public artworks in Dzaleka Refugee
           // Show error message
           console.error('Submission error:', error);
           errorMessage.classList.remove('hidden');
-          setTimeout(() => {
-            errorMessage.classList.add('hidden');
-          }, 5000);
+          errorMessage.focus();
         } finally {
           // Reset button state
           submitButton.disabled = false;

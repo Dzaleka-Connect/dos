@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { curatedGrantsPrograms } from '../data/grantsPrograms';
 
 const baseUrl = 'https://services.dzaleka.com';
 
@@ -96,6 +97,10 @@ export async function GET() {
     if (route) {
       addUrl(route);
     }
+  }
+
+  for (const program of curatedGrantsPrograms) {
+    addUrl(`/grants-and-programs/${program.slug}`, program.verifiedDate);
   }
 
   const collectionRoutes = [

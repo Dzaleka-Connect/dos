@@ -1,0 +1,15 @@
+---
+const { current } = Astro.props;
+const links = [
+  { label: 'Culture', href: '/culture' },
+  { label: 'Public art', href: '/public-art-catalogue' },
+  { label: 'Visual artists', href: '/public-art-catalogue/visual-arts-community' },
+  { label: 'Poets', href: '/poets' },
+  { label: 'Dance', href: '/dancers' },
+];
+---
+<nav aria-label="Arts and culture" class="border-b border-slate-200 bg-white">
+  <div class="mx-auto flex max-w-7xl flex-wrap gap-x-4 px-4 sm:gap-x-6 sm:px-6 lg:px-8">
+    {links.map(link => <a href={link.href} aria-current={link.href === current ? 'page' : undefined} class:list={['inline-flex min-h-[48px] items-center border-b-2 py-3 text-sm', link.href === current ? 'border-primary-800 font-semibold text-primary-900' : 'border-transparent text-slate-600 hover:border-slate-400 hover:text-primary-800']}>{link.label}</a>)}
+  </div>
+</nav>

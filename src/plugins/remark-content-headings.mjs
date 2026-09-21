@@ -5,9 +5,10 @@ export default function remarkContentHeadings() {
     if (!path?.includes('/src/content/')) return;
     // These record templates already display the title above the gallery.
     // Remove only a matching opening title; retain authored section headings.
-    if (/\/src\/content\/(photos|sites|artworks)\//.test(path)) {
+    if (/\/src\/content\/(photos|sites|artworks|artists|poets|dancers)\//.test(path)) {
       const first = tree.children?.[0];
-      const title = file.data?.astro?.frontmatter?.title;
+      const frontmatter = file.data?.astro?.frontmatter;
+      const title = /\/artists\//.test(path) ? frontmatter?.artistName : frontmatter?.title;
       const text = node => node.value ?? node.children?.map(text).join('') ?? '';
       const normalize = value => value.trim().replace(/\s+/g, ' ');
       if (typeof title === 'string' && first?.type === 'heading' && first.depth === 1 && normalize(text(first)) === normalize(title)) tree.children.shift();

@@ -1,4 +1,5 @@
 import { getCollection, getEntry } from 'astro:content';
+import { curatedGrantsPrograms } from '../../data/grantsPrograms';
 
 export const GET = async () => {
     // Fetch all collections
@@ -27,6 +28,15 @@ export const GET = async () => {
 
     // Map to search index format
     const searchIndex = [
+        ...curatedGrantsPrograms.map(item => ({
+            title: item.title,
+            description: item.summary,
+            type: 'Opportunity',
+            category: item.type,
+            url: `/grants-and-programs/${item.slug}`,
+            image: item.image?.src,
+            tags: [...item.audience, item.organization],
+        })),
         ...profiles.map(item => {
             const data = item.data as any;
             return {

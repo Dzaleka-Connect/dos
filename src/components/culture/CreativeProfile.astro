@@ -1,0 +1,40 @@
+---
+import CollectionHeader from '../ui/CollectionHeader.astro';
+import RecordFacts, { type Fact } from '../records/RecordFacts.astro';
+import { recordImageUrl } from '../../utils/recordMedia';
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  photographer?: string;
+  parent: string;
+  href: string;
+  kind: string;
+  facts: Fact[];
+}
+const { title, description = '', image, photographer, parent, href, kind, facts } = Astro.props;
+const src = recordImageUrl(image);
+---
+<CollectionHeader title={title} description={description} breadcrumbs={[{ label: 'Home', href: '/' }, { label: parent, href }, { label: title }]}>
+  <p class="text-sm text-slate-600">{kind}</p>
+</CollectionHeader>
+<div class="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:px-8">
+  {src && <figure class="min-w-0 lg:col-start-2 lg:row-start-1">
+    <img src={src} alt={title} decoding="async" class="max-h-[28rem] w-full bg-slate-100 object-contain" onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Profile photograph unavailable';" />
+    {photographer && <figcaption class="mt-2 text-sm leading-6 text-slate-600">Photograph: {photographer}</figcaption>}
+  </figure>}
+  <div class="min-w-0 lg:col-start-1 lg:row-span-2 lg:row-start-1">
+    <article class="prose prose-primary max-w-none break-words"><slot /></article>
+    <slot name="after" />
+  </div>
+  <aside class:list={['min-w-0 space-y-6 lg:col-start-2', src ? 'lg:row-start-2' : 'lg:row-start-1']} aria-label="Profile information">
+    {facts.some(fact => fact.value) && <section class="border-t border-slate-300 pt-5">
+      <h2 class="mb-5 text-xl text-primary-900">Profile details</h2>
+      <RecordFacts facts={facts} />
+    </section>}
+    <slot name="details" />
+  </aside>
+</div>
+<style>
+  .prose :global(h2:first-child) { margin-top: 0; }
+</style>

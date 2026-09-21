@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import { format } from 'date-fns';
+import { formatDateInCAT } from '../../utils/eventDate';
 import Button from '../../components/ui/Button.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 
@@ -112,22 +112,8 @@ function formatLocation(location: any) {
   return location.venue && location.city ? `${location.venue}, ${location.city}` : location.venue || location.city || 'Location TBA';
 }
 
-// Function to format date in CAT timezone (UTC+2)
-function formatDateInCAT(date: Date, formatString: string) {
-  try {
-    // Create a new date object and add 2 hours for CAT timezone
-    const catDate = new Date(date.getTime() + (2 * 60 * 60 * 1000));
-    return format(catDate, formatString);
-  } catch (error) {
-    // Fallback to original date if conversion fails
-    return format(date, formatString);
-  }
-}
 
-// Format date for structured data
-// Format date for structured data (only if entry exists)
-const formattedDate = entry ? format(entry.data.date, 'yyyy-MM-dd') : '';
-const formattedTime = entry ? format(entry.data.date, 'HH:mm') : '';
+
 const todayIso = new Date().toISOString().split('T')[0];
 
 // Create structured data
@@ -296,8 +282,8 @@ const seo = isPage ? {
       type: "image/jpeg"
     },
     event: {
-      startTime: `${formattedDate}T${formattedTime}`,
-      endTime: `${formattedDate}T${formattedTime}`,
+      startTime: entry.data.date.toISOString(),
+      endTime: entry.data.endDate?.toISOString(),
       location: formatLocation(entry.data.location),
       organizer: entry.data.organizer || "Dzaleka Online Services"
     }

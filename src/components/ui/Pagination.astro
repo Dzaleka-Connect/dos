@@ -3,12 +3,14 @@ interface Props {
   currentPage: number;
   totalPages: number;
   baseUrl: string;
-  searchParams: URLSearchParams;
+  searchParams?: URLSearchParams;
+  urlStyle?: 'query' | 'path';
 }
 
-const { currentPage, totalPages, baseUrl, searchParams } = Astro.props;
+const { currentPage, totalPages, baseUrl, searchParams, urlStyle = 'query' } = Astro.props;
 
 function getPageUrl(page: number): string {
+  if (urlStyle === 'path') return page === 1 ? baseUrl : `${baseUrl}/${page}`;
   const params = new URLSearchParams(searchParams);
   params.set('page', page.toString());
   return `${baseUrl}?${params.toString()}`;

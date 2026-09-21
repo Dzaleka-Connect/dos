@@ -1,4 +1,5 @@
 ---
+import CollectionHeader from '../../components/ui/CollectionHeader.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -39,71 +40,31 @@ const quickStats = [
 
 <MainLayout title={pageTitle} description={description} image={image} canonical="https://services.dzaleka.com/marketplace">
   <div class="bg-gray-50">
-    <section class="relative overflow-hidden bg-gray-900 py-16 sm:py-24">
-      <!-- Background Image with Overlay -->
-      <div class="absolute inset-0 z-0">
-        <img
-          src={image}
-          alt="Dzaleka Marketplace"
-          class="h-full w-full object-cover opacity-30"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/90 to-gray-900/40"></div>
-      </div>
+    <CollectionHeader title="Dzaleka marketplace" description="Browse products and services from local entrepreneurs and creators. Open a listing for prices, seller details and ordering information." action={{ label: 'Add a listing', href: '/marketplace/submit' }}>
+      <a href="/marketplace/stores" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Restaurants and shops →</a>
+    </CollectionHeader>
 
-      <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-2xl">
-          <nav class="mb-8 text-sm font-medium text-gray-400">
-            <a href="/" class="hover:text-white transition-colors">Home</a>
-            <span class="mx-2">/</span>
-            <span class="text-white">Marketplace</span>
-          </nav>
-
-          <span class="inline-block rounded border border-white/20 bg-white/10 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-            Community Commerce
-          </span>
-          <h1 class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Dzaleka Marketplace
-          </h1>
-          <p class="mt-6 text-lg leading-relaxed text-gray-300">
-            Supporting local entrepreneurs and creators. Browse products, services, and cultural treasures direct from Dzaleka.
-          </p>
-
-          <div class="mt-10 flex flex-wrap gap-4">
-            <a
-              href="/marketplace/submit"
-              class="min-h-[44px] inline-flex items-center rounded bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
-            >
-              Add a listing
-            </a>
-            <a
-              href="/marketplace/stores"
-              class="min-h-[44px] inline-flex items-center rounded border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/50"
-            >
-              View stores
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sticky top-24 lg:top-44 z-10 border-b border-gray-200 bg-white">
+    <section class="border-b border-gray-200 bg-white">
       <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex flex-wrap items-center gap-2">
             <button
               data-filter="all"
+              aria-pressed="true"
               class="min-h-[44px] filter-btn rounded bg-primary-700 px-4 py-2 text-sm font-medium text-white"
             >
               All ({activeListings.length})
             </button>
             <button
               data-filter="product"
+              aria-pressed="false"
               class="min-h-[44px] filter-btn rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
             >
               Products ({products.length})
             </button>
             <button
               data-filter="service"
+              aria-pressed="false"
               class="min-h-[44px] filter-btn rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
             >
               Services ({services.length})
@@ -205,11 +166,13 @@ const quickStats = [
               })}
             </div>
 
-            <div id="pagination" class="mt-8 flex items-center justify-center gap-2">
+            <p id="filterEmpty" hidden class="rounded border border-slate-200 bg-slate-50 p-6 text-base text-slate-700">No listings match these filters. Choose All or another category.</p>
+
+            <div id="pagination" class="mt-8 flex flex-wrap items-center justify-center gap-2">
               <button id="prevPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Previous
               </button>
-              <span id="pageInfo" class="px-3 py-2 text-sm text-gray-600"></span>
+              <span id="pageInfo" role="status" class="px-3 py-2 text-sm text-gray-600"></span>
               <button id="nextPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Next
               </button>
@@ -269,6 +232,7 @@ const quickStats = [
     let activeType = 'all';
     let activeCategory = 'all';
     let currentPage = 1;
+    if (!prevBtn || !nextBtn || !pageInfo) return;
     const itemsPerPage = 8;
 
     function getFilteredCards() {
@@ -295,7 +259,9 @@ const quickStats = [
         card.style.display = 'block';
       });
 
-      pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+      pageInfo.textContent = `${filteredCards.length} listings · Page ${currentPage} of ${totalPages || 1}`;
+      const empty = document.getElementById('filterEmpty');
+      if (empty) empty.hidden = filteredCards.length > 0;
       prevBtn.disabled = currentPage <= 1;
       nextBtn.disabled = currentPage >= totalPages;
     }
@@ -303,9 +269,11 @@ const quickStats = [
     filterBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         filterBtns.forEach((button) => {
+          button.setAttribute('aria-pressed', 'false');
           button.classList.remove('bg-primary-700', 'text-white');
           button.classList.add('bg-gray-100', 'text-gray-700');
         });
+        btn.setAttribute('aria-pressed', 'true');
         btn.classList.remove('bg-gray-100', 'text-gray-700');
         btn.classList.add('bg-primary-700', 'text-white');
 

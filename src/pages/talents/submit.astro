@@ -1,209 +1,43 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-
-// Get Cloudinary credentials from environment variables
+import FormHeader from '../../components/ui/FormHeader.astro';
 const cloudName = import.meta.env.CLOUDINARY_CLOUD_NAME;
 const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 ---
-
-<MainLayout title="Submit Your Profile - Dzaleka Talents">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Join our talent directory</h1>
-      <p class="text-lg text-gray-600">Share your story and showcase your talents to the community</p>
-    </div>
-
-    <div class="bg-white shadow-sm rounded p-6 md:p-8">
-      <form
-        id="talentForm"
-        action="https://formspree.io/f/xqaaajae"
-        method="POST"
-        class="submission-form space-y-6"
-      >
-        <!-- Hidden input for Cloudinary URL -->
-        <input type="hidden" name="profilePic" id="profilePicUrl" />
-
-        <!-- Name -->
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Full Name *</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            required
-            class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-            placeholder="Your full name"
-          />
-        </div>
-
-        <!-- Category -->
-        <div>
-          <label for="category" class="block text-sm font-medium text-gray-700">Category/Profession *</label>
-          <input
-            type="text"
-            name="category"
-            id="category"
-            required
-            class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-            placeholder="For example, Graphic Designer, Musician, Developer"
-          />
-        </div>
-
-        <!-- Bio -->
-        <div>
-          <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
-          <textarea
-            name="bio"
-            id="bio"
-            rows="4"
-            class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-            placeholder="Tell us about yourself, your skills, and your achievements"
-          ></textarea>
-        </div>
-
-        <!-- Profile Picture -->
-        <div>
-          <label for="profilePicInput" class="block text-sm font-medium text-gray-700">Profile Picture *</label>
-          <div class="mt-1 flex items-center">
-            <input
-              type="file"
-              id="profilePicInput"
-              required
-              accept="image/*"
-              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
-            />
-          </div>
-          <div id="uploadStatus" class="mt-2 text-sm"></div>
-          <p class="mt-2 text-sm text-gray-500">Upload a clear, professional photo of yourself</p>
-        </div>
-
-        <!-- Preview -->
-        <div id="imagePreview" class="hidden mt-4">
-          <img id="previewImage" src="" alt="Preview" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-primary-500" />
-        </div>
-
-        <!-- Social Links -->
-        <div class="space-y-4">
-          <div>
-            <label for="linkedin" class="block text-sm font-medium text-gray-700">LinkedIn Profile</label>
-            <input
-              type="url"
-              name="linkedin"
-              id="linkedin"
-              class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-              placeholder="https://linkedin.com/in/your-profile"
-            />
-          </div>
-          <div>
-            <label for="twitter" class="block text-sm font-medium text-gray-700">Twitter/X Profile</label>
-            <input
-              type="url"
-              name="twitter"
-              id="twitter"
-              class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-              placeholder="https://twitter.com/your-handle"
-            />
-          </div>
-        </div>
-
-        <!-- Additional Information -->
-        <div>
-          <label for="message" class="block text-sm font-medium text-gray-700">Additional Information</label>
-          <textarea
-            name="message"
-            id="message"
-            rows="3"
-            class="mt-1 block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-            placeholder="Any additional information you'd like to share"
-          ></textarea>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="flex justify-center">
-          <button
-            type="submit"
-            id="submitButton"
-            disabled
-            class="min-h-[44px] inline-flex items-center px-6 py-3 border border-transparent rounded-md text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Submit Profile
-          </button>
-        </div>
-
-        <!-- Privacy Notice -->
-        <div class="text-sm text-gray-500 text-center mt-4">
-          <p>By submitting this form, you agree to share your information on our platform. Fields marked with * are required.</p>
-        </div>
-      </form>
-    </div>
+<MainLayout title="Submit your profile - Dzaleka Talents" description="Share your work, skills and profile with the Dzaleka talent directory.">
+  <FormHeader title="Add your talent profile" description="Introduce your work and skills to the community. Your submitted profile and links are intended for publication in the talent directory." parent="Dzaleka talents" href="/talents" />
+  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <form id="talentForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8 rounded border border-slate-200 bg-white p-5 sm:p-8" data-cloud-name={cloudName} data-upload-preset={uploadPreset}>
+      <p class="text-sm text-slate-600">Fields marked with * are required.</p>
+      <fieldset class="space-y-5">
+        <legend class="mb-4 text-lg font-semibold">Your profile</legend>
+        <div><label for="name" class="block font-medium">Full name *</label><input type="text" name="name" id="name" required autocomplete="name" class="mt-2 block w-full" /></div>
+        <div><label for="category" class="block font-medium">Profession or creative practice *</label><p id="category-help" class="mt-1 text-sm text-slate-600">For example, graphic designer, musician or developer.</p><input type="text" name="category" id="category" required aria-describedby="category-help" class="mt-2 block w-full" /></div>
+        <div><label for="bio" class="block font-medium">Short biography</label><p id="bio-help" class="mt-1 text-sm text-slate-600">Describe your work, skills and achievements in a few sentences.</p><textarea name="bio" id="bio" rows="4" aria-describedby="bio-help" class="mt-2 block w-full"></textarea></div>
+      </fieldset>
+      <fieldset class="form-section space-y-5">
+        <legend>Profile photograph</legend>
+        <div><label for="profilePicUrl" class="block font-medium">Photo link *</label><p id="photo-help" class="mt-1 text-sm text-slate-600">Link directly to a photograph you have permission to publish.{cloudName && uploadPreset ? ' You can also upload a photo below to fill in this link.' : ''}</p><input type="url" name="profilePic" id="profilePicUrl" required placeholder="https://example.com/your-photo.jpg" aria-describedby="photo-help" class="mt-2 block w-full" /></div>
+        {cloudName && uploadPreset && <div data-photo-upload hidden><label for="profilePicInput" class="block font-medium">Upload a photograph</label><p id="upload-help" class="mt-1 text-sm text-slate-600">JPEG, PNG or WebP, up to 10 MB. The preview shows your whole photograph.</p><input type="file" id="profilePicInput" accept="image/jpeg,image/png,image/webp" aria-describedby="upload-help uploadStatus" class="mt-2 block w-full" /><p id="uploadStatus" role="status" class="mt-2 text-sm text-slate-700"></p><figure id="imagePreview" hidden class="mt-4 max-w-xs"><img id="previewImage" alt="Your selected profile photograph" class="aspect-[4/3] w-full rounded border border-slate-200 bg-slate-100 object-contain" /><figcaption class="mt-2 text-sm text-slate-600">Photo preview</figcaption></figure></div>}
+      </fieldset>
+      <fieldset class="form-section space-y-5">
+        <legend>Links and additional information</legend>
+        <p class="text-sm text-slate-600">These fields are optional. Only include details you want to share publicly.</p>
+        <div><label for="linkedin" class="block font-medium">LinkedIn profile</label><input type="url" name="linkedin" id="linkedin" placeholder="https://linkedin.com/in/your-profile" class="mt-2 block w-full" /></div>
+        <div><label for="twitter" class="block font-medium">X / Twitter profile</label><input type="url" name="twitter" id="twitter" placeholder="https://x.com/your-handle" class="mt-2 block w-full" /></div>
+        <div><label for="message" class="block font-medium">Additional information</label><textarea name="message" id="message" rows="3" class="mt-2 block w-full"></textarea></div>
+      </fieldset>
+      <div class="form-actions"><button type="submit" id="submitButton">Submit profile</button><a href="/talents" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Back to the talent directory</a></div>
+      <p class="text-sm text-slate-600">By submitting, you agree to share this information on Dzaleka Online Services. Read our <a href="/privacy" class="text-primary-800 underline underline-offset-4">privacy policy</a>.</p>
+    </form>
   </div>
 </MainLayout>
-
-<script define:vars={{ cloudName, uploadPreset }}>
-// Handle image upload and preview
-const profilePicInput = document.getElementById('profilePicInput');
-const imagePreview = document.getElementById('imagePreview');
-const previewImage = document.getElementById('previewImage');
-const uploadStatus = document.getElementById('uploadStatus');
-const submitButton = document.getElementById('submitButton');
-const profilePicUrl = document.getElementById('profilePicUrl');
-const form = document.getElementById('talentForm');
-
-if (profilePicInput) {
-  profilePicInput.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Show preview
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.src = e.target.result;
-      imagePreview.classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
-
-    // Upload to Cloudinary
-    submitButton.disabled = true;
-    uploadStatus.textContent = 'Uploading image...';
-    uploadStatus.className = 'mt-2 text-sm text-primary-600';
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', uploadPreset);
-
-    try {
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
-
-      if (!response.ok) throw new Error('Upload failed');
-
-      const data = await response.json();
-      profilePicUrl.value = data.secure_url;
-      uploadStatus.textContent = 'Image uploaded successfully!';
-      uploadStatus.className = 'mt-2 text-sm text-green-600';
-      submitButton.disabled = false;
-    } catch (error) {
-      console.error('Upload error:', error);
-      uploadStatus.textContent = 'Failed to upload image. Try again.';
-      uploadStatus.className = 'mt-2 text-sm text-red-600';
-      submitButton.disabled = true;
-    }
-  });
-}
-
-// Handle form submission
-if (form) {
-  form.addEventListener('submit', async (e) => {
-    if (!profilePicUrl.value) {
-      e.preventDefault();
-      uploadStatus.textContent = 'Upload a profile picture first.';
-      uploadStatus.className = 'mt-2 text-sm text-red-600';
-    }
-  });
-}
+<script>
+  import { initTalentUpload } from '../../utils/talentUpload';
+  const init = () => {
+    const form = document.querySelector<HTMLFormElement>('#talentForm');
+    if (form) initTalentUpload(form);
+  };
+  init(); document.addEventListener('astro:page-load', init);
 </script>
+<style>[hidden] { display: none !important; }</style>

@@ -1,0 +1,61 @@
+import type { CuratedOpportunity } from './grantsPrograms';
+
+export const papitaKhasuResidency: CuratedOpportunity = {
+  slug: 'papita-khasu-virtual-artist-residency',
+  title: 'Papita Khasu Virtual Artist Residency',
+  summary: 'A two-month residency supporting one emerging visual artist in Malawi with MWK 1.5 million to create new work. Refugees and asylum seekers are eligible.',
+  organization: 'kyle malanda',
+  location: 'Malawi · virtual, working from your own studio',
+  type: 'Artist residency',
+  audience: ['artists, educators, and job seekers'],
+  status: 'open',
+  opensAt: '2026-09-21T00:00:00+02:00',
+  deadline: '2026-10-18T23:59:59.999+02:00',
+  period: 'January–February 2027',
+  award: { amount: 1500000, currency: 'MWK', recipients: 1 },
+  actionHref: 'https://docs.google.com/forms/d/e/1FAIpQLSc0dCzVu_vAB6wazKIy3aO8IzlW8TZ49yfjuO3h1c43nwatRw/viewform?usp=dialog',
+  actionLabel: 'Apply through Google Forms',
+  image: {
+    src: 'https://format.creatorcdn.com/1787e46a-541e-407e-8a1b-bcac31566183/0/0/0/0,1020,3643,2424,2280,880/0-0-0/b5bec23d-3ab8-43fb-916e-9a579139f876/1/2/WWBY+II+%28hi+res%29.jpg?fjkss=exp=2105443983~hmac=37dcb19af56038be5cd5f268f5b14cf704155e3a6af9919c5e1ffaf84cd6b49c',
+    alt: 'Two hands reaching towards leafy branches against a blue sky',
+    credit: 'Residency cover image from kyle malanda',
+  },
+  intro: 'Established and personally funded by Malawian visual artist and collector kyle malanda, Papita Khasu supports an individual emerging artist to develop and produce new work over two months. The residency takes place remotely from the artist’s own workspace; studio space is not provided.',
+  support: [
+    'MWK 1,500,000 in unrestricted funding for one artist. The suggested budget is MWK 500,000 for materials and MWK 1,000,000 for living costs over two months.',
+    'There are no application or participation fees. Materials, data and other production costs come from the award.',
+    'Artists keep copyright and ownership of their work, with one new or existing artwork donated to the residency collection.',
+  ],
+  eligibility: [
+    'Individual emerging visual artists aged 18 or over who are citizens, permanent residents, recognised refugees or asylum seekers living in Malawi.',
+    'A serious artistic practice, a strong portfolio and active participation in Malawi’s arts and culture. Self-taught artists are welcome; formal art education is not required.',
+    'Visual arts practices such as painting, photography, textiles, film, printmaking, sculpture, woodwork and metalwork. Duos and collectives are not eligible.',
+    'Applicants must not be enrolled in an educational programme when the residency starts and must be available for two months of production.',
+    'Work must be original. Copied copyrighted work and AI-generated or AI-assisted work will not be considered.',
+    'The organiser has clarified that refugees and asylum seekers may use valid refugee or asylum documentation; a Malawian National ID or passport is not required for these applicants.',
+  ],
+  applicationSteps: [
+    'Read the official residency criteria and the Artist Guide. Applications may be written in Chichewa or English.',
+    'Prepare an artist statement, a project title and short proposal, and a motivation letter explaining why this residency is right for you now.',
+    'Prepare your CV and a curated portfolio. The guide explains how to select and document work; a personal website is not required.',
+    'Submit the application using the Google Form by 18 October 2026 at 23:59 Malawi time. Google may require you to sign in.',
+    'Shortlisted applicants will be interviewed in late October. The selected artist will be announced in early November for a January 2027 start.',
+  ],
+  commitments: [
+    'Produce new artwork during January and February 2027; this is a production residency, not a research-only placement.',
+    'Run one community engagement activity, such as a workshop, open studio, skill-sharing session or talk.',
+    'Donate one artwork, engage with the residency on social media and complete a reflection report.',
+    'Take part in milestone check-ins, at least one studio visit or photoshoot and an interview for the residency archive. Participation in outside media is optional.',
+  ],
+  payments: [
+    { label: 'Start of month one', amount: 750000 },
+    { label: 'Start of month two', amount: 250000 },
+    { label: 'On completion', amount: 500000 },
+  ],
+  organiserNote: 'Payment timing, flexible payment methods, accepted refugee documentation, copyright, donation options and documentation commitments reflect organiser clarifications supplied to Dzaleka Online Services. Confirm the final arrangements with the organiser before accepting a place.',
+  resources: [
+    { label: 'Official residency page', href: 'https://www.kylemalanda.com/residency' },
+    { label: 'Artist Guide · PDF on Google Drive', href: 'https://drive.google.com/file/d/1rGNBskwK7Lk75F7N1kNmzTbIYVi6XBR0/view?usp=sharing' },
+  ],
+  verifiedDate: '2026-09-21',
+};

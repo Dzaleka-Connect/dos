@@ -129,15 +129,16 @@ const sections = [
 ---
 <MainLayout title={seo.title} description={seo.description} image={seo.image} type={seo.type} canonical={seo.canonical} openGraph={seo.openGraph}>
   <script type="application/ld+json" set:html={JSON.stringify(artworkStructuredData)} />
-  <div class="record-detail bg-white">
-    <header class="border-b border-slate-200 bg-slate-50"><div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="record-detail art-record bg-white">
+    <header class="border-b border-slate-200 bg-white"><div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Public Art Catalogue', href: '/public-art-catalogue' }, { label: frontmatter.title }]} />
       <div class="mt-5 max-w-4xl"><p class="text-sm font-medium text-slate-600">{frontmatter.category}</p><h1 class="mt-2 text-primary-900">{frontmatter.title}</h1>{frontmatter.description && <p class="mt-4 text-base leading-7 text-slate-700">{frontmatter.description}</p>}<p class="mt-4 text-base text-slate-700">{frontmatter.artistName === 'Unknown' ? 'Artist not identified in this record' : frontmatter.artistName}</p></div>
     </div></header>
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="art-record-gallery">{images.length > 0 ? <RecordGallery images={images} title={frontmatter.title} credit={frontmatter.artistName && frontmatter.artistName !== 'Unknown' ? `Artwork: ${frontmatter.artistName}` : undefined} /> : <p class="rounded-lg border border-slate-200 bg-slate-50 p-5 text-base text-slate-700">No image has been added to this artwork record.</p>}</div>
       <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-10">
         <div class="min-w-0 space-y-8">
-          {images.length > 0 ? <RecordGallery images={images} title={frontmatter.title} credit={frontmatter.artistName && frontmatter.artistName !== 'Unknown' ? `Artwork: ${frontmatter.artistName}` : undefined} /> : <p class="rounded-lg border border-slate-200 bg-slate-50 p-5 text-base text-slate-700">No image has been added to this artwork record.</p>}
+
           <article class="record-prose prose prose-slate max-w-none"><Content /></article>
           {sections.map(section => <section class="record-section"><h2 class="text-primary-900">{section.title}</h2><p class="text-base leading-7 text-slate-700">{section.content}</p></section>)}
           <RecordResources resources={frontmatter.educationalResources} />
@@ -153,3 +154,12 @@ const sections = [
     </div>
   </div>
 </MainLayout>
+
+<style>
+  .art-record-gallery { margin-bottom:2.5rem; }
+  .art-record-gallery :global(.record-gallery > figure) { border:0; border-radius:0; }
+  .art-record-gallery :global(.record-image-stage) { height:auto; }
+  .art-record-gallery :global(.record-image-stage img) { height:auto; max-height:36rem; object-fit:contain; }
+  .art-record-gallery :global(figcaption) { padding-inline:0; border:0; }
+  .art-record :global(.record-meta) { background:#f4f6f7; border:0; border-top:3px solid #1e4865; border-radius:0; }
+</style>

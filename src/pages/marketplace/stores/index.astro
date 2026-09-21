@@ -1,4 +1,5 @@
 ---
+import CollectionHeader from '../../../components/ui/CollectionHeader.astro';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -41,64 +42,19 @@ const typeIcons = {
 
 <MainLayout title={pageTitle} description={description} image={image} canonical="https://services.dzaleka.com/marketplace/stores">
   <div class="bg-gray-50">
-    <section class="relative overflow-hidden bg-gray-900 py-16 sm:py-24">
-      <!-- Background Image with Overlay -->
-      <div class="absolute inset-0 z-0">
-        <img
-          src={image}
-          alt="Restaurants and Shops"
-          class="h-full w-full object-cover opacity-30"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/90 to-gray-900/40"></div>
-      </div>
+    <CollectionHeader title="Restaurants and shops" description="Find local food, retail and workshops. Browse business profiles for menus, opening hours and contact details." action={{ label: 'Register a business', href: '/marketplace/stores/register' }}>
+      <a href="/marketplace" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Marketplace listings →</a>
+    </CollectionHeader>
 
-      <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-2xl">
-          <nav class="mb-8 text-sm font-medium text-gray-400">
-            <a href="/" class="hover:text-white transition-colors">Home</a>
-            <span class="mx-2">/</span>
-            <a href="/marketplace" class="hover:text-white transition-colors">Marketplace</a>
-            <span class="mx-2">/</span>
-            <span class="text-white">Restaurants and shops</span>
-          </nav>
-
-          <span class="inline-block rounded border border-white/20 bg-white/10 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-            Business Directory
-          </span>
-          <h1 class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Restaurants and Shops
-          </h1>
-          <p class="mt-6 text-lg leading-relaxed text-gray-300">
-            Browse verified business profiles for local food, retail, and workshops. Direct access to menus, hours, and service details.
-          </p>
-
-          <div class="mt-10 flex flex-wrap gap-4">
-            <a
-              href="/marketplace/stores/register"
-              class="min-h-[44px] inline-flex items-center rounded bg-white px-6 py-3 text-sm font-bold text-gray-900 transition hover:bg-gray-100"
-            >
-              Register a business
-            </a>
-            <a
-              href="/marketplace"
-              class="min-h-[44px] inline-flex items-center rounded border border-white/30 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/50"
-            >
-              Back to marketplace
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sticky top-24 lg:top-44 z-10 border-b border-gray-200 bg-white">
+    <section class="border-b border-gray-200 bg-white">
       <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+        <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter businesses">
           {storeTypes.map((type) => (
             <button
               data-filter={type.value}
-              class={`filter-btn whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition ${type.value === 'all' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              aria-pressed={type.value === 'all'}
+              class={`min-h-[44px] filter-btn whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition ${type.value === 'all' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
             >
-              <span class="mr-2">{type.icon}</span>
               {type.label}
             </button>
           ))}
@@ -158,11 +114,13 @@ const typeIcons = {
               ))}
             </div>
 
-            <div id="pagination" class="mt-8 flex items-center justify-center gap-2">
+            <p id="filterEmpty" hidden class="rounded border border-slate-200 bg-slate-50 p-6 text-base text-slate-700">No businesses match these filters. Choose All or another category.</p>
+
+            <div id="pagination" class="mt-8 flex flex-wrap items-center justify-center gap-2">
               <button id="prevPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Previous
               </button>
-              <span id="pageInfo" class="px-3 py-2 text-sm text-gray-600"></span>
+              <span id="pageInfo" role="status" class="px-3 py-2 text-sm text-gray-600"></span>
               <button id="nextPage" class="min-h-[44px] rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50">
                 Next
               </button>
@@ -172,17 +130,17 @@ const typeIcons = {
       </div>
     </section>
 
-    <section class="border-t border-gray-200 bg-gray-50">
+    <section class="border-t border-gray-200 bg-white">
       <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
-        <article class="rounded border border-gray-200 bg-white p-5">
+        <article class="border-t border-slate-300 pt-5">
           <h2 class="text-lg font-semibold text-gray-900">What profiles can include</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">Business details, opening hours, menu items, payment methods, delivery options, and direct contact information.</p>
         </article>
-        <article class="rounded border border-gray-200 bg-white p-5">
+        <article class="border-t border-slate-300 pt-5">
           <h2 class="text-lg font-semibold text-gray-900">Who can register</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">Restaurants, cafés, bakeries, grocery shops, salons, repair workshops, retail businesses, and similar local services.</p>
         </article>
-        <article class="rounded border border-gray-200 bg-white p-5">
+        <article class="border-t border-slate-300 pt-5">
           <h2 class="text-lg font-semibold text-gray-900">Need a simple listing instead?</h2>
           <p class="mt-2 text-sm leading-6 text-gray-600">For a one-off product or service, use the general marketplace listing form instead of a full business profile.</p>
           <a href="/marketplace/submit" class="mt-4 inline-flex text-sm font-medium text-primary-700 hover:text-primary-800">Create a marketplace listing</a>
@@ -200,6 +158,7 @@ const typeIcons = {
     const nextBtn = document.getElementById('nextPage');
     const pageInfo = document.getElementById('pageInfo');
 
+    if (!prevBtn || !nextBtn || !pageInfo) return;
     const itemsPerPage = 6;
     let currentPage = 1;
     let currentFilter = 'all';
@@ -225,7 +184,9 @@ const typeIcons = {
         card.style.display = 'block';
       });
 
-      pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+      pageInfo.textContent = `${filteredCards.length} businesses · Page ${currentPage} of ${totalPages || 1}`;
+      const empty = document.getElementById('filterEmpty');
+      if (empty) empty.hidden = filteredCards.length > 0;
       prevBtn.disabled = currentPage <= 1;
       nextBtn.disabled = currentPage >= totalPages;
     }
@@ -236,9 +197,11 @@ const typeIcons = {
         currentPage = 1;
 
         filterBtns.forEach((button) => {
+          button.setAttribute('aria-pressed', 'false');
           button.classList.remove('bg-primary-700', 'text-white');
           button.classList.add('bg-gray-100', 'text-gray-700');
         });
+        btn.setAttribute('aria-pressed', 'true');
         btn.classList.remove('bg-gray-100', 'text-gray-700');
         btn.classList.add('bg-primary-700', 'text-white');
 

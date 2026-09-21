@@ -1,222 +1,112 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
-import {
-  curatedGrantsPrograms,
-  audienceShortLabels,
-  getStatusClasses
-} from '../../data/grantsPrograms';
-
-export function getStaticPaths() {
-  return curatedGrantsPrograms.map((program) => ({
-    params: { slug: program.slug },
-    props: { program }
-  }));
-}
-
-const { program } = Astro.props;
+import { curatedGrantsPrograms, getStatusClasses } from '../../data/grantsPrograms';
+import { formatOpportunityDate, opportunityStatus } from '../../utils/opportunityDates';
+export const prerender = false;
+const program = curatedGrantsPrograms.find(item => item.slug === Astro.params.slug);
+if (!program) return Astro.redirect('/404', 302);
+const status = opportunityStatus(program);
+const canApply = status === 'open' || status === 'ongoing';
 const canonicalUrl = `https://services.dzaleka.com/grants-and-programs/${program.slug}`;
-const pageKeywords = `${program.title}, Dzaleka grants, Dzaleka programs, community opportunities Malawi, refugee support programs`;
-
-const pageStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: program.title,
-  description: program.summary,
-  url: canonicalUrl,
-  about: {
-    '@type': 'Thing',
-    name: program.title,
-    description: program.summary
-  }
-};
-
-const breadcrumbStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: 'https://services.dzaleka.com'
-    },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: 'Grants and programs',
-      item: 'https://services.dzaleka.com/grants-and-programs'
-    },
-    {
-      '@type': 'ListItem',
-      position: 3,
-      name: program.title,
-      item: canonicalUrl
-    }
-  ]
-};
+const money = (amount: number) => `${program.award?.currency || 'MWK'} ${amount.toLocaleString('en-GB')}`;
+const facts = [
+  ...(program.award ? [{ label: 'Award', value: `${money(program.award.amount)} · ${program.award.recipients} artist` }] : []),
+  ...(program.period ? [{ label: 'Residency dates', value: program.period }] : []),
+  { label: 'Location', value: program.location },
+  { label: 'Organiser', value: program.organization },
+  ...(program.opensAt ? [{ label: 'Applications open', value: formatOpportunityDate(program.opensAt) }] : []),
+  { label: 'Closing date', value: program.deadline ? formatOpportunityDate(program.deadline, Boolean(program.opensAt)) : 'Ongoing — no fixed closing date' },
+];
+const sections = [
+  { id: 'support', title: program.award ? 'Funding and support' : 'What it offers', items: program.support },
+  { id: 'eligibility', title: 'Who can apply', items: program.eligibility },
+  ...(program.commitments ? [{ id: 'commitments', title: 'What the residency involves', items: program.commitments }] : []),
+];
 ---
-
-<MainLayout
-  title={`${program.title} | Grants and programs`}
-  description={program.summary}
-  keywords={pageKeywords}
-  canonical={canonicalUrl}
-  robots="index, follow, max-image-preview:large"
-  openGraph={{
-    title: `${program.title} | Grants and programs`,
-    description: program.summary,
-    type: 'article',
-    url: canonicalUrl,
-    site_name: 'Dzaleka Online Services',
-    locale: 'en_US'
-  }}
-  twitter={{
-    card: 'summary_large_image',
-    title: `${program.title} | Grants and programs`,
-    description: program.summary
-  }}
->
-  <script type="application/ld+json" set:html={JSON.stringify(pageStructuredData)} />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
-
-  <div class="min-h-screen bg-slate-50">
-    <section class="border-b border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div class="mb-6">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Grants and programs', href: '/grants-and-programs' },
-              { label: program.title }
-            ]}
-          />
+<MainLayout title={`${program.title} | Grants and programs`} description={program.summary} canonical={canonicalUrl}
+  openGraph={{ title: program.title, description: program.summary, type: 'article', url: canonicalUrl, image: program.image?.src }}
+  twitter={{ card: 'summary_large_image', title: program.title, description: program.summary, image: program.image?.src }}>
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: program.title, description: program.summary, url: canonicalUrl, image: program.image?.src, dateModified: program.verifiedDate })} />
+  <article class="program-page">
+    <header class="program-width program-heading">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Grants and programs', href: '/grants-and-programs' }, { label: program.title }]} />
+      <div class="program-kicker"><span class:list={['status', getStatusClasses(status)]}>{status === 'closed' ? 'Applications closed' : status}</span><span>{program.type}</span></div>
+      <h1>{program.title}</h1><p class="program-summary">{program.summary}</p>
+    </header>
+    {program.image && <figure class="program-width program-cover"><img src={program.image.src} alt={program.image.alt} width="2279" height="879" fetchpriority="high" /><figcaption>{program.image.credit}</figcaption></figure>}
+    <div class="program-width program-grid">
+      <aside class="program-sidebar" aria-label="Opportunity details and application">
+        <div class="application-panel">
+          <h2>At a glance</h2>
+          <dl>{facts.map(fact => <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+          {canApply ? <a class="apply-link" href={program.actionHref}>{program.actionLabel}<span aria-hidden="true">{program.actionHref.startsWith('https:') ? '↗' : '→'}</span></a> : <p class="application-status">{status === 'closed' ? 'Applications for this call have closed.' : `Applications open ${program.opensAt ? formatOpportunityDate(program.opensAt) : 'soon'}.`}</p>}
+          {program.resources && <ul class="resource-links">{program.resources.map(resource => <li><a href={resource.href}>{resource.label} <span aria-hidden="true">↗</span></a></li>)}</ul>}
         </div>
-
-        <div class="max-w-4xl">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class:list={['inline-flex rounded-[5px] px-2.5 py-1 text-xs font-semibold capitalize', getStatusClasses(program.status)]}>
-              {program.status}
-            </span>
-            <span class="inline-flex rounded-[5px] bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
-              {program.type}
-            </span>
-          </div>
-
-          <h1 class="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{program.title}</h1>
-          <p class="mt-4 text-lg leading-8 text-slate-600">{program.summary}</p>
-        </div>
+        <nav aria-label="On this page"><h2>On this page</h2><a href="#about">About this opportunity</a>{sections.map(section => <a href={`#${section.id}`}>{section.title}</a>)}<a href="#apply">How to apply</a>{program.payments && <a href="#payment">Payment schedule</a>}</nav>
+        {Boolean(program.contacts?.length) && <section class="program-contacts"><h2>Contact</h2>{program.contacts.map(contact => <p>{contact.label}<br />{contact.href ? <a href={contact.href}>{contact.value}</a> : contact.value}</p>)}</section>}
+      </aside>
+      <div class="program-content">
+        <section id="about"><h2>About this opportunity</h2><p>{program.intro}</p></section>
+        {sections.map(section => <section id={section.id}><h2>{section.title}</h2><ul>{section.items.map(item => <li>{item}</li>)}</ul></section>)}
+        <section id="apply"><h2>How to apply</h2><ol>{program.applicationSteps.map(item => <li>{item}</li>)}</ol></section>
+        {program.payments && <section id="payment"><h2>Payment schedule</h2><p>The organiser has supplied the following payment schedule for the award.</p><dl class="payment-schedule">{program.payments.map(payment => <div><dt>{payment.label}</dt><dd>{money(payment.amount)}</dd></div>)}</dl></section>}
+        {program.organiserNote && <aside class="source-note"><h2>Sources and organiser clarification</h2><p>{program.organiserNote}</p>{program.verifiedDate && <p>Official residency page checked on {formatOpportunityDate(program.verifiedDate)}. The application form and Artist Guide are linked from that page.</p>}</aside>}
+        <a class="back-link" href="/grants-and-programs">← All grants and programs</a>
       </div>
-    </section>
-
-    <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_320px]">
-        <div class="space-y-8">
-          <section class="border border-slate-200 bg-white px-6 py-6">
-            <h2 class="text-2xl font-semibold text-slate-900">About this opportunity</h2>
-            <p class="mt-4 text-base leading-7 text-slate-700">{program.intro}</p>
-          </section>
-
-          <section class="border border-slate-200 bg-white px-6 py-6">
-            <h2 class="text-2xl font-semibold text-slate-900">What it can help with</h2>
-            <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
-              {program.support.map((item) => (
-                <li class="flex gap-3">
-                  <span class="mt-2 h-1.5 w-1.5 rounded-full bg-slate-500"></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section class="border border-slate-200 bg-white px-6 py-6">
-            <h2 class="text-2xl font-semibold text-slate-900">Who this is for</h2>
-            <ul class="mt-4 space-y-3 text-base leading-7 text-slate-700">
-              {program.eligibility.map((item) => (
-                <li class="flex gap-3">
-                  <span class="mt-2 h-1.5 w-1.5 rounded-full bg-slate-500"></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section class="border border-slate-200 bg-white px-6 py-6">
-            <h2 class="text-2xl font-semibold text-slate-900">How to access it</h2>
-            <ol class="mt-4 space-y-3 text-base leading-7 text-slate-700">
-              {program.applicationSteps.map((item, index) => (
-                <li class="flex gap-4">
-                  <span class="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
-                    {index + 1}
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
-
-        <aside class="space-y-6">
-          <section class="border border-slate-200 bg-white px-6 py-6">
-            <h2 class="text-lg font-semibold text-slate-900">Program details</h2>
-            <dl class="mt-4 space-y-4 text-sm text-slate-700">
-              <div>
-                <dt class="font-medium text-slate-900">Status</dt>
-                <dd class="mt-1 capitalize">{program.status}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-slate-900">Type</dt>
-                <dd class="mt-1">{program.type}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-slate-900">Audience</dt>
-                <dd class="mt-1">{program.audience.map((audience) => audienceShortLabels[audience]).join(', ')}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-slate-900">Organisation</dt>
-                <dd class="mt-1">{program.organization}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-slate-900">Location</dt>
-                <dd class="mt-1">{program.location}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-slate-900">Closing date</dt>
-                <dd class="mt-1">{program.deadline || 'Ongoing'}</dd>
-              </div>
-            </dl>
-          </section>
-
-          <section class="border border-slate-200 bg-white px-6 py-6">
-            <h2 class="text-lg font-semibold text-slate-900">Next step</h2>
-            <div class="mt-4">
-              <a href={program.actionHref} class="min-h-[44px] inline-flex w-full items-center justify-center rounded-md bg-primary-900 px-4 py-3 text-sm font-semibold text-white hover:bg-primary-800">
-                {program.actionLabel}
-              </a>
-            </div>
-          </section>
-
-          {program.contacts && program.contacts.length > 0 && (
-            <section class="border border-slate-200 bg-white px-6 py-6">
-              <h2 class="text-lg font-semibold text-slate-900">Contacts</h2>
-              <div class="mt-4 space-y-3 text-sm text-slate-700">
-                {program.contacts.map((contact) => (
-                  <div>
-                    <div class="font-medium text-slate-900">{contact.label}</div>
-                    {contact.href ? (
-                      <a href={contact.href} class="mt-1 inline-flex text-primary-700 hover:text-primary-800 hover:underline">
-                        {contact.value}
-                      </a>
-                    ) : (
-                      <div class="mt-1">{contact.value}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-        </aside>
-      </div>
-    </section>
-  </div>
+    </div>
+  </article>
 </MainLayout>
+<style>
+  .program-page { background:white; color:#334155; padding-bottom:3rem; }
+  .program-width { max-width:76rem; margin-inline:auto; padding-inline:2rem; }
+  .program-heading { padding-block:2rem; }
+  .program-kicker { display:flex; align-items:center; flex-wrap:wrap; gap:1rem; margin-block:1.5rem .875rem; font-size:.8125rem; color:#64748b; }
+  .status { border-radius:3px; padding:.25rem .6rem; text-transform:capitalize; }
+  h1 { color:#1e4865; font-size:clamp(2rem,4vw,3rem); line-height:1.15; letter-spacing:-.025em; max-width:58rem; }
+  .program-summary { font-size:1.125rem; line-height:1.75; margin-top:1rem; max-width:52rem; }
+  .program-cover img { display:block; width:100%; height:auto; }
+  .program-cover figcaption { font-size:.75rem; color:#64748b; margin-top:.5rem; }
+  .program-grid { display:grid; grid-template-columns:minmax(0,1fr) 19rem; gap:4rem; padding-top:2.5rem; align-items:start; }
+  .program-sidebar { grid-column:2; grid-row:1; min-width:0; }
+  .program-content { grid-column:1; grid-row:1; min-width:0; }
+  .program-content > section { margin-bottom:2.5rem; scroll-margin-top:10rem; }
+  h2 { color:#1e4865; font-size:1.5rem; line-height:1.35; margin-bottom:1rem; }
+  .program-content p,.program-content li { font-size:1rem; line-height:1.8; }
+  .program-content ul,.program-content ol { padding-left:1.3rem; }
+  .program-content ul { list-style:disc; }
+  .program-content ol { list-style:decimal; }
+  .program-content li { padding-left:.35rem; margin-top:.75rem; }
+  .application-panel { background:#f4f6f7; border-top:3px solid #1e4865; padding:1.5rem; }
+  .program-sidebar h2 { font-size:1.125rem; }
+  .application-panel dl { display:grid; gap:1.1rem; }
+  .application-panel dt { font-size:.75rem; color:#64748b; margin-bottom:.25rem; }
+  .application-panel dd { font-size:.9375rem; line-height:1.6; }
+  .apply-link { display:flex; align-items:center; justify-content:center; gap:.6rem; padding:.75rem; min-height:44px; color:white; background:#1e4865; border-radius:3px; font-size:.875rem; text-align:center; margin-top:1.5rem; text-decoration:none; }
+  .apply-link:hover { background:#15364d; }
+  .application-status { margin-top:1.5rem; font-size:.9375rem; font-weight:600; }
+  .resource-links { margin-top:.75rem; list-style:none; padding:0; }
+  .resource-links a,.program-sidebar nav a { display:block; padding-block:.65rem; font-size:.875rem; line-height:1.5; color:#1e4865; text-decoration:underline; text-underline-offset:3px; }
+  .program-sidebar nav { padding:1.5rem; }
+  .program-sidebar nav a { padding-block:.4rem; }
+  .program-contacts { border-top:1px solid #cbd5e1; margin-top:1rem; padding-top:1.5rem; }
+  .program-contacts p { font-size:.875rem; line-height:1.75; }
+  .payment-schedule { margin-top:1rem; }
+  .payment-schedule > div { display:flex; justify-content:space-between; gap:1rem; padding-block:.875rem; border-bottom:1px solid #e2e8f0; font-size:.9375rem; }
+  .payment-schedule dd { font-weight:600; white-space:nowrap; }
+  .source-note { border-top:1px solid #cbd5e1; padding-top:1.5rem; }
+  .source-note h2 { font-size:1.125rem; }
+  .program-content .source-note p { font-size:.875rem; color:#64748b; margin-bottom:.75rem; }
+  .back-link { display:inline-flex; align-items:center; min-height:44px; color:#1e4865; text-decoration:underline; text-underline-offset:4px; font-size:.875rem; margin-top:1.5rem; }
+  @media(max-width:900px) { .program-grid { gap:2rem; grid-template-columns:minmax(0,1fr) 17rem; } }
+  @media(max-width:767px) {
+    .program-width { padding-inline:1rem; }
+    .program-heading { padding-block:1.25rem 1.5rem; }
+    .program-summary { font-size:1rem; }
+    .program-grid { display:flex; flex-direction:column; gap:2rem; padding-top:1.5rem; }
+    .program-sidebar,.program-content { width:100%; }
+    .program-sidebar nav { padding:1.5rem 0 0; }
+    .program-sidebar nav a { display:inline-flex; margin-right:1.25rem; min-height:44px; }
+    .program-content > section { margin-bottom:2rem; }
+  }
+</style>

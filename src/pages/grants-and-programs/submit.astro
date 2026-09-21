@@ -1,6 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import FormHeader from '../../components/ui/FormHeader.astro';
 
 const pageTitle = 'Submit an opportunity';
 const pageDescription =
@@ -35,48 +35,7 @@ const audiences = [
   canonical="https://services.dzaleka.com/grants-and-programs/submit"
   robots="index, follow, max-image-preview:large"
 >
-  <section class="relative overflow-hidden border-b border-slate-200 bg-slate-900">
-    <div class="absolute inset-0 z-0">
-      <img src="/images/dzaleka-hero.jpeg" alt="Community opportunity submissions" class="h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-slate-900/65"></div>
-    </div>
-
-    <div class="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-      <div class="mb-8 flex justify-center">
-        <Breadcrumb
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Grants and programs', href: '/grants-and-programs' },
-            { label: 'Submit an opportunity' }
-          ]}
-          light={true}
-        />
-      </div>
-
-      <div class="mx-auto max-w-4xl text-center">
-        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-200">Funding and support opportunities</p>
-        <h1 class="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Submit an opportunity</h1>
-        <p class="mt-5 text-lg leading-8 text-slate-200 sm:text-xl">
-          Share a verified grant, programme, fellowship, finance product, or support opportunity that could benefit the Dzaleka community.
-        </p>
-
-        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href="#opportunity-form"
-            class="min-h-[44px] inline-flex items-center justify-center rounded bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100"
-          >
-            Go to form
-          </a>
-          <a
-            href="/grants-and-programs"
-            class="min-h-[44px] inline-flex items-center justify-center rounded border border-white/30 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
-          >
-            Back to grants and programs
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <FormHeader title="Submit an opportunity" description="Share a grant, programme, fellowship or support opportunity for review. Include the official source and explain who can apply." parent="Grants and programs" href="/grants-and-programs" />
 
   <section class="border-b border-slate-200 bg-white">
     <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
@@ -98,21 +57,7 @@ const audiences = [
           <h2 class="text-2xl font-semibold tracking-tight text-slate-900">Opportunity details</h2>
           <p class="mt-2 text-sm leading-6 text-slate-600">Provide enough detail for review, verification, and possible listing.</p>
         </div>
-        <div class="flex flex-col gap-3 sm:flex-row">
-          <a
-            href="#submit-actions"
-            class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 hover:text-slate-900"
-          >
-            Review before submit
-          </a>
-          <button
-            type="button"
-            id="topSubmitButton"
-            class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
-          >
-            Submit opportunity
-          </button>
-        </div>
+
       </div>
 
       <form id="opportunityForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
@@ -309,7 +254,7 @@ const audiences = [
         </div>
       </form>
 
-      <div id="successMessage" class="mt-6 hidden rounded border border-emerald-200 bg-emerald-50 p-4">
+      <div id="successMessage" role="status" tabindex="-1" class="mt-6 hidden rounded border border-emerald-200 bg-emerald-50 p-4">
         <p class="text-sm font-medium text-emerald-800">Opportunity submitted successfully.</p>
       </div>
     </div>
@@ -319,12 +264,8 @@ const audiences = [
 <script>
   const form = document.getElementById('opportunityForm');
   const successMessage = document.getElementById('successMessage');
-  const topSubmitButton = document.getElementById('topSubmitButton');
 
   if (form && successMessage) {
-    topSubmitButton?.addEventListener('click', () => {
-      form.requestSubmit();
-    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();

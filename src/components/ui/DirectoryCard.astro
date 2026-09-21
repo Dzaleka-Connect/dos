@@ -1,0 +1,18 @@
+---
+import { recordImageUrl } from '../../utils/recordMedia';
+interface Props { title: string; href?: string; image?: string; description?: string; meta?: string; contain?: boolean; portrait?: boolean; }
+const { title, href, image, description, meta, contain = false, portrait = false } = Astro.props;
+const src = recordImageUrl(image);
+const MediaTag = href ? 'a' : 'div';
+---
+<article class="directory-card flex h-full min-w-0 flex-col bg-white">
+  <MediaTag href={href} tabindex={href ? -1 : undefined} aria-hidden={href ? true : undefined} class:list={['block overflow-hidden bg-slate-100', portrait ? 'aspect-square' : 'aspect-[4/3]']}>
+    {src ? <img src={src} alt={title} loading="lazy" decoding="async" class:list={['h-full w-full', contain ? 'object-contain' : 'object-cover']} onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.classList.replace('object-cover','object-contain');" /> : <div class="flex h-full items-center justify-center px-5 text-sm text-slate-500">Image not available</div>}
+  </MediaTag>
+  <div class="flex flex-1 flex-col pb-3 pt-4">
+    {meta && <p class="mb-2 text-sm leading-6 text-slate-600 [overflow-wrap:anywhere]">{meta}</p>}
+    <h3 class="text-xl text-primary-900 [overflow-wrap:anywhere]">{href ? <a href={href} class="underline decoration-primary-800/40 underline-offset-4 hover:decoration-primary-800">{title}</a> : title}</h3>
+    {description && <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-700">{description}</p>}
+    {Astro.slots.has('default') && <div class="mt-auto pt-4"><slot /></div>}
+  </div>
+</article>

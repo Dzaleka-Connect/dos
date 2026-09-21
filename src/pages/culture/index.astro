@@ -1,348 +1,53 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import DirectoryCard from '../../components/ui/DirectoryCard.astro';
+import CultureNav from '../../components/culture/CultureNav.astro';
+const collections = [
+  { title: 'Public art', href: '/public-art-catalogue', image: '/images/6976810_orig.jpg', description: 'Explore murals, public artworks and the stories behind them.' },
+  { title: 'Visual artists', href: '/public-art-catalogue/visual-arts-community', image: '/images/artists/serge-kasongo.jpg', description: 'Meet painters, sculptors, designers and other visual artists.' },
+  { title: 'Poetry and spoken word', href: '/poets', image: '/images/poets/hassan-c-honore.jpg', description: 'Read about the writers and performers sharing Dzaleka’s stories.' },
+  { title: 'Dance', href: '/dancers', image: '/images/dancers/forus-crew.jpg', description: 'Discover dance crews, individual performers and booking information.' },
+];
+const organizations = [
+  {
+    "title": "Tumaini Festival",
+    "image": "/images/tumaini_festival_cover.jpeg",
+    "description": "A refugee-led festival presenting music, dance, theatre, poetry, film, and visual art.",
+    "href": "https://tumaini-festival.dzaleka.com"
+  },
+  {
+    "title": "Dzaleka Arts Lab",
+    "image": "https://freight.cargo.site/w/2500/h/1562/q/75/i/H2041496616323746227278298378001/lead-image.png",
+    "description": "A creative community creating physical and digital artworks, connecting refugee stories with the world through art and music.",
+    "href": "https://dzalekaartslab.org"
+  },
+  {
+    "title": "Kibebe",
+    "image": "https://kibebe.com/cdn/shop/files/Team_adjusted_600x600.png?v=1613718687",
+    "description": "A social enterprise selling textile products made by refugee artisans in Dzaleka.",
+    "href": "/services/kibebe"
+  },
+  {
+    "title": "Dzaleka Art Project",
+    "image": "https://dzalekaartproject.com/images/visual%20arts%20images/Art1080x1080.jpg",
+    "description": "A community-based initiative documenting and promoting the diverse artistic talents within the refugee camp.",
+    "href": "https://dzalekaartproject.com"
+  }
+];
 ---
-
-<MainLayout title="Cultural Hub - Dzaleka Online Services">
-  <div>
-    <!-- Hero Section -->
-    <div class="relative overflow-hidden">
-      <div class="absolute inset-0">
-        <img
-          src="/images/dzaleka-hero.jpeg"
-          alt="Cultural activities in Dzaleka"
-          class="w-full h-full object-cover object-center"
-        />
-        <div class="absolute inset-0 bg-gray-900/80"></div>
-      </div>
-      <div class="relative min-h-[50vh] flex items-center">
-        <div class="container mx-auto px-6 py-12">
-          <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-              Culture in Dzaleka
-            </h1>
-            <p class="text-lg text-white/90 leading-relaxed mb-8 mx-auto max-w-2xl">
-              Meet the organizations behind Dzaleka's music, poetry, dance, festivals,
-              and craft — and find ways to watch, join, or support their work.
-            </p>
-            <div class="flex justify-center">
-              <a
-                href="#organizations"
-                class="min-h-[44px] inline-flex items-center rounded bg-white px-6 py-3 font-medium text-slate-900 transition-colors duration-150 hover:bg-slate-100"
-              >
-                Browse organizations
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+<MainLayout title="Culture in Dzaleka | Dzaleka Online Services" description="Explore Dzaleka’s artists, poetry, dance, public art and cultural organizations.">
+  <header class="culture-intro mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+    <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Culture' }]} />
+    <div class="mt-6 grid items-center gap-6 md:grid-cols-2 lg:gap-12">
+      <div><h1 class="text-primary-900">Culture in Dzaleka</h1><p class="mt-4 max-w-xl text-base leading-7 text-slate-700">Discover the artists, writers and performers shaping life in Dzaleka. Explore their work, find a performance or connect with a creative community.</p><a href="/events" class="mt-4 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Find cultural events →</a></div>
+      <figure><img src="/images/tumaini_festival_cover.jpeg" alt="Crowds gathered around the stage at Tumaini Festival" width="960" height="540" class="h-auto w-full" fetchpriority="high" /><figcaption class="mt-2 text-xs text-slate-600">Tumaini Festival, Dzaleka</figcaption></figure>
     </div>
-
-    <!-- Cultural Impact -->
-    <section class="py-24 bg-white">
-      <div class="container mx-auto px-6">
-        <div class="max-w-3xl mx-auto text-center mb-16">
-          <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-slate-500">Cultural work</p>
-          <h2 class="text-4xl font-bold text-gray-900 mb-6">
-            What cultural work looks like here
-          </h2>
-          <p class="text-lg text-gray-600">
-            Festivals, artist directories, craft businesses, and performance groups working in Dzaleka.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          <!-- Cultural Exchange -->
-          <div class="bg-white rounded p-5 sm:p-8 border border-gray-200 hover:border-slate-400 transition-colors duration-150 relative overflow-hidden group">
-            <div class="relative">
-              <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-4">Cultural Exchange</h3>
-              <p class="text-gray-600 mb-6">
-                <a href="https://tumaini-festival.dzaleka.com" class="font-medium text-slate-700 hover:text-slate-900">Tumaini Festival</a>, founded in 2014, programmes artists from Dzaleka alongside performers from Malawi and other countries.
-              </p>
-              <div class="flex items-center text-slate-700 font-medium">
-                <span class="text-3xl font-bold mr-2">24K+</span>
-                <span>Festival Attendees</span>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <a href="https://blogs.worldbank.org/nasikiliza/breaking-mold-refugees-founding-tumaini-festival-dzaleka-refugee-camp-malawi" class="hover:text-slate-700 transition-colors">
-                  Source: World Bank Nasikiliza Report
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cultural Enterprise - Kibebe -->
-          <div class="bg-white rounded p-5 sm:p-8 border border-gray-200 hover:border-slate-400 transition-colors duration-150 relative overflow-hidden group">
-            <div class="relative">
-              <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-4">Cultural Enterprise</h3>
-              <p class="text-gray-600 mb-6">
-                <a href="https://kibebe.com" class="font-medium text-slate-700 hover:text-slate-900">Kibebe</a> works with refugee artisans to produce and sell bags, homeware, and other textile products.
-              </p>
-              <div class="flex items-center text-slate-700 font-medium">
-                <span class="text-3xl font-bold mr-2">100+</span>
-                <span>Artisans listed by the project</span>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <a href="https://seed.uno/enterprise-profiles/kibebe" class="hover:text-slate-700 transition-colors">
-                  Source: SEED Enterprise Profile
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Economic Impact -->
-          <div class="bg-white rounded p-5 sm:p-8 border border-gray-200 hover:border-slate-400 transition-colors duration-150 relative overflow-hidden group">
-            <div class="relative">
-              <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-4">Arts & Performance</h3>
-              <p class="text-gray-600 mb-6">
-                The <a href="https://dzalekaartproject.com" class="font-medium text-slate-700 hover:text-slate-900">Dzaleka Art Project</a> documents artists working in visual art, music, dance, and theatre.
-              </p>
-              <div class="flex items-center text-slate-700 font-medium">
-                <span class="text-3xl font-bold mr-2">150+</span>
-                <span>Artists Documented</span>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <a href="https://dzalekaartproject.com/about" class="hover:text-slate-700 transition-colors">
-                  Source: Dzaleka Art Project
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Community Building -->
-          <div class="bg-white rounded p-5 sm:p-8 border border-gray-200 hover:border-slate-400 transition-colors duration-150 relative overflow-hidden group">
-            <div class="relative">
-              <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-4">Community programmes</h3>
-              <p class="text-gray-600 mb-6">
-                Cultural organizations also run youth programmes, arts workshops, peace-building activities, and mental health support.
-              </p>
-              <div class="flex items-center text-slate-700 font-medium">
-                <span class="text-3xl font-bold mr-2">153+</span>
-                <span>Performance Acts</span>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <a href="https://www.wilsoncenter.org/article/refugee-creativity-fun-and-initiative-dzaleka-refugee-camp-malawi" class="hover:text-slate-700 transition-colors">
-                  Source: Wilson Center Report
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-12 text-center text-sm text-gray-500">
-          <p>
-            Data compiled from verified sources including the World Bank, Wilson Center, and official project documentation. Last verified: January 2024.
-          </p>
-          <div class="flex justify-center gap-4 mt-2">
-            <a href="https://blogs.worldbank.org/nasikiliza/breaking-mold-refugees-founding-tumaini-festival-dzaleka-refugee-camp-malawi" class="text-slate-700 hover:text-slate-700">
-              World Bank Report
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-            <a href="https://www.wilsoncenter.org/article/refugee-creativity-fun-and-initiative-dzaleka-refugee-camp-malawi" class="text-slate-700 hover:text-slate-700">
-              Wilson Center Report
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-            <a href="https://seed.uno/enterprise-profiles/kibebe" class="text-slate-700 hover:text-slate-700">
-              SEED Enterprise Profile
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured Organizations -->
-    <section id="organizations" class="py-20 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto text-center mb-16">
-          <span class="text-sm font-semibold uppercase tracking-widest text-slate-500">Directory</span>
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-4">Cultural organizations in Dzaleka</h2>
-          <p class="text-xl text-gray-600 mt-4">
-            Follow their work, visit their websites, or find their service listing.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Tumaini Festival -->
-          <div class="bg-white rounded border border-gray-200 hover:border-slate-400 transition-colors duration-150 overflow-hidden">
-            <div class="relative h-48 overflow-hidden">
-              <img
-                src="https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji_Tumaini_festival21_-31-1.jpg"
-                alt="Tumaini Festival performance"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Tumaini Festival</h3>
-              <p class="text-gray-600 mb-4">
-                A refugee-led festival presenting music, dance, theatre, poetry, film, and visual art.
-              </p>
-              <a
-                href="https://tumaini-festival.dzaleka.com"
-                class="inline-flex items-center text-slate-700 hover:text-slate-700 font-medium"
-              >
-                Learn more
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Dzaleka Arts Lab -->
-          <div class="bg-white rounded border border-gray-200 hover:border-slate-400 transition-colors duration-150 overflow-hidden">
-            <div class="relative h-48 overflow-hidden">
-              <img
-                src="https://freight.cargo.site/w/2500/h/1562/q/75/i/H2041496616323746227278298378001/lead-image.png"
-                alt="Dzaleka Arts Lab creative space"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Dzaleka Arts Lab</h3>
-              <p class="text-gray-600 mb-4">
-                A creative community creating physical and digital artworks, connecting refugee stories with the world through art and music.
-              </p>
-              <a
-                href="https://dzalekaartslab.org"
-                class="inline-flex items-center text-slate-700 hover:text-slate-700 font-medium"
-              >
-                Learn more
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Kibebe -->
-          <div class="bg-white rounded border border-gray-200 hover:border-slate-400 transition-colors duration-150 overflow-hidden">
-            <div class="relative h-48 overflow-hidden">
-              <img
-                src="https://kibebe.com/cdn/shop/files/Team_adjusted_600x600.png?v=1613718687"
-                alt="Kibebe artisans at work"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Kibebe</h3>
-              <p class="text-gray-600 mb-4">
-                A social enterprise selling textile products made by refugee artisans in Dzaleka.
-              </p>
-              <a
-                href="/services/kibebe"
-                class="inline-flex items-center text-slate-700 hover:text-slate-700 font-medium"
-              >
-                Learn more
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Dzaleka Art Project -->
-          <div class="bg-white rounded border border-gray-200 hover:border-slate-400 transition-colors duration-150 overflow-hidden">
-            <div class="relative h-48 overflow-hidden">
-              <img
-                src="https://dzalekaartproject.com/images/visual%20arts%20images/Art1080x1080.jpg"
-                alt="Dzaleka Art Project exhibition"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Dzaleka Art Project</h3>
-              <p class="text-gray-600 mb-4">
-                A community-based initiative documenting and promoting the diverse artistic talents within the refugee camp.
-              </p>
-              <a
-                href="https://dzalekaartproject.com"
-                class="inline-flex items-center text-slate-700 hover:text-slate-700 font-medium"
-              >
-                Learn more
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="relative py-20 overflow-hidden bg-gray-900 border-t border-gray-800">
-      <div class="relative container mx-auto px-6">
-        <div class="max-w-4xl mx-auto text-center">
-          <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-slate-300">More listings</p>
-          <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-            Find events and cultural organizations
-          </h2>
-          <p class="text-lg text-white/80 mb-10 max-w-2xl mx-auto">
-            Check the event calendar or browse the services directory.
-          </p><br>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a
-              href="/events"
-              class="min-h-[44px] inline-flex items-center rounded bg-white px-6 py-3 font-medium text-slate-900 transition-colors duration-150 hover:bg-slate-100"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-              </svg>
-              View Events
-            </a>
-            <a
-              href="/services"
-              class="min-h-[44px] inline-flex items-center rounded border border-slate-600 bg-slate-800 px-6 py-3 font-medium text-white transition-colors duration-150 hover:bg-slate-700"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 00-2 2v2a2 2 0 002 2h12a2 2 0 002-2v-2a2 2 0 00-2-2H4z" />
-              </svg>
-              Browse Organizations
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+  </header>
+  <CultureNav current="/culture" />
+  <div class="mx-auto max-w-7xl space-y-12 px-4 py-8 sm:px-6 lg:px-8">
+    <section><h2 class="mb-6 text-primary-900">Explore arts and culture</h2><div class="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-4">{collections.map(collection => <DirectoryCard {...collection} contain />)}</div></section>
+    <section id="organizations" class="border-t border-slate-200 pt-8"><h2 class="text-primary-900">Cultural organizations</h2><p class="mb-6 mt-3 text-base leading-7 text-slate-700">Find out who is making, teaching and presenting work in Dzaleka.</p><div class="grid gap-x-10 gap-y-6 md:grid-cols-2">{organizations.map(organization => <article class="flex gap-4 border-b border-slate-200 pb-6"><img src={organization.image} alt="" loading="lazy" class="h-20 w-24 shrink-0 bg-slate-100 object-contain" /><div class="min-w-0"><h3 class="text-xl text-primary-900"><a href={organization.href} class="underline decoration-primary-800/40 underline-offset-4">{organization.title} <span aria-hidden="true">{organization.href.startsWith('https:') ? '↗' : '→'}</span></a></h3><p class="mt-2 text-sm leading-6 text-slate-700">{organization.description}</p></div></article>)}</div></section>
+    <aside class="border-t border-slate-200 pt-6"><h2 class="text-primary-900">Culture in context</h2><p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Explore the <a href="/encyclopedia" class="text-primary-800 underline underline-offset-4">Dzaleka Encyclopedia</a> and <a href="/photos" class="text-primary-800 underline underline-offset-4">Photo Archive</a> for more community history and documentation.</p><details class="mt-4"><summary class="min-h-[44px] cursor-pointer py-3 text-sm font-medium text-primary-800">Further reading about cultural work</summary><ul class="space-y-3 py-3 text-sm text-primary-800"><li><a class="underline underline-offset-4" href="https://blogs.worldbank.org/nasikiliza/breaking-mold-refugees-founding-tumaini-festival-dzaleka-refugee-camp-malawi">World Bank: the founding of Tumaini Festival</a></li><li><a class="underline underline-offset-4" href="https://www.wilsoncenter.org/article/refugee-creativity-fun-and-initiative-dzaleka-refugee-camp-malawi">Wilson Center: creativity and initiative in Dzaleka</a></li><li><a class="underline underline-offset-4" href="https://seed.uno/enterprise-profiles/kibebe">SEED: Kibebe enterprise profile</a></li></ul></details></aside>
   </div>
 </MainLayout>

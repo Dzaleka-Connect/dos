@@ -1,213 +1,46 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import CreativeProfile from '../../components/culture/CreativeProfile.astro';
 import { getCollection, render } from 'astro:content';
+import { recordImageUrl } from '../../utils/recordMedia';
 
 export async function getStaticPaths() {
-  const poets = await getCollection('poets');
-  return poets.map(poet => ({
-    params: { slug: poet.id },
-    props: { poet }
-  }));
+  return (await getCollection('poets')).map(poet => ({ params: { slug: poet.id }, props: { poet } }));
 }
-
 const { poet } = Astro.props;
 const { Content } = await render(poet);
-
-// Enhanced SEO metadata for individual poet pages
-const pageTitle = `${poet.data.title} - Poet from Dzaleka Refugee Camp`;
-const pageDescription = `${poet.data.description} ${poet.data.age ? `Age: ${poet.data.age} years.` : ''} ${poet.data.nationality ? `Nationality: ${poet.data.nationality}.` : ''} Read poetry and learn more about this talented poet from Dzaleka Refugee Camp.`;
-const pageKeywords = `${poet.data.title}, Dzaleka poet, refugee poetry, ${poet.data.nationality || 'African'} poet, spoken word artist, poetry readings, literary talent, Dzaleka literary community`;
-const canonicalURL = `https://services.dzaleka.com/poets/${poet.id}`;
-
-// Generate structured data for individual poet
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": poet.data.title,
-  "description": poet.data.description,
-  "url": canonicalURL,
-  "nationality": poet.data.nationality,
-  "age": poet.data.age,
-  "jobTitle": "Poet",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Dzaleka Online Services"
-  },
-  "image": poet.data.image ? `https://services.dzaleka.com${poet.data.image}` : undefined,
-  "sameAs": [
-    canonicalURL
-  ]
-};
+const data = poet.data;
+const canonical = `https://services.dzaleka.com/poets/${poet.id}`;
+const image = recordImageUrl(data.image);
+const facts = [
+  { label: 'Nationality', value: data.nationality },
+  { label: 'Also known as', value: data.nickname },
+  { label: 'Age recorded in this biography', value: data.age },
+  { label: 'Birthplace', value: data.birthplace },
+  { label: 'Arrived in Malawi', value: data.arrivedInMalawi },
+  { label: 'Started writing', value: data.startedWriting || data.startedPoetry },
+  { label: 'First performance', value: data.firstPerformance },
+  { label: 'Poetry group', value: data.poetryGroup },
+  { label: 'Volunteer work', value: data.volunteerWork },
+  { label: 'Biography by', value: data.biographyAuthor },
+];
 ---
-
-<MainLayout
-  title={pageTitle}
-  description={pageDescription}
-  keywords={pageKeywords}
-  canonical={canonicalURL}
-  ogType="profile"
-  ogImage={poet.data.image || "/images/poets/hassan-c-honore.jpg"}
-  twitterCard="summary_large_image"
->
-  <!-- Structured Data -->
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-
-  <!-- Hero Section -->
-  <section class="border-b border-gray-200 bg-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center mb-8">
-        <a href="/poets" class="inline-flex items-center text-slate-700 hover:text-slate-700 transition-colors font-medium">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Poets
-        </a>
-      </div>
-
-      <div class="lg:grid lg:grid-cols-3 lg:gap-12 items-start">
-        <!-- Hero Image Section -->
-        <div class="lg:col-span-1 mb-8 lg:mb-0">
-          {poet.data.image ? (
-            <div class="relative aspect-[3/4] overflow-hidden rounded border border-gray-100">
-              <img src={poet.data.image} alt={poet.data.title}
-                   class="w-full h-full object-cover" />
-            </div>
-          ) : (
-            <div class="relative aspect-[3/4] overflow-hidden rounded border border-gray-100 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-              <svg class="w-24 h-24 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-          )}
-        </div>
-
-        <!-- Content Section -->
-        <div class="lg:col-span-2">
-          <div class="flex items-center mb-4">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-800 mr-3 border border-slate-200">
-              Poet
-            </span>
-            {poet.data.featured && (
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800 border border-amber-200">
-                Featured
-              </span>
-            )}
-          </div>
-
-          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight mb-6">
-            {poet.data.title}
-          </h1>
-
-          <p class="text-xl text-gray-600 mb-8 leading-relaxed">
-            {poet.data.description}
-          </p>
-
-          <!-- Quick Stats -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-            {poet.data.age && (
-              <div class="bg-white rounded p-3 border border-gray-200">
-                <div class="text-lg font-bold text-slate-700 leading-tight">{poet.data.age}</div>
-                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Age</div>
-              </div>
-            )}
-            {poet.data.nationality && (
-              <div class="bg-white rounded p-3 border border-gray-200">
-                <div class="text-lg font-bold text-slate-700 leading-tight truncate" title={poet.data.nationality}>{poet.data.nationality}</div>
-                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Nationality</div>
-              </div>
-            )}
-            {poet.data.startedWriting && (
-              <div class="bg-white rounded p-3 border border-gray-200">
-                <div class="text-lg font-bold text-slate-700 leading-tight truncate" title={poet.data.startedWriting}>{poet.data.startedWriting}</div>
-                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Started</div>
-              </div>
-            )}
-            {poet.data.firstPerformance && (
-              <div class="bg-white rounded p-3 border border-gray-200">
-                <div class="text-lg font-bold text-slate-700 leading-tight truncate" title={poet.data.firstPerformance}>{poet.data.firstPerformance}</div>
-                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mt-1">Debut</div>
-              </div>
-            )}
-          </div>
-
-          <!-- Sidebar Info (Moved inline for better flow) -->
-          <div class="bg-white rounded p-6 border border-gray-200 mb-8">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Poet Information</h3>
-
-            <div class="grid sm:grid-cols-2 gap-6">
-              {poet.data.birthplace && (
-                <div>
-                  <h4 class="text-sm font-medium text-gray-500 mb-1">Birthplace</h4>
-                  <p class="text-gray-900">{poet.data.birthplace}</p>
-                </div>
-              )}
-
-              {poet.data.arrivedInMalawi && (
-                <div>
-                  <h4 class="text-sm font-medium text-gray-500 mb-1">Arrived in Malawi</h4>
-                  <p class="text-gray-900">{poet.data.arrivedInMalawi}</p>
-                </div>
-              )}
-
-              {poet.data.volunteerWork && (
-                <div>
-                  <h4 class="text-sm font-medium text-gray-500 mb-1">Volunteer Work</h4>
-                  <p class="text-gray-900 text-sm">{poet.data.volunteerWork}</p>
-                </div>
-              )}
-
-              {poet.data.biographyAuthor && (
-                <div>
-                  <h4 class="text-sm font-medium text-gray-500 mb-1">Biography by</h4>
-                  <p class="text-gray-900">{poet.data.biographyAuthor}</p>
-                </div>
-              )}
-
-              {poet.data.photographer && (
-                <div>
-                  <h4 class="text-sm font-medium text-gray-500 mb-1">Photo by</h4>
-                  <p class="text-gray-900">{poet.data.photographer}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Content Section -->
-  <section class="py-12 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="prose prose-lg prose-primary mx-auto">
-        <Content />
-      </div>
-    </div>
-  </section>
-
-  <!-- Call to Action Section -->
-  <section class="py-12 bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-2xl font-bold text-gray-900 mb-3">Book this poet</h2>
-      <p class="text-gray-600 mb-6">
-        Interested in booking {poet.data.title} for your event? Get in touch to discuss poetry reading opportunities.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/contact"
-           class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 rounded text-white bg-primary-900 hover:bg-primary-800 transition-colors font-medium">
-          Book Poetry Reading
-          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-        <a href="/poets"
-           class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 rounded text-slate-700 border-2 border-gray-900 hover:bg-slate-50 transition-colors font-medium">
-          Browse All Poets
-          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
+<MainLayout title={`${data.title} | Poets from Dzaleka`} description={data.description} canonical={canonical} image={image} type="profile" schema={{ '@context': 'https://schema.org', '@type': 'Person', name: data.title, description: data.description, url: canonical, jobTitle: 'Poet', image: image ? new URL(image, canonical).href : undefined }}>
+  <CreativeProfile title={data.title} description={data.description} image={image} photographer={data.photographer} parent="Poets" href="/poets" kind="Poetry and spoken word" facts={facts}>
+    <div class="poet-writing"><Content /></div>
+    {(data.email || data.whatsapp) && <section slot="details" class="border-t border-slate-200 pt-5">
+      <h2 class="text-xl text-primary-900">Published contacts</h2>
+      {data.email && <a href={`mailto:${data.email}`} class="mt-2 inline-flex min-h-[44px] items-center break-all text-sm text-primary-800 underline underline-offset-4">{data.email}</a>}
+      {data.whatsapp && <a href={`https://wa.me/${data.whatsapp.replace(/\D/g, '')}`} class="block min-h-[44px] py-3 text-sm text-primary-800 underline underline-offset-4">WhatsApp</a>}
+    </section>}
+    <aside slot="after" class="mt-8 border-t border-slate-200 pt-6">
+      <h2 class="text-primary-900">Poetry readings and enquiries</h2>
+      <p class="mt-3 text-base leading-7 text-slate-700">For an enquiry about this profile or a poetry reading, <a href="/contact" class="text-primary-800 underline underline-offset-4">contact the directory team</a> and include {data.title}’s name.</p>
+      <a href="/poets" class="mt-3 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Browse all poets →</a>
+    </aside>
+  </CreativeProfile>
 </MainLayout>
+
+<style>
+  .poet-writing :global(h2[id^="featured-poem"] ~ p) { white-space: pre-line; }
+</style>

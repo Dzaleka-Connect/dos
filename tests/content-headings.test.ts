@@ -2,6 +2,12 @@ import { describe, it, expect } from 'vitest';
 import remarkContentHeadings from '../src/plugins/remark-content-headings.mjs';
 
 describe('content headings', () => {
+  it('uses the artist name when removing a duplicate biography title', () => {
+    const section = { type: 'heading', depth: 2, children: [{ type: 'text', value: 'About the Artist' }] };
+    const tree = { type: 'root', children: [{ type: 'heading', depth: 1, children: [{ type: 'text', value: 'Serge Kasongo' }] }, section] };
+    remarkContentHeadings()(tree, { path: '/project/src/content/artists/serge.md', data: { astro: { frontmatter: { title: 'Serge Kasongo - Team Leader', artistName: 'Serge Kasongo' } } } });
+    expect(tree.children).toEqual([section]);
+  });
   it('keeps the page template as the only top-level heading without changing section anchors or text', () => {
     const title = { type: 'heading', depth: 1, data: { id: 'profile' }, children: [{ type: 'text', value: 'Profile' }] };
     const section = { type: 'heading', depth: 2, children: [{ type: 'text', value: 'Contact' }] };

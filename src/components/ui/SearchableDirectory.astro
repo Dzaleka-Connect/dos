@@ -1,0 +1,21 @@
+---
+import DirectoryCard from './DirectoryCard.astro';
+interface Props { id: string; title: string; noun: string; items: { title: string; href: string; image?: string; description?: string; meta?: string }[]; }
+const { id, title, noun, items } = Astro.props;
+---
+<section data-directory-search data-directory-noun={noun}>
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-4"><h2 class="text-primary-900">{title}</h2><p data-directory-count role="status" class="text-sm text-slate-600">{items.length} {noun}</p></div>
+  <form data-directory-form hidden role="search" class="mb-8 flex max-w-3xl flex-wrap items-end gap-3">
+    <div class="min-w-0 flex-1 basis-64"><label for={`${id}-search`} class="mb-2 block text-sm font-medium text-slate-700">Search {noun} by name or practice</label><input id={`${id}-search`} type="search" autocomplete="off" class="block w-full rounded border-slate-400 bg-white px-3 py-2" /></div>
+    <button type="submit" class="inline-flex min-h-[44px] items-center rounded bg-primary-900 px-4 py-2 text-sm text-white hover:bg-primary-800">Search</button>
+    <button type="button" data-directory-clear class="inline-flex min-h-[44px] items-center rounded border border-slate-400 bg-white px-4 py-2 text-sm text-primary-800 hover:bg-slate-100">Clear</button>
+  </form>
+  <div class="grid auto-rows-fr gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{items.map(item => <div data-search-item={`${item.title} ${item.meta || ''}`}><DirectoryCard {...item} portrait contain /></div>)}</div>
+  <p data-directory-empty hidden class="rounded border border-slate-200 bg-slate-50 p-6 text-base text-slate-700">No matching {noun}. Try another name or clear the search to see everyone.</p>
+</section>
+<script>
+  import { initDirectorySearch } from '../../utils/directorySearch';
+  const init = () => document.querySelectorAll<HTMLElement>('[data-directory-search]').forEach(initDirectorySearch);
+  init(); document.addEventListener('astro:page-load', init);
+</script>
+<style>[hidden] { display: none !important; }</style>

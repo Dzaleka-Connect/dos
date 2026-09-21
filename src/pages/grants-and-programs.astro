@@ -2,13 +2,16 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
-import { formatDate, isJobExpired } from '../utils/dateHelpers';
+import { isJobExpired } from '../utils/dateHelpers';
+import { formatOpportunityDate as formatDate, opportunityStatus, externalOpportunityStatus } from '../utils/opportunityDates';
+import OpportunityFeature from '../components/opportunities/OpportunityFeature.astro';
+import { papitaKhasuResidency } from '../data/papitaKhasuResidency';
+export const prerender = false;
 import {
   audienceLabels,
   audienceShortLabels,
   curatedGrantsPrograms,
   externalOpportunities,
-  getExternalStatusClasses,
   getStatusClasses,
   type ExternalOpportunityStatus,
   type OpportunityAudience,
@@ -60,32 +63,27 @@ const curatedItems: FinderItem[] = curatedGrantsPrograms.map((item) => ({
   title: item.title,
   summary: item.summary,
   href: `/grants-and-programs/${item.slug}`,
-  status: item.status,
+  status: opportunityStatus(item),
   type: item.type,
   audience: item.audience,
   organization: item.organization,
   deadline: item.deadline
 }));
 
-const platformItems = [...jobItems, ...curatedItems];
-const summaryStats = [
-  { label: 'Platform opportunities', value: platformItems.length },
-  { label: 'External open now', value: externalOpportunities.filter((item) => item.status === 'open now').length },
-  { label: 'External ongoing support', value: externalOpportunities.filter((item) => item.status === 'ongoing support').length },
-  { label: 'Watchlist sources', value: externalOpportunities.filter((item) => item.status === 'watchlist').length }
-];
-
+const platformItems = [...curatedItems, ...jobItems];
+const datedExternalOpportunities = externalOpportunities.map(item => ({ ...item, status: externalOpportunityStatus(item) }));
 const externalSectionLabels: Record<ExternalOpportunityStatus, string> = {
   'open now': 'Open now',
   'ongoing support': 'Ongoing support',
-  watchlist: 'Watchlist'
+  watchlist: 'Watchlist',
+  closed: 'Previous calls — closed'
 };
 
-const externalSections = (['open now', 'ongoing support', 'watchlist'] as ExternalOpportunityStatus[]).map((status) => ({
+const externalSections = (['open now', 'ongoing support', 'watchlist', 'closed'] as ExternalOpportunityStatus[]).map((status) => ({
   status,
   title: externalSectionLabels[status],
-  items: externalOpportunities.filter((item) => item.status === status)
-}));
+  items: datedExternalOpportunities.filter((item) => item.status === status)
+})).filter(section => section.items.length);
 
 const collectionStructuredData = {
   '@context': 'https://schema.org',
@@ -129,367 +127,100 @@ const breadcrumbStructuredData = {
 };
 ---
 
-<MainLayout
-  title={`${pageTitle} | Dzaleka Online Services`}
-  description={pageDescription}
-  keywords={pageKeywords}
-  canonical={canonicalUrl}
-  robots="index, follow, max-image-preview:large"
-  openGraph={{
-    title: `${pageTitle} | Dzaleka Online Services`,
-    description: pageDescription,
-    type: 'website',
-    url: canonicalUrl,
-    site_name: 'Dzaleka Online Services',
-    locale: 'en_US'
-  }}
-  twitter={{
-    card: 'summary_large_image',
-    title: `${pageTitle} | Dzaleka Online Services`,
-    description: pageDescription
-  }}
->
+<MainLayout title={`${pageTitle} | Dzaleka Online Services`} description={pageDescription} canonical={canonicalUrl} keywords={pageKeywords}>
   <script type="application/ld+json" set:html={JSON.stringify(collectionStructuredData)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
-
-  <div class="min-h-screen bg-slate-50">
-    <section class="border-b border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div class="mb-6">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Grants and programs' }
-            ]}
-          />
-        </div>
-
-        <div class="max-w-4xl">
-          <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Grants and programs</h1>
-          <p class="mt-4 text-lg leading-8 text-slate-600">
-            Browse Dzaleka opportunities alongside official external grants, enterprise support programmes, and refugee-business watchlists relevant to Malawi and the wider region.
-          </p>
-
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a
-              href="#platform-opportunities"
-              class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-900 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-800"
-            >
-              Browse opportunities
-            </a>
-            <a
-              href="/grants-and-programs/submit"
-              class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-            >
-              Submit an opportunity
-            </a>
-          </div>
-        </div>
+  <div class="grants-page">
+    <header class="grants-width grants-heading">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: pageTitle }]} />
+      <h1>{pageTitle}</h1>
+      <p>Find funding, jobs and ways to take part in community programmes. Check eligibility and closing dates before applying.</p>
+      <a href="/grants-and-programs/submit" class="text-link">Submit an opportunity <span aria-hidden="true">→</span></a>
+    </header>
+    <div class="grants-width"><OpportunityFeature program={papitaKhasuResidency} /></div>
+    <section class="grants-width directory-section" id="platform-opportunities" aria-labelledby="opportunities-heading">
+      <h2 id="opportunities-heading">Browse opportunities</h2>
+      <p class="section-intro">Funding calls, community jobs and ongoing registration routes. Each listing explains what is offered and how to take part.</p>
+      <div class="finder-filters">
+        <fieldset><legend>Status</legend><div data-status-filters class="status-filters">{['all', 'open', 'opening soon', 'ongoing', 'closed'].map(status => <button type="button" data-status={status} aria-pressed={status === 'all'}>{status === 'all' ? 'All' : status}</button>)}</div></fieldset>
+        <div><label for="audience-filter">Audience</label><select id="audience-filter"><option value="all">All audiences</option>{audienceLabels.map(audience => <option value={audience}>{audienceShortLabels[audience]}</option>)}</select></div>
       </div>
+      <p id="platform-results-info" role="status" class="results-count">{platformItems.length} opportunities</p>
+      <div id="opportunity-list">
+        {platformItems.map(item => <article class="opportunity-row" data-opportunity-card data-status={item.status} data-audience={item.audience.join('|')}>
+          <div><p class="row-meta">{item.type} · {item.organization}</p><h3><a href={item.href}>{item.title}</a></h3><p class="row-summary">{item.summary}</p><p class="row-audience">{item.audience.map(audience => audienceShortLabels[audience]).join(' · ')}</p></div>
+          <div class="row-details"><span class:list={['status-label', getStatusClasses(item.status)]}>{item.status}</span><p>{item.deadline ? <><span>Closing date</span><time datetime={item.deadline}>{formatDate(item.deadline)}</time></> : 'No fixed closing date'}</p></div>
+        </article>)}
+      </div>
+      <p id="empty-state" class="hidden empty-state">No opportunities match these filters. Try another status or audience.</p>
+      <nav id="platform-pagination" aria-label="Opportunity pages" class="finder-pagination"><button id="platform-prev" type="button">← Previous</button><span id="platform-page-info">Page 1</span><button id="platform-next" type="button">Next →</button></nav>
     </section>
-
-    <section class="border-b border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
-        <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-          <div class="max-w-4xl">
-            <p class="text-sm leading-6 text-slate-600">
-              Includes grants, jobs, applications, registrations, and business support routes. Always confirm external details with the source organisation before applying.
-            </p>
-          </div>
-
-          <div class="flex flex-wrap gap-3 text-sm text-slate-600 lg:justify-end">
-            {summaryStats.map((stat) => (
-              <div class="rounded-[5px] border border-slate-200 bg-slate-50 px-3 py-2">
-                <span class="font-semibold text-slate-900">{stat.value}</span> {stat.label.toLowerCase()}
-              </div>
-            ))}
-          </div>
-        </div>
-        <p class="mt-4 text-xs leading-5 text-slate-500">
-          External opportunity details below were reviewed against official source pages on April 13, 2026.
-        </p>
-      </div>
+    <section class="grants-width external-directory" aria-labelledby="external-heading">
+      <h2 id="external-heading">External programmes and sources</h2><p class="section-intro">Support available elsewhere, and sources to watch for future calls. Some programmes are specific to other countries. Eligibility and programme details were last reviewed on 13 April 2026; check the official source for updates.</p>
+      {externalSections.map(section => <section class="external-section"><h3>{section.title}</h3>{section.items.map(item => <details class="external-item"><summary><span><strong>{item.title}</strong><span class="external-meta">{item.location} · {item.type}</span></span><span class="disclosure-icon" aria-hidden="true">+</span></summary><div class="external-body"><p>{item.summary}</p><p><strong>Eligibility:</strong> {item.eligibilityNote}</p><p>{item.note}</p><p class="external-dates">{item.deadline && <>Closing date: {formatDate(item.deadline)} · </>}Last reviewed: {formatDate(item.verifiedDate)}</p><a class="text-link" href={item.sourceUrl}>{item.sourceLabel} <span aria-hidden="true">↗</span></a></div></details>)}</section>)}
     </section>
-
-    <section id="platform-opportunities" class="mx-auto max-w-6xl scroll-mt-24 px-4 py-8 sm:px-6 lg:px-8">
-      <div class="mb-4">
-        <h2 class="text-2xl font-semibold tracking-tight text-slate-900">Dzaleka platform opportunities</h2>
-        <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          These are opportunities and actions available directly through Dzaleka Online Services, including applications, registrations,
-          learning routes, jobs, and community participation.
-        </p>
-      </div>
-
-      <div class="border border-slate-200 bg-white">
-        <div class="border-b border-slate-200 px-5 py-5 sm:px-6">
-          <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-end">
-            <div>
-              <label class="block text-sm font-medium text-slate-700">Status</label>
-              <div class="mt-2 flex flex-wrap gap-2" data-status-filters>
-                <button type="button" data-status="all" class="min-h-[44px] rounded-md bg-primary-900 px-3 py-2 text-sm font-medium text-white">All</button>
-                <button type="button" data-status="open" class="min-h-[44px] rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open</button>
-                <button type="button" data-status="opening soon" class="min-h-[44px] rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Opening soon</button>
-                <button type="button" data-status="ongoing" class="min-h-[44px] rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Ongoing</button>
-              </div>
-            </div>
-
-            <div>
-              <label for="audience-filter" class="block text-sm font-medium text-slate-700">Audience</label>
-              <select id="audience-filter" class="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200">
-                <option value="all">All audiences</option>
-                {audienceLabels.map((audience) => (
-                  <option value={audience}>{audienceShortLabels[audience]}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="hidden border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 lg:grid lg:grid-cols-[minmax(0,1.8fr)_170px_150px_170px] lg:gap-4 lg:px-6">
-          <div>Program</div>
-          <div>Status</div>
-          <div>Closing date</div>
-          <div>Audience</div>
-        </div>
-
-        <div id="opportunity-list">
-          {platformItems.map((item) => (
-            <article
-              class="border-b border-slate-200 px-5 py-6 last:border-b-0 lg:px-6"
-              data-opportunity-card
-              data-status={item.status}
-              data-audience={item.audience.join('|')}
-            >
-              <div class="grid gap-4 lg:grid-cols-[minmax(0,1.8fr)_170px_150px_170px] lg:items-start">
-                <div class="min-w-0">
-                  <h2 class="text-xl font-semibold text-slate-900">
-                    <a href={item.href} class="hover:text-primary-700 hover:underline">{item.title}</a>
-                  </h2>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">{item.summary}</p>
-                  <div class="mt-3 text-sm text-slate-500">{item.organization}</div>
-                  <div class="mt-3 lg:hidden">
-                    <a href={item.href} class="text-sm font-medium text-primary-700 hover:text-primary-800 hover:underline">
-                      View details
-                    </a>
-                  </div>
-                </div>
-
-                <div class="text-sm text-slate-600">
-                  <div class="font-medium text-slate-900 lg:hidden">Status</div>
-                  <div class="mt-1 lg:mt-0">
-                    <span class:list={['inline-flex rounded-[5px] px-2.5 py-1 text-xs font-semibold capitalize', getStatusClasses(item.status)]}>
-                      {item.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="text-sm text-slate-600">
-                  <div class="font-medium text-slate-900 lg:hidden">Closing date</div>
-                  <div class="mt-1 lg:mt-0">{item.deadline ? formatDate(item.deadline) : 'Ongoing'}</div>
-                </div>
-
-                <div class="text-sm text-slate-600">
-                  <div class="font-medium text-slate-900 lg:hidden">Audience</div>
-                  <div class="mt-1 lg:mt-0">{item.audience.map((audience) => audienceShortLabels[audience]).join(', ')}</div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div id="empty-state" class="hidden px-6 py-12 text-center">
-          <h2 class="text-lg font-semibold text-slate-900">No opportunities match these filters</h2>
-          <p class="mt-2 text-sm leading-6 text-slate-600">
-            Try a different status or audience, or check back later for new listings.
-          </p>
-        </div>
-
-        {platformItems.length > 6 && (
-          <div id="platform-pagination" class="border-t border-slate-200 px-5 py-4 sm:px-6">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div id="platform-results-info" class="text-sm text-slate-600"></div>
-              <div class="flex items-center gap-3">
-                <button
-                  id="platform-prev"
-                  type="button"
-                  class="min-h-[44px] rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Previous
-                </button>
-                <span id="platform-page-info" class="text-sm text-slate-600"></span>
-                <button
-                  id="platform-next"
-                  type="button"
-                  class="min-h-[44px] rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-
-    <section class="border-t border-slate-200 bg-slate-50">
-      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <div class="rounded border border-slate-200 bg-white p-6">
-          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-start">
-            <div>
-              <h2 class="text-xl font-semibold text-slate-900">Preparing to apply or grow a business?</h2>
-              <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Use the startup tools library for practical templates on marketing, business action planning, cash flow forecasting, and risk preparation before you apply for an opportunity.
-              </p>
-            </div>
-            <div class="flex flex-col gap-3">
-              <a
-                href="/tools-and-templates"
-                class="min-h-[44px] inline-flex items-center justify-center rounded border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-              >
-                Open tools library
-              </a>
-              <a
-                href="/tools-and-templates/cash-flow-forecast-template"
-                class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-800"
-              >
-                Start with cash flow template
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="border-t border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <details class="group rounded border border-slate-200 bg-white">
-          <summary class="flex cursor-pointer list-none items-start justify-between gap-6 px-6 py-5">
-            <div class="max-w-4xl">
-              <h2 class="text-2xl font-semibold tracking-tight text-slate-900">External opportunities and support</h2>
-              <p class="mt-2 text-sm leading-6 text-slate-600">
-                These listings point to official organisations outside Dzaleka Online Services. Expand this section to view external open calls, ongoing support, and watchlist sources.
-              </p>
-              <p class="mt-3 text-sm leading-6 text-slate-600">
-                If your organisation has a verified grant, programme, finance product, or support opportunity that should appear here,
-                <a href="/grants-and-programs/submit" class="font-medium text-primary-700 hover:text-primary-800 hover:underline">submit an opportunity for review</a>.
-              </p>
-            </div>
-            <span class="mt-1 inline-flex flex-none items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 group-open:hidden">
-              Expand
-            </span>
-            <span class="mt-1 hidden flex-none items-center rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 group-open:inline-flex">
-              Collapse
-            </span>
-          </summary>
-
-          <div class="border-t border-slate-200 px-6 py-8">
-            <div class="space-y-10">
-              {externalSections.map((section) => (
-                <section>
-                  <div class="mb-4 flex items-center justify-between gap-4">
-                    <h3 class="text-xl font-semibold text-slate-900">{section.title}</h3>
-                    <div class="text-sm text-slate-500">{section.items.length} source{section.items.length === 1 ? '' : 's'}</div>
-                  </div>
-
-                  <div class="space-y-4">
-                    {section.items.map((item) => (
-                      <details class="rounded border border-slate-200 bg-slate-50/40">
-                        <summary class="flex cursor-pointer list-none flex-col gap-3 px-5 py-5 sm:px-6">
-                          <div class="flex flex-wrap items-center gap-2">
-                            <span class:list={['inline-flex rounded-[5px] px-2.5 py-1 text-xs font-semibold capitalize', getExternalStatusClasses(item.status)]}>
-                              {item.status}
-                            </span>
-                            <span class="inline-flex rounded-[5px] bg-white px-2.5 py-1 text-xs font-medium text-slate-700 ring-1 ring-inset ring-slate-200">
-                              {item.region}
-                            </span>
-                            <span class="inline-flex rounded-[5px] bg-white px-2.5 py-1 text-xs font-medium text-slate-700 ring-1 ring-inset ring-slate-200">
-                              {item.type}
-                            </span>
-                          </div>
-
-                          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-start">
-                            <div class="min-w-0">
-                              <h4 class="text-xl font-semibold text-slate-900">{item.title}</h4>
-                              <p class="mt-2 text-sm leading-6 text-slate-600">{item.summary}</p>
-                              <div class="mt-3 text-sm text-slate-500">{item.organization}</div>
-                            </div>
-
-                            <div class="text-sm leading-6 text-slate-600">
-                              <div><span class="font-medium text-slate-900">Closing date:</span> {item.deadline ? formatDate(item.deadline) : 'Check source'}</div>
-                              <div><span class="font-medium text-slate-900">Verified:</span> {formatDate(item.verifiedDate)}</div>
-                            </div>
-                          </div>
-                        </summary>
-
-                        <div class="border-t border-slate-200 px-5 py-5 sm:px-6">
-                          <div class="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_260px]">
-                            <div>
-                              <dl class="grid gap-3 text-sm leading-6 text-slate-600 sm:grid-cols-2">
-                                <div>
-                                  <dt class="font-medium text-slate-900">Organisation</dt>
-                                  <dd>{item.organization}</dd>
-                                </div>
-                                <div>
-                                  <dt class="font-medium text-slate-900">Location</dt>
-                                  <dd>{item.location}</dd>
-                                </div>
-                                <div>
-                                  <dt class="font-medium text-slate-900">Audience</dt>
-                                  <dd>{item.audience.map((audience) => audienceShortLabels[audience]).join(', ')}</dd>
-                                </div>
-                                <div>
-                                  <dt class="font-medium text-slate-900">Source</dt>
-                                  <dd>{item.region}</dd>
-                                </div>
-                              </dl>
-                            </div>
-
-                            <div class="border border-slate-200 bg-white px-4 py-4">
-                              <div>
-                                <div class="text-sm font-medium text-slate-900">Eligibility note</div>
-                                <p class="mt-1 text-sm leading-6 text-slate-600">{item.eligibilityNote}</p>
-                              </div>
-                              <div class="mt-4">
-                                <div class="text-sm font-medium text-slate-900">Why it is listed</div>
-                                <p class="mt-1 text-sm leading-6 text-slate-600">{item.note}</p>
-                              </div>
-                              <div class="mt-4">
-                                <a
-                                  href={item.sourceUrl}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  class="inline-flex items-center text-sm font-medium text-primary-700 hover:text-primary-800 hover:underline"
-                                >
-                                  {item.sourceLabel}
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </div>
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <section class="border-t border-slate-200 bg-white">
-      <div class="mx-auto max-w-6xl px-4 py-8 text-sm leading-6 text-slate-600 sm:px-6 lg:px-8">
-        Know about a grant, training programme, or partner opportunity that should be listed here?
-        <a href="/grants-and-programs/submit" class="ml-1 font-medium text-primary-700 hover:text-primary-800 hover:underline">Submit an opportunity</a>
-        ,
-        <a href="/contact" class="ml-1 font-medium text-primary-700 hover:text-primary-800 hover:underline">contact the team</a>
-        , or
-        <a href="/help-desk" class="ml-1 font-medium text-primary-700 hover:text-primary-800 hover:underline">ask for help</a>.
-      </div>
-    </section>
+    <aside class="grants-width help-note"><h2>Help with an application</h2><p>Use the <a href="/tools-and-templates">document templates</a>, <a href="/help-desk">ask the help desk</a> or <a href="/contact">contact the team</a> for support.</p></aside>
   </div>
 </MainLayout>
-
+<style>
+  .grants-page { background:white; color:#334155; padding-bottom:3rem; }
+  .grants-width { max-width:76rem; margin-inline:auto; padding-inline:2rem; }
+  .grants-heading { padding-block:2rem; }
+  h1 { margin-top:1.5rem; color:#1e4865; font-size:clamp(2rem,4vw,3rem); line-height:1.2; letter-spacing:-.025em; }
+  .grants-heading > p { font-size:1.125rem; line-height:1.75; max-width:45rem; margin-block:1rem .5rem; }
+  .text-link { display:inline-flex; min-height:44px; align-items:center; gap:.5rem; color:#1e4865; font-size:.875rem; text-decoration:underline; text-underline-offset:4px; }
+  h2 { color:#1e4865; font-size:1.5rem; line-height:1.35; }
+  .section-intro { font-size:.9375rem; line-height:1.75; max-width:48rem; margin-top:.75rem; }
+  .directory-section,.external-directory { padding-top:3rem; }
+  .finder-filters { display:grid; grid-template-columns:1fr 17rem; gap:1.5rem; padding-block:1.5rem; border-bottom:1px solid #cbd5e1; }
+  .finder-filters legend,.finder-filters label { display:block; font-size:.8125rem; font-weight:600; margin-bottom:.5rem; }
+  .status-filters { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .status-filters button,.finder-pagination button { min-height:44px; border:1px solid #cbd5e1; border-radius:3px; padding:.5rem .875rem; font-size:.875rem; text-transform:capitalize; }
+  .status-filters button[aria-pressed='true'] { background:#1e4865; border-color:#1e4865; color:white; }
+  .status-filters button[aria-pressed='false']:hover,.finder-pagination button:hover:enabled { background:#f1f5f9; }
+  select { min-height:44px; width:100%; border:1px solid #cbd5e1; border-radius:3px; font-size:.875rem; padding:.6rem 2rem .6rem .75rem; }
+  .results-count { padding-top:1rem; font-size:.8125rem; color:#64748b; }
+  .opportunity-row { display:grid; grid-template-columns:minmax(0,1fr) 12rem; gap:2rem; padding-block:1.5rem; border-bottom:1px solid #e2e8f0; }
+  .opportunity-row.hidden { display:none; }
+  .row-meta,.row-audience { color:#64748b; font-size:.8125rem; line-height:1.6; }
+  .opportunity-row h3 { margin-top:.5rem; font-size:1.25rem; line-height:1.4; }
+  .opportunity-row h3 a { color:#1e4865; text-decoration:underline; text-underline-offset:4px; }
+  .row-summary { font-size:.9375rem; line-height:1.7; margin-block:.65rem; max-width:45rem; }
+  .status-label { display:inline-block; border-radius:3px; padding:.2rem .5rem; font-size:.75rem; text-transform:capitalize; }
+  .row-details > p { font-size:.8125rem; line-height:1.6; color:#64748b; margin-top:.75rem; }
+  .row-details time { display:block; color:#334155; }
+  .empty-state { padding-block:2rem; }
+  .finder-pagination { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding-top:1.5rem; font-size:.875rem; }
+  .finder-pagination.hidden { display:none; }
+  .finder-pagination button:disabled { opacity:.4; cursor:not-allowed; }
+  .external-section { margin-top:2rem; }
+  .external-section > h3 { font-size:1.125rem; margin-bottom:.75rem; color:#1e4865; }
+  .external-item { border-top:1px solid #cbd5e1; }
+  .external-item:last-child { border-bottom:1px solid #cbd5e1; }
+  .external-item summary { cursor:pointer; display:flex; justify-content:space-between; gap:1rem; list-style:none; padding-block:1rem; }
+  .external-item summary::-webkit-details-marker { display:none; }
+  .external-item strong { font-weight:600; }
+  .external-meta { display:block; font-size:.8125rem; color:#64748b; margin-top:.35rem; }
+  .disclosure-icon { font-size:1.4rem; font-weight:400; }
+  .external-item[open] .disclosure-icon { transform:rotate(45deg); }
+  .external-body { max-width:52rem; padding-bottom:1rem; }
+  .external-body p { font-size:.9375rem; line-height:1.75; margin-bottom:.75rem; }
+  .external-body .external-dates { font-size:.8125rem; color:#64748b; }
+  .help-note { padding-top:3rem; }
+  .help-note h2 { font-size:1.125rem; }
+  .help-note p { margin-top:.75rem; font-size:.9375rem; line-height:1.75; }
+  .help-note a { color:#1e4865; text-decoration:underline; text-underline-offset:3px; }
+  @media(max-width:767px) {
+    .grants-width { padding-inline:1rem; }
+    .grants-heading { padding-top:1.25rem; }
+    .grants-heading > p { font-size:1rem; }
+    .finder-filters { grid-template-columns:1fr; }
+    .opportunity-row { grid-template-columns:1fr; gap:1rem; }
+    .row-details { display:flex; align-items:center; flex-wrap:wrap; gap:.75rem; }
+    .row-details > p { margin:0; }
+    .row-details time { display:inline; margin-left:.5rem; }
+  }
+</style>
 <script>
   const statusButtons = Array.from(document.querySelectorAll('[data-status-filters] button'));
   const audienceFilter = document.getElementById('audience-filter');
@@ -536,13 +267,14 @@ const breadcrumbStructuredData = {
 
     emptyState?.classList.toggle('hidden', filteredCards.length !== 0);
 
+    if (resultsInfo) resultsInfo.textContent = `${filteredCards.length} ${filteredCards.length === 1 ? 'opportunity' : 'opportunities'} found`;
     if (pagination && prevButton && nextButton && pageInfo && resultsInfo) {
-      const shouldShowPagination = filteredCards.length > 0;
+      const shouldShowPagination = filteredCards.length > itemsPerPage;
       pagination.classList.toggle('hidden', !shouldShowPagination);
       prevButton.toggleAttribute('disabled', currentPage === 1);
       nextButton.toggleAttribute('disabled', currentPage === totalPages);
       pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-      resultsInfo.textContent = `${filteredCards.length} opportunity${filteredCards.length === 1 ? '' : 'ies'} found`;
+      resultsInfo.textContent = `${filteredCards.length} ${filteredCards.length === 1 ? 'opportunity' : 'opportunities'} found`;
     }
   }
 
@@ -553,11 +285,7 @@ const breadcrumbStructuredData = {
 
       statusButtons.forEach((otherButton) => {
         const isActive = otherButton === button;
-        otherButton.classList.toggle('bg-slate-900', isActive);
-        otherButton.classList.toggle('text-white', isActive);
-        otherButton.classList.toggle('border', !isActive);
-        otherButton.classList.toggle('border-slate-300', !isActive);
-        otherButton.classList.toggle('text-slate-700', !isActive);
+        otherButton.setAttribute('aria-pressed', String(isActive));
       });
 
       updateCards();

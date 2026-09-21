@@ -1,5 +1,7 @@
-export type OpportunityStatus = 'open' | 'opening soon' | 'ongoing';
-export type ExternalOpportunityStatus = 'open now' | 'ongoing support' | 'watchlist';
+import { papitaKhasuResidency } from './papitaKhasuResidency';
+
+export type OpportunityStatus = 'open' | 'opening soon' | 'ongoing' | 'closed';
+export type ExternalOpportunityStatus = 'open now' | 'ongoing support' | 'watchlist' | 'closed';
 export type OpportunityAudience =
   | 'residents and families'
   | 'service providers and NGOs'
@@ -19,6 +21,15 @@ export interface CuratedOpportunity {
   organization: string;
   location: string;
   deadline?: string;
+  opensAt?: string;
+  period?: string;
+  award?: { amount: number; currency: string; recipients: number };
+  image?: { src: string; alt: string; credit: string };
+  resources?: { label: string; href: string }[];
+  commitments?: string[];
+  payments?: { label: string; amount: number }[];
+  organiserNote?: string;
+  verifiedDate?: string;
   intro: string;
   support: string[];
   eligibility: string[];
@@ -61,6 +72,7 @@ export const audienceShortLabels: Record<OpportunityAudience, string> = {
 };
 
 export const curatedGrantsPrograms: CuratedOpportunity[] = [
+  papitaKhasuResidency,
   {
     slug: 'marketplace-store-registration',
     title: 'Register a store in the marketplace',

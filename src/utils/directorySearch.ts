@@ -1,0 +1,26 @@
+const normalize = (value: string) => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase().trim();
+
+export function initDirectorySearch(root: HTMLElement) {
+  if (root.dataset.searchReady) return;
+  const form = root.querySelector<HTMLFormElement>('[data-directory-form]');
+  const input = root.querySelector<HTMLInputElement>('input[type="search"]');
+  const count = root.querySelector<HTMLElement>('[data-directory-count]');
+  const empty = root.querySelector<HTMLElement>('[data-directory-empty]');
+  const items = [...root.querySelectorAll<HTMLElement>('[data-search-item]')];
+  if (!form || !input || !count || !empty) return;
+  root.dataset.searchReady = 'true';
+  const update = () => {
+    const words = normalize(input.value).split(/\s+/).filter(Boolean);
+    let visible = 0;
+    items.forEach(item => {
+      item.hidden = !words.every(word => normalize(item.dataset.searchItem || '').includes(word));
+      if (!item.hidden) visible++;
+    });
+    count.textContent = `${visible} of ${items.length} ${root.dataset.directoryNoun || 'records'}`;
+    empty.hidden = visible !== 0;
+  };
+  form.hidden = false;
+  form.addEventListener('submit', event => { event.preventDefault(); update(); });
+  input.addEventListener('input', update);
+  root.querySelector('[data-directory-clear]')?.addEventListener('click', () => { input.value = ''; update(); input.focus(); });
+}
