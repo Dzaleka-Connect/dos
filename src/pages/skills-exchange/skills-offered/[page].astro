@@ -113,7 +113,7 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
         <a
           href="/skills-exchange/skills-offered/1"
           class:list={[
-            'inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium',
+            'inline-flex items-center rounded border px-4 py-2 text-sm font-medium',
             !selectedCategory ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:text-slate-900'
           ]}
         >
@@ -123,7 +123,7 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
           <a
             href={`/skills-exchange/skills-offered/1?category=${encodeURIComponent(category)}`}
             class:list={[
-              'inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium',
+              'inline-flex items-center rounded border px-4 py-2 text-sm font-medium',
               selectedCategory === category ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:text-slate-900'
             ]}
           >
@@ -150,19 +150,19 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
                   <h3 class="text-base font-semibold text-slate-900">{profile.data.skill}</h3>
                   <p class="mt-1 text-sm text-slate-500">{profile.data.name}{profile.data.location ? ` · ${profile.data.location}` : ''}</p>
                 </div>
-                <span class="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">Available</span>
+                <span class="rounded bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">Available</span>
               </div>
 
               <p class="mt-4 text-sm leading-6 text-slate-600 line-clamp-2">{profile.data.shortDescription}</p>
 
               <div class="mt-4 flex flex-wrap gap-2">
-                <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.category}</span>
-                {profile.data.level && <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.level}</span>}
+                <span class="rounded border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.category}</span>
+                {profile.data.level && <span class="rounded border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.level}</span>}
                 {profile.data.chargeType === 'paid' && profile.data.rate && (
-                  <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.rate}</span>
+                  <span class="rounded border border-slate-200 px-2.5 py-1 text-xs text-slate-700">{profile.data.rate}</span>
                 )}
                 {profile.data.chargeType === 'free' && (
-                  <span class="rounded-md border border-slate-200 px-2.5 py-1 text-xs text-slate-700">Free</span>
+                  <span class="rounded border border-slate-200 px-2.5 py-1 text-xs text-slate-700">Free</span>
                 )}
               </div>
 
@@ -198,7 +198,7 @@ const visiblePages = getVisiblePages(safeCurrentPage, filteredTotalPages);
               <a
                 href={getPageUrl(pageNumber)}
                 class:list={[
-                  'inline-flex min-w-10 items-center justify-center rounded-md px-3 py-2 text-sm font-medium',
+                  'inline-flex min-w-10 items-center justify-center rounded px-3 py-2 text-sm font-medium',
                   safeCurrentPage === pageNumber ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                 ]}
               >

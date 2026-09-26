@@ -70,7 +70,7 @@ export function NewsWidget() {
 
   if (error) {
     return (
-      <div className="text-center p-4 text-red-600 bg-red-50 rounded-lg">
+      <div className="text-center p-4 text-red-600 bg-red-50 rounded">
         <p>{error}</p>
       </div>
     );
@@ -89,11 +89,11 @@ export function NewsWidget() {
       {news.map((item) => (
         <article
           key={item.id}
-          className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+          className="p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
         >
           <div className="flex items-center justify-between gap-3 mb-2">
             {item.category ? (
-              <span className="text-[11px] font-semibold uppercase tracking-wide text-primary-700 bg-primary-50 px-2 py-1 rounded-full">
+              <span className="text-xs font-semibold uppercase tracking-wide text-primary-700 bg-primary-50 px-2 py-1 rounded-full">
                 {item.category.replace(/-/g, ' ')}
               </span>
             ) : (

@@ -151,10 +151,10 @@ function getPaginationUrl(pageNum: number) {
               </p>
             </div>
             <div>
-              <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+              <nav class="isolate inline-flex -space-x-px rounded" aria-label="Pagination">
                 <a
                   href={page.url.prev ? getPaginationUrl(page.currentPage - 1) : '#'}
-                  class={`relative inline-flex items-center rounded-l-md px-2 py-2 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
+                  class={`relative inline-flex items-center rounded-l px-2 py-2 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
                     !page.url.prev ? 'text-gray-300 cursor-not-allowed pointer-events-none' : 'text-gray-400 hover:bg-gray-50'
                   }`}
                   aria-disabled={!page.url.prev}
@@ -181,7 +181,7 @@ function getPaginationUrl(pageNum: number) {
 
                 <a
                   href={page.url.next ? getPaginationUrl(page.currentPage + 1) : '#'}
-                  class={`relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
+                  class={`relative inline-flex items-center rounded-r px-2 py-2 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
                     !page.url.next ? 'text-gray-300 cursor-not-allowed pointer-events-none' : 'text-gray-400 hover:bg-gray-50'
                   }`}
                   aria-disabled={!page.url.next}
@@ -197,13 +197,13 @@ function getPaginationUrl(pageNum: number) {
           <div class="flex flex-1 justify-between sm:hidden">
             <a
               href={page.url.prev ? getPaginationUrl(page.currentPage - 1) : '#'}
-              class={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${!page.url.prev ? 'pointer-events-none opacity-50' : ''}`}
+              class={`relative inline-flex items-center rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${!page.url.prev ? 'pointer-events-none opacity-50' : ''}`}
             >
               Previous
             </a>
             <a
               href={page.url.next ? getPaginationUrl(page.currentPage + 1) : '#'}
-              class={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${!page.url.next ? 'pointer-events-none opacity-50' : ''}`}
+              class={`relative ml-3 inline-flex items-center rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${!page.url.next ? 'pointer-events-none opacity-50' : ''}`}
             >
               Next
             </a>

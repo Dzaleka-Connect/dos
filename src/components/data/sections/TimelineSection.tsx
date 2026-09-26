@@ -77,7 +77,7 @@ export function TimelineSection() {
 
               <button
                 type="button"
-                className={`ml-10 w-full rounded-lg border border-gray-100 bg-white p-4 text-left shadow-sm transition-shadow hover:shadow-md md:ml-0 md:w-[calc(50%-2.5rem)] ${
+                className={`ml-10 w-full rounded border border-gray-100 bg-white p-4 text-left transition-shadow md:ml-0 md:w-[calc(50%-2.5rem)] ${
                   selectedEvent?.year === event.year ? 'ring-2 ring-primary-500' : ''
                 }`}
                 onClick={() => setSelectedEvent(event)}
@@ -91,7 +91,7 @@ export function TimelineSection() {
       </div>
 
       {selectedEvent && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-lg">
+        <div className="mt-8 p-6 bg-gray-50 rounded">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-medium text-gray-900">{selectedEvent.title}</h3>
             <span className="text-sm font-medium text-primary-600">{selectedEvent.year}</span>

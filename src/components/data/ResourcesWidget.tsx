@@ -123,7 +123,7 @@ export function ResourcesWidget() {
 
   if (error) {
     return (
-      <div className="text-center p-4 text-red-600 bg-red-50 rounded-lg">
+      <div className="text-center p-4 text-red-600 bg-red-50 rounded">
         <p>{error}</p>
       </div>
     );
@@ -149,10 +149,10 @@ export function ResourcesWidget() {
             href={getResourceHref(resource)}
             target={resource.resourceUrl || resource.downloadUrl ? '_blank' : undefined}
             rel={resource.resourceUrl || resource.downloadUrl ? 'noopener noreferrer' : undefined}
-            className="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+            className="block p-4 bg-white rounded transition-shadow border border-gray-100"
           >
             <div className="flex items-start">
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${typeStyle.accent}`}>
+              <div className={`w-10 h-10 rounded flex items-center justify-center flex-shrink-0 ${typeStyle.accent}`}>
                 {typeStyle.icon}
               </div>
 
@@ -170,7 +170,7 @@ export function ResourcesWidget() {
                 <p className="mt-1 text-sm text-gray-500 line-clamp-3">{resource.description}</p>
 
                 <div className="mt-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-primary-700 bg-primary-50 px-2 py-1 rounded-full">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-primary-700 bg-primary-50 px-2 py-1 rounded-full">
                     {resource.category}
                   </span>
                 </div>

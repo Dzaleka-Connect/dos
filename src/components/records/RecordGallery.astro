@@ -5,7 +5,7 @@ const { images: supplied, title, credit, compact = false } = Astro.props;
 const images = recordImages(supplied);
 ---
 {images.length > 0 && <div class:list={['record-gallery', compact && 'record-gallery-compact']} data-record-gallery aria-label={`${title} images`}>
-  <figure class="overflow-hidden rounded-lg border border-slate-200 bg-white">
+  <figure class="overflow-hidden rounded border border-slate-200 bg-white">
     <a href={images[0]} data-gallery-open class="record-image-stage block bg-slate-100" aria-label={`Enlarge image: ${title}`}>
       <img data-gallery-image src={images[0]} alt={title} loading={compact ? 'lazy' : 'eager'} decoding="async" class="h-full w-full object-contain" />
     </a>
@@ -19,7 +19,7 @@ const images = recordImages(supplied);
     <div data-gallery-controls hidden class="mb-3 flex items-center justify-between gap-3"><button type="button" data-gallery-previous class="record-button">← Previous image</button><button type="button" data-gallery-next class="record-button">Next image →</button></div>
     <div class="flex gap-3 overflow-x-auto pb-2" aria-label="Choose an image">{images.map((src, index) => <a href={src} data-gallery-thumbnail data-image-index={index} aria-label={`View image ${index + 1} of ${images.length}: ${title}`} aria-current={index === 0 ? 'true' : undefined} class="record-thumbnail shrink-0 overflow-hidden rounded border-2 border-transparent bg-slate-100"><img src={src} alt="" loading="lazy" decoding="async" class="h-full w-full object-contain" /></a>)}</div>
   </div>}
-  <dialog data-gallery-dialog aria-label={`Image viewer: ${title}`} class="record-image-dialog rounded-lg border border-slate-300 bg-white p-0 text-slate-900 backdrop:bg-slate-950/80">
+  <dialog data-gallery-dialog aria-label={`Image viewer: ${title}`} class="record-image-dialog rounded border border-slate-300 bg-white p-0 text-slate-900 backdrop:bg-slate-950/80">
     <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3"><p class="text-sm font-semibold">{title}</p><button data-gallery-close type="button" class="record-button shrink-0">Close ×</button></div>
     <div class="record-dialog-stage bg-slate-100"><img data-gallery-full alt={title} class="h-full w-full object-contain" /></div>
     <p data-gallery-full-error hidden role="status" class="px-4 py-3 text-sm text-slate-700">This image could not load. Try another image, or close the viewer to use the original link.</p>

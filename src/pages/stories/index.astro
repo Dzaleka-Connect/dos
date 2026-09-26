@@ -48,7 +48,7 @@ const allTags = [...new Set(sortedStories.flatMap((story) => story.data.tags ?? 
           data-title={leadStory.data.title.toLowerCase()}
           data-description={leadStory.data.description.toLowerCase()}
           data-tags={(leadStory.data.tags ?? []).map((tag) => tag.toLowerCase()).join('|')}
-          class="mb-8 overflow-hidden rounded-xl border border-gray-200 bg-white"
+          class="mb-8 overflow-hidden rounded border border-gray-200 bg-white"
         >
           <div class="grid lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
             <a href={`/stories/${leadStory.id}`} class="block h-full overflow-hidden bg-gray-100">
@@ -61,16 +61,16 @@ const allTags = [...new Set(sortedStories.flatMap((story) => story.data.tags ?? 
             <div class="flex flex-col justify-between p-6 sm:p-8">
               <div>
                 <div class="flex flex-wrap gap-2">
-                  <span class="rounded-md bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700">
+                  <span class="rounded bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700">
                     Lead Story
                   </span>
                   {leadStory.data.source && (
-                    <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                    <span class="rounded bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
                       Adapted source
                     </span>
                   )}
                   {(leadStory.data.tags ?? []).slice(0, 3).map((tag) => (
-                    <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                    <span class="rounded bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
                       {tag}
                     </span>
                   ))}
@@ -145,7 +145,7 @@ const allTags = [...new Set(sortedStories.flatMap((story) => story.data.tags ?? 
         {storyGrid.map((story) => <StoryCard story={story} />)}
       </div>
 
-      <div id="stories-empty-state" class={`rounded-xl border border-gray-200 bg-white px-6 py-10 text-center ${sortedStories.length ? 'hidden' : ''}`}>
+      <div id="stories-empty-state" class={`rounded border border-gray-200 bg-white px-6 py-10 text-center ${sortedStories.length ? 'hidden' : ''}`}>
         <p class="text-lg font-medium text-gray-900">
           No stories match this search yet.
         </p>

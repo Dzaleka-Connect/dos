@@ -68,12 +68,12 @@ const moreIsActive = navigationGroups.some(({ links }) => links.some(({ href }) 
         Languages
       </a>
       <div class="hidden lg:block"><WhatsNewWidget /></div>
-      <a href="/search" class="inline-flex h-11 w-11 items-center justify-center rounded-md text-slate-600 hover:bg-slate-50 hover:text-slate-950" aria-label="Search the site">
+      <a href="/search" class="inline-flex h-11 w-11 items-center justify-center rounded text-slate-600 hover:bg-slate-50 hover:text-slate-950" aria-label="Search the site">
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0" /></svg>
       </a>
       <a href="/get-help-now" aria-current={isActive('/get-help-now') ? 'page' : undefined} class="hidden min-h-[44px] items-center rounded border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-800 hover:bg-red-100 lg:inline-flex">Get help now</a>
       <button id="menu-button" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open main menu"
-        class="inline-flex h-11 items-center gap-2 rounded-md px-2 text-sm font-medium text-slate-700 hover:bg-slate-50 lg:hidden">
+        class="inline-flex h-11 items-center gap-2 rounded px-2 text-sm font-medium text-slate-700 hover:bg-slate-50 lg:hidden">
         <span class="sr-only" data-menu-label>Open main menu</span>
         <span aria-hidden="true">Menu</span>
         <svg data-menu-icon-open class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
@@ -126,7 +126,7 @@ const moreIsActive = navigationGroups.some(({ links }) => links.some(({ href }) 
           class:list={['py-3 text-sm font-medium', isActive(href) ? 'text-primary-800 underline underline-offset-4' : 'text-slate-800']}>{label}</a>
       ))}
     </div>
-    <a href="/get-help-now" class="mb-4 flex min-h-[44px] items-center justify-between rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-800">Get help now <span aria-hidden="true">→</span></a>
+    <a href="/get-help-now" class="mb-4 flex min-h-[44px] items-center justify-between rounded bg-red-50 px-3 py-2 text-sm font-medium text-red-800">Get help now <span aria-hidden="true">→</span></a>
     {navigationGroups.map(({ title, links }) => (
       <details class="mobile-navigation-group border-t border-slate-200" open={links.some(({ href }) => isActive(href))}>
         <summary class="flex min-h-[48px] cursor-pointer list-none items-center justify-between gap-2 py-3 text-sm font-medium text-slate-900">

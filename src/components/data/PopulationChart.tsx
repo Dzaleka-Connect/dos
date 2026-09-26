@@ -139,7 +139,7 @@ export function PopulationChart() {
 
   return (
     <div className="space-y-4">
-      <div className="bg-blue-50 p-3 rounded-lg">
+      <div className="bg-blue-50 p-3 rounded">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-semibold">Total Population</h3>
           <span className="text-lg font-bold text-blue-600">{data.total.toLocaleString()}</span>
@@ -170,7 +170,7 @@ export function PopulationChart() {
         Data as of {new Date().toLocaleDateString()}
       </div>
 
-      {error ? <div className="text-sm text-amber-700 bg-amber-50 rounded-lg p-3">{error}</div> : null}
+      {error ? <div className="text-sm text-amber-700 bg-amber-50 rounded p-3">{error}</div> : null}
     </div>
   );
 }

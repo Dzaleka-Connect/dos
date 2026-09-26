@@ -101,7 +101,7 @@ export function DemographicsSection() {
       
       <div className="space-y-4">
         {demographics.map((group, index) => (
-          <div key={index} className="p-4 bg-gray-50 rounded-lg">
+          <div key={index} className="p-4 bg-gray-50 rounded">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-gray-900">{group.nationality}</h3>
               <div className="text-right">

@@ -636,7 +636,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="mb-8 rounded border border-slate-200 bg-white p-2">
-        <div class="flex gap-1 overflow-x-auto rounded-md bg-slate-100 p-1 custom-scrollbar" role="tablist" aria-label="Dashboard sections">
+        <div class="flex gap-1 overflow-x-auto rounded bg-slate-100 p-1 custom-scrollbar" role="tablist" aria-label="Dashboard sections">
           <button
             class={`${tabClass} ${activeTabClass}`}
             data-tab="overview"
@@ -730,7 +730,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
             <div class="mt-4">
               <div class="flex items-center text-sm">
-                <span class="text-green-700 font-medium bg-green-50 px-2 py-0.5 rounded-md">↑ {totalActivity.last7Days}</span>
+                <span class="text-green-700 font-medium bg-green-50 px-2 py-0.5 rounded">↑ {totalActivity.last7Days}</span>
                 <span class="text-gray-500 ml-2">new in last 7 days</span>
               </div>
             </div>
@@ -784,7 +784,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                 <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">{healthPercentage}%</p>
                 <p class="text-xs text-gray-500 mt-1">Content quality score</p>
               </div>
-              <div class={`w-12 h-12 rounded-lg flex items-center justify-center ${healthPercentage >= 90 ? 'bg-green-50' : healthPercentage >= 70 ? 'bg-yellow-50' : 'bg-red-50'}`}>
+              <div class={`w-12 h-12 rounded flex items-center justify-center ${healthPercentage >= 90 ? 'bg-green-50' : healthPercentage >= 70 ? 'bg-yellow-50' : 'bg-red-50'}`}>
                 <svg class={`w-6 h-6 ${healthPercentage >= 90 ? 'text-green-600' : healthPercentage >= 70 ? 'text-yellow-600' : 'text-red-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -2079,7 +2079,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `flex items-center p-4 rounded-lg shadow-lg ${
+    toast.className = `flex items-center p-4 rounded shadow-lg ${
       type === 'success' ? 'bg-green-500' :
       type === 'error' ? 'bg-red-500' :
       type === 'warning' ? 'bg-yellow-500' :

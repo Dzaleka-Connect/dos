@@ -159,7 +159,7 @@ export function InfoPanel({ activeChart }: InfoPanelProps) {
   const info = infoData[activeChart] || infoData.overview;
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full">
+    <div className="bg-white rounded p-6 border border-gray-100 h-full">
       <h3 className="text-xl font-semibold text-gray-900 mb-4">{info.title}</h3>
       <div className="space-y-3">
         {info.content.map((text, index) => (

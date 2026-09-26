@@ -111,7 +111,7 @@ export function EventsSection() {
           {recentEvents.map((event, index) => (
             <div key={index} className="relative pl-12">
               <div className="absolute left-0 top-4 w-4 h-4 rounded-full border-4 border-white bg-primary-500 shadow-sm" />
-              <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 p-4">
+              <div className="bg-white rounded transition-shadow border border-gray-100 p-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className={`px-2 py-1 text-xs font-medium rounded-full ${
                     event.type === 'Cultural' ? 'bg-blue-100 text-blue-700' :
@@ -158,7 +158,7 @@ export function EventsSection() {
       <div className="text-center pt-4">
         <a 
           href="/events"
-          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded hover:bg-primary-700 transition-colors"
         >
           View All Events
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

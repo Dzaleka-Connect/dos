@@ -24,7 +24,7 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
           <div><label for="orgName" class="mb-2 block font-semibold">Organization name *</label><input id="orgName" name="orgName" type="text" autocomplete="organization" required class="w-full px-3 py-2" /></div>
           <div><label for="orgType" class="mb-2 block font-semibold">Organization type *</label><select id="orgType" name="orgType" required class="w-full px-3 py-2"><option value="">Select an organization type</option>{organizationTypes.map(type => <option value={type.value}>{type.label}</option>)}</select></div>
           <div><label for="orgDescription" class="mb-2 block font-semibold">About the organization *</label><p id="org-description-hint" class="mb-2 text-sm text-slate-600">Explain what your organization does and who it supports.</p><textarea id="orgDescription" name="orgDescription" rows="4" required aria-describedby="org-description-hint" class="w-full px-3 py-2"></textarea></div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+          <div class="rounded border border-slate-200 bg-slate-50 p-5">
             <label for="orgLogo" class="mb-2 block font-semibold">Organization logo <span class="font-normal">(optional)</span></label>
             <p id="logo-hint" class="mb-3 text-sm text-slate-600">JPG, PNG or WebP, up to 2 MB. A square image works best.</p>
             <input id="orgLogo" name="orgLogo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="logo-hint logoUploadStatus" class="block w-full" />
@@ -42,7 +42,7 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
             <div><label for="phone" class="mb-2 block font-semibold">Contact phone *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="phone-hint" class="w-full px-3 py-2" /><p id="phone-hint" class="mt-2 text-sm text-slate-600">Include the country code, for example +265.</p></div>
           </div>
           <div><label for="website" class="mb-2 block font-semibold">Website (optional)</label><input id="website" name="website" type="url" autocomplete="url" placeholder="https://" class="w-full px-3 py-2" /></div>
-          <details class="rounded-lg border border-slate-200 p-4 sm:p-5"><summary class="min-h-[44px] cursor-pointer font-semibold text-primary-900">Add social profiles (optional)</summary><div class="mt-4 grid gap-6 sm:grid-cols-2">{socialFields.map(([id, label, placeholder]) => <div><label for={id} class="mb-2 block font-semibold">{label}</label><input type="url" id={id} name={id} placeholder={placeholder} class="w-full px-3 py-2" /></div>)}</div></details>
+          <details class="rounded border border-slate-200 p-4 sm:p-5"><summary class="min-h-[44px] cursor-pointer font-semibold text-primary-900">Add social profiles (optional)</summary><div class="mt-4 grid gap-6 sm:grid-cols-2">{socialFields.map(([id, label, placeholder]) => <div><label for={id} class="mb-2 block font-semibold">{label}</label><input type="url" id={id} name={id} placeholder={placeholder} class="w-full px-3 py-2" /></div>)}</div></details>
         </div>
       </fieldset>
       <fieldset class="form-section">

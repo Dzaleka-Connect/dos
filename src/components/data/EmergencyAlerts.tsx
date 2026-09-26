@@ -92,7 +92,7 @@ export function EmergencyAlerts() {
 
   if (error) {
     return (
-      <div className="text-center p-4 text-red-600 bg-red-50 rounded-lg">
+      <div className="text-center p-4 text-red-600 bg-red-50 rounded">
         <p>{error}</p>
       </div>
     );
@@ -113,7 +113,7 @@ export function EmergencyAlerts() {
         const body = alert.message || alert.description || '';
 
         return (
-          <div key={alert.id} className={`p-4 rounded-lg border ${variant.container}`}>
+          <div key={alert.id} className={`p-4 rounded border ${variant.container}`}>
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 {alert.type === 'critical' || alert.type === 'severe' ? (

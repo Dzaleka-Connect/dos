@@ -5,22 +5,22 @@
 <div class="analytics-display" id="analytics-display">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
     <!-- Summary Cards -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="bg-white rounded p-6">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Overview</h3>
       <div class="grid grid-cols-2 gap-4">
-        <div class="bg-blue-50 rounded-lg p-4">
+        <div class="bg-blue-50 rounded p-4">
           <p class="text-sm text-gray-600">Total Page Views</p>
           <p class="text-2xl font-bold text-blue-700" id="total-views">-</p>
         </div>
-        <div class="bg-green-50 rounded-lg p-4">
+        <div class="bg-green-50 rounded p-4">
           <p class="text-sm text-gray-600">Unique Visitors (Today)</p>
           <p class="text-2xl font-bold text-green-700" id="unique-visitors">-</p>
         </div>
-        <div class="bg-purple-50 rounded-lg p-4">
+        <div class="bg-purple-50 rounded p-4">
           <p class="text-sm text-gray-600">First Visit</p>
           <p class="text-md font-bold text-purple-700" id="first-visit">-</p>
         </div>
-        <div class="bg-orange-50 rounded-lg p-4">
+        <div class="bg-orange-50 rounded p-4">
           <p class="text-sm text-gray-600">Last Visit</p>
           <p class="text-md font-bold text-orange-700" id="last-visit">-</p>
         </div>
@@ -28,14 +28,14 @@
     </div>
 
     <!-- Visitor Trend Chart -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="bg-white rounded p-6">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Visitor Trend</h3>
       <canvas id="visitor-trend-chart" class="w-full h-64"></canvas>
     </div>
   </div>
 
   <!-- Popular Pages Table -->
-  <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+  <div class="bg-white rounded p-6 mb-8">
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Popular Pages</h3>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white">
@@ -58,7 +58,7 @@
   </div>
 
   <!-- Referrers Section -->
-  <div class="bg-white rounded-xl shadow-sm p-6">
+  <div class="bg-white rounded p-6">
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Top Referrers</h3>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white">
@@ -79,13 +79,13 @@
   </div>
 
   <!-- Note about data -->
-  <div class="mt-8 text-sm text-gray-500 bg-gray-50 rounded-lg p-4">
+  <div class="mt-8 text-sm text-gray-500 bg-gray-50 rounded p-4">
     <p>
       <strong>Note:</strong> This analytics data is stored locally in your browser using localStorage. 
       It does not track personal information and is not shared with any third parties.
     </p>
     <div class="mt-4 flex justify-end">
-      <button id="reset-analytics" class="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm">
+      <button id="reset-analytics" class="px-4 py-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-colors text-sm">
         Reset Analytics Data
       </button>
     </div>
@@ -206,10 +206,10 @@
       console.error('Error initializing analytics display:', error);
       // Show error message to user
       document.getElementById('analytics-display').innerHTML = `
-        <div class="bg-red-50 text-red-800 p-6 rounded-xl shadow-sm my-8">
+        <div class="bg-red-50 text-red-800 p-6 rounded my-8">
           <h3 class="text-xl font-semibold mb-4">Error loading analytics</h3>
           <p>There was a problem loading the analytics data. Try refreshing the page or resetting the analytics data.</p>
-          <button id="error-reset-analytics" class="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors">
+          <button id="error-reset-analytics" class="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors">
             Reset Analytics Data
           </button>
         </div>

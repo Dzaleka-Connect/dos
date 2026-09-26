@@ -111,9 +111,9 @@ export function StakeholdersSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {stakeholders.map((stakeholder, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 p-5">
+          <div key={index} className="bg-white rounded transition-shadow border border-gray-100 p-5">
             <div className="flex items-start gap-4">
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${
+              <div className={`w-12 h-12 rounded flex items-center justify-center shrink-0 ${
                 stakeholder.type === 'NGO' ? 'bg-blue-100 text-blue-600' :
                 stakeholder.type === 'Government' ? 'bg-green-100 text-green-600' :
                 stakeholder.type === 'UN' ? 'bg-blue-100 text-blue-700' :
@@ -173,7 +173,7 @@ export function StakeholdersSection() {
       <div className="text-center pt-4">
         <a 
           href="https://reporting.unhcr.org/operational/operations/malawi"
-          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded hover:bg-primary-700 transition-colors"
         >
           View All Stakeholders
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

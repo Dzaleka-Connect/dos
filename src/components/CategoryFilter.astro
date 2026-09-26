@@ -22,14 +22,14 @@ const getHref = (category: string | null) => {
 };
 ---
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+<div class="bg-white rounded border border-gray-100 p-4">
   <h2 class="text-lg font-semibold text-gray-900 mb-4">Categories</h2>
   <div class="space-y-2">
     <a
       href={getHref(null)}
-      class={`block px-3 py-2 rounded-lg transition-colors ${
-        !selected 
-          ? 'bg-primary-50 text-primary-700' 
+      class={`block px-3 py-2 rounded transition-colors ${
+        !selected
+          ? 'bg-primary-50 text-primary-700'
           : 'text-gray-700 hover:bg-gray-50'
       }`}
     >
@@ -41,9 +41,9 @@ const getHref = (category: string | null) => {
     {categories.map(category => (
       <a
         href={getHref(category)}
-        class={`block px-3 py-2 rounded-lg transition-colors ${
-          selected === category 
-            ? 'bg-primary-50 text-primary-700' 
+        class={`block px-3 py-2 rounded transition-colors ${
+          selected === category
+            ? 'bg-primary-50 text-primary-700'
             : 'text-gray-700 hover:bg-gray-50'
         }`}
       >

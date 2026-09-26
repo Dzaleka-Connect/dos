@@ -172,7 +172,7 @@ export default function LocationPickerMap({
 
       <div
         ref={mapContainerRef}
-        className="h-80 w-full rounded-xl border border-slate-300 bg-slate-100 shadow-inner overflow-hidden z-0"
+        className="h-80 w-full rounded border border-slate-300 bg-slate-100 shadow-inner overflow-hidden z-0"
         style={{ minHeight: '320px' }}
       />
 
@@ -189,7 +189,7 @@ export default function LocationPickerMap({
             value={coords.lat.toFixed(5)}
             onChange={handleManualLatChange}
             required
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 font-mono focus:border-sky-500 outline-none"
+            className="w-full rounded border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 font-mono focus:border-sky-500 outline-none"
           />
         </div>
         <div>
@@ -204,7 +204,7 @@ export default function LocationPickerMap({
             value={coords.lng.toFixed(5)}
             onChange={handleManualLngChange}
             required
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 font-mono focus:border-sky-500 outline-none"
+            className="w-full rounded border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 font-mono focus:border-sky-500 outline-none"
           />
         </div>
       </div>

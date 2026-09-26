@@ -140,11 +140,11 @@ export function InstagramStoriesViewer({ yearGroups }: Props) {
             <button
               key={group.year}
               onClick={() => openStory(idx)}
-              className="flex flex-col items-center gap-2 shrink-0 group focus:outline-none cursor-pointer"
+              className="flex flex-col items-center gap-2 shrink-0 group cursor-pointer"
               title={`View ${group.year} Story Highlights (${group.photos.length} photos)`}
             >
               {/* INSTAGRAM / BRAND GRADIENT RING WITH HOVER LIFT */}
-              <div className="relative p-[2.5px] rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-pink-600 shadow-xs group-hover:-translate-y-1 group-hover:shadow-md transition-all duration-200 ease-out">
+              <div className="relative p-[2.5px] rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-pink-600 group-hover:-translate-y-1 group-hover:shadow-md transition-all duration-200 ease-out">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-white bg-slate-900 overflow-hidden relative">
                   <img
                     src={coverPhoto?.image || '/images/dzaleka-hero.jpeg'}
@@ -179,7 +179,7 @@ export function InstagramStoriesViewer({ yearGroups }: Props) {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="relative w-full max-w-md h-full sm:h-[840px] sm:max-h-[92vh] sm:rounded-2xl bg-slate-950 overflow-hidden flex flex-col justify-between shadow-2xl border border-slate-800"
+            className="relative w-full max-w-md h-full sm:h-[840px] sm:max-h-[92vh] sm:rounded bg-slate-950 overflow-hidden flex flex-col justify-between shadow-2xl border border-slate-800"
           >
             
             {/* TOP PROGRESS BARS */}

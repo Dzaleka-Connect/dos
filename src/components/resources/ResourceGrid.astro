@@ -110,7 +110,7 @@ function getDownloadUrl(resource: any) {
   {resources.map(resource => {
     const downloadUrl = getDownloadUrl(resource);
     return (
-    <article class="group bg-white rounded   overflow-hidden flex flex-col border border-gray-200 hover:border-gray-300">
+    <article class="group bg-white rounded overflow-hidden flex flex-col border border-gray-200 hover:border-gray-300">
       <div class="relative">
         {resource.data.thumbnail ? (
           <div class="aspect-video w-full overflow-hidden">
@@ -124,7 +124,7 @@ function getDownloadUrl(resource: any) {
 
         <div class="flex flex-wrap gap-2 px-6 pt-4">
           {resource.data.fileType && (
-            <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium  ${getFileTypeColor(resource.data.fileType)}`}>
+            <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getFileTypeColor(resource.data.fileType)}`}>
               {resource.data.fileType}
             </span>
           )}
@@ -137,12 +137,12 @@ function getDownloadUrl(resource: any) {
             <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
               {resource.data.title}
             </h3>
-            <span class={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium mt-2 ${getCategoryColor(resource.data.category)}`}>
+            <span class={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium mt-2 ${getCategoryColor(resource.data.category)}`}>
               {resource.data.category}
             </span>
           </div>
           {resource.data.fileSize && (
-            <span class="text-sm font-medium text-gray-500 bg-gray-50 px-2 py-1 rounded-md">
+            <span class="text-sm font-medium text-gray-500 bg-gray-50 px-2 py-1 rounded">
               {resource.data.fileSize}
             </span>
           )}
@@ -176,7 +176,7 @@ function getDownloadUrl(resource: any) {
           <div class="flex items-center justify-between">
             <a
               href={downloadUrl}
-              class="inline-flex min-h-[44px] items-center justify-center px-4 py-2 border border-transparent rounded-md  text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors w-full"
+              class="inline-flex min-h-[44px] items-center justify-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors w-full"
               download
               target="_blank"
               rel="noopener noreferrer"
@@ -194,7 +194,7 @@ function getDownloadUrl(resource: any) {
           <div class="flex items-center justify-between">
             <a
               href={resource.data.resourceUrl}
-              class="inline-flex min-h-[44px] items-center justify-center px-4 py-2 border border-gray-300 rounded-md  text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors w-full"
+              class="inline-flex min-h-[44px] items-center justify-center px-4 py-2 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors w-full"
               target="_blank"
               rel="noopener noreferrer"
               onclick="event.stopPropagation();"

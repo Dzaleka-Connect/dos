@@ -115,7 +115,7 @@ export function FinanceWidget() {
         </p>
       </div>
 
-      {error ? <div className="text-xs text-amber-700 bg-amber-50 rounded-lg p-2">{error}</div> : null}
+      {error ? <div className="text-xs text-amber-700 bg-amber-50 rounded p-2">{error}</div> : null}
     </div>
   );
 }

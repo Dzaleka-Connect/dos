@@ -20,7 +20,7 @@ function formatLocation(location: any) {
 
 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
   {events.map(event => (
-    <article class="group relative flex h-full min-w-0 flex-col overflow-hidden rounded border border-gray-200 bg-white  transition-colors hover:border-gray-300">
+    <article class="group relative flex h-full min-w-0 flex-col overflow-hidden rounded border border-gray-200 bg-white transition-colors hover:border-gray-300">
       <a href={`/events/${event.id}`} class="flex min-w-0 flex-grow flex-col">
         <div class="aspect-w-16 aspect-h-9 relative overflow-hidden flex-shrink-0">
           <img onerror="this.onerror=null; this.src='/images/unavailable-image.svg'; this.alt='Image unavailable';"
@@ -30,7 +30,7 @@ function formatLocation(location: any) {
           />
           {/* Category badge */}
           <div class="absolute bottom-3 right-3 z-10 max-w-[calc(100%-1.5rem)]">
-            <span class="inline-flex w-fit max-w-full truncate rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-800 ">
+            <span class="inline-flex w-fit max-w-full truncate rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-800">
               {event.data.category}
             </span>
           </div>
@@ -38,7 +38,7 @@ function formatLocation(location: any) {
         <div class="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
           <div class="mb-3 flex min-w-0 flex-wrap items-center gap-2">
             <time datetime={event.data.date.toISOString()} class:list={[
-              'inline-flex w-fit max-w-full flex-none items-center rounded-md bg-gray-50 px-2.5 py-1 text-sm font-body',
+              'inline-flex w-fit max-w-full flex-none items-center rounded bg-gray-50 px-2.5 py-1 text-sm font-body',
               event.data.isTBA ? 'text-amber-700 font-medium' : 'text-gray-500'
             ]}>
               <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

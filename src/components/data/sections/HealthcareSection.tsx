@@ -144,7 +144,7 @@ export function HealthcareSection() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {healthcareData.map((service, index) => (
-          <div key={index} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+          <div key={index} className="p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-primary-600 font-medium">{service.name}</span>
               <span className="text-sm text-gray-500">({service.availability}%)</span>
