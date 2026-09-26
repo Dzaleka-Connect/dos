@@ -18,26 +18,16 @@ const activeStores = allStores
   });
 
 const storeTypes = [
-  { value: 'all', label: 'All businesses', icon: '🏪' },
-  { value: 'restaurant', label: 'Restaurants', icon: '🍽️' },
-  { value: 'cafe', label: 'Cafes', icon: '☕' },
-  { value: 'bakery', label: 'Bakeries', icon: '🥖' },
-  { value: 'grocery', label: 'Groceries', icon: '🛒' },
-  { value: 'retail', label: 'Retail', icon: '🛍️' },
-  { value: 'salon', label: 'Salons', icon: '💇' },
-  { value: 'workshop', label: 'Workshops', icon: '🔧' },
+  { value: 'all', label: 'All businesses' },
+  { value: 'restaurant', label: 'Restaurants' },
+  { value: 'cafe', label: 'Cafes' },
+  { value: 'bakery', label: 'Bakeries' },
+  { value: 'grocery', label: 'Groceries' },
+  { value: 'retail', label: 'Retail' },
+  { value: 'salon', label: 'Salons' },
+  { value: 'workshop', label: 'Workshops' },
 ];
 
-const typeIcons = {
-  restaurant: '🍽️',
-  cafe: '☕',
-  bakery: '🥖',
-  grocery: '🛒',
-  retail: '🛍️',
-  salon: '💇',
-  workshop: '🔧',
-  other: '🏪',
-};
 ---
 
 <MainLayout title={pageTitle} description={description} image={image} canonical="https://services.dzaleka.com/marketplace/stores">
@@ -53,7 +43,7 @@ const typeIcons = {
             <button
               data-filter={type.value}
               aria-pressed={type.value === 'all'}
-              class={`min-h-[44px] filter-btn whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition ${type.value === 'all' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              class={`min-h-[44px] filter-btn whitespace-nowrap rounded px-4 py-2 text-sm font-medium transition ${type.value === 'all' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
             >
               {type.label}
             </button>
@@ -88,8 +78,8 @@ const typeIcons = {
                     {store.data.coverImage ? (
                       <img src={store.data.coverImage} alt={store.data.name} class="h-full w-full object-cover" />
                     ) : (
-                      <div class="flex h-full items-center justify-center bg-gray-100 text-5xl">
-                        {typeIcons[store.data.type]}
+                      <div class="flex h-full items-center justify-center bg-gray-100">
+                        <svg class="h-12 w-12 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"/></svg>
                       </div>
                     )}
                   </div>

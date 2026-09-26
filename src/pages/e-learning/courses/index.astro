@@ -57,13 +57,13 @@ const levelColors = {
     </section>
 
     <!-- Filters -->
-    <section class="py-6 bg-white border-b border-gray-200 sticky top-24 lg:top-44 z-30 bg-white/95">
+    <section class="py-6 border-b border-gray-200 sticky top-24 lg:top-44 z-30 bg-white/95">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center gap-4">
           <div class="relative">
             <select
               id="categoryFilter" aria-label="Filter courses by category"
-              class="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md focus:ring-2 focus:ring-slate-500 focus:border-transparent text-gray-700 font-medium cursor-pointer hover:bg-gray-100 transition-colors"
+              class="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent text-gray-700 font-medium cursor-pointer hover:bg-gray-100 transition-colors"
             >
               {categories.map(cat => (
                 <option value={cat.value}>{cat.label}</option>
@@ -79,7 +79,7 @@ const levelColors = {
           <div class="relative">
             <select
               id="levelFilter" aria-label="Filter courses by level"
-              class="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md focus:ring-2 focus:ring-slate-500 focus:border-transparent text-gray-700 font-medium cursor-pointer hover:bg-gray-100 transition-colors"
+              class="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent text-gray-700 font-medium cursor-pointer hover:bg-gray-100 transition-colors"
             >
               <option value="all">All Levels</option>
               <option value="beginner">Beginner</option>
@@ -101,11 +101,10 @@ const levelColors = {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {publishedCourses.length === 0 ? (
           <div class="text-center py-20 bg-white border-y border-dashed border-gray-200">
-            <div class="text-6xl mb-6">📚</div>
             <h3 class="text-2xl font-bold text-gray-900 mb-3">No courses yet</h3>
-            <p class="text-gray-500 mb-8 max-w-md mx-auto">Be the first to share your knowledge with the community. Creating a course is easy!</p>
+            <p class="text-gray-500 mb-8 max-w-md mx-auto">If you teach something people in Dzaleka want to learn, you can submit a course.</p>
             <a href="/e-learning/courses/submit" class="min-h-[44px] inline-flex items-center bg-white text-slate-700 border border-slate-300 px-6 py-3 rounded font-semibold hover:bg-slate-50 transition-colors">
-              Start Creating
+              Submit a course
             </a>
           </div>
         ) : (
@@ -170,10 +169,9 @@ const levelColors = {
 
           <!-- No Results Message (Client-side) -->
           <div id="noResultsMessage" class="hidden text-center py-20">
-            <div class="text-4xl mb-4">🔍</div>
             <h3 class="text-xl font-bold text-gray-900 mb-2">No courses found</h3>
-            <p class="text-gray-500">Try adjusting your filters to find what you're looking for.</p>
-            <button id="clearFilters" class="min-h-[44px] mt-6 text-slate-700 font-medium hover:text-slate-700 hover:underline transition-colors">
+            <p class="text-gray-500">Try fewer filters or a different search.</p>
+            <button id="clearFilters" class="min-h-[44px] mt-6 text-slate-700 font-medium hover:underline">
               Clear all filters
             </button>
           </div>

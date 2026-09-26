@@ -7,16 +7,15 @@ const CLOUDINARY_UPLOAD_PRESET = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET
 ---
 
 <MainLayout title="Submit Your Voice - Community Voice">
-  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-16">
+  <div class="min-h-screen bg-gray-50 pb-16">
     <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
-      <div class="absolute inset-0 bg-grid-white/[0.1] bg-[length:16px_16px]"></div>
-      <div class="relative max-w-4xl mx-auto px-4 py-24 text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up">
+    <div class="bg-slate-900">
+      <div class="max-w-4xl mx-auto px-4 py-24 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
           Share Your Story
         </h1>
-        <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto animate-fade-in-up [animation-delay:200ms]">
-          Your voice matters. Share your experiences, stories, and perspectives with the Dzaleka community.
+        <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
+          Share your experiences, stories and views with the Dzaleka community.
         </p>
       </div>
     </div>
@@ -200,7 +199,7 @@ const CLOUDINARY_UPLOAD_PRESET = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET
                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
               <div class="flex text-sm text-gray-600">
-                <label for="image" class="relative cursor-pointer rounded-md font-medium text-slate-700 hover:text-slate-900 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-slate-500">
+                <label for="image" class="relative cursor-pointer rounded font-medium text-slate-700 hover:text-slate-900 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-slate-500">
                   <span>Upload a file</span>
                   <input id="image" name="image" type="file" class="sr-only" accept="image/*" />
                 </label>
@@ -231,38 +230,6 @@ const CLOUDINARY_UPLOAD_PRESET = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET
   </div>
 </MainLayout>
 
-<style>
-  .bg-grid-white {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  }
-
-  .animate-fade-in-up {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease-out forwards;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.1;
-    }
-    50% {
-      opacity: 0.2;
-    }
-  }
-</style>
 
 <script define:vars={{ CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET }}>
 function formatText(type) {

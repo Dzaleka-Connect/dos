@@ -15,10 +15,10 @@ const { Content } = await render(entry);
 
 // Determine style based on category
 const categoryStyles = {
-  'legislation': { icon: '⚖️', badge: 'bg-gray-100 text-gray-900 border-gray-200' },
-  'analysis': { icon: '📊', badge: 'bg-slate-100 text-slate-800 border-slate-200' },
-  'guide': { icon: '📘', badge: 'bg-gray-100 text-gray-800 border-gray-200' },
-  'resource': { icon: '🔗', badge: 'bg-slate-50 text-slate-700 border-slate-200' }
+  'legislation': { badge: 'bg-gray-100 text-gray-900 border-gray-200' },
+  'analysis': { badge: 'bg-slate-100 text-slate-800 border-slate-200' },
+  'guide': { badge: 'bg-gray-100 text-gray-800 border-gray-200' },
+  'resource': { badge: 'bg-slate-50 text-slate-700 border-slate-200' }
 };
 
 const style = categoryStyles[entry.data.category] || categoryStyles['resource'];
@@ -71,7 +71,7 @@ const schema = {
         <div class="max-w-4xl">
             <div class="flex items-center gap-3 mb-4">
                 <span class={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center border ${style.badge}`}>
-                 <span class="mr-2">{style.icon}</span> {entry.data.category}
+                 {entry.data.category}
                </span>
                {entry.data.date && (
                  <span class="text-gray-500 text-sm">
