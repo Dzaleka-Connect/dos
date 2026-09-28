@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import CollectionHeader from '../ui/CollectionHeader.astro';
+import FeatureHeader from '../ui/FeatureHeader.astro';
+import Pagination from '../ui/Pagination.astro';
+import ServiceLogo from './ServiceLogo.astro';
+import { getServiceDirectory, serviceCategorySlug } from '../../utils/serviceDirectory';
+
+interface Props { services: CollectionEntry<'services'>[]; params: URLSearchParams; categoryPage?: string; }
+const { services, params, categoryPage } = Astro.props;
+const results = getServiceDirectory(services, params);
+const categories = [...new Set(services.map(service => service.data.category))].sort();
+const title = categoryPage || 'Find a service in Dzaleka';
+const description = 'Organizations, schools, clinics, community groups and businesses in and around Dzaleka.';
+const pageUrl = categoryPage ? `/services/category/${serviceCategorySlug(categoryPage)}` : '/services';
+---
+<MainLayout title={title} description={description}>
+  {!categoryPage && !results.query && !results.category && results.currentPage === 1 ? <FeatureHeader
+    title={title} description={description} eyebrow="Services directory"
+    image="/images/dzaleka-hero.jpeg" imageAlt="Homes, community buildings and the football ground in Dzaleka"
+    action={{ label: 'Find a service', href: '#service-search' }} secondary={{ label: 'Register a service', href: '/services/register' }}
+    breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Services' }]} /> : <CollectionHeader title={title} description={description}
+    breadcrumbs={[{ label: 'Home', href: '/' }, ...(categoryPage ? [{ label: 'Services', href: '/services' }, { label: categoryPage }] : [{ label: 'Services' }])]}
+    action={{ label: 'Register a service', href: '/services/register' }} />}
+  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <form action="/services" method="get" role="search" aria-label="Services directory" class="rounded border border-slate-200 bg-slate-50 p-4 sm:p-5">
+      <div class="grid items-end gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1fr)_auto]">
+        <div class="min-w-0"><label for="service-search" class="mb-2 block text-sm font-semibold text-slate-900">Search services</label><input id="service-search" type="search" name="q" value={results.query} placeholder="Name, service or keyword" class="w-full rounded border-slate-400" /></div>
+        <div class="min-w-0"><label for="service-category" class="mb-2 block text-sm font-semibold text-slate-900">Category</label><select id="service-category" name="category" class="w-full rounded border-slate-400"><option value="">All categories</option>{categories.map(category => <option value={category} selected={category === results.category}>{category}</option>)}</select></div>
+        <div class="min-w-0"><label for="service-sort" class="mb-2 block text-sm font-semibold text-slate-900">Sort by</label><select id="service-sort" name="sort" class="w-full rounded border-slate-400"><option value="featured" selected={results.sort === 'featured'}>Featured first</option><option value="name" selected={results.sort === 'name'}>Name (A–Z)</option><option value="newest" selected={results.sort === 'newest'}>Recently updated</option></select></div>
+        <button type="submit" class="min-h-[44px] rounded bg-primary-900 px-6 py-2 text-sm font-medium text-white hover:bg-primary-800">Search</button>
+      </div>
+    </form>
+
+    <section class="mt-8" aria-labelledby="service-results">
+      <div class="mb-2 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
+        <div class="min-w-0 max-w-full"><h2 id="service-results" class="break-words text-xl text-primary-900">{results.total} {results.total === 1 ? 'service' : 'services'}{results.query && ` matching “${results.query}”`}</h2>
+          {results.total > 0 && <p class="mt-1 text-sm text-slate-600">Showing {results.start + 1}–{results.start + results.entries.length} of {results.total}</p>}
+        </div>
+        {(results.query || results.category) && <a href="/services" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Clear filters</a>}
+      </div>
+      <ul class="grid gap-x-10 sm:grid-cols-2">
+        {results.entries.map(service => <li class="min-w-0 border-b border-slate-200 py-6">
+          <article class="flex items-start gap-4">
+            <ServiceLogo title={service.data.title} logo={service.data.logo} />
+            <div class="min-w-0 flex-1">
+              <p class="text-sm text-slate-600">{service.data.category}</p>
+              <h3 class="mt-1 text-xl leading-7"><a href={`/services/${service.id}`} class="text-primary-800 underline underline-offset-4 hover:text-primary-900">{service.data.title}</a></h3>
+              <p class="mt-3 text-sm leading-6 text-slate-700">{service.data.description}</p>
+              {service.data.location?.address && <p class="mt-3 text-sm text-slate-500">{service.data.location.address}</p>}
+              {service.data.status === 'inactive' && <p class="mt-2 text-sm font-medium text-amber-800">Listed as inactive</p>}
+            </div>
+          </article>
+        </li>)}
+      </ul>
+      {results.total === 0 && <p class="py-8 text-slate-700">No services match these filters. Try another name or keyword, or choose all categories.</p>}
+      {results.totalPages > 1 && <div class="mt-6"><Pagination currentPage={results.currentPage} totalPages={results.totalPages} baseUrl="/services" searchParams={results.searchParams} /></div>}
+    </section>
+
+    <details class="mt-10 border-y border-slate-200 py-4">
+      <summary class="cursor-pointer py-2 font-semibold text-primary-900">Browse all categories</summary>
+      <ul class="mt-3 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">{categories.map(category => <li><a href={`/services/category/${serviceCategorySlug(category)}`} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{category}</a></li>)}</ul>
+    </details>
+    <p class="mt-5 text-sm"><a href="/services/stats" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Services directory statistics</a></p>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: title, url: `https://services.dzaleka.com${pageUrl}`, itemListElement: results.entries.map((service, index) => ({ '@type': 'ListItem', position: results.start + index + 1, name: service.data.title, url: `https://services.dzaleka.com/services/${service.id}` })) })} />
+</MainLayout>

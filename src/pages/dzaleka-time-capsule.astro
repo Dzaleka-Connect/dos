@@ -1,985 +1,192 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import { format } from 'date-fns';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
 
-// Comprehensive SEO metadata
-const seo = {
-  title: 'Dzaleka Time Capsule - Complete Historical Archive of Dzaleka Refugee Camp (1964-Present)',
-  description: 'Explore the complete history of Dzaleka Refugee Camp from its origins as a political prison during Hastings Banda\'s regime to its transformation into a refugee settlement. Includes historical documents, first-person accounts, population data and cultural records.',
-  image: '/images/dzaleka-hero.jpeg',
-  keywords: [
-    'Dzaleka History',
-    'Dzaleka Refugee Camp',
-    'Dzaleka Historical Archive',
-    'Malawi Political Prison',
-    'Hastings Banda Regime',
-    'Jehovah\'s Witnesses Persecution',
-    'Refugee History Malawi',
-    'Malawi History 1964 to 1994',
-    'Dzaleka Political Prison',
-    'Refugee Camp Transformation',
-    'Dzaleka Population Growth',
-    'Tumaini Festival Dzaleka',
-    'Refugee Community Development',
-    'Malawi Refugee History',
-    'Dzaleka Time Capsule',
-    'Historical Documents Dzaleka',
-    'Refugee Testimonies',
-    'Dzaleka Cultural Achievements',
-    'Malawi Refugee Camp History',
-    'Dzaleka Historical Timeline',
-    'Refugee Settlement History',
-    'Dzaleka Community Archive',
-    'Malawi Political History',
-    'Refugee Rights History',
-    'Dzaleka Historical Research',
-    'Refugee Camp Evolution',
-    'Dzaleka Historical Records',
-    'Malawi Refugee Policy',
-    'Dzaleka Historical Documentation',
-    'Refugee Community Building'
-  ].join(', '),
-  type: 'article',
-  publishedDate: '2024-12-19',
-  modifiedDate: new Date().toISOString().split('T')[0],
-  author: 'Dzaleka Online Services',
-  publisher: 'Dzaleka Online Services',
-  section: 'History',
-  tags: ['Dzaleka', 'Refugee Camp', 'History', 'Malawi', 'Political Prison', 'Refugee Rights', 'Cultural Heritage', 'Historical Archive'],
-  canonical: 'https://services.dzaleka.com/dzaleka-time-capsule',
-  ogType: 'article',
-  twitterCard: 'summary_large_image',
-  twitterCreator: '@dzalekaconnect',
-  twitterSite: '@dzalekaconnect'
-};
-
-// Structured data for rich snippets
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Dzaleka Time Capsule - Complete Historical Archive of Dzaleka Refugee Camp (1964-Present)",
-  "description": seo.description,
-  "image": {
-    "@type": "ImageObject",
-    "url": "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
-    "width": 1200,
-    "height": 630,
-    "creator": {
-      "@type": "Organization",
-      "name": "Dzaleka Online Services"
-    },
-    "creditText": "Dzaleka Online Services",
-    "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services`,
-    "license": "https://services.dzaleka.com/terms",
-    "acquireLicensePage": "https://services.dzaleka.com/contact"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "Dzaleka Online Services",
-    "url": "https://services.dzaleka.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Dzaleka Online Services",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://services.dzaleka.com/images/logo.png",
-      "creator": {
-        "@type": "Organization",
-        "name": "Dzaleka Online Services"
+const description = 'Documents, personal accounts and photographs tracing Dzaleka from political prison to refugee settlement.';
+const periods = [
+  { id: 'origins', dates: '1964–1994', title: 'Political prison', summary: 'Detention under Hastings Kamuzu Banda' },
+  { id: 'transition', dates: '1994–2000', title: 'A refugee camp opens', summary: 'Arrival, resettlement and early accounts' },
+  { id: 'refugee-era', dates: '2000 onwards', title: 'Community life', summary: 'Population growth, organisations and culture' },
+];
+const archiveRecords = [
+  {
+    "id": "origins",
+    "records": [
+      {
+        "title": "State Department Cable",
+        "excerpt": "In the Dzaleka detention camp near Dowa, north of Lilongwe, there are now over 3,000 male witnesses who have been incarcerated for a two-year period.",
+        "source": "State Department Cable 1976-135342",
+        "year": "1976"
       },
-      "creditText": "Dzaleka Online Services",
-      "copyrightNotice": `© ${new Date().getFullYear()} Dzaleka Online Services`,
-      "license": "https://services.dzaleka.com/terms",
-      "acquireLicensePage": "https://services.dzaleka.com/contact"
-    }
+      {
+        "title": "Africa Contemporary Record",
+        "excerpt": "Grim conditions prevail at Dzaleka. A report smuggled from the camp in April 1976 said 70 people had died there—65 of them children.",
+        "source": "Africa Contemporary Record, Annual Survey and Documents, 1978",
+        "year": "1978"
+      },
+      {
+        "title": "Jehovah's Witnesses Yearbook",
+        "excerpt": "At the beginning of the service year, hundreds of our Malawi brothers were still in detention at Dzaleka, a camp in the north of the country, which had previously been used for political detainees.",
+        "source": "1978 Yearbook of Jehovah's Witnesses",
+        "year": "1978"
+      }
+    ]
   },
-  "datePublished": seo.publishedDate,
-  "dateModified": seo.modifiedDate,
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": seo.canonical
+  {
+    "id": "transition",
+    "records": [
+      {
+        "title": "Personal Testimony: Joseph Ndereyimana",
+        "excerpt": "On 23rd December 1995, we were taken to the Dzaleka Refugee Centre, outside Dowa. We were feeling happy in the hope that we might meet up with people we knew, and even hear news of our families whom we had left behind in Kashusha.",
+        "source": "\"Walk this way: the journey of a Rwandan refugee\" (1999)",
+        "year": "1995"
+      },
+      {
+        "title": "Camp Organization",
+        "excerpt": "Dzaleka Centre was organised so that people of each nationality had their own accommodation. For example, there was a single men's dormitory for the Rwandans, one for the Zaireans, one for the Somalis and so on.",
+        "source": "Personal testimony, Joseph Ndereyimana",
+        "year": "1995"
+      },
+      {
+        "title": "Initial Population",
+        "excerpt": "At the outset, there were only about one hundred and fifty refugees in this well-equipped centre: families were accommodated in houses while there were dormitories for the singles.",
+        "source": "\"Walk this way: the journey of a Rwandan refugee\" (1999)",
+        "year": "1995"
+      }
+    ]
   },
-  "keywords": seo.keywords,
-  "articleSection": "History",
-  "inLanguage": "en",
-  "isAccessibleForFree": true,
-  "speakable": {
-    "@type": "SpeakableSpecification",
-    "cssSelector": ["h1", "h2", "h3", "p"]
+  {
+    "id": "refugee-era",
+    "records": [
+      {
+        "title": "State Department Cable",
+        "excerpt": "The Dzaleka camp covers 201 hectares and UNHCR estimates it can hold a maximum of 9300 people. Once all refugees are relocated it will have a population approaching 8800 people and continues to get a steady stream of new refugees from the Congo.",
+        "source": "State Department Cable 07LILONGWE803",
+        "year": "2007"
+      },
+      {
+        "title": "Academic Research",
+        "excerpt": "This study inquired into the nature of identity among refugee youth living at Dzaleka Refugee Camp in Malawi. Aged between eighteen and twenty-four, the sample comprised of twenty-two female and thirty-eight male participants, from Burundi, the Democratic Republic of Congo, Rwanda, and Somalia.",
+        "source": "Refugee Youth Identity Formation at Dzaleka Refugee Camp (2023)",
+        "year": "2023"
+      },
+      {
+        "title": "Food Security Study",
+        "excerpt": "Food security and dietary diversity surveys were conducted with 300 women living in Dzaleka camp, Malawi. Ninety-one percent of women had severe food insecurity and women only ate on average 2–3 food groups the previous day.",
+        "source": "Food insecurity and dietary diversity among women living in Dzaleka refugee camp, Malawi (2025)",
+        "year": "2025"
+      }
+    ]
   }
-};
-
-// Additional structured data for historical place
-const placeStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "Place",
-  "name": "Dzaleka Refugee Camp",
-  "alternateName": "Dzaleka",
-  "description": "A refugee camp in Malawi that was originally a political prison during the Hastings Banda regime (1964 to 1994) and later transformed into a refugee settlement.",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Dowa",
-    "addressRegion": "Central Region",
-    "addressCountry": "MW"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": -13.7167,
-    "longitude": 33.9333
-  },
-  "hasMap": "https://maps.google.com/?q=Dzaleka+Refugee+Camp,+Malawi",
-  "sameAs": [
-    "https://en.wikipedia.org/wiki/Dzaleka_Refugee_Camp",
-    "https://www.unhcr.org/countries/malawi"
-  ]
-};
-
-// Breadcrumb structured data
-const breadcrumbStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://services.dzaleka.com"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "History",
-      "item": "https://services.dzaleka.com/data"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Dzaleka Time Capsule",
-      "item": seo.canonical
-    }
-  ]
+];
+const schema = {
+  '@context': 'https://schema.org', '@type': 'Article',
+  headline: 'Dzaleka Time Capsule', description,
+  image: 'https://services.dzaleka.com/images/encyclopedia/entrance-sign.jpg',
+  author: { '@type': 'Organization', name: 'Dzaleka Online Services' },
+  mainEntityOfPage: 'https://services.dzaleka.com/dzaleka-time-capsule',
 };
 ---
-
-<MainLayout
-  title={seo.title}
-  description={seo.description}
-  image={seo.image}
-  keywords={seo.keywords}
-  type={seo.type}
-  publishedDate={seo.publishedDate}
-  modifiedDate={seo.modifiedDate}
-  author={seo.author}
-  publisher={seo.publisher}
-  section={seo.section}
-  tags={seo.tags}
-  canonical={seo.canonical}
-  ogType={seo.ogType}
-  twitterCard={seo.twitterCard}
-  twitterCreator={seo.twitterCreator}
-  twitterSite={seo.twitterSite}
-  structuredData={[structuredData, placeStructuredData, breadcrumbStructuredData]}
->
-  <div class="bg-white">
-    <!-- Hero Section -->
-    <div class="relative bg-black text-white py-24 overflow-hidden">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, white 2px, transparent 2px), radial-gradient(circle at 75% 75%, white 2px, transparent 2px); background-size: 50px 50px;"></div>
-      </div>
-
-      <div class="relative container mx-auto px-4 text-center">
-        <div class="max-w-3xl mx-auto">
-          <div class="inline-block mb-8">
-            <div class="w-16 h-1 bg-white mx-auto mb-4"></div>
-            <span class="text-sm uppercase tracking-wider text-white/70">Historical Archive</span>
+<MainLayout title="Dzaleka Time Capsule" description={description} image="/images/encyclopedia/entrance-sign.jpg" schema={schema}>
+  <div class="history-page">
+    <header class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Dzaleka Time Capsule' }]} />
+        <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-16">
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-primary-700">History and memory</p>
+            <h1 class="mt-3 text-primary-900">Dzaleka Time Capsule</h1>
+            <p class="mt-4 max-w-xl text-lg leading-8 text-slate-700">{description}</p>
+            <nav class="mt-8" aria-label="Historical periods">
+              <ol class="border-t border-slate-300">
+                {periods.map(period => <li class="border-b border-slate-300">
+                  <a href={`#${period.id}`} class="group grid gap-1 py-4 sm:grid-cols-[8rem_1fr] sm:gap-4">
+                    <span class="text-sm font-semibold tabular-nums text-primary-800">{period.dates}</span>
+                    <span><span class="font-semibold text-slate-900 underline-offset-4 group-hover:underline">{period.title} <span aria-hidden="true">↓</span></span><span class="mt-1 block text-sm leading-6 text-slate-600">{period.summary}</span></span>
+                  </a>
+                </li>)}
+              </ol>
+            </nav>
           </div>
-
-          <h1 class="text-4xl md:text-6xl font-light mb-8 leading-tight">
-            Dzaleka<br>
-            <span class="font-bold">Time Capsule</span>
-          </h1>
-
-          <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Records, accounts and photographs of the site, from political prison to refugee camp
-          </p>
-
-          <div class="flex flex-wrap justify-center gap-6 text-sm">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 bg-white/60 rounded-full"></div>
-              <span class="text-white/70">1964 to 1994</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 bg-white/60 rounded-full"></div>
-              <span class="text-white/70">1994 to 2000</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 bg-white/60 rounded-full"></div>
-              <span class="text-white/70">2000-Present</span>
-            </div>
-          </div>
+          <figure class="m-0 self-start">
+            <img src="/images/encyclopedia/entrance-sign.jpg" alt="The entrance sign and gateway at Dzaleka Refugee Camp" width="1200" height="1600" fetchpriority="high" class="mx-auto max-h-[27rem] w-auto max-w-full rounded" />
+            <figcaption class="mt-3 text-sm leading-6 text-slate-600">The entrance to Dzaleka Refugee Camp.<br />Dzaleka Online Services archive.</figcaption>
+          </figure>
         </div>
       </div>
+    </header>
+
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="border-b border-slate-200 py-5 text-sm leading-6 text-slate-600">This collection includes accounts of imprisonment, persecution and loss, and may name people who have died.</p>
+      {periods.map((period, index) => <section id={period.id} aria-labelledby={`${period.id}-title`} class="history-period grid gap-5 border-b border-slate-200 py-10 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-12 lg:py-14">
+        <div class="lg:border-r lg:border-slate-200 lg:pr-6">
+          <p class="text-sm text-slate-500">{String(index + 1).padStart(2, '0')}</p>
+          <p class="mt-2 text-2xl font-semibold tabular-nums text-primary-900">{period.dates}</p>
+        </div>
+        <div class="min-w-0">
+          <h2 id={`${period.id}-title`} class="text-2xl text-primary-900 sm:text-3xl">{period.title}</h2>
+          {period.id === 'origins' && <div class="history-copy mt-5 max-w-3xl">
+            <p>Before it became a refugee camp, Dzaleka was a political detention facility during the presidency of Hastings Kamuzu Banda. Political dissidents and religious minorities were held there.</p>
+            <p>The records below describe the imprisonment of Jehovah’s Witnesses who refused to join the Malawi Congress Party, forced labour and conditions in the camp during the 1970s.</p>
+          </div>}
+          {period.id === 'transition' && <div class="history-copy mt-5 max-w-3xl">
+            <p>The Government of Malawi and UNHCR established Dzaleka as a refugee camp in 1994, as conflicts displaced people across Rwanda, Burundi and the Democratic Republic of the Congo.</p>
+            <p>Joseph Ndereyimana’s account records his arrival in December 1995, the accommodation arrangements and the small number of residents in the centre’s early years.</p>
+            <p>The name Dzaleka comes from the Chichewa expression “N’dzaleka”, commonly translated as “I will not do it again”.</p>
+          </div>}
+          {period.id === 'refugee-era' && <>
+            <div class="history-copy mt-5 max-w-3xl">
+              <p>Dzaleka developed into a long-term settlement. Residents established businesses, schools, faith communities, cultural groups and refugee-led organisations.</p>
+              <p>In 2007, the closure of Luwani camp brought approximately 3,000 people to Dzaleka. The population continued to grow, increasing pressure on housing, schools and health services. <a href="/encyclopedia/history-of-dzaleka">Read the history and its sources</a>.</p>
+            </div>
+            <figure class="mt-7 overflow-hidden rounded border border-slate-200">
+              <img src="/images/tumaini_festival_cover.jpeg" alt="Crowds gathered around the stage at Tumaini Festival" width="960" height="540" loading="lazy" class="max-h-80 w-full object-cover" />
+              <figcaption class="bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-700"><a href="/encyclopedia/tumaini-festival" class="font-semibold text-primary-800 underline underline-offset-4">Tumaini Festival</a>, founded in 2014 by Trésor Nzengu Mpauni, known as Menes la Plume, brings residents, Malawian communities and visiting artists together.</figcaption>
+            </figure>
+            <div class="mt-7 max-w-3xl">
+              <h3 class="text-lg font-semibold text-slate-900">Population in the records</h3>
+              <dl class="mt-3 divide-y divide-slate-200 border-y border-slate-200 text-sm">
+                <div class="grid grid-cols-[6rem_1fr] gap-4 py-3"><dt class="font-semibold">1995</dt><dd>About 150 residents at the outset, in Joseph Ndereyimana’s account.</dd></div>
+                <div class="grid grid-cols-[6rem_1fr] gap-4 py-3"><dt class="font-semibold">2007</dt><dd>About 5,000 before the Luwani transfer; more than 8,000 afterwards.</dd></div>
+                <div class="grid grid-cols-[6rem_1fr] gap-4 py-3"><dt class="font-semibold">End of 2024</dt><dd>More than 52,000 residents, reported by UNHCR.</dd></div>
+              </dl>
+              <p class="mt-3 text-sm text-slate-600">These are dated records. See <a href="/encyclopedia/population-and-demography" class="text-primary-800 underline underline-offset-4">population and demography</a> for sources and context.</p>
+            </div>
+          </>}
+          <div class="mt-7 rounded border border-slate-200 bg-slate-50 px-5 sm:px-6">
+            <h3 class="py-5 text-lg font-semibold text-slate-900">{period.id === 'transition' ? 'Personal accounts' : 'From the records'}</h3>
+            {archiveRecords.find(era => era.id === period.id)?.records.map(record => <details class="border-t border-slate-200">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-primary-900"><span><span class="mr-3 text-sm font-medium text-slate-600">{record.year}</span><span class="font-semibold">{record.title}</span></span><span class="record-toggle shrink-0 text-lg" aria-hidden="true">+</span></summary>
+              <div class="pb-5"><blockquote class="max-w-3xl border-l-2 border-primary-600 pl-4 text-base leading-7 text-slate-800">“{record.excerpt}”</blockquote><p class="mt-3 text-sm leading-6 text-slate-600">Source: {record.source}</p></div>
+            </details>)}
+          </div>
+        </div>
+      </section>)}
     </div>
 
-    <!-- Timeline Navigation -->
-    <div class="bg-white border-b sticky top-24 lg:top-44 z-10">
-      <div class="container mx-auto px-4 py-6">
-        <div class="flex justify-center space-x-8">
-          <a href="#origins" class="text-sm font-medium text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-colors pb-2">
-            Origins
-          </a>
-          <a href="#transition" class="text-sm font-medium text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-colors pb-2">
-            Transition
-          </a>
-          <a href="#refugee-era" class="text-sm font-medium text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-colors pb-2">
-            Refugee Era
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Origins Section -->
-    <section id="origins" class="py-20 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto">
-          <div class="text-center mb-16">
-            <div class="inline-block mb-4">
-              <span class="text-sm uppercase tracking-wider text-gray-500">1964 to 1994</span>
-            </div>
-            <h2 class="text-3xl md:text-5xl font-light mb-6">
-              Origins:<br>
-              <span class="font-bold">Political Prison Era</span>
-            </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-              The dark chapter of Dzaleka as a detention center during the presidency of Hastings Kamuzu Banda
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Political Prison Facility</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                  Dzaleka was specifically chosen as a political prison due to its colder climate, where prisoners were not accustomed to the weather and were denied basic comforts like blankets.
-                </p>
-                <ul class="space-y-3 text-gray-600">
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Capacity: Up to 6,000 inmates</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Harsh conditions and forced labor</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Sisal fiber production for fabric industry</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Political dissidents and religious minorities</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Jehovah's Witnesses Persecution</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                  The facility became notorious for the imprisonment of Jehovah's Witnesses who refused to join the Malawi Congress Party.
-                </p>
-                <ul class="space-y-3 text-gray-600">
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Over 3,000 male Witnesses imprisoned</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Women held in separate camps</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Forced labor and torture reported</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Children died from malnutrition</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Historical Documents -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Historical Documents</h3>
-              <p class="text-gray-600">Primary sources from 1976 to 1978</p>
-            </div>
-
-            <div class="space-y-8">
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1976</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">State Department Cable</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "In the Dzaleka detention camp near Dowa, north of Lilongwe, there are now over 3,000 male witnesses who have been incarcerated for a two-year period."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: State Department Cable 1976-135342</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1978</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Africa Contemporary Record</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "Grim conditions prevail at Dzaleka. A report smuggled from the camp in April 1976 said 70 people had died there—65 of them children."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: Africa Contemporary Record, Annual Survey and Documents, 1978</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1978</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Jehovah's Witnesses Yearbook</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "At the beginning of the service year, hundreds of our Malawi brothers were still in detention at Dzaleka, a camp in the north of the country, which had previously been used for political detainees."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: 1978 Yearbook of Jehovah's Witnesses</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <section aria-labelledby="history-contribute" class="bg-primary-50">
+      <div class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
+        <div><h2 id="history-contribute" class="text-2xl text-primary-900">Add to the community archive</h2><p class="mt-4 max-w-xl leading-7 text-slate-700">Share photographs, documents or a personal account of life in Dzaleka. Include the date, names and source where known.</p><p class="mt-3 text-sm leading-6 text-slate-600">Digital material only. For help with an upload, contact <a href="mailto:bakari@mail.dzaleka.com" class="text-primary-800 underline underline-offset-4">bakari@mail.dzaleka.com</a>.</p></div>
+        <ul class="divide-y divide-primary-200 border-y border-primary-200">
+          <li><a href="/photos/submit" class="block py-4 font-semibold text-primary-900 underline underline-offset-4">Share a photograph</a></li>
+          <li><a href="/resources/submit" class="block py-4 font-semibold text-primary-900 underline underline-offset-4">Submit a document or record</a></li>
+          <li><a href="/submit-voice" class="block py-4 font-semibold text-primary-900 underline underline-offset-4">Share a personal story</a></li>
+        </ul>
       </div>
     </section>
-
-    <!-- Transition Section -->
-    <section id="transition" class="py-20 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto">
-          <div class="text-center mb-16">
-            <div class="inline-block mb-4">
-              <span class="text-sm uppercase tracking-wider text-gray-500">1994 to 2000</span>
-            </div>
-            <h2 class="text-3xl md:text-5xl font-light mb-6">
-              Transition:<br>
-              <span class="font-bold">From Prison to Refugee Camp</span>
-            </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-              The transformation following the end of Banda's regime and the establishment of refugee services
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">End of Banda Era</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                  With the fall of Hastings Kamuzu Banda's regime in 1994, the political prison was closed and the facility was repurposed.
-                </p>
-                <ul class="space-y-3 text-gray-600">
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Democratic transition in Malawi</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Closure of political detention facilities</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>International pressure for reform</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>UNHCR involvement begins</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Refugee Camp Establishment</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                  The facility was officially established as a refugee camp by the Government of Malawi and UNHCR in 1994.
-                </p>
-                <ul class="space-y-3 text-gray-600">
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Initial capacity: 10,000-12,000 people</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Refugees from Great Lakes region</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Burundi, Rwanda, DRC conflicts</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Humanitarian infrastructure development</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Early Refugee Period Documentation -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Early refugee period</h3>
-              <p class="text-gray-600">Personal testimonies from 1995 to 1996</p>
-            </div>
-
-            <div class="space-y-8">
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1995</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Personal Testimony: Joseph Ndereyimana</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "On 23rd December 1995, we were taken to the Dzaleka Refugee Centre, outside Dowa. We were feeling happy in the hope that we might meet up with people we knew, and even hear news of our families whom we had left behind in Kashusha."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: "Walk this way: the journey of a Rwandan refugee" (1999)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1995</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Camp Organization</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "Dzaleka Centre was organised so that people of each nationality had their own accommodation. For example, there was a single men's dormitory for the Rwandans, one for the Zaireans, one for the Somalis and so on."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: Personal testimony, Joseph Ndereyimana</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">1995</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Initial Population</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "At the outset, there were only about one hundred and fifty refugees in this well-equipped centre: families were accommodated in houses while there were dormitories for the singles."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: "Walk this way: the journey of a Rwandan refugee" (1999)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Name Origin -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">The Name "Dzaleka"</h3>
-              <p class="text-gray-600">Meaning and significance</p>
-            </div>
-
-            <div class="max-w-3xl mx-auto">
-              <p class="text-lg text-gray-700 mb-8 leading-relaxed">
-                The name Dzaleka comes from the Chichewa phrase "N'dzaleka," meaning "I will never do it again." This name carries profound significance, representing both the hope for a better future and the acknowledgment of past suffering.
-              </p>
-              <div class="border-l-4 border-gray-400 pl-8">
-                <blockquote class="text-gray-700 italic text-lg">
-                  "The name serves as a reminder of the transformation from a place of oppression to a place of refuge and hope."
-                </blockquote>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Refugee Era Section -->
-    <section id="refugee-era" class="py-20 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto">
-          <div class="text-center mb-16">
-            <div class="inline-block mb-4">
-              <span class="text-sm uppercase tracking-wider text-gray-500">2000-Present</span>
-            </div>
-            <h2 class="text-3xl md:text-5xl font-light mb-6">
-              Refugee Era:<br>
-              <span class="font-bold">Community Development</span>
-            </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-              How residents built businesses, schools and cultural groups in the camp
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Population Growth</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                  From its initial capacity, Dzaleka now accommodates over 52,000 refugees and asylum seekers.
-                </p>
-                <ul class="space-y-3 text-gray-600">
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Democratic Republic of Congo: 62%</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Burundi: 19%</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Rwanda: 7%</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Other nationalities: 12%</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="space-y-6">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Community Development</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed">
-                  Residents have set up businesses, schools and cultural groups in the camp.
-                </p>
-                <ul class="space-y-3 text-gray-600">
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Tumaini Festival (founded 2014)</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Refugee-led organizations</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Educational institutions</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-1.5 h-1.5 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Cultural preservation</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Population Timeline -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Population Timeline</h3>
-              <p class="text-gray-600">Growth over the years</p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <div class="text-center">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-xl font-bold text-gray-700">150</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">1995</div>
-                <div class="text-xs text-gray-500">Initial refugees</div>
-              </div>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-xl font-bold text-gray-700">5,000</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">2007</div>
-                <div class="text-xs text-gray-500">Before Luwani closure</div>
-              </div>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-xl font-bold text-gray-700">8,800</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">2007</div>
-                <div class="text-xs text-gray-500">After Luwani closure</div>
-              </div>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-xl font-bold text-gray-700">52,000+</span>
-                </div>
-                <div class="text-sm font-medium text-gray-900">Present</div>
-                <div class="text-xs text-gray-500">Current population</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cultural Achievements -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Cultural Achievements</h3>
-              <p class="text-gray-600">Notable accomplishments and initiatives</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12">
-              <div class="border-l-4 border-gray-300 pl-8">
-                <h4 class="text-xl font-bold text-gray-900 mb-4">Tumaini Festival</h4>
-                <p class="text-gray-700 mb-4 leading-relaxed">
-                  Founded by Congolese refugee Trésor Nzengu Mpauni, this annual arts and cultural event has reached an estimated 40 million people worldwide.
-                </p>
-                <span class="text-sm text-gray-500">Established: 2014</span>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <h4 class="text-xl font-bold text-gray-900 mb-4">Community Organizations</h4>
-                <p class="text-gray-700 mb-4 leading-relaxed">
-                  Refugee-led initiatives including There is Hope, RELON Malawi, and various cultural groups have transformed the camp's narrative.
-                </p>
-                <span class="text-sm text-gray-500">Ongoing Development</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Current Challenges -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Current Challenges</h3>
-              <p class="text-gray-600">Ongoing issues facing the community</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12">
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h4 class="text-xl font-bold text-gray-900 mb-4">Overcrowding</h4>
-                <p class="text-gray-700 leading-relaxed">
-                  The camp now houses over four times its original intended capacity, leading to resource strain and infrastructure challenges.
-                </p>
-              </div>
-
-              <div class="border-l-4 border-gray-800 pl-8">
-                <h4 class="text-xl font-bold text-gray-900 mb-4">Human Trafficking</h4>
-                <p class="text-gray-700 leading-relaxed">
-                  In 2022, UNODC and Malawian Police uncovered widespread exploitation networks operating within the camp, leading to ongoing efforts to dismantle these operations.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contemporary Documentation -->
-          <div class="border-t border-gray-200 pt-16">
-            <div class="text-center mb-12">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">Contemporary Documentation</h3>
-              <p class="text-gray-600">Recent sources from 2007 to 2023</p>
-            </div>
-
-            <div class="space-y-8">
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">2007</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">State Department Cable</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "The Dzaleka camp covers 201 hectares and UNHCR estimates it can hold a maximum of 9300 people. Once all refugees are relocated it will have a population approaching 8800 people and continues to get a steady stream of new refugees from the Congo."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: State Department Cable 07LILONGWE803</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">2023</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Academic Research</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "This study inquired into the nature of identity among refugee youth living at Dzaleka Refugee Camp in Malawi. Aged between eighteen and twenty-four, the sample comprised of twenty-two female and thirty-eight male participants, from Burundi, the Democratic Republic of Congo, Rwanda, and Somalia."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: Refugee Youth Identity Formation at Dzaleka Refugee Camp (2023)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border-l-4 border-gray-300 pl-8">
-                <div class="flex items-start gap-4">
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm font-bold text-gray-600">2025</span>
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gray-900 mb-2">Food Security Study</h4>
-                    <blockquote class="text-gray-700 italic mb-3 text-lg">
-                      "Food security and dietary diversity surveys were conducted with 300 women living in Dzaleka camp, Malawi. Ninety-one percent of women had severe food insecurity and women only ate on average 2–3 food groups the previous day."
-                    </blockquote>
-                    <span class="text-sm text-gray-500">Source: Food insecurity and dietary diversity among women living in Dzaleka refugee camp, Malawi (2025)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-
-    <!-- Community Contribution Section -->
-    <section class="py-24 bg-black text-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto text-center">
-          <div class="mb-16">
-            <div class="inline-block mb-6">
-              <div class="w-16 h-1 bg-white mx-auto mb-4"></div>
-              <span class="text-sm uppercase tracking-wider text-white/70">Contribute</span>
-            </div>
-
-            <h2 class="text-3xl md:text-5xl font-light mb-8">
-              Help Us Preserve<br>
-              <span class="font-bold">Dzaleka's History</span>
-            </h2>
-
-            <p class="text-lg text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-              We invite the community to curate and preserve our Dzaleka's past for the future.
-            </p>
-
-            <!-- People's History Statement -->
-            <div class="border border-white/20 p-5 sm:p-8 max-w-3xl mx-auto">
-              <h3 class="text-xl font-bold mb-4">This is a People's History</h3>
-              <p class="text-white/80 leading-relaxed">
-                The Time Capsule is not a formal history of Dzaleka, nor is it intended to be a collection point for formal Dzaleka records or documents, research papers and organisational or administrative material. This is a community-driven archive focused on personal stories, cultural memories, and the lived experiences of Dzaleka's residents.
-              </p>
-            </div>
-          </div>
-
-          <!-- Warning Notice -->
-          <div class="border border-white/20 bg-white/5 p-5 sm:p-8 mb-16">
-            <div class="flex items-start gap-4">
-              <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-white mb-3">
-                  Important Notice
-                </h3>
-                <p class="text-white/80 leading-relaxed">
-                  Be aware that the Time Capsule site may contain a record of photographs, videos, voices, and names of deceased persons. We handle all historical materials with respect and sensitivity, honoring the dignity of all individuals represented in our archive.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- What We're Looking For -->
-          <div class="border border-white/20 p-5 sm:p-8 mb-16">
-            <h3 class="text-2xl font-bold text-white mb-8 text-center">
-              We are looking for historical or contemporary material that tells the people's history of Dzaleka
-            </h3>
-            <div class="grid md:grid-cols-2 gap-12">
-              <div>
-                <h4 class="text-lg font-bold text-white mb-6">Examples include:</h4>
-                <ul class="space-y-4 text-white/80">
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Dzaleka buildings, architecture and grounds</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Dzaleka events and celebrations</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Communities and cultural groups</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Personal histories and testimonies</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Notable visits and delegations</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Cultural celebrations and festivals</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h4 class="text-lg font-bold text-white mb-6">What we can share:</h4>
-                <ul class="space-y-4 text-white/80">
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Images – photo, map, flyer, object, newspaper clipping</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Video – advertisement, recollection, documentary</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Audio – oral history, interviews, music</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-white/60 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Documents – article, correspondence, newsletter</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contribution Links -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <a href="/resources/submit" class="border border-white/20 p-5 sm:p-8 text-center group hover:border-white/40 transition-colors">
-              <div class="w-16 h-16 border border-white/30 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:border-white/60 transition-colors">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold mb-3">Share Resources</h4>
-              <p class="text-white/70">Documents, articles, and historical records</p>
-            </a>
-
-            <a href="/photos/submit" class="border border-white/20 p-5 sm:p-8 text-center group hover:border-white/40 transition-colors">
-              <div class="w-16 h-16 border border-white/30 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:border-white/60 transition-colors">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold mb-3">Share Photos</h4>
-              <p class="text-white/70">Historical images and visual documentation</p>
-            </a>
-
-            <a href="/submit-voice" class="border border-white/20 p-5 sm:p-8 text-center group hover:border-white/40 transition-colors">
-              <div class="w-16 h-16 border border-white/30 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:border-white/60 transition-colors">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold mb-3">Refugee Stories</h4>
-              <p class="text-white/70">Personal testimonies and oral histories</p>
-            </a>
-
-            <a href="/support-our-work" class="border border-white/20 p-5 sm:p-8 text-center group hover:border-white/40 transition-colors">
-              <div class="w-16 h-16 border border-white/30 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:border-white/60 transition-colors">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold mb-3">Support Our Work</h4>
-              <p class="text-white/70">Help preserve Dzaleka's history</p>
-            </a>
-          </div>
-
-          <!-- Additional Information -->
-          <div class="border border-white/20 p-5 sm:p-8">
-            <div class="grid md:grid-cols-2 gap-12">
-              <div>
-                <h4 class="text-lg font-bold text-white mb-6">Important Notes:</h4>
-                <ul class="space-y-4 text-white/80">
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Note we are unable to accept hard-copy material</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Contact bakari@mail.dzaleka.com if you need help uploading</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <div class="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>All contributions will be reviewed and archived</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h4 class="text-lg font-bold text-white mb-6">Future Vision:</h4>
-                <p class="text-white/80 leading-relaxed mb-4">
-                  As the site builds, we can all enjoy the opportunity to reminisce and pay tribute to all that has brought Dzaleka to this point. It is envisaged that on completion of the project, this material will be archived, potentially as a resource for future researchers.
-                </p>
-                <p class="text-white/80 leading-relaxed">
-                  We encourage you to visit regularly and keep an eye on our social media to view the most recent additions to the collection, and share your own moments.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer Note -->
-    <section class="py-12 bg-gray-900 text-white">
-      <div class="container mx-auto px-4 text-center">
-        <p class="text-base sm:text-lg mb-4 max-w-2xl mx-auto">
-          "Those who cannot remember the past are condemned to repeat it."
-        </p>
-        <p class="text-gray-400 text-sm">
-          - George Santayana
-        </p>
-        <p class="text-gray-400 text-sm mt-4 max-w-3xl mx-auto">
-          This archive keeps the site's history on record so it is not lost.
-        </p>
-      </div>
-    </section>
+    <nav aria-label="Related collections" class="mx-auto flex max-w-7xl flex-wrap gap-x-8 gap-y-3 px-4 py-6 text-sm sm:px-6 lg:px-8">
+      <a href="/photos" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Photo Archive</a>
+      <a href="/encyclopedia/history-of-dzaleka" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">History in the Encyclopedia</a>
+      <a href="/resources" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Resource collection</a>
+    </nav>
   </div>
-
-  <script>
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Update active navigation based on scroll position
-    window.addEventListener('scroll', () => {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('a[href^="#"]');
-
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.pageYOffset >= sectionTop - 200) {
-          current = section.getAttribute('id');
-        }
-      });
-
-      navLinks.forEach(link => {
-        link.classList.remove('border-black', 'text-black');
-        link.classList.add('border-transparent', 'text-gray-600');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.remove('border-transparent', 'text-gray-600');
-          link.classList.add('border-black', 'text-black');
-        }
-      });
-    });
-  </script>
 </MainLayout>
+<style>
+  .history-copy { color: #334155; line-height: 1.85; }
+  .history-copy p + p { margin-top: 1rem; }
+  .history-copy a { color: #075985; text-decoration: underline; text-underline-offset: 4px; }
+  .history-period { scroll-margin-top: 12rem; }
+  summary::-webkit-details-marker { display: none; }
+  details[open] .record-toggle { transform: rotate(45deg); }
+  @media (max-width: 767px) { .history-period { scroll-margin-top: 7rem; } }
+</style>

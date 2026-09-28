@@ -16,8 +16,8 @@ export function filterServices(
     return services;
   }
 
-  // For search, use case-insensitive matching
-  const query = searchQuery.toLowerCase().trim();
+  const normalize = (value: string) => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+  const words = normalize(searchQuery).trim().split(/\s+/).filter(Boolean);
 
   return services.filter(service => {
     // Check all searchable fields
@@ -29,11 +29,9 @@ export function filterServices(
       service.data.location?.address,
       service.data.location?.city,
       service.id
-    ].filter(Boolean); // Remove undefined/null values
-
-    return searchableFields.some(field =>
-      field.toString().toLowerCase().includes(query)
-    );
+    ].filter(Boolean);
+    const text = normalize(searchableFields.join(' '));
+    return words.every(word => text.includes(word));
   });
 }
 

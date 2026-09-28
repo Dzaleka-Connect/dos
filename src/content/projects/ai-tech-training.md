@@ -2,7 +2,7 @@
 title: AI & Technology Training for Stateless Youth
 category: Technology Education
 description: >-
-  An innovative 9-month training program empowering stateless youth in Dzaleka refugee camp with AI and technology skills, enabling them to develop solutions for camp challenges and access global opportunities.
+  A nine-month AI and technology training program for stateless youth in Dzaleka, with practical projects on issues affecting the camp.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -29,7 +29,7 @@ lastUpdated: 2025-03-11
 
 ## About the Project
 
-This groundbreaking initiative addresses the critical need for education and opportunity among stateless youth in Dzaleka refugee camp through comprehensive AI and technology training. The program aims to transform participants into skilled tech professionals while developing solutions for camp challenges.
+The program combines training in machine learning, data analytics, app development and digital literacy. It aims to prepare stateless youth in Dzaleka for technology work and support projects addressing camp challenges.
 
 ### Program Components
 

@@ -2,7 +2,7 @@
 title: Tumaini Festival
 category: Arts & Culture
 description: >-
-  The world's first multicultural festival within a refugee camp, promoting cultural exchange, economic empowerment, and peaceful co-existence between refugees and host communities through art and culture.
+  A multicultural festival in Dzaleka bringing refugees and host communities together through arts, performances and local trading.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -34,7 +34,7 @@ lastUpdated: 2025-03-11
 
 ## About Tumaini Festival
 
-Founded in 2014, Tumaini Festival is a groundbreaking three-day multicultural celebration that transforms Dzaleka Refugee Camp into an international festival ground. The initiative promotes cultural exchange, economic empowerment, and peaceful co-existence between refugees and host communities.
+Founded in 2014, Tumaini Festival is a three-day multicultural festival in Dzaleka Refugee Camp. It brings refugees and host communities together for performances, cultural exchange and trading.
 
 ### Core Components
 

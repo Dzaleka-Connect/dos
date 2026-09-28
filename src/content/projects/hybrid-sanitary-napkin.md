@@ -2,7 +2,7 @@
 title: Hybrid Sanitary Napkin for Economic Change
 category: Health & Economic Empowerment
 description: >-
-  An innovative hybrid sanitary pad solution that addresses menstrual health challenges in Dzaleka refugee camp while creating economic opportunities for refugee women through production and sales.
+  A partly reusable sanitary pad designed for Dzaleka's water and waste conditions, with production and sales opportunities for refugee women.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -29,7 +29,7 @@ lastUpdated: 2025-03-11
 
 ## About the Project
 
-This innovative project addresses the critical challenge of menstrual health management in Dzaleka refugee camp through a unique hybrid sanitary napkin design. The solution considers both the camp's water scarcity and waste management challenges while creating economic opportunities for refugee women.
+The project develops sanitary pads with reusable and disposable parts. The design considers water scarcity and waste disposal in Dzaleka, alongside opportunities for refugee women to produce and sell the pads.
 
 ### The Challenge
 

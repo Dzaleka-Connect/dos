@@ -1433,7 +1433,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
   </div>
 
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2" role="region" aria-label="Notifications" aria-live="polite"></div>
+  <div id="dashboard-toast-container" class="fixed bottom-4 right-4 z-50 space-y-2" role="region" aria-label="Notifications" aria-live="polite"></div>
 </MainLayout>
 
 <script is:inline define:vars={{ chartDataJSON: JSON.stringify(chartData), allContentJSON: JSON.stringify(allContent), activityItemsJSON: JSON.stringify(activityItems) }}>
@@ -2075,7 +2075,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
   // Toast notifications
   function showToast(message, type = 'info') {
-    const container = document.getElementById('toast-container');
+    const container = document.getElementById('dashboard-toast-container');
     if (!container) return;
 
     const toast = document.createElement('div');

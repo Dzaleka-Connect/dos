@@ -38,3 +38,28 @@ describe('artist directory search', () => {
     expect(root.querySelector('form')?.hidden).toBe(false);
   });
 });
+
+describe('course directory filters', () => {
+  it('combines topic, subject and level and clears all three together', () => {
+    const { document, Event } = parseHTML('<section data-directory-noun="courses"><form data-directory-form hidden><input type="search"><select data-directory-filter="category"><option value="">All</option><option value="business">Business</option></select><select data-directory-filter="level"><option value="">All</option><option value="beginner">Beginner</option></select><button data-directory-clear type="button">Clear</button></form><p data-directory-count></p><li data-search-item="Business planning" data-category="business" data-level="beginner"></li><li data-search-item="Business pitching" data-category="business" data-level="intermediate"></li><li data-search-item="Web development" data-category="technology" data-level="beginner"></li><p data-directory-empty hidden></p></section>');
+    const root = document.querySelector<HTMLElement>('section')!;
+    const input = root.querySelector('input')!;
+    const filters = [...root.querySelectorAll('select')];
+    // linkedom exposes select.value as read-only; model native selection changes.
+    filters.forEach(filter => Object.defineProperty(filter, 'value', { value: '', writable: true }));
+    initDirectorySearch(root);
+    input.value = 'business';
+    input.dispatchEvent(new Event('input'));
+    filters[0].value = 'business';
+    filters[1].value = 'beginner';
+    filters[1].dispatchEvent(new Event('change'));
+    expect(root.querySelector('[data-directory-count]')?.textContent).toBe('1 of 3 courses');
+    expect(root.querySelector('[data-search-item]:not([hidden])')?.getAttribute('data-search-item')).toBe('Business planning');
+    input.value = 'no match';
+    input.dispatchEvent(new Event('input'));
+    expect(root.querySelector('[data-directory-empty]')?.hasAttribute('hidden')).toBe(false);
+    root.querySelector<HTMLButtonElement>('[data-directory-clear]')!.click();
+    expect(filters.map(filter => filter.value)).toEqual(['', '']);
+    expect(root.querySelector('[data-directory-count]')?.textContent).toBe('3 of 3 courses');
+  });
+});

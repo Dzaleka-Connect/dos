@@ -2,7 +2,7 @@
 title: Child Protection & English as Foreign Language Program
 category: Education & Child Protection
 description: >-
-  An innovative education program providing English language training and child protection services to new arrivals and out-of-school youth in Dzaleka refugee camp, helping over 1,200 youth access educational opportunities.
+  English language classes, child protection services and vocational training for new arrivals and out-of-school youth in Dzaleka.
 location:
   address: Dzaleka Refugee Camp
   city: Dowa
@@ -29,7 +29,7 @@ lastUpdated: 2025-03-11
 
 ## About the Project
 
-This innovative project addresses critical educational gaps in Dzaleka refugee camp through multiple integrated programs, with a primary focus on English language education and vocational training. The initiative emerged in 2017 in response to the challenges faced by new arrivals and out-of-school youth in accessing formal education.
+The project provides English language education and vocational training in Dzaleka. It began in 2017 to help new arrivals and out-of-school youth access formal education.
 
 ### Key Programs
 

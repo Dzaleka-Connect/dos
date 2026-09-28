@@ -1,47 +1,27 @@
 ---
 title: Visit Dzaleka
-description: Guide to planning a visit through the public visit section
+description: Find trip planning, local experiences and guided visits on the dedicated Visit Dzaleka website
 section: visit
 ---
-The visit section explains how guided visits work and what guests should know before planning a trip.
+Trip planning and bookings are now on [Visit Dzaleka](https://visit.dzaleka.com/).
 
-## Useful planning pages
+## Plan your visit
 
-- [Visit](/visit)
-- [Visit pricing](/visit/pricing)
+- [Plan your trip](https://visit.dzaleka.com/plan-your-trip/)
+- [Things to do](https://visit.dzaleka.com/things-to-do/)
+- [Guided walking tour](https://visit.dzaleka.com/things-to-do/dzaleka-refugee-camp-guided-walking-tour/)
 - [Visitor guidelines](/visit/guidelines)
-- [Travel guide](/visit/travel-guide)
+
+Check the Visit Dzaleka website for current tour information and booking options.
+
+## Explore the community
+
+- [Community map](/map)
+- [Dzaleka Encyclopedia](/encyclopedia)
+- [Photo Archive](/photos)
+- [Culture](/culture)
+
+## Guide applications and feedback
+
 - [Become a guide](/visit/become-guide)
-
-## Before you plan a visit
-
-Review:
-
-- current pricing
-- visitor guidelines
-- transport planning
-- the booking or planning form on the main [Visit](/visit) page
-
-## What to expect
-
-- guided, community-based visits
-- walking-focused activities unless stated otherwise
-- respectful photography only with permission
-- cultural and local context shared by guides
-
-## What to bring
-
-- comfortable walking shoes
-- water
-- sun protection
-- modest clothing
-- mobile money or cash if payment is required
-
-## Need help?
-
-- [Visit](/visit)
-- [Visit pricing](/visit/pricing)
-- [Visitor guidelines](/visit/guidelines)
-- [Travel guide](/visit/travel-guide)
 - [Visit feedback](/visit/feedback)
-- [Contact](/contact)

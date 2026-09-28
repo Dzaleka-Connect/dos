@@ -6,7 +6,7 @@ const movieSchema = {
   "@type": "Movie",
   "name": "We Name Ourselves",
   "description": "From behind locked gates and closed borders, hope rises—in color, in sound, in story. A documentary about the power of art in Dzaleka Refugee Camp.",
-  "image": "https://m.media-amazon.com/images/M/MV5BN2ViMGY2NzUtNWViNy00MzZhLTlkOWYtZGFiMTI0ZjU1MWVjXkEyXkFqcGc@._V1_FMjpg_UY4724_.jpg",
+  "image": "https://services.dzaleka.com/images/encyclopedia/we-name-ourselves-poster.jpg",
   "director": {
     "@type": "Person",
     "name": "Francisco Alcala Torreslanda"
@@ -43,33 +43,21 @@ const movieSchema = {
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
 <MainLayout title="We Name Ourselves | The Power of Art" schema={movieSchema}>
-  <div class="bg-slate-950 text-white selection:bg-primary-900 selection:text-white font-sans">
+  <div class="film-page bg-slate-950 text-white selection:bg-primary-900 selection:text-white font-sans">
 
-    {/* Partners / Presents Section */}
-    {/* Partners / Presents Section */}
-    <div class="bg-slate-950 py-6 text-center uppercase tracking-[0.2em] text-[10px] md:text-xs text-slate-500 font-medium border-b border-slate-900/50">
-      <div class="container mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-y-4 gap-x-8 opacity-80">
-        <div class="flex items-center gap-2 text-primary-500/80">
-           <span>Promoted by Dzaleka Online Services</span>
-        </div>
-        <span class="hidden md:inline text-slate-800">|</span>
-        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-slate-400">
-            <a href="https://tbhf.ae/" target="_blank" class="hover:text-white transition-colors">The Big Heart Foundation</a>
-            <span class="text-slate-700">•</span>
-            <span>Presents</span>
-            <span class="text-slate-700">•</span>
-            <a href="https://www.wenameourselves.com/" target="_blank" class="hover:text-white transition-colors">A Home Storytellers Film</a>
-        </div>
-      </div>
+    <div class="border-b border-slate-800 px-4 py-4 text-center text-xs leading-6 text-slate-400">
+      <p>Presented by <a href="https://tbhf.ae/" target="_blank" rel="noopener noreferrer" class="text-slate-200 underline underline-offset-4">The Big Heart Foundation</a> · A <a href="https://www.wenameourselves.com/" target="_blank" rel="noopener noreferrer" class="text-slate-200 underline underline-offset-4">HOME Storytellers</a> film</p>
+      <p>Promoted by Dzaleka Online Services</p>
     </div>
 
     {/* Hero Section */}
     {/* Hero Section */}
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden py-24 lg:py-0">
+    <section class="relative flex items-center justify-center overflow-hidden py-10 lg:py-14">
       <div class="absolute inset-0 z-0">
         <img
-          src="https://m.media-amazon.com/images/M/MV5BN2ViMGY2NzUtNWViNy00MzZhLTlkOWYtZGFiMTI0ZjU1MWVjXkEyXkFqcGc@._V1_FMjpg_UY4724_.jpg"
-          alt="We Name Ourselves Film Background"
+          src="/images/encyclopedia/we-name-ourselves-poster.jpg"
+          alt=""
+          width="489" height="714"
           class="w-full h-full object-cover opacity-30"
         />
         <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/50 to-slate-950"></div>
@@ -78,8 +66,8 @@ const movieSchema = {
       <div class="relative z-10 container mx-auto px-4">
         <div class="flex flex-col lg:flex-row items-center lg:gap-16 xl:gap-24">
           {/* Text Content */}
-          <div class="w-full lg:w-3/5 text-center lg:text-left order-2 lg:order-1 mt-12 lg:mt-0">
-            <h1 class="font-serif italic text-5xl md:text-8xl lg:text-9xl mb-6 tracking-tight leading-none drop-shadow-2xl">
+          <div class="w-full lg:w-3/5 text-center lg:text-left order-1">
+            <h1 class="font-serif italic text-5xl md:text-8xl lg:text-9xl mb-6 tracking-tight leading-none ">
               We Name <br/> Ourselves
             </h1>
             <div class="w-24 h-1 bg-white mx-auto lg:mx-0 mb-8 opacity-50 rounded-lg"></div>
@@ -88,18 +76,20 @@ const movieSchema = {
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-6">
-              <a href="https://www.wenameourselves.com/" target="_blank" class="px-10 py-4 bg-white text-slate-950 hover:bg-slate-100 rounded-full font-bold tracking-widest uppercase transition-all duration-300 text-sm md:text-base shadow-xl hover:scale-105 transform">
+              <a href="https://www.wenameourselves.com/" target="_blank" class="px-10 py-4 bg-white text-slate-950 hover:bg-slate-100 rounded font-semibold transition-colors text-sm md:text-base">
                 Watch Trailer
               </a>
             </div>
           </div>
 
           {/* Poster Image (Visible on Mobile now) */}
-          <div class="w-full lg:w-2/5 max-w-[280px] md:max-w-sm xl:max-w-md mx-auto order-1 lg:order-2">
+          <div class="w-full lg:w-2/5 mt-8 max-w-[220px] sm:max-w-[280px] md:max-w-sm xl:max-w-md mx-auto order-2 lg:mt-0">
              <img
-              src="https://m.media-amazon.com/images/M/MV5BN2ViMGY2NzUtNWViNy00MzZhLTlkOWYtZGFiMTI0ZjU1MWVjXkEyXkFqcGc@._V1_FMjpg_UY4724_.jpg"
+              src="/images/encyclopedia/we-name-ourselves-poster.jpg"
               alt="We Name Ourselves Official Poster"
-              class="w-full h-auto rounded-lg shadow-2xl border border-white/10 rotate-0 lg:rotate-2 hover:rotate-0 transition-transform duration-500"
+              width="489" height="714"
+              fetchpriority="high"
+              class="w-full h-auto rounded border border-white/10"
             />
           </div>
         </div>
@@ -107,7 +97,7 @@ const movieSchema = {
     </section>
 
     {/* About The Story - Cinematic Text Layout */}
-    <section id="about" class="py-32 bg-slate-950 relative overflow-hidden">
+    <section id="about" class="py-14 sm:py-20 bg-slate-950 relative overflow-hidden">
       {/* Background Image with Overlay */}
       <div class="absolute inset-0 z-0 opacity-40">
         <img
@@ -143,7 +133,7 @@ const movieSchema = {
     </section>
 
     {/* The Poets / Cast Section */}
-    <section class="py-24 bg-slate-900 border-t border-slate-800">
+    <section class="py-12 sm:py-16 bg-slate-900 border-t border-slate-800">
       <div class="container mx-auto px-4 max-w-5xl">
         <div class="text-center mb-16">
           <h2 class="font-serif text-3xl md:text-4xl text-white mb-4">The Poets</h2>
@@ -230,7 +220,7 @@ const movieSchema = {
     </section>
 
     {/* Our Release & Distribution */}
-    <section class="py-24 bg-slate-950 border-y border-slate-800">
+    <section class="py-12 sm:py-16 bg-slate-950 border-y border-slate-800">
        <div class="container mx-auto px-4 max-w-4xl text-center">
           <span class="block text-primary-500 tracking-[0.2em] text-xs font-bold uppercase mb-4">The Release</span>
           <p class="text-2xl font-serif text-gray-300 leading-relaxed mb-12">
@@ -256,7 +246,7 @@ const movieSchema = {
     </section>
 
     {/* Impact Section - New Initiatives */}
-    <section class="py-32 bg-slate-950 relative overflow-hidden text-center">
+    <section class="py-14 sm:py-20 bg-slate-950 relative overflow-hidden text-center">
       <div class="container mx-auto px-4 relative z-10">
         <div class="mb-20">
           <span class="block text-primary-500 tracking-[0.2em] text-xs font-bold uppercase mb-4">Real-World Impact</span>
@@ -324,13 +314,13 @@ const movieSchema = {
     </section>
 
     {/* Call to Action - Minimalist */}
-    <section class="py-32 bg-gradient-to-b from-slate-900 to-slate-950 text-center border-t border-slate-900">
+    <section class="py-14 sm:py-20 bg-gradient-to-b from-slate-900 to-slate-950 text-center border-t border-slate-900">
       <div class="container mx-auto px-4 max-w-4xl">
         <h2 class="font-serif text-4xl md:text-5xl text-white mb-8">Work alongside us</h2>
         <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-          From behind locked gates and closed borders, hope rises. We’re here to carry it forward.
+          Contact HOME Storytellers about screenings, partnerships and the film.
         </p>
-        <a href="https://www.wenameourselves.com/contact-us" target="_blank" class="inline-block px-12 py-5 bg-white text-slate-950 hover:bg-slate-100 font-bold tracking-[0.2em] uppercase text-sm transition-all duration-300 rounded-lg shadow-sm hover:shadow-white/20">
+        <a href="https://www.wenameourselves.com/contact-us" target="_blank" class="inline-block px-12 py-5 bg-white text-slate-950 hover:bg-slate-100 font-bold tracking-[0.2em] uppercase text-sm transition-all duration-300 rounded-lg ">
           Get Involved
         </a>
       </div>
@@ -347,3 +337,8 @@ const movieSchema = {
     </div>
   </div>
 </MainLayout>
+
+<style>
+  .film-page h1 { font-size: clamp(2.75rem, 6vw, 5.5rem); line-height: 1.05; }
+  .film-page h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+</style>

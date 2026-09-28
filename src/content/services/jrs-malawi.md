@@ -20,7 +20,7 @@ socialMedia:
   instagram: 'https://www.instagram.com/jrsusa/'
   linkedin: ''
   website: 'https://jrs.net/en/country/malawi/'
-logo: /images/Jesuit Refugee Service.jpg
+logo: /images/Jesuit Refugee Service.jpeg
 featured: false
 lastUpdated: 2024-12-24
 ---

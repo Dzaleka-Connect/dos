@@ -1,0 +1,12 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { course: CollectionEntry<'courses'>; }
+const { course } = Astro.props;
+---
+<article class="min-w-0">
+  {course.data.thumbnail && <a href={`/e-learning/courses/${course.id}`} tabindex="-1" aria-hidden="true" class="mb-4 block aspect-video overflow-hidden rounded bg-slate-100"><img src={course.data.thumbnail} alt="" width="640" height="360" loading="lazy" class="h-full w-full object-cover" onerror="this.parentElement.style.display='none'" /></a>}
+  <p class="text-sm capitalize text-slate-600">{course.data.category.replaceAll('-', ' ')} · {course.data.level} · {course.data.duration}</p>
+  <h3 class="mt-2 text-xl leading-7"><a href={`/e-learning/courses/${course.id}`} class="text-primary-800 underline underline-offset-4 hover:text-primary-900">{course.data.title}</a></h3>
+  <p class="mt-3 text-sm leading-6 text-slate-700">{course.data.description}</p>
+  <p class="mt-3 text-sm text-slate-500">{course.data.author}</p>
+</article>

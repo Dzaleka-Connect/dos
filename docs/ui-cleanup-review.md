@@ -70,3 +70,42 @@ Validation:
 - Generated-page audit: 92 affected pages checked; one h1 and main landmark, no duplicate IDs, and 131 local image references resolve. The residency appears once in the search index and is present in the sitemap.
 - Browser checks at desktop and 390px phone width: art catalogue/detail, grants/residency, culture, visual artists, poetry, dance, talents, shops, contact and representative submission forms. No horizontal overflow on checked mobile routes; form controls checked for labels. Status/audience filtering, empty results, pagination, accent-insensitive artist search, residency search, gallery next/enlarge/close and restored artist contacts were verified.
 - Restarted the local development server after content schema/Markdown changes so the preview matches the generated build.
+
+## 28 September 2026: government references and remaining directories
+
+Reviewed GOV.UK, NSW Government, Queensland Government and City of Sydney. Read their service and topic structures, then inspected the NSW education page and City of Sydney places page in the browser. The useful patterns were clear service groups, concise summaries, reliable search and readable detail pages.
+
+| Reference | Pattern applied |
+| --- | --- |
+| [GOV.UK](https://www.gov.uk/) and [its layout guidance](https://design-system.service.gov.uk/styles/layout/) | Keep the main task visible and limit the width of long articles. Course and project details now use a readable text column. |
+| [NSW education and training](https://www.nsw.gov.au/education-and-training) and [card guidance](https://designsystem.nsw.gov.au/components/card/index.html) | Use short summaries and one destination per result. Learning pages retain course photographs with open captions. |
+| [NSW search guidance](https://designsystem.nsw.gov.au/docs/content/methods/search.html) and [filtered search template](https://designsystem.nsw.gov.au/templates/search/filters.html) | Keep search terms, filters and sorting when moving between result pages. Show result counts and a clear empty state. |
+| [Queensland services](https://www.qld.gov.au/services) | Group services by recognizable topics and provide direct routes into each group. |
+| [City of Sydney places](https://www.cityofsydney.nsw.gov.au/places) | Give images a clear purpose and keep topic navigation distinct from record details. |
+
+### Changes
+
+- Preserved the user's recent flat styling, four-pixel corners and existing palette.
+- Services now uses one directory template for the index, numbered pages and category pages. Search runs across the full collection before filtering, sorting and pagination. It works through a normal GET form without client JavaScript. Legacy page and category URLs remain available. Results have one detail link, the supplied logo and a concise service summary. Contact actions remain on the detail page.
+- E-learning now leads with the course catalogue and separates local learning organizations from external resources. Removed the broken decorative banner, repeated promotional panels and anonymous author avatars. Shared course cards retain the supplied photographs. Subject and level filters derive from the published courses, including personal development.
+- Course details retain the lesson content, video and external course links. Added compact metadata and an expandable contents list on phones. Corrected section links to use Astro's heading slugs. Tables and code can scroll within the article.
+- Projects now separates the submission directory from individual project records. Removed aggregate statistics and repeated impact previews. Details retain the authored programs, outcomes, dates and source links. Sharing uses the site's correct domain. Rewrote promotional introductions without adding factual claims.
+- Corrected the JRS logo extension to match the supplied local asset. Kept the ReFAN submission and removed the disputed access instructions.
+
+### Verification
+
+- Production build passes. All 314 tests pass across 29 suites. Added regression checks for full-directory search, accent-insensitive matching, combined filters, preserved pagination parameters, invalid page/category handling and course filter reset.
+- TypeScript checks pass for the changed search and directory helpers. `git diff --check` passes.
+- Checked 71 generated pages for a single main landmark and page heading, duplicate IDs, form labels and local images. All 128 local image references resolve. All 51 course contents links have targets. The browser-rendered first service page and legacy pagination together include all 149 services exactly once.
+- Browser checks cover service search, category selection, sorting, pagination and reset; course filters, empty results and reset; course section navigation; and project listings/details. Reviewed six page types at desktop size and in a 390px embedded viewport. None of the checked narrow layouts overflow horizontally. Course contents starts collapsed at that width.
+- The temporary responsive review page was removed. No external forms were submitted and no deployment was performed. Existing build warnings about prerendered request headers remain. This pass covers Services, E-learning and Projects; it does not claim a fresh review of every other site section.
+
+## 28 September 2026 — Sitewide follow-up and Visit Dzaleka
+
+Reviewed all 203 Astro page templates: 190 rendered samples, 12 redirects and one overlapping event route. The complete route inventory and verification limits are in [ui-page-review.md](./ui-page-review.md).
+
+Added purposeful photography to Services and Projects; rebuilt the document hub and collection About page; simplified Yetu Radio around actual playback; restored the film poster from the local archive; and corrected small heading, form-label and duplicate-ID issues. The Time Capsule now uses dated chapters, archive imagery and nine preserved expandable source excerpts, with compact contribution links. Existing cultural galleries, portrait presentation, service details, shared forms and the interactive map retain their distinct layouts.
+
+Visit navigation now points to the dedicated [Visit Dzaleka website](https://visit.dzaleka.com/). The local visit page provides a short handoff; legacy pricing and travel-guide routes redirect to the official tour and trip-planning pages. Visitor guidelines remain here because the dedicated site links to them. Related documentation was updated.
+
+Validation: production build succeeds; all 314 tests in 29 suites pass; changed helper TypeScript checks pass. The final generated-page audit checked 1,012 HTML pages with no heading, landmark, duplicate-ID, visible-field-label or local-image issues. Template samples were checked at 390px, with desktop visual checks of the redesigned sections. Resource filtering/pagination/reset and Time Capsule navigation/expansion were verified. The review fixture was removed before the final build. No external forms were submitted or deployment performed.

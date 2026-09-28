@@ -1,141 +1,17 @@
 ---
-import MainLayout from '../../../../layouts/MainLayout.astro';
-import ServiceCard from '../../../../components/ServiceCard.astro';
-import ServicePagination from '../../../../components/services/ServicePagination.astro';
 import { getCollection } from 'astro:content';
-import Breadcrumb from '../../../../components/ui/Breadcrumb.astro';
-import { sortServices } from '../../../../utils/serviceHelpers';
+import ServiceDirectory from '../../../../components/services/ServiceDirectory.astro';
+import { SERVICES_PER_PAGE, serviceCategorySlug } from '../../../../utils/serviceDirectory';
 
 export async function getStaticPaths({ paginate }) {
-  const allServices = await getCollection('services');
-
-  // Get unique categories
-  const categories = [...new Set(allServices.map(service => service.data.category))];
-
-  return categories.flatMap(category => {
-    const slug = category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-
-    // Filter services for this category
-    const categoryServices = allServices.filter(service =>
-      service.data.category.toLowerCase() === category.toLowerCase()
-    );
-
-    // We can't easily support dynamic sorting/filtering with static generation + pagination
-    // So we default to 'featured' sort for the static build.
-    // Client-side filtering/sorting would be needed for dynamic behavior,
-    // or we pre-generate specific sort routes (complex).
-    // For now, let's sort by default (featured).
-    const sortedServices = sortServices(categoryServices, 'featured');
-
-    return paginate(sortedServices, {
-      params: { category: slug },
-      props: { categoryName: category },
-      pageSize: 6
-    });
-  });
+  const services = await getCollection('services');
+  const categories = [...new Set(services.map(service => service.data.category))];
+  return categories.flatMap(category => paginate(services.filter(service => service.data.category === category), {
+    params: { category: serviceCategorySlug(category) }, props: { categoryName: category }, pageSize: SERVICES_PER_PAGE,
+  }));
 }
-
-const { page } = Astro.props;
-const { categoryName } = Astro.props;
-const { category } = Astro.params;
-
-const paginatedServices = page.data;
-const totalItems = page.total;
-
-// SEO metadata
-const seo = {
-  title: `${categoryName} Services - Dzaleka Online Services`,
-  description: `Discover ${totalItems} ${categoryName.toLowerCase()} services in Dzaleka Refugee Camp.`,
-  image: '/images/services-directory.jpg',
-  type: 'website'
-};
-
-const baseUrl = `/services/category/${category}`;
+const { page, categoryName } = Astro.props;
+const services = await getCollection('services');
+const params = new URLSearchParams({ category: categoryName, page: String(page.currentPage) });
 ---
-
-<MainLayout
-  title={seo.title}
-  description={seo.description}
-  image={seo.image}
-  type={seo.type}
->
-  <!-- Hero Section -->
-  <div class="relative border-b border-gray-200 bg-slate-50">
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-      <div class="max-w-3xl">
-        <div class="mb-6">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Services', href: '/services' },
-              { label: categoryName }
-            ]}
-
-          />
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 mb-4 tracking-tight">{categoryName}</h1>
-        <p class="text-base text-slate-600 leading-relaxed">
-          {totalItems} services
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12">
-    <!-- Results Header -->
-    <div class="mb-6 flex justify-between items-center">
-       <h2 class="text-xl font-bold text-gray-900">
-         {page.start + 1}-{page.end + 1} of {totalItems} Services
-       </h2>
-       <!-- Note: Client-side sorting/filtering removed as it conflicts with static pagination -->
-    </div>
-
-    <!-- Services Grid -->
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {paginatedServices.map(service => (
-        <div class="service-card">
-          <ServiceCard
-            title={service.data.title}
-            description={service.data.description}
-            category={service.data.category}
-            featured={service.data.featured}
-            verified={service.data.verified}
-            href={`/services/${service.id}`}
-            email={service.data.contact?.email}
-            phone={service.data.contact?.phone}
-            address={service.data.location?.address}
-            logo={service.data.logo}
-            hours={service.data.contact?.hours}
-            location={service.data.location}
-            socialMedia={service.data.socialMedia}
-          />
-        </div>
-      ))}
-    </div>
-
-    <!-- Pagination -->
-    {page.lastPage > 1 && (
-      <div class="mt-8">
-        <ServicePagination
-          currentPage={page.currentPage}
-          totalPages={page.lastPage}
-          baseUrl={baseUrl}
-        />
-      </div>
-    )}
-
-    <!-- Back to all -->
-    <div class="mt-12 text-center">
-        <a href="/services" class="inline-flex items-center text-sm text-gray-600 hover:text-primary-600 transition-colors">
-          ← Browse All Services
-        </a>
-    </div>
-  </div>
-</MainLayout>
-
-<style>
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .animate-fade-in { animation: fadeIn 2s ease-out forwards; }
-</style>
+<ServiceDirectory services={services} params={params} categoryPage={categoryName} />
