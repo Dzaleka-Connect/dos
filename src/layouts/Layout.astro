@@ -7,6 +7,7 @@ import '../styles/patterns.css';
 import '../styles/site.css';
 
 interface Props {
+	lang?: string;
 	title: string;
 	description?: string;
 	keywords?: string;
@@ -54,6 +55,7 @@ interface Props {
 }
 
 const {
+	lang = "en",
 	title,
 	description,
 	keywords,
@@ -69,7 +71,7 @@ const {
 
 // Default values
 const defaultDescription = "Find Dzaleka services, urgent contacts, jobs, events, resources, community data, and cultural records in one community-maintained site.";
-const defaultOgImage = "/images/dzaleka-hero.jpeg";
+const defaultOgImage = "https://services.dzaleka.com/images/dzaleka-hero.jpeg";
 
 // Use provided values or defaults
 const metaDescription = description || defaultDescription;
@@ -82,7 +84,7 @@ import Schema from '../components/Schema.astro';
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -1,6 +1,6 @@
 ---
 title: Tumaini Festival Grounds
-description: The central gathering space for the internationally recognised Tumaini Festival, a refugee-led music and cultural event that promotes peace, intercultural harmony, and creative expression.
+description: "The gathering space for Tumaini Festival, a refugee-led music and cultural event in Dzaleka."
 yearEstablished: 2014
 referenceId: "DZK-004"
 campZone: "Central Sector"

@@ -1,6 +1,6 @@
 ---
 title: "Dzaleka Hill"
-description: "A natural viewpoint overlooking the Dzaleka Refugee Camp, used for recreation, community activities, and environmental conservation projects."
+description: "A viewpoint overlooking Dzaleka, used for recreation and community activities."
 alternativeNames: "Dzaleka Viewpoint"
 campZone: "Western Heights"
 specificLocation: "Western Elevation Ridge Overlook"

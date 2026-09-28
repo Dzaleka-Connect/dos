@@ -1,6 +1,6 @@
 ---
 title: "Salama Africa Creative Centre"
-description: "A groundbreaking creative hub in Dzaleka Refugee Camp built to foster innovation, entrepreneurship, and artistic development among youth for positive social transformation."
+description: "A centre for young people in Dzaleka to practise the arts and develop creative and business skills."
 alternativeNames: "Creative Center, Salama Hub"
 yearEstablished: 2018
 referenceId: "DZK-005"

@@ -1,0 +1,15 @@
+---
+import { commonTasks } from '../../data/commonTasks';
+interface Props { label?: string; }
+const { label = 'What do you need to do?' } = Astro.props;
+---
+<nav aria-label={label} class="task-links">
+  <h2 class="text-2xl font-semibold text-slate-900">{label}</h2>
+  <ul class="mt-4 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+    {commonTasks.map(({ href, label }) => <li class="border-b border-slate-200">
+      <a href={href} class="group flex min-h-[60px] items-center justify-between gap-4 py-4 text-base font-semibold text-primary-800 underline underline-offset-4 hover:text-primary-900">
+        <span>{label}</span><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </a>
+    </li>)}
+  </ul>
+</nav>

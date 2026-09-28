@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { guideLanguages, guideVersion } from '../data/essentials';
 import { curatedGrantsPrograms } from '../data/grantsPrograms';
 
 const baseUrl = 'https://services.dzaleka.com';
@@ -8,6 +9,7 @@ const EXCLUDED_STATIC_ROUTES = new Set([
   '/api-test',
   '/test-api',
   '/test-resources',
+  '/staff',
 ]);
 
 const EXCLUDED_ROUTE_PREFIXES = [
@@ -99,11 +101,14 @@ export async function GET() {
     }
   }
 
+  for (const lang of guideLanguages) addUrl(`/essentials/${lang}`, guideVersion);
+
   for (const program of curatedGrantsPrograms) {
     addUrl(`/grants-and-programs/${program.slug}`, program.verifiedDate);
   }
 
   const collectionRoutes = [
+    { name: 'startup-templates', buildPath: (entry) => `/tools-and-templates/${entry.id}` },
     { name: 'community-voices', buildPath: (entry) => `/community-voices/${entry.id}`, lastmod: (entry) => entry.data.date },
     { name: 'courses', buildPath: (entry) => `/e-learning/courses/${entry.id}`, lastmod: (entry) => entry.data.lastUpdated || entry.data.datePublished },
     { name: 'dancers', buildPath: (entry) => `/dancers/${entry.id}` },

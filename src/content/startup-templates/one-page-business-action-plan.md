@@ -1,10 +1,10 @@
 ---
-title: One-page business action plan
+title: Business action plan
 shortTitle: Business action plan
-description: Set one business goal, list your top priorities, and break the work into clear actions, deadlines, and responsibilities on one page.
+description: Set a business goal, choose three priorities and assign tasks, costs and deadlines. Fill in the worksheet and download or print your action plan.
 bestFor: People starting a business, restarting after a setback, or trying to organise the next 1 to 3 months
 estimatedTime: 20 to 30 minutes
-intro: Use this one-page action plan when you want a simple business roadmap that shows what must happen next, who will do it, and what support or money is needed.
+intro: Use this worksheet to decide what needs to happen next, who will do it and what it will cost.
 order: 2
 keywords: business action plan template Dzaleka, startup planning Malawi, one page business plan refugee entrepreneurs, Dzaleka small business template
 whoShouldUse:

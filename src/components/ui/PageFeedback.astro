@@ -1,192 +1,29 @@
 ---
+const path = Astro.url.pathname;
 ---
-
-<div class="bg-slate-50 border-t border-slate-200 py-8">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="feedback-container">
-
-    <!-- State 1: Initial Prompt -->
-    <div id="feedback-prompt" class="flex flex-wrap items-center gap-x-6 gap-y-4">
-      <h3 class="text-lg font-semibold text-slate-900">Was this page useful?</h3>
-      <div class="flex justify-center gap-4">
-        <button id="btn-feedback-yes" class="min-h-[44px] px-5 py-2 bg-white border border-primary-800 rounded text-sm text-primary-900 hover:bg-primary-50 font-medium">
-          Yes
-        </button>
-        <button id="btn-feedback-no" class="min-h-[44px] px-5 py-2 bg-white border border-primary-800 rounded text-sm text-primary-900 hover:bg-primary-50 font-medium">
-          No
-        </button>
-      </div>
-    </div>
-
-    <!-- State 2: Success Message -->
-    <div id="feedback-success" role="status" tabindex="-1" class="hidden transition-opacity duration-300">
-      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
-        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-      </div>
-      <h3 class="text-xl font-semibold text-gray-900">Thank you for your feedback.</h3>
-    </div>
-
-    <!-- State 3: Negative Feedback Form -->
-    <div id="feedback-form-container" class="hidden max-w-xl text-left">
-      <h3 class="text-lg font-semibold text-gray-900 mb-2">Help us improve this page</h3>
-      <p class="text-gray-600 text-sm mb-4">Tell us why it wasn't useful*</p>
-
-      <form id="feedback-form" action="https://formspree.io/f/xqaaajae" method="POST">
-        <!-- Hidden fields to give context to the email -->
-        <input type="hidden" name="subject" id="feedback-subject" value="Website Feedback: Page Not Useful" />
-        <input type="hidden" name="page_url" id="feedback-url" value="" />
-
-        <div class="space-y-3 mb-6">
-          <label class="flex items-start">
-            <input type="radio" name="reason" value="I had trouble finding what I was looking for." required class="mt-1 h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 feedback-radio">
-            <span class="ml-3 text-sm text-gray-700">I had trouble finding what I was looking for.</span>
-          </label>
-          <label class="flex items-start">
-            <input type="radio" name="reason" value="The information could be clearer or more accurate." class="mt-1 h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 feedback-radio">
-            <span class="ml-3 text-sm text-gray-700">The information could be clearer or more accurate.</span>
-          </label>
-          <label class="flex items-start">
-            <input type="radio" name="reason" value="I found the page difficult to navigate." class="mt-1 h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 feedback-radio">
-            <span class="ml-3 text-sm text-gray-700">I found the page difficult to navigate.</span>
-          </label>
-          <label class="flex items-start">
-            <input type="radio" name="reason" value="Accessibility could be improved." class="mt-1 h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 feedback-radio">
-            <span class="ml-3 text-sm text-gray-700">Accessibility could be improved.</span>
-          </label>
-          <label class="flex items-start">
-            <input type="radio" name="reason" value="The page could load faster or more smoothly." class="mt-1 h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 feedback-radio">
-            <span class="ml-3 text-sm text-gray-700">The page could load faster or more smoothly.</span>
-          </label>
-          <label class="flex items-start">
-            <input type="radio" name="reason" value="Other" class="mt-1 h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 feedback-radio">
-            <span class="ml-3 text-sm text-gray-700">Other</span>
-          </label>
-        </div>
-
-        <!-- Conditional text input for 'Other' -->
-        <div id="feedback-other-container" class="hidden mb-6">
-          <label for="feedback-other-text" class="block text-sm font-medium text-gray-700 mb-2">Tell us more details*</label>
-          <textarea id="feedback-other-text" name="other_details" rows="3" class="w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500 text-sm"></textarea>
-        </div>
-
-        <div class="flex gap-4">
-          <button type="submit" id="btn-feedback-submit" class="min-h-[44px] flex-1 text-sm bg-primary-900 text-white px-4 py-2 rounded font-medium hover:bg-primary-700 transition-colors inline-flex justify-center items-center">
-            <span id="feedback-submit-text">Submit</span>
-            <svg id="feedback-submit-spinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </button>
-          <button type="button" id="btn-feedback-cancel" class="min-h-[44px] flex-1 text-sm bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded font-medium hover:bg-gray-50 transition-colors">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-
+<section data-page-feedback lang="en" aria-label="Page feedback" class="border-t border-slate-200 bg-slate-50 py-7 print:hidden">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <form action="https://formspree.io/f/xqaaajae" method="POST" class="max-w-2xl">
+      <input type="hidden" name="subject" value="Website page feedback" />
+      <input type="hidden" name="page_path" value={path} />
+      <fieldset class="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <legend class="mb-2 text-base font-semibold text-slate-900">Was this page useful?</legend>
+        <label class="inline-flex min-h-[44px] cursor-pointer items-center gap-3 text-slate-800"><input type="radio" name="useful" value="yes" required class="h-5 w-5 border-slate-400 text-primary-800" /> Yes</label>
+        <label class="inline-flex min-h-[44px] cursor-pointer items-center gap-3 text-slate-800"><input type="radio" name="useful" value="no" required class="h-5 w-5 border-slate-400 text-primary-800" /> No</label>
+      </fieldset>
+      <details class="mb-3">
+        <summary class="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-primary-800 underline underline-offset-4">Add a comment (optional)</summary>
+        <label for="page-feedback-details" class="mt-2 block text-sm font-semibold text-slate-800">What could we improve?</label>
+        <p id="page-feedback-hint" class="my-2 text-sm text-slate-600">Do not include names, phone numbers or other personal information.</p>
+        <textarea id="page-feedback-details" name="details" maxlength="2000" rows="3" aria-describedby="page-feedback-hint" class="w-full rounded border-slate-400"></textarea>
+      </details>
+      <p data-feedback-error role="alert" tabindex="-1" hidden class="mb-4 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-900"></p>
+      <button type="submit" class="min-h-[44px] rounded border border-slate-400 bg-white px-4 py-2 text-sm font-semibold text-primary-900 hover:bg-slate-100 disabled:opacity-60">Send feedback</button>
+    </form>
+    <p data-feedback-status role="status" tabindex="-1" hidden class="font-semibold text-slate-900">Thank you. Your feedback has been sent.</p>
   </div>
-</div>
-
+</section>
 <script>
-  // Get DOM elements
-  const promptDiv = document.getElementById('feedback-prompt');
-  const successDiv = document.getElementById('feedback-success');
-  const formDiv = document.getElementById('feedback-form-container');
-  const otherContainer = document.getElementById('feedback-other-container');
-  const otherTextArea = document.getElementById('feedback-other-text') as HTMLTextAreaElement;
-  const radioButtons = document.querySelectorAll('.feedback-radio') as NodeListOf<HTMLInputElement>;
-
-  const btnYes = document.getElementById('btn-feedback-yes');
-  const btnNo = document.getElementById('btn-feedback-no');
-  const btnCancel = document.getElementById('btn-feedback-cancel');
-
-  const form = document.getElementById('feedback-form') as HTMLFormElement;
-  const urlInput = document.getElementById('feedback-url') as HTMLInputElement;
-  const submitText = document.getElementById('feedback-submit-text');
-  const submitSpinner = document.getElementById('feedback-submit-spinner');
-  const submitBtn = document.getElementById('btn-feedback-submit') as HTMLButtonElement;
-
-  // Set the current URL so we know which page triggered the feedback
-  if (urlInput) {
-    urlInput.value = window.location.href;
-  }
-
-  // Handle radio change to toggle 'Other' textarea
-  radioButtons.forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      const target = e.target as HTMLInputElement;
-      if (target.value === 'Other') {
-        otherContainer?.classList.remove('hidden');
-        if (otherTextArea) otherTextArea.required = true;
-      } else {
-        otherContainer?.classList.add('hidden');
-        if (otherTextArea) {
-          otherTextArea.required = false;
-          otherTextArea.value = ''; // clear out if they switch away
-        }
-      }
-    });
-  });
-
-  // Handle "Yes" click purely visual (or could optionally fire analytics)
-  btnYes?.addEventListener('click', () => {
-    promptDiv?.classList.add('hidden');
-    successDiv?.classList.remove('hidden');
-    successDiv?.focus();
-  });
-
-  // Handle "No" click -> Show Form
-  btnNo?.addEventListener('click', () => {
-    promptDiv?.classList.add('hidden');
-    formDiv?.classList.remove('hidden');
-    (radioButtons[0] as HTMLInputElement | undefined)?.focus();
-  });
-
-  // Handle "Cancel" click -> Go back to prompt
-  btnCancel?.addEventListener('click', () => {
-    formDiv?.classList.add('hidden');
-    promptDiv?.classList.remove('hidden');
-    btnNo?.focus();
-    form?.reset();
-    otherContainer?.classList.add('hidden');
-    if (otherTextArea) otherTextArea.required = false;
-  });
-
-  // Handle form submission via AJAX so it doesn't leave the page
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    // Loading state
-    submitBtn.disabled = true;
-    submitText?.classList.add('hidden');
-    submitSpinner?.classList.remove('hidden');
-
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        // Show success state
-        formDiv?.classList.add('hidden');
-        successDiv?.classList.remove('hidden');
-    successDiv?.focus();
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Feedback error:', error);
-      alert("There was an error sending your feedback. Try again.");
-    } finally {
-      // Revert loading state
-      submitBtn.disabled = false;
-      submitText?.classList.remove('hidden');
-      submitSpinner?.classList.add('hidden');
-    }
-  });
+  import { initPageFeedback } from '../../utils/pageFeedback';
+  document.querySelectorAll<HTMLElement>('[data-page-feedback]').forEach(root => initPageFeedback(root, new URL(window.location.href)));
 </script>

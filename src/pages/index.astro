@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import { format } from 'date-fns';
 import HomeSection from '../components/home/Section.astro';
-import PageFeedback from '../components/ui/PageFeedback.astro';
+import TaskLinks from '../components/ui/TaskLinks.astro';
 
 export const prerender = false;
 
@@ -240,20 +240,13 @@ const homepageSchema = [
               </button>
             </div>
           </form>
-          <nav aria-label="Popular pages" class="mx-auto mt-3 grid max-w-2xl grid-cols-2 items-center gap-x-5 text-sm sm:flex sm:flex-wrap sm:justify-center">
-            <span class="hidden text-slate-600 sm:inline">Popular:</span>
-            {[
-              { href: '/get-help-now', label: 'Get help now' },
-              { href: '/new-to-dzaleka', label: 'New to Dzaleka?' },
-              { href: '/jobs', label: 'Jobs' },
-              { href: '/events', label: 'Events' },
-            ].map(({ href, label }) => (
-              <a href={href} class="inline-flex min-h-[40px] items-center text-primary-800 underline underline-offset-4 hover:text-primary-900 hover:decoration-2">{label}</a>
-            ))}
-          </nav>
+          <a href="/get-help-now" class="mt-2 flex min-h-[44px] w-fit items-center text-sm font-semibold text-red-800 underline underline-offset-4 sm:mx-auto">Get help now</a>
+
         </div>
       </div>
     </section>
+
+    <div class="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8"><TaskLinks /></div>
 
     <section class="bg-white py-10 sm:py-12" aria-labelledby="services-heading">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -485,6 +478,6 @@ const homepageSchema = [
       </details>
     </HomeSection>
 
-    <PageFeedback />
+
   </div>
 </MainLayout>

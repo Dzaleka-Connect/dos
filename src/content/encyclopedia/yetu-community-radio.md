@@ -6,10 +6,13 @@ category: "Institution"
 entryType: "organization"
 schemaType: "RadioStation"
 aliases: ["Yetu FM", "Dzaleka Yetu Community Radio"]
+image: "https://yetufm.mw/wp-content/uploads/2025/03/Yetu-com-radio-logo.jpg"
+imageAlt: "Yetu Community Radio logo"
+imageCredit: "Yetu FM"
 featured: true
 status: "reviewed"
 datePublished: 2026-07-13
-lastReviewed: 2026-07-13
+lastReviewed: 2026-09-28
 officialWebsite: "https://yetufm.mw/"
 sameAs:
   - "https://yetufm.mw/"
@@ -45,6 +48,6 @@ The station was created as a shared platform for refugee and Malawian communitie
 
 Yetu FM says it broadcasts in English, Chichewa, Kiswahili, French, and Kinyarwanda. That multilingual model reflects both Dzaleka's population and the surrounding host community.
 
-## Community record
+## Listening
 
-Yetu is important not only as a broadcaster but also as a record of community voices. Interviews, news, music, and discussion programmes document daily life in ways that formal reports often do not. Broadcast schedules, frequencies, and staffing can change and should be checked with the station.
+[Listen to Yetu Radio online](/yetu-radio), or visit the [station website](https://yetufm.mw/) for its reporting and contact details. The station’s website lists its FM frequency as **107.6 MHz**. Check with the station for current broadcast coverage and schedules.

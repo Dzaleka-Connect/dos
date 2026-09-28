@@ -1,6 +1,6 @@
 ---
 title: "Dzaleka Health Centre"
-description: "The primary healthcare facility serving a catchment population of 86,000 people, including 54,000 refugees and asylum-seekers from Dzaleka Refugee Camp and 32,000 local residents from Dowa District."
+description: "A health facility in Dzaleka serving refugees, asylum-seekers and surrounding communities in Dowa District."
 alternativeNames: "Dzaleka Clinic, Refugee Health Centre"
 yearEstablished: 1994
 campZone: "Central Sector"

@@ -1,0 +1,21 @@
+---
+const fields = [
+  { name: 'eligibility', label: 'Who can use the service', hint: 'Include any age, location or other eligibility requirements.' },
+  { name: 'fees', label: 'Cost', hint: 'State the fees, or say free only if this is confirmed.' },
+  { name: 'documents', label: 'Documents to bring', hint: 'List any required documents. Say none if no documents are needed.' },
+  { name: 'appointment', label: 'Appointments and referrals', hint: 'Explain whether people can walk in, need an appointment or need a referral.' },
+  { name: 'languages', label: 'Languages offered', hint: 'List the languages your team can provide the service in, separated by commas.' },
+  { name: 'accessibility', label: 'Access needs', hint: 'Describe available access arrangements, such as step-free entry or communication support.' },
+];
+---
+<details class="rounded border border-slate-300 p-4 sm:p-5">
+  <summary class="min-h-[44px] cursor-pointer font-semibold text-primary-900">Add access information (optional)</summary>
+  <div class="mt-4 space-y-6">
+  <p class="text-sm leading-6 text-slate-600">All fields in this section are optional. Include only information you can confirm. Leave a field blank if you do not know.</p>
+  {fields.map(({ name, label, hint }) => <div>
+    <label for={`access-${name}`} class="mb-2 block font-semibold">{label}</label>
+    <p id={`access-${name}-hint`} class="mb-2 text-sm text-slate-600">{hint}</p>
+    <textarea id={`access-${name}`} name={`access_${name}`} rows="2" maxlength="1500" aria-describedby={`access-${name}-hint`} class="w-full px-3 py-2"></textarea>
+  </div>)}
+</div>
+</details>

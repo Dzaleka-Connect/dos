@@ -1,7 +1,7 @@
 ---
 title: Cash flow forecast template
 shortTitle: Cash flow forecast
-description: Estimate the money coming in and going out each month so you can see when cash may be tight and plan before it becomes a crisis.
+description: Estimate monthly sales and costs, calculate your closing balance and plan for cash shortages. Fill in, download or print the worksheet.
 bestFor: Small businesses handling stock, transport, rent, data, airtime, or other regular monthly costs
 estimatedTime: 30 to 40 minutes
 intro: Use this template to forecast your monthly cash position. It helps you see whether your business can cover costs, when extra support may be needed, and which months are risky.
@@ -78,7 +78,7 @@ example:
         - "Part-time helper: MWK 120,000."
     - title: Balance and warning sign
       items:
-        - "Estimated closing balance: MWK 247,000."
+        - "Estimated closing balance: MWK 487,000."
         - "Warning sign: if available cash drops below MWK 80,000 before week 3."
         - "Response: reduce low-profit menu items and delay non-essential purchases."
 related:

@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { serviceAccessSchema, providerConfirmationSchema } from './utils/serviceDetails';
 
 /**
  * A date field that tolerates everything a CMS or a human may write.
@@ -60,6 +61,8 @@ const serviceSchema = z.object({
   category: z.string(),
   featured: z.boolean().optional(),
   verified: z.boolean().optional(),
+  access: serviceAccessSchema.optional(),
+  providerConfirmation: providerConfirmationSchema.optional(),
   logo: z.string().optional(),
   image: z.string().optional(),
   contact: z.object({

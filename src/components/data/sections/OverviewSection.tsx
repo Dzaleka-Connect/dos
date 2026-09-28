@@ -12,7 +12,7 @@ const overviewData: OverviewData = {
   content: [
     "Established in 1994 in response to the Rwandan genocide and conflicts in Burundi and DRC",
     "Located in Dowa District, about 45km north of Lilongwe, Malawi's capital",
-    "Originally designed for 10,000-12,000 refugees, now hosts over 60,000 people",
+    "Originally designed for 10,000-12,000 refugees; the chart uses the March 2025 population snapshot",
     "Faces significant challenges with overcrowding and limited resources",
     "Home to diverse entrepreneurial activities and small businesses",
     "Supported by UNHCR, WFP, and various NGOs providing essential services"
@@ -21,7 +21,7 @@ const overviewData: OverviewData = {
 };
 
 const chartData = {
-  labels: ['Original Capacity', 'Current Population', 'Overcapacity'],
+  labels: ['Original capacity', 'Population (March 2025)', 'Above capacity'],
   datasets: [{
     label: 'Number of People',
     data: [12000, 57438, 45438],
@@ -48,7 +48,7 @@ const chartOptions = {
     },
     title: {
       display: true,
-      text: 'Camp Capacity vs Reality (2024)',
+      text: 'Capacity and recorded population (March 2025)',
       padding: 20
     }
   },
@@ -67,11 +67,11 @@ const chartOptions = {
 export function OverviewSection() {
   return (
     <div className="bg-white rounded p-6 border border-gray-100">
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">{overviewData.title}</h3>
+      <h3 className="text-xl font-bold text-gray-900 mb-6">Capacity and population</h3>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="h-[320px] sm:h-[400px]">
-          <Bar options={chartOptions} data={chartData} />
+          <Bar options={chartOptions} data={chartData} aria-label="Original capacity: 12,000. Recorded population in March 2025: 57,438. Above capacity: 45,438." role="img" />
         </div>
         
         <div className="space-y-4">

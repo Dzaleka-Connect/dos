@@ -32,6 +32,7 @@ const pageUrl = categoryPage ? `/services/category/${serviceCategorySlug(categor
         <button type="submit" class="min-h-[44px] rounded bg-primary-900 px-6 py-2 text-sm font-medium text-white hover:bg-primary-800">Search</button>
       </div>
     </form>
+    <nav aria-label="Service shortcuts" class="mt-3 flex flex-wrap gap-x-6 text-sm"><a href="/services?category=Education" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Schools and courses</a><a href="/services?category=Health" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Healthcare</a><a href="/essentials" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Newcomer essentials · FR / SW / NY</a></nav>
 
     <section class="mt-8" aria-labelledby="service-results">
       <div class="mb-2 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
@@ -62,7 +63,7 @@ const pageUrl = categoryPage ? `/services/category/${serviceCategorySlug(categor
       <summary class="cursor-pointer py-2 font-semibold text-primary-900">Browse all categories</summary>
       <ul class="mt-3 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">{categories.map(category => <li><a href={`/services/category/${serviceCategorySlug(category)}`} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{category}</a></li>)}</ul>
     </details>
-    <p class="mt-5 text-sm"><a href="/services/stats" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Services directory statistics</a></p>
+    <p class="mt-5 text-sm"><a href="/services/stats" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Services directory statistics</a> · <a href="/services/about" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">About the directory</a></p>
   </div>
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: title, url: `https://services.dzaleka.com${pageUrl}`, itemListElement: results.entries.map((service, index) => ({ '@type': 'ListItem', position: results.start + index + 1, name: service.data.title, url: `https://services.dzaleka.com/services/${service.id}` })) })} />
 </MainLayout>

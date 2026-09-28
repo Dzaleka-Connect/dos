@@ -1,135 +1,304 @@
 ---
-import MainLayout from '../../layouts/MainLayout.astro';
-import RecordGallery from '../../components/records/RecordGallery.astro';
-import RecordFacts from '../../components/records/RecordFacts.astro';
-import RecordTools from '../../components/records/RecordTools.astro';
-import RecordResources from '../../components/records/RecordResources.astro';
-import RelatedRecords from '../../components/records/RelatedRecords.astro';
-import { recordImages, recordCoordinates, formatRecordDate, sameRecordValue } from '../../utils/recordMedia';
-import '../../styles/records.css';
-import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import MainLayout from "../../layouts/MainLayout.astro";
+import RecordGallery from "../../components/records/RecordGallery.astro";
+import RecordFacts from "../../components/records/RecordFacts.astro";
+import RecordTools from "../../components/records/RecordTools.astro";
+import RecordResources from "../../components/records/RecordResources.astro";
+import RelatedRecords from "../../components/records/RelatedRecords.astro";
+import {
+  recordImages,
+  recordCoordinates,
+  formatRecordDate,
+  sameRecordValue,
+} from "../../utils/recordMedia";
+import "../../styles/records.css";
+import Breadcrumb from "../../components/ui/Breadcrumb.astro";
 
 // Generate static paths for all sites
 export async function getStaticPaths() {
   let sites = [];
   try {
-    sites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
+    sites = Object.values(
+      import.meta.glob("../../content/sites/*.md", { eager: true }),
+    );
   } catch (error) {
-    console.error('Error loading sites:', error);
+    console.error("Error loading sites:", error);
     sites = [];
   }
 
   return sites.map((site) => {
-    const slug = site.file.split('/').pop().replace('.md', '');
+    const slug = site.file.split("/").pop().replace(".md", "");
     return {
       params: { slug },
-      props: { site }
+      props: { site },
     };
   });
 }
 
 const { site } = Astro.props;
 const { frontmatter, Content } = site;
+const pageImage = frontmatter.image
+  ? new URL(frontmatter.image, "https://services.dzaleka.com").href
+  : undefined;
 
 // Get related sites based on category and location
-const allSites = Object.values(import.meta.glob('../../content/sites/*.md', { eager: true }));
+const allSites = Object.values(
+  import.meta.glob("../../content/sites/*.md", { eager: true }),
+);
 const relatedSites = allSites
-  .filter(s =>
-    s.file !== site.file &&
-    (sameRecordValue(s.frontmatter.category, frontmatter.category) || sameRecordValue(s.frontmatter.campZone, frontmatter.campZone))
+  .filter(
+    (s) =>
+      s.file !== site.file &&
+      (sameRecordValue(s.frontmatter.category, frontmatter.category) ||
+        sameRecordValue(s.frontmatter.campZone, frontmatter.campZone)),
   )
   .slice(0, 3);
 
 // Create SEO metadata
 const seo = {
   title: `${frontmatter.title} | Dzaleka Heritage Register`,
-  description: frontmatter.description || `Heritage record for ${frontmatter.title} in Dzaleka Refugee Camp`,
-  image: frontmatter.image,
+  description:
+    frontmatter.description ||
+    `Heritage record for ${frontmatter.title} in Dzaleka Refugee Camp`,
+  image: pageImage,
   type: "article",
-  canonical: `https://services.dzaleka.com/site-register/${site.file.split('/').pop().replace('.md', '')}`,
+  canonical: `https://services.dzaleka.com/site-register/${site.file.split("/").pop().replace(".md", "")}`,
   openGraph: {
     title: `${frontmatter.title} | Dzaleka Heritage Register`,
-    description: frontmatter.description || `Heritage record for ${frontmatter.title} in Dzaleka Refugee Camp`,
+    description:
+      frontmatter.description ||
+      `Heritage record for ${frontmatter.title} in Dzaleka Refugee Camp`,
     type: "article",
     site_name: "Dzaleka Online Services",
     locale: "en_US",
-    url: `https://services.dzaleka.com/site-register/${site.file.split('/').pop().replace('.md', '')}`,
+    url: `https://services.dzaleka.com/site-register/${site.file.split("/").pop().replace(".md", "")}`,
     image: {
-      url: frontmatter.image,
-      width: 1200,
-      height: 630,
+      url: pageImage,
       alt: frontmatter.title,
-      type: "image/jpeg"
-    }
-  }
+    },
+  },
 };
 
-const slug = site.file.split('/').pop().replace('.md', '');
-const images = recordImages(frontmatter.image, frontmatter.additionalImages || []);
+const slug = site.file.split("/").pop().replace(".md", "");
+const images = recordImages(
+  frontmatter.image,
+  frontmatter.additionalImages || [],
+);
 const beforeImages = recordImages(frontmatter.beforeImages || []);
 const afterImages = recordImages(frontmatter.afterImages || []);
-const coordinates = recordCoordinates(frontmatter.latitude, frontmatter.longitude);
-const mapHref = coordinates ? `/map?lat=${coordinates.lat}&lng=${coordinates.lng}` : undefined;
-const params = new URLSearchParams({ siteName: frontmatter.title, location: frontmatter.specificLocation || frontmatter.campZone || '' });
+const coordinates = recordCoordinates(
+  frontmatter.latitude,
+  frontmatter.longitude,
+);
+const mapHref = coordinates
+  ? `/map?lat=${coordinates.lat}&lng=${coordinates.lng}`
+  : undefined;
+const params = new URLSearchParams({
+  siteName: frontmatter.title,
+  location: frontmatter.specificLocation || frontmatter.campZone || "",
+});
 const facts = [
-  { label: 'Record number', value: frontmatter.referenceId },
-  { label: 'Category', value: frontmatter.category },
-  { label: 'Area', value: frontmatter.campZone },
-  { label: 'Location', value: frontmatter.specificLocation },
-  { label: 'Established', value: frontmatter.yearEstablished },
-  { label: 'Status or ownership', value: frontmatter.legalStatus },
-  { label: 'Recorded condition', value: frontmatter.condition },
-  { label: 'Date documented', value: formatRecordDate(frontmatter.inscriptionDate) },
-  { label: 'Coordinates', value: coordinates ? `${coordinates.lat}, ${coordinates.lng}` : undefined, href: mapHref },
+  { label: "Record number", value: frontmatter.referenceId },
+  { label: "Category", value: frontmatter.category },
+  { label: "Area", value: frontmatter.campZone },
+  { label: "Location", value: frontmatter.specificLocation },
+  { label: "Established", value: frontmatter.yearEstablished },
+  { label: "Status or ownership", value: frontmatter.legalStatus },
+  { label: "Recorded condition", value: frontmatter.condition },
+  {
+    label: "Date documented",
+    value: formatRecordDate(frontmatter.inscriptionDate),
+  },
+  {
+    label: "Coordinates",
+    value: coordinates ? `${coordinates.lat}, ${coordinates.lng}` : undefined,
+    href: mapHref,
+  },
 ];
 ---
-<MainLayout title={seo.title} description={seo.description} image={seo.image} type={seo.type} canonical={seo.canonical} openGraph={seo.openGraph}>
+
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  type={seo.type}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+>
   {/* Schema.org Place / Landmark Structured Data */}
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": frontmatter.category === "Historical Site" ? "LandmarksOrHistoricalBuildings" : "Place",
-    "name": frontmatter.title,
-    "description": seo.description,
-    "url": seo.canonical,
-    "image": frontmatter.image ? [frontmatter.image] : undefined,
-    "geo": coordinates ? {
-      "@type": "GeoCoordinates",
-      "latitude": coordinates.lat,
-      "longitude": coordinates.lng
-    } : undefined,
-    "containedInPlace": {
-      "@type": "AdministrativeArea",
-      "name": "Dzaleka Refugee Camp",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Dowa",
-        "addressCountry": "MW"
-      }
-    }
-  })} />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type":
+        frontmatter.category === "Historical Site"
+          ? "LandmarksOrHistoricalBuildings"
+          : "Place",
+      name: frontmatter.title,
+      description: seo.description,
+      url: seo.canonical,
+      image: pageImage ? [pageImage] : undefined,
+      geo: coordinates
+        ? {
+            "@type": "GeoCoordinates",
+            latitude: coordinates.lat,
+            longitude: coordinates.lng,
+          }
+        : undefined,
+      containedInPlace: {
+        "@type": "AdministrativeArea",
+        name: "Dzaleka Refugee Camp",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Dowa",
+          addressCountry: "MW",
+        },
+      },
+    })}
+  />
   <div class="record-detail bg-white">
-    <header class="border-b border-slate-200 bg-slate-50"><div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Site Register', href: '/site-register' }, { label: frontmatter.title }]} />
-      <div class="mt-5 max-w-4xl"><p class="text-sm font-medium text-slate-600">{frontmatter.category}{frontmatter.referenceId && <> · {frontmatter.referenceId}</>}</p><h1 class="mt-2 text-primary-900">{frontmatter.title}</h1>{frontmatter.description && <p class="mt-4 text-base leading-7 text-slate-700">{frontmatter.description}</p>}{frontmatter.alternativeNames && <p class="mt-3 text-sm text-slate-600">Also known as {frontmatter.alternativeNames}</p>}</div>
-    </div></header>
+    <header class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Site Register", href: "/site-register" },
+            { label: frontmatter.title },
+          ]}
+        />
+        <div class="mt-5 max-w-4xl">
+          <p class="text-sm font-medium text-slate-600">
+            {frontmatter.category}
+            {frontmatter.referenceId && <> · {frontmatter.referenceId}</>}
+          </p>
+          <h1 class="mt-2 text-primary-900">{frontmatter.title}</h1>
+          {frontmatter.description && (
+            <p class="mt-4 text-base leading-7 text-slate-700">
+              {frontmatter.description}
+            </p>
+          )}
+          {frontmatter.alternativeNames && (
+            <p class="mt-3 text-sm text-slate-600">
+              Also known as {frontmatter.alternativeNames}
+            </p>
+          )}
+        </div>
+      </div>
+    </header>
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-10">
         <div class="min-w-0 space-y-8">
-          {images.length > 0 && <RecordGallery images={images} title={frontmatter.title} />}
-          <article class="record-prose prose prose-slate max-w-none"><Content /></article>
-          {frontmatter.significanceCriteria?.length > 0 && <section class="record-section"><h2 class="text-primary-900">Heritage significance</h2><ul class="list-disc space-y-3 pl-5 text-base leading-7 text-slate-700">{frontmatter.significanceCriteria.map(criterion => <li>{criterion}</li>)}</ul></section>}
-          {(frontmatter.integrity || frontmatter.authenticity || frontmatter.preservationNeeds) && <section class="record-section"><h2 class="text-primary-900">Condition and preservation</h2><RecordFacts facts={[{ label: 'Integrity', value: frontmatter.integrity }, { label: 'Authenticity', value: frontmatter.authenticity }, { label: 'Preservation needs', value: frontmatter.preservationNeeds }]} /></section>}
-          {frontmatter.associatedEvents && <section class="record-section"><h2 class="text-primary-900">Associated events</h2><p class="text-base leading-7 text-slate-700">{frontmatter.associatedEvents}</p></section>}
-          {(beforeImages.length > 0 || afterImages.length > 0) && <section class="record-section"><h2 class="text-primary-900">Before and after photographs</h2><div class="grid gap-6 sm:grid-cols-2">{beforeImages.length > 0 && <div><h3 class="mb-3 text-lg text-slate-900">Before</h3><RecordGallery images={beforeImages} title={`${frontmatter.title} — before`} compact /></div>}{afterImages.length > 0 && <div><h3 class="mb-3 text-lg text-slate-900">After</h3><RecordGallery images={afterImages} title={`${frontmatter.title} — after`} compact /></div>}</div></section>}
+          {images.length > 0 && (
+            <RecordGallery images={images} title={frontmatter.title} />
+          )}
+          <article class="record-prose prose prose-slate max-w-none">
+            <Content />
+          </article>
+          {frontmatter.significanceCriteria?.length > 0 && (
+            <section class="record-section">
+              <h2 class="text-primary-900">Heritage significance</h2>
+              <ul class="list-disc space-y-3 pl-5 text-base leading-7 text-slate-700">
+                {frontmatter.significanceCriteria.map((criterion) => (
+                  <li>{criterion}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {(frontmatter.integrity ||
+            frontmatter.authenticity ||
+            frontmatter.preservationNeeds) && (
+            <section class="record-section">
+              <h2 class="text-primary-900">Condition and preservation</h2>
+              <RecordFacts
+                facts={[
+                  { label: "Integrity", value: frontmatter.integrity },
+                  { label: "Authenticity", value: frontmatter.authenticity },
+                  {
+                    label: "Preservation needs",
+                    value: frontmatter.preservationNeeds,
+                  },
+                ]}
+              />
+            </section>
+          )}
+          {frontmatter.associatedEvents && (
+            <section class="record-section">
+              <h2 class="text-primary-900">Associated events</h2>
+              <p class="text-base leading-7 text-slate-700">
+                {frontmatter.associatedEvents}
+              </p>
+            </section>
+          )}
+          {(beforeImages.length > 0 || afterImages.length > 0) && (
+            <section class="record-section">
+              <h2 class="text-primary-900">Before and after photographs</h2>
+              <div class="grid gap-6 sm:grid-cols-2">
+                {beforeImages.length > 0 && (
+                  <div>
+                    <h3 class="mb-3 text-lg text-slate-900">Before</h3>
+                    <RecordGallery
+                      images={beforeImages}
+                      title={`${frontmatter.title} — before`}
+                      compact
+                    />
+                  </div>
+                )}
+                {afterImages.length > 0 && (
+                  <div>
+                    <h3 class="mb-3 text-lg text-slate-900">After</h3>
+                    <RecordGallery
+                      images={afterImages}
+                      title={`${frontmatter.title} — after`}
+                      compact
+                    />
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
           <RecordResources resources={frontmatter.educationalResources} />
         </div>
         <aside class="min-w-0 space-y-8" aria-label="Site record information">
-          <section class="record-meta"><h2 class="text-primary-900">Site information</h2><RecordFacts facts={facts} />{mapHref && <a href={mapHref} class="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded bg-primary-900 px-4 py-3 text-sm font-medium text-white hover:bg-primary-800">View this place on the map →</a>}</section>
-          <RecordTools title={frontmatter.title} url={seo.canonical} printHref={`/site-register/${slug}/print`} updateHref={`/site-register/submit-update?${params}`} reportHref={`/site-register/report-issue?${params}`} />
-          <a href="/site-register/license" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Record licence and usage policy →</a>
+          <section class="record-meta">
+            <h2 class="text-primary-900">Site information</h2>
+            <RecordFacts facts={facts} />
+            {mapHref && (
+              <a
+                href={mapHref}
+                class="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded bg-primary-900 px-4 py-3 text-sm font-medium text-white hover:bg-primary-800"
+              >
+                View this place on the map →
+              </a>
+            )}
+          </section>
+          <RecordTools
+            title={frontmatter.title}
+            url={seo.canonical}
+            printHref={`/site-register/${slug}/print`}
+            updateHref={`/site-register/submit-update?${params}`}
+            reportHref={`/site-register/report-issue?${params}`}
+          />
+          <a
+            href="/site-register/license"
+            class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+          >
+            Record licence and usage policy →
+          </a>
         </aside>
       </div>
-      <div class="mt-12"><RelatedRecords title="Explore related places" items={relatedSites.map(record => ({ title: record.frontmatter.title, href: `/site-register/${record.file.split('/').pop().replace('.md', '')}`, image: record.frontmatter.image, meta: [record.frontmatter.category, record.frontmatter.campZone].filter(Boolean).join(' · ') }))} /></div>
+      <div class="mt-12">
+        <RelatedRecords
+          title="Explore related places"
+          items={relatedSites.map((record) => ({
+            title: record.frontmatter.title,
+            href: `/site-register/${record.file.split("/").pop().replace(".md", "")}`,
+            image: record.frontmatter.image,
+            meta: [record.frontmatter.category, record.frontmatter.campZone]
+              .filter(Boolean)
+              .join(" · "),
+          }))}
+        />
+      </div>
     </div>
   </div>
 </MainLayout>

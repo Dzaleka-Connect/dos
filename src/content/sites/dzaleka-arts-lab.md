@@ -1,6 +1,6 @@
 ---
 title: Dzaleka Arts Lab
-description: A dedicated creative incubator and collaborative space where artists rehearse, record, and produce both physical and digital artworks, serving as a beacon of artistic resilience.
+description: "A space in Dzaleka where artists rehearse, record and produce physical and digital artworks."
 referenceId: "DZK-008"
 campZone: "Central Sector"
 specificLocation: "Cultural Quarter near Community Center"

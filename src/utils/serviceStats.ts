@@ -1,3 +1,4 @@
+import { providerConfirmation } from './serviceDetails';
 import type { CollectionEntry } from 'astro:content';
 
 export interface ServiceStats {
@@ -22,7 +23,7 @@ export function calculateServiceStats(services: CollectionEntry<'services'>[]): 
   return {
     total: services.length,
     featured: services.filter(s => s?.data?.featured).length,
-    verified: services.filter(s => s?.data?.verified).length,
+    verified: services.filter(s => providerConfirmation(s?.data?.providerConfirmation)).length,
     active: services.filter(s => s?.data?.status !== 'inactive').length,
     categories: new Set(services.map(s => s?.data?.category).filter(Boolean)).size
   };

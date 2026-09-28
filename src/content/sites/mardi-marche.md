@@ -1,6 +1,6 @@
 ---
 title: "Dzaleka Tuesday Market"
-description: "The largest and most vibrant weekly trading event in Dzaleka Refugee Camp, acting as the community's economic and social heart."
+description: "A weekly Tuesday market where people in Dzaleka buy and sell goods."
 alternativeNames: "Tuesday Market, Mardi Marché"
 campZone: "Central Market Spine"
 specificLocation: "Kawale Commercial Axis, Central Dzaleka"

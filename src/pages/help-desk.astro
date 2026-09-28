@@ -1,441 +1,110 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import HelpDeskForm from '../components/HelpDeskForm.astro';
-import { supportCategories } from '../data/support-categories';
-
-const pageTitle = "Help Desk & Support Center";
-const description = "Get expert support for Dzaleka Online Services with 24-48 hour response times. Our dedicated help desk provides assistance for technical issues, business services, community resources, cultural support, and educational programs. Multilingual support available.";
-const keywords = "help desk, support center, technical support, customer service, Dzaleka services, business support, community support, cultural support, education support, employment support, gallery support, event support, resource center";
-const ogImage = "https://services.dzaleka.com/images/Visit_Dzaleka.png";
-
-const canonicalUrl = "https://services.dzaleka.com/help-desk";
-const seo = {
-  title: pageTitle,
-  description,
-  keywords,
-  canonical: canonicalUrl,
-  openGraph: {
-    title: pageTitle,
-    description,
-    type: "website",
-    image: {
-      url: ogImage,
-      alt: "Dzaleka Online Services Help Desk"
-    },
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
-    url: canonicalUrl
-  },
-  twitter: {
-    card: "summary_large_image",
-    creator: "@dzalekaonline",
-    title: pageTitle,
-    description,
-    image: ogImage
-  }
-};
-
-const helpDeskStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "CustomerService",
-  "name": "Dzaleka Online Services Help Desk",
-  "description": "Comprehensive support center for Dzaleka Online Services",
-  "url": canonicalUrl,
-  "telephone": "",
-  "email": "dzalekaconnect@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Dzaleka Refugee Camp",
-    "addressRegion": "Dowa",
-    "addressCountry": "Malawi"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer service",
-    "email": "dzalekaconnect@gmail.com",
-    "availableLanguage": ["English", "French", "Swahili"]
-  }
-};
-
-const faqs = [
-  {
-    question: "What is the typical response time?",
-    answer: "We aim to respond to all inquiries within 24 hours. For urgent issues, we prioritize quick responses."
-  },
-  {
-    question: "What information should I include in my request?",
-    answer: "Include your full name, contact information, and a detailed description of your issue or question. For technical issues, provide any relevant error messages or screenshots."
-  },
-  {
-    question: "What are your business hours?",
-    answer: "Our support team is available Monday through Friday, 8:00 AM to 5:00 PM (Malawi Time). If your situation is urgent, use the Get help now page for hotline numbers and faster routes."
-  },
-  {
-    question: "What languages do you support?",
-    answer: "We provide support in English, French, and Swahili. Indicate your preferred language in your request."
-  }
-];
-
-// Initialize form state
-const errors = { name: "", email: "", message: "", category: "" };
-let success = false;
-
-// Handle form submission
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    const name = data.get("name");
-    const email = data.get("email");
-    const message = data.get("message");
-    const subject = data.get("_subject") || "New Support Request";
-
-    // Validate the data
-    if (typeof name !== "string" || name.length < 1) {
-      errors.name = "Enter your name";
-    }
-    if (typeof email !== "string" || !email.includes("@")) {
-      errors.email = "Enter a valid email";
-    }
-    if (typeof message !== "string" || message.length < 10) {
-      errors.message = "Message must be at least 10 characters";
-    }
-
-    const hasErrors = Object.values(errors).some(msg => msg);
-
-    if (!hasErrors) {
-      // Submit to FormCarry
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("message", message);
-      formData.append("_subject", subject);
-      formData.append("_replyto", email);
-      formData.append("_next", "https://services.dzaleka.com/thank-you?type=support");
-
-      const response = await fetch("https://formcarry.com/s/w40iBX_iU0b", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Accept": "application/json"
-        }
-      });
-
-      if (response.ok) {
-        success = true;
-        return Astro.redirect("/thank-you?type=support");
-      } else {
-        throw new Error("Failed to submit form");
-      }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Form submission error:", error.message);
-    }
-  }
-}
+import MainLayout from "../layouts/MainLayout.astro";
+import Breadcrumb from "../components/ui/Breadcrumb.astro";
+import HelpDeskForm from "../components/HelpDeskForm.astro";
+const description =
+  "Ask for help using Dzaleka Online Services, report a website problem or request a listing correction. Contact the site team by form or email.";
+const canonical = "https://services.dzaleka.com/help-desk";
 ---
 
 <MainLayout
-  title={seo.title}
-  description={seo.description}
-  keywords={seo.keywords}
-  canonical={seo.canonical}
-  openGraph={seo.openGraph}
-  twitter={seo.twitter}
+  title="Help desk"
+  description={description}
+  canonical={canonical}
+  image="https://services.dzaleka.com/images/dzaleka-hero.jpeg"
+  schema={{
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Help desk",
+    description,
+    url: canonical,
+  }}
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(helpDeskStructuredData)} />
-
-  <div class="min-h-screen bg-gray-50">
-    <!-- Hidden data element for support categories -->
-    <script id="support-categories-data" type="application/json" set:html={JSON.stringify(supportCategories)}></script>
-
-    <!-- Hero Section -->
-    <div class="relative h-[60vh] overflow-hidden">
-      <!-- Background Image with Overlay -->
-      <div class="absolute inset-0">
-        <img
-          src="/images/Visit_Dzaleka.png"
-          alt="Dzaleka Help Desk"
-          class="w-full h-full object-cover"
-        />
-        <div class="absolute inset-0 bg-gray-900 bg-opacity-60"></div>
-      </div>
-
-      <!-- Hero Content -->
-      <div class="relative h-full flex items-center justify-center text-center px-4">
-        <div class="max-w-3xl">
-          <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
-            How can we help you today?
-          </h1>
-          <p class="text-xl text-gray-200 mb-8">
-            Get support for all Dzaleka Online Services. Our team is here to help.
-          </p>
-          <a
-            href="#supportFormSection"
-            class="min-h-[44px] inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded text-white bg-primary-600 hover:bg-primary-700"
-          >
-            Get Support
-            <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </a>
-        </div>
-      </div>
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <Breadcrumb
+        items={[{ label: "Home", href: "/" }, { label: "Help desk" }]}
+      />
+      <p class="text-sm font-semibold uppercase tracking-widest text-primary-700">
+        Website support
+      </p>
+      <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+        Help desk
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
+        Report a website problem, ask about a listing or send a question to the
+        site team.
+      </p>
     </div>
-
-    <section class="border-b border-slate-200 bg-white">
-      <div class="container mx-auto px-4 py-6">
-        <div class="mx-auto flex max-w-5xl flex-col gap-4 rounded border border-red-200 bg-red-50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-red-700">Urgent support</p>
-            <p class="mt-2 text-sm leading-6 text-slate-700">
-              If you need help with safety, protection, health, legal problems, or an emergency, do not wait for a 24 to 48 hour help desk reply.
+  </section>
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14 lg:px-8">
+    <section id="supportFormSection" class="scroll-mt-28">
+      <h2 class="text-2xl font-bold text-slate-900">Send a message</h2>
+      <p class="mb-6 mt-2 leading-7 text-slate-600">
+        Include the page address and explain what happened so we can look into
+        it.
+      </p>
+      <HelpDeskForm />
+    </section>
+    <aside class="space-y-8">
+      <section class="rounded border border-slate-200 bg-slate-50 p-5">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Looking for something else?
+        </h2>
+        <ul class="mt-4 divide-y divide-slate-200">
+          <li class="py-3 first:pt-0">
+            <a
+              href="/services/update-request"
+              class="font-medium text-primary-800 underline underline-offset-4"
+            >
+              Update a service listing
+            </a>
+            <p class="mt-1 text-sm leading-6 text-slate-600">
+              Send changes to contact details, hours or service information.
             </p>
-          </div>
-          <a
-            href="/get-help-now"
-            class="min-h-[44px] inline-flex items-center justify-center rounded bg-primary-900 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-800"
-          >
-            Open Get help now
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Support Categories Grid -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Support Categories</h2>
-            <p class="text-gray-600">Select the category that best matches your needs</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {supportCategories.map(category => (
-              <button
-                type="button"
-                class="min-h-[44px] category-btn p-6 bg-white rounded border-2 border-gray-200 hover:border-primary-500 transition-colors text-left"
-                data-category={category.id}
-              >
-                <div class="text-primary-600 mb-3 w-8 h-8" set:html={category.icon} />
-                <h3 class="font-medium text-gray-900 text-lg">{category.title}</h3>
-                <p class="text-gray-500 text-sm mt-2">{category.description}</p>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Support Form Section -->
-    <section id="supportFormSection" class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Submit Your Request</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-              Select a category below and fill out the form to get started. Our support team will respond via email.
+          </li>
+          <li class="py-3">
+            <a
+              href="https://visit.dzaleka.com"
+              class="font-medium text-primary-800 underline underline-offset-4"
+            >
+              Visit Dzaleka
+            </a>
+            <p class="mt-1 text-sm leading-6 text-slate-600">
+              Tour and visitor information is on the dedicated website.
             </p>
-          </div>
-
-          <div class="bg-white rounded shadow-lg overflow-hidden">
-            <div class="p-6">
-              <!-- Thank You Message (Hidden by default) -->
-              <div id="thankYouMessage" class="hidden text-center py-8">
-                <div class="mb-4">
-                  <svg class="mx-auto h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
-                <p class="text-gray-600 mb-6">
-                  Your support request has been submitted successfully. We'll get back to you as soon as possible.
-                </p>
-                <button
-                  id="submitAnotherButton"
-                  class="min-h-[44px] inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded text-white bg-primary-600 hover:bg-primary-700"
-                >
-                  Submit Another Request
-                </button>
-              </div>
-
-              <!-- Form (Hidden after submission) -->
-              <div id="supportFormContainer">
-                <HelpDeskForm />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently asked questions</h2>
-            <p class="text-gray-600">Find quick answers to common questions</p>
-          </div>
-
-          <div class="space-y-6">
-            {faqs.map((faq, index) => (
-              <div class="bg-gray-50 rounded p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-2">{faq.question}</h3>
-                <p class="text-gray-600">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Info Section -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Still Need Help?</h2>
-          <p class="text-gray-600 mb-6">
-            If you can't find what you're looking for, feel free to contact us directly at
-          </p>
-          <a href="mailto:dzalekaconnect@gmail.com" class="text-primary-600 hover:text-primary-700">
-            dzalekaconnect@gmail.com
-          </a>
-        </div>
-      </div>
-    </section>
+          </li>
+          <li class="pt-3">
+            <a
+              href="/get-help-now"
+              class="font-medium text-primary-800 underline underline-offset-4"
+            >
+              Get help now
+            </a>
+            <p class="mt-1 text-sm leading-6 text-slate-600">
+              Find urgent help contacts. This website form is not an emergency
+              service.
+            </p>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="text-lg font-semibold text-slate-900">Email the team</h2>
+        <a
+          href="mailto:dzalekaconnect@gmail.com"
+          class="mt-3 inline-flex min-h-[44px] items-center break-all text-primary-800 underline underline-offset-4"
+        >
+          dzalekaconnect@gmail.com
+        </a>
+      </section>
+      <section class="border-t border-slate-200 pt-6">
+        <h2 class="text-lg font-semibold text-slate-900">What to include</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
+          <li>The page or listing you need help with.</li>
+          <li>What you were trying to do.</li>
+          <li>Any error message you saw.</li>
+        </ul>
+      </section>
+    </aside>
   </div>
-
-  <script>
-    // Get the support categories data from the server
-    const supportCategoriesData = JSON.parse(document.getElementById('support-categories-data')?.textContent || '[]');
-
-    document.addEventListener('DOMContentLoaded', function() {
-      // Handle category selection
-      const categoryButtons = document.querySelectorAll('.category-btn');
-      const form = document.getElementById('supportForm');
-      const thankYouMessage = document.getElementById('thankYouMessage');
-      const supportFormContainer = document.getElementById('supportFormContainer');
-      const submitAnotherButton = document.getElementById('submitAnotherButton');
-
-      if (!form || !thankYouMessage || !supportFormContainer || !submitAnotherButton) return;
-
-      // Handle "Submit Another" button
-      submitAnotherButton.addEventListener('click', function() {
-        thankYouMessage.classList.add('hidden');
-        supportFormContainer.classList.remove('hidden');
-        form.reset();
-
-        // Reset category selection
-        categoryButtons.forEach(btn => btn.classList.remove('border-primary-500'));
-
-        // Reset form header
-        const categoryTitle = form.querySelector('.category-title');
-        const categoryDescription = form.querySelector('.category-description');
-        const categoryIcon = form.querySelector('.category-icon');
-
-        if (categoryTitle) {
-          categoryTitle.textContent = 'Select a Category';
-          categoryTitle.className = 'text-2xl font-bold category-title text-gray-400';
-        }
-        if (categoryDescription) {
-          categoryDescription.textContent = 'Choose a category above to get started';
-          categoryDescription.className = 'text-gray-400 category-description';
-        }
-        if (categoryIcon) {
-          categoryIcon.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
-          categoryIcon.className = 'category-icon text-gray-400';
-        }
-      });
-
-      // Handle form submission
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Show loading state
-        const submitButton = form.querySelector('#submitButton') as HTMLButtonElement;
-        const submitText = submitButton.querySelector('.submit-text') as HTMLElement;
-        const loadingText = submitButton.querySelector('.loading-text') as HTMLElement;
-        const submitIcon = submitButton.querySelector('.submit-icon') as HTMLElement;
-
-        submitButton.disabled = true;
-        submitText.classList.add('hidden');
-        loadingText.classList.remove('hidden');
-        submitIcon.classList.add('hidden');
-
-        // Update _replyto with email value
-        const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
-        const replyToInput = form.querySelector('input[name="_replyto"]') as HTMLInputElement;
-        if (emailInput && replyToInput) {
-          replyToInput.value = emailInput.value;
-        }
-
-        // Submit to FormCarry
-        const formData = new FormData(form);
-        fetch("https://formcarry.com/s/w40iBX_iU0b", {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Accept": "application/json"
-          }
-        })
-        .then(response => {
-          if (response.ok) {
-            // Show thank you message
-            supportFormContainer.classList.add('hidden');
-            thankYouMessage.classList.remove('hidden');
-          } else {
-            throw new Error('Form submission failed');
-          }
-        })
-        .catch(error => {
-          console.error('Form submission error:', error);
-          // Reset button state
-          submitButton.disabled = false;
-          submitText.classList.remove('hidden');
-          loadingText.classList.add('hidden');
-          submitIcon.classList.remove('hidden');
-        });
-      });
-
-      categoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const categoryId = this.dataset.category;
-          const category = supportCategoriesData.find(c => c.id === categoryId);
-
-          if (category) {
-            // Update subject field
-            const subjectInput = form.querySelector('input[name="_subject"]');
-            if (subjectInput) subjectInput.value = `${category.title} Support Request`;
-
-            // Update visual state
-            categoryButtons.forEach(btn => btn.classList.remove('border-primary-500'));
-            this.classList.add('border-primary-500');
-
-            // Update header
-            const categoryTitle = form.querySelector('.category-title');
-            const categoryDescription = form.querySelector('.category-description');
-            const categoryIcon = form.querySelector('.category-icon');
-
-            if (categoryTitle) {
-              categoryTitle.textContent = category.title;
-              categoryTitle.className = 'text-2xl font-bold category-title text-gray-900';
-            }
-            if (categoryDescription) {
-              categoryDescription.textContent = category.description;
-              categoryDescription.className = 'text-gray-600 category-description';
-            }
-            if (categoryIcon) {
-              categoryIcon.innerHTML = category.icon;
-              categoryIcon.className = 'category-icon text-primary-600';
-            }
-
-            // Scroll to form
-            document.getElementById('supportFormSection')?.scrollIntoView({ behavior: 'smooth' });
-          }
-        });
-      });
-    });
-  </script>
 </MainLayout>

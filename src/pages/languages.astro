@@ -1,4 +1,5 @@
 ---
+import { essentials, guideLanguages } from '../data/essentials';
 import MainLayout from '../layouts/MainLayout.astro';
 
 const pageTitle = 'Language support | Dzaleka Online Services';
@@ -68,7 +69,7 @@ const supportRoutes = [
   {
     title: 'If you need a reply from the site team',
     text:
-      'For non-urgent questions, the Help Desk can reply in English, French, and Swahili.',
+      'For non-urgent questions, contact the Help Desk and say which language you prefer.',
     links: [{ label: 'Open Help Desk', href: '/help-desk' }],
   },
 ];
@@ -117,7 +118,11 @@ const schema = {
 
     <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <div class="space-y-8">
-        <!-- New Multilingual Context Section in Original Style -->
+        <section class="border-t-4 border-primary-800 bg-white p-6 sm:p-8" aria-labelledby="translated-guides">
+          <h2 id="translated-guides" class="text-2xl font-semibold text-slate-900">Newcomer essentials in your language</h2>
+          <p class="mt-3 text-base leading-7 text-slate-700">A short guide to finding services and useful contacts. Read online, print or save it for offline use.</p>
+          <ul class="mt-4 grid gap-x-6 sm:grid-cols-2">{guideLanguages.map(lang => <li class="border-b border-slate-200"><a href={`/essentials/${lang}`} lang={lang} hreflang={lang} class="flex min-h-[52px] items-center text-lg font-semibold text-primary-800 underline underline-offset-4">{essentials[lang].name}</a></li>)}</ul>
+        </section>
         <section class="rounded border border-slate-200 bg-white px-6 py-6 sm:px-8">
           <h2 class="text-2xl font-semibold text-slate-900">The multilingual heart of Dzaleka</h2>
           <p class="mt-4 text-base leading-7 text-slate-600">

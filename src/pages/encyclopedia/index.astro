@@ -1,15 +1,26 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
-import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { getCollection } from "astro:content";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Breadcrumb from "../../components/ui/Breadcrumb.astro";
 
-const entries = (await getCollection('encyclopedia')).sort((a, b) =>
-  (a.data.sortName || a.data.title).localeCompare(b.data.sortName || b.data.title)
+const entries = (await getCollection("encyclopedia")).sort((a, b) =>
+  (a.data.sortName || a.data.title).localeCompare(
+    b.data.sortName || b.data.title,
+  ),
 );
 
-const campEntry = entries.find((entry) => entry.id === 'dzaleka-refugee-camp');
-const featuredEntries = ['history-of-dzaleka', 'tumaini-festival', 'refugee-led-organisations']
-  .map((id) => entries.find((entry) => entry.id === id)).filter(Boolean);
+const campEntry = entries.find((entry) => entry.id === "dzaleka-refugee-camp");
+const featuredEntries = [
+  "history-of-dzaleka",
+  "tumaini-festival",
+  "refugee-led-organisations",
+]
+  .map((id) => entries.find((entry) => entry.id === id))
+  .filter(Boolean);
+
+const featuredPeople = ["angela-abizera", "menes-la-plume", "innocent-magambi"]
+  .map((id) => entries.find((entry) => entry.id === id))
+  .filter(Boolean);
 
 const categories = [...new Set(entries.map((entry) => entry.data.category))]
   .sort()
@@ -18,16 +29,25 @@ const categories = [...new Set(entries.map((entry) => entry.data.category))]
     count: entries.filter((entry) => entry.data.category === category).length,
   }));
 const entryTypeLabels: Record<string, string> = {
-  overview: 'Overviews',
-  topic: 'Topics',
-  person: 'People',
-  organization: 'Organisations',
-  place: 'Places',
-  event: 'Events',
-  book: 'Books',
-  film: 'Films',
+  overview: "Overviews",
+  topic: "Topics",
+  person: "People",
+  organization: "Organisations",
+  place: "Places",
+  event: "Events",
+  book: "Books",
+  film: "Films",
 };
-const entryTypeOrder = ['overview', 'topic', 'person', 'organization', 'place', 'event', 'book', 'film'];
+const entryTypeOrder = [
+  "overview",
+  "topic",
+  "person",
+  "organization",
+  "place",
+  "event",
+  "book",
+  "film",
+];
 const entryTypes = entryTypeOrder
   .filter((type) => entries.some((entry) => entry.data.entryType === type))
   .map((type) => ({
@@ -36,93 +56,110 @@ const entryTypes = entryTypeOrder
     count: entries.filter((entry) => entry.data.entryType === type).length,
   }));
 const surveyEntryIds = [
-  'health-nutrition-and-population',
-  'mdhs-household-conditions',
-  'fertility-and-family-planning-mdhs-2024',
-  'vaccination-nutrition-and-anaemia-mdhs-2024',
-  'maternal-health-and-malaria-mdhs-2024',
-  'social-development-mdhs-2024',
+  "health-nutrition-and-population",
+  "mdhs-household-conditions",
+  "fertility-and-family-planning-mdhs-2024",
+  "vaccination-nutrition-and-anaemia-mdhs-2024",
+  "maternal-health-and-malaria-mdhs-2024",
+  "social-development-mdhs-2024",
 ];
 const surveyEntries = surveyEntryIds
   .map((id) => entries.find((entry) => entry.id === id))
   .filter(Boolean);
-const availableLetters = new Set(entries.map((entry) => (entry.data.sortName || entry.data.title).charAt(0).toUpperCase()));
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-const sourceCount = new Set(entries.flatMap((entry) => entry.data.sources.map((source) => source.url))).size;
-const latestReview = entries.reduce(
-  (latest, entry) => entry.data.lastReviewed > latest ? entry.data.lastReviewed : latest,
-  entries[0]?.data.lastReviewed || new Date()
+const availableLetters = new Set(
+  entries.map((entry) =>
+    (entry.data.sortName || entry.data.title).charAt(0).toUpperCase(),
+  ),
 );
-const reviewLabel = latestReview.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-const canonical = 'https://services.dzaleka.com/encyclopedia';
-const title = 'Dzaleka Encyclopedia';
-const description = 'A sourced reference to Dzaleka Refugee Camp: its history, people, institutions, culture, services, law, health, education, infrastructure, and public life.';
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const sourceCount = new Set(
+  entries.flatMap((entry) => entry.data.sources.map((source) => source.url)),
+).size;
+const latestReview = entries.reduce(
+  (latest, entry) =>
+    entry.data.lastReviewed > latest ? entry.data.lastReviewed : latest,
+  entries[0]?.data.lastReviewed || new Date(),
+);
+const reviewLabel = latestReview.toLocaleDateString("en-GB", {
+  month: "long",
+  year: "numeric",
+});
+const canonical = "https://services.dzaleka.com/encyclopedia";
+const title = "Dzaleka Encyclopedia";
+const description =
+  "Explore Dzaleka Refugee Camp’s people, history, culture and institutions. Search sourced encyclopedia entries, read biographies and suggest corrections.";
 
 const structuredData = {
-  '@context': 'https://schema.org',
-  '@graph': [
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      '@type': 'CollectionPage',
-      '@id': `${canonical}#collection`,
+      "@type": "CollectionPage",
+      "@id": `${canonical}#collection`,
       url: canonical,
       name: title,
       description,
-      inLanguage: 'en',
-      isPartOf: { '@id': 'https://services.dzaleka.com/#website' },
-      about: { '@id': `${canonical}/dzaleka-refugee-camp#entity` },
-      mainEntity: { '@id': `${canonical}#entries` },
+      inLanguage: "en",
+      isPartOf: { "@id": "https://services.dzaleka.com/#website" },
+      about: { "@id": `${canonical}/dzaleka-refugee-camp#entity` },
+      mainEntity: { "@id": `${canonical}#entries` },
       dateModified: latestReview.toISOString(),
     },
     {
-      '@type': 'ItemList',
-      '@id': `${canonical}#entries`,
-      name: 'Dzaleka Encyclopedia entries',
+      "@type": "ItemList",
+      "@id": `${canonical}#entries`,
+      name: "Dzaleka Encyclopedia entries",
       numberOfItems: entries.length,
-      itemListOrder: 'https://schema.org/ItemListOrderAscending',
+      itemListOrder: "https://schema.org/ItemListOrderAscending",
       itemListElement: entries.map((entry, index) => ({
-        '@type': 'ListItem',
+        "@type": "ListItem",
         position: index + 1,
         url: `${canonical}/${entry.id}`,
         name: entry.data.title,
       })),
     },
     {
-      '@type': 'DefinedTermSet',
-      '@id': `${canonical}#term-set`,
+      "@type": "DefinedTermSet",
+      "@id": `${canonical}#term-set`,
       url: canonical,
-      name: 'Dzaleka Encyclopedia topics',
+      name: "Dzaleka Encyclopedia topics",
       description,
       hasDefinedTerm: entries.map((entry) => ({
-        '@id': `${canonical}/${entry.id}#entity`,
+        "@id": `${canonical}/${entry.id}#entity`,
         name: entry.data.title,
       })),
     },
     {
-      '@type': 'Place',
-      '@id': `${canonical}/dzaleka-refugee-camp#entity`,
-      name: 'Dzaleka Refugee Camp',
+      "@type": "Place",
+      "@id": `${canonical}/dzaleka-refugee-camp#entity`,
+      name: "Dzaleka Refugee Camp",
       alternateName: campEntry?.data.aliases,
       description: campEntry?.data.summary,
-      image: 'https://services.dzaleka.com/images/encyclopedia/entrance-sign.jpg',
+      image:
+        "https://services.dzaleka.com/images/encyclopedia/entrance-sign.jpg",
       geo: {
-        '@type': 'GeoCoordinates',
+        "@type": "GeoCoordinates",
         latitude: campEntry?.data.geo?.latitude,
         longitude: campEntry?.data.geo?.longitude,
       },
       address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Dzaleka',
-        addressRegion: 'Dowa District',
-        addressCountry: 'MW',
+        "@type": "PostalAddress",
+        addressLocality: "Dzaleka",
+        addressRegion: "Dowa District",
+        addressCountry: "MW",
       },
       sameAs: campEntry?.data.sameAs,
     },
     {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonical}#breadcrumb`,
+      "@type": "BreadcrumbList",
+      "@id": `${canonical}#breadcrumb`,
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
-        { '@type': 'ListItem', position: 2, name: title, item: canonical },
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://services.dzaleka.com/",
+        },
+        { "@type": "ListItem", position: 2, name: title, item: canonical },
       ],
     },
   ],
@@ -133,118 +170,517 @@ const structuredData = {
   title={`${title} | Dzaleka Online Services`}
   description={description}
   canonical={canonical}
-  image="/images/encyclopedia/camp-panorama.jpg"
+  image="https://services.dzaleka.com/images/encyclopedia/camp-panorama.jpg"
   robots="index, follow, max-image-preview:large"
   schema={structuredData}
   openGraph={{
     title,
     description,
-    type: 'website',
-    site_name: 'Dzaleka Online Services',
-    locale: 'en_US',
+    type: "website",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
     url: canonical,
     image: {
-      url: 'https://services.dzaleka.com/images/encyclopedia/camp-panorama.jpg',
+      url: "https://services.dzaleka.com/images/encyclopedia/camp-panorama.jpg",
       width: 1476,
       height: 830,
-      alt: 'A panoramic view across Dzaleka Refugee Camp',
-      type: 'image/jpeg',
+      alt: "A panoramic view across Dzaleka Refugee Camp",
+      type: "image/jpeg",
     },
   }}
 >
-  <header class="border-b border-slate-200 bg-slate-50">
-    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: title }]} />
-      <div class="mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+  <header class="bg-primary-900 text-white">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <Breadcrumb
+        light
+        items={[{ label: "Home", href: "/" }, { label: title }]}
+      />
+      <div class="mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-12">
         <div>
-          <p class="text-sm font-medium text-primary-800">Dzaleka’s people, history and public life</p>
-          <h1 class="mt-3 text-primary-900">Dzaleka Encyclopedia</h1>
-          <p class="mt-4 max-w-2xl text-base leading-7 text-slate-700">Discover the stories, places and knowledge connected to Dzaleka Refugee Camp. Explore a community-informed reference with visible sources and room for new voices.</p>
-          <p class="mt-5 text-sm text-slate-600">{entries.length} entries · {sourceCount} linked sources · latest review {reviewLabel}</p>
-          <a href="#all-entries" class="mt-5 inline-flex min-h-[44px] items-center rounded bg-primary-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800">Search and browse entries <span class="ml-3" aria-hidden="true">↓</span></a>
+          <p class="text-sm font-semibold uppercase tracking-widest text-primary-200">
+            People, history and public life
+          </p>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+            Dzaleka Encyclopedia
+          </h1>
+          <p class="mt-4 max-w-2xl text-lg leading-8 text-primary-50">
+            A reference to Dzaleka Refugee Camp, its people and the communities
+            connected to it. Read biographies, explore its history and follow
+            the sources.
+          </p>
+          <form
+            id="encyclopedia-search-form"
+            action="/encyclopedia#all-entries"
+            method="get"
+            role="search"
+            class="mt-6"
+          >
+            <label
+              for="encyclopedia-search"
+              class="mb-2 block text-sm font-semibold"
+            >
+              Search the encyclopedia
+            </label>
+            <div class="flex rounded border border-white bg-white p-1">
+              <input
+                id="encyclopedia-search"
+                name="q"
+                type="search"
+                placeholder="Name, place or topic"
+                class="min-w-0 flex-1 rounded border-0 bg-white px-3 py-3 text-slate-900 placeholder:text-slate-500"
+              />
+              <button
+                type="submit"
+                class="min-h-[48px] shrink-0 rounded bg-primary-900 px-4 py-2 font-semibold text-white hover:bg-primary-800"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+          <p class="mt-4 text-sm leading-6 text-primary-100">
+            {entries.length} entries · {sourceCount} linked sources{" "}
+            <span class="block sm:inline">
+              · latest entry review {reviewLabel}
+            </span>
+          </p>
         </div>
-        {campEntry?.data.image && <figure class="overflow-hidden rounded border border-slate-200 bg-white">
-          <a href={`/encyclopedia/${campEntry.id}`} aria-label="Explore Dzaleka Refugee Camp"><img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={campEntry.data.image} alt={campEntry.data.imageAlt || campEntry.data.title} width="720" height="480" fetchpriority="high" class="aspect-[3/2] w-full object-cover" /></a>
-          <figcaption class="px-4 py-3 text-sm leading-6 text-slate-600">{campEntry.data.imageCaption || 'Dzaleka Refugee Camp'}{campEntry.data.imageCredit && <span class="block">Photo: {campEntry.data.imageCredit}</span>}</figcaption>
-        </figure>}
+        {campEntry?.data.image && (
+          <figure class="min-w-0">
+            <a
+              href={`/encyclopedia/${campEntry.id}`}
+              class="block overflow-hidden rounded"
+              aria-label="Read about Dzaleka Refugee Camp"
+            >
+              <img
+                onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
+                src={campEntry.data.image}
+                alt={campEntry.data.imageAlt || campEntry.data.title}
+                width="720"
+                height="480"
+                fetchpriority="high"
+                class="aspect-[3/2] w-full object-cover"
+              />
+            </a>
+            <figcaption class="mt-3 text-sm leading-6 text-primary-100">
+              <a
+                href={`/encyclopedia/${campEntry.id}`}
+                class="font-medium text-white underline underline-offset-4"
+              >
+                Start with the camp overview →
+              </a>
+              {campEntry.data.imageCredit && (
+                <span class="block text-xs">
+                  Photo: {campEntry.data.imageCredit}
+                </span>
+              )}
+            </figcaption>
+          </figure>
+        )}
       </div>
-      <nav class="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-200 pt-4 text-sm" aria-label="Encyclopedia information">
-        <a href="/encyclopedia/about" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">About the encyclopedia</a>
-        <a href="/encyclopedia/editorial-guidelines" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Editorial guidance</a>
-        <a href="/encyclopedia/submit-correction" class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">Contribute or correct an entry</a>
-      </nav>
     </div>
   </header>
-
-  <section class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8" aria-labelledby="featured-heading">
-    <div class="mb-5 flex flex-wrap items-baseline justify-between gap-3"><h2 id="featured-heading" class="text-primary-900">Discover Dzaleka</h2><p class="text-sm text-slate-600">History, culture and community</p></div>
-    <div class="grid gap-6 sm:grid-cols-3">
-      {featuredEntries.map((entry) => entry && <article class="min-w-0">
-        <a href={`/encyclopedia/${entry.id}`} class="group block">
-          {entry.data.image && <div class="relative aspect-[3/2] overflow-hidden rounded bg-slate-100"><img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={entry.data.image} alt={entry.data.imageAlt || ''} width="600" height="400" loading="lazy" class="absolute inset-0 h-full w-full object-cover" /></div>}
-          <p class="mt-4 text-sm text-slate-600">{entry.data.category}</p>
-          <h3 class="mt-2 text-xl font-semibold text-primary-800 underline underline-offset-4 group-hover:text-primary-900">{entry.data.title}</h3>
-        </a>
-        <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-700">{entry.data.summary}</p>
-      </article>)}
+  <nav
+    class="border-b border-slate-200 bg-slate-50"
+    aria-label="Browse entry types"
+  >
+    <div class="mx-auto flex max-w-6xl flex-wrap gap-x-6 px-4 py-2 sm:px-6 lg:px-8">
+      <a
+        href="#all-entries"
+        class="inline-flex min-h-[44px] items-center text-sm font-semibold text-primary-900 underline underline-offset-4"
+      >
+        All entries
+      </a>
+      {entryTypes
+        .filter(({ type }) =>
+          ["person", "organization", "place", "topic"].includes(type),
+        )
+        .map(({ type, label, count }) => (
+          <a
+            href={`/encyclopedia?type=${type}#all-entries`}
+            class="inline-flex min-h-[44px] items-center gap-2 text-sm text-primary-800 underline underline-offset-4"
+          >
+            {label}
+            <span class="text-slate-500">{count}</span>
+          </a>
+        ))}
+      <a
+        href="/encyclopedia/about"
+        class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+      >
+        About this reference
+      </a>
     </div>
-  </section>
+  </nav>
 
-  <section id="all-entries" class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8" aria-labelledby="entries-heading">
-    <h2 id="entries-heading" tabindex="-1" class="text-primary-900">Browse the encyclopedia</h2>
-    <form id="encyclopedia-search-form" action="/encyclopedia#all-entries" method="get" role="search" class="mt-5 max-w-2xl">
-      <label for="encyclopedia-search" class="mb-2 block text-sm font-semibold text-slate-900">Search entries</label>
-      <div class="flex">
-        <input id="encyclopedia-search" name="q" type="search" placeholder="Name, place or topic" class="min-w-0 flex-1 rounded-l border border-slate-400 bg-white px-3 py-2 text-slate-900" />
-        <button type="submit" class="min-h-[44px] shrink-0 rounded-r bg-primary-900 px-5 py-2 text-sm font-medium text-white hover:bg-primary-800">Search</button>
-      </div>
-    </form>
+  <section
+    id="all-entries"
+    class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+    aria-labelledby="entries-heading"
+  >
+    <h2 id="entries-heading" tabindex="-1" class="text-primary-900">
+      Browse the encyclopedia
+    </h2>
+    <p class="mt-2 text-sm leading-6 text-slate-600">
+      Browse A–Z, or narrow the list by subject and entry type. People are
+      listed by surname where available.
+    </p>
     <div class="mt-5 grid gap-4 sm:grid-cols-3">
-      <div><label for="encyclopedia-category" class="mb-2 block text-sm font-medium text-slate-900">Subject</label><select id="encyclopedia-category" class="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">All subjects</option>{categories.map((category) => <option value={category.name.toLowerCase()}>{category.name} ({category.count})</option>)}</select></div>
-      <div><label for="encyclopedia-type" class="mb-2 block text-sm font-medium text-slate-900">Entry type</label><select id="encyclopedia-type" class="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">All types</option>{entryTypes.map((entryType) => <option value={entryType.type}>{entryType.label} ({entryType.count})</option>)}</select></div>
-      <div><label for="encyclopedia-letter" class="mb-2 block text-sm font-medium text-slate-900">Starts with</label><select id="encyclopedia-letter" class="w-full border border-slate-400 bg-white px-3 py-2"><option value="all">A–Z</option>{alphabet.filter((letter) => availableLetters.has(letter)).map((letter) => <option value={letter}>{letter}</option>)}</select></div>
+      <div>
+        <label
+          for="encyclopedia-category"
+          class="mb-2 block text-sm font-medium text-slate-900"
+        >
+          Subject
+        </label>
+        <select
+          id="encyclopedia-category"
+          class="min-h-[44px] w-full rounded border border-slate-400 bg-white px-3 py-2"
+        >
+          <option value="all">All subjects</option>
+          {categories.map((category) => (
+            <option value={category.name.toLowerCase()}>
+              {category.name} ({category.count})
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label
+          for="encyclopedia-type"
+          class="mb-2 block text-sm font-medium text-slate-900"
+        >
+          Entry type
+        </label>
+        <select
+          id="encyclopedia-type"
+          class="min-h-[44px] w-full rounded border border-slate-400 bg-white px-3 py-2"
+        >
+          <option value="all">All types</option>
+          {entryTypes.map((entryType) => (
+            <option value={entryType.type}>
+              {entryType.label} ({entryType.count})
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label
+          for="encyclopedia-letter"
+          class="mb-2 block text-sm font-medium text-slate-900"
+        >
+          Starts with
+        </label>
+        <select
+          id="encyclopedia-letter"
+          class="min-h-[44px] w-full rounded border border-slate-400 bg-white px-3 py-2"
+        >
+          <option value="all">A–Z</option>
+          {alphabet
+            .filter((letter) => availableLetters.has(letter))
+            .map((letter) => (
+              <option value={letter}>{letter}</option>
+            ))}
+        </select>
+      </div>
     </div>
     <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
-      <p id="result-count" class="text-sm text-slate-600" role="status">{entries.length} entries</p>
-      <button id="clear-filters" type="button" class="min-h-[44px] text-sm font-medium text-primary-800 underline underline-offset-4">Clear search and filters</button>
+      <p id="result-count" class="text-sm text-slate-600" role="status">
+        {entries.length} entries
+      </p>
+      <button
+        id="clear-filters"
+        type="button"
+        class="min-h-[44px] text-sm font-medium text-primary-800 underline underline-offset-4"
+      >
+        Clear search and filters
+      </button>
     </div>
     <div id="entry-list" class="grid gap-x-8 md:grid-cols-2">
-      {entries.map((entry) => <article class="encyclopedia-entry min-w-0 border-b border-slate-200 py-6" data-search={[entry.data.title, entry.data.summary, entry.data.category, ...(entry.data.aliases || []), entry.body || ''].join(' ').toLowerCase()} data-category={entry.data.category.toLowerCase()} data-type={entry.data.entryType} data-letter={(entry.data.sortName || entry.data.title).charAt(0).toUpperCase()}>
-        <div class="grid grid-cols-[80px_minmax(0,1fr)] items-start gap-4">
-          <a href={`/encyclopedia/${entry.id}`} tabindex="-1" aria-hidden="true" class="relative aspect-square overflow-hidden rounded bg-slate-100">
-            {entry.data.image ? <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={entry.data.image} alt="" width="160" height="160" loading="lazy" class:list={['absolute inset-0 h-full w-full', /\b(?:logo|poster|book cover|book jacket|cover of)\b/i.test(entry.data.imageAlt || '') ? 'object-contain p-1' : entry.data.entryType === 'person' ? 'object-cover object-[50%_25%]' : 'object-cover']} /> : <span class="flex h-full items-center justify-center text-2xl font-semibold text-primary-900">{entry.data.title.charAt(0)}</span>}
-          </a>
-          <div class="min-w-0">
-            <p class="text-sm text-slate-600">{entry.data.category}{entry.data.status === 'developing' && <span> · Developing entry</span>}</p>
-            <h3 class="mt-2 text-lg"><a href={`/encyclopedia/${entry.id}`} class="text-primary-800 underline underline-offset-4 hover:text-primary-900">{entry.data.title}</a></h3>
-            <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-700">{entry.data.summary}</p>
+      {entries.map((entry) => (
+        <article
+          class="encyclopedia-entry min-w-0 border-b border-slate-200 py-6"
+          data-name={[entry.data.title, ...(entry.data.aliases || [])].join(
+            " ",
+          )}
+          data-search={[
+            entry.data.title,
+            entry.data.summary,
+            entry.data.category,
+            ...(entry.data.aliases || []),
+            entry.body || "",
+          ]
+            .join(" ")
+            .toLowerCase()}
+          data-category={entry.data.category.toLowerCase()}
+          data-type={entry.data.entryType}
+          data-letter={(entry.data.sortName || entry.data.title)
+            .charAt(0)
+            .toUpperCase()}
+        >
+          <div
+            class:list={[
+              "grid items-start gap-4 sm:gap-5",
+              entry.data.image
+                ? "grid-cols-[100px_minmax(0,1fr)] sm:grid-cols-[120px_minmax(0,1fr)]"
+                : "grid-cols-1",
+            ]}
+          >
+            {entry.data.image && (
+              <a
+                href={`/encyclopedia/${entry.id}`}
+                tabindex="-1"
+                aria-hidden="true"
+                class="relative aspect-square overflow-hidden rounded bg-slate-100"
+              >
+                <img
+                  onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
+                  src={entry.data.image}
+                  alt=""
+                  width="240"
+                  height="240"
+                  loading="lazy"
+                  class:list={[
+                    "absolute inset-0 h-full w-full",
+                    /\b(?:logo|poster|book cover|book jacket|cover of)\b/i.test(
+                      entry.data.imageAlt || "",
+                    )
+                      ? "object-contain p-1"
+                      : entry.data.entryType === "person"
+                        ? "object-contain"
+                        : "object-cover",
+                  ]}
+                />
+              </a>
+            )}
+            <div class="min-w-0">
+              <p class="text-sm text-slate-600">
+                {entry.data.category}
+                {entry.data.status === "developing" && (
+                  <span> · Developing entry</span>
+                )}
+              </p>
+              <h3 class="mt-1 text-lg leading-7">
+                <a
+                  href={`/encyclopedia/${entry.id}`}
+                  class="text-primary-800 underline underline-offset-4 hover:text-primary-900"
+                >
+                  {entry.data.title}
+                </a>
+              </h3>
+              <p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-700">
+                {entry.data.summary}
+              </p>
+              <p class="mt-2 text-xs leading-5 text-slate-500">
+                {entry.data.sources.length}{" "}
+                {entry.data.sources.length === 1 ? "source" : "sources"}
+              </p>
+            </div>
           </div>
-        </div>
-      </article>)}
+        </article>
+      ))}
     </div>
-    <div id="no-results" hidden class="hidden border-b border-slate-200 py-8"><h3 class="text-lg text-slate-900">No matching entries</h3><p class="mt-2 text-slate-600">Try another name or topic, or clear the search and filters above.</p></div>
-    <nav id="pagination" hidden class="hidden mt-6 flex-wrap items-center justify-between gap-4" aria-label="Encyclopedia pages">
-      <p id="page-status" class="text-sm text-slate-600">Page 1</p>
+    <div id="no-results" hidden class="hidden border-b border-slate-200 py-8">
+      <h3 class="text-lg text-slate-900">No matching entries</h3>
+      <p class="mt-2 text-slate-600">
+        Try another name or topic, or clear the search and filters above.
+      </p>
+    </div>
+    <nav
+      id="pagination"
+      hidden
+      class="hidden mt-6 flex-wrap items-center justify-between gap-4"
+      aria-label="Encyclopedia pages"
+    >
+      <p id="page-status" class="text-sm text-slate-600">
+        Page 1
+      </p>
       <div class="flex flex-wrap gap-3">
-        <button id="pagination-prev" type="button" class="min-h-[44px] rounded border border-slate-400 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">Previous</button>
-        <button id="pagination-next" type="button" class="min-h-[44px] rounded border border-slate-400 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">Next</button>
+        <button
+          id="pagination-prev"
+          type="button"
+          class="min-h-[44px] rounded border border-slate-400 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <button
+          id="pagination-next"
+          type="button"
+          class="min-h-[44px] rounded border border-slate-400 px-4 py-2 text-sm text-primary-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </nav>
   </section>
 
-  <section class="border-t border-slate-200 bg-slate-50" aria-labelledby="exploring-heading">
+  <section
+    class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8"
+    aria-labelledby="featured-heading"
+  >
+    <div class="mb-5 flex flex-wrap items-baseline justify-between gap-3">
+      <h2 id="featured-heading" class="text-primary-900">
+        Discover Dzaleka
+      </h2>
+      <p class="text-sm text-slate-600">History, culture and community</p>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-3">
+      {featuredEntries.map(
+        (entry) =>
+          entry && (
+            <article class="min-w-0">
+              <a href={`/encyclopedia/${entry.id}`} class="group block">
+                {entry.data.image && (
+                  <div class="relative aspect-[3/2] overflow-hidden rounded bg-slate-100">
+                    <img
+                      onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
+                      src={entry.data.image}
+                      alt={entry.data.imageAlt || ""}
+                      width="600"
+                      height="400"
+                      loading="lazy"
+                      class="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+                <p class="mt-4 text-sm text-slate-600">{entry.data.category}</p>
+                <h3 class="mt-2 text-xl font-semibold text-primary-800 underline underline-offset-4 group-hover:text-primary-900">
+                  {entry.data.title}
+                </h3>
+              </a>
+              <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-700">
+                {entry.data.summary}
+              </p>
+            </article>
+          ),
+      )}
+    </div>
+  </section>
+
+  <section
+    class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+    aria-labelledby="people-heading"
+  >
+    <div class="flex flex-wrap items-baseline justify-between gap-3">
+      <h2 id="people-heading" class="text-primary-900">
+        People connected to Dzaleka
+      </h2>
+      <a
+        href="/encyclopedia?type=person#all-entries"
+        class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+      >
+        Browse all biographies →
+      </a>
+    </div>
+    <div class="mt-5 grid gap-6 md:grid-cols-3">
+      {featuredPeople.map(
+        (entry) =>
+          entry && (
+            <article class="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4 border-t border-slate-200 pt-5">
+              <a
+                href={`/encyclopedia/${entry.id}`}
+                tabindex="-1"
+                aria-hidden="true"
+                class="overflow-hidden rounded bg-slate-100"
+              >
+                <img
+                  src={entry.data.image}
+                  alt=""
+                  width="192"
+                  height="240"
+                  loading="lazy"
+                  class="aspect-[4/5] w-full object-contain"
+                />
+              </a>
+              <div>
+                <h3 class="text-lg">
+                  <a
+                    href={`/encyclopedia/${entry.id}`}
+                    class="text-primary-800 underline underline-offset-4"
+                  >
+                    {entry.data.title}
+                  </a>
+                </h3>
+                <p class="mt-2 line-clamp-4 text-sm leading-6 text-slate-600">
+                  {entry.data.summary}
+                </p>
+              </div>
+            </article>
+          ),
+      )}
+    </div>
+  </section>
+
+  <section
+    class="border-t border-slate-200 bg-slate-50"
+    aria-labelledby="exploring-heading"
+  >
     <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      <h2 id="exploring-heading" class="text-primary-900">Start exploring</h2>
+      <h2 id="exploring-heading" class="text-primary-900">
+        Research and contributions
+      </h2>
       <div class="mt-5 grid gap-8 md:grid-cols-2">
-        {campEntry && <article><h3 class="text-lg"><a href={`/encyclopedia/${campEntry.id}`} class="text-primary-800 underline underline-offset-4">{campEntry.data.title}</a></h3><p class="mt-3 text-sm leading-6 text-slate-700">{campEntry.data.summary}</p><a href="/encyclopedia/history-of-dzaleka" class="mt-2 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Read the history of Dzaleka</a></article>}
-        <div><h3 class="text-lg text-slate-900">Research and health surveys</h3><ul class="mt-2">{surveyEntries.map((entry) => entry && <li><a href={`/encyclopedia/${entry.id}`} class="inline-flex min-h-[44px] items-center py-2 text-sm text-primary-800 underline underline-offset-4">{entry.data.title}</a></li>)}</ul></div>
+        <article>
+          <h3 class="text-lg text-slate-900">Help improve the encyclopedia</h3>
+          <p class="mt-3 text-sm leading-6 text-slate-700">
+            Suggest a correction, contribute a photograph or propose an entry.
+            Include the source and date so editors can check the information.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-x-5">
+            <a
+              href="/encyclopedia/submit-correction"
+              class="inline-flex min-h-[44px] items-center text-sm font-semibold text-primary-800 underline underline-offset-4"
+            >
+              Contribute or correct an entry
+            </a>
+            <a
+              href="/encyclopedia/editorial-guidelines"
+              class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+            >
+              Editorial guidance
+            </a>
+          </div>
+        </article>
+        <div>
+          <h3 class="text-lg text-slate-900">Research and health surveys</h3>
+          <ul class="mt-2">
+            {surveyEntries.map(
+              (entry) =>
+                entry && (
+                  <li>
+                    <a
+                      href={`/encyclopedia/${entry.id}`}
+                      class="inline-flex min-h-[44px] items-center py-2 text-sm text-primary-800 underline underline-offset-4"
+                    >
+                      {entry.data.title}
+                    </a>
+                  </li>
+                ),
+            )}
+          </ul>
+        </div>
       </div>
-      <p class="mt-8 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">Entries show review dates and sources. To reuse the collection, read the <a href="/encyclopedia/developers" class="text-primary-800 underline underline-offset-4">API documentation</a> and <a href="/open-license" class="text-primary-800 underline underline-offset-4">open license</a>.</p>
+      <p class="mt-8 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">
+        Entries show review dates and sources. To reuse the collection, read the{" "}
+        <a
+          href="/encyclopedia/developers"
+          class="text-primary-800 underline underline-offset-4"
+        >
+          API documentation
+        </a>{" "}
+        and{" "}
+        <a
+          href="/open-license"
+          class="text-primary-800 underline underline-offset-4"
+        >
+          open license
+        </a>
+        .
+      </p>
     </div>
   </section>
 </MainLayout>
 
 <script>
-  import { initEncyclopediaBrowser } from '../../utils/encyclopediaBrowser';
+  import { initEncyclopediaBrowser } from "../../utils/encyclopediaBrowser";
   initEncyclopediaBrowser(document, window);
 </script>

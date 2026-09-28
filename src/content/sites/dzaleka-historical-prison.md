@@ -1,6 +1,6 @@
 ---
 title: "The Old Dzaleka Maximum Security Prison"
-description: "The historical context of the Dzaleka site, which originally operated as a maximum-security political prison under President Dr. Hastings Kamuzu Banda before becoming a refugee camp in 1994."
+description: "The former political prison on the site that became Dzaleka Refugee Camp in 1994."
 alternativeNames: "Dzaleka Prison, N'dzaleka"
 yearEstablished: 1964
 campZone: "Original Encampment Perimeter (Historical Camp Core)"

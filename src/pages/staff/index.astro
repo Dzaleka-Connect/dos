@@ -1,899 +1,267 @@
 ---
-import MainLayout from '../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
-
-// Get staff announcements
-let announcements = [];
-let events = [];
-
-try {
-  announcements = await getCollection('announcements') || [];
-  events = await getCollection('events') || [];
-} catch (error) {
-  console.error('Error fetching collections:', error);
-}
-
-const sortedAnnouncements = announcements.sort((a, b) =>
-  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-).slice(0, 5);
-
-const upcomingEvents = events
-  .filter(event => new Date(event.data.date) > new Date())
-  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime())
+import MainLayout from "../../layouts/MainLayout.astro";
+import Breadcrumb from "../../components/ui/Breadcrumb.astro";
+import { getCollection } from "astro:content";
+const [news, events, services, jobs] = await Promise.all([
+  getCollection("news"),
+  getCollection("events"),
+  getCollection("services"),
+  getCollection("jobs"),
+]);
+const recentNews = [...news]
+  .sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+  )
   .slice(0, 5);
-
-// Fetch all content from collections
-const allNews = await getCollection('news');
-const allEvents = await getCollection('events');
-const allServices = await getCollection('services');
-const allJobs = await getCollection('jobs');
-
-// Sort all content by date
-const sortedNews = allNews.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-const sortedEvents = allEvents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-const sortedServices = allServices.sort((a, b) => new Date(b.data.lastUpdated || b.data.date).getTime() - new Date(a.data.lastUpdated || a.data.date).getTime());
-const sortedJobs = allJobs.sort((a, b) => new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime());
-
-// Get recent items for the dashboard
-const recentNews = sortedNews.slice(0, 3);
-const recentEvents = sortedEvents.slice(0, 3);
-const recentServices = sortedServices.slice(0, 3);
-const recentJobs = sortedJobs.slice(0, 3);
-
-// Fetch recent announcements
-const recentAnnouncements = allNews
-  .filter(entry => entry.data.category === 'announcement')
-  .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
-  .slice(0, 3);
-
-// Format date for display
-function formatDate(dateValue) {
-  if (!dateValue) return 'Date not available';
-  try {
-    const date = new Date(dateValue);
-    if (isNaN(date.getTime())) return 'Invalid date';
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  } catch (error) {
-    return 'Invalid date';
-  }
-}
-
-// Get date for different content types
-function getContentDate(content) {
-  switch (content.collection) {
-    case 'news':
-      return content.data.date;
-    case 'events':
-      return content.data.date;
-    case 'services':
-      return content.data.lastUpdated || content.data.date;
-    case 'jobs':
-      return content.data.posted;
-    default:
-      return null;
-  }
-}
-
-// Get current date for welcome message
-const currentDate = new Date().toLocaleDateString('en-US', {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
-
-// SEO Metadata
-const seo = {
-  title: "Staff Portal",
-  description: "Manage content, organize events, and support the Dzaleka community through our comprehensive staff portal. Access resources, training materials, and community tools.",
-  canonical: "https://services.dzaleka.com/staff",
-  openGraph: {
-    title: "Staff Portal - Dzaleka Online Services",
-    description: "Manage content, organize events, and support the Dzaleka community through our comprehensive staff portal.",
-    type: "website",
-    image: {
-      url: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
-      alt: "Dzaleka Refugee Camp Staff Portal",
-    },
-    site_name: "Dzaleka Online Services",
-    locale: "en_US",
-    url: "https://services.dzaleka.com/staff",
+const upcoming = events
+  .filter(
+    (event) =>
+      new Date(event.data.endDate || event.data.date).getTime() >= Date.now(),
+  )
+  .sort(
+    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
+  )
+  .slice(0, 4);
+const formatDate = (value: Date | string) =>
+  new Date(value).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+const tasks = [
+  {
+    title: "Write a news post",
+    description: "Open the Dzaleka news editor in Blogger.",
+    href: "https://draft.blogger.com/u/0/blog/posts/415814352087212165",
   },
-  twitter: {
-    card: "summary_large_image",
-    creator: "@dzalekaconnect",
-    title: "Staff Portal - Dzaleka Online Services",
-    description: "Manage content, organize events, and support the Dzaleka community through our comprehensive staff portal.",
-    image: "https://services.dzaleka.com/images/dzaleka-hero.jpeg",
+  {
+    title: "Organise an event",
+    description: "Add the date, venue and event details.",
+    href: "/events/organize",
   },
-};
-
+  {
+    title: "Register a service",
+    description: "Create an organisation or service listing.",
+    href: "/services/register",
+  },
+  {
+    title: "Post a job",
+    description: "Submit a vacancy to the jobs board.",
+    href: "/jobs/post",
+  },
+  {
+    title: "Share a resource",
+    description: "Submit a document, guide or report.",
+    href: "/resources/submit",
+  },
+  {
+    title: "Correct a service listing",
+    description: "Send updated contacts or service information.",
+    href: "/services/update-request",
+  },
+];
+const description =
+  "Publishing shortcuts, content totals, recent posts and training resources for Dzaleka Online Services contributors.";
 ---
 
 <MainLayout
-  title={seo.title}
-  description={seo.description}
-  canonical={seo.canonical}
-  openGraph={seo.openGraph}
-  twitter={seo.twitter}
+  title="Staff portal"
+  description={description}
+  canonical="https://services.dzaleka.com/staff"
   robots="noindex, follow"
+  showFeedback={false}
 >
-  <Fragment slot="head">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="language" content="English" />
-    <meta name="author" content="Dzaleka Online Services" />
-    <meta name="revisit-after" content="7 days" />
-  </Fragment>
-
-  <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section with Background Image -->
-    <div class="relative bg-gray-900">
-      <!-- Background Image -->
-      <div class="absolute inset-0">
-        <img
-          src="/images/dzaleka-hero.jpeg"
-          alt="Staff Portal Background"
-          class="w-full h-full object-cover opacity-50"
-        />
-        <div class="absolute inset-0 bg-gray-900/80"></div>
-      </div>
-
-      <!-- Hero Content -->
-      <div class="relative container mx-auto px-4 py-10 sm:py-12">
-        <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Welcome to the staff portal
-          </h1>
-          <p class="text-xl text-gray-200 mb-8">
-            Manage content, organize events, and support the Dzaleka community
+  <section class="bg-slate-900 text-white">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <Breadcrumb
+        light
+        items={[{ label: "Home", href: "/" }, { label: "Staff portal" }]}
+      />
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-widest text-slate-300">
+            Contributor workspace
           </p>
-
-          <!-- Search Bar -->
-          <form action="/search/results" method="GET" class="relative w-full max-w-2xl mx-auto mb-8">
-            <div class="relative">
-              <input
-                type="search"
-                name="q" aria-label="Search staff documentation"
-                placeholder="Search news, events, services..."
-                class="w-full px-6 py-4 text-lg bg-white/10 border border-white/20 rounded text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50"
-              />
-              <button
-                type="submit" aria-label="Search staff resources"
-                class="min-h-[44px] absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-full"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            </div>
-          </form>
-
-          <!-- Quick Links -->
-          <div class="flex flex-wrap justify-center gap-4 mt-8">
-            <a href="/staff/onboarding" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-white/10 rounded text-white hover:bg-white/20 transition-colors">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span class="text-sm font-medium">Getting Started</span>
-            </a>
-            <a href="/staff/contributing" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-white/10 rounded text-white hover:bg-white/20 transition-colors">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              <span class="text-sm font-medium">Content Guidelines</span>
-            </a>
-            <a href="/staff/training" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-white/10 rounded text-white hover:bg-white/20 transition-colors">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span class="text-sm font-medium">Training</span>
-            </a>
-            <a href="/staff/faq" class="min-h-[44px] inline-flex items-center justify-center px-6 py-3 bg-white/10 rounded text-white hover:bg-white/20 transition-colors">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span class="text-sm font-medium">FAQ</span>
-            </a>
-          </div>
+          <h1 class="mt-3 text-4xl font-bold tracking-tight">Staff portal</h1>
+          <p class="mt-3 max-w-2xl text-lg leading-8 text-slate-300">
+            Publishing tools, site content and guidance for contributors.
+          </p>
         </div>
+        <a
+          href="/staff/onboarding"
+          class="inline-flex min-h-[44px] items-center rounded bg-white px-5 py-3 font-semibold text-slate-900 hover:bg-slate-100"
+        >
+          New contributor? Start here →
+        </a>
       </div>
     </div>
-
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Left Column - Quick Actions & Recent Activity -->
-        <div class="lg:col-span-2 space-y-8">
-          <!-- Quick Actions -->
-          <section class="bg-white rounded border border-gray-200 p-6 mb-8">
-            <div class="flex justify-between items-center mb-6">
-              <h2 class="text-xl font-semibold text-gray-900">Quick Actions</h2>
-              <a href="/dashboard" class="text-sm text-slate-700 hover:text-slate-700">View All</a>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  </section>
+  <div class="mx-auto max-w-7xl px-4 py-9 sm:px-6 lg:px-8">
+    <section aria-labelledby="content-heading">
+      <h2
+        id="content-heading"
+        class="text-sm font-semibold uppercase tracking-widest text-slate-500"
+      >
+        Published site content
+      </h2>
+      <dl class="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {[
+          ["News posts", news.length, "/news"],
+          ["Event listings", events.length, "/events"],
+          ["Services", services.length, "/services"],
+          ["Job listings", jobs.length, "/jobs"],
+        ].map(([label, count, href]) => (
+          <div class="rounded border border-slate-200 px-5 py-4">
+            <dt class="text-sm text-slate-600">
               <a
-                href="https://draft.blogger.com/u/0/blog/posts/415814352087212165"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
+                href={String(href)}
+                class="text-primary-800 underline underline-offset-4"
               >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">News Publishing</div>
-                  <div class="text-xs text-gray-500">Publish on Dzaleka.com</div>
-                </div>
+                {label}
               </a>
-
-              <a
-                href="/events/organize"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
-              >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">New Event</div>
-                  <div class="text-xs text-gray-500">Organize a community event</div>
-                </div>
-              </a>
-
-              <a href="/services/register" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">New Service</div>
-                  <p class="text-xs text-gray-500">Register a service</p>
-                </div>
-              </a>
-
-              <a href="/jobs/post" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Post Job</div>
-                  <p class="text-xs text-gray-500">Create a job listing</p>
-                </div>
-              </a>
-
-              <a href="/resources" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Resources</div>
-                  <p class="text-xs text-gray-500">View all resources</p>
-                </div>
-              </a>
-
-              <a href="/dashboard" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Dashboard</div>
-                  <p class="text-xs text-gray-500">View all activities</p>
-                </div>
-              </a>
-            </div>
-          </section>
-
-          <!-- Recent Activity -->
-          <div class="bg-white rounded border border-gray-200 p-6">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-semibold text-gray-900">Recent Activity</h2>
-              <button
-                id="viewAllActivity"
-                class="min-h-[44px] text-sm text-slate-700 hover:text-slate-700 font-medium"
-              >
-                View All
-              </button>
-            </div>
-
-            <div id="recentActivityList" class="space-y-4">
-              {recentNews.length > 0 && (
-                <div class="flex items-start space-x-3">
-                  <div class="bg-gray-100 p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{recentNews[0].data.title}</div>
-                    <div class="text-xs text-gray-500">{formatDate(getContentDate(recentNews[0]))}</div>
-                  </div>
-                </div>
-              )}
-
-              {recentEvents.length > 0 && (
-                <div class="flex items-start space-x-3">
-                  <div class="bg-gray-100 p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{recentEvents[0].data.title}</div>
-                    <div class="text-xs text-gray-500">{formatDate(getContentDate(recentEvents[0]))}</div>
-                  </div>
-                </div>
-              )}
-
-              {recentServices.length > 0 && (
-                <div class="flex items-start space-x-3">
-                  <div class="bg-gray-100 p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{recentServices[0].data.title}</div>
-                    <div class="text-xs text-gray-500">{formatDate(getContentDate(recentServices[0]))}</div>
-                  </div>
-                </div>
-              )}
-
-              {recentJobs.length > 0 && (
-                <div class="flex items-start space-x-3">
-                  <div class="bg-gray-100 p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">{recentJobs[0].data.title}</div>
-                    <div class="text-xs text-gray-500">{formatDate(getContentDate(recentJobs[0]))}</div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <!-- All Activity Modal -->
-            <div id="activityModal" class="fixed inset-0 z-50 hidden">
-              <div class="fixed inset-0 bg-slate-900/60"></div>
-              <div class="fixed inset-0 overflow-y-auto">
-                <div class="flex min-h-full items-center justify-center p-4">
-                  <div class="relative w-full max-w-4xl transform overflow-hidden rounded bg-white border border-gray-200 transition-colors">
-                    <!-- Modal Header -->
-                    <div class="border-b border-gray-200 bg-white px-6 py-4">
-                      <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-semibold text-gray-900">Recent Activity</h3>
-                        <button type="button" id="closeModal" class="min-h-[44px] rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500">
-                          <span class="sr-only">Close</span>
-                          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Modal Content -->
-                    <div class="px-6 py-4">
-                      <!-- Activity Categories -->
-                      <div class="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-                        <!-- Staff Resources -->
-                        <div>
-                          <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <div class="bg-gray-100 p-2 rounded-full mr-3">
-                              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                              </svg>
-                            </div>
-                            Staff Resources
-                          </h4>
-                          <div class="space-y-4">
-                            <a href="/docs" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                              <div class="bg-gray-100 p-2 rounded-full mr-3">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                              </div>
-                              <div>
-                                <p class="text-sm font-medium text-gray-900">Getting Started Guide</p>
-                                <p class="text-xs text-gray-500">Learn the basics of using the platform</p>
-                              </div>
-                            </a>
-                            <a href="/staff/contributing" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                              <div class="bg-gray-100 p-2 rounded-full mr-3">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                              </div>
-                              <div>
-                                <p class="text-sm font-medium text-gray-900">Content Guidelines</p>
-                                <p class="text-xs text-gray-500">Best practices for content creation</p>
-                              </div>
-                            </a>
-                            <a href="/staff/faq" class="min-h-[44px] flex items-center p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                              <div class="bg-gray-100 p-2 rounded-full mr-3">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                              </div>
-                              <div>
-                                <p class="text-sm font-medium text-gray-900">FAQ and Troubleshooting</p>
-                                <p class="text-xs text-gray-500">Common questions and solutions</p>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-
-                        <!-- News Articles -->
-                        <div>
-                          <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <div class="bg-gray-100 p-2 rounded-full mr-3">
-                              <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                              </svg>
-                            </div>
-                            News Articles
-                          </h4>
-                          <div class="space-y-4">
-                            {sortedNews.map((item) => (
-                              <div class="flex items-start p-4 bg-gray-50 rounded">
-                                <div class="flex-1 min-w-0">
-                                  <p class="text-sm font-medium text-gray-900 truncate">{item.data.title}</p>
-                                  <p class="text-sm text-gray-500">{formatDate(item.data.date)}</p>
-                                </div>
-                                <a href={`/news/${item.id}`} class="ml-4 text-slate-700 hover:text-slate-700">
-                                  View
-                                </a>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <!-- Events -->
-                        <div>
-                          <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <div class="bg-gray-100 p-2 rounded-full mr-3">
-                              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
-                            </div>
-                            Events
-                          </h4>
-                          <div class="space-y-4">
-                            {sortedEvents.map((item) => (
-                              <div class="flex items-start p-4 bg-gray-50 rounded">
-                                <div class="flex-1 min-w-0">
-                                  <p class="text-sm font-medium text-gray-900 truncate">{item.data.title}</p>
-                                  <p class="text-sm text-gray-500">{formatDate(item.data.date)}</p>
-                                </div>
-                                <a href={`/events/${item.id}`} class="ml-4 text-slate-700 hover:text-slate-700">
-                                  View
-                                </a>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <!-- Services -->
-                        <div>
-                          <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <div class="bg-gray-100 p-2 rounded-full mr-3">
-                              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                              </svg>
-                            </div>
-                            Services
-                          </h4>
-                          <div class="space-y-4">
-                            {sortedServices.map((item) => (
-                              <div class="flex items-start p-4 bg-gray-50 rounded">
-                                <div class="flex-1 min-w-0">
-                                  <p class="text-sm font-medium text-gray-900 truncate">{item.data.title}</p>
-                                  <p class="text-sm text-gray-500">{formatDate(item.data.lastUpdated || item.data.date)}</p>
-                                </div>
-                                <a href={`/services/${item.id}`} class="ml-4 text-slate-700 hover:text-slate-700">
-                                  View
-                                </a>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <!-- Job Listings -->
-                        <div>
-                          <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <div class="bg-gray-100 p-2 rounded-full mr-3">
-                              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                              </svg>
-                            </div>
-                            Job Listings
-                          </h4>
-                          <div class="space-y-4">
-                            {sortedJobs.map((item) => (
-                              <div class="flex items-start p-4 bg-gray-50 rounded">
-                                <div class="flex-1 min-w-0">
-                                  <p class="text-sm font-medium text-gray-900 truncate">{item.data.title}</p>
-                                  <p class="text-sm text-gray-500">{formatDate(item.data.posted)}</p>
-                                </div>
-                                <a href={`/jobs/${item.id}`} class="ml-4 text-slate-700 hover:text-slate-700">
-                                  View
-                                </a>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </dt>
+            <dd class="mt-2 text-3xl font-bold text-slate-900">{count}</dd>
           </div>
-
-          <!-- Recent Announcements -->
-          <section class="bg-white rounded border border-gray-200 p-6 mb-8">
-            <div class="flex justify-between items-center mb-6">
-              <h2 class="text-xl font-semibold text-gray-900">Recent Announcements</h2>
-              <a href="/news?category=announcement" class="text-sm text-slate-700 hover:text-slate-700">View All</a>
-            </div>
-            <div class="space-y-4">
-              {recentAnnouncements.length > 0 ? (
-                recentAnnouncements.map((announcement) => (
-                  <a href={`/news/${announcement.id}`} class="block hover:bg-gray-100 transition-colors">
-                    <div class="flex items-start p-4 bg-gray-50 rounded">
-                      <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                        </svg>
-                      </div>
-                      <div class="flex-1">
-                        <h3 class="text-sm font-medium text-gray-900">{announcement.data.title}</h3>
-                        <p class="text-xs text-gray-500 mt-1">{formatDate(getContentDate(announcement))}</p>
-                        {announcement.data.description && (
-                          <p class="text-sm text-gray-600 mt-2 line-clamp-2">{announcement.data.description}</p>
-                        )}
-                      </div>
-                    </div>
+        ))}
+      </dl>
+    </section>
+    <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div>
+        <section>
+          <h2 class="text-2xl font-bold text-slate-900">Publish or update</h2>
+          <div class="mt-5 grid gap-x-8 sm:grid-cols-2">
+            {tasks.map((task) => (
+              <article class="border-t border-slate-200 py-5">
+                <h3 class="font-semibold">
+                  <a
+                    href={task.href}
+                    class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+                  >
+                    {task.title} →
                   </a>
-                ))
-              ) : (
-                <div class="text-center py-8">
-                  <p class="text-gray-500">No recent announcements</p>
-                </div>
-              )}
-            </div>
-          </section>
-        </div>
-
-        <!-- Right Column - Resources, Events & Help -->
-        <div class="space-y-8">
-          <!-- Staff Resources -->
-          <section class="bg-white rounded border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">Staff Resources</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <a
-                href="/staff/onboarding"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
-              >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Onboarding Guide</div>
-                  <div class="text-xs text-gray-500">Get started with the platform</div>
-                </div>
-              </a>
-
-              <a
-                href="/staff/contributing"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
-              >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Contributing Guidelines</div>
-                  <div class="text-xs text-gray-500">Learn how to contribute</div>
-                </div>
-              </a>
-
-              <a
-                href="/staff/training"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
-              >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Training Resources</div>
-                  <div class="text-xs text-gray-500">Access learning materials</div>
-                </div>
-              </a>
-
-              <a
-                href="/staff/faq"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
-              >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">FAQ</div>
-                  <div class="text-xs text-gray-500">Find answers to common questions</div>
-                </div>
-              </a>
-
+                </h3>
+                <p class="mt-1 text-sm leading-6 text-slate-600">
+                  {task.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section class="mt-8">
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="text-2xl font-bold text-slate-900">Recent news posts</h2>
+            <a
+              href="/news"
+              class="text-sm text-primary-800 underline underline-offset-4"
+            >
+              All news
+            </a>
+          </div>
+          <ul class="mt-4 divide-y divide-slate-200 border-y border-slate-200">
+            {recentNews.map((item) => (
+              <li class="py-4">
+                <time
+                  datetime={new Date(item.data.date).toISOString()}
+                  class="text-xs text-slate-500"
+                >
+                  {formatDate(item.data.date)}
+                </time>
+                <a
+                  href={`/news/${item.id}`}
+                  class="mt-1 block font-medium leading-7 text-primary-800 hover:underline"
+                >
+                  {item.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section class="mt-8">
+          <h2 class="text-2xl font-bold text-slate-900">Upcoming events</h2>
+          {upcoming.length ? (
+            <ul class="mt-4 divide-y divide-slate-200">
+              {upcoming.map((event) => (
+                <li class="py-4">
+                  <p class="text-sm text-slate-500">
+                    {formatDate(event.data.date)}
+                  </p>
+                  <a
+                    href={`/events/${event.id}`}
+                    class="mt-1 block font-medium text-primary-800 underline underline-offset-4"
+                  >
+                    {event.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="mt-3 text-slate-600">No upcoming events are listed.</p>
+          )}
+        </section>
+      </div>
+      <aside class="space-y-6">
+        <section class="rounded border border-slate-200 bg-slate-50 p-5">
+          <h2 class="text-lg font-semibold text-slate-900">
+            Contributor guidance
+          </h2>
+          <ul class="mt-3 divide-y divide-slate-200">
+            {[
+              ["Onboarding", "/staff/onboarding"],
+              ["Contributing", "/staff/contributing"],
+              ["Content guidelines", "/staff/guidelines"],
+              ["Training", "/staff/training"],
+              ["Staff FAQ", "/staff/faq"],
+            ].map(([label, href]) => (
+              <li>
+                <a
+                  href={href}
+                  class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section class="border-t border-slate-200 pt-5">
+          <h2 class="text-lg font-semibold text-slate-900">Files and tools</h2>
+          <ul class="mt-3 space-y-3">
+            <li>
               <a
                 href="https://drive.google.com/drive/u/1/folders/1n1DCddBHQbNeNthMAUIBVd7eJYVxcdOG"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-4 bg-white rounded border border-gray-200 hover:border-slate-500 transition-colors"
+                class="text-primary-800 underline underline-offset-4"
               >
-                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">Knowledge Base</div>
-                  <div class="text-xs text-gray-500">Internal documentation and guides</div>
-                </div>
+                Shared Google Drive folder
               </a>
-            </div>
-          </section>
-
-          <!-- Upcoming Events -->
-          <section class="bg-white rounded border border-gray-200 p-6">
-            <div class="flex justify-between items-center mb-6">
-              <h2 class="text-xl font-semibold text-gray-900">Upcoming Events</h2>
-              <a href="/events/upcoming" class="text-sm text-slate-700 hover:text-slate-700">View All</a>
-            </div>
-            <div class="space-y-4">
-              {upcomingEvents.length > 0 ? (
-                upcomingEvents.map((event) => (
-                  <a href={`/events/${event.id}`} class="block hover:bg-gray-100 transition-colors">
-                    <div class="flex items-start p-4 bg-gray-50 rounded">
-                      <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <div class="flex-1">
-                        <h3 class="text-sm font-medium text-gray-900">{event.data.title}</h3>
-                        <p class="text-xs text-gray-500 mt-1">{formatDate(getContentDate(event))}</p>
-                        {event.data.description && (
-                          <p class="text-sm text-gray-600 mt-2 line-clamp-2">{event.data.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </a>
-                ))
-              ) : (
-                <div class="text-center py-8">
-                  <p class="text-gray-500">No upcoming events</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          <!-- Help & Feedback -->
-          <section class="bg-white rounded border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">Need Help?</h2>
-            <div class="space-y-4">
-              <a href="/help-desk" class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                <span class="text-gray-900">Help Desk</span>
+            </li>
+            <li>
+              <a
+                href="/dashboard"
+                class="text-primary-800 underline underline-offset-4"
+              >
+                Content dashboard
               </a>
-              <a href="/contact" class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
-                <span class="text-gray-900">Contact Us</span>
+            </li>
+            <li>
+              <a
+                href="/docs"
+                class="text-primary-800 underline underline-offset-4"
+              >
+                Site documentation
               </a>
-              <a href="/staff/training" class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                <span class="text-gray-900">Training Resources</span>
+            </li>
+            <li>
+              <a
+                href="/help-desk"
+                class="text-primary-800 underline underline-offset-4"
+              >
+                Website help desk
               </a>
-            </div>
-          </section>
-
-          <!-- Quick Links -->
-          <section class="bg-white rounded border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">Quick Links</h2>
-            <div class="space-y-4">
-              <a href="https://workspace.google.com" target="_blank" rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                </svg>
-                <span class="text-gray-900">Google Workspace</span>
-              </a>
-              <a href="https://docs.google.com" target="_blank" rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/>
-                  <path d="M7 12h2v5H7zm4-3h2v8h-2zm4-3h2v11h-2z"/>
-                </svg>
-                <span class="text-gray-900">Google Docs</span>
-              </a>
-              <a href="https://sheets.google.com" target="_blank" rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
-                  <path d="M7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z"/>
-                </svg>
-                <span class="text-gray-900">Google Sheets</span>
-              </a>
-              <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5zm2 4h10v2H7v-2zm0 4h7v2H7v-2z"/>
-                </svg>
-                <span class="text-gray-900">Google Calendar</span>
-              </a>
-              <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer"
-                class="min-h-[44px] flex items-center p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5 text-gray-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                </svg>
-                <span class="text-gray-900">Google Meet</span>
-              </a>
-            </div>
-          </section>
-        </div>
-      </div>
+            </li>
+          </ul>
+        </section>
+      </aside>
     </div>
   </div>
 </MainLayout>
-
-<script>
-  // Handle mobile menu toggle
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  if (mobileMenuButton && mobileMenu) {
-    mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-  }
-
-  // Handle search functionality
-  const searchInput = document.querySelector('input[type="text"]');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      // Implement search functionality here
-      console.log('Searching for:', e.target.value);
-    });
-  }
-
-  // Handle quick action buttons
-  document.querySelectorAll('[data-action]').forEach(button => {
-    button.addEventListener('click', (e) => {
-      const action = e.currentTarget.dataset.action;
-      switch(action) {
-        case 'new-article':
-          window.location.href = '/news/new';
-          break;
-        case 'photo-gallery':
-          window.location.href = '/photos';
-          break;
-        case 'organize-event':
-          window.location.href = '/events/organize';
-          break;
-        case 'register-service':
-          window.location.href = '/services/register';
-          break;
-      }
-    });
-  });
-
-  // Add event listener for View All button
-  document.getElementById('viewAllActivity')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    openModal();
-  });
-
-  // Add event listener for close button
-  document.getElementById('closeModal')?.addEventListener('click', () => {
-    closeModal();
-  });
-
-  function openModal() {
-    const modal = document.getElementById('activityModal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-  }
-
-  function closeModal() {
-    const modal = document.getElementById('activityModal');
-    if (modal) {
-      modal.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }
-  }
-
-  // Close modal when clicking outside
-  const modal = document.getElementById('activityModal');
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-  }
-
-  // Close modal on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeModal();
-    }
-  });
-</script>
-
-<style>
-  /* Add any custom styles here */
-  .bg-gray-900 {
-    background-color: #2563eb;
-  }
-  .text-slate-100 {
-    color: #dbeafe;
-  }
-  .text-slate-200 {
-    color: #bfdbfe;
-  }
-  .text-slate-700 {
-    color: #2563eb;
-  }
-  .text-slate-700 {
-    color: #1d4ed8;
-  }
-  .hover\:text-slate-700:hover {
-    color: #1d4ed8;
-  }
-  .focus\:ring-primary-300:focus {
-    --tw-ring-color: #93c5fd;
-  }
-
-  /* Modal Styles */
-  @media (max-width: 640px) {
-    .inline-block {
-      width: 100%;
-      margin: 0;
-      height: 100vh;
-      max-height: 100vh;
-      border-radius: 0;
-    }
-
-    .max-h-\[calc\(100vh-12rem\)\] {
-      max-height: calc(100vh - 8rem);
-    }
-  }
-</style>

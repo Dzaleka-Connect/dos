@@ -1,7 +1,7 @@
 ---
 title: Risk and crisis plan template
 shortTitle: Risk and crisis plan
-description: Prepare for disruptions by listing business risks, likely impacts, prevention steps, emergency contacts, and backup options before a crisis happens.
+description: List business risks, prevention steps, response actions and backup contacts. Fill in this worksheet and download or print your risk plan.
 bestFor: Businesses affected by supply problems, illness, market disruption, weather events, theft, or equipment failure
 estimatedTime: 25 to 35 minutes
 intro: Use this template to think ahead about what could interrupt your business and what you will do if it happens. A simple risk plan can protect income, customers, and stock.

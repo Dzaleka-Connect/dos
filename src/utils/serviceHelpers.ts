@@ -1,3 +1,4 @@
+import { providerConfirmation } from './serviceDetails';
 import type { CollectionEntry } from 'astro:content';
 
 /**
@@ -86,7 +87,7 @@ export function sortServices(
 export function calculateServiceStats(services: CollectionEntry<'services'>[]) {
   const totalServices = services.length;
   const featuredServices = services.filter(s => s.data.featured).length;
-  const verifiedServices = services.filter(s => s.data.verified).length;
+  const verifiedServices = services.filter(s => providerConfirmation(s.data.providerConfirmation)).length;
   const activeServices = services.filter(s => s.data.status !== 'inactive').length;
 
   const categories = new Set(services.map(s => s.data.category));

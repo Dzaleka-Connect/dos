@@ -1,7 +1,7 @@
 ---
 title: Marketing plan template
 shortTitle: Marketing plan
-description: Plan how you will reach customers, explain what you sell, and decide which low-cost channels to use each week and each month.
+description: Choose your customers, plan promotions and set a marketing budget. Fill in this worksheet online, then download or print your plan.
 bestFor: Market traders, food stalls, tailoring, beauty services, crafts, and small digital services
 estimatedTime: 30 to 45 minutes
 intro: Use this template to decide who your customers are, what you want them to know, and how you will reach them without spending more than your business can manage.

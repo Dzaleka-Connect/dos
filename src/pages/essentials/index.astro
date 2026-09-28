@@ -1,0 +1,28 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import FeatureHeader from '../../components/ui/FeatureHeader.astro';
+import { essentials, guideLanguages } from '../../data/essentials';
+---
+<MainLayout title="Newcomer essentials" description="A short Dzaleka guide in English, French, Swahili and Chichewa. Read online, print or download a copy for offline use.">
+  <FeatureHeader title="Newcomer essentials" eyebrow="New to Dzaleka" description="Finding services, preparing for a visit and keeping useful contacts. Choose a language to read, print or save a copy for later." image="/images/dzaleka-hero.jpeg" imageAlt="A view across homes and community buildings in Dzaleka" breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'New to Dzaleka', href: '/new-to-dzaleka' }, { label: 'Essentials' }]} />
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
+      <section aria-labelledby="choose-language">
+        <h2 id="choose-language" class="text-2xl font-semibold text-slate-900">Choose your language</h2>
+        <ul class="mt-5 grid gap-x-8 sm:grid-cols-2">
+          {guideLanguages.map(lang => <li lang={lang} class="border-t border-slate-300 py-6">
+            <h3 class="text-2xl font-semibold"><a href={`/essentials/${lang}`} hreflang={lang} class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">{essentials[lang].name}<span class="sr-only"> — {essentials[lang].title}</span></a></h3>
+            <p class="mt-2 min-h-[3rem] text-base leading-6 text-slate-700">{essentials[lang].title}</p>
+            <a href={`/downloads/essentials/${lang}.html`} download={`dzaleka-essentials-${lang}.html`} class="mt-3 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{essentials[lang].download} · HTML</a>
+          </li>)}
+        </ul>
+      </section>
+      <aside class="border-t-4 border-primary-800 pt-5">
+        <h2 class="text-xl font-semibold text-slate-900">Keep a copy</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-700">Each download is a small HTML file with the same information as the online guide. Open it in your phone’s browser without internet, or print it from a computer.</p>
+        <p class="mt-3 text-sm leading-7 text-slate-700">Links to other pages need internet. Most of the wider website is in English.</p>
+        <a href="/new-to-dzaleka" class="mt-4 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">More information for newcomers</a>
+      </aside>
+    </div>
+  </div>
+</MainLayout>

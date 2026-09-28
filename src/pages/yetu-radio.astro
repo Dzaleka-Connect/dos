@@ -1,156 +1,410 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import Breadcrumb from '../components/ui/Breadcrumb.astro';
-import NewsWidget from '../components/radio/NewsWidget.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import Breadcrumb from "../components/ui/Breadcrumb.astro";
 
-const title = "Yetu Radio 99.1 MHz | Dzaleka Community Radio";
-const description = "Listen to Yetu Radio 99.1 MHz, the only multilingual radio station in Malawi broadcasting in 5 languages (English, Chichewa, Kiswahili, French, Kinyarwanda) from Dzaleka Refugee Camp. Serving central Malawi with community news, cultural programming, and refugee voices.";
+const title = "Yetu Radio | Listen online from Dzaleka";
+const description =
+  "Listen to Yetu community radio from Dzaleka, Malawi. Start the online stream, find the station’s contact details and learn about its five broadcast languages.";
+const canonical = "https://services.dzaleka.com/yetu-radio";
+const stationUrl = "https://yetufm.mw/";
+const logo =
+  "https://yetufm.mw/wp-content/uploads/2025/03/Yetu-com-radio-logo.jpg";
+const stream = "https://play.streamafrica.net/yetu";
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${canonical}#page`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: "en",
+      mainEntity: { "@id": `${canonical}#station` },
+      breadcrumb: { "@id": `${canonical}#breadcrumb` },
+      isPartOf: { "@id": "https://services.dzaleka.com/#website" },
+    },
+    {
+      "@type": "RadioStation",
+      "@id": `${canonical}#station`,
+      name: "Yetu Community Radio",
+      alternateName: ["Yetu FM", "Yetu Radio"],
+      url: stationUrl,
+      logo,
+      description:
+        "Community radio based in Dzaleka Refugee Camp, serving refugee and Malawian communities.",
+      telephone: "+265884909320",
+      email: "yetufmradio@outlook.com",
+      foundingDate: "2018",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Dzaleka",
+        addressRegion: "Dowa District",
+        addressCountry: "MW",
+      },
+      subjectOf: { "@id": `${canonical}#page` },
+    },
+    {
+      "@type": "BroadcastService",
+      "@id": `${canonical}#broadcast`,
+      name: "Yetu Radio online broadcast",
+      broadcaster: { "@id": `${canonical}#station` },
+      inLanguage: ["en", "ny", "sw", "fr", "rw"],
+      broadcastTimezone: "Africa/Blantyre",
+      potentialAction: {
+        "@type": "ListenAction",
+        target: `${canonical}#listen`,
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonical}#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://services.dzaleka.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Yetu Radio",
+          item: canonical,
+        },
+      ],
+    },
+  ],
+};
+---
 
-const seo = {
-  title,
-  description,
-  type: "website",
-  canonical: "https://services.dzaleka.com/yetu-radio",
-  keywords: "Yetu Radio, 99.1 MHz, Dzaleka radio, refugee radio, Malawi radio, community radio, UNHCR radio, multilingual radio, Chichewa radio, Kiswahili radio, French radio, Kinyarwanda radio, central Malawi radio",
-  openGraph: {
+<MainLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  image={logo}
+  schema={schema}
+  openGraph={{
     title,
     description,
     type: "website",
-    site_name: "Yetu Radio",
-    locale: "en_US",
-    url: "https://services.dzaleka.com/yetu-radio",
-    images: [
-      {
-        url: "https://www.unhcr.org/sites/default/files/styles/d12/public/RF1321732.webp?itok=r_DIA-bu&t=1707819930",
-        width: 1200,
-        height: 630,
-        alt: "Yetu Radio - Voice of Dzaleka Refugee Camp"
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@Dzalekaconnect",
-    creator: "@Dzalekaconnect",
-    title,
-    description,
-    image: "https://www.unhcr.org/sites/default/files/styles/d12/public/RF1321732.webp?itok=r_DIA-bu&t=1707819930"
-  },
-  additionalMetaTags: [
-    {
-      name: "geo.region",
-      content: "MW"
+    url: canonical,
+    site_name: "Dzaleka Online Services",
+    image: {
+      url: logo,
+      width: 480,
+      height: 480,
+      alt: "Yetu Community Radio logo",
     },
-    {
-      name: "geo.placename",
-      content: "Dzaleka Refugee Camp"
-    },
-    {
-      name: "geo.position",
-      content: "-13.7000;33.9333"
-    },
-    {
-      name: "ICBM",
-      content: "-13.7000, 33.9333"
-    },
-    {
-      name: "language",
-      content: "en,ny,sw,fr,rw"
-    },
-    {
-      name: "frequency",
-      content: "99.1 MHz"
-    },
-    {
-      name: "broadcast-area",
-      content: "Central Region, Malawi"
-    }
-  ]
-};
-
-// Enhanced structured data for radio station
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "RadioStation",
-  "name": "Yetu Radio",
-  "description": description,
-  "url": "https://services.dzaleka.com/yetu-radio",
-  "broadcastDisplayName": "Yetu Radio 99.1 MHz",
-  "broadcastTimezone": "Africa/Blantyre",
-  "inLanguage": ["en", "ny", "sw", "fr", "rw"],
-  "broadcastArea": {
-    "@type": "Place",
-    "name": "Central Region, Malawi",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "Malawi",
-      "addressRegion": "Central Region"
-    }
-  },
-  "foundingDate": "2018",
-  "foundingOrganization": {
-    "@type": "Organization",
-    "name": "United Nations High Commissioner for Refugees",
-    "abbreviation": "UNHCR"
-  },
-  "broadcastFrequency": "99.1 MHz",
-  "genre": ["Community Radio", "Multilingual Radio", "Refugee Radio"],
-  "slogan": "Voice of Dzaleka Refugee Camp",
-  "location": {
-    "@type": "Place",
-    "name": "Dzaleka Refugee Camp",
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "-13.7000",
-      "longitude": "33.9333"
-    }
-  },
-  "potentialAction": {
-    "@type": "ListenAction",
-    "target": "https://play.streamafrica.net/yetu"
-  }
-};
----
-<MainLayout {...seo}>
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-  <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Yetu Radio' }]} /></div>
-  <section class="bg-slate-950 text-white" aria-labelledby="station-title">
-    <div class="mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8 lg:py-14">
-      <div class="flex items-start gap-5">
-        <img src="https://cdn.onlineradiobox.com/img/l/9/111679.v19.png" alt="Yetu Radio logo" width="112" height="112" class="h-20 w-20 shrink-0 rounded bg-white object-contain sm:h-28 sm:w-28" />
-        <div><p class="mb-3 text-sm text-primary-200">Community radio · 99.1 MHz</p><h1 id="station-title" class="text-white">Yetu Radio</h1><p class="mt-4 max-w-lg text-base leading-7 text-slate-200">Music, news and community programming from Dzaleka Refugee Camp.</p></div>
-      </div>
-      <div class="rounded border border-slate-600 bg-slate-900 p-6">
-        <h2 class="text-lg text-white">Listen online</h2>
-        <p id="radio-status" role="status" class="mb-5 mt-2 text-sm text-slate-300">Press play to connect to the station.</p>
-        <audio id="radio-player" controls preload="none" aria-label="Yetu Radio stream" class="w-full" src="https://play.streamafrica.net/yetu">Your browser does not support the audio player.</audio>
-        <a href="https://play.streamafrica.net/yetu" class="mt-4 inline-flex min-h-[44px] items-center text-sm text-white underline underline-offset-4">Open the stream directly ↗</a>
+  }}
+  twitter={{ card: "summary", title, description, image: logo }}
+>
+  <header class="bg-primary-900 text-white">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <Breadcrumb
+        light
+        items={[{ label: "Home", href: "/" }, { label: "Yetu Radio" }]}
+      />
+      <div class="mt-6 grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+        <div>
+          <div class="flex items-center gap-5">
+            <img
+              src={logo}
+              alt="Yetu Community Radio logo"
+              width="480"
+              height="480"
+              class="h-24 w-24 shrink-0 rounded bg-white object-contain sm:h-28 sm:w-28"
+              fetchpriority="high"
+            />
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-widest text-primary-200">
+                Dzaleka, Malawi
+              </p>
+              <h1 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+                Yetu Radio
+              </h1>
+            </div>
+          </div>
+          <p class="mt-6 max-w-lg text-lg leading-8 text-primary-50">
+            News, music and conversation from a community radio station in
+            Dzaleka Refugee Camp.
+          </p>
+          <p class="mt-4 text-sm leading-6 text-primary-100">
+            English · Chichewa · Kiswahili · French · Kinyarwanda
+          </p>
+        </div>
+        <section
+          id="listen"
+          data-radio
+          class="min-w-0 rounded border border-slate-200 bg-white p-5 text-slate-900 sm:p-7"
+          aria-labelledby="listen-heading"
+        >
+          <div class="flex items-center justify-between gap-4">
+            <h2
+              id="listen-heading"
+              class="text-xl font-semibold text-primary-900"
+            >
+              Listen online
+            </h2>
+            <span class="text-sm text-slate-500">Live stream</span>
+          </div>
+          <p
+            id="radio-status"
+            data-radio-status
+            role="status"
+            aria-live="polite"
+            class="mt-3 min-h-[3rem] text-sm leading-6 text-slate-600"
+          >
+            Press play to connect to the station.
+          </p>
+          <audio
+            id="radio-player"
+            src={stream}
+            controls
+            preload="none"
+            aria-label="Yetu Radio live stream"
+            class="mt-4 w-full"
+          >
+            Your browser does not support this audio player. Use the direct
+            stream link below.
+          </audio>
+          <div data-radio-controls hidden class="hidden mt-5">
+            <button
+              data-radio-toggle
+              type="button"
+              aria-controls="radio-player"
+              class="flex min-h-[64px] w-full items-center justify-center gap-3 rounded bg-primary-900 px-5 py-4 text-base font-semibold text-white hover:bg-primary-800"
+            >
+              <svg
+                data-radio-play-icon
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-6 w-6"
+                aria-hidden="true"
+              >
+                <path d="M7 4v16l14-8z" />
+              </svg>
+              <svg
+                data-radio-stop-icon
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden h-6 w-6"
+                aria-hidden="true"
+              >
+                <path d="M5 5h14v14H5z" />
+              </svg>
+              <span data-radio-label>Listen live</span>
+            </button>
+            <div class="mt-5 flex items-center gap-3">
+              <button
+                data-radio-mute
+                type="button"
+                aria-controls="radio-player"
+                class="min-h-[44px] min-w-[64px] rounded border border-slate-300 px-3 text-sm font-medium text-primary-900 hover:bg-slate-50"
+              >
+                Mute
+              </button>
+              <label for="radio-volume" class="text-sm text-slate-600">
+                Volume
+              </label>
+              <input
+                data-radio-volume
+                id="radio-volume"
+                type="range"
+                min="0"
+                max="100"
+                value="100"
+                step="1"
+                class="h-11 min-w-0 flex-1 accent-primary-800"
+              />
+            </div>
+          </div>
+          <p class="mt-4 border-t border-slate-200 pt-4 text-xs leading-5 text-slate-500">
+            Streaming uses mobile data. On a phone, use your device’s volume
+            controls if needed.
+          </p>
+          <div class="mt-2 flex flex-wrap gap-x-5 text-sm">
+            <a
+              href={stream}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+            >
+              Open stream separately ↗
+            </a>
+            <a
+              href={stationUrl}
+              class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+            >
+              Station website ↗
+            </a>
+          </div>
+        </section>
       </div>
     </div>
-  </section>
-  <div class="mx-auto grid max-w-7xl items-start gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-8">
-    <div class="space-y-10">
-      <section aria-labelledby="about-station" class="max-w-prose"><h2 id="about-station" class="text-primary-900">About Yetu Radio</h2>
-        <p class="mt-4 text-base leading-7 text-slate-700">Yetu community radio was established in 2018 by UNHCR. Its programmes give refugee and Malawian communities a place to discuss child protection, gender-based violence, human rights and other issues affecting their lives.</p>
-        <p class="mt-4 text-base leading-7 text-slate-700">The station broadcasts on 99.1 MHz in Malawi's Central Region, in English, Chichewa, Kiswahili, French and Kinyarwanda.</p>
+  </header>
+  <div class="border-b border-slate-200 bg-slate-50">
+    <dl class="mx-auto grid max-w-6xl gap-5 px-4 py-6 sm:grid-cols-3 sm:px-6 lg:px-8">
+      <div>
+        <dt class="text-sm text-slate-600">FM broadcast</dt>
+        <dd class="mt-1 font-semibold text-primary-900">
+          107.6 MHz{" "}
+          <a
+            href="https://yetufm.mw/about-us/"
+            class="block text-xs font-normal text-primary-800 underline underline-offset-4"
+          >
+            Listed on the station website
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="text-sm text-slate-600">Based in</dt>
+        <dd class="mt-1 font-semibold text-primary-900">
+          Dzaleka, Dowa District
+        </dd>
+      </div>
+      <div>
+        <dt class="text-sm text-slate-600">First broadcast</dt>
+        <dd class="mt-1 font-semibold text-primary-900">7 August 2018</dd>
+      </div>
+    </dl>
+  </div>
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16 lg:px-8">
+    <div class="min-w-0">
+      <section aria-labelledby="about-station">
+        <h2 id="about-station" class="text-2xl font-semibold text-primary-900">
+          Radio for the community
+        </h2>
+        <p class="mt-4 max-w-prose leading-8 text-slate-700">
+          Yetu was established with UNHCR to serve refugee and Malawian
+          communities. Its programmes cover local news, public information,
+          human rights and the issues people discuss in daily life.
+        </p>
+        <p class="mt-3 max-w-prose leading-8 text-slate-700">
+          The station broadcasts in five languages. Read its history and sources
+          in the{" "}
+          <a
+            href="/encyclopedia/yetu-community-radio"
+            class="text-primary-800 underline underline-offset-4"
+          >
+            Dzaleka Encyclopedia
+          </a>
+          , or visit{" "}
+          <a
+            href={stationUrl}
+            class="text-primary-800 underline underline-offset-4"
+          >
+            Yetu FM
+          </a>{" "}
+          for the station’s own reporting.
+        </p>
       </section>
-      <section class="border-t border-slate-200 pt-7" aria-labelledby="radio-news"><h2 id="radio-news" class="mb-5 text-primary-900">News from Dzaleka</h2><NewsWidget /><a href="/news" class="mt-4 inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">All news and announcements</a></section>
+      <section
+        class="mt-8 border-t border-slate-200 pt-7"
+        aria-labelledby="listening-help"
+      >
+        <h2 id="listening-help" class="text-xl font-semibold text-primary-900">
+          Help with listening
+        </h2>
+        <div class="mt-4 divide-y divide-slate-200 border-y border-slate-200">
+          <details class="py-1">
+            <summary class="min-h-[48px] cursor-pointer py-3 font-medium text-primary-800">
+              The stream will not connect
+            </summary>
+            <p class="pb-4 text-sm leading-7 text-slate-600">
+              Check your connection and press Try again. You can also open the
+              stream separately. The broadcast is supplied by Yetu’s stream
+              provider; this site cannot restart it if the station is offline.
+            </p>
+          </details>
+          <details class="py-1">
+            <summary class="min-h-[48px] cursor-pointer py-3 font-medium text-primary-800">
+              The player says it is playing, but I hear nothing
+            </summary>
+            <p class="pb-4 text-sm leading-7 text-slate-600">
+              Check the player’s mute and volume settings, your device volume
+              and the selected speaker or headphones. If other audio works, the
+              station may be transmitting silence. Stop and reconnect, or check
+              the station website.
+            </p>
+          </details>
+          <details class="py-1">
+            <summary class="min-h-[48px] cursor-pointer py-3 font-medium text-primary-800">
+              Can I pause or rewind?
+            </summary>
+            <p class="pb-4 text-sm leading-7 text-slate-600">
+              This is a live broadcast. Stop listening disconnects the stream.
+              When you start again, you join the current broadcast. A recording
+              or rewind option is not available here.
+            </p>
+          </details>
+        </div>
+      </section>
     </div>
-    <aside class="rounded border border-slate-200 bg-slate-50 p-6" aria-labelledby="radio-contact"><h2 id="radio-contact" class="text-xl text-primary-900">Contact the station</h2>
+    <aside
+      aria-labelledby="radio-contact"
+      class="border-t-4 border-primary-800 pt-5"
+    >
+      <h2 id="radio-contact" class="text-xl font-semibold text-primary-900">
+        Contact Yetu Radio
+      </h2>
       <dl class="mt-5 space-y-5 text-sm leading-6">
-        <div><dt class="font-semibold text-slate-900">Location</dt><dd class="mt-1 text-slate-700">Dzaleka Refugee Camp, Dowa District, Malawi</dd></div>
-        <div><dt class="font-semibold text-slate-900">Phone</dt><dd class="mt-1"><a href="tel:+265884909320" class="text-primary-800 underline underline-offset-4">+265 884 90 93 20</a></dd></div>
-        <div><dt class="font-semibold text-slate-900">Email</dt><dd class="mt-1 break-words"><a href="mailto:yetufmradio@outlook.com" class="text-primary-800 underline underline-offset-4">yetufmradio@outlook.com</a></dd></div>
-        <div><dt class="font-semibold text-slate-900">Social media</dt><dd class="mt-1"><a href="https://www.facebook.com/MalawiSportsNow/" class="text-primary-800 underline underline-offset-4">Yetu Radio on Facebook ↗</a></dd></div>
+        <div>
+          <dt class="font-semibold text-slate-900">Phone</dt>
+          <dd class="mt-1">
+            <a
+              href="tel:+265884909320"
+              class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+            >
+              +265 884 90 93 20
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-slate-900">Email</dt>
+          <dd class="mt-1 break-words">
+            <a
+              href="mailto:yetufmradio@outlook.com"
+              class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+            >
+              yetufmradio@outlook.com
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-slate-900">Website</dt>
+          <dd class="mt-1">
+            <a
+              href={stationUrl}
+              class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4"
+            >
+              yetufm.mw ↗
+            </a>
+          </dd>
+        </div>
       </dl>
+      <p class="mt-6 border-t border-slate-200 pt-4 text-xs leading-6 text-slate-500">
+        Station details:{" "}
+        <a
+          href="https://yetufm.mw/about-us/"
+          class="underline underline-offset-4"
+        >
+          Yetu FM
+        </a>
+        . Launch date:{" "}
+        <a
+          href="https://data.unhcr.org/en/news/21157"
+          class="underline underline-offset-4"
+        >
+          UNHCR’s 2018 launch report
+        </a>
+        .
+      </p>
     </aside>
   </div>
 </MainLayout>
 <script>
-  const player = document.querySelector<HTMLAudioElement>('#radio-player');
-  const status = document.querySelector<HTMLElement>('#radio-status');
-  if (player && status) {
-    const messages = { playing: 'Playing Yetu Radio.', waiting: 'Connecting to the stream…', pause: 'Playback paused.', error: 'The stream could not be loaded. Try again or open it directly.' };
-    for (const [event, message] of Object.entries(messages)) player.addEventListener(event, () => { status.textContent = message; });
-  }
+  import { initRadioPlayer } from "../utils/radioPlayer";
+  const root = document.querySelector<HTMLElement>("[data-radio]");
+  if (root) initRadioPlayer(root);
 </script>

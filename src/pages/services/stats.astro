@@ -1,4 +1,5 @@
 ---
+import { providerConfirmation } from '../../utils/serviceDetails';
 import MainLayout from '../../layouts/MainLayout.astro';
 import CollectionHeader from '../../components/ui/CollectionHeader.astro';
 import { getCollection } from 'astro:content';
@@ -82,7 +83,7 @@ const contactRows = [
 const noContact = has((s) => !s.data.contact?.phone && !s.data.contact?.email && !s.data.contact?.whatsapp);
 const reachable = total - noContact;
 
-// How recently each listing was checked.
+// How recently each listing was updated.
 const dayMs = 24 * 60 * 60 * 1000;
 const ageBand = (s: (typeof services)[number]) => {
   if (!s.data.lastUpdated) return 'No date recorded';
@@ -94,16 +95,16 @@ const ageBand = (s: (typeof services)[number]) => {
 const byAge = ['In the past 12 months', '1 to 2 years ago', 'More than 2 years ago', 'No date recorded']
   .map((name) => ({ name, count: services.filter((s) => ageBand(s) === name).length }))
   .filter((row) => row.count > 0);
-const checkedThisYear = byAge.find((row) => row.name === 'In the past 12 months')?.count ?? 0;
+const updatedThisYear = byAge.find((row) => row.name === 'In the past 12 months')?.count ?? 0;
 
-const verified = has((s) => s.data.verified);
+const verified = has((s) => providerConfirmation(s.data.providerConfirmation));
 const inactive = has((s) => s.data.status === 'inactive');
 
 const keyFigures = [
   { value: total, label: 'Services listed', note: inactive ? `${inactive} marked inactive` : 'all marked active' },
-  { value: verified, label: 'Verified listings', note: `${share(verified)}% of listings` },
+  { value: verified, label: 'Provider confirmations', note: `${share(verified)}% of listings` },
   { value: reachable, label: 'Have a phone, email or WhatsApp', note: `${share(reachable)}% of listings` },
-  { value: checkedThisYear, label: 'Checked in the past 12 months', note: `${share(checkedThisYear)}% of listings` },
+  { value: updatedThisYear, label: 'Updated in the past 12 months', note: `${share(updatedThisYear)}% of listings` },
 ];
 
 const sections = [
@@ -114,7 +115,7 @@ const sections = [
   { id: 'about', title: 'About this data' },
 ];
 
-const description = `Figures for the ${total} services listed in the Dzaleka services directory: types of service, location, contact details and when listings were last checked.`;
+const description = `Figures for the ${total} services listed in the Dzaleka services directory: types of service, location, contact details and when listings were last updated.`;
 ---
 
 <MainLayout
@@ -264,11 +265,11 @@ const description = `Figures for the ${total} services listed in the Dzaleka ser
           <section id="updated" class="scroll-mt-28" aria-labelledby="updated-title">
             <h2 id="updated-title" class="text-2xl font-semibold text-slate-900">How up to date the listings are</h2>
             <p class="mt-3 text-lg text-slate-700">
-              {checkedThisYear} of {total} listings were checked in the past 12 months.
+              {updatedThisYear} of {total} listings were updated in the past 12 months.
             </p>
             <table class="stat-table mt-6">
-              <caption class="sr-only">Listings by when they were last checked</caption>
-              <thead><tr><th scope="col">Last checked</th><th scope="col">Listings</th><th scope="col">Share</th></tr></thead>
+              <caption class="sr-only">Listings by when they were last updated</caption>
+              <thead><tr><th scope="col">Last updated</th><th scope="col">Listings</th><th scope="col">Share</th></tr></thead>
               <tbody>
                 {byAge.map((row) => (
                   <tr>
@@ -296,7 +297,7 @@ const description = `Figures for the ${total} services listed in the Dzaleka ser
             <ul class="mt-4 list-disc space-y-3 pl-5 text-slate-700">
               <li>Figures are counted from the directory's listings each time the site is published. These were counted on {builtOnLabel}.</li>
               <li>Types of service group the {rawCounts.size} categories that listings use. The categories each type contains are shown under it.</li>
-              <li>"Checked" uses the date a listing was last updated. A listing can be correct and still have an old date.</li>
+              <li>An update records an edit to a listing, not a provider confirmation. A listing can be correct and still have an old date.</li>
               <li>Percentages are rounded, so they may not add up to 100.</li>
             </ul>
             <p class="mt-6 text-slate-700">

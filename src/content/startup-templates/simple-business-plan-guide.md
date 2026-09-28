@@ -1,7 +1,7 @@
 ---
 title: Simple business plan guide
 shortTitle: Business plan guide
-description: Build a simple business plan covering your vision, customer, offer, market, operations, and money without writing a long consultant-style document.
+description: Work through your customers, products, operations and finances. Use the guided worksheet to write, download or print a small business plan.
 bestFor: First-time business owners, market traders, service providers, and people preparing to apply for support or funding
 estimatedTime: 45 to 60 minutes
 intro: Use this guide when you need a stronger overall business plan than a one-page action plan. It helps you explain where the business is going, who it serves, how it will operate, and how it will make money.

@@ -1,5 +1,7 @@
 import { getCollection, getEntry } from 'astro:content';
+import { essentials, guideLanguages } from '../../data/essentials';
 import { curatedGrantsPrograms } from '../../data/grantsPrograms';
+import { toolsLibrary, templatePath } from '../../utils/startupTemplates';
 
 export const GET = async () => {
     // Fetch all collections
@@ -14,6 +16,7 @@ export const GET = async () => {
     const jobs = await getCollection('jobs');
     const inspirationalStories = await getCollection('inspirational-stories');
     const encyclopedia = await getCollection('encyclopedia');
+    const startupTemplates = await getCollection('startup-templates');
 
     // Fetch talents (data collection)
     let talents: any[] = [];
@@ -28,6 +31,18 @@ export const GET = async () => {
 
     // Map to search index format
     const searchIndex = [
+        { title: toolsLibrary.title, description: toolsLibrary.description, type: 'Resource', category: 'Business planning', url: '/tools-and-templates', tags: ['tools', 'templates', 'worksheets'] },
+        ...startupTemplates.map(item => ({
+            title: item.data.title,
+            description: item.data.description,
+            type: 'Template',
+            category: 'Business planning',
+            url: templatePath(item.id),
+            tags: ['business', 'worksheet', ...item.data.sections.map(section => section.title)],
+        })),
+        ...guideLanguages.map(lang => ({ title: essentials[lang].title, description: essentials[lang].intro, type: 'Guide', category: 'Newcomer essentials', url: `/essentials/${lang}`, tags: [essentials[lang].name, 'newcomer', 'offline', 'language'] })),
+        { title: 'Accessibility', description: 'Reading options, accessibility limitations and how to report a barrier.', type: 'Guide', category: 'Website help', url: '/accessibility', tags: ['accessibility', 'easy read'] },
+        { title: 'About the service directory', description: 'Service information, listing updates and provider confirmations.', type: 'Guide', category: 'Services', url: '/services/about', tags: ['directory', 'confirmation'] },
         ...curatedGrantsPrograms.map(item => ({
             title: item.title,
             description: item.summary,

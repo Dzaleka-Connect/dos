@@ -1,0 +1,15 @@
+---
+interface Props {
+  facts: { label: string; value: string }[];
+}
+const { facts } = Astro.props;
+---
+
+<dl class="divide-y divide-slate-200">
+  {facts.map((fact) => (
+    <div class="py-3 first:pt-0 last:pb-0">
+      <dt class="text-sm font-semibold text-slate-600">{fact.label}</dt>
+      <dd class="mt-1 text-sm leading-6 text-slate-900">{fact.value}</dd>
+    </div>
+  ))}
+</dl>

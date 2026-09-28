@@ -1,8 +1,8 @@
 ---
 title: "Yetu Community Radio"
-description: "Yetu Radio, founded by UNHCR in 2018, airs from a refugee camp in 5 languages, promoting unity and rights on 107.6 MHz in Malawi."
+description: "Community radio in Dzaleka, broadcasting news and public information in English, Chichewa, Kiswahili, French and Kinyarwanda."
 category: "Media & Communication"
-logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpCzdiMDwkM37gZhpBawttg9kFqUwvbudgzQ&s"
+logo: "https://yetufm.mw/wp-content/uploads/2025/03/Yetu-com-radio-logo.jpg"
 location:
   address: "Dzaleka Refugee Camp"
   city: "Dowa"
@@ -12,7 +12,6 @@ location:
 contact:
   email: "yetufmradio@outlook.com"
   phone: "+265 884 90 93 20"
-  hours: "Monday-Sunday, 8:00 AM - 5:00 PM"
 socialMedia:
   facebook: "https://www.facebook.com/MalawiSportsNow/"
   twitter: ""
@@ -21,11 +20,15 @@ socialMedia:
 featured: true
 verified: true
 status: "active"
-lastUpdated: 2025-07-11
+lastUpdated: 2026-09-28
 ---
 
 ## About Yetu Community Radio
 
-Yetu community radio was established in 2018 by the United Nations High Commissioner for Refugees (UNHCR) with the mission of serving as a model of peaceful co-existence between the Malawian and refugee communities in addressing issues of child protection, GBV, and human rights by providing a platform for all people to access information and speak on issues that affect them through media programming. Yetu community radio boasts of being a unique radio as it is based in a refugee camp setup and is the only radio in Malawi that broadcasts in five languages, namely; English, Chichewa, Kiswahili, French, and Kinyarwanda. The station broadcasts on 107.6 MHZ across the central region of Malawi.
+Yetu Community Radio was established in 2018 with UNHCR to serve refugee and Malawian communities. Its programming covers public information, child protection, human rights and community concerns.
 
-For more information or to tune in, visit [Yetu Radio's website](https://yetufm.mw) or follow their [Facebook page](https://www.facebook.com/MalawiSportsNow/). 
+The station lists five broadcast languages: English, Chichewa, Kiswahili, French and Kinyarwanda. Its [official website](https://yetufm.mw/about-us/) lists the FM frequency as **107.6 MHz**.
+
+## Listen online
+
+[Open the Yetu Radio player](/yetu-radio) to listen to the online broadcast. For station news and contact information, visit [Yetu FM](https://yetufm.mw/).

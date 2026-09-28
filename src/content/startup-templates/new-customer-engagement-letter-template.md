@@ -1,7 +1,7 @@
 ---
-title: New customer engagement letter template
+title: Customer engagement letter template
 shortTitle: Customer engagement letter
-description: Use a simple written agreement to confirm the work, price, timeline, approvals, and communication method before you begin.
+description: Draft the scope, price, payment terms and delivery dates for a customer job. Use the worksheet to prepare a letter, then download or print your notes.
 bestFor: Tailoring, design, catering, photography, tutoring, beauty services, repairs, and freelance digital work
 estimatedTime: 15 to 25 minutes
 intro: Use this template when a customer has agreed to work with you and you want to confirm the main terms clearly. A simple engagement letter helps avoid confusion about what is included, what it costs, and when payment is due.

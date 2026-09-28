@@ -1,0 +1,84 @@
+---
+import type { GetStaticPaths } from 'astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+import { essentials, guideLanguages, guideSite, guideVersion, sectionsFor, unhcrContact, type GuideLanguage } from '../../data/essentials';
+export const getStaticPaths = (() => guideLanguages.map(lang => ({ params: { lang }, props: { lang } }))) satisfies GetStaticPaths;
+interface Props { lang: GuideLanguage; }
+const { lang } = Astro.props;
+const copy = essentials[lang];
+const sections = sectionsFor(lang);
+---
+<MainLayout title={copy.title} description={copy.intro} lang={lang}>
+  <Fragment slot="head">
+    {guideLanguages.map(code => <link rel="alternate" hreflang={code} href={`${guideSite}/essentials/${code}`} />)}
+    <link rel="alternate" hreflang="x-default" href={`${guideSite}/essentials`} />
+  </Fragment>
+  <article class="guide-page">
+    <header class="border-b border-slate-200 bg-primary-900 text-white">
+      <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <a href="/essentials" lang="en" class="inline-flex min-h-[44px] items-center text-sm text-sky-100 underline underline-offset-4 print:hidden">Newcomer essentials · All languages</a>
+        <p class="mt-4 text-sm font-semibold tracking-wide text-sky-100">{copy.name}</p>
+        <h1 class="mt-3 max-w-4xl text-3xl font-bold tracking-tight text-white sm:text-4xl">{copy.title}</h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-100">{copy.intro}</p>
+      </div>
+    </header>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <nav aria-label={copy.languageLabel} class="flex flex-wrap items-center gap-x-5 border-b border-slate-200 py-4 text-sm print:hidden">
+        <span class="w-full font-semibold text-slate-700 sm:w-auto">{copy.languageLabel}</span>
+        {guideLanguages.map(code => <a href={`/essentials/${code}`} lang={code} hreflang={code} aria-current={code === lang ? 'page' : undefined} class:list={['inline-flex min-h-[44px] items-center underline underline-offset-4', code === lang ? 'font-bold text-slate-900 decoration-2' : 'text-primary-800']}>{essentials[code].name}</a>)}
+      </nav>
+      <a href="#guide-download" class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary-800 underline underline-offset-4 lg:hidden print:hidden">{copy.download}</a>
+      <div class="grid items-start gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
+        <div class="min-w-0">
+          <nav aria-label={copy.contents} class="mb-8 border-l-2 border-primary-700 pl-5 print:hidden">
+            <h2 class="text-base font-semibold text-slate-900">{copy.contents}</h2>
+            <ol class="mt-2 list-decimal pl-5 text-sm">{sections.map(section => <li><a href={`#${section.id}`} class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">{section.title}</a></li>)}</ol>
+          </nav>
+          <div class="space-y-8">{sections.map((section, index) => <section id={section.id} class="scroll-mt-52 border-t border-slate-200 pt-6">
+            <h2 class="text-2xl font-semibold leading-8 text-slate-900"><span class="mr-2 text-primary-800">{index + 1}.</span> {section.title}</h2>
+            <p class="mt-3 text-base leading-8 text-slate-700">{section.body}</p>
+            <a href={section.href} class="mt-2 inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">{section.link}</a>
+          </section>)}</div>
+        </div>
+        <aside class="space-y-7">
+          <section id="guide-download" class="scroll-mt-52 rounded border border-slate-300 bg-slate-50 p-5 print:hidden">
+            <h2 class="text-xl font-semibold text-slate-900">{copy.download}</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-700">{copy.downloadHint}</p>
+            <a href={`/downloads/essentials/${lang}.html`} download={`dzaleka-essentials-${lang}.html`} class="mt-4 flex min-h-[44px] items-center justify-center rounded bg-primary-900 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-primary-800">{copy.download} · HTML</a>
+            <button data-print-guide type="button" hidden class="mt-2 min-h-[44px] w-full rounded border border-slate-400 bg-white px-4 py-3 text-sm font-semibold text-primary-900 hover:bg-slate-100">{copy.print}</button>
+          </section>
+          <section class="border-t-4 border-primary-800 pt-5">
+            <h2 class="text-xl font-semibold text-slate-900">{copy.officeTitle}</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-700">{copy.officeNote}</p>
+            <dl class="mt-4 text-sm"><dt class="font-semibold text-slate-800">{copy.phone}</dt><dd><a href={unhcrContact.phoneHref} class="inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">{unhcrContact.phone}</a></dd><dt class="mt-2 font-semibold text-slate-800">{copy.email}</dt><dd><a href={`mailto:${unhcrContact.email}`} class="inline-flex min-h-[44px] items-center break-all text-primary-800 underline underline-offset-4">{unhcrContact.email}</a></dd></dl>
+            <a href={unhcrContact.source} class="mt-3 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{copy.source}</a><p class="text-xs leading-5 text-slate-500">{copy.checked}</p>
+          </section>
+          <nav aria-label={copy.shortcuts} class="border-t border-slate-200 pt-5">
+            <h2 class="text-lg font-semibold text-slate-900">{copy.shortcuts}</h2>
+            <a href="/services?category=Health" class="mt-2 flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{copy.health}</a>
+            <a href="/services?category=Education" class="flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{copy.education}</a>
+          </nav>
+        </aside>
+      </div>
+      <footer class="border-t border-slate-200 py-6 text-sm leading-6 text-slate-600">
+        <p>{copy.linksNote}</p>
+        <a href={`mailto:dzalekaconnect@gmail.com?subject=${encodeURIComponent(`Newcomer guide (${lang})`)}`} class="mt-2 inline-flex min-h-[44px] items-center text-primary-800 underline underline-offset-4">{copy.correction}</a>
+        <p lang="en" class="mt-2 text-xs">Dzaleka Online Services · <time datetime={guideVersion}>{guideVersion}</time></p>
+      </footer>
+    </div>
+  </article>
+</MainLayout>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-print-guide]').forEach(button => {
+    button.hidden = false;
+    button.addEventListener('click', () => window.print());
+  });
+</script>
+<style>
+  @media print {
+    .guide-page { font-size: 11pt; }
+    .guide-page header { background: white; color: #0f172a; }
+    .guide-page header :is(h1, p) { color: #0f172a; }
+    .guide-page section { break-inside: avoid; }
+  }
+</style>

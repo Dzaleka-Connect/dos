@@ -1,7 +1,7 @@
 ---
 slug: "gis-spatial-registry"
 title: "GIS Community Spatial Map & Registry"
-summary: "Verified spatial dataset of 92+ community facilities, water boreholes, schools, healthcare centers, and cultural points in Dzaleka Refugee Camp."
+summary: "Locations and records for community facilities, water points, schools, health facilities and cultural places in Dzaleka."
 description:
   - "This open-access geospatial dataset packages verified spatial nodes, administrative zones, operational indicators, and site register records across Dzaleka Refugee Camp."
   - "Drawing from OpenStreetMap, local Participatory GIS audits, and the HOT Microgrants 2021 initiative, this dataset enables programmatic mapping and spatial research."

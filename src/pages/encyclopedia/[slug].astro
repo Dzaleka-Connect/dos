@@ -1,23 +1,30 @@
 ---
-import { getCollection, render } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
-import Breadcrumb from '../../components/ui/Breadcrumb.astro';
-import EntryContents from '../../components/encyclopedia/EntryContents.astro';
-import EntryDataPanel from '../../components/encyclopedia/EntryDataPanel.astro';
-import RelatedCoverage from '../../components/encyclopedia/RelatedCoverage.astro';
-import { resolveStatSeries } from '../../data/campStatistics';
-import { rankCoverage, type CoverageCandidate } from '../../utils/relatedCoverage';
-import { getDzalekaFeed } from '../../utils/dzalekaFeed';
+import { getCollection, render } from "astro:content";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Breadcrumb from "../../components/ui/Breadcrumb.astro";
+import EntryContents from "../../components/encyclopedia/EntryContents.astro";
+import EntryFacts from "../../components/encyclopedia/EntryFacts.astro";
+import EntryDataPanel from "../../components/encyclopedia/EntryDataPanel.astro";
+import RelatedCoverage from "../../components/encyclopedia/RelatedCoverage.astro";
+import { resolveStatSeries } from "../../data/campStatistics";
+import {
+  rankCoverage,
+  type CoverageCandidate,
+} from "../../utils/relatedCoverage";
+import { getDzalekaFeed } from "../../utils/dzalekaFeed";
 
 export async function getStaticPaths() {
-  const entries = await getCollection('encyclopedia');
-  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const entries = await getCollection("encyclopedia");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
 }
 
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const toc = headings.filter((heading) => heading.depth === 2);
-const allEntries = await getCollection('encyclopedia');
+const allEntries = await getCollection("encyclopedia");
 const relatedEntries = (entry.data.relatedEntries || [])
   .map((id) => allEntries.find((candidate) => candidate.id === id))
   .filter(Boolean);
@@ -27,8 +34,8 @@ const entryCharts = resolveStatSeries(entry.data.charts);
 // Ongoing reporting matched at build time across news and resources, so the
 // sidebar refreshes whenever new items are published.
 const [newsItems, resourceItems, feedItems] = await Promise.all([
-  getCollection('news'),
-  getCollection('resources'),
+  getCollection("news"),
+  getCollection("resources"),
   getDzalekaFeed(),
 ]);
 const coverageCandidates: CoverageCandidate[] = [
@@ -39,30 +46,30 @@ const coverageCandidates: CoverageCandidate[] = [
     description: item.description,
     date: item.date,
     tags: item.categories,
-    kind: 'dispatch' as const,
+    kind: "dispatch" as const,
     href: item.link,
-    publisher: 'dzaleka.com',
+    publisher: "dzaleka.com",
     external: true,
   })),
   ...newsItems.map((item) => ({
     id: item.id,
     title: item.data.title,
-    description: item.data.description ?? '',
+    description: item.data.description ?? "",
     date: item.data.date,
     category: item.data.category,
     tags: item.data.tags,
-    kind: 'news' as const,
+    kind: "news" as const,
     href: `/news/${item.id}`,
     publisher: item.data.author,
   })),
   ...resourceItems.map((item) => ({
     id: item.id,
     title: item.data.title,
-    description: item.data.description ?? '',
+    description: item.data.description ?? "",
     date: item.data.date,
     category: item.data.category,
     tags: item.data.tags,
-    kind: 'resource' as const,
+    kind: "resource" as const,
     href: `/resources/${item.id}`,
     publisher: item.data.author,
   })),
@@ -76,78 +83,105 @@ const relatedCoverage = rankCoverage(
     coverageTopics: entry.data.coverageTopics,
     entryType: entry.data.entryType,
   },
-  coverageCandidates
+  coverageCandidates,
 );
 
 const contentsLinks = [
   ...toc.map((heading) => ({ href: `#${heading.slug}`, label: heading.text })),
-  ...(entryCharts.length ? [{ href: '#data-heading', label: 'Data behind this entry' }] : []),
-  ...(entry.data.gallery?.length ? [{ href: '#gallery-heading', label: 'Photographs' }] : []),
-  { href: '#sources-heading', label: 'Sources' },
+  ...(entryCharts.length
+    ? [{ href: "#data-heading", label: "Data behind this entry" }]
+    : []),
+  ...(entry.data.gallery?.length
+    ? [{ href: "#gallery-heading", label: "Photographs" }]
+    : []),
+  { href: "#sources-heading", label: "Sources" },
 ];
 
 const canonical = `https://services.dzaleka.com/encyclopedia/${entry.id}`;
-const encyclopediaUrl = 'https://services.dzaleka.com/encyclopedia';
+const encyclopediaUrl = "https://services.dzaleka.com/encyclopedia";
 const campEntityId = `${encyclopediaUrl}/dzaleka-refugee-camp#entity`;
-const configuredEntityType = entry.data.schemaType || (
-  entry.data.entryType === 'person' ? 'Person'
-    : entry.data.entryType === 'organization' ? 'Organization'
-      : entry.data.entryType === 'event' ? 'Event'
-        : entry.data.entryType === 'film' ? 'Movie'
-          : entry.data.entryType === 'book' ? 'Book'
-            : entry.data.entryType === 'place' || entry.data.entryType === 'overview' ? 'Place'
-              : 'Article'
-);
-const entityType = configuredEntityType === 'Article'
-  ? 'DefinedTerm'
-  : configuredEntityType === 'Event'
-    ? 'EventSeries'
-    : configuredEntityType;
+const configuredEntityType =
+  entry.data.schemaType ||
+  (entry.data.entryType === "person"
+    ? "Person"
+    : entry.data.entryType === "organization"
+      ? "Organization"
+      : entry.data.entryType === "event"
+        ? "Event"
+        : entry.data.entryType === "film"
+          ? "Movie"
+          : entry.data.entryType === "book"
+            ? "Book"
+            : entry.data.entryType === "place" ||
+                entry.data.entryType === "overview"
+              ? "Place"
+              : "Article");
+const entityType =
+  configuredEntityType === "Article"
+    ? "DefinedTerm"
+    : configuredEntityType === "Event"
+      ? "EventSeries"
+      : configuredEntityType;
 const publishedDate = entry.data.datePublished || entry.data.lastReviewed;
-const reviewedDate = entry.data.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const reviewedDate = entry.data.lastReviewed.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 const wordCount = entry.body?.trim().split(/\s+/).filter(Boolean).length || 0;
 const readingMinutes = Math.max(1, Math.ceil(wordCount / 220));
 const correctionUrl = `/encyclopedia/submit-correction?entry=${encodeURIComponent(entry.id)}`;
 const pubYear = publishedDate.getFullYear();
-const todayDateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-const apaCitation = `Dzaleka Online Services. (${pubYear}). ${entry.data.title}. Dzaleka Encyclopedia. Retrieved ${todayDateStr}, from ${canonical}`;
-const mlaCitation = `"${entry.data.title}." Dzaleka Encyclopedia, Dzaleka Online Services, ${pubYear}, ${canonical}. Accessed ${todayDateStr}.`;
-const bibtexCitation = `@misc{dzaleka_${entry.id.replace(/-/g, '_')},
+const apaCitation = `Dzaleka Online Services. (${pubYear}). ${entry.data.title}. Dzaleka Encyclopedia. ${canonical}`;
+const mlaCitation = `"${entry.data.title}." Dzaleka Encyclopedia, Dzaleka Online Services, ${pubYear}, ${canonical}.`;
+const bibtexCitation = `@misc{dzaleka_${entry.id.replace(/-/g, "_")},
   title = {${entry.data.title}},
   author = {{Dzaleka Online Services}},
   year = {${pubYear}},
   publisher = {Dzaleka Encyclopedia},
   url = {${canonical}}
 };`;
-const isPerson = entry.data.entryType === 'person';
-const isFilm = entry.data.entryType === 'film';
-const isBook = entry.data.entryType === 'book';
+const isPerson = entry.data.entryType === "person";
+const isFilm = entry.data.entryType === "film";
+const isBook = entry.data.entryType === "book";
 const isCoverMedia = isFilm || isBook;
-const hasHeaderMedia = (isPerson || isCoverMedia) && Boolean(entry.data.image);
-const isLogoImage = entry.data.image?.toLowerCase().includes('logo');
+const isLogoImage =
+  entry.data.image?.toLowerCase().includes("logo") ||
+  /\blogo\b/i.test(entry.data.imageAlt || "");
+const hasHeaderMedia =
+  (isPerson || isCoverMedia || isLogoImage) && Boolean(entry.data.image);
 const imageCaption = entry.data.imageCaption?.trim();
-const imageCaptionSeparator = imageCaption && entry.data.imageCredit
-  ? /[.!?]$/.test(imageCaption) ? ' ' : '. '
-  : '';
+const imageCaptionSeparator =
+  imageCaption && entry.data.imageCredit
+    ? /[.!?]$/.test(imageCaption)
+      ? " "
+      : ". "
+    : "";
 const allImages = [
-  ...(entry.data.image ? [{
-    src: entry.data.image,
-    alt: entry.data.imageAlt || entry.data.title,
-    caption: entry.data.imageCaption,
-    credit: entry.data.imageCredit,
-  }] : []),
+  ...(entry.data.image
+    ? [
+        {
+          src: entry.data.image,
+          alt: entry.data.imageAlt || entry.data.title,
+          caption: entry.data.imageCaption,
+          credit: entry.data.imageCredit,
+        },
+      ]
+    : []),
   ...(entry.data.gallery || []),
 ];
-const absoluteUrl = (path: string) => path.startsWith('http') ? path : `https://services.dzaleka.com${path}`;
-const socialImagePath = entry.data.image || '/images/encyclopedia/camp-panorama.jpg';
-const socialImageType = socialImagePath.toLowerCase().endsWith('.png')
-  ? 'image/png'
-  : socialImagePath.toLowerCase().endsWith('.webp')
-    ? 'image/webp'
-    : 'image/jpeg';
+const absoluteUrl = (path: string) =>
+  path.startsWith("http") ? path : `https://services.dzaleka.com${path}`;
+const socialImagePath =
+  entry.data.image || "/images/encyclopedia/camp-panorama.jpg";
+const socialImageType = socialImagePath.toLowerCase().endsWith(".png")
+  ? "image/png"
+  : socialImagePath.toLowerCase().endsWith(".webp")
+    ? "image/webp"
+    : "image/jpeg";
 const imageObjects = allImages.map((image, index) => ({
-  '@type': 'ImageObject',
-  '@id': `${canonical}#image-${index + 1}`,
+  "@type": "ImageObject",
+  "@id": `${canonical}#image-${index + 1}`,
   contentUrl: absoluteUrl(image.src),
   url: absoluteUrl(image.src),
   caption: image.caption || image.alt,
@@ -155,86 +189,114 @@ const imageObjects = allImages.map((image, index) => ({
   representativeOfPage: index === 0,
 }));
 
-const isScholarly = entry.id.includes('thesis') || entry.id.includes('mdhs') || entry.id.includes('survey') || entry.data.title.toLowerCase().includes('thesis') || entry.data.title.toLowerCase().includes('survey');
-const mainArticleType = isScholarly ? 'ScholarlyArticle' : 'Article';
+const isScholarly =
+  entry.id.includes("thesis") ||
+  entry.id.includes("mdhs") ||
+  entry.id.includes("survey") ||
+  entry.data.title.toLowerCase().includes("thesis") ||
+  entry.data.title.toLowerCase().includes("survey");
+const mainArticleType = isScholarly ? "ScholarlyArticle" : "Article";
 
 const factProperties = (entry.data.facts || []).map((fact) => ({
-  '@type': 'PropertyValue',
+  "@type": "PropertyValue",
   name: fact.label,
   value: fact.value,
 }));
 
 const mentionNodes = relatedEntries.map((rel) => ({
-  '@type': 'Thing',
-  '@id': `https://services.dzaleka.com/encyclopedia/${rel.id}#entity`,
+  "@type": "Thing",
+  "@id": `https://services.dzaleka.com/encyclopedia/${rel.id}#entity`,
   name: rel.data.title,
   url: `https://services.dzaleka.com/encyclopedia/${rel.id}`,
 }));
 
 const entity: Record<string, unknown> = {
-  '@type': entityType,
-  '@id': `${canonical}#entity`,
+  "@type": entityType,
+  "@id": `${canonical}#entity`,
   name: entry.data.title,
   alternateName: entry.data.aliases,
   description: entry.data.summary,
   url: entry.data.officialWebsite || canonical,
   mainEntityOfPage: canonical,
-  image: imageObjects.length ? imageObjects.map((image) => ({ '@id': image['@id'] })) : undefined,
+  image: imageObjects.length
+    ? imageObjects.map((image) => ({ "@id": image["@id"] }))
+    : undefined,
   sameAs: entry.data.sameAs,
   additionalProperty: factProperties.length ? factProperties : undefined,
 };
 
-if (entityType === 'DefinedTerm') {
-  entity.inDefinedTermSet = { '@id': `${encyclopediaUrl}#term-set` };
+if (entityType === "DefinedTerm") {
+  entity.inDefinedTermSet = { "@id": `${encyclopediaUrl}#term-set` };
 }
 
 if (entry.data.geo) {
   entity.geo = {
-    '@type': 'GeoCoordinates',
+    "@type": "GeoCoordinates",
     latitude: entry.data.geo.latitude,
     longitude: entry.data.geo.longitude,
   };
   entity.address = {
-    '@type': 'PostalAddress',
-    addressLocality: 'Dzaleka',
-    addressRegion: 'Dowa District',
-    addressCountry: 'MW',
+    "@type": "PostalAddress",
+    addressLocality: "Dzaleka",
+    addressRegion: "Dowa District",
+    addressCountry: "MW",
   };
   entity.containedInPlace = {
-    '@type': 'AdministrativeArea',
-    name: 'Dowa District',
-    containedInPlace: { '@type': 'Country', name: 'Malawi' },
+    "@type": "AdministrativeArea",
+    name: "Dowa District",
+    containedInPlace: { "@type": "Country", name: "Malawi" },
   };
 }
 
-if (['Organization', 'NGO', 'RadioStation', 'EducationalOrganization', 'MedicalOrganization'].includes(entityType)) {
-  entity.areaServed = { '@id': campEntityId };
+if (
+  [
+    "Organization",
+    "NGO",
+    "RadioStation",
+    "EducationalOrganization",
+    "MedicalOrganization",
+  ].includes(entityType)
+) {
+  entity.areaServed = { "@id": campEntityId };
 }
-if (entityType === 'EventSeries') entity.location = { '@id': campEntityId };
-if (entityType === 'Movie') {
-  entity.genre = 'Documentary';
-  entity.locationCreated = { '@id': campEntityId };
+if (entityType === "EventSeries") entity.location = { "@id": campEntityId };
+if (entityType === "Movie") {
+  entity.genre = "Documentary";
+  entity.locationCreated = { "@id": campEntityId };
   entity.datePublished = entry.data.film?.releaseDate;
   entity.duration = entry.data.film?.runtime;
-  entity.director = entry.data.film?.directors?.map((name) => ({ '@type': 'Person', name }));
-  entity.productionCompany = entry.data.film?.productionCompanies?.map((name) => ({ '@type': 'Organization', name }));
-  entity.actor = entry.data.film?.featuredPeople?.map((name) => ({ '@type': 'Person', name }));
+  entity.director = entry.data.film?.directors?.map((name) => ({
+    "@type": "Person",
+    name,
+  }));
+  entity.productionCompany = entry.data.film?.productionCompanies?.map(
+    (name) => ({ "@type": "Organization", name }),
+  );
+  entity.actor = entry.data.film?.featuredPeople?.map((name) => ({
+    "@type": "Person",
+    name,
+  }));
 }
-if (entityType === 'Book') {
-  entity.author = entry.data.book?.authors.map((name) => ({ '@type': 'Person', name }));
+if (entityType === "Book") {
+  entity.author = entry.data.book?.authors.map((name) => ({
+    "@type": "Person",
+    name,
+  }));
   entity.contributor = entry.data.book?.contributors?.map((contributor) => ({
-    '@type': 'Person',
+    "@type": "Person",
     name: contributor.name,
     description: contributor.role,
   }));
   entity.genre = entry.data.book?.genres;
   entity.inLanguage = entry.data.book?.originalLanguage;
-  entity.about = { '@id': campEntityId };
+  entity.about = { "@id": campEntityId };
   entity.workExample = entry.data.book?.editions?.map((edition) => ({
-    '@type': 'Book',
+    "@type": "Book",
     name: edition.name || entry.data.title,
     isbn: edition.isbn13 || edition.isbn10,
-    publisher: edition.publisher ? { '@type': 'Organization', name: edition.publisher } : undefined,
+    publisher: edition.publisher
+      ? { "@type": "Organization", name: edition.publisher }
+      : undefined,
     datePublished: edition.publicationDate,
     bookFormat: edition.format,
     numberOfPages: edition.pages,
@@ -243,86 +305,116 @@ if (entityType === 'Book') {
 }
 
 const articleSchema: Record<string, unknown> = {
-  '@type': mainArticleType,
-  '@id': `${canonical}#article`,
+  "@type": mainArticleType,
+  "@id": `${canonical}#article`,
   url: canonical,
   headline: entry.data.title,
   alternateName: entry.data.aliases,
   description: entry.data.summary,
   abstract: entry.data.summary,
-  image: imageObjects.length ? imageObjects.map((image) => ({ '@id': image['@id'] })) : undefined,
+  image: imageObjects.length
+    ? imageObjects.map((image) => ({ "@id": image["@id"] }))
+    : undefined,
   datePublished: publishedDate.toISOString(),
   dateModified: entry.data.lastReviewed.toISOString(),
-  inLanguage: 'en',
+  inLanguage: "en",
   isAccessibleForFree: true,
   wordCount,
   articleSection: entry.data.category,
-  keywords: [entry.data.category, entry.data.entryType, ...(entry.data.aliases || [])].join(', '),
-  mainEntityOfPage: { '@id': canonical },
-  about: [{ '@id': `${canonical}#entity` }, { '@id': campEntityId }],
+  keywords: [
+    entry.data.category,
+    entry.data.entryType,
+    ...(entry.data.aliases || []),
+  ].join(", "),
+  mainEntityOfPage: { "@id": canonical },
+  about: [{ "@id": `${canonical}#entity` }, { "@id": campEntityId }],
   mentions: mentionNodes.length ? mentionNodes : undefined,
-  isPartOf: { '@id': `${encyclopediaUrl}#collection` },
+  isPartOf: { "@id": `${encyclopediaUrl}#collection` },
   author: {
-    '@type': 'Organization',
-    '@id': 'https://services.dzaleka.com/#organization',
-    name: 'Dzaleka Online Services',
-    url: 'https://services.dzaleka.com/',
+    "@type": "Organization",
+    "@id": "https://services.dzaleka.com/#organization",
+    name: "Dzaleka Online Services",
+    url: "https://services.dzaleka.com/",
   },
   publisher: {
-    '@type': 'Organization',
-    '@id': 'https://services.dzaleka.com/#organization',
-    name: 'Dzaleka Online Services',
-    url: 'https://services.dzaleka.com/',
+    "@type": "Organization",
+    "@id": "https://services.dzaleka.com/#organization",
+    name: "Dzaleka Online Services",
+    url: "https://services.dzaleka.com/",
     logo: {
-      '@type': 'ImageObject',
-      url: 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png',
+      "@type": "ImageObject",
+      url: "https://services.dzaleka.com/images/dzaleka-digital-heritage.png",
     },
   },
   citation: entry.data.sources.map((source) => ({
-    '@type': 'CreativeWork',
+    "@type": "CreativeWork",
     name: source.title,
-    publisher: { '@type': 'Organization', name: source.publisher },
+    publisher: { "@type": "Organization", name: source.publisher },
     url: source.url,
   })),
 };
 
 if (isScholarly) {
-  articleSchema.genre = 'Academic Research';
+  articleSchema.genre = "Academic Research";
 }
 
 const structuredData = {
-  '@context': 'https://schema.org',
-  '@graph': [
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      '@type': 'WebPage',
-      '@id': canonical,
+      "@type": "WebPage",
+      "@id": canonical,
       url: canonical,
       name: `${entry.data.title} | Dzaleka Encyclopedia`,
       description: entry.data.summary,
-      isPartOf: { '@id': 'https://services.dzaleka.com/#website' },
-      breadcrumb: { '@id': `${canonical}#breadcrumb` },
-      mainEntity: { '@id': `${canonical}#entity` },
-      primaryImageOfPage: imageObjects[0] ? { '@id': imageObjects[0]['@id'] } : undefined,
+      isPartOf: { "@id": "https://services.dzaleka.com/#website" },
+      breadcrumb: { "@id": `${canonical}#breadcrumb` },
+      mainEntity: { "@id": `${canonical}#entity` },
+      primaryImageOfPage: imageObjects[0]
+        ? { "@id": imageObjects[0]["@id"] }
+        : undefined,
       datePublished: publishedDate.toISOString(),
       dateModified: entry.data.lastReviewed.toISOString(),
     },
     articleSchema,
     entity,
     ...imageObjects,
-    ...(entry.id === 'dzaleka-refugee-camp' ? [] : [{
-      '@type': 'Place',
-      '@id': campEntityId,
-      name: 'Dzaleka Refugee Camp',
-      url: `${encyclopediaUrl}/dzaleka-refugee-camp`,
-      sameAs: ['https://www.wikidata.org/wiki/Q135224742', 'https://en.wikipedia.org/wiki/Dzaleka_Refugee_Camp'],
-    }]),
+    ...(entry.id === "dzaleka-refugee-camp"
+      ? []
+      : [
+          {
+            "@type": "Place",
+            "@id": campEntityId,
+            name: "Dzaleka Refugee Camp",
+            url: `${encyclopediaUrl}/dzaleka-refugee-camp`,
+            sameAs: [
+              "https://www.wikidata.org/wiki/Q135224742",
+              "https://en.wikipedia.org/wiki/Dzaleka_Refugee_Camp",
+            ],
+          },
+        ]),
     {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonical}#breadcrumb`,
+      "@type": "BreadcrumbList",
+      "@id": `${canonical}#breadcrumb`,
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://services.dzaleka.com/' },
-        { '@type': 'ListItem', position: 2, name: 'Dzaleka Encyclopedia', item: encyclopediaUrl },
-        { '@type': 'ListItem', position: 3, name: entry.data.title, item: canonical },
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://services.dzaleka.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Dzaleka Encyclopedia",
+          item: encyclopediaUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: entry.data.title,
+          item: canonical,
+        },
       ],
     },
   ],
@@ -333,16 +425,16 @@ const structuredData = {
   title={`${entry.data.title} | Dzaleka Encyclopedia`}
   description={entry.data.summary}
   canonical={canonical}
-  image={socialImagePath}
+  image={absoluteUrl(socialImagePath)}
   type="article"
   robots="index, follow, max-image-preview:large"
   schema={structuredData}
   openGraph={{
     title: entry.data.title,
     description: entry.data.summary,
-    type: 'article',
-    site_name: 'Dzaleka Online Services',
-    locale: 'en_US',
+    type: "article",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
     url: canonical,
     image: {
       url: absoluteUrl(socialImagePath),
@@ -352,7 +444,7 @@ const structuredData = {
     article: {
       publishedTime: publishedDate.toISOString(),
       modifiedTime: entry.data.lastReviewed.toISOString(),
-      author: 'Dzaleka Online Services',
+      author: "Dzaleka Online Services",
       tags: [entry.data.category, ...(entry.data.aliases || [])],
       section: entry.data.category,
     },
@@ -361,50 +453,132 @@ const structuredData = {
   <article class="bg-white">
     <header class="border-b border-slate-200 bg-slate-50">
       <div class="mx-auto max-w-6xl px-4 py-9 sm:px-6 sm:py-12 lg:px-8">
-        <Breadcrumb items={[
-          { label: 'Home', href: '/' },
-          { label: 'Dzaleka Encyclopedia', href: '/encyclopedia' },
-        ]} />
-        <div class:list={['mt-6 grid items-start gap-7 sm:gap-10', hasHeaderMedia ? 'sm:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[minmax(0,1fr)_260px]' : 'max-w-4xl']}>
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Dzaleka Encyclopedia", href: "/encyclopedia" },
+          ]}
+        />
+        <div
+          class:list={[
+            "mt-6 grid items-start gap-7 sm:gap-10",
+            hasHeaderMedia
+              ? "sm:grid-cols-[minmax(0,1fr)_240px] lg:grid-cols-[minmax(0,1fr)_300px]"
+              : "max-w-4xl",
+          ]}
+        >
           <div class="min-w-0">
-            <p class="text-sm font-medium text-primary-800">{isPerson ? 'People of Dzaleka and its wider community' : entry.data.category}</p>
+            <a
+              href={`/encyclopedia?${isPerson ? "type=person" : `category=${encodeURIComponent(entry.data.category.toLowerCase())}`}#all-entries`}
+              class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4"
+            >
+              {isPerson ? "People connected to Dzaleka" : entry.data.category}
+            </a>
             <h1 class="mt-3 text-primary-900">{entry.data.title}</h1>
-            {entry.data.aliases?.length > 0 && <p class="mt-3 text-sm text-slate-600">Also known as {entry.data.aliases.join(', ')}</p>}
-            <p class="mt-5 max-w-3xl text-base leading-7 text-slate-700">{entry.data.summary}</p>
+            {entry.data.aliases?.length > 0 && (
+              <p class="mt-3 text-sm text-slate-600">
+                Also known as {entry.data.aliases.join(", ")}
+              </p>
+            )}
+            <p class="mt-5 max-w-3xl text-base leading-7 text-slate-700">
+              {entry.data.summary}
+            </p>
             <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
               <p>{readingMinutes} min read</p>
-              <p>Reviewed <time datetime={entry.data.lastReviewed.toISOString()}>{reviewedDate}</time></p>
+              <p>
+                Reviewed{" "}
+                <time datetime={entry.data.lastReviewed.toISOString()}>
+                  {reviewedDate}
+                </time>
+              </p>
               {isScholarly && <p>Academic research</p>}
-              {entry.data.status === 'developing' && <p class="text-amber-800">Developing entry</p>}
+              {entry.data.status === "developing" && (
+                <p class="text-amber-800">Developing entry</p>
+              )}
             </div>
-            <nav class="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-200 pt-3" aria-label="Entry tools">
-              <a href="#sources-heading" class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4">{entry.data.sources.length} {entry.data.sources.length === 1 ? 'source' : 'sources'}</a>
-              <button id="open-cite-dialog" type="button" class="min-h-[44px] text-sm font-medium text-primary-800 underline underline-offset-4">Cite this entry</button>
-              <a href={correctionUrl} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Suggest a correction</a>
+            <nav
+              class="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-200 pt-3"
+              aria-label="Entry tools"
+            >
+              <a
+                href="#sources-heading"
+                class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4"
+              >
+                {entry.data.sources.length}{" "}
+                {entry.data.sources.length === 1 ? "source" : "sources"}
+              </a>
+              <button
+                id="open-cite-dialog"
+                type="button"
+                hidden
+                class="min-h-[44px] text-sm font-medium text-primary-800 underline underline-offset-4"
+              >
+                Cite this entry
+              </button>
+              <a
+                href={correctionUrl}
+                class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+              >
+                Suggest a correction
+              </a>
             </nav>
           </div>
-          {hasHeaderMedia && entry.data.image && <figure class="entry-portrait w-full max-w-[260px] justify-self-start sm:justify-self-end">
-            <div class="overflow-hidden rounded border border-slate-200 bg-white p-2">
-              <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={entry.data.image} alt={entry.data.imageAlt || entry.data.title} fetchpriority="high" class="block h-auto max-h-[360px] w-full object-contain" />
-            </div>
-            {(entry.data.imageCaption || entry.data.imageCredit) && <figcaption class="mt-3 text-sm leading-6 text-slate-600">{imageCaption}{imageCaptionSeparator}{entry.data.imageCredit && <span>Credit: {entry.data.imageCredit}.</span>}</figcaption>}
-          </figure>}
+          {hasHeaderMedia && entry.data.image && (
+            <figure class="entry-portrait w-full max-w-[300px] justify-self-center sm:justify-self-end">
+              <a
+                href={entry.data.image}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block overflow-hidden rounded bg-slate-100"
+                aria-label={`View full image for ${entry.data.title} (opens in a new tab)`}
+              >
+                <img
+                  onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
+                  src={entry.data.image}
+                  alt={entry.data.imageAlt || entry.data.title}
+                  fetchpriority="high"
+                  width="600"
+                  height={isLogoImage ? 600 : 750}
+                  class:list={[
+                    "block h-auto w-full object-contain",
+                    isLogoImage
+                      ? "aspect-square bg-white p-5"
+                      : "aspect-[4/5] max-h-[375px]",
+                  ]}
+                />
+              </a>
+              {(entry.data.imageCaption || entry.data.imageCredit) && (
+                <figcaption class="mt-3 text-sm leading-6 text-slate-600">
+                  {imageCaption}
+                  {imageCaptionSeparator}
+                  {entry.data.imageCredit && (
+                    <span>Credit: {entry.data.imageCredit}.</span>
+                  )}
+                </figcaption>
+              )}
+            </figure>
+          )}
         </div>
       </div>
     </header>
 
-    {entry.data.image && !isPerson && !isCoverMedia && (
+    {entry.data.image && !hasHeaderMedia && (
       <div class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 lg:px-8">
         <figure class="overflow-hidden rounded border border-slate-200 bg-slate-100">
           <img
+            onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
             src={entry.data.image}
             alt={entry.data.imageAlt || entry.data.title}
-            class:list={['w-full', isLogoImage ? 'h-64 bg-white object-contain p-10 sm:h-72 sm:p-14' : 'max-h-[360px] aspect-[16/8] object-cover']}
+            class="w-full max-h-[360px] aspect-[16/8] object-cover"
             fetchpriority="high"
           />
           {(entry.data.imageCaption || entry.data.imageCredit) && (
             <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-sm leading-5 text-slate-500">
-              {entry.data.imageCaption}{entry.data.imageCaption && entry.data.imageCredit ? ' ' : ''}{entry.data.imageCredit && <span>Photo: {entry.data.imageCredit}.</span>}
+              {entry.data.imageCaption}
+              {entry.data.imageCaption && entry.data.imageCredit ? " " : ""}
+              {entry.data.imageCredit && (
+                <span>Photo: {entry.data.imageCredit}.</span>
+              )}
             </figcaption>
           )}
         </figure>
@@ -412,15 +586,27 @@ const structuredData = {
     )}
 
     <div class="mx-auto grid max-w-6xl gap-10 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:px-8 lg:py-14">
-      <!-- Center Column: Main Article Body -->
       <div class="min-w-0">
+        {entry.data.facts?.length > 0 && (
+          <details class="mb-4 rounded border border-slate-200 bg-slate-50 px-4 lg:hidden">
+            <summary class="min-h-[48px] cursor-pointer py-3 font-semibold text-primary-900">
+              Key facts about {entry.data.title}
+            </summary>
+            <div class="pb-4 pt-2">
+              <EntryFacts facts={entry.data.facts} />
+            </div>
+          </details>
+        )}
         <details class="mb-6 rounded border border-slate-200 px-4 lg:hidden">
-          <summary class="cursor-pointer py-3 text-base font-semibold text-primary-800">On this page</summary>
+          <summary class="cursor-pointer py-3 text-base font-semibold text-primary-800">
+            On this page
+          </summary>
           <EntryContents links={contentsLinks} />
         </details>
-        {entry.data.status === 'developing' && (
+        {entry.data.status === "developing" && (
           <div class="mb-8 border-l-4 border-amber-500 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
-            This entry preserves verified historical information, but a recent primary source has not confirmed every current operational detail.
+            This entry preserves verified historical information, but a recent
+            primary source has not confirmed every current operational detail.
           </div>
         )}
 
@@ -429,28 +615,64 @@ const structuredData = {
         </div>
 
         {entryCharts.length > 0 && (
-          <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="data-heading">
+          <section
+            class="mt-12 border-t border-slate-200 pt-8"
+            aria-labelledby="data-heading"
+          >
             <p class="text-sm font-semibold text-slate-500">Evidence</p>
-            <h2 id="data-heading" class="mt-2 text-2xl font-semibold text-slate-950">Data behind this entry</h2>
+            <h2
+              id="data-heading"
+              class="mt-2 text-2xl font-semibold text-slate-950"
+            >
+              Data behind this entry
+            </h2>
             <p class="mt-3 max-w-3xl text-base leading-7 text-slate-600">
-              Each figure below is plotted only where a cited source reports it. Open the table under any
-              chart to read the values and follow them back to the original report.
+              Each figure below is plotted only where a cited source reports it.
+              Open the table under any chart to read the values and follow them
+              back to the original report.
             </p>
-            {entryCharts.map((series) => <EntryDataPanel series={series} />)}
+            {entryCharts.map((series) => (
+              <EntryDataPanel series={series} />
+            ))}
           </section>
         )}
 
         {entry.data.gallery && entry.data.gallery.length > 0 && (
-          <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="gallery-heading">
+          <section
+            class="mt-12 border-t border-slate-200 pt-8"
+            aria-labelledby="gallery-heading"
+          >
             <p class="text-sm font-semibold text-slate-500">Visual record</p>
-            <h2 id="gallery-heading" class="mt-2 text-2xl font-semibold text-slate-950">Photographs</h2>
+            <h2
+              id="gallery-heading"
+              class="mt-2 text-2xl font-semibold text-slate-950"
+            >
+              Photographs
+            </h2>
             <div class="mt-6 grid gap-5 sm:grid-cols-2">
               {entry.data.gallery.map((image, index) => (
-                <figure class:list={['overflow-hidden rounded border border-slate-200 bg-slate-50', index === 0 && entry.data.gallery && entry.data.gallery.length % 2 === 1 ? 'sm:col-span-2' : '']}>
-                  <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={image.src} alt={image.alt} class="aspect-[4/3] w-full object-cover" loading="lazy" />
+                <figure
+                  class:list={[
+                    "overflow-hidden rounded border border-slate-200 bg-slate-50",
+                    index === 0 &&
+                    entry.data.gallery &&
+                    entry.data.gallery.length % 2 === 1
+                      ? "sm:col-span-2"
+                      : "",
+                  ]}
+                >
+                  <img
+                    onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
+                    src={image.src}
+                    alt={image.alt}
+                    class="aspect-[4/3] w-full object-cover"
+                    loading="lazy"
+                  />
                   {(image.caption || image.credit) && (
                     <figcaption class="border-t border-slate-200 bg-white px-4 py-3 text-sm leading-5 text-slate-500">
-                      {image.caption}{image.caption && image.credit ? ' ' : ''}{image.credit && <span>Photo: {image.credit}.</span>}
+                      {image.caption}
+                      {image.caption && image.credit ? " " : ""}
+                      {image.credit && <span>Photo: {image.credit}.</span>}
                     </figcaption>
                   )}
                 </figure>
@@ -459,17 +681,39 @@ const structuredData = {
           </section>
         )}
 
-        <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="sources-heading">
+        <section
+          class="mt-12 border-t border-slate-200 pt-8"
+          aria-labelledby="sources-heading"
+        >
           <p class="text-sm font-semibold text-slate-500">References</p>
-          <h2 id="sources-heading" class="mt-2 text-2xl font-semibold text-slate-950">Sources</h2>
+          <h2
+            id="sources-heading"
+            class="mt-2 text-2xl font-semibold text-slate-950"
+          >
+            Sources
+          </h2>
           <ol class="mt-6 space-y-5">
             {entry.data.sources.map((source, index) => (
               <li class="grid grid-cols-[2rem_minmax(0,1fr)] gap-3 text-sm leading-6">
-                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-500">{index + 1}</span>
+                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-500">
+                  {index + 1}
+                </span>
                 <div>
-                  <a href={source.url} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">{source.title}</a>
-                  <p class="text-slate-600">{source.publisher}{source.date ? `, ${source.date}` : ''}</p>
-                  {source.note && <p class="mt-1 text-sm text-slate-500">{source.note}</p>}
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800"
+                  >
+                    {source.title}
+                  </a>
+                  <p class="text-slate-600">
+                    {source.publisher}
+                    {source.date ? `, ${source.date}` : ""}
+                  </p>
+                  {source.note && (
+                    <p class="mt-1 text-sm text-slate-500">{source.note}</p>
+                  )}
                 </div>
               </li>
             ))}
@@ -477,173 +721,355 @@ const structuredData = {
         </section>
 
         {relatedEntries.length > 0 && (
-          <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="related-heading">
-            <h2 id="related-heading" class="text-2xl font-semibold text-slate-950">Related entries</h2>
+          <section
+            class="mt-12 border-t border-slate-200 pt-8"
+            aria-labelledby="related-heading"
+          >
+            <h2
+              id="related-heading"
+              class="text-2xl font-semibold text-slate-950"
+            >
+              Related entries
+            </h2>
             <div class="mt-5 grid gap-3">
-              {relatedEntries.map((related) => related && (
-                <a href={`/encyclopedia/${related.id}`} class="group flex gap-4 rounded border border-slate-200 bg-white p-4 hover:border-slate-300">
-                  <div class="h-20 w-20 flex-none overflow-hidden rounded bg-slate-100">
-                    {related.data.image ? (
-                      <img onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'" src={related.data.image} alt="" class:list={['h-full w-full', related.data.entryType === 'person' ? 'object-contain' : 'object-cover']} loading="lazy" />
-                    ) : (
-                      <div class="flex h-full w-full items-center justify-center text-slate-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M18 15.75h.008v.008H18v-.008zM2.25 6h19.5a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5H2.25a1.5 1.5 0 01-1.5-1.5v-9A1.5 1.5 0 012.25 6z" />
-                        </svg>
+              {relatedEntries.map(
+                (related) =>
+                  related && (
+                    <a
+                      href={`/encyclopedia/${related.id}`}
+                      class="group flex gap-4 rounded border border-slate-200 bg-white p-4 hover:border-slate-300"
+                    >
+                      <div class="h-20 w-20 flex-none overflow-hidden rounded bg-slate-100">
+                        {related.data.image ? (
+                          <img
+                            onerror="this.onerror=null;this.src='/images/unavailable-image.svg';this.alt='Image unavailable'"
+                            src={related.data.image}
+                            alt=""
+                            class:list={[
+                              "h-full w-full",
+                              related.data.entryType === "person"
+                                ? "object-contain"
+                                : "object-cover",
+                            ]}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div class="flex h-full w-full items-center justify-center text-slate-300">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="h-8 w-8"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              aria-hidden="true"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M18 15.75h.008v.008H18v-.008zM2.25 6h19.5a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5H2.25a1.5 1.5 0 01-1.5-1.5v-9A1.5 1.5 0 012.25 6z"
+                              />
+                            </svg>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div class="min-w-0">
-                    <p class="text-sm font-semibold text-slate-500">{related.data.category}</p>
-                    <h3 class="mt-1 font-semibold text-slate-950 group-hover:text-primary-700">{related.data.title}</h3>
-                    <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{related.data.summary}</p>
-                  </div>
-                </a>
-              ))}
+                      <div class="min-w-0">
+                        <p class="text-sm font-semibold text-slate-500">
+                          {related.data.category}
+                        </p>
+                        <h3 class="mt-1 font-semibold text-slate-950 group-hover:text-primary-700">
+                          {related.data.title}
+                        </h3>
+                        <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+                          {related.data.summary}
+                        </p>
+                      </div>
+                    </a>
+                  ),
+              )}
             </div>
           </section>
         )}
 
         <section class="mt-12 rounded border border-slate-200 bg-slate-50 p-6">
-          <h2 class="text-xl font-semibold text-slate-950">Help improve this entry</h2>
-          <p class="mt-2 text-sm leading-6 text-slate-600">Send a correction, a stronger source, a missing detail, or a photograph. Submissions are reviewed against the encyclopedia's editorial guidance before the public record changes.</p>
-          <div class="flex flex-wrap items-center gap-x-5"><a href={correctionUrl} class="min-h-[44px] mt-4 inline-flex rounded bg-primary-900 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800">Submit a correction</a>
-          <a href="/encyclopedia/editorial-guidelines" class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800">Read the editorial guidelines</a></div>
+          <h2 class="text-xl font-semibold text-slate-950">
+            Help improve this entry
+          </h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">
+            Send a correction, a stronger source, a missing detail, or a
+            photograph. Submissions are reviewed against the encyclopedia's
+            editorial guidance before the public record changes.
+          </p>
+          <div class="flex flex-wrap items-center gap-x-5">
+            <a
+              href={correctionUrl}
+              class="min-h-[44px] mt-4 inline-flex rounded bg-primary-900 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800"
+            >
+              Submit a correction
+            </a>
+            <a
+              href="/encyclopedia/editorial-guidelines"
+              class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary-700 underline underline-offset-4 hover:text-primary-800"
+            >
+              Read the editorial guidelines
+            </a>
+          </div>
         </section>
       </div>
 
-      <!-- Right Sidebar: Fact Sheet Infobox & Meta -->
       <aside class="space-y-8">
-        <div class="hidden border-b border-slate-200 pb-6 lg:block"><h2 class="text-primary-900">On this page</h2><EntryContents links={contentsLinks} /></div>
+        <div class="hidden border-b border-slate-200 pb-6 lg:block">
+          <h2 class="text-primary-900">On this page</h2>
+          <EntryContents links={contentsLinks} />
+        </div>
 
-        {entry.data.facts && entry.data.facts.length > 0 && (
-          <section class="overflow-hidden rounded border border-slate-200 bg-white">
-            <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 flex items-center justify-between">
-              <h2 class="text-sm font-semibold text-slate-600 flex items-center gap-1.5">
-                <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Key facts
-              </h2>
-              <span class="text-sm font-semibold text-slate-600">{entry.data.facts.length} items</span>
-            </div>
-            <dl class="divide-y divide-slate-100 px-4 py-1">
-              {entry.data.facts.map((fact) => (
-                <div class="py-2.5 transition-colors hover:bg-slate-50/70">
-                  <dt class="text-sm font-semibold text-slate-500">{fact.label}</dt>
-                  <dd class="mt-0.5 text-sm font-medium leading-6 text-slate-900">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
+        {entry.data.facts?.length > 0 && (
+          <section
+            class="hidden rounded border border-slate-200 bg-slate-50 p-5 lg:block"
+            aria-labelledby="entry-facts-heading"
+          >
+            <h2
+              id="entry-facts-heading"
+              class="mb-4 text-lg font-semibold text-primary-900"
+            >
+              Key facts
+            </h2>
+            <EntryFacts facts={entry.data.facts} />
           </section>
         )}
 
         {entry.data.officialWebsite && (
-          <a href={entry.data.officialWebsite} target="_blank" rel="noopener noreferrer" class="min-h-[44px] flex items-center justify-between gap-4 rounded border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
-            <span>Official website</span><span aria-hidden="true">↗</span>
+          <a
+            href={entry.data.officialWebsite}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="min-h-[44px] flex items-center justify-between gap-4 rounded border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+          >
+            <span>Official website</span>
+            <span aria-hidden="true">↗</span>
           </a>
         )}
 
         <RelatedCoverage items={relatedCoverage} />
 
-        <p class="text-sm leading-6 text-slate-600">This entry is part of a community-maintained reference work. Service details may change between reviews. <a href="/encyclopedia/about" class="underline underline-offset-2 hover:text-primary-700">About the encyclopedia</a>.</p>
+        <p class="text-sm leading-6 text-slate-600">
+          This entry is part of a community-maintained reference work. Service
+          details may change between reviews.{" "}
+          <a
+            href="/encyclopedia/about"
+            class="underline underline-offset-2 hover:text-primary-700"
+          >
+            About the encyclopedia
+          </a>
+          .
+        </p>
       </aside>
     </div>
   </article>
-  <dialog id="cite-dialog" aria-labelledby="cite-dialog-title" class="rounded border border-slate-200 bg-white p-0 backdrop:bg-slate-950/50 max-w-[calc(100%-2rem)] w-[36rem] max-h-[85dvh] overflow-y-auto">
+  <dialog
+    id="cite-dialog"
+    aria-labelledby="cite-dialog-title"
+    class="rounded border border-slate-200 bg-white p-0 backdrop:bg-slate-950/50 max-w-[calc(100%-2rem)] w-[36rem] max-h-[85dvh] overflow-y-auto"
+  >
     <div class="border-b border-slate-200 bg-slate-50 px-6 py-4 flex items-center justify-between">
-      <h2 id="cite-dialog-title" class="text-base font-semibold text-slate-950 flex items-center gap-2">
-        <svg class="h-5 w-5 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+      <h2
+        id="cite-dialog-title"
+        class="text-base font-semibold text-slate-950 flex items-center gap-2"
+      >
+        <svg
+          class="h-5 w-5 text-primary-700"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
+          />
         </svg>
         Cite this entry
       </h2>
-      <button id="close-cite-dialog" type="button" aria-label="Close citation dialog" class="min-h-[44px] min-w-[44px] rounded p-2 text-slate-600 hover:bg-slate-200 hover:text-slate-700">
-        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <button
+        id="close-cite-dialog"
+        type="button"
+        aria-label="Close citation dialog"
+        class="min-h-[44px] min-w-[44px] rounded p-2 text-slate-600 hover:bg-slate-200 hover:text-slate-700"
+      >
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>
     <div class="p-6 space-y-5">
+      <p
+        id="citation-copy-status"
+        class="text-sm text-slate-600"
+        role="status"
+      ></p>
       <div>
-        <h3 class="text-sm font-semibold text-slate-700">APA format</h3>
-        <div class="mt-1.5 rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-5 text-slate-800 select-all [overflow-wrap:anywhere]">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-sm font-semibold text-slate-700">APA format</h3>
+          <button
+            type="button"
+            data-copy-citation="apa-citation"
+            class="min-h-[44px] text-sm font-semibold text-primary-800 underline underline-offset-4"
+          >
+            Copy APA
+          </button>
+        </div>
+        <div
+          id="apa-citation"
+          class="mt-1.5 rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-5 text-slate-800 select-all [overflow-wrap:anywhere]"
+        >
           {apaCitation}
         </div>
       </div>
       <div>
-        <h3 class="text-sm font-semibold text-slate-700">MLA format</h3>
-        <div class="mt-1.5 rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-5 text-slate-800 select-all [overflow-wrap:anywhere]">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-sm font-semibold text-slate-700">MLA format</h3>
+          <button
+            type="button"
+            data-copy-citation="mla-citation"
+            class="min-h-[44px] text-sm font-semibold text-primary-800 underline underline-offset-4"
+          >
+            Copy MLA
+          </button>
+        </div>
+        <div
+          id="mla-citation"
+          class="mt-1.5 rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-5 text-slate-800 select-all [overflow-wrap:anywhere]"
+        >
           {mlaCitation}
         </div>
       </div>
       <div>
         <div class="flex items-center justify-between">
           <h3 class="text-sm font-semibold text-slate-700">BibTeX format</h3>
-          <button id="copy-bibtex-btn" type="button" class="min-h-[44px] text-sm font-semibold text-primary-700 hover:underline">
-            <span id="copy-bibtex-text" role="status">Copy BibTeX</span>
+          <button
+            data-copy-citation="bibtex-text"
+            type="button"
+            class="min-h-[44px] text-sm font-semibold text-primary-700 hover:underline"
+          >
+            Copy BibTeX
           </button>
         </div>
-        <pre id="bibtex-text" class="mt-1.5 rounded border border-slate-200 bg-slate-900 p-3 text-sm leading-5 text-slate-100 overflow-x-auto select-all [overflow-wrap:anywhere]">{bibtexCitation}</pre>
+        <pre
+          id="bibtex-text"
+          class="mt-1.5 rounded border border-slate-200 bg-slate-900 p-3 text-sm leading-5 text-slate-100 overflow-x-auto select-all [overflow-wrap:anywhere]"
+        >{bibtexCitation}</pre>
       </div>
     </div>
     <div class="border-t border-slate-200 bg-slate-50 px-6 py-3 flex items-center justify-between text-sm">
-      <a href={`/api/encyclopedia/${entry.id}?format=jsonld`} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary-700 hover:underline flex items-center gap-1">
-        <span>View raw JSON-LD schema</span><span aria-hidden="true">↗</span>
+      <a
+        href={`/api/encyclopedia/${entry.id}?format=jsonld`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold text-primary-700 hover:underline flex items-center gap-1"
+      >
+        <span>View raw JSON-LD schema</span>
+        <span aria-hidden="true">↗</span>
       </a>
     </div>
   </dialog>
 </MainLayout>
 
 <script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((obsEntry) => {
-      if (obsEntry.isIntersecting) {
-        const id = obsEntry.target.id;
-        document.querySelectorAll('.toc-link').forEach((link) => {
-          if (link.getAttribute('href') === `#${id}`) {
-            link.setAttribute('aria-current', 'location');
-            link.classList.add('font-semibold', 'text-primary-700', 'border-l-2', 'border-primary-700', '-ml-2', 'pl-2');
-            link.classList.remove('text-slate-600');
-          } else {
-            link.removeAttribute('aria-current');
-            link.classList.remove('font-semibold', 'text-primary-700', 'border-l-2', 'border-primary-700', '-ml-2', 'pl-2');
-            link.classList.add('text-slate-600');
-          }
-        });
-      }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((obsEntry) => {
+        if (obsEntry.isIntersecting) {
+          const id = obsEntry.target.id;
+          document.querySelectorAll(".toc-link").forEach((link) => {
+            if (link.getAttribute("href") === `#${id}`) {
+              link.setAttribute("aria-current", "location");
+              link.classList.add(
+                "font-semibold",
+                "text-primary-700",
+                "border-l-2",
+                "border-primary-700",
+                "-ml-2",
+                "pl-2",
+              );
+              link.classList.remove("text-slate-600");
+            } else {
+              link.removeAttribute("aria-current");
+              link.classList.remove(
+                "font-semibold",
+                "text-primary-700",
+                "border-l-2",
+                "border-primary-700",
+                "-ml-2",
+                "pl-2",
+              );
+              link.classList.add("text-slate-600");
+            }
+          });
+        }
+      });
+    },
+    { rootMargin: "-10% 0px -70% 0px" },
+  );
+
+  document
+    .querySelectorAll(
+      ".encyclopedia-prose h2, #data-heading, #gallery-heading, #sources-heading",
+    )
+    .forEach((heading) => {
+      observer.observe(heading);
     });
-  }, { rootMargin: '-10% 0px -70% 0px' });
 
-  document.querySelectorAll('.encyclopedia-prose h2, #data-heading, #gallery-heading, #sources-heading').forEach((heading) => {
-    observer.observe(heading);
-  });
+  const citeDialog = document.getElementById(
+    "cite-dialog",
+  ) as HTMLDialogElement | null;
+  const openCiteBtn = document.getElementById("open-cite-dialog");
+  const closeCiteBtn = document.getElementById("close-cite-dialog");
 
-  const citeDialog = document.getElementById('cite-dialog') as HTMLDialogElement | null;
-  const openCiteBtn = document.getElementById('open-cite-dialog');
-  const closeCiteBtn = document.getElementById('close-cite-dialog');
-  const copyBibtexBtn = document.getElementById('copy-bibtex-btn');
-
-  openCiteBtn?.addEventListener('click', () => citeDialog?.showModal());
-  closeCiteBtn?.addEventListener('click', () => citeDialog?.close());
-  citeDialog?.addEventListener('close', () => openCiteBtn?.focus());
-  citeDialog?.addEventListener('click', (e) => {
+  if (openCiteBtn && citeDialog) openCiteBtn.hidden = false;
+  openCiteBtn?.addEventListener("click", () => citeDialog?.showModal());
+  closeCiteBtn?.addEventListener("click", () => citeDialog?.close());
+  citeDialog?.addEventListener("close", () => openCiteBtn?.focus());
+  citeDialog?.addEventListener("click", (e) => {
     const bounds = citeDialog.getBoundingClientRect();
-    if (e.target === citeDialog && (e.clientX < bounds.left || e.clientX > bounds.right || e.clientY < bounds.top || e.clientY > bounds.bottom)) citeDialog.close();
+    if (
+      e.target === citeDialog &&
+      (e.clientX < bounds.left ||
+        e.clientX > bounds.right ||
+        e.clientY < bounds.top ||
+        e.clientY > bounds.bottom)
+    )
+      citeDialog.close();
   });
 
-  copyBibtexBtn?.addEventListener('click', async () => {
-    const bibContent = document.getElementById('bibtex-text')?.textContent || '';
-    try {
-      await navigator.clipboard.writeText(bibContent);
-      const copyText = document.getElementById('copy-bibtex-text');
-      if (copyText) copyText.textContent = 'Copied!';
-      setTimeout(() => { if (copyText) copyText.textContent = 'Copy BibTeX'; }, 2000);
-    } catch (err) {
-      const copyText = document.getElementById('copy-bibtex-text');
-      if (copyText) copyText.textContent = 'Copy failed. Select and copy the text below.';
-    }
-  });
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-copy-citation]")
+    .forEach((button) => {
+      button.addEventListener("click", async () => {
+        const text = document
+          .getElementById(button.dataset.copyCitation || "")
+          ?.textContent?.trim();
+        const status = document.getElementById("citation-copy-status");
+        if (!text || !status) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          status.textContent = `${button.textContent?.trim().replace("Copy ", "")} citation copied.`;
+        } catch {
+          status.textContent =
+            "Could not copy automatically. Select the citation text and copy it.";
+        }
+      });
+    });
 </script>
 
 <style>
@@ -651,11 +1077,20 @@ const structuredData = {
     margin-top: 2.75rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgb(226 232 240);
-
   }
   .encyclopedia-prose :global(h2:first-child) {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
+  }
+  .encyclopedia-prose :global(h2),
+  #sources-heading,
+  #gallery-heading,
+  #data-heading {
+    scroll-margin-top: 9rem;
+  }
+  .encyclopedia-prose :global(img) {
+    height: auto;
+    max-width: 100%;
   }
 </style>

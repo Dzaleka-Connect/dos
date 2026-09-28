@@ -1,233 +1,145 @@
 ---
-import { supportCategories } from '../data/support-categories';
-
-interface Props {
-  errors?: {
-    name?: string;
-    email?: string;
-    message?: string;
-    category?: string;
-  };
-}
-
-const { errors = {} } = Astro.props;
+const categories = [
+  "Website problem",
+  "Listing correction",
+  "Submitting content",
+  "Data or API question",
+  "Accessibility",
+  "Other question",
+];
 ---
 
-<form 
-  method="POST" 
-  id="supportForm"
-  class="space-y-4 support-form"
-  action="https://formcarry.com/s/w40iBX_iU0b"
->
-  <!-- FormCarry Configuration -->
-  <input type="hidden" name="_subject" value="New Support Request">
-  <input type="hidden" name="_replyto">
-  <input type="hidden" name="_next" value="https://services.dzaleka.com/thank-you?type=support">
-
-  <!-- Form Header -->
-  <div class="flex items-center space-x-3 mb-6">
-    <span class="category-icon text-gray-400"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
-    <div>
-      <h2 class="text-2xl font-bold category-title text-gray-400">Select a Category</h2>
-      <p class="text-gray-400 category-description">Choose a category above to get started</p>
+<div data-support-request>
+  <form
+    method="POST"
+    id="supportForm"
+    action="https://formcarry.com/s/w40iBX_iU0b"
+    class="submission-form space-y-5"
+  >
+    <input type="hidden" name="_subject" value="Website support request" />
+    <input
+      type="hidden"
+      name="_next"
+      value="https://services.dzaleka.com/thank-you?type=support"
+    />
+    <p class="text-sm text-slate-500">
+      All fields are required unless marked optional.
+    </p>
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="support-name" class="block font-semibold text-slate-900">
+          Your name
+        </label>
+        <input
+          id="support-name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          class="mt-2 w-full rounded border border-slate-400 px-3 py-3"
+        />
+      </div>
+      <div>
+        <label for="support-email" class="block font-semibold text-slate-900">
+          Email address
+        </label>
+        <input
+          id="support-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          class="mt-2 w-full rounded border border-slate-400 px-3 py-3"
+        />
+      </div>
     </div>
-  </div>
-  
-  <div class="form-fields">
-    <!-- Common Fields -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1" for="name">
-        Full Name
+      <label for="support-category" class="block font-semibold text-slate-900">
+        What is your message about?
       </label>
-      <input 
-        type="text"
-        id="name"
-        name="name"
-        class:list={[
-          "w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-          errors.name ? "border-red-500" : "border-gray-300"
-        ]}
+      <select
+        id="support-category"
+        name="category"
         required
-      />
-      {errors.name && <p class="mt-1 text-sm text-red-600">{errors.name}</p>}
+        class="mt-2 w-full rounded border border-slate-400 px-3 py-3"
+      >
+        <option value="">Choose a topic</option>
+        {categories.map((category) => (
+          <option value={category}>{category}</option>
+        ))}
+      </select>
     </div>
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1" for="email">
-        Email Address
+      <label for="support-page" class="block font-semibold text-slate-900">
+        Page address <span class="font-normal text-slate-500">(optional)</span>
       </label>
-      <input 
-        type="email"
-        id="email"
-        name="email"
-        class:list={[
-          "w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-          errors.email ? "border-red-500" : "border-gray-300"
-        ]}
-        required
+      <input
+        id="support-page"
+        type="url"
+        name="page"
+        inputmode="url"
+        class="mt-2 w-full rounded border border-slate-400 px-3 py-3"
+        placeholder="https://services.dzaleka.com/…"
       />
-      {errors.email && <p class="mt-1 text-sm text-red-600">{errors.email}</p>}
     </div>
-
-    <!-- Dynamic Fields Container -->
-    <div id="dynamicFields"></div>
-
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1" for="message">
-        Your Message
+      <label for="support-message" class="block font-semibold text-slate-900">
+        Your message
       </label>
-      <textarea 
-        id="message"
+      <textarea
+        id="support-message"
         name="message"
-        rows="4"
-        class:list={[
-          "w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-          errors.message ? "border-red-500" : "border-gray-300"
-        ]}
+        rows="6"
+        minlength="10"
         required
-        placeholder="Provide detailed information about your request..."
+        class="mt-2 w-full rounded border border-slate-400 px-3 py-3"
       ></textarea>
-      {errors.message && <p class="mt-1 text-sm text-red-600">{errors.message}</p>}
     </div>
-  </div>
-
-  <div class="mt-6">
+    <p class="text-sm leading-6 text-slate-600">
+      Your message is sent to the site team through Formcarry.{" "}
+      <a href="/privacy" class="text-primary-800 underline underline-offset-4">
+        Read our privacy policy
+      </a>
+      .
+    </p>
+    <p
+      data-support-error
+      hidden
+      role="alert"
+      tabindex="-1"
+      class="rounded border border-red-300 bg-red-50 p-4 text-red-800"
+    >
+      Your message could not be sent. Your answers are still here. Try again or
+      email dzalekaconnect@gmail.com.
+    </p>
     <button
       type="submit"
-      id="submitButton"
-      class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
+      class="min-h-[44px] rounded bg-primary-900 px-6 py-3 font-semibold text-white hover:bg-primary-800 disabled:opacity-60"
     >
-      <span class="submit-text">Submit Request</span>
-      <span class="loading-text hidden">
-        Sending...
-        <svg class="animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      </span>
-      <svg class="submit-icon ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-      </svg>
+      Send message
     </button>
+  </form>
+  <div
+    data-support-success
+    hidden
+    role="status"
+    tabindex="-1"
+    class="rounded border border-green-300 bg-green-50 p-6"
+  >
+    <h3 class="text-xl font-semibold text-green-900">Message sent</h3>
+    <p class="mt-2 leading-7 text-green-900">
+      Thank you. Your message has been sent to the site team.
+    </p>
   </div>
-</form>
-
+</div>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('supportForm') as HTMLFormElement;
-    const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
-    const submitText = submitButton.querySelector('.submit-text') as HTMLElement;
-    const loadingText = submitButton.querySelector('.loading-text') as HTMLElement;
-    const submitIcon = submitButton.querySelector('.submit-icon') as HTMLElement;
-    const dynamicFieldsContainer = document.getElementById('dynamicFields');
-
-    if (!form || !submitButton || !submitText || !loadingText || !submitIcon || !dynamicFieldsContainer) return;
-
-    // Get the support categories data from the server
-    const supportCategoriesData = JSON.parse(document.getElementById('support-categories-data')?.textContent || '[]');
-
-    // Function to create form field
-    function createFormField(field: any) {
-      const fieldContainer = document.createElement('div');
-      fieldContainer.className = 'mb-4';
-
-      const label = document.createElement('label');
-      label.className = 'block text-sm font-medium text-gray-700 mb-1';
-      label.htmlFor = field.name;
-      label.textContent = field.label;
-
-      let input;
-      if (field.type === 'select') {
-        input = document.createElement('select');
-        input.className = 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-primary-500 border-gray-300';
-        input.id = field.name;
-        input.name = field.name;
-        input.required = field.required;
-
-        field.options.forEach((option: any) => {
-          const optionElement = document.createElement('option');
-          optionElement.value = option.value;
-          optionElement.textContent = option.label;
-          input.appendChild(optionElement);
-        });
-      } else {
-        input = document.createElement('input');
-        input.type = field.type;
-        input.className = 'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-primary-500 border-gray-300';
-        input.id = field.name;
-        input.name = field.name;
-        input.required = field.required;
-      }
-
-      fieldContainer.appendChild(label);
-      fieldContainer.appendChild(input);
-      return fieldContainer;
-    }
-
-    // Handle category selection
-    const categoryButtons = document.querySelectorAll('.category-btn');
-    categoryButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const categoryId = this.dataset.category;
-        const category = supportCategoriesData.find(c => c.id === categoryId);
-        
-        if (category) {
-          // Clear existing dynamic fields
-          dynamicFieldsContainer.innerHTML = '';
-          
-          // Add new dynamic fields
-          category.fields.forEach((field: any) => {
-            if (field.type !== 'text' && field.type !== 'email' && field.type !== 'textarea') {
-              dynamicFieldsContainer.appendChild(createFormField(field));
-            }
-          });
-
-          // Update subject field
-          const subjectInput = form.querySelector('input[name="_subject"]');
-          if (subjectInput) subjectInput.value = `${category.title} Support Request`;
-          
-          // Update visual state
-          categoryButtons.forEach(btn => btn.classList.remove('border-primary-500'));
-          this.classList.add('border-primary-500');
-          
-          // Update header
-          const categoryTitle = form.querySelector('.category-title');
-          const categoryDescription = form.querySelector('.category-description');
-          const categoryIcon = form.querySelector('.category-icon');
-          
-          if (categoryTitle) {
-            categoryTitle.textContent = category.title;
-            categoryTitle.className = 'text-2xl font-bold category-title text-gray-900';
-          }
-          if (categoryDescription) {
-            categoryDescription.textContent = category.description;
-            categoryDescription.className = 'text-gray-600 category-description';
-          }
-          if (categoryIcon) {
-            categoryIcon.innerHTML = category.icon;
-            categoryIcon.className = 'category-icon text-primary-600';
-          }
-
-          // Scroll to form
-          document.getElementById('supportFormSection')?.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-
-    form.addEventListener('submit', function(e) {
-      // Show loading state
-      submitButton.disabled = true;
-      submitText.classList.add('hidden');
-      loadingText.classList.remove('hidden');
-      submitIcon.classList.add('hidden');
-
-      // Update _replyto with email value
-      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
-      const replyToInput = form.querySelector('input[name="_replyto"]') as HTMLInputElement;
-      if (emailInput && replyToInput) {
-        replyToInput.value = emailInput.value;
-      }
-
-      // Let the form submit naturally to FormCarry
-    });
-  });
+  import { initSupportRequest } from "../utils/supportRequest";
+  document
+    .querySelectorAll<HTMLElement>("[data-support-request]")
+    .forEach((root) => initSupportRequest(root));
 </script>
+<style>
+  [hidden] {
+    display: none !important;
+  }
+</style>

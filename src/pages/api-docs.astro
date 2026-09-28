@@ -1,162 +1,336 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import Breadcrumb from "../components/ui/Breadcrumb.astro";
 import {
   API_CATALOG_PATH,
   OPENAPI_PATH,
   API_STATUS_PATH,
   discoveryLinks,
-} from '../data/agentDiscovery';
-import { MCP_SERVER_CARD_PATH, MCP_PROTOCOL_VERSION } from '../data/mcpServerCard';
-import { mcpToolDescriptors } from '../data/mcpTools';
-import { errorCatalog, buildProblem } from '../utils/api-errors';
-import { API_VERSION } from '../utils/api-headers';
+} from "../data/agentDiscovery";
+import {
+  MCP_SERVER_CARD_PATH,
+  MCP_PROTOCOL_VERSION,
+} from "../data/mcpServerCard";
+import { mcpToolDescriptors } from "../data/mcpTools";
+import { errorCatalog, buildProblem } from "../utils/api-errors";
+import { API_VERSION } from "../utils/api-headers";
 
-const siteUrl = 'https://services.dzaleka.com';
+const siteUrl = "https://services.dzaleka.com";
 const baseApiUrl = `${siteUrl}/api`;
 
 const collectionEndpoints = [
-  { name: 'Encyclopedia', path: '/api/encyclopedia', dataKey: 'entries', methods: ['GET', 'OPTIONS'], description: 'Sourced encyclopedia entries with filters, pagination, detail records, suggestions, facets, and JSON-LD.', docs: '/encyclopedia/developers' },
-  { name: 'Services', path: '/api/services', dataKey: 'services', description: 'Published service organisations and support listings.' },
-  { name: 'Resources', path: '/api/resources', dataKey: 'resources', description: 'Published resources, documents, and downloads.' },
-  { name: 'Events', path: '/api/events', dataKey: 'events', description: 'Published community events and activity listings.' },
-  { name: 'Photos', path: '/api/photos', dataKey: 'photos', description: 'Photo gallery items and related metadata.' },
-  { name: 'Jobs', path: '/api/jobs', dataKey: 'jobs', description: 'Published job listings and opportunity notices.' },
-  { name: 'News', path: '/api/news', dataKey: 'news', description: 'Published news articles and updates.' },
-  { name: 'Courses', path: '/api/courses', dataKey: 'courses', description: 'Published e-learning course records and learning resources.' },
-  { name: 'Community Voices', path: '/api/community-voices', dataKey: 'community-voices', description: 'Community stories and voice submissions that are already published.' },
-  { name: 'Profiles', path: '/api/profiles', dataKey: 'profiles', description: 'Published skills exchange profiles.' },
-  { name: 'Talents', path: '/api/talents', dataKey: 'talents', description: 'Talent directory records exposed through the API.' },
-  { name: 'Marketplace Listings', path: '/api/marketplace', dataKey: 'marketplace', description: 'Published marketplace product and service listings.' },
-  { name: 'Stores', path: '/api/stores', dataKey: 'stores', description: 'Published marketplace stores and vendor storefronts.' },
-  { name: 'Rights Navigator', path: '/api/rights', dataKey: 'rights', description: 'Published rights and legal guidance entries from the rights navigator.' },
-  { name: 'Artists', path: '/api/artists', dataKey: 'artists', description: 'Published artist profiles used by the public art catalogue.' },
-  { name: 'Artworks', path: '/api/artworks', dataKey: 'artworks', description: 'Published artwork records from the public art catalogue.' },
-  { name: 'Poets', path: '/api/poets', dataKey: 'poets', description: 'Published poet profiles and creative directory entries.' },
-  { name: 'Dancers', path: '/api/dancers', dataKey: 'dancers', description: 'Published dancer and dance crew profiles.' },
-  { name: 'Docs', path: '/api/docs', dataKey: 'docs', description: 'Documentation pages from the docs content collection.' },
-  { name: 'Pages', path: '/api/pages', dataKey: 'pages', description: 'Published markdown reference pages served through the catch-all page route.' },
+  {
+    name: "Encyclopedia",
+    path: "/api/encyclopedia",
+    dataKey: "entries",
+    methods: ["GET", "OPTIONS"],
+    description:
+      "Sourced encyclopedia entries with filters, pagination, detail records, suggestions, facets, and JSON-LD.",
+    docs: "/encyclopedia/developers",
+  },
+  {
+    name: "Services",
+    path: "/api/services",
+    dataKey: "services",
+    description: "Published service organisations and support listings.",
+  },
+  {
+    name: "Resources",
+    path: "/api/resources",
+    dataKey: "resources",
+    description: "Published resources, documents, and downloads.",
+  },
+  {
+    name: "Events",
+    path: "/api/events",
+    dataKey: "events",
+    description: "Published community events and activity listings.",
+  },
+  {
+    name: "Photos",
+    path: "/api/photos",
+    dataKey: "photos",
+    description: "Photo gallery items and related metadata.",
+  },
+  {
+    name: "Jobs",
+    path: "/api/jobs",
+    dataKey: "jobs",
+    description: "Published job listings and opportunity notices.",
+  },
+  {
+    name: "News",
+    path: "/api/news",
+    dataKey: "news",
+    description: "Published news articles and updates.",
+  },
+  {
+    name: "Courses",
+    path: "/api/courses",
+    dataKey: "courses",
+    description: "Published e-learning course records and learning resources.",
+  },
+  {
+    name: "Community Voices",
+    path: "/api/community-voices",
+    dataKey: "community-voices",
+    description:
+      "Community stories and voice submissions that are already published.",
+  },
+  {
+    name: "Profiles",
+    path: "/api/profiles",
+    dataKey: "profiles",
+    description: "Published skills exchange profiles.",
+  },
+  {
+    name: "Talents",
+    path: "/api/talents",
+    dataKey: "talents",
+    description: "Talent directory records exposed through the API.",
+  },
+  {
+    name: "Marketplace Listings",
+    path: "/api/marketplace",
+    dataKey: "marketplace",
+    description: "Published marketplace product and service listings.",
+  },
+  {
+    name: "Stores",
+    path: "/api/stores",
+    dataKey: "stores",
+    description: "Published marketplace stores and vendor storefronts.",
+  },
+  {
+    name: "Rights Navigator",
+    path: "/api/rights",
+    dataKey: "rights",
+    description:
+      "Published rights and legal guidance entries from the rights navigator.",
+  },
+  {
+    name: "Artists",
+    path: "/api/artists",
+    dataKey: "artists",
+    description: "Published artist profiles used by the public art catalogue.",
+  },
+  {
+    name: "Artworks",
+    path: "/api/artworks",
+    dataKey: "artworks",
+    description: "Published artwork records from the public art catalogue.",
+  },
+  {
+    name: "Poets",
+    path: "/api/poets",
+    dataKey: "poets",
+    description: "Published poet profiles and creative directory entries.",
+  },
+  {
+    name: "Dancers",
+    path: "/api/dancers",
+    dataKey: "dancers",
+    description: "Published dancer and dance crew profiles.",
+  },
+  {
+    name: "Docs",
+    path: "/api/docs",
+    dataKey: "docs",
+    description: "Documentation pages from the docs content collection.",
+  },
+  {
+    name: "Pages",
+    path: "/api/pages",
+    dataKey: "pages",
+    description:
+      "Published markdown reference pages served through the catch-all page route.",
+  },
 ];
 
 const searchEndpoints = [
   {
-    name: 'Search',
-    methods: ['GET', 'OPTIONS'],
-    path: '/api/search',
-    description: 'Search across multiple collections with rate limiting and a short cache.',
+    name: "Search",
+    methods: ["GET", "OPTIONS"],
+    path: "/api/search",
+    description:
+      "Search across multiple collections with rate limiting and a short cache.",
     parameters: [
-      '`q` required search query, minimum 2 characters',
-      '`collections` optional comma-separated list such as `services,resources,news`',
-      '`limit` optional results per collection, default `10`',
+      "`q` required search query, minimum 2 characters",
+      "`collections` optional comma-separated list such as `services,resources,news`",
+      "`limit` optional results per collection, default `10`",
     ],
     example: `${baseApiUrl}/search?q=education&collections=services,events&limit=5`,
   },
   {
-    name: 'Search Index',
-    methods: ['GET'],
-    path: '/api/search-index.json',
-    description: 'Flat public search index used by site search and lightweight integrations.',
+    name: "Search Index",
+    methods: ["GET"],
+    path: "/api/search-index.json",
+    description:
+      "Flat public search index used by site search and lightweight integrations.",
     example: `${baseApiUrl}/search-index.json`,
   },
   {
-    name: 'RSS Feed',
-    methods: ['GET'],
-    path: '/api/rss',
-    description: 'XML RSS feed for the latest news items.',
+    name: "RSS Feed",
+    methods: ["GET"],
+    path: "/api/rss",
+    description: "XML RSS feed for the latest news items.",
     example: `${baseApiUrl}/rss`,
   },
 ];
 
 const dataEndpoints = [
-  { name: 'Emergency Alerts', methods: ['GET'], path: '/api/alerts', description: 'Curated high-priority alert items for the data page and crisis messaging.', example: `${baseApiUrl}/alerts` },
-  { name: 'Population Snapshot', methods: ['GET'], path: '/api/population', description: 'Population totals, demographic split, nationality breakdown, and trend series.', example: `${baseApiUrl}/population` },
-  { name: 'Finance Snapshot', methods: ['GET'], path: '/api/finance', description: 'UNHCR funding snapshot used by the data dashboard.', example: `${baseApiUrl}/finance` },
-  { name: 'Weather', methods: ['GET'], path: '/api/weather', description: 'Current weather and forecast data, with a safe fallback if the upstream weather source is unavailable.', example: `${baseApiUrl}/weather` },
-  { name: 'Weather Alerts', methods: ['GET'], path: '/api/weather-alerts', description: 'Weather alert feed for the weather page, sourced from the upstream CAP RSS feed when available.', example: `${baseApiUrl}/weather-alerts` },
-  { name: 'Geolocation', methods: ['GET'], path: '/api/geolocation', description: 'Same-origin geolocation proxy returning coarse location data or a safe unavailable response.', example: `${baseApiUrl}/geolocation` },
-  { name: 'Charts', methods: ['GET'], path: '/api/charts', description: 'Prepared chart series used by visual dashboard sections.', example: `${baseApiUrl}/charts` },
-  { name: 'Analytics Pageviews (deprecated)', methods: ['GET'], path: '/api/analytics/pageviews', description: 'Deprecated, and scheduled for removal on 1 March 2027. Returns a hardcoded zero and never reported real data. Do not build against it.', example: `${baseApiUrl}/analytics/pageviews` },
+  {
+    name: "Emergency Alerts",
+    methods: ["GET"],
+    path: "/api/alerts",
+    description:
+      "Curated high-priority alert items for the data page and crisis messaging.",
+    example: `${baseApiUrl}/alerts`,
+  },
+  {
+    name: "Population Snapshot",
+    methods: ["GET"],
+    path: "/api/population",
+    description:
+      "Population totals, demographic split, nationality breakdown, and trend series.",
+    example: `${baseApiUrl}/population`,
+  },
+  {
+    name: "Finance Snapshot",
+    methods: ["GET"],
+    path: "/api/finance",
+    description: "UNHCR funding snapshot used by the data dashboard.",
+    example: `${baseApiUrl}/finance`,
+  },
+  {
+    name: "Weather",
+    methods: ["GET"],
+    path: "/api/weather",
+    description:
+      "Current weather and forecast data, with a safe fallback if the upstream weather source is unavailable.",
+    example: `${baseApiUrl}/weather`,
+  },
+  {
+    name: "Weather Alerts",
+    methods: ["GET"],
+    path: "/api/weather-alerts",
+    description:
+      "Weather alert feed for the weather page, sourced from the upstream CAP RSS feed when available.",
+    example: `${baseApiUrl}/weather-alerts`,
+  },
+  {
+    name: "Geolocation",
+    methods: ["GET"],
+    path: "/api/geolocation",
+    description:
+      "Same-origin geolocation proxy returning coarse location data or a safe unavailable response.",
+    example: `${baseApiUrl}/geolocation`,
+  },
+  {
+    name: "Charts",
+    methods: ["GET"],
+    path: "/api/charts",
+    description: "Prepared chart series used by visual dashboard sections.",
+    example: `${baseApiUrl}/charts`,
+  },
+  {
+    name: "Analytics Pageviews (deprecated)",
+    methods: ["GET"],
+    path: "/api/analytics/pageviews",
+    description:
+      "Deprecated, and scheduled for removal on 1 March 2027. Returns a hardcoded zero and never reported real data. Do not build against it.",
+    example: `${baseApiUrl}/analytics/pageviews`,
+  },
 ];
 
 const actionEndpoints = [
   {
-    name: 'Export',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    path: '/api/export',
-    description: 'Export multiple content collections in one response, with optional metadata and stats.',
+    name: "Export",
+    methods: ["GET", "POST", "OPTIONS"],
+    path: "/api/export",
+    description:
+      "Export multiple content collections in one response, with optional metadata and stats.",
     notes: [
-      '`GET` returns the export endpoint description and supported collections.',
-      '`POST` accepts a JSON body with `collections` and optional `options.includeMetadata` / `options.includeStats`.',
+      "`GET` returns the export endpoint description and supported collections.",
+      "`POST` accepts a JSON body with `collections` and optional `options.includeMetadata` / `options.includeStats`.",
     ],
     example: `curl -X POST "${baseApiUrl}/export" -H "Content-Type: application/json" -d '{"collections":["services","resources","events"],"options":{"includeMetadata":true,"includeStats":true}}'`,
   },
   {
-    name: 'Match Category',
-    methods: ['POST'],
-    path: '/api/match-category',
-    description: 'Accepts a skills category and returns a simple matching confirmation response for the skills exchange flow.',
-    notes: ['Body requires `category`.'],
+    name: "Match Category",
+    methods: ["POST"],
+    path: "/api/match-category",
+    description:
+      "Accepts a skills category and returns a simple matching confirmation response for the skills exchange flow.",
+    notes: ["Body requires `category`."],
     example: `curl -X POST "${baseApiUrl}/match-category" -H "Content-Type: application/json" -d '{"category":"Business"}'`,
   },
   {
-    name: 'Submit Voice',
-    methods: ['POST'],
-    path: '/api/submit-voice',
-    description: 'Submits a community voice/story payload for follow-up review and email notification.',
-    notes: ['Body requires `title`, `author`, and `content`.'],
+    name: "Submit Voice",
+    methods: ["POST"],
+    path: "/api/submit-voice",
+    description:
+      "Submits a community voice/story payload for follow-up review and email notification.",
+    notes: ["Body requires `title`, `author`, and `content`."],
     example: `curl -X POST "${baseApiUrl}/submit-voice" -H "Content-Type: application/json" -d '{"title":"Story title","author":"Name","content":"Story text"}'`,
   },
   {
-    name: 'Spatial GeoJSON Data',
-    methods: ['GET'],
-    path: '/api/v1/spatial.json',
-    description: 'Returns an RFC 7946 GeoJSON FeatureCollection of all 92+ Dzaleka spatial nodes, Site Register records, and Public Art catalogue data.',
+    name: "Spatial GeoJSON Data",
+    methods: ["GET"],
+    path: "/api/v1/spatial.json",
+    description:
+      "Returns an RFC 7946 GeoJSON FeatureCollection of published Dzaleka places, Site Register records, and Public Art catalogue data.",
     notes: [
-      'Supports query parameters: `category`, `zone`, `protocol`, and `format=json`.',
-      'CORS allowed (*). Published under CC BY-SA 4.0 Open Access.'
+      "Supports query parameters: `category`, `zone`, `protocol`, and `format=json`.",
+      "CORS allowed (*). Published under CC BY-SA 4.0 Open Access.",
     ],
     example: `curl -sS "${baseApiUrl}/v1/spatial.json?category=public_service"`,
   },
   {
-    name: 'Spatial CSV Export',
-    methods: ['GET'],
-    path: '/api/v1/spatial.csv',
-    description: 'Serves a tabular CSV file export of all 92+ Dzaleka spatial nodes for QGIS, Excel, or Python data analysis.',
-    notes: ['Supports query parameters: `category` and `zone`.'],
+    name: "Spatial CSV Export",
+    methods: ["GET"],
+    path: "/api/v1/spatial.csv",
+    description:
+      "Serves a tabular CSV file export of published Dzaleka places for QGIS, Excel, or Python data analysis.",
+    notes: ["Supports query parameters: `category` and `zone`."],
     example: `curl -sS "${baseApiUrl}/v1/spatial.csv"`,
   },
   {
-    name: 'Send Booking Confirmation',
-    methods: ['POST'],
-    path: '/api/send-booking-confirmation',
-    description: 'Processes a visit booking request and sends a booking confirmation email.',
-    notes: ['Used by the visit booking flow. Requires booking details in JSON.'],
+    name: "Send Booking Confirmation",
+    methods: ["POST"],
+    path: "/api/send-booking-confirmation",
+    description:
+      "Processes a visit booking request and sends a booking confirmation email.",
+    notes: [
+      "Used by the visit booking flow. Requires booking details in JSON.",
+    ],
     example: `curl -X POST "${baseApiUrl}/send-booking-confirmation" -H "Content-Type: application/json" -d '{"name":"Visitor","email":"visitor@example.com","visitDate":"2026-04-20","visitTime":"10:00","groupSize":"2-5","tourType":"standard","meetingPoint":"appfactory","paymentMethod":"cash"}'`,
   },
 ];
 
 const commonResponse = {
-  status: 'success',
+  status: "success",
   count: 147,
   data: {
     services: [
       {
-        id: 'sample-service',
-        collection: 'services',
-        title: 'Sample service',
+        id: "sample-service",
+        collection: "services",
+        title: "Sample service",
       },
     ],
   },
 };
 
 const exportResponse = {
-  status: 'success',
+  status: "success",
   data: {
-    services: [{ id: 'sample-service', title: 'Sample service' }],
-    resources: [{ id: 'sample-resource', title: 'Sample resource' }],
+    services: [{ id: "sample-service", title: "Sample service" }],
+    resources: [{ id: "sample-resource", title: "Sample resource" }],
     metadata: {
-      exportDate: '2026-04-14T01:00:00.000Z',
+      exportDate: "2026-04-14T01:00:00.000Z",
       totalCollections: 2,
-      collections: ['services', 'resources'],
+      collections: ["services", "resources"],
     },
     stats: {
       totalItems: 2,
@@ -169,282 +343,277 @@ const exportResponse = {
 };
 
 const searchResponse = {
-  status: 'success',
-  query: 'education',
+  status: "success",
+  query: "education",
   totalResults: 3,
   results: {
-    services: [{ slug: 'sample-service', title: 'Education service', collection: 'services', url: '/services/sample-service' }],
-    events: [{ slug: 'sample-event', title: 'Education workshop', collection: 'events', url: '/events/sample-event' }],
+    services: [
+      {
+        slug: "sample-service",
+        title: "Education service",
+        collection: "services",
+        url: "/services/sample-service",
+      },
+    ],
+    events: [
+      {
+        slug: "sample-event",
+        title: "Education workshop",
+        collection: "events",
+        url: "/events/sample-event",
+      },
+    ],
   },
   cached: false,
 };
 
 const methodClassMap = {
-  GET: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  POST: 'bg-blue-100 text-blue-800 border-blue-200',
-  OPTIONS: 'bg-gray-100 text-gray-700 border-gray-200',
+  GET: "bg-emerald-100 text-emerald-800 border-emerald-200",
+  POST: "bg-blue-100 text-blue-800 border-blue-200",
+  OPTIONS: "bg-gray-100 text-gray-700 border-gray-200",
 };
 
 const discoveryEndpoints = [
   {
-    name: 'Agent guidance',
-    path: '/llms.txt',
+    name: "Agent guidance",
+    path: "/llms.txt",
     description:
-      'Plain-text summary of what this site covers, when an agent should use it, and where the developer resources are.',
-    contentType: 'text/plain',
+      "Plain-text summary of what this site covers, when an agent should use it, and where the developer resources are.",
+    contentType: "text/plain",
   },
   {
-    name: 'API catalog',
+    name: "API catalog",
     path: API_CATALOG_PATH,
-    description: 'Well-known discovery document in Linkset JSON format for agents and automated API clients.',
-    contentType: 'application/linkset+json',
-  },
-  {
-    name: 'MCP server',
-    path: '/.well-known/mcp',
     description:
-      'Live Model Context Protocol server over Streamable HTTP, also served at /mcp. GET returns a discovery document; POST JSON-RPC 2.0 to run the read-only tools.',
-    contentType: 'application/json',
+      "Well-known discovery document in Linkset JSON format for agents and automated API clients.",
+    contentType: "application/linkset+json",
   },
   {
-    name: 'Deprecation policy',
-    path: '/api/deprecation-policy',
+    name: "MCP server",
+    path: "/.well-known/mcp",
     description:
-      'Machine-readable versioning and deprecation policy: how removals are signalled, the notice period, and any endpoint currently scheduled for retirement.',
-    contentType: 'application/json',
+      "Live Model Context Protocol server over Streamable HTTP, also served at /mcp. GET returns a discovery document; POST JSON-RPC 2.0 to run the read-only tools.",
+    contentType: "application/json",
   },
   {
-    name: 'MCP server card',
+    name: "Deprecation policy",
+    path: "/api/deprecation-policy",
+    description:
+      "Machine-readable versioning and deprecation policy: how removals are signalled, the notice period, and any endpoint currently scheduled for retirement.",
+    contentType: "application/json",
+  },
+  {
+    name: "MCP server card",
     path: MCP_SERVER_CARD_PATH,
     description:
-      'SEP-1649-style discovery document describing the browser-side WebMCP tool surface and where to learn more about it.',
-    contentType: 'application/json',
+      "SEP-1649-style discovery document describing the browser-side WebMCP tool surface and where to learn more about it.",
+    contentType: "application/json",
   },
   {
-    name: 'OpenAPI description',
+    name: "OpenAPI description",
     path: OPENAPI_PATH,
-    description: 'Machine-readable OpenAPI 3.1 document for the public API.',
-    contentType: 'application/openapi+json',
+    description: "Machine-readable OpenAPI 3.1 document for the public API.",
+    contentType: "application/openapi+json",
   },
   {
-    name: 'API status',
+    name: "API status",
     path: API_STATUS_PATH,
-    description: 'Lightweight health and discovery status document.',
-    contentType: 'application/json',
+    description: "Lightweight health and discovery status document.",
+    contentType: "application/json",
   },
 ];
 
 const linkHeaderExample = discoveryLinks
   .map((link) => `<${link.href}>; rel="${link.rel}"; type="${link.type}"`)
-  .join(', ');
+  .join(", ");
 
 const mcpHandshakeExample = `curl -X POST ${siteUrl}/.well-known/mcp \\
   -H "Content-Type: application/json" \\
   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"${MCP_PROTOCOL_VERSION}","capabilities":{},"clientInfo":{"name":"my-agent","version":"1.0"}}}'`;
 
 const problemExample = JSON.stringify(
-  buildProblem('not_found', 'No encyclopedia entry with slug "no-such-entry".', '/api/encyclopedia/no-such-entry'),
+  buildProblem(
+    "not_found",
+    'No encyclopedia entry with slug "no-such-entry".',
+    "/api/encyclopedia/no-such-entry",
+  ),
   null,
-  2
+  2,
 );
 ---
 
 <MainLayout
-  title="API Documentation - Dzaleka Online Services"
+  title="API documentation"
+  canonical="https://services.dzaleka.com/api-docs"
+  image="https://services.dzaleka.com/images/dzaleka-hero.jpeg"
   description="Public API reference for Dzaleka Online Services, including collection endpoints, search, exports, live data snapshots, and submission endpoints."
   keywords="Dzaleka API, API docs, public API, services API, resources API, search API"
 >
-  <div class="min-h-screen bg-gray-50">
-    <header class="border-b border-gray-200 bg-white">
-      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div class="max-w-4xl">
-          <p class="text-sm font-medium text-gray-500">Developers</p>
-          <h1 class="mt-2 text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-            Dzaleka Online Services API
-          </h1>
-          <p class="mt-4 text-base leading-7 text-gray-600">
-            Public JSON endpoints for published content, dashboards, search, feeds, and selected submission workflows across Dzaleka Online Services.
-          </p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a
-              href="/docs/api-reference"
-              class="min-h-[44px] inline-flex items-center rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              Docs version
-            </a>
-            <a
-              href="/open-data-platform"
-              class="min-h-[44px] inline-flex items-center rounded border border-primary-600 bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
-            >
-              Open data platform
-            </a>
-            <a
-              href="/encyclopedia/developers"
-              class="min-h-[44px] inline-flex items-center rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              Encyclopedia API
-            </a>
+  <div class="api-reference min-h-screen bg-white">
+    <header class="border-b border-slate-200 bg-slate-900 text-white">
+      <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <Breadcrumb
+          light
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Open data", href: "/open-data-platform" },
+            { label: "API documentation" },
+          ]}
+        />
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-slate-300">
+              Developer reference
+            </p>
+            <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Dzaleka Online Services API
+            </h1>
+            <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
+              Read published services, events, jobs and archive records as JSON.
+              Start with one request, then find the endpoint you need.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a
+                href="#quick-start"
+                class="inline-flex min-h-[44px] items-center rounded bg-white px-5 py-3 font-semibold text-slate-900 hover:bg-slate-100"
+              >
+                Make your first request
+              </a>
+              <a
+                href={OPENAPI_PATH}
+                class="inline-flex min-h-[44px] items-center rounded border border-slate-500 px-5 py-3 font-medium text-white hover:bg-slate-800"
+              >
+                OpenAPI specification
+              </a>
+            </div>
           </div>
-        </div>
-
-        <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div class="rounded border border-gray-200 bg-gray-50 p-5">
-            <p class="text-sm font-medium text-gray-500">Base URL</p>
-            <p class="mt-2 break-all font-mono text-sm text-gray-900">{baseApiUrl}</p>
-          </div>
-          <div class="rounded border border-gray-200 bg-gray-50 p-5">
-            <p class="text-sm font-medium text-gray-500">Authentication</p>
-            <p class="mt-2 text-sm leading-6 text-gray-900">Read access is public. Some action endpoints accept JSON submissions without account auth.</p>
-          </div>
-          <div class="rounded border border-gray-200 bg-gray-50 p-5">
-            <p class="text-sm font-medium text-gray-500">Format</p>
-            <p class="mt-2 text-sm leading-6 text-gray-900">JSON responses by default. RSS is available at <code>/api/rss</code>.</p>
-          </div>
-          <div class="rounded border border-gray-200 bg-gray-50 p-5">
-            <p class="text-sm font-medium text-gray-500">Rate limiting</p>
-            <p class="mt-2 text-sm leading-6 text-gray-900">Collection and search endpoints are limited to 60 requests per minute per IP.</p>
-          </div>
+          <dl class="divide-y divide-slate-700 border-y border-slate-700 text-sm">
+            <div class="py-3">
+              <dt class="text-slate-400">Base URL</dt>
+              <dd class="mt-1 break-all font-mono text-white">{baseApiUrl}</dd>
+            </div>
+            <div class="py-3">
+              <dt class="text-slate-400">Read access</dt>
+              <dd class="mt-1 text-white">Public, no API key required</dd>
+            </div>
+            <div class="py-3">
+              <dt class="text-slate-400">Collection and search limits</dt>
+              <dd class="mt-1 text-white">60 requests per minute per IP</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </header>
 
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div class="space-y-8 lg:flex lg:items-start lg:gap-8 lg:space-y-0">
-        <aside class="hidden lg:block lg:w-72 lg:flex-none">
-          <nav class="sticky top-24 lg:top-44 space-y-4" aria-label="API navigation">
-            <div class="rounded border border-gray-200 bg-white p-5">
-              <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">On this page</h2>
-              <ul class="mt-4 space-y-3 text-sm">
-                <li><a class="text-primary-700 hover:text-primary-800" href="#collections">Collection endpoints</a></li>
-                <li><a class="text-primary-700 hover:text-primary-800" href="#discovery">Discovery</a></li>
-                <li><a class="text-primary-700 hover:text-primary-800" href="#search-and-feeds">Search and feeds</a></li>
-                <li><a class="text-primary-700 hover:text-primary-800" href="#data-snapshots">Data snapshots</a></li>
-                <li><a class="text-primary-700 hover:text-primary-800" href="#actions">Action endpoints</a></li>
-                <li><a class="text-primary-700 hover:text-primary-800" href="#examples">Examples</a></li>
-              </ul>
-            </div>
-            <div class="rounded border border-gray-200 bg-white p-5">
-              <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-900">Notes</h2>
-              <ul class="mt-4 space-y-3 text-sm leading-6 text-gray-600">
-                <li>Collection endpoints expose published content collections only.</li>
-                <li><code>/api/pages</code> is for markdown reference pages, not a full inventory of every Astro route on the site.</li>
-                <li>Maintenance and test routes are not listed here.</li>
-              </ul>
+        <aside class="lg:w-56 lg:flex-none">
+          <nav aria-label="API sections" class="lg:sticky lg:top-28">
+            <details class="rounded border border-slate-200 p-4 lg:hidden">
+              <summary class="cursor-pointer font-semibold text-slate-900">
+                On this page
+              </summary>
+              <ol class="mt-3 space-y-1">
+                {[
+                  ["quick-start", "First request"],
+                  ["collections", "Collections"],
+                  ["search-and-feeds", "Search and feeds"],
+                  ["data-snapshots", "Data snapshots"],
+                  ["actions", "Actions and exports"],
+                  ["examples", "Response examples"],
+                  ["errors", "Errors and limits"],
+                  ["discovery", "Agents and discovery"],
+                ].map(([id, label]) => (
+                  <li>
+                    <a
+                      href={`#${id}`}
+                      class="flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+            <div class="hidden lg:block">
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                API reference
+              </h2>
+              <ol class="mt-3 space-y-1">
+                {[
+                  ["quick-start", "First request"],
+                  ["collections", "Collections"],
+                  ["search-and-feeds", "Search and feeds"],
+                  ["data-snapshots", "Data snapshots"],
+                  ["actions", "Actions and exports"],
+                  ["examples", "Response examples"],
+                  ["errors", "Errors and limits"],
+                  ["discovery", "Agents and discovery"],
+                ].map(([id, label]) => (
+                  <li>
+                    <a
+                      href={`#${id}`}
+                      class="flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ol>
             </div>
           </nav>
         </aside>
 
         <div class="min-w-0 flex-1 space-y-10">
-          <section id="discovery" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
-            <div class="max-w-3xl">
-              <h2 class="text-2xl font-semibold text-gray-900">Discovery</h2>
-              <p class="mt-2 text-sm leading-6 text-gray-600">
-                Agents can discover this API from Link response headers on HTML pages, the API catalog at <code>/.well-known/api-catalog</code>, the browser tool server card at <code>{MCP_SERVER_CARD_PATH}</code>, and the OpenAPI document below.
-              </p>
-            </div>
-
-            <div class="mt-6 grid gap-4 lg:grid-cols-3">
-              {discoveryEndpoints.map((endpoint) => (
-                <div class="rounded border border-gray-200 p-5">
-                  <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
-                  <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
-                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
-                  <p class="mt-3 text-xs uppercase tracking-wide text-gray-500">{endpoint.contentType}</p>
-                </div>
-              ))}
-            </div>
-
-            <div class="mt-6 space-y-4">
-              <div>
-                <h3 class="text-lg font-medium text-gray-900">Homepage Link header</h3>
-                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{linkHeaderExample}</pre>
-              </div>
-              <div>
-                <h3 class="text-lg font-medium text-gray-900">Markdown negotiation</h3>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  HTML pages also respond in markdown when the request sends <code>Accept: text/markdown</code>. Those responses return <code>Content-Type: text/markdown</code>, <code>Vary: Accept</code>, and an <code>x-markdown-tokens</code> estimate for agents.
-                </p>
-              </div>
-              <div>
-                <h3 class="text-lg font-medium text-gray-900">MCP server</h3>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  <code>/.well-known/mcp</code> is a live Model Context Protocol server over Streamable HTTP, protocol version <code>{MCP_PROTOCOL_VERSION}</code>. Send a <code>GET</code> for a discovery document, or <code>POST</code> JSON-RPC 2.0 to run its read-only tools: {mcpToolDescriptors.map((tool, index) => (<>{index > 0 ? ', ' : ''}<code>{tool.name}</code></>))}. It is unauthenticated and shares the same rate limit as the REST API.
-                </p>
-                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{mcpHandshakeExample}</pre>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  Full walkthrough in the <a href="/docs/agent-access-guide#mcp-server" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900">agent access guide</a>.
-                </p>
-              </div>
-              <div>
-                <h3 class="text-lg font-medium text-gray-900">Command-line client</h3>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  The DZDK CLI wraps this API for terminal and script use. Install it with <code>pip install dzdk</code> (Python 3.8+), then run <code>dzdk health</code> to check every endpoint, or <code>dzdk search --query "legal aid"</code> to search. See the <a href="/docs/dzdk-cli" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900">DZDK CLI guide</a> for the full command list.
-                </p>
-              </div>
-              <div>
-                <h3 class="text-lg font-medium text-gray-900">Browser agent tools</h3>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  On supported browsers, site pages also publish read-only WebMCP tools for search, services search, weather summary, urgent help contacts, language support routes, and newcomer first steps. The published server card lives at <code>{MCP_SERVER_CARD_PATH}</code>, and published agent skills are available at <code>/.well-known/agent-skills/index.json</code>.
-                </p>
-              </div>
+          <section
+            id="quick-start"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <h2 class="text-2xl font-bold text-slate-900">
+              Make your first request
+            </h2>
+            <p class="mt-3 leading-7 text-slate-600">
+              Request the services collection from a terminal. The response
+              includes a status, a count and the published service records.
+            </p>
+            <pre
+              tabindex="0"
+              aria-label="Example services request"
+              class="mt-4 overflow-x-auto rounded bg-slate-900 p-5 text-sm text-slate-100"
+            ><code>{`curl -sS "${baseApiUrl}/services"`}</code></pre>
+            <div class="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+              <a
+                href="/api/services"
+                class="inline-flex min-h-[44px] items-center font-medium text-primary-800 underline underline-offset-4"
+              >
+                View the JSON response
+              </a>
+              <a
+                href={API_STATUS_PATH}
+                class="inline-flex min-h-[44px] items-center font-medium text-primary-800 underline underline-offset-4"
+              >
+                API status
+              </a>
+              <a
+                href="/encyclopedia/developers"
+                class="inline-flex min-h-[44px] items-center font-medium text-primary-800 underline underline-offset-4"
+              >
+                Encyclopedia API guide
+              </a>
             </div>
           </section>
-
-          <section id="errors" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
+          <section
+            id="collections"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
             <div class="max-w-3xl">
-              <h2 class="text-2xl font-semibold text-gray-900">Errors and versioning</h2>
+              <h2 class="text-2xl font-semibold text-gray-900">
+                Collection endpoints
+              </h2>
               <p class="mt-2 text-sm leading-6 text-gray-600">
-                Every error is an <a href="https://www.rfc-editor.org/rfc/rfc9457" rel="noopener noreferrer" target="_blank" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900">RFC 9457</a> problem document served as <code>application/problem+json</code>, including unknown <code>/api/*</code> paths. Branch on <code>code</code>, which is stable across releases; <code>title</code> and <code>detail</code> are human-readable and may change.
-              </p>
-            </div>
-
-            <pre class="mt-6 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{problemExample}</pre>
-
-            <div class="mt-6 overflow-x-auto rounded ring-1 ring-gray-200">
-              <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="px-4 py-3 text-left font-medium text-gray-700">Code</th>
-                    <th scope="col" class="px-4 py-3 text-left font-medium text-gray-700">Status</th>
-                    <th scope="col" class="px-4 py-3 text-left font-medium text-gray-700">What to do</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
-                  {Object.entries(errorCatalog).map(([code, entry]) => (
-                    <tr id={`error-${code}`} class="scroll-mt-24">
-                      <td class="px-4 py-3 align-top"><code class="text-primary-700">{code}</code></td>
-                      <td class="px-4 py-3 align-top text-gray-700">{entry.status}</td>
-                      <td class="px-4 py-3 align-top text-gray-600">
-                        <span class="block text-gray-800">{entry.title}</span>
-                        <span class="mt-1 block leading-6">{entry.resolution}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div class="mt-6 grid gap-4 sm:grid-cols-2">
-              <div id="rate-limits" class="scroll-mt-24 rounded ring-1 ring-gray-200 p-5">
-                <h3 class="text-lg font-medium text-gray-900">Rate limits</h3>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  60 requests per minute per IP. Successful responses carry <code>RateLimit-Limit</code>, <code>RateLimit-Remaining</code>, <code>RateLimit-Reset</code> (seconds) and <code>RateLimit-Policy</code>, so clients can self-throttle. A <code>429</code> adds <code>Retry-After</code>. The legacy <code>X-RateLimit-*</code> headers are still sent, but <code>X-RateLimit-Reset</code> is a Unix timestamp rather than a duration.
-                </p>
-              </div>
-              <div id="versioning" class="scroll-mt-24 rounded ring-1 ring-gray-200 p-5">
-                <h3 class="text-lg font-medium text-gray-900">Versioning</h3>
-                <p class="mt-2 text-sm leading-6 text-gray-600">
-                  The current version is <code>{API_VERSION}</code>, echoed on every response as <code>API-Version</code>. Send <code>API-Version</code> on a request to pin it. Breaking changes ship under a new major version; endpoints scheduled for removal return <code>Deprecation</code> (RFC 9745) and <code>Sunset</code> (RFC 8594) headers with at least six months of notice. The full policy, and anything currently scheduled for removal, is published at <a href="/api/deprecation-policy" class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"><code>/api/deprecation-policy</code></a>.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section id="collections" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
-            <div class="max-w-3xl">
-              <h2 class="text-2xl font-semibold text-gray-900">Collection endpoints</h2>
-              <p class="mt-2 text-sm leading-6 text-gray-600">
-                Most collection endpoints support `GET`, `POST`, and `OPTIONS`. The encyclopedia is read-only and uses dedicated query, detail, suggestion, and facet endpoints.
+                Most collection endpoints support `GET`, `POST`, and `OPTIONS`.
+                The encyclopedia is read-only and uses dedicated query, detail,
+                suggestion, and facet endpoints.
               </p>
             </div>
 
@@ -460,22 +629,41 @@ const problemExample = JSON.stringify(
                   <div class="px-5 py-4">
                     <div class="grid gap-4 md:grid-cols-[minmax(0,1.1fr)_7rem_9rem_minmax(0,1fr)] md:items-start">
                       <div>
-                        <h3 class="text-base font-medium text-gray-900">{endpoint.name}</h3>
-                        <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                        <h3 class="text-base font-medium text-gray-900">
+                          {endpoint.name}
+                        </h3>
+                        <code class="mt-1 block text-sm text-primary-700">
+                          {endpoint.path}
+                        </code>
                       </div>
                       <div class="flex flex-wrap gap-2">
-                        {(endpoint.methods || ['GET', 'POST', 'OPTIONS']).map((method) => (
-                          <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
-                            {method}
-                          </span>
-                        ))}
+                        {(endpoint.methods || ["GET", "POST", "OPTIONS"]).map(
+                          (method) => (
+                            <span
+                              class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}
+                            >
+                              {method}
+                            </span>
+                          ),
+                        )}
                       </div>
                       <div>
-                        <code class="rounded-[5px] bg-gray-100 px-2 py-1 text-xs text-gray-700">{endpoint.dataKey}</code>
+                        <code class="rounded-[5px] bg-gray-100 px-2 py-1 text-xs text-gray-700">
+                          {endpoint.dataKey}
+                        </code>
                       </div>
                       <div>
-                        <p class="text-sm leading-6 text-gray-600">{endpoint.description}</p>
-                        {endpoint.docs && <a href={endpoint.docs} class="mt-2 inline-flex text-sm font-semibold text-primary-700 hover:text-primary-800">Dedicated documentation</a>}
+                        <p class="text-sm leading-6 text-gray-600">
+                          {endpoint.description}
+                        </p>
+                        {endpoint.docs && (
+                          <a
+                            href={endpoint.docs}
+                            class="mt-2 inline-flex text-sm font-semibold text-primary-700 hover:text-primary-800"
+                          >
+                            Dedicated documentation
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -483,26 +671,38 @@ const problemExample = JSON.stringify(
               </div>
             </div>
           </section>
-
-          <section id="search-and-feeds" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
-            <h2 class="text-2xl font-semibold text-gray-900">Search and feeds</h2>
+          <section
+            id="search-and-feeds"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <h2 class="text-2xl font-semibold text-gray-900">
+              Search and feeds
+            </h2>
             <div class="mt-6 space-y-5">
               {searchEndpoints.map((endpoint) => (
                 <div class="rounded border border-gray-200 p-5">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
-                      <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        {endpoint.name}
+                      </h3>
+                      <code class="mt-1 block text-sm text-primary-700">
+                        {endpoint.path}
+                      </code>
                     </div>
                     <div class="flex flex-wrap gap-2">
                       {endpoint.methods.map((method) => (
-                        <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                        <span
+                          class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}
+                        >
                           {method}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">
+                    {endpoint.description}
+                  </p>
                   {endpoint.parameters && (
                     <ul class="mt-3 space-y-2 text-sm leading-6 text-gray-600">
                       {endpoint.parameters.map((parameter) => (
@@ -511,62 +711,92 @@ const problemExample = JSON.stringify(
                     </ul>
                   )}
                   <div class="mt-4 rounded bg-gray-900 p-4">
-                    <code class="break-all text-sm text-green-400">{endpoint.example}</code>
+                    <code class="break-all text-sm text-slate-100">
+                      {endpoint.example}
+                    </code>
                   </div>
                 </div>
               ))}
             </div>
           </section>
-
-          <section id="data-snapshots" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
-            <h2 class="text-2xl font-semibold text-gray-900">Data snapshots and dashboard endpoints</h2>
+          <section
+            id="data-snapshots"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <h2 class="text-2xl font-semibold text-gray-900">
+              Data snapshots and dashboard endpoints
+            </h2>
             <div class="mt-6 grid gap-4 lg:grid-cols-2">
               {dataEndpoints.map((endpoint) => (
                 <div class="rounded border border-gray-200 p-5">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
-                      <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        {endpoint.name}
+                      </h3>
+                      <code class="mt-1 block text-sm text-primary-700">
+                        {endpoint.path}
+                      </code>
                     </div>
                     <div class="flex flex-wrap gap-2">
                       {endpoint.methods.map((method) => (
-                        <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                        <span
+                          class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}
+                        >
                           {method}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">
+                    {endpoint.description}
+                  </p>
                   <div class="mt-4 rounded bg-gray-900 p-4">
-                    <code class="break-all text-sm text-green-400">{endpoint.example}</code>
+                    <code class="break-all text-sm text-slate-100">
+                      {endpoint.example}
+                    </code>
                   </div>
                 </div>
               ))}
             </div>
           </section>
-
-          <section id="actions" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
-            <h2 class="text-2xl font-semibold text-gray-900">Action and submission endpoints</h2>
+          <section
+            id="actions"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <h2 class="text-2xl font-semibold text-gray-900">
+              Action and submission endpoints
+            </h2>
             <p class="mt-2 text-sm leading-6 text-gray-600">
-              These endpoints accept request bodies and are used for export flows, skills matching, visit booking confirmations, and community voice submissions.
+              These endpoints accept request bodies and are used for export
+              flows, skills matching, visit booking confirmations, and community
+              voice submissions.
             </p>
             <div class="mt-6 space-y-5">
               {actionEndpoints.map((endpoint) => (
                 <div class="rounded border border-gray-200 p-5">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h3 class="text-lg font-medium text-gray-900">{endpoint.name}</h3>
-                      <code class="mt-1 block text-sm text-primary-700">{endpoint.path}</code>
+                      <h3 class="text-lg font-medium text-gray-900">
+                        {endpoint.name}
+                      </h3>
+                      <code class="mt-1 block text-sm text-primary-700">
+                        {endpoint.path}
+                      </code>
                     </div>
                     <div class="flex flex-wrap gap-2">
                       {endpoint.methods.map((method) => (
-                        <span class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}>
+                        <span
+                          class={`rounded-[5px] border px-2.5 py-1 text-xs font-semibold ${methodClassMap[method]}`}
+                        >
                           {method}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <p class="mt-3 text-sm leading-6 text-gray-600">{endpoint.description}</p>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">
+                    {endpoint.description}
+                  </p>
                   {endpoint.notes && (
                     <ul class="mt-3 space-y-2 text-sm leading-6 text-gray-600">
                       {endpoint.notes.map((note) => (
@@ -575,27 +805,271 @@ const problemExample = JSON.stringify(
                     </ul>
                   )}
                   <div class="mt-4 rounded bg-gray-900 p-4">
-                    <code class="block whitespace-pre-wrap break-words text-sm text-green-400">{endpoint.example}</code>
+                    <code class="block whitespace-pre-wrap break-words text-sm text-slate-100">
+                      {endpoint.example}
+                    </code>
                   </div>
                 </div>
               ))}
             </div>
           </section>
-
-          <section id="examples" class="rounded border border-gray-200 bg-white p-6 lg:p-8">
-            <h2 class="text-2xl font-semibold text-gray-900">Example responses</h2>
+          <section
+            id="examples"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <h2 class="text-2xl font-semibold text-gray-900">
+              Example responses
+            </h2>
             <div class="mt-6 space-y-6">
               <div>
-                <h3 class="text-lg font-medium text-gray-900">Collection response shape</h3>
-                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(commonResponse, null, 2)}</pre>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Collection response shape
+                </h3>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-slate-100">{JSON.stringify(commonResponse, null, 2)}</pre>
               </div>
               <div>
-                <h3 class="text-lg font-medium text-gray-900">Search response shape</h3>
-                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(searchResponse, null, 2)}</pre>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Search response shape
+                </h3>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-slate-100">{JSON.stringify(searchResponse, null, 2)}</pre>
               </div>
               <div>
-                <h3 class="text-lg font-medium text-gray-900">Export response shape</h3>
-                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-green-400">{JSON.stringify(exportResponse, null, 2)}</pre>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Export response shape
+                </h3>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-slate-100">{JSON.stringify(exportResponse, null, 2)}</pre>
+              </div>
+            </div>
+          </section>
+          <section
+            id="errors"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <div class="max-w-3xl">
+              <h2 class="text-2xl font-semibold text-gray-900">
+                Errors and versioning
+              </h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                Every error is an{" "}
+                <a
+                  href="https://www.rfc-editor.org/rfc/rfc9457"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"
+                >
+                  RFC 9457
+                </a>{" "}
+                problem document served as <code>application/problem+json</code>
+                , including unknown <code>/api/*</code> paths. Branch on{" "}
+                <code>code</code>, which is stable across releases;{" "}
+                <code>title</code> and <code>detail</code> are human-readable
+                and may change.
+              </p>
+            </div>
+
+            <pre class="mt-6 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-slate-100">{problemExample}</pre>
+
+            <div class="mt-6 overflow-x-auto rounded ring-1 ring-gray-200">
+              <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="px-4 py-3 text-left font-medium text-gray-700"
+                    >
+                      Code
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-4 py-3 text-left font-medium text-gray-700"
+                    >
+                      Status
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-4 py-3 text-left font-medium text-gray-700"
+                    >
+                      What to do
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                  {Object.entries(errorCatalog).map(([code, entry]) => (
+                    <tr id={`error-${code}`} class="scroll-mt-24">
+                      <td class="px-4 py-3 align-top">
+                        <code class="text-primary-700">{code}</code>
+                      </td>
+                      <td class="px-4 py-3 align-top text-gray-700">
+                        {entry.status}
+                      </td>
+                      <td class="px-4 py-3 align-top text-gray-600">
+                        <span class="block text-gray-800">{entry.title}</span>
+                        <span class="mt-1 block leading-6">
+                          {entry.resolution}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div
+                id="rate-limits"
+                class="scroll-mt-24 rounded ring-1 ring-gray-200 p-5"
+              >
+                <h3 class="text-lg font-medium text-gray-900">Rate limits</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  60 requests per minute per IP. Successful responses carry{" "}
+                  <code>RateLimit-Limit</code>, <code>RateLimit-Remaining</code>
+                  , <code>RateLimit-Reset</code> (seconds) and{" "}
+                  <code>RateLimit-Policy</code>, so clients can self-throttle. A{" "}
+                  <code>429</code> adds <code>Retry-After</code>. The legacy{" "}
+                  <code>X-RateLimit-*</code> headers are still sent, but{" "}
+                  <code>X-RateLimit-Reset</code> is a Unix timestamp rather than
+                  a duration.
+                </p>
+              </div>
+              <div
+                id="versioning"
+                class="scroll-mt-24 rounded ring-1 ring-gray-200 p-5"
+              >
+                <h3 class="text-lg font-medium text-gray-900">Versioning</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  The current version is <code>{API_VERSION}</code>, echoed on
+                  every response as <code>API-Version</code>. Send{" "}
+                  <code>API-Version</code> on a request to pin it. Breaking
+                  changes ship under a new major version; endpoints scheduled
+                  for removal return <code>Deprecation</code> (RFC 9745) and{" "}
+                  <code>Sunset</code> (RFC 8594) headers with at least six
+                  months of notice. The full policy, and anything currently
+                  scheduled for removal, is published at{" "}
+                  <a
+                    href="/api/deprecation-policy"
+                    class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"
+                  >
+                    <code>/api/deprecation-policy</code>
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </section>
+          <section
+            id="discovery"
+            class="scroll-mt-28 border-b border-slate-200 pb-8"
+          >
+            <div class="max-w-3xl">
+              <h2 class="text-2xl font-semibold text-gray-900">Discovery</h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                Agents can discover this API from Link response headers on HTML
+                pages, the API catalog at <code>/.well-known/api-catalog</code>,
+                the browser tool server card at{" "}
+                <code>{MCP_SERVER_CARD_PATH}</code>, and the OpenAPI document
+                below.
+              </p>
+            </div>
+
+            <div class="mt-6 grid gap-4 lg:grid-cols-3">
+              {discoveryEndpoints.map((endpoint) => (
+                <div class="rounded border border-gray-200 p-5">
+                  <h3 class="text-lg font-medium text-gray-900">
+                    {endpoint.name}
+                  </h3>
+                  <code class="mt-1 block text-sm text-primary-700">
+                    {endpoint.path}
+                  </code>
+                  <p class="mt-3 text-sm leading-6 text-gray-600">
+                    {endpoint.description}
+                  </p>
+                  <p class="mt-3 text-xs uppercase tracking-wide text-gray-500">
+                    {endpoint.contentType}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-6 space-y-4">
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Homepage Link header
+                </h3>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-slate-100">{linkHeaderExample}</pre>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Markdown negotiation
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  HTML pages also respond in markdown when the request sends{" "}
+                  <code>Accept: text/markdown</code>. Those responses return{" "}
+                  <code>Content-Type: text/markdown</code>,{" "}
+                  <code>Vary: Accept</code>, and an{" "}
+                  <code>x-markdown-tokens</code> estimate for agents.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">MCP server</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  <code>/.well-known/mcp</code> is a live Model Context Protocol
+                  server over Streamable HTTP, protocol version{" "}
+                  <code>{MCP_PROTOCOL_VERSION}</code>. Send a <code>GET</code>{" "}
+                  for a discovery document, or <code>POST</code> JSON-RPC 2.0 to
+                  run its read-only tools:{" "}
+                  {mcpToolDescriptors.map((tool, index) => (
+                    <>
+                      {index > 0 ? ", " : ""}
+                      <code>{tool.name}</code>
+                    </>
+                  ))}
+                  . It is unauthenticated and shares the same rate limit as the
+                  REST API.
+                </p>
+                <pre class="mt-3 overflow-x-auto rounded bg-gray-900 p-4 text-sm text-slate-100">{mcpHandshakeExample}</pre>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  Full walkthrough in the{" "}
+                  <a
+                    href="/docs/agent-access-guide#mcp-server"
+                    class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"
+                  >
+                    agent access guide
+                  </a>
+                  .
+                </p>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Command-line client
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  The DZDK CLI wraps this API for terminal and script use.
+                  Install it with <code>pip install dzdk</code> (Python 3.8+),
+                  then run <code>dzdk health</code> to check every endpoint, or{" "}
+                  <code>dzdk search --query "legal aid"</code> to search. See
+                  the{" "}
+                  <a
+                    href="/docs/dzdk-cli"
+                    class="text-primary-700 underline underline-offset-2 transition-colors duration-150 hover:text-primary-900"
+                  >
+                    DZDK CLI guide
+                  </a>{" "}
+                  for the full command list.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-lg font-medium text-gray-900">
+                  Browser agent tools
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600">
+                  On supported browsers, site pages also publish read-only
+                  WebMCP tools for search, services search, weather summary,
+                  urgent help contacts, language support routes, and newcomer
+                  first steps. The published server card lives at{" "}
+                  <code>{MCP_SERVER_CARD_PATH}</code>, and published agent
+                  skills are available at{" "}
+                  <code>/.well-known/agent-skills/index.json</code>.
+                </p>
               </div>
             </div>
           </section>
@@ -604,3 +1078,16 @@ const problemExample = JSON.stringify(
     </div>
   </div>
 </MainLayout>
+
+<style>
+  .api-reference :is(code, td) {
+    overflow-wrap: anywhere;
+  }
+  .api-reference pre code {
+    overflow-wrap: normal;
+  }
+  .api-reference :is(a, pre):focus-visible {
+    outline: 3px solid #0284c7;
+    outline-offset: 3px;
+  }
+</style>

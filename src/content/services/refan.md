@@ -13,6 +13,8 @@ socialMedia:
   website: 'https://refan-website.vercel.app/#/'
 logo: https://res.cloudinary.com/dcvwslmow/image/upload/v1790500775/o7oyq4v8gm7hixhese0q.png
 featured: false
+access:
+  eligibility: Orphaned children, widows and foster parents living in Dzaleka Refugee Camp.
 lastUpdated: 2026-09-28
 tags:
   - Refugee-led
@@ -35,7 +37,3 @@ Resilient Foundation Assistance Network (ReFAN) is a refugee-led community-based
 - **Education:** School fees, notebooks, learning materials and encouragement to stay in school for orphaned children.
 - **Family support:** Support for widows and foster parents caring for orphaned children.
 - **Bereavement assistance:** Community support for families following a death, helping them maintain dignity.
-
-## Who can use this service
-
-Orphaned children, widows and foster parents living in Dzaleka Refugee Camp.

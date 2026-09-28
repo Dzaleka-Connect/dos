@@ -8,24 +8,6 @@ interface Props {
 
 const { services } = Astro.props as Props;
 
-// Debug log
-console.log('ServiceGrid received services:', services.map(s => ({
-  title: s.data.title,
-  hasEmail: !!s.data.contact?.email,
-  hasPhone: !!s.data.contact?.phone,
-  hasWebsite: !!s.data.socialMedia?.website,
-  hasAddress: !!s.data.location?.address,
-  hasLogo: !!s.data.logo,
-  hasSocialMedia: !!s.data.socialMedia
-})));
-
-services.forEach(service => {
-  console.log('Service:', {
-    title: service.data.title,
-    socialMedia: service.data.socialMedia,
-    website: service.data.socialMedia?.website
-  });
-});
 
 ---
 
@@ -52,7 +34,6 @@ services.forEach(service => {
           description={service.data.description}
           category={service.data.category}
           featured={service.data.featured}
-          verified={service.data.verified}
           href={`/services/${service.id}`}
           email={service.data.contact?.email}
           phone={service.data.contact?.phone}
