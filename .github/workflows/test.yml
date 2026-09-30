@@ -26,6 +26,11 @@ jobs:
         run: npm ci
 
       - name: Run tests
+        env:
+          # Exercise the hosting variables present during the public Netlify build.
+          NETLIFY: 'true'
+          SITE_ID: public-site-test
+          URL: https://services.dzaleka.com
         run: npm test
 
       - name: Build

@@ -107,8 +107,12 @@ describe('Netlify CMS staging boundaries', () => {
     expect(response.headers.get('X-Robots-Tag')).toContain('noindex');
   });
 
-  it('sends maintenance only to the fixed staging origin and reports non-successful responses', async () => {
-    for (const [key, value] of Object.entries(env)) vi.stubEnv(key, value);
+  it.each([
+    { name: 'local', NETLIFY: undefined, SITE_ID: undefined, EMDASH_STAGING_SITE_ID: undefined, URL: undefined },
+    { name: 'Netlify', NETLIFY: 'true', SITE_ID: 'test-cms', EMDASH_STAGING_SITE_ID: 'test-cms', URL: env.EMDASH_STAGING_ORIGIN },
+  ])('sends maintenance only to the fixed staging origin in $name and reports non-successful responses', async ({ name: _name, ...hosting }) => {
+    // Own every hosting variable read by stagingOrigin, including on the public site's CI runner.
+    for (const [key, value] of Object.entries({ ...env, ...hosting })) vi.stubEnv(key, value);
     const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
     expect((await maintenance()).status).toBe(204);
