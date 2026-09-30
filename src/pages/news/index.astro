@@ -1,9 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import MainLayout from '../../layouts/MainLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 
-const allNews = await getCollection('news');
+const allNews = await getNews();
 const sortedNews = allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const categoryMeta = {
@@ -27,6 +27,7 @@ const categoryMeta = {
     description: 'Practical information for business owners and entrepreneurs.',
     href: '/news/category/business-guide'
   },
+  education: { title: 'Education', description: 'Education news and learning opportunities.', href: '/news/category/education' },
   news: {
     title: 'Community updates',
     description: 'General developments, programmes, and local news.',

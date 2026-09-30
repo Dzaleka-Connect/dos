@@ -1,3 +1,4 @@
+import { getNews } from '@dos/news';
 import { getCollection, getEntry } from 'astro:content';
 import { essentials, guideLanguages } from '../../data/essentials';
 import { curatedGrantsPrograms } from '../../data/grantsPrograms';
@@ -11,7 +12,7 @@ export const GET = async () => {
     const events = await getCollection('events');
     const resources = await getCollection('resources');
     const communityVoices = await getCollection('community-voices');
-    const news = await getCollection('news');
+    const news = await getNews();
     const photos = await getCollection('photos');
     const jobs = await getCollection('jobs');
     const inspirationalStories = await getCollection('inspirational-stories');

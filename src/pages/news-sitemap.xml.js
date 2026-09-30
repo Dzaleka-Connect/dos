@@ -1,4 +1,4 @@
-import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 
 const baseUrl = 'https://services.dzaleka.com';
 const publicationName = 'Dzaleka Online Services';
@@ -23,12 +23,12 @@ const xmlEscape = (value) =>
   });
 
 export async function GET() {
-  const allNews = await getCollection('news');
+  const allNews = await getNews();
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 2);
 
   const recentNews = allNews
-    .filter((entry) => new Date(entry.data.date) >= cutoff)
+    .filter((entry) => !entry.seo?.noIndex && new Date(entry.data.date) >= cutoff)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
     .slice(0, 1000);
 

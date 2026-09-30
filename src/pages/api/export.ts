@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import { apiHeaders } from '../../utils/api-utils';
 import { problemResponse } from '../../utils/api-errors';
 
@@ -81,7 +82,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       try {
-        const items = await getCollection(collection);
+        const items = collection === 'news' ? await getNews() : await getCollection(collection);
         data[collection] = items.map((item) => ({
           id: item.id,
           ...item.data,

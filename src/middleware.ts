@@ -1,3 +1,4 @@
+import { withNewsRequest, NewsUnavailable } from './lib/news/public-client.mjs';
 import { defineMiddleware } from 'astro:middleware';
 import { discoveryLinks } from './data/agentDiscovery';
 import { convertHtmlToMarkdown, estimateMarkdownTokens } from './utils/markdownForAgents';
@@ -30,8 +31,26 @@ function wantsMarkdown(request: Request) {
   return request.method === 'GET' && accept.includes('text/markdown');
 }
 
-export const onRequest = defineMiddleware(async (context, next) => {
-  const response = await next();
+export const onRequest = defineMiddleware((context, next) => withNewsRequest(async () => {
+  if (context.url.pathname.startsWith('/_emdash/')) return next();
+  let response: Response;
+  try { response = await next(); }
+  catch (error) {
+    if (!(error instanceof NewsUnavailable)) throw error;
+    return new Response('News is temporarily unavailable. Please try again shortly.', {
+      status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'Retry-After': '30' },
+    });
+  }
+  if (!context.isPrerendered) {
+    const path = context.url.pathname.replace(/\/$/, '') || '/';
+    if (path === '/' || path === '/news' || path.startsWith('/news/') ||
+      ['/api/news', '/api/search', '/api/export', '/api/rss', '/api/search-index.json', '/news-sitemap.xml', '/sitemap.xml', '/dashboard', '/staff', '/dzaleka-wellbeing'].includes(path) || path.startsWith('/encyclopedia/')) {
+      const headers = new Headers(response.headers);
+      headers.set('Cache-Control', 'no-store');
+      headers.set('Netlify-CDN-Cache-Control', 'no-store');
+      response = new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+    }
+  }
 
   if (!isHtmlResponse(response) || (response.status >= 300 && response.status < 400)) {
     return response;
@@ -62,4 +81,4 @@ export const onRequest = defineMiddleware(async (context, next) => {
     statusText: response.statusText,
     headers,
   });
-});
+}));

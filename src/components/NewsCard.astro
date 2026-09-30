@@ -23,6 +23,7 @@ const categoryLabels = {
   announcement: 'Announcement',
   'success-story': 'Success story',
   news: 'Community update',
+  education: 'Education',
   'business-guide': 'Business guide'
 };
 
@@ -51,7 +52,7 @@ const placeholderImage = data.image && optimizedImage !== data.image
       <img
         src={placeholderImage || optimizedImage}
         data-src={placeholderImage ? optimizedImage : undefined}
-        alt={data.title}
+        alt={data.imageAlt ?? data.title}
         class={`${placeholderImage ? 'lazy-load' : ''} h-full w-full object-cover`}
         loading="lazy"
       />

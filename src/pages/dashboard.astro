@@ -1,4 +1,5 @@
 ---
+import { getNews } from '@dos/news';
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
@@ -15,7 +16,7 @@ const photos = await getCollection('photos');
 const jobs = await getCollection('jobs');
 const docs = await getCollection('docs');
 const communityVoices = await getCollection('community-voices');
-const news = await getCollection('news');
+const news = await getNews();
 const dancers = await getCollection('dancers');
 const poets = await getCollection('poets');
 const sites = await getCollection('sites');

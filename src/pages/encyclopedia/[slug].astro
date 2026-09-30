@@ -1,5 +1,6 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getNews } from '@dos/news';
+import { getCollection, getEntry, render } from "astro:content";
 import MainLayout from "../../layouts/MainLayout.astro";
 import Breadcrumb from "../../components/ui/Breadcrumb.astro";
 import EntryContents from "../../components/encyclopedia/EntryContents.astro";
@@ -21,7 +22,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const { entry } = Astro.props;
+const entry = Astro.props.entry ?? await getEntry("encyclopedia", Astro.params.slug || "");
+if (!entry) return new Response("Entry not found", { status: 404 });
 const { Content, headings } = await render(entry);
 const toc = headings.filter((heading) => heading.depth === 2);
 const allEntries = await getCollection("encyclopedia");
@@ -31,10 +33,9 @@ const relatedEntries = (entry.data.relatedEntries || [])
 // Sourced statistical series declared in this entry's frontmatter.
 const entryCharts = resolveStatSeries(entry.data.charts);
 
-// Ongoing reporting matched at build time across news and resources, so the
-// sidebar refreshes whenever new items are published.
+// Render coverage on request so published News appears immediately.
 const [newsItems, resourceItems, feedItems] = await Promise.all([
-  getCollection("news"),
+  getNews(),
   getCollection("resources"),
   getDzalekaFeed(),
 ]);

@@ -1,10 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import NewsCard from '../../../components/NewsCard.astro';
 
 export async function getStaticPaths() {
-  const categories = ['news', 'business-spotlight', 'announcement', 'success-story', 'business-guide'];
+  const categories = ['news', 'business-spotlight', 'announcement', 'success-story', 'business-guide', 'education'];
   return categories.map((category) => ({
     params: { category },
     props: { category }
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { category } = Astro.params;
 
-const allNews = await getCollection('news');
+const allNews = await getNews();
 const categoryNews = allNews
   .filter((item) => item.data.category === category)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -35,6 +35,7 @@ const categoryMeta = {
     title: 'Business guides',
     description: 'Practical information for business owners and entrepreneurs.'
   },
+  education: { title: 'Education', description: 'Education news and learning opportunities.' },
   news: {
     title: 'Community updates',
     description: 'General developments, programmes, and local news.'
@@ -42,6 +43,7 @@ const categoryMeta = {
 };
 
 const selectedCategory = categoryMeta[category];
+if (!selectedCategory) return new Response('Category not found', { status: 404 });
 
 const seo = {
   title: `${selectedCategory.title} | News & Updates`,

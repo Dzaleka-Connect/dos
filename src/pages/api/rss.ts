@@ -1,4 +1,4 @@
-import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import type { APIRoute } from 'astro';
 import { apiHeaders } from '../../utils/api-utils';
 import { problemResponse } from '../../utils/api-errors';
@@ -19,13 +19,14 @@ function escapeXml(value: string) {
 export const GET: APIRoute = async ({ request }) => {
   try {
     const siteUrl = 'https://services.dzaleka.com';
-    const localNews = await getCollection('news');
+    const localNews = await getNews();
 
     // Fetch live Blogger RSS feed from dzaleka.com
     let externalItemsXml = '';
     try {
       const res = await fetch('https://www.dzaleka.com/feeds/posts/default?alt=rss', {
         headers: { 'User-Agent': 'DzalekaOnlineServices/1.0' },
+        signal: AbortSignal.timeout(8000),
       });
       if (res.ok) {
         const xml = await res.text();

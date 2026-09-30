@@ -1,0 +1,23 @@
+# On the separate Netlify site: base directory = repository root;
+# package directory = deployment/emdash. Do not use this on the live DOS site.
+[build]
+  command = "npm test && npm run news:staging:build"
+  publish = "dist-emdash-staging"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NPM_FLAGS = "--production=false"
+  DOS_EMDASH_STAGING = "1"
+
+[functions]
+  directory = "netlify/emdash-functions"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[redirects]]
+  from = "/updates"
+  to = "/updates/1"
+  status = 302

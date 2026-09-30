@@ -1,18 +1,26 @@
 ---
-import { getCollection, render } from 'astro:content';
+import NewsBody from '@dos/news-body';
+import { getNews, getNewsEntry } from '@dos/news';
 import MainLayout from '../../layouts/MainLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 
 export async function getStaticPaths() {
-  const newsEntries = await getCollection('news');
+  const newsEntries = await getNews();
   return newsEntries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
 }
 
-const { entry } = Astro.props;
-const { Content } = await render(entry);
+const result = Astro.props.entry
+  ? { entry: Astro.props.entry, isPreview: false }
+  : await getNewsEntry(Astro.params.slug || '');
+const { entry, isPreview } = result;
+if (!entry) return new Response('Article not found', { status: 404 });
+if (isPreview) {
+  Astro.response.headers.set('Cache-Control', 'private, no-store');
+  Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+}
 const articleUrl = `https://services.dzaleka.com/news/${entry.id}`;
 const articleImageUrl = entry.data.image
   ? (entry.data.image.startsWith('http') ? entry.data.image : `https://services.dzaleka.com${entry.data.image}`)
@@ -23,7 +31,7 @@ const publisherName = 'Dzaleka Online Services';
 const publisherLogoUrl = 'https://services.dzaleka.com/images/dzaleka-digital-heritage.png';
 const articleWordCount = entry.body ? entry.body.trim().split(/\s+/).filter(Boolean).length : undefined;
 
-const allNews = await getCollection('news');
+const allNews = await getNews();
 const relatedNews = allNews
   .filter((item) => item.id !== entry.id)
   .sort((a, b) => {
@@ -52,15 +60,16 @@ const categoryLabels = {
   announcement: 'Announcement',
   'success-story': 'Success story',
   'business-guide': 'Business guide',
+  education: 'Education',
   news: 'Community update'
 };
 
 const seo = {
-  title: `${entry.data.title} | Dzaleka Online Services`,
-  description: entry.data.description,
+  title: entry.seo?.title || `${entry.data.title} | Dzaleka Online Services`,
+  description: entry.seo?.description || entry.data.description,
   type: 'article',
   canonical: articleUrl,
-  robots: 'index, follow, max-image-preview:large',
+  robots: isPreview || entry.seo?.noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large',
   openGraph: {
     title: entry.data.title,
     description: entry.data.description,
@@ -139,6 +148,9 @@ const articleStructuredData = {
   openGraph={seo.openGraph}
   twitter={seo.twitter}
 >
+  {isPreview && <aside class="border-b border-amber-300 bg-amber-50 px-4 py-3 text-center text-sm text-slate-900" aria-label="Preview status">
+    <strong>Draft preview.</strong> Changes here may not be published yet. <a href="/news" class="underline">Back to published news</a>
+  </aside>}
   <script type="application/ld+json" set:html={JSON.stringify(articleStructuredData)} />
 
   <section class="border-b border-slate-200 bg-white">
@@ -189,7 +201,7 @@ const articleStructuredData = {
       <div class="mb-10 overflow-hidden border border-slate-200">
         <img
           src={entry.data.image}
-          alt={entry.data.title}
+          alt={entry.data.imageAlt ?? entry.data.title}
           class="h-full w-full object-cover"
           loading="eager"
         />
@@ -198,7 +210,7 @@ const articleStructuredData = {
 
     <div class="max-w-none">
       <div class="prose prose-lg max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-li:text-slate-700 prose-a:text-primary-700">
-        <Content />
+        <NewsBody entry={entry} />
       </div>
 
       {entry.data.businessName && (

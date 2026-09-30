@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import { guideLanguages, guideVersion } from '../data/essentials';
 import { curatedGrantsPrograms } from '../data/grantsPrograms';
 
@@ -74,7 +75,7 @@ const toStaticRoute = (filePath) => {
   return route;
 };
 
-const publicPageModules = import.meta.glob('/src/pages/**/*.astro', { eager: true });
+const publicPageModules = import.meta.glob('/src/pages/**/*.astro');
 
 export async function GET() {
   const urls = new Map();
@@ -132,8 +133,11 @@ export async function GET() {
   ];
 
   for (const collectionConfig of collectionRoutes) {
-    const entries = await getCollection(collectionConfig.name);
+    const entries = collectionConfig.name === 'news'
+      ? await getNews()
+      : await getCollection(collectionConfig.name);
     for (const entry of entries) {
+      if (collectionConfig.name === 'news' && entry.seo?.noIndex) continue;
       addUrl(collectionConfig.buildPath(entry), collectionConfig.lastmod?.(entry));
     }
   }

@@ -1,4 +1,5 @@
 ---
+import { getNews } from '@dos/news';
 import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import { format } from 'date-fns';
@@ -80,7 +81,7 @@ const latestResources = allResources
   .slice(0, 6); // Get latest 6 resources
 
 // Fetch announcements for Notice Board
-const news = await getCollection('news');
+const news = await getNews();
 const announcements = news
   .filter(item => item.data.category === 'announcement')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())

@@ -1,0 +1,9 @@
+---
+import NewsBody from './CmsBody.astro';
+import { publishedArticle } from './published';
+import { publicMediaUrl } from './public-contract.mjs';
+const article = await publishedArticle(Astro.params.slug || '');
+if (!article) return new Response('Article not found', { status: 404 });
+if (Astro.locals.emdash) Astro.locals.emdash.getPublicMediaUrl = key => publicMediaUrl(key) || '';
+---
+<html lang="en"><head><meta charset="utf-8" /></head><body><div data-dos-article><NewsBody entry={{ content: article.data.content }} /></div></body></html>

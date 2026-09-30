@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import { checkRateLimit, apiHeaders } from '../../utils/api-utils';
 import { problemResponse } from '../../utils/api-errors';
 
@@ -78,8 +79,7 @@ function cleanupCache(): void {
   }
 }
 
-// Clean up cache every 10 minutes
-setInterval(cleanupCache, 10 * 60 * 1000);
+
 
 /**
  * Server-side search API endpoint
@@ -91,6 +91,7 @@ setInterval(cleanupCache, 10 * 60 * 1000);
  * - limit: max number of results per collection (optional, default 10)
  */
 export const GET: APIRoute = async ({ request, url }) => {
+  cleanupCache();
   try {
     // Check rate limit
     const rateLimitResponse = checkRateLimit(request);
@@ -123,7 +124,8 @@ export const GET: APIRoute = async ({ request, url }) => {
 
     // Check cache first
     const cacheKey = getCacheKey(searchTerm, requestedCollections, limit);
-    const cachedResults = getCachedResults(cacheKey);
+    const includesNews = requestedCollections.includes('news');
+    const cachedResults = includesNews ? null : getCachedResults(cacheKey);
 
     if (cachedResults) {
       return new Response(
@@ -137,7 +139,7 @@ export const GET: APIRoute = async ({ request, url }) => {
           headers: {
             ...apiHeaders(request),
             'X-Cache': 'HIT',
-            'Cache-Control': 'public, max-age=300' // 5 minutes
+            'Cache-Control': includesNews ? 'no-store' : 'public, max-age=300'
           }
         }
       );
@@ -149,7 +151,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     // Search each collection
     for (const collectionName of requestedCollections) {
       try {
-        const collection = await getCollection(collectionName as any);
+        const collection = collectionName === 'news' ? await getNews() : await getCollection(collectionName as any);
         const searchResults = collection
           .filter(item => {
             // Search in common fields
@@ -200,7 +202,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     };
 
     // Cache the results
-    setCachedResults(cacheKey, responseData);
+    if (!includesNews) setCachedResults(cacheKey, responseData);
 
     return new Response(
       JSON.stringify({
@@ -212,7 +214,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         headers: {
           ...apiHeaders(request),
           'X-Cache': 'MISS',
-          'Cache-Control': 'public, max-age=300' // 5 minutes
+          'Cache-Control': includesNews ? 'no-store' : 'public, max-age=300'
         }
       }
     );

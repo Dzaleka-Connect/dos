@@ -1,8 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 
 // Render the latest local news without depending on a retired external RSS feed.
-const localNews = await getCollection('news');
+const localNews = await getNews();
 const allNews = localNews
   .map((article) => ({
     title: article.data.title,

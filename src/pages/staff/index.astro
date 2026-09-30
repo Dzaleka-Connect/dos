@@ -1,9 +1,10 @@
 ---
+import { getNews } from '@dos/news';
 import MainLayout from "../../layouts/MainLayout.astro";
 import Breadcrumb from "../../components/ui/Breadcrumb.astro";
 import { getCollection } from "astro:content";
 const [news, events, services, jobs] = await Promise.all([
-  getCollection("news"),
+  getNews(),
   getCollection("events"),
   getCollection("services"),
   getCollection("jobs"),

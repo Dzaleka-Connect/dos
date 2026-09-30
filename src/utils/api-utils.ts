@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { getNews } from '@dos/news';
 import { problemResponse } from './api-errors';
 
 // Header, versioning and rate-limit logic lives in ./api-headers so it can be
@@ -65,7 +66,7 @@ export function createGetHandler(collectionName: string): APIRoute {
       console.log(`GET request received to /api/${collectionName}`);
 
       // Fetch the collection
-      const collection = await getCollection(collectionName);
+      const collection = collectionName === 'news' ? await getNews() : await getCollection(collectionName);
       console.log(`Found ${collection.length} ${collectionName}`);
 
       // Process the collection data
@@ -124,7 +125,7 @@ export function createPostHandler(collectionName: string): APIRoute {
       console.log(`POST request received to /api/${collectionName}`);
 
       // Fetch the collection
-      const collection = await getCollection(collectionName);
+      const collection = collectionName === 'news' ? await getNews() : await getCollection(collectionName);
       console.log(`Found ${collection.length} ${collectionName}`);
 
       // Process the collection data
