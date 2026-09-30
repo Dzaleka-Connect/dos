@@ -3,7 +3,7 @@ export const cmsCollections = ['news', 'events', 'jobs'];
 
 // Collections the websites read from the CMS. Add a collection here only after
 // its content has been imported on cms.dzaleka.com; until then it stays on Markdown.
-export const liveCollections = ['news'];
+export const liveCollections = ['news', 'events', 'jobs'];
 
 export const isLive = name => liveCollections.includes(name);
 export const isCmsCollection = name => cmsCollections.includes(name);
