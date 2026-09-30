@@ -4,7 +4,7 @@ import { runMigrations } from 'emdash/db';
 import { applySeed } from 'emdash/seed';
 import { handleMediaUsageActivationAdvance } from 'emdash';
 import { createMigrationDialect } from '../../src/lib/news/staging-postgres.mjs';
-import { buildSeed } from './seed.mjs';
+import { buildSeed, newCollectionsOnly } from './seed.mjs';
 
 const db = new Kysely({ dialect: createMigrationDialect() });
 try {
@@ -24,9 +24,17 @@ try {
     const result = await handleMediaUsageActivationAdvance(db, { writersDrained: true });
     assert(result.success && result.data.outcome === 'active', 'Media tracking must be active before importing content.');
   }
-  const seed = await buildSeed({ fullTextSearch: false });
-  await applySeed(db, seed, { includeContent: true, onConflict: 'skip' });
-  console.log(`News import complete: ${seed.content.news.length} source articles; existing entries preserved.`);
+  // Import only collections the CMS does not have yet. Re-importing an existing
+  // collection would bring back entries that editors have since deleted.
+  const existing = new Set((await db.selectFrom('_emdash_collections').select('slug').execute()).map(row => row.slug));
+  const seed = newCollectionsOnly(await buildSeed({ fullTextSearch: false }), existing);
+  if (!seed.collections.length) {
+    console.log('Every CMS collection already exists. Nothing to import.');
+  } else {
+    await applySeed(db, seed, { includeContent: true, onConflict: 'skip' });
+  }
+  for (const [name, entries] of Object.entries(seed.content)) console.log(`Imported ${entries.length} ${name} entries.`);
+  if (existing.size) console.log(`Left unchanged: ${[...existing].join(', ')}.`);
 } finally {
   await db.destroy();
 }

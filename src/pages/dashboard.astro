@@ -1,5 +1,6 @@
 ---
 import { getNews } from '@dos/news';
+import { getContent } from '../lib/content';
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
@@ -10,10 +11,10 @@ import { calculateContactStats, calculateSocialBreakdown, calculateFeaturedStats
 // Fetch all collections
 const services = await getCollection('services');
 const resources = await getCollection('resources');
-const events = await getCollection('events');
+const events = await getContent('events');
 const talents = await getCollection('talents');
 const photos = await getCollection('photos');
-const jobs = await getCollection('jobs');
+const jobs = await getContent('jobs');
 const docs = await getCollection('docs');
 const communityVoices = await getCollection('community-voices');
 const news = await getNews();

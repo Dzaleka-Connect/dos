@@ -1,0 +1,419 @@
+---
+// Single job page, shared by the static and on-request routes.
+import MainLayout from '../../layouts/MainLayout.astro';
+import EntryBody from '../../lib/news/EntryBody.astro';
+import { formatDate } from '../../utils/dateHelpers';
+import { getContent } from '../../lib/content';
+
+const { job } = Astro.props;
+
+
+// Check if job is closed
+const currentDate = new Date();
+const isExpired = job.data.deadline ? new Date(job.data.deadline) < currentDate : false;
+const isClosed = job.data.status === 'closed' || isExpired;
+
+// Get related jobs
+const allJobs = await getContent('jobs');
+const relatedJobs = allJobs
+  .filter(j =>
+    j.id !== job.id &&
+    !isClosed &&
+    (j.data.category === job.data.category || j.data.type === job.data.type)
+  )
+  .slice(0, 3);
+
+// Create SEO metadata
+const seo = {
+  description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`,
+  type: "article",
+  canonical: `https://services.dzaleka.com/jobs/${job.id}`,
+  openGraph: {
+    title: `${job.data.title}`,
+    description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`,
+    type: "article",
+    site_name: "Dzaleka Online Services",
+    locale: "en_US",
+    url: `https://services.dzaleka.com/jobs/${job.id}`
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${job.data.title} | Dzaleka Online Services`,
+    description: `${job.data.title} at ${job.data.organization} - ${job.data.description?.substring(0, 150)}...`
+  }
+};
+
+const employmentTypeMap = {
+  'full-time': 'FULL_TIME',
+  'part-time': 'PART_TIME',
+  contract: 'CONTRACTOR',
+  temporary: 'TEMPORARY',
+  intern: 'INTERN',
+  volunteer: 'VOLUNTEER',
+} as const;
+
+const salarySources = [
+  job.data.contact?.salary,
+  job.body,
+].filter(Boolean) as string[];
+
+function extractSalaryData(rawSources: string[]) {
+  for (const raw of rawSources) {
+    const normalized = raw.replace(/,/g, '');
+    const match = normalized.match(/(MWK|MK|USD)\s*([0-9]+(?:\.[0-9]+)?)(?:\s*(?:-|to)\s*([0-9]+(?:\.[0-9]+)?))?/i);
+
+    if (!match) continue;
+
+    const currency = match[1].toUpperCase() === 'USD' ? 'USD' : 'MWK';
+    const unitText = /hour/i.test(normalized)
+      ? 'HOUR'
+      : /day/i.test(normalized)
+        ? 'DAY'
+        : /week/i.test(normalized)
+          ? 'WEEK'
+          : /year|annual|annum/i.test(normalized)
+            ? 'YEAR'
+            : 'MONTH';
+
+    return {
+      currency,
+      value: match[3]
+        ? {
+            "@type": "QuantitativeValue",
+            "minValue": Number(match[2]),
+            "maxValue": Number(match[3]),
+            unitText,
+          }
+        : {
+            "@type": "QuantitativeValue",
+            "value": Number(match[2]),
+            unitText,
+          },
+    };
+  }
+
+  return null;
+}
+
+function buildJobLocationSchema(location: string, address?: string) {
+  const normalized = location.toLowerCase();
+
+  if (normalized.includes('remote')) {
+    return {
+      jobLocationType: 'TELECOMMUTE',
+      applicantLocationRequirements: {
+        "@type": "Country",
+        "name": "Malawi",
+      },
+    };
+  }
+
+  if (normalized.includes('lilongwe')) {
+    return {
+      jobLocation: {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": address?.split('\n')[0] || location,
+          "addressLocality": "Lilongwe",
+          "addressRegion": "Central Region",
+          "postalCode": "00000",
+          "addressCountry": "MW",
+        },
+      },
+    };
+  }
+
+  if (normalized.includes('dzaleka') || normalized.includes('dowa') || normalized.includes('lilambwe')) {
+    return {
+      jobLocation: {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": location,
+          "addressLocality": "Dzaleka",
+          "addressRegion": "Dowa",
+          "postalCode": "DZ001",
+          "addressCountry": "MW",
+        },
+      },
+    };
+  }
+
+  return {
+    jobLocation: {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": address?.split('\n')[0] || location,
+        "addressLocality": "Malawi",
+        "addressRegion": "Malawi",
+        "postalCode": "00000",
+        "addressCountry": "MW",
+      },
+    },
+  };
+}
+
+const salaryData = extractSalaryData(salarySources);
+const employmentType = employmentTypeMap[job.data.type as keyof typeof employmentTypeMap] || 'OTHER';
+const locationSchema = buildJobLocationSchema(job.data.location, job.data.contact?.address);
+const directApply = Boolean(job.data.contact.email || job.data.contact.website);
+
+// Create structured data for the job posting
+const jobStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": job.data.title,
+  "description": job.data.description,
+  "datePosted": job.data.posted,
+  ...(job.data.deadline && { "validThrough": job.data.deadline.toISOString() }),
+  "employmentType": employmentType,
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": job.data.organization,
+    "value": job.id,
+  },
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": job.data.organization,
+    ...(job.data.contact.website && { "sameAs": job.data.contact.website }),
+  },
+  ...locationSchema,
+  "applicationRequirements": job.data.skills?.join(", "),
+  ...(salaryData && {
+    "baseSalary": {
+      "@type": "MonetaryAmount",
+      "currency": salaryData.currency,
+      "value": salaryData.value,
+    },
+  }),
+  ...(directApply && { "directApply": true }),
+  "url": `https://services.dzaleka.com/jobs/${job.id}`,
+};
+
+// Create breadcrumb structured data
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://services.dzaleka.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Jobs",
+      "item": "https://services.dzaleka.com/jobs"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": job.data.title,
+      "item": `https://services.dzaleka.com/jobs/${job.id}`
+    }
+  ]
+};
+---
+
+<MainLayout
+  title={job.data.title}
+  description={seo.description}
+  type={seo.type}
+  canonical={seo.canonical}
+  openGraph={seo.openGraph}
+  twitter={seo.twitter}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jobStructuredData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
+
+  <!-- Header Section -->
+  <section class="border-b border-gray-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:py-10 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <a
+          href="/jobs"
+          class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
+        >
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Jobs
+        </a>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="text-sm font-semibold text-slate-500">
+          {job.data.organization}
+        </span>
+        {isClosed ? (
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-slate-200 text-slate-700">
+            Closed
+          </span>
+        ) : (
+          <span class="inline-flex items-center px-2 py-0.5 rounded border border-green-200 bg-green-50 text-sm font-medium text-green-800">
+            Open
+          </span>
+        )}
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-bold text-gray-900 tracking-tight max-w-3xl">
+        {job.data.title}
+      </h1>
+
+      <div class="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+        <div class="inline-flex items-center gap-2">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {job.data.location}
+        </div>
+        <div class="inline-flex items-center gap-2 text-slate-900 font-medium capitalize">
+          {job.data.type}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_20rem] gap-8 lg:gap-12">
+
+      <!-- Main Column -->
+      <div class="order-2 lg:order-1">
+        <div class="prose prose-lg prose-slate max-w-none text-gray-700">
+          <EntryBody entry={job} />
+        </div>
+
+        <!-- Related Jobs -->
+        {relatedJobs.length > 0 && (
+          <div class="mt-16 border-t border-gray-200 pt-12">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Similar opportunities</h2>
+            <div class="flex flex-col border-t border-gray-200">
+              {relatedJobs.map(relatedJob => (
+                <a
+                  href={`/jobs/${relatedJob.id}`}
+                  class="block py-4 border-b border-gray-200 hover:bg-slate-50 transition-colors -mx-4 px-4 sm:mx-0 sm:px-2 rounded sm:rounded-none sm:hover:bg-transparent group"
+                >
+                  <h3 class="font-bold text-gray-900 group-hover:underline">{relatedJob.data.title}</h3>
+                  <div class="mt-1 flex items-center gap-3 text-sm text-gray-500">
+                    <span class="text-slate-700 font-medium">{relatedJob.data.organization}</span>
+                    <span>&middot;</span>
+                    <span class="capitalize">{relatedJob.data.type}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <div class="order-1 lg:order-2 space-y-10">
+        <!-- Apply Block -->
+        {!isClosed && (
+          <div class="rounded border border-blue-200 bg-blue-50 p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Interested in applying?</h3>
+            <p class="text-sm text-gray-700 mb-4">Submit your application before the deadline.</p>
+            <a
+              href={`mailto:${job.data.contact.email}?subject=Application for ${job.data.title}`}
+              class="min-h-[44px] flex w-full items-center justify-center rounded bg-primary-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-800"
+            >
+              Apply now via email
+            </a>
+            {job.data.contact.website && (
+              <a
+                href={job.data.contact.website}
+                rel="noopener noreferrer"
+                class="min-h-[44px] mt-3 flex w-full items-center justify-center rounded border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Visit website
+              </a>
+            )}
+          </div>
+        )}
+
+        {isClosed && (
+          <div class="rounded border border-gray-200 bg-gray-50 p-6 text-center text-sm font-medium text-gray-600">
+            This position is no longer accepting applications.
+          </div>
+        )}
+
+        <!-- Job Details -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 border-b border-gray-200 pb-2">Details</h3>
+          <dl class="space-y-4 text-sm">
+            <div>
+              <dt class="text-gray-500">Posted on</dt>
+              <dd class="font-medium text-gray-900">{formatDate(job.data.posted)}</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500">Deadline</dt>
+              <dd class:list={['font-medium', isExpired ? 'text-red-600' : 'text-gray-900']}>
+                {formatDate(job.data.deadline)} {isExpired && '(Expired)'}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-gray-500">Category</dt>
+              <dd class="font-medium text-gray-900 capitalize">{job.data.category}</dd>
+            </div>
+          </dl>
+        </div>
+
+        {job.data.skills && job.data.skills.length > 0 && (
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 border-b border-gray-200 pb-2">Required skills</h3>
+            <div class="flex flex-wrap gap-2">
+              {job.data.skills.map(skill => (
+                <span class="inline-flex rounded border border-gray-200 px-2 py-1 text-xs font-medium text-gray-600 whitespace-nowrap">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Contact/Application specifics -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4 border-b border-gray-200 pb-2">Contact & application</h3>
+          <div class="text-sm text-gray-600 space-y-4">
+            {job.data.title === "Social Media Content Creator" && (
+              <>
+                <p>Send the following to <span class="font-medium text-gray-900">{job.data.contact.email}</span>:</p>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>30-60 second reel on refugees</li>
+                  <li>Your portfolio</li>
+                  <li>Proposed fee structure</li>
+                </ul>
+              </>
+            )}
+            {job.data.title === "Programs Manager" && (
+              <>
+                <p>Submit application to <span class="font-medium text-gray-900">{job.data.contact.email}</span>:</p>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>Cover letter</li>
+                  <li>CV (max 2 pages)</li>
+                </ul>
+                <p class="text-xs italic mt-2 text-gray-500">Malawian nationals only.</p>
+              </>
+            )}
+            {job.data.title === "Language Exchange Program" && (
+              <p>Contact Emily from Refugee Outreach Collective at <span class="font-medium text-gray-900">{job.data.contact.email}</span>.</p>
+            )}
+            {!["Social Media Content Creator", "Programs Manager", "Language Exchange Program"].includes(job.data.title) && (
+              <p>Email: <a href={`mailto:${job.data.contact.email}`} class="font-medium text-slate-700 hover:underline break-all">{job.data.contact.email}</a></p>
+            )}
+            {job.data.contact.phone && (
+              <p>Phone: <a href={`tel:${job.data.contact.phone}`} class="font-medium text-slate-700 hover:underline">{job.data.contact.phone}</a></p>
+            )}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</MainLayout>

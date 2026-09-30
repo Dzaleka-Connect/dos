@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getContent } from '../lib/content';
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { isJobExpired } from '../utils/dateHelpers';
@@ -36,7 +36,7 @@ const canonicalUrl = 'https://services.dzaleka.com/grants-and-programs';
 const pageKeywords =
   'Dzaleka grants, Dzaleka programs, refugee opportunities Malawi, refugee business grants Malawi, refugee entrepreneur support, Dzaleka job opportunities, business support Dzaleka';
 
-const jobItems = (await getCollection('jobs'))
+const jobItems = (await getContent('jobs'))
   .filter((job) => job.data.status === 'open' && !isJobExpired(job.data.deadline))
   .sort((a, b) => {
     const dateA = a.data.deadline ? new Date(a.data.deadline).getTime() : Infinity;

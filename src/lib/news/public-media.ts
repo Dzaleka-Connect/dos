@@ -1,12 +1,17 @@
 import type { APIRoute } from 'astro';
-import { publishedNews } from './published';
-import { referencedMediaKeys, safeMediaKey } from './public-contract.mjs';
+import { publishedItems } from './published';
+import { entryMedia, referencedMediaKeys, safeMediaKey } from './public-contract.mjs';
+import { cmsCollections } from './live-collections.mjs';
 
 export const GET: APIRoute = async ({ params, locals }) => {
   const key = params.key || '';
   if (!safeMediaKey(key)) return new Response('Not found', { status: 404 });
-  const published = await publishedNews();
-  if (!published.some(item => referencedMediaKeys({ image: item.data.image, content: item.data.content }).has(key))) {
+  let referenced = false;
+  for (const collection of cmsCollections) {
+    const published = await publishedItems(collection);
+    if (published.some(item => referencedMediaKeys(entryMedia(collection, item.data)).has(key))) { referenced = true; break; }
+  }
+  if (!referenced) {
     return new Response('Not found', { status: 404 });
   }
   if (!locals.emdash?.storage) return new Response('Media unavailable', { status: 503 });

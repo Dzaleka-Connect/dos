@@ -1,5 +1,4 @@
-import { getCollection } from 'astro:content';
-import { getNews } from '@dos/news';
+import { getContent } from '../lib/content';
 import { guideLanguages, guideVersion } from '../data/essentials';
 import { curatedGrantsPrograms } from '../data/grantsPrograms';
 
@@ -133,11 +132,9 @@ export async function GET() {
   ];
 
   for (const collectionConfig of collectionRoutes) {
-    const entries = collectionConfig.name === 'news'
-      ? await getNews()
-      : await getCollection(collectionConfig.name);
+    const entries = await getContent(collectionConfig.name);
     for (const entry of entries) {
-      if (collectionConfig.name === 'news' && entry.seo?.noIndex) continue;
+      if (entry.seo?.noIndex) continue;
       addUrl(collectionConfig.buildPath(entry), collectionConfig.lastmod?.(entry));
     }
   }

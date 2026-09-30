@@ -1,5 +1,6 @@
 ---
 import { getNews } from '@dos/news';
+import { getContent } from '../lib/content';
 import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import { format } from 'date-fns';
@@ -48,7 +49,7 @@ const serviceTopics = [
 ];
 
 // Get upcoming events
-const events = await getCollection('events');
+const events = await getContent('events');
 const upcomingEvents = events
   .filter(event => {
     // Check if event is TBA either in data or title

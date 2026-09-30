@@ -9,7 +9,7 @@ export class NewsUnavailable extends Error {}
 async function read(path) {
   try {
     const response = await fetch(`${cmsOrigin}${publicPrefix}${path}`, {
-      headers: { Accept: path === 'news.json' ? 'application/json' : 'text/html' },
+      headers: { Accept: path.endsWith('.json') ? 'application/json' : 'text/html' },
       redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(15000),
     });
     if (response.status === 404) return null;
@@ -18,25 +18,37 @@ async function read(path) {
   } catch { throw new NewsUnavailable('Published news is temporarily unavailable.'); }
 }
 
-async function loadNews() {
-  const response = await read('news.json');
-  if (!response) throw new NewsUnavailable('Published news is temporarily unavailable.');
+// Date fields per collection: the first is required, the rest optional.
+const dateFields = { news: ['date', 'updated'], events: ['date', 'endDate'], jobs: ['posted', 'deadline'] };
+const unavailable = collection => new NewsUnavailable(`Published ${collection} are temporarily unavailable.`);
+
+async function load(collection) {
+  const fields = dateFields[collection];
+  if (!fields) throw unavailable(collection);
+  const response = await read(`${collection}.json`);
+  if (!response) throw unavailable(collection);
   try {
     const payload = await response.json();
-    if (payload.version !== 1 || !Array.isArray(payload.entries)) throw new Error('Invalid news feed');
+    if (payload.version !== 1 || !Array.isArray(payload.entries)) throw new Error('Invalid feed');
     return payload.entries.map(entry => {
-      if (typeof entry.id !== 'string' || typeof entry.data?.title !== 'string' || !Number.isFinite(Date.parse(entry.data.date))) throw new Error('Invalid article');
-      return { ...entry, data: { ...entry.data, date: new Date(entry.data.date), updated: entry.data.updated ? new Date(entry.data.updated) : undefined } };
+      const [required, ...optional] = fields;
+      if (typeof entry.id !== 'string' || typeof entry.data?.title !== 'string' || !Number.isFinite(Date.parse(entry.data[required]))) throw new Error('Invalid entry');
+      const data = { ...entry.data, [required]: new Date(entry.data[required]) };
+      for (const field of optional) data[field] = entry.data[field] ? new Date(entry.data[field]) : undefined;
+      if (collection === 'events' && data.registration?.deadline) data.registration = { ...data.registration, deadline: new Date(data.registration.deadline) };
+      return { ...entry, data };
     });
-  } catch { throw new NewsUnavailable('Published news is temporarily unavailable.'); }
+  } catch { throw unavailable(collection); }
 }
 
-export function getNews() {
+export function getEntries(collection) {
   const cache = requests.getStore();
-  if (!cache) return loadNews();
-  if (!cache.has('news')) cache.set('news', loadNews());
-  return cache.get('news');
+  if (!cache) return load(collection);
+  if (!cache.has(collection)) cache.set(collection, load(collection));
+  return cache.get(collection);
 }
+
+export const getNews = () => getEntries('news');
 
 export function articleFragment(html) {
   const { document } = parseHTML(html);
@@ -53,10 +65,12 @@ export function articleFragment(html) {
   return [...document.head.querySelectorAll('link[rel="stylesheet"], style')].map(node => node.outerHTML).join('') + article.innerHTML;
 }
 
-export async function getNewsEntry(slug) {
-  const entry = (await getNews()).find(item => item.id === slug);
+export async function getEntry(collection, slug) {
+  const entry = (await getEntries(collection)).find(item => item.id === slug);
   if (!entry) return { entry: undefined, isPreview: false };
-  const response = await read(`news/${encodeURIComponent(slug)}`);
+  const response = await read(`${collection}/${encodeURIComponent(slug)}`);
   if (!response) return { entry: undefined, isPreview: false };
   return { entry: { ...entry, html: articleFragment(await response.text()) }, isPreview: false };
 }
+
+export const getNewsEntry = slug => getEntry('news', slug);

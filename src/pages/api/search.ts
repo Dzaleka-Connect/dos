@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import { getNews } from '@dos/news';
+import { getContent } from '../../lib/content';
 import { checkRateLimit, apiHeaders } from '../../utils/api-utils';
 import { problemResponse } from '../../utils/api-errors';
 
@@ -151,7 +150,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     // Search each collection
     for (const collectionName of requestedCollections) {
       try {
-        const collection = collectionName === 'news' ? await getNews() : await getCollection(collectionName as any);
+        const collection = await getContent(collectionName);
         const searchResults = collection
           .filter(item => {
             // Search in common fields

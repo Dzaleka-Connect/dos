@@ -1,7 +1,7 @@
-import { mkdir, writeFile, access, chmod } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, chmod } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { buildSeed } from './seed.mjs';
+import { buildSeed, newCollectionsOnly } from './seed.mjs';
 
 process.chdir(fileURLToPath(new URL('../../', import.meta.url)));
 if (process.env.NETLIFY) throw new Error('This pilot must not run on Netlify.');
@@ -14,11 +14,19 @@ function run(args) {
 }
 run(['secrets', 'generate', '--write', '.emdash-pilot/.env']);
 await chmod('.emdash-pilot/.env', 0o600);
-let imported = false;
-try { await access('.emdash-pilot/import-complete'); imported = true; } catch {}
-if (!imported) {
-  run(['seed', '.emdash-pilot/seed.json', '--database', '.emdash-pilot/news.db', '--uploads-dir', '.emdash-pilot/uploads', '--on-conflict', 'skip']);
-  await writeFile('.emdash-pilot/import-complete', new Date().toISOString() + '\n');
+// The marker lists imported collections; an older marker (a timestamp) means News only.
+let imported = [];
+try {
+  const marker = (await readFile('.emdash-pilot/import-complete', 'utf8')).trim();
+  imported = marker.startsWith('{') ? JSON.parse(marker).collections : ['news'];
+} catch {}
+const pending = newCollectionsOnly(seed, new Set(imported));
+if (pending.collections.length) {
+  // Seeding only new collections avoids restoring entries deleted in the pilot.
+  await writeFile('.emdash-pilot/seed-pending.json', JSON.stringify(pending, null, 2) + '\n');
+  run(['seed', '.emdash-pilot/seed-pending.json', '--database', '.emdash-pilot/news.db', '--uploads-dir', '.emdash-pilot/uploads', '--on-conflict', 'skip']);
+  const collections = [...imported, ...pending.collections.map((collection) => collection.slug)];
+  await writeFile('.emdash-pilot/import-complete', JSON.stringify({ collections, updated: new Date().toISOString() }) + '\n');
 }
-console.log(`News pilot ready: ${seed.content.news.length} source articles. Existing CMS edits are preserved.`);
+console.log(`CMS pilot ready: ${seed.content.news.length} articles, ${seed.content.events.length} events and ${seed.content.jobs.length} jobs. Existing CMS edits are preserved.`);
 console.log('Editor: http://localhost:4322/_emdash/admin/');

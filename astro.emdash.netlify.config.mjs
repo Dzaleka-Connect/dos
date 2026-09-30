@@ -47,8 +47,8 @@ export default mergeConfig(base, {
       hooks: {
         'astro:config:setup': ({ updateConfig, injectRoute }) => {
           updateConfig({ security: { checkOrigin: true } });
-          injectRoute({ pattern: '/_dos/public/news.json', entrypoint: './src/lib/news/public-feed.ts', prerender: false });
-          injectRoute({ pattern: '/_dos/public/news/[...slug]', entrypoint: './src/lib/news/PublicArticle.astro', prerender: false });
+          injectRoute({ pattern: '/_dos/public/[collection].json', entrypoint: './src/lib/news/public-feed.ts', prerender: false });
+          injectRoute({ pattern: '/_dos/public/[collection]/[...slug]', entrypoint: './src/lib/news/PublicArticle.astro', prerender: false });
           injectRoute({ pattern: '/_dos/public/media/[...key]', entrypoint: './src/lib/news/public-media.ts', prerender: false });
           injectRoute({ pattern: '/_emdash/api/dos-maintenance', entrypoint: './src/lib/news/maintenance-route.ts', prerender: false });
         },

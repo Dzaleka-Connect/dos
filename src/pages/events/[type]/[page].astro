@@ -2,7 +2,7 @@
 import MainLayout from '../../../layouts/MainLayout.astro';
 import EventGrid from '../../../components/events/EventGrid.astro';
 import EventPagination from '../../../components/events/EventPagination.astro';
-import { getCollection } from 'astro:content';
+import { getContent } from '../../../lib/content';
 
 export const prerender = false;
 
@@ -15,7 +15,7 @@ if (type !== 'upcoming' && type !== 'past') {
   return Astro.redirect('/events');
 }
 
-const allEvents = await getCollection('events');
+const allEvents = await getContent('events');
 
 // Function to determine if an event is upcoming
 function isUpcoming(date: Date) {

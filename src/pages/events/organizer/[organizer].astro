@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getContent } from '../../../lib/content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import CollectionHeader from '../../../components/ui/CollectionHeader.astro';
 import EventGrid from '../../../components/events/EventGrid.astro';
@@ -13,7 +13,7 @@ if (!organizerSlug) {
   return Astro.redirect('/events');
 }
 
-const allEvents = await getCollection('events');
+const allEvents = await getContent('events');
 
 // Find the organizer name that matches the slug
 const organizerName = [...new Set(allEvents.map(e => e.data.organizer).filter(Boolean))]

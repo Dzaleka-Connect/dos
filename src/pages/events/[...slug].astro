@@ -1,5 +1,6 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getContent, getContentEntry } from '../../lib/content';
+import EntryBody from '../../lib/news/EntryBody.astro';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { formatDateInCAT } from '../../utils/eventDate';
 import Button from '../../components/ui/Button.astro';
@@ -20,9 +21,8 @@ const pageNum = parseInt(slug);
 const isPage = !isNaN(pageNum) && pageNum > 0;
 
 // Shared data
-const allEvents = await getCollection('events');
+const allEvents = await getContent('events');
 let entry = null;
-let Content = null;
 let paginatedEvents = [];
 let totalPages = 0;
 let validCurrentPage = 1;
@@ -77,14 +77,12 @@ if (isPage) {
 
 } else {
   // --- EVENT DETAILS LOGIC ---
-  entry = allEvents.find(e => e.id === slug);
+  entry = await getContentEntry('events', slug);
 
   if (!entry) {
     return Astro.redirect('/404');
   }
 
-  const renderResult = await render(entry);
-  Content = renderResult.Content;
 
   // Calculate status dynamically
   const today = new Date();
@@ -340,7 +338,7 @@ const seo = isPage ? {
         <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12">
           <article class="order-2 min-w-0 lg:order-1">
             {entry.data.image && <img onerror="this.onerror=null; this.src='/images/unavailable-image.svg'; this.alt='Image unavailable';" src={entry.data.image} alt={entry.data.title} class="mb-8 aspect-video w-full rounded object-cover" />}
-            <div class="prose max-w-none prose-headings:text-slate-900 prose-a:text-primary-800"><Content /></div>
+            <div class="prose max-w-none prose-headings:text-slate-900 prose-a:text-primary-800"><EntryBody entry={entry} /></div>
             {entry.data.panelists?.length > 0 && (
               <section class="mt-10 border-t border-slate-200 pt-8" aria-labelledby="panelists-heading">
                 <h2 id="panelists-heading">Speakers and panelists</h2>

@@ -1,12 +1,13 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { getContent } from '../lib/content';
 
 const SITE_URL = 'https://services.dzaleka.com';
 
 const collectionLoaders = {
   services: () => getCollection('services'),
   resources: () => getCollection('resources'),
-  events: () => getCollection('events'),
-  jobs: () => getCollection('jobs'),
+  events: () => getContent('events'),
+  jobs: () => getContent('jobs'),
   'community-voices': () => getCollection('community-voices'),
   artworks: () => getCollection('artworks'),
   marketplace: () => getCollection('marketplace'),

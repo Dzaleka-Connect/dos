@@ -14,7 +14,7 @@ npm run news:pilot
 - News: <http://localhost:4322/news>
 - Editor: <http://localhost:4322/_emdash/admin/>
 
-The first run imports the 30 existing articles. Later runs preserve CMS edits and do not reimport deleted articles. The launcher runs in the foreground: stop it with Ctrl+C. It uses a separate port and does not stop the usual site on port 4321.
+The first run imports the existing news articles, events and jobs. Later runs preserve CMS edits and do not reimport deleted entries. A collection added to the CMS later is imported once, on the next run. The launcher runs in the foreground: stop it with Ctrl+C. It uses a separate port and does not stop the usual site on port 4321.
 
 Complete the editor setup with a site title such as “Dzaleka News pilot”, then create your own administrator account and passkey. Use `localhost` consistently because passkeys are tied to the hostname. The “Sample content” option refers to the imported DOS articles; it uses conflict skipping, so existing edits are preserved. No administrator account is created by the pilot scripts.
 

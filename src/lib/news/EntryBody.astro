@@ -1,0 +1,8 @@
+---
+// Renders the body of a CMS entry or a Markdown entry.
+import LiveBody from '@dos/news-body';
+import FileBody from './FileBody.astro';
+const { entry } = Astro.props;
+const fromCms = typeof entry?.html === 'string' || Array.isArray(entry?.content);
+---
+{fromCms ? <LiveBody entry={entry} /> : <FileBody entry={entry} />}

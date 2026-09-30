@@ -1,13 +1,14 @@
 ---
 import { getNews } from '@dos/news';
+import { getContent } from '../../lib/content';
 import MainLayout from "../../layouts/MainLayout.astro";
 import Breadcrumb from "../../components/ui/Breadcrumb.astro";
 import { getCollection } from "astro:content";
 const [news, events, services, jobs] = await Promise.all([
   getNews(),
-  getCollection("events"),
+  getContent('events'),
   getCollection("services"),
-  getCollection("jobs"),
+  getContent('jobs'),
 ]);
 const recentNews = [...news]
   .sort(

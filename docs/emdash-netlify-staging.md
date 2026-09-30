@@ -95,6 +95,33 @@ The scheduler sends a secret-authenticated POST to `/_emdash/api/dos-maintenance
 
 **Schedules only run automatically on published deploys.** Deploy previews and branch deploys do not trigger schedules. Use a published deploy on this separate staging site for the end-to-end test, as described in [Netlify Scheduled Functions](https://docs.netlify.com/build/functions/scheduled-functions/). Do not share a staging database across changing preview hostnames: passkeys and the cron target use the fixed staging origin.
 
+## Add Events and Jobs
+
+Events and Jobs are defined in the CMS alongside News. The websites keep reading them from Markdown until they are switched on in `src/lib/news/live-collections.mjs`. Follow these steps in order.
+
+1. **Deploy this code.** Both sites build from `main`. The public site keeps Events and Jobs on Markdown. The CMS gains the published-only routes `/_dos/public/events.json`, `/_dos/public/jobs.json` and one route per entry.
+2. **Stop editing Events and Jobs in the old editor** (`/admin`) from this point until the switch. Edits made there after the import will not reach the CMS.
+3. **Import.** On your machine, with the completed `.env.staging`, run:
+
+   ```sh
+   npm run news:staging:initialize
+   ```
+
+   The script imports only collections the CMS does not have yet. News is left exactly as it is, including any articles you have deleted. The output lists how many events and jobs were imported. Running it again imports nothing.
+4. **Check the CMS.** Sign in at `https://cms.dzaleka.com/_emdash/admin/`. Events and Jobs appear in the sidebar. Open a few entries and compare them with the live site. Then open `https://cms.dzaleka.com/_dos/public/events.json` and `https://cms.dzaleka.com/_dos/public/jobs.json`: each should list the published entries.
+5. **Switch.** In one commit:
+   - change `liveCollections` in `src/lib/news/live-collections.mjs` to `['news', 'events', 'jobs']`
+   - remove the `events` and `jobs` collections from `public/admin/config.yml`, so there is only one place to edit them.
+
+   Deploy. Event and job pages, the homepage, search, sitemaps, datasets and the APIs now read the CMS on each request. Publishing, editing or unpublishing takes effect on the next page load, without a rebuild.
+6. **Check the site.** Visit `/events`, an event page, `/jobs`, `/jobs/2` and a job page. Publish a disposable test event, check it appears, then unpublish it.
+
+The Markdown files in `src/content/events` and `src/content/jobs` are no longer read after the switch. Keep them as an archive or delete them later.
+
+To undo the switch, set `liveCollections` back to `['news']` and restore the old editor entries. Pages return to the Markdown files, without any changes made in the CMS.
+
+In the CMS, the listing status fields are named "Listed as" (events: upcoming or past) and "Listing status" (jobs: open, closed or draft), so they do not clash with EmDash's own draft and published status. A job with the listing status "draft" is imported as a CMS draft.
+
 ## Boundaries and verification
 
 The CMS, News pages, homepage, search index, RSS, both sitemaps, staff dashboard and Encyclopedia coverage run through Node Functions, with runtime middleware, no-store caching and the staging access gate. Other existing public pages can remain static; the Netlify staging configuration marks all responses `noindex`. This is protection for the editorial pilot, not a promise that every existing public asset is private. The public News/search/export APIs read the same published feed; other collections and their editorial tools remain file based.

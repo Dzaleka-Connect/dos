@@ -20,7 +20,14 @@ function blocks(tokens) {
   return tokens.flatMap((token) => {
     switch (token.type) {
       case 'space': return [];
-      case 'paragraph':
+      case 'paragraph': {
+        // A paragraph holding only images becomes image blocks (remote images keep their original URL).
+        const parts = (token.tokens || []).filter((part) => !(part.type === 'text' && !part.text.trim()) && part.type !== 'br');
+        if (parts.length && parts.every((part) => part.type === 'image')) {
+          return parts.map((image) => ({ type: 'image', attrs: { provider: 'external', src: image.href, alt: image.text || '', ...(image.title ? { caption: image.title } : {}) } }));
+        }
+        return [{ type: 'paragraph', content: inline(token.tokens || [token]) }];
+      }
       case 'text': return [{ type: 'paragraph', content: inline(token.tokens || [token]) }];
       case 'heading': return [{ type: 'heading', attrs: { level: token.depth }, content: inline(token.tokens) }];
       case 'hr': return [{ type: 'horizontalRule' }];
@@ -36,6 +43,13 @@ function blocks(tokens) {
           content: [{ type: 'paragraph', content: inline(cell.tokens) }],
         })),
       })) }];
+      case 'html': {
+        // Video iframes become EmDash embeds; any other raw HTML still needs a person to review it.
+        const src = token.raw.match(/^\s*<iframe\b[^>]*\ssrc="([^"]+)"[^>]*>\s*<\/iframe>\s*$/i)?.[1];
+        const video = src && /^https:\/\/(www\.)?(youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/|player\.vimeo\.com\/video\/)/.test(src);
+        if (!video) throw new Error('Unsupported Markdown block: html. Review before importing.');
+        return [{ type: 'embed', attrs: { url: src, provider: src.includes('vimeo') ? 'vimeo' : 'youtube' } }];
+      }
       default: throw new Error(`Unsupported Markdown block: ${token.type}. Review before importing.`);
     }
   });

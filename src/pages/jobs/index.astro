@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getContent } from '../../lib/content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import JobCard from '../../components/jobs/JobCard.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
@@ -9,7 +9,7 @@ import { getPaginationData } from '../../utils/pagination';
 const currentSort = Astro.url.searchParams.get('sort') || 'recent';
 
 // Get all jobs
-const allJobs = await getCollection('jobs');
+const allJobs = await getContent('jobs');
 
 // Filter active jobs (not expired and status is open)
 const activeJobs = allJobs.filter(job =>

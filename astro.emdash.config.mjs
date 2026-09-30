@@ -1,7 +1,7 @@
 import { mergeConfig } from 'astro/config';
 import emdash, { local } from 'emdash/astro';
 import { sqlite } from 'emdash/db';
-import { newsViteConfig } from './scripts/emdash/shared-config.mjs';
+import { newsViteConfig, usesLiveNews } from './scripts/emdash/shared-config.mjs';
 import base from './astro.config.mjs';
 
 process.loadEnvFile(new URL('./.emdash-pilot/.env', import.meta.url));
@@ -26,7 +26,7 @@ export default mergeConfig(base, {
           updateConfig({ security: { checkOrigin: true }, vite: { server: { strictPort: true } } });
         },
         'astro:route:setup': ({ route }) => {
-          if (route.component.replaceAll('\\', '/').includes('/pages/news/')) route.prerender = false;
+          if (usesLiveNews(route.component)) route.prerender = false;
         },
       },
     },

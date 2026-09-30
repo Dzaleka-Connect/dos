@@ -1,6 +1,6 @@
 ---
 import MainLayout from '../../../layouts/MainLayout.astro';
-import { getCollection } from 'astro:content';
+import { getContent } from '../../../lib/content';
 import EventGrid from '../../../components/events/EventGrid.astro';
 import EventPagination from '../../../components/events/EventPagination.astro';
 
@@ -10,7 +10,7 @@ const { page } = Astro.params;
 const currentPage = parseInt(page || '1');
 const itemsPerPage = 4;
 
-const allEvents = await getCollection('events');
+const allEvents = await getContent('events');
 
 // Function to determine if an event is upcoming
 function isUpcoming(date: Date) {
