@@ -239,6 +239,7 @@ const title = "Analytics | Dzaleka Online Services";
 
   <!-- Rest of the script remains unchanged -->
   <script>
+    import { formatDateInCAT } from "../utils/eventDate";
     let Chart;
     // Import all necessary functions
     import {
@@ -287,7 +288,7 @@ const title = "Analytics | Dzaleka Online Services";
       if (!dateString) return '-';
       try {
         const date = new Date(dateString);
-        return date.toLocaleDateString(undefined, {
+        return date.toLocaleDateString('en-GB', {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
@@ -672,7 +673,7 @@ const title = "Analytics | Dzaleka Online Services";
                 <span class="text-xs font-medium text-blue-700 bg-blue-100 px-2 py-1 rounded-full">All time</span>
               </div>
               <div class="text-sm font-medium text-blue-900 mb-1">Total Page Views</div>
-              <p class="text-3xl font-bold text-blue-900">${(data.totalViews || 0).toLocaleString()}</p>
+              <p class="text-3xl font-bold text-blue-900">${(data.totalViews || 0).toLocaleString('en-GB')}</p>
             </div>
           </div>
 
@@ -689,7 +690,7 @@ const title = "Analytics | Dzaleka Online Services";
                 <span class="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded-full">Today</span>
               </div>
               <div class="text-sm font-medium text-green-900 mb-1">Today's Visitors</div>
-              <p class="text-3xl font-bold text-green-900">${todayVisitors.toLocaleString()}</p>
+              <p class="text-3xl font-bold text-green-900">${todayVisitors.toLocaleString('en-GB')}</p>
             </div>
           </div>
 
@@ -706,7 +707,7 @@ const title = "Analytics | Dzaleka Online Services";
                 <span class="text-xs font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded-full">Lifetime</span>
               </div>
               <div class="text-sm font-medium text-purple-900 mb-1">Total Visitors</div>
-              <p class="text-3xl font-bold text-purple-900">${totalVisitors.toLocaleString()}</p>
+              <p class="text-3xl font-bold text-purple-900">${totalVisitors.toLocaleString('en-GB')}</p>
             </div>
           </div>
 
@@ -726,7 +727,7 @@ const title = "Analytics | Dzaleka Online Services";
                 </div>
               </div>
               <div class="text-sm font-medium text-orange-900 mb-1">Active Sessions</div>
-              <p class="text-3xl font-bold text-orange-900">${activeSessions.toLocaleString()}</p>
+              <p class="text-3xl font-bold text-orange-900">${activeSessions.toLocaleString('en-GB')}</p>
             </div>
           </div>
         </div>
@@ -1376,9 +1377,9 @@ const title = "Analytics | Dzaleka Online Services";
       return `
         <div class="mb-4 flex items-center justify-between">
           <div class="relative">
-            <input type="text"
+            <p id="popularPagesSearch-hint" class="mb-1 text-sm text-slate-600">Search pages</p>
+            <input aria-describedby="popularPagesSearch-hint" type="text"
               id="popularPagesSearch" aria-label="Search popular pages"
-              placeholder="Search pages..."
               value="${searchQuery}"
               class="pl-9 pr-4 py-2 border border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500 w-64"
             >
@@ -1415,7 +1416,7 @@ const title = "Analytics | Dzaleka Online Services";
                 return `
                   <tr class="hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">${formatPagePath(page)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${views.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${views.toLocaleString('en-GB')}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div class="flex items-center">
                         <span class="w-12">${percentage}%</span>
@@ -1522,7 +1523,7 @@ const title = "Analytics | Dzaleka Online Services";
                 <span class="px-3 py-1 bg-gray-100 rounded text-sm group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">
                   ${formatPagePath(p.page)}
                   <span class="text-[10px] text-gray-500 ml-1">
-                    ${new Date(p.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    ${formatDateInCAT(new Date(p.timestamp), 'h:mm a') + ' CAT'}
                   </span>
                 </span>
                 ${i < journey.path.length - 1 ? `
@@ -1580,7 +1581,7 @@ const title = "Analytics | Dzaleka Online Services";
         const date = new Date(today);
         date.setDate(date.getDate() - i);
         const dateString = date.toISOString().split('T')[0];
-        visitorTrendData.labels.push(date.toLocaleDateString(undefined, { weekday: 'short' }));
+        visitorTrendData.labels.push(date.toLocaleDateString('en-GB', { weekday: 'short' }));
 
         // Get visitors for this date
         visitorTrendData.visitors.push(getTotalVisitors(data, dateString));
@@ -1731,7 +1732,7 @@ const title = "Analytics | Dzaleka Online Services";
         const date = new Date(today);
         date.setDate(date.getDate() - i);
         const dateString = date.toISOString().split('T')[0];
-        visitorTrendData.labels.push(date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }));
+        visitorTrendData.labels.push(date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' }));
 
         // Get visitors for this date
         visitorTrendData.visitors.push(getTotalVisitors(data, dateString));

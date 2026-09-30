@@ -4,7 +4,7 @@ const { title, collection, href, description } = Astro.props;
 const canonical = new URL(href, 'https://services.dzaleka.com').href;
 ---
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>{title} — print record | Dzaleka Online Services</title><meta name="robots" content="noindex, follow" /><link rel="canonical" href={canonical} /><link rel="icon" href="/images/dzaleka-digital-heritage.png" /></head>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>{title} — print record | Dzaleka Online Services</title><meta name="description" content={description || `Print record for ${title} in the ${collection}.`} /><meta name="robots" content="noindex, follow" /><link rel="canonical" href={canonical} /><link rel="icon" href="/images/dzaleka-digital-heritage.png" /></head>
 <body class="record-print-page">
   <nav class="print-toolbar" aria-label="Print actions"><a href={href}>← Back to record</a><button type="button" onclick="window.print()">Print or save as PDF</button></nav>
   <main class="print-record"><header><p class="print-brand">Dzaleka Online Services · {collection}</p><h1>{title}</h1>{description && <p>{description}</p>}</header><slot /><footer><p>Source record: <a href={canonical}>{canonical}</a></p><p>Refer to the source record for image credits, usage information and updates.</p></footer></main>

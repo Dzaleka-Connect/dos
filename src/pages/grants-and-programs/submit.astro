@@ -98,7 +98,7 @@ const audiences = [
         </div>
 
         <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
-          <label for="phone" class="text-sm font-medium text-slate-700 sm:pt-3">Phone or WhatsApp</label>
+          <label for="phone" class="text-sm font-medium text-slate-700 sm:pt-3">Phone or WhatsApp <span class="font-normal text-slate-600">(optional)</span></label>
           <input
             type="text"
             name="phone"
@@ -120,12 +120,12 @@ const audiences = [
 
         <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
           <label for="sourceUrl" class="text-sm font-medium text-slate-700 sm:pt-3">Official source URL</label>
-          <input
+          <p id="sourceUrl-hint" class="mb-1 text-sm text-slate-600">Start with https://</p>
+          <input aria-describedby="sourceUrl-hint"
             type="url"
             name="sourceUrl"
             id="sourceUrl"
             required
-            placeholder="https://"
             class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           />
         </div>
@@ -176,7 +176,7 @@ const audiences = [
         </div>
 
         <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
-          <label for="closingDate" class="text-sm font-medium text-slate-700 sm:pt-3">Closing date</label>
+          <label for="closingDate" class="text-sm font-medium text-slate-700 sm:pt-3">Closing date <span class="font-normal text-slate-600">(optional)</span></label>
           <input
             type="date"
             name="closingDate"
@@ -204,35 +204,35 @@ const audiences = [
 
         <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
           <label for="summary" class="text-sm font-medium text-slate-700 sm:pt-3">Short summary</label>
-          <textarea
+          <p id="summary-hint" class="mb-1 text-sm text-slate-600">What is the opportunity and what support does it offer?</p>
+          <textarea aria-describedby="summary-hint"
             id="summary"
             name="summary"
             rows="4"
             required
-            placeholder="What is the opportunity and what support does it offer?"
             class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           ></textarea>
         </div>
 
         <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
           <label for="eligibilityNote" class="text-sm font-medium text-slate-700 sm:pt-3">Eligibility note</label>
-          <textarea
+          <p id="eligibilityNote-hint" class="mb-1 text-sm text-slate-600">Who can apply, and are there location, legal, or documentation requirements?</p>
+          <textarea aria-describedby="eligibilityNote-hint"
             id="eligibilityNote"
             name="eligibilityNote"
             rows="4"
             required
-            placeholder="Who can apply, and are there location, legal, or documentation requirements?"
             class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           ></textarea>
         </div>
 
         <div class="grid gap-6 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-start">
-          <label for="notes" class="text-sm font-medium text-slate-700 sm:pt-3">Why it should be listed</label>
-          <textarea
+          <label for="notes" class="text-sm font-medium text-slate-700 sm:pt-3">Why it should be listed <span class="font-normal text-slate-600">(optional)</span></label>
+          <p id="notes-hint" class="mb-1 text-sm text-slate-600">Anything we should know when reviewing this for the Dzaleka grants and programs page</p>
+          <textarea aria-describedby="notes-hint"
             id="notes"
             name="notes"
             rows="4"
-            placeholder="Anything we should know when reviewing this for the Dzaleka grants and programs page."
             class="block w-full rounded border-slate-300 text-sm focus:border-primary-500 focus:ring-primary-500"
           ></textarea>
         </div>

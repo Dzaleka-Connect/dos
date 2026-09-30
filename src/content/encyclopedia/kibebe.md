@@ -37,8 +37,6 @@ sources:
     url: "https://seed.uno/enterprise-profiles/kibebe"
 ---
 
-## Overview
-
 Kibébé is a social enterprise registered in 2017 by [There is Hope](/encyclopedia/there-is-hope-malawi), the Malawian NGO working with refugees in Dzaleka and the surrounding Dowa host community. It designs and handcrafts baby products, accessories, and home décor, providing employment for artisans who live in and around the camp.
 
 ## Operations

@@ -4,7 +4,7 @@ import ServiceAccessFields from '../../components/services/ServiceAccessFields.a
 import FormHeader from '../../components/ui/FormHeader.astro';
 import { serviceCategories } from '../../data/serviceCategories';
 import { organizationTypes } from '../../data/organizationTypes';
-const title = 'Service Provider Registration';
+const title = 'Service provider registration';
 const description = 'Register your organization and the services it provides for the Dzaleka service directory.';
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitter', 'X / Twitter', 'https://x.com/'], ['instagram', 'Instagram', 'https://instagram.com/'], ['linkedin', 'LinkedIn', 'https://linkedin.com/company/']];
@@ -17,14 +17,14 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
       <p class="mt-2">Already listed? <a href="/services/update-request" class="text-primary-800 underline underline-offset-4">Update an existing service</a>. For help, <a href="/support" class="text-primary-800 underline underline-offset-4">contact support</a>.</p>
     </div>
     <form id="registrationForm" class="submission-form space-y-10" action="https://formspree.io/f/xqaaajae" method="POST">
-      <p class="text-sm text-slate-600">Fields marked <span aria-hidden="true">*</span> are required.</p>
+      <p class="text-sm text-slate-600">Optional fields are marked.</p>
       <input type="hidden" name="logoUrl" id="logoUrlInput" />
       <fieldset class="form-section">
         <legend>1. Organization</legend>
         <div class="space-y-6">
-          <div><label for="orgName" class="mb-2 block font-semibold">Organization name *</label><input id="orgName" name="orgName" type="text" autocomplete="organization" required class="w-full px-3 py-2" /></div>
-          <div><label for="orgType" class="mb-2 block font-semibold">Organization type *</label><select id="orgType" name="orgType" required class="w-full px-3 py-2"><option value="">Select an organization type</option>{organizationTypes.map(type => <option value={type.value}>{type.label}</option>)}</select></div>
-          <div><label for="orgDescription" class="mb-2 block font-semibold">About the organization *</label><p id="org-description-hint" class="mb-2 text-sm text-slate-600">Explain what your organization does and who it supports.</p><textarea id="orgDescription" name="orgDescription" rows="4" required aria-describedby="org-description-hint" class="w-full px-3 py-2"></textarea></div>
+          <div><label for="orgName" class="mb-2 block font-semibold">Organization name</label><input id="orgName" name="orgName" type="text" autocomplete="organization" required class="w-full px-3 py-2" /></div>
+          <div><label for="orgType" class="mb-2 block font-semibold">Organization type</label><select id="orgType" name="orgType" required class="w-full px-3 py-2"><option value="">Select an organization type</option>{organizationTypes.map(type => <option value={type.value}>{type.label}</option>)}</select></div>
+          <div><label for="orgDescription" class="mb-2 block font-semibold">About the organization</label><p id="org-description-hint" class="mb-2 text-sm text-slate-600">Explain what your organization does and who it supports.</p><textarea id="orgDescription" name="orgDescription" rows="4" required aria-describedby="org-description-hint" class="w-full px-3 py-2"></textarea></div>
           <div class="rounded border border-slate-200 bg-slate-50 p-5">
             <label for="orgLogo" class="mb-2 block font-semibold">Organization logo <span class="font-normal">(optional)</span></label>
             <p id="logo-hint" class="mb-3 text-sm text-slate-600">JPG, PNG or WebP, up to 2 MB. A square image works best.</p>
@@ -39,30 +39,30 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
         <div class="space-y-6">
           <p class="text-sm text-slate-600">Use the email address and phone number people should use to contact your service.</p>
           <div class="grid gap-6 sm:grid-cols-2">
-            <div><label for="email" class="mb-2 block font-semibold">Contact email *</label><input id="email" name="email" type="email" autocomplete="email" required class="w-full px-3 py-2" /></div>
-            <div><label for="phone" class="mb-2 block font-semibold">Contact phone *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="phone-hint" class="w-full px-3 py-2" /><p id="phone-hint" class="mt-2 text-sm text-slate-600">Include the country code, for example +265.</p></div>
+            <div><label for="email" class="mb-2 block font-semibold">Contact email</label><input id="email" name="email" type="email" autocomplete="email" required class="w-full px-3 py-2" /></div>
+            <div><label for="phone" class="mb-2 block font-semibold">Contact phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="phone-hint" class="w-full px-3 py-2" /><p id="phone-hint" class="mt-2 text-sm text-slate-600">Include the country code, for example +265.</p></div>
           </div>
-          <div><label for="website" class="mb-2 block font-semibold">Website (optional)</label><input id="website" name="website" type="url" autocomplete="url" placeholder="https://" class="w-full px-3 py-2" /></div>
-          <details class="rounded border border-slate-200 p-4 sm:p-5"><summary class="min-h-[44px] cursor-pointer font-semibold text-primary-900">Add social profiles (optional)</summary><div class="mt-4 grid gap-6 sm:grid-cols-2">{socialFields.map(([id, label, placeholder]) => <div><label for={id} class="mb-2 block font-semibold">{label}</label><input type="url" id={id} name={id} placeholder={placeholder} class="w-full px-3 py-2" /></div>)}</div></details>
+          <div><label for="website" class="mb-2 block font-semibold">Website (optional)</label><p id="website-hint" class="mb-1 text-sm text-slate-600">Start with https://</p>
+<input aria-describedby="website-hint" id="website" name="website" type="url" autocomplete="url" class="w-full px-3 py-2" /></div>
+          <details class="rounded border border-slate-200 p-4 sm:p-5"><summary class="min-h-[44px] cursor-pointer font-semibold text-primary-900">Add social profiles (optional)</summary><div class="mt-4 grid gap-6 sm:grid-cols-2">{socialFields.map(([id, label, example]) => <div><label for={id} class="mb-2 block font-semibold">{label}</label><p id={`${id}-hint`} class="mb-2 text-sm text-slate-600">Start with {example}</p><input type="url" id={id} name={id} aria-describedby={`${id}-hint`} class="w-full px-3 py-2" /></div>)}</div></details>
         </div>
       </fieldset>
       <fieldset class="form-section">
         <legend>3. Services and availability</legend>
         <div class="space-y-6">
-          <div><label for="serviceCategory" class="mb-2 block font-semibold">Primary service category *</label><select id="serviceCategory" name="serviceCategory" required class="w-full px-3 py-2"><option value="">Select a category</option>{serviceCategories.map(category => <option value={category.value}>{category.label}</option>)}</select></div>
-          <div><label for="serviceDescription" class="mb-2 block font-semibold">Service description *</label><p id="service-description-hint" class="mb-2 text-sm text-slate-600">Include the support available, who can use it and how to access it.</p><textarea id="serviceDescription" name="serviceDescription" rows="4" required aria-describedby="service-description-hint" class="w-full px-3 py-2"></textarea></div>
-          <fieldset aria-describedby="availability-hint"><legend class="mb-2 font-semibold">Days available *</legend><p id="availability-hint" class="mb-3 text-sm text-slate-600">Select every day the service is normally available.</p><div class="grid grid-cols-2 gap-x-6 sm:grid-cols-3">{days.map(day => <label class="flex min-h-[44px] items-center gap-3" for={day.toLowerCase()}><input type="checkbox" id={day.toLowerCase()} name="availability" value={day} class="h-5 w-5 rounded border-slate-400" /><span>{day}</span></label>)}</div></fieldset>
+          <div><label for="serviceCategory" class="mb-2 block font-semibold">Primary service category</label><select id="serviceCategory" name="serviceCategory" required class="w-full px-3 py-2"><option value="">Select a category</option>{serviceCategories.map(category => <option value={category.value}>{category.label}</option>)}</select></div>
+          <div><label for="serviceDescription" class="mb-2 block font-semibold">Service description</label><p id="service-description-hint" class="mb-2 text-sm text-slate-600">Include the support available, who can use it and how to access it.</p><textarea id="serviceDescription" name="serviceDescription" rows="4" required aria-describedby="service-description-hint" class="w-full px-3 py-2"></textarea></div>
+          <fieldset aria-describedby="availability-hint"><legend class="mb-2 font-semibold">Days available</legend><p id="availability-hint" class="mb-3 text-sm text-slate-600">Select every day the service is normally available.</p><div class="grid grid-cols-2 gap-x-6 sm:grid-cols-3">{days.map(day => <label class="flex min-h-[44px] items-center gap-3" for={day.toLowerCase()}><input type="checkbox" id={day.toLowerCase()} name="availability" value={day} class="h-5 w-5 rounded border-slate-400" /><span>{day}</span></label>)}</div></fieldset>
         </div>
       </fieldset>
       <fieldset class="form-section"><legend>4. Using the service</legend><ServiceAccessFields /></fieldset>
-      <div id="errorMessage" role="alert" tabindex="-1" class="hidden rounded border-l-4 border-red-700 bg-red-50 p-5 text-red-900"><p></p></div>
-      <div id="successMessage" role="status" tabindex="-1" class="hidden rounded border-l-4 border-green-700 bg-green-50 p-5 text-green-900"><p>Your registration has been submitted for review.</p><a href="/services" class="mt-3 inline-flex min-h-[44px] items-center underline underline-offset-4">Return to services</a></div>
       <div class="form-actions"><button type="submit" id="submitButton">Submit registration</button><a href="/services" class="inline-flex min-h-[44px] items-center px-3 text-primary-800 underline underline-offset-4">Cancel</a></div>
-      <p class="text-sm leading-6 text-slate-600">Check the information before submitting. Read our <a href="/privacy" class="text-primary-800 underline underline-offset-4">privacy policy</a> to learn how submissions are handled.</p>
+      <p class="text-sm leading-6 text-slate-600">Check the information before submitting. Read our <a href="/privacy" target="_blank" rel="noopener noreferrer" class="text-primary-800 underline underline-offset-4">privacy policy (opens in a new tab)</a> to learn how submissions are handled.</p>
     </form>
   </div>
 </MainLayout>
 <script>
+  import { initReviewedForm } from '../../utils/reviewedForm';
   import { logoValidationError, registrationPayload } from '../../utils/serviceRegistration';
   const form = document.getElementById('registrationForm') as HTMLFormElement;
   const submit = document.getElementById('submitButton') as HTMLButtonElement;
@@ -70,8 +70,12 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
   const logoUrl = document.getElementById('logoUrlInput') as HTMLInputElement;
   const logoStatus = document.getElementById('logoUploadStatus')!;
   const removeLogo = document.getElementById('removeLogo')!;
-  const error = document.getElementById('errorMessage')!;
-  const success = document.getElementById('successMessage')!;
+  const flow = initReviewedForm(form, {
+    title: 'Registration submitted for review',
+    message: 'Your organization and service details have been submitted for review. The listing has not been published. To correct your submission, contact the help desk with your organization’s name.',
+    href: '/services',
+    linkText: 'Return to services',
+  });
   const availability = [...form.querySelectorAll<HTMLInputElement>('input[name="availability"]')];
   let upload: AbortController | null = null;
   let uploading = false;
@@ -94,13 +98,14 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
     const validation = logoValidationError(file);
     if (validation) { logoStatus.textContent = validation; logo.setCustomValidity(validation); return; }
     uploading = true; submit.disabled = true; logoStatus.textContent = 'Uploading logo…';
+    logo.setCustomValidity('Wait for the logo to finish uploading.');
     try {
       const data = new FormData(); data.append('file', file); data.append('upload_preset', 'dzaleka_events');
       const response = await fetch('https://api.cloudinary.com/v1_1/dcvwslmow/upload', { method: 'POST', body: data, signal: controller.signal });
       const result = await response.json();
       if (!response.ok || !result.secure_url) throw new Error('Upload failed');
       if (controller.signal.aborted) return;
-      logoUrl.value = result.secure_url; logoStatus.textContent = 'Logo uploaded.';
+      logoUrl.value = result.secure_url; logoStatus.textContent = 'Logo uploaded.'; logo.setCustomValidity('');
     } catch {
       if (controller.signal.aborted) return;
       logoStatus.textContent = 'Logo upload failed. Choose the file again, or remove it to continue without a logo.';
@@ -109,15 +114,15 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
   });
   form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (uploading || sent || !form.reportValidity()) return;
-    submit.disabled = true; submit.textContent = 'Submitting…'; form.setAttribute('aria-busy', 'true'); error.classList.add('hidden');
+    if (uploading || sent) return;
+    submit.disabled = true; submit.textContent = 'Submitting…'; form.setAttribute('aria-busy', 'true');
     try {
       const response = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(registrationPayload(new FormData(form))) });
       if (!response.ok) throw new Error('Submission failed');
-      sent = true; success.classList.remove('hidden'); success.focus(); submit.textContent = 'Registration submitted';
+      sent = true; flow.succeed();
     } catch {
-      error.querySelector('p')!.textContent = 'Your registration could not be submitted. Your information is still here. Check your connection and try again.';
-      error.classList.remove('hidden'); error.focus(); submit.disabled = false; submit.textContent = 'Submit registration';
+      flow.fail('Your registration could not be submitted. Your information is still here. Check your connection and try again.');
+      submit.disabled = false; submit.textContent = 'Check your answers';
     } finally { form.removeAttribute('aria-busy'); }
   });
 </script>

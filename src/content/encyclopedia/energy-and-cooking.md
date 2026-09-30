@@ -34,8 +34,6 @@ sources:
     date: "2022"
 ---
 
-## Overview
-
 Like most displacement settings in sub-Saharan Africa, Dzaleka runs largely on biomass. Research on refugee settlements in the region reports that the great majority of camp households lack electricity access and rely on firewood and charcoal for cooking — a pattern that holds in Dzaleka, where most households cook on biomass and electricity access is limited to a minority of homes and institutions.
 
 The costs of biomass cooking fall unevenly. Firewood collection is customarily a task for women and girls, who face safety risks on collection trips outside the camp, and indoor smoke from cooking fires carries health consequences. Fuel is also a recurring household expense in a setting where cash is scarce.

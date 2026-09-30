@@ -2,7 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { getCollection } from 'astro:content';
-import { format } from 'date-fns';
+import { formatDateInCAT } from '../utils/eventDate';
 import { checkContentHealth, calculateSystemHealth } from '../utils/monitoring-utils';
 import { calculateContactStats, calculateSocialBreakdown, calculateFeaturedStats } from '../utils/serviceStats';
 
@@ -251,7 +251,7 @@ const last7DaysTrend = Array.from({ length: 7 }, (_, i) => {
   ].length;
 
   return {
-    date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }),
     value: count,
   };
 });
@@ -803,7 +803,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             <div class="bg-white rounded border border-slate-200 overflow-hidden">
               <div class="p-6 border-b border-slate-200 bg-slate-50">
                 <div class="flex items-center justify-between">
-                  <h2 class="text-lg font-semibold text-gray-900">Recent Activity</h2>
+                  <h2 class="text-lg font-semibold text-gray-900">Recent activity</h2>
                   <div class="flex items-center space-x-2">
                     <input
                       type="search"
@@ -848,7 +848,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                       </div>
                       <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
-                        <p class="text-sm text-gray-500 capitalize">{activity.type} • {new Date(activity.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                        <p class="text-sm text-gray-500 capitalize">{activity.type} • {new Date(activity.date).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                         {activity.description && (
                           <p class="text-sm text-gray-600 mt-1 line-clamp-2">{activity.description}</p>
                         )}
@@ -875,7 +875,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           <div class="space-y-6">
             <!-- Collection Breakdown -->
             <div class="bg-white rounded border border-slate-200 p-6">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">Content Breakdown</h3>
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Content breakdown</h3>
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-gray-600">Services</span>
@@ -906,7 +906,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
             <!-- Quick Actions -->
             <div class="bg-white rounded border border-slate-200 p-6">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick actions</h3>
               <div class="space-y-2">
                 <a href="/events/organize" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
                   <svg class="w-5 h-5 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -926,7 +926,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   </svg>
                   Upload Photo
                 </a>
-                <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" target="_blank" rel="noopener noreferrer" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                <a href="https://draft.blogger.com/u/0/blog/posts/415814352087212165" rel="noopener noreferrer" class="min-h-[44px] flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
                   <svg class="w-5 h-5 mr-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
@@ -937,7 +937,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
             <!-- Top Categories -->
             <div class="bg-white rounded border border-slate-200 p-6">
-              <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Top Categories</h3>
+              <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Top categories</h3>
               <div class="space-y-3">
                 {topCategories.map(([category, count]) => (
                   <div class="flex items-center justify-between">
@@ -956,7 +956,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <!-- Activity Trend Chart -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Activity Trend</h3>
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Activity trend</h3>
             <div class="h-64 sm:h-80">
               <canvas id="activityTrendChart" aria-label="Activity trend chart showing last 7 days"></canvas>
             </div>
@@ -964,7 +964,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Content Overview Chart -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Content Overview</h3>
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Content overview</h3>
             <div class="h-64 sm:h-80">
               <canvas id="contentOverviewChart" aria-label="Content overview pie chart"></canvas>
             </div>
@@ -972,7 +972,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Service Status Chart -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Service Status</h3>
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Service status</h3>
             <div class="h-48 sm:h-64">
               <canvas id="serviceStatusChart" aria-label="Service status doughnut chart"></canvas>
             </div>
@@ -980,7 +980,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Event Status Chart -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Event Status</h3>
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4">Event status</h3>
             <div class="h-48 sm:h-64">
               <canvas id="eventStatusChart" aria-label="Event status doughnut chart"></canvas>
             </div>
@@ -988,7 +988,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Top Categories Chart -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Service Categories</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Top service categories</h3>
             <div class="h-64">
               <canvas id="topCategoriesChart" aria-label="Top categories bar chart"></canvas>
             </div>
@@ -996,7 +996,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Arts & Culture Breakdown -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Arts & Culture Breakdown</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Arts & culture breakdown</h3>
             <div class="h-64">
               <canvas id="artsBreakdownChart" aria-label="Arts and culture breakdown pie chart"></canvas>
             </div>
@@ -1004,7 +1004,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
            <!-- Digital Presence Chart -->
            <div class="bg-white rounded border border-slate-200 p-6 lg:col-span-2">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Digital Presence (Services & Stores)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Digital presence (services & stores)</h3>
             <div class="h-64">
               <canvas id="digitalPresenceChart" aria-label="Digital presence bar chart"></canvas>
             </div>
@@ -1012,7 +1012,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Verification Status Chart -->
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Service Verification</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Service verification</h3>
             <div class="h-64">
               <canvas id="verificationStatusChart" aria-label="Verification status doughnut chart"></canvas>
             </div>
@@ -1020,7 +1020,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
            <!-- Featured Content Chart -->
            <div class="bg-white rounded border border-slate-200 p-6 lg:col-span-3">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Featured Content Distribution (All Collections)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Featured content distribution (all collections)</h3>
             <div class="h-80">
               <canvas id="featuredContentChart" aria-label="Featured content pie chart"></canvas>
             </div>
@@ -1031,16 +1031,16 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         <div class="mt-8 space-y-8">
           <!-- Resource Analytics -->
           <div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Resource Analytics</h3>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Resource analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div class="bg-white rounded border border-slate-200 p-6">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Top Resource Categories</h4>
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Top resource categories</h4>
                 <div class="h-64">
                   <canvas id="resourceCategoriesChart"></canvas>
                 </div>
               </div>
               <div class="bg-white rounded border border-slate-200 p-6">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Resource Activity</h4>
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Resource activity</h4>
                 <div class="flex items-center justify-between mb-6">
                   <div>
                     <p class="text-sm text-gray-500">Total Resources</p>
@@ -1052,12 +1052,12 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   </div>
                 </div>
                 <div class="overflow-hidden rounded border border-gray-200">
-                  <table class="min-w-full divide-y divide-gray-200">
+                  <table class="min-w-full divide-y divide-gray-200"><caption class="sr-only">Recent resources</caption>
                     <thead class="bg-gray-50">
                       <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -1065,7 +1065,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                         <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick={`window.location.href='/resources/${r.id}'`}>
                           <td class="px-4 py-3 text-sm text-gray-900 truncate max-w-[150px]">{r.data.title}</td>
                           <td class="px-4 py-3 text-sm text-gray-500">{r.data.category}</td>
-                          <td class="px-4 py-3 text-sm text-gray-500">{new Date(r.data.date).toLocaleDateString()}</td>
+                          <td class="px-4 py-3 text-sm text-gray-500">{new Date(r.data.date).toLocaleDateString('en-GB')}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1077,10 +1077,10 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Skills Exchange Analytics -->
           <div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Skills Exchange Analytics</h3>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Skills Exchange analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div class="bg-white rounded border border-slate-200 p-6">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Skills Distribution</h4>
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Skills distribution</h4>
                 <div class="h-48">
                   <canvas id="skillsDistributionChart"></canvas>
                 </div>
@@ -1096,7 +1096,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                 </div>
               </div>
               <div class="bg-white rounded border border-slate-200 p-6 lg:col-span-2">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Top Skill Categories</h4>
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Top skill categories</h4>
                 <div class="h-64">
                   <canvas id="skillCategoriesChart"></canvas>
                 </div>
@@ -1106,23 +1106,23 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
           <!-- Jobs Analytics -->
           <div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Jobs Analytics</h3>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Jobs analytics</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div class="bg-white rounded border border-slate-200 p-6">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Jobs Status</h4>
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Jobs status</h4>
                 <div class="h-64">
                   <canvas id="jobStatusChart"></canvas>
                 </div>
               </div>
               <div class="bg-white rounded border border-slate-200 p-6">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Recent Job Activity</h4>
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Recent job activity</h4>
                 <div class="overflow-hidden rounded border border-gray-200">
-                  <table class="min-w-full divide-y divide-gray-200">
+                  <table class="min-w-full divide-y divide-gray-200"><caption class="sr-only">Recent job listings</caption>
                     <thead class="bg-gray-50">
                       <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Org</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Org</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -1150,7 +1150,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       <div id="content-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="content-tab">
         <div class="bg-white rounded border border-slate-200">
           <div class="p-6 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Content Management</h2>
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Content management</h2>
             <div class="flex flex-col sm:flex-row gap-4">
               <input
                 type="search"
@@ -1185,7 +1185,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
             </div>
           </div>
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200"><caption class="sr-only">Content management records</caption>
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
@@ -1280,14 +1280,14 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
         <!-- Content Health Chart & Details -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Content Health Distribution</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Content health distribution</h3>
             <div class="h-64">
               <canvas id="contentHealthChart" aria-label="Content health distribution chart"></canvas>
             </div>
           </div>
 
           <div class="bg-white rounded border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Health by Collection</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Health by collection</h3>
             <div class="space-y-4">
               {Object.entries(contentHealthData).map(([collection, data]) => {
                 const percentage = data.total > 0 ? Math.round(((data.total - data.missingImages.length - data.incompleteMetadata.length - data.brokenLinks.length) / data.total) * 100) : 100;
@@ -1312,7 +1312,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
 
         <!-- System Health Monitoring -->
         <div class="mt-8">
-          <h3 class="text-xl font-bold text-gray-900 mb-4">System Health Monitoring</h3>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">System health monitoring</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(apiStatus).map(([serviceName, statusData]) => (
               <div class="bg-white rounded border border-slate-200 p-6">
@@ -1328,7 +1328,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                 </div>
                 <div class="flex items-center justify-between text-sm text-gray-600 mt-1">
                   <span>Last Checked:</span>
-                  <span class="font-medium">{format(new Date(), 'MMM dd, HH:mm')}</span>
+                  <span class="font-medium">{formatDateInCAT(new Date(), 'MMM d, yyyy')} at {formatDateInCAT(new Date(), 'h:mm a')} CAT</span>
                 </div>
               </div>
             ))}
@@ -1345,7 +1345,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
       <!-- Export Tab -->
       <div id="export-panel" class="tab-panel hidden" role="tabpanel" aria-labelledby="export-tab">
         <div class="bg-white rounded border border-slate-200 p-6">
-          <h2 class="text-lg font-semibold text-gray-900 mb-4">Data Export Tools</h2>
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">Data export tools</h2>
           <p class="text-gray-600 mb-6">Select the type of data you wish to export. Data will be provided in CSV format.</p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1355,7 +1355,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900 mb-2">Services Data</h4>
+              <h3 class="font-medium text-gray-900 mb-2">Services data</h3>
               <p class="text-sm text-gray-500 mb-4">Export all registered services and their details.</p>
               <button data-export-type="services" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Services
@@ -1368,7 +1368,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900 mb-2">Events Data</h4>
+              <h3 class="font-medium text-gray-900 mb-2">Events data</h3>
               <p class="text-sm text-gray-500 mb-4">Download details of all upcoming and past events.</p>
               <button data-export-type="events" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Events
@@ -1381,7 +1381,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900 mb-2">News Articles</h4>
+              <h3 class="font-medium text-gray-900 mb-2">News articles</h3>
               <p class="text-sm text-gray-500 mb-4">Get a CSV of all published news and announcements.</p>
               <button data-export-type="news" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export News
@@ -1394,7 +1394,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900 mb-2">Jobs Listings</h4>
+              <h3 class="font-medium text-gray-900 mb-2">Jobs listings</h3>
               <p class="text-sm text-gray-500 mb-4">Export all job postings, active and inactive.</p>
               <button data-export-type="jobs" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Jobs
@@ -1407,7 +1407,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900 mb-2">Photos Data</h4>
+              <h3 class="font-medium text-gray-900 mb-2">Photos data</h3>
               <p class="text-sm text-gray-500 mb-4">Download metadata for all uploaded photos.</p>
               <button data-export-type="photos" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export Photos
@@ -1420,7 +1420,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4" />
                 </svg>
               </div>
-              <h4 class="font-medium text-gray-900 mb-2">All Content</h4>
+              <h3 class="font-medium text-gray-900 mb-2">All content</h3>
               <p class="text-sm text-gray-500 mb-4">Export a consolidated CSV of all content types.</p>
               <button data-export-type="all" class="min-h-[44px] start-export-btn inline-flex items-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                 Export All
@@ -2216,7 +2216,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 truncate">${item.title}</p>
-            <p class="text-sm text-gray-500 capitalize">${item.type} • ${new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+            <p class="text-sm text-gray-500 capitalize">${item.type} • ${new Date(item.date).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
             ${item.description ? `<p class="text-sm text-gray-600 mt-1 line-clamp-2">${item.description}</p>` : ''}
           </div>
           <a
@@ -2339,7 +2339,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           `"${(item.title || '').replace(/"/g, '""')}"`,
           `"${(item.category || '').replace(/"/g, '""')}"`,
           item.status,
-          new Date(item.date).toLocaleDateString(),
+          new Date(item.date).toLocaleDateString('en-GB'),
           `"${(item.description || '').replace(/"/g, '""')}"`
         ];
         csvRows.push(row.join(','));
@@ -2449,7 +2449,7 @@ const inactiveTabClass = "text-slate-600 hover:bg-slate-100 hover:text-slate-900
           </span>
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          ${new Date(item.date).toLocaleDateString()}
+          ${new Date(item.date).toLocaleDateString('en-GB')}
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
           <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${ item.status === 'Active' || item.status === 'Published' || item.status === 'open' || item.status === 'Upcoming' ? 'bg-green-100 text-green-800' : item.status === 'Past' || item.status === 'closed' ? 'bg-gray-100 text-gray-800' : 'bg-yellow-100 text-yellow-800' }">

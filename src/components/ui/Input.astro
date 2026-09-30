@@ -43,22 +43,24 @@ const {
 } = Astro.props;
 
 const inputId = `input-${name}`;
+const hint = helpText || (type !== 'search' ? placeholder : '');
 ---
 
 <div class={`mb-4 ${className}`}>
   <label for={inputId} class="block text-sm font-medium text-gray-700 mb-1">
     {label}
-    {required && <span class="text-red-500">*</span>}
+    {!required && type !== 'search' && <span class="font-normal text-slate-600">(optional)</span>}
   </label>
 
+  {hint && <p id={`${inputId}-help`} class="mb-2 text-sm text-slate-600">{hint}</p>}
   <div class="relative">
     <input
-      aria-describedby={[helpText && `${inputId}-help`, `${inputId}-error`].filter(Boolean).join(' ')}
+      aria-describedby={[hint && `${inputId}-help`, `${inputId}-error`].filter(Boolean).join(' ')}
       type={type}
       id={inputId}
       name={name}
       value={value}
-      placeholder={placeholder}
+      placeholder={type === 'search' ? placeholder : undefined}
       required={required}
       pattern={pattern}
       minlength={minlength}
@@ -68,9 +70,6 @@ const inputId = `input-${name}`;
 
   </div>
 
-  {helpText && (
-    <p id={`${inputId}-help`} class="mt-2 text-sm text-slate-600">{helpText}</p>
-  )}
 
   <!-- Error message (shown via JavaScript) -->
   <p id={`${inputId}-error`} aria-live="polite" class="hidden mt-2 text-sm text-red-700"></p>

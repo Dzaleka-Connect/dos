@@ -41,8 +41,6 @@ relatedEntries:
   - "dzaleka-refugee-camp"
 ---
 
-## Overview
-
 ***Environmental and Socio-Economic Impact of Hosting Refugees: A Case Study of Villages around the Dzaleka Refugee Camp in Dowa District, Malawi*** is a landmark 2016 doctoral dissertation completed at the **University of South Africa (UNISA)**. The research represents one of the most comprehensive long-term ecological and socio-economic evaluations of Dzaleka's footprint on the surrounding host communities in Central Malawi.
 
 As Dzaleka's population expanded beyond its original capacity of 10,000 to over 50,000 residents, the dissertation systematically measured environmental stress on local forests, arable land, and groundwater aquifers, while assessing economic interactions between refugees and Malawian villagers.

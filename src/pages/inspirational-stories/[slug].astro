@@ -103,7 +103,7 @@ const shareLinks = {
               <span class="rounded bg-gray-100 px-3 py-1.5">{country}</span>
               {age && <span class="rounded bg-gray-100 px-3 py-1.5">{age} years old</span>}
               <time class="rounded bg-gray-100 px-3 py-1.5">
-                {new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date(date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
             </div>
           </div>
@@ -138,7 +138,6 @@ const shareLinks = {
                 {contact.whatsapp && (
                   <a
                     href={`https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, '')}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
@@ -156,7 +155,6 @@ const shareLinks = {
                 {contact.twitter && (
                   <a
                     href={`https://twitter.com/${contact.twitter.replace('@', '')}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
@@ -166,7 +164,6 @@ const shareLinks = {
                 {contact.website && (
                   <a
                     href={contact.website.startsWith('http') ? contact.website : `https://${contact.website}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     class="rounded border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary-300 hover:text-primary-700"
                   >
@@ -184,9 +181,9 @@ const shareLinks = {
                 <p class="mt-1 text-sm text-gray-600">Help other people find this profile.</p>
               </div>
               <div class="flex flex-wrap gap-2">
-                <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Twitter</a>
-                <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Facebook</a>
-                <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">WhatsApp</a>
+                <a href={shareLinks.twitter} rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Twitter</a>
+                <a href={shareLinks.facebook} rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">Facebook</a>
+                <a href={shareLinks.whatsapp} rel="noopener noreferrer" class="rounded border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:text-primary-700">WhatsApp</a>
               </div>
             </div>
           </section>

@@ -23,7 +23,7 @@ const formId = 'emergency-relief-form';
 
         <div class="bg-white rounded p-5 sm:p-8">
           <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Emergency Relief Application</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Emergency relief application</h1>
             <p class="text-gray-600">
               Request emergency assistance for immediate needs. We prioritize cases based on urgency and available resources.
             </p>
@@ -51,11 +51,11 @@ const formId = 'emergency-relief-form';
 
             {/* Personal Information */}
             <div class="space-y-6">
-              <h2 class="text-xl font-semibold text-gray-900">Personal Information</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Personal information</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">Given name</label>
                   <input
                     type="text"
                     name="firstName"
@@ -66,7 +66,7 @@ const formId = 'emergency-relief-form';
                 </div>
 
                 <div>
-                  <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                  <label for="lastName" class="block text-sm font-medium text-gray-700">Family name</label>
                   <input
                     type="text"
                     name="lastName"
@@ -78,7 +78,7 @@ const formId = 'emergency-relief-form';
               </div>
 
               <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number (for urgent contact)</label>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone number (for urgent contact)</label>
                 <input
                   type="tel"
                   name="phone"
@@ -89,19 +89,19 @@ const formId = 'emergency-relief-form';
               </div>
 
               <div>
-                <label for="location" class="block text-sm font-medium text-gray-700">Current Location</label>
-                <input
+                <label for="location" class="block text-sm font-medium text-gray-700">Current location</label>
+                <p id="location-hint" class="mb-1 text-sm text-slate-600">For example, Block/Section number, Dzaleka Refugee Camp</p>
+                <input aria-describedby="location-hint"
                   type="text"
                   name="location"
                   id="location"
                   required
-                  placeholder="For example, Block/Section number, Dzaleka Refugee Camp"
                   class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
                 />
               </div>
 
               <div>
-                <label for="familySize" class="block text-sm font-medium text-gray-700">Number of Family Members</label>
+                <label for="familySize" class="block text-sm font-medium text-gray-700">Number of family members</label>
                 <input
                   type="number"
                   name="familySize"
@@ -115,10 +115,10 @@ const formId = 'emergency-relief-form';
 
             {/* Emergency Details */}
             <div class="space-y-6 pt-6 border-t">
-              <h2 class="text-xl font-semibold text-gray-900">Emergency Details</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Emergency details</h2>
 
               <div>
-                <label for="assistanceType" class="block text-sm font-medium text-gray-700">Type of Assistance Needed</label>
+                <label for="assistanceType" class="block text-sm font-medium text-gray-700">Type of assistance needed</label>
                 <select
                   name="assistanceType"
                   id="assistanceType"
@@ -135,19 +135,19 @@ const formId = 'emergency-relief-form';
               </div>
 
               <div>
-                <label for="situation" class="block text-sm font-medium text-gray-700">Emergency Situation</label>
-                <textarea
+                <label for="situation" class="block text-sm font-medium text-gray-700">Emergency situation</label>
+                <p id="situation-hint" class="mb-1 text-sm text-slate-600">Describe your emergency situation and immediate needs</p>
+                <textarea aria-describedby="situation-hint"
                   name="situation"
                   id="situation"
                   rows="4"
                   required
                   class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                  placeholder="Describe your emergency situation and immediate needs..."
                 ></textarea>
               </div>
 
               <div>
-                <label for="urgency" class="block text-sm font-medium text-gray-700">Urgency Level</label>
+                <label for="urgency" class="block text-sm font-medium text-gray-700">Urgency level</label>
                 <select
                   name="urgency"
                   id="urgency"
@@ -162,7 +162,7 @@ const formId = 'emergency-relief-form';
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700">Current Support</label>
+                <label class="block text-sm font-medium text-gray-700">Current support</label>
                 <div class="mt-2 space-y-2">
                   <div class="flex items-start">
                     <div class="flex items-center h-5">
@@ -196,22 +196,21 @@ const formId = 'emergency-relief-form';
 
             {/* File Upload Section */}
             <div class="space-y-6 pt-6 border-t">
-              <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Supporting documents</h2>
 
               <div class="space-y-4">
                 <div>
                   <label for="documentLinks" class="block text-sm font-medium text-gray-700">
-                    Document Links
-                  </label>
+                    Document links <span class="font-normal text-slate-600">(optional)</span></label>
                   <p class="text-sm text-gray-500 mb-2">
                     Upload your documents to Google Drive or another file sharing service and paste the links below. Make sure the links are accessible.
                   </p>
-                  <textarea
+                  <p id="documentLinks-hint" class="mb-1 text-sm text-slate-600">Paste your document links here, one per line</p>
+                  <textarea aria-describedby="documentLinks-hint"
                     name="documentLinks"
                     id="documentLinks"
                     rows="3"
                     class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                    placeholder="Paste your document links here, one per line..."
                   ></textarea>
                 </div>
               </div>
@@ -233,7 +232,7 @@ const formId = 'emergency-relief-form';
                     />
                   </div>
                   <div class="ml-3 text-sm">
-                    <label for="consent" class="font-medium text-gray-700">Information Consent</label>
+                    <label for="consent" class="font-medium text-gray-700">Information consent</label>
                     <p class="text-gray-500">I confirm that the information provided is accurate and consent to its use for processing my emergency assistance request.</p>
                   </div>
                 </div>

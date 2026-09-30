@@ -59,7 +59,7 @@ function getFileTypeColor(fileType: string) {
 
 // Function to format date
 function formatDate(date: Date) {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -178,14 +178,13 @@ function getDownloadUrl(resource: any) {
               href={downloadUrl}
               class="inline-flex min-h-[44px] items-center justify-center px-4 py-2 border border-transparent rounded text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors w-full"
               download
-              target="_blank"
               rel="noopener noreferrer"
               onclick="event.stopPropagation();"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download
+              <span>Download {resource.data.fileType?.toUpperCase() || 'file'}{resource.data.fileSize && ` (${resource.data.fileSize})`}<span class="sr-only">: {resource.data.title}</span></span>
             </a>
           </div>
         )}
@@ -195,7 +194,6 @@ function getDownloadUrl(resource: any) {
             <a
               href={resource.data.resourceUrl}
               class="inline-flex min-h-[44px] items-center justify-center px-4 py-2 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors w-full"
-              target="_blank"
               rel="noopener noreferrer"
               onclick="event.stopPropagation();"
             >

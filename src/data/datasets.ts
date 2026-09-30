@@ -114,7 +114,7 @@ function getLatestDate(entries: Array<{ data: Record<string, unknown> }>): Date 
 function formatDate(date: Date | null): string {
   if (!date) return 'Published dataset';
 
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -122,7 +122,7 @@ function formatDate(date: Date | null): string {
 }
 
 function formatCount(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value);
+  return new Intl.NumberFormat('en-GB').format(value);
 }
 
 async function getCollectionStats(collection: DatasetCollectionKey): Promise<CollectionStats> {

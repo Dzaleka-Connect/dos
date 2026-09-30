@@ -5,12 +5,14 @@ interface Props {
   news: any;
   featured?: boolean;
   large?: boolean;
+  headingLevel?: 2 | 3;
 }
 
-const { news, featured = false, large = false } = Astro.props;
+const { news, featured = false, large = false, headingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
 const { data, id } = news;
 
-const formattedDate = new Date(data.date).toLocaleDateString('en-US', {
+const formattedDate = new Date(data.date).toLocaleDateString('en-GB', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -84,9 +86,9 @@ const placeholderImage = data.image && optimizedImage !== data.image
       )}
     </div>
 
-    <h3 class={`mt-3 font-semibold tracking-tight text-slate-900 ${large ? 'text-2xl sm:text-[2rem]' : 'text-lg'}`}>
+    <Heading class={`mt-3 font-semibold tracking-tight text-slate-900 ${large ? 'text-2xl sm:text-[2rem]' : 'text-lg'}`}>
       {data.title}
-    </h3>
+    </Heading>
 
     <p class={`mt-3 text-slate-600 ${large ? 'text-base leading-7' : 'text-sm leading-6'} line-clamp-3`}>
       {data.description}

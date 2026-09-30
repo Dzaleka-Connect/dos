@@ -40,7 +40,7 @@ const fileTypes = [
         >
           <option value="">All Categories</option>
           {categories.map(category => (
-            <option 
+            <option
               value={category}
               selected={category === selectedCategory}
             >
@@ -52,7 +52,7 @@ const fileTypes = [
 
       <div>
         <label for="typeFilter" class="block text-sm font-medium text-gray-700 mb-2">
-          File Type
+          File type
         </label>
         <select
           id="typeFilter"
@@ -61,7 +61,7 @@ const fileTypes = [
         >
           <option value="">All File Types</option>
           {fileTypes.map(type => (
-            <option 
+            <option
               value={type.value}
               selected={type.value === selectedType}
             >
@@ -82,7 +82,7 @@ const fileTypes = [
     select.addEventListener('change', () => {
       const formData = new FormData(form);
       const params = new URLSearchParams(window.location.search);
-      
+
       formData.forEach((value, key) => {
         if (value) {
           params.set(key, value.toString());

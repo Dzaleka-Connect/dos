@@ -1,0 +1,23 @@
+---
+export interface Fact { label: string; value?: string | number | string[] | null; href?: string; }
+interface Props { facts: Fact[]; class?: string; }
+const { facts: items, class: className } = Astro.props;
+const facts = items.filter(fact => fact.value !== undefined && fact.value !== null && String(fact.value).trim() !== '');
+---
+<dl class:list={['fact-summary', className]}>
+  {facts.map(({ label, value, href }) => <div>
+    <dt>{label}</dt>
+    <dd>{href ? <a href={href}>{Array.isArray(value) ? value.join(', ') : value}</a> : Array.isArray(value) ? value.join(', ') : value}</dd>
+  </div>)}
+</dl>
+<style>
+  .fact-summary { container-type: inline-size; }
+  .fact-summary > div { border-top: 1px solid #cbd5e1; padding: 1rem 0; }
+  dt { font-weight: 600; font-size: .9375rem; color: #334155; }
+  dd { margin: .25rem 0 0; line-height: 1.6; color: #0f172a; white-space: pre-line; overflow-wrap: anywhere; min-width: 0; }
+  a { color: #075985; text-decoration: underline; text-underline-offset: .2em; }
+  @container (min-width: 30rem) {
+    .fact-summary > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 1.5rem; }
+    dd { margin-top: 0; }
+  }
+</style>

@@ -220,7 +220,7 @@ export function InstagramStoriesViewer({ yearGroups }: Props) {
                       </span>
                     </div>
                     <p className="text-[10px] text-slate-300 truncate">
-                      {currentPhoto.date ? new Date(currentPhoto.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : `${activeGroup.year}`}
+                      {currentPhoto.date ? new Date(currentPhoto.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : `${activeGroup.year}`}
                       {currentPhoto.location ? ` • ${currentPhoto.location}` : ''}
                     </p>
                   </div>

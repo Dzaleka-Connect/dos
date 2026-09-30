@@ -43,8 +43,6 @@ relatedEntries:
   - "dzaleka-refugee-camp"
 ---
 
-## Overview
-
 ***Refugees' Livelihood Strategies in a Setting of Long-term Encampment: The Case of Dzaleka Refugee Camp in Malawi*** is a 2022 academic master's thesis published by **Erasmus University Rotterdam**. The research offers a critical empirical examination of how long-term camp residents adapt, survive, and build economic agency despite severe legal restrictions on formal employment, business ownership, and land tenure under Malawi's 1989 Refugee Act.
 
 Drawing on extensive qualitative fieldwork inside Dzaleka, the study analyses the divergence between humanitarian policy narratives of "self-reliance" and the day-to-day realities of navigating chronic economic vulnerability.

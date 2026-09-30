@@ -160,7 +160,7 @@ export default function LocationPickerMap({
     <div class="space-y-3">
       <div className="flex items-center justify-between">
         <label className="block text-sm font-semibold text-slate-700">
-          Interactive Pin Coordinate Picker <span className="text-red-500">*</span>
+          Choose the location on the map
         </label>
         <span className="text-xs text-sky-700 font-mono font-semibold" id="coordDisplay">
           {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}

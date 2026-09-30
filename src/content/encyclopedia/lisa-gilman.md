@@ -40,8 +40,6 @@ relatedEntries:
   - "menes-la-plume"
 ---
 
-## Overview
-
 **Dr. Lisa Gilman** is a prominent American professor of folklore, anthropology, and English at **George Mason University** (Fairfax, Virginia). She is a leading academic researcher and cultural advocate who co-founded the **Dzaleka Art Project**, an collaborative initiative between camp-based refugee artists and international researchers.
 
 Dr. Gilman’s extensive field research in Malawi focuses on how displaced individuals utilise folklore, music, dance, theater, and visual art as mechanisms for self-definition, trauma recovery, economic survival, and political voice.

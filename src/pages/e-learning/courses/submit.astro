@@ -21,67 +21,65 @@ const categories = [
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="bg-white rounded border border-gray-200 p-8 md:p-10">
         <div class="text-center mb-10">
-          <h1 class="text-3xl font-bold text-gray-900 mb-3">Submit a Course</h1>
+          <h1 class="text-3xl font-bold text-gray-900 mb-3">Submit a course</h1>
           <p class="text-gray-600 max-w-lg mx-auto">Share your knowledge and help others learn. Your course will be reviewed by our team before publishing.</p>
         </div>
 
         <form id="courseForm" class="submission-form space-y-8">
           <!-- Course Title -->
           <div>
-            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Course Title *</label>
-            <input
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Course title</label>
+            <p id="title-hint" class="mb-1 text-sm text-slate-600">For example, Introduction to Python Programming</p>
+            <input aria-describedby="title-hint"
               type="text"
               id="title"
               name="title"
               required
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-              placeholder="For example, Introduction to Python Programming"
             />
           </div>
 
           <!-- Author Info -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label for="author" class="block text-sm font-medium text-gray-700 mb-2">Author Name *</label>
+              <label for="author" class="block text-sm font-medium text-gray-700 mb-2">Author name</label>
               <input
                 type="text"
                 id="author"
                 name="author"
                 required
                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-                placeholder="Your name"
               />
             </div>
             <div>
-              <label for="authorEmail" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+              <label for="authorEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
               <input
                 type="email"
                 id="authorEmail"
                 name="authorEmail"
                 required
                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-                placeholder="your@email.com"
               />
             </div>
           </div>
 
           <!-- Description -->
           <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Course Description *</label>
-            <textarea
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Course description</label>
+            <p id="description-hint" class="mb-1 text-sm text-slate-600">A brief summary of what students will learn</p>
+            <textarea aria-describedby="description-hint"
               id="description"
               name="description"
               rows="3"
               required
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-              placeholder="A brief summary of what students will learn..."
             ></textarea>
           </div>
 
           <!-- Category and Level -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
               <div class="relative">
                 <select
                   id="category"
@@ -102,7 +100,7 @@ const categories = [
               </div>
             </div>
             <div>
-              <label for="level" class="block text-sm font-medium text-gray-700 mb-2">Difficulty Level *</label>
+              <label for="level" class="block text-sm font-medium text-gray-700 mb-2">Difficulty level</label>
               <div class="relative">
                 <select
                   id="level"
@@ -126,20 +124,20 @@ const categories = [
 
           <!-- Duration -->
           <div>
-            <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">Estimated Duration *</label>
-            <input
+            <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">Estimated duration</label>
+            <p id="duration-hint" class="mb-1 text-sm text-slate-600">For example, 4 weeks, 10 hours, 2 days</p>
+            <input aria-describedby="duration-hint"
               type="text"
               id="duration"
               name="duration"
               required
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-              placeholder="For example, 4 weeks, 10 hours, 2 days"
             />
           </div>
 
           <!-- Course Content -->
           <div>
-            <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Course Content *</label>
+            <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Course content</label>
             <p class="text-xs text-gray-500 mb-3">Write your course content using Markdown. Include modules, lessons, resources, and any relevant information.</p>
             <textarea
               id="content"
@@ -176,38 +174,38 @@ Content for module 2...
           <!-- Video URL -->
           <div>
             <label for="videoUrl" class="block text-sm font-medium text-gray-700 mb-2">Video URL (optional)</label>
-            <input
+            <p id="videoUrl-hint" class="mb-1 text-sm text-slate-600">For example, https://www.youtube.com/embed/</p>
+            <input aria-describedby="videoUrl-hint"
               type="url"
               id="videoUrl"
               name="videoUrl"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-              placeholder="https://www.youtube.com/embed/..."
             />
             <p class="text-xs text-gray-500 mt-1.5">YouTube embed URL for course intro video</p>
           </div>
 
           <!-- External Link -->
           <div>
-            <label for="externalLink" class="block text-sm font-medium text-gray-700 mb-2">External Course Link (optional)</label>
-            <input
+            <label for="externalLink" class="block text-sm font-medium text-gray-700 mb-2">External course link (optional)</label>
+            <p id="externalLink-hint" class="mb-1 text-sm text-slate-600">Start with https://</p>
+            <input aria-describedby="externalLink-hint"
               type="url"
               id="externalLink"
               name="externalLink"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-              placeholder="https://..."
             />
             <p class="text-xs text-gray-500 mt-1.5">Link to your course on an external platform</p>
           </div>
 
           <!-- Tags -->
           <div>
-            <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags / Keywords</label>
-            <input
+            <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags / keywords <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="tags-hint" class="mb-1 text-sm text-slate-600">For example, python, programming, beginner, coding (comma separated)</p>
+            <input aria-describedby="tags-hint"
               type="text"
               id="tags"
               name="tags"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
-              placeholder="python, programming, beginner, coding (comma separated)"
             />
           </div>
 

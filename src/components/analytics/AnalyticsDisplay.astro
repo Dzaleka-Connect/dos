@@ -6,7 +6,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
     <!-- Summary Cards -->
     <div class="bg-white rounded p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Overview</h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Visit summary</h3>
       <div class="grid grid-cols-2 gap-4">
         <div class="bg-blue-50 rounded p-4">
           <p class="text-sm text-gray-600">Total Page Views</p>
@@ -29,14 +29,14 @@
 
     <!-- Visitor Trend Chart -->
     <div class="bg-white rounded p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Visitor Trend</h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Visitor trend</h3>
       <canvas id="visitor-trend-chart" class="w-full h-64"></canvas>
     </div>
   </div>
 
   <!-- Popular Pages Table -->
   <div class="bg-white rounded p-6 mb-8">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Popular Pages</h3>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Popular pages</h3>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white">
         <thead class="bg-gray-50">
@@ -59,7 +59,7 @@
 
   <!-- Referrers Section -->
   <div class="bg-white rounded p-6">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Top Referrers</h3>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Top referrers</h3>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white">
         <thead class="bg-gray-50">
@@ -81,7 +81,7 @@
   <!-- Note about data -->
   <div class="mt-8 text-sm text-gray-500 bg-gray-50 rounded p-4">
     <p>
-      <strong>Note:</strong> This analytics data is stored locally in your browser using localStorage. 
+      <strong>Note:</strong> This analytics data is stored locally in your browser using localStorage.
       It does not track personal information and is not shared with any third parties.
     </p>
     <div class="mt-4 flex justify-end">
@@ -103,18 +103,18 @@
     // Fallback to our polyfill
     Chart = (await import('../../utils/chart-polyfill.js')).default;
   }
-  
+
   // Import the analytics utilities
   import { getAnalyticsData, clearAnalyticsData } from '../../utils/analytics.js';
-  
+
   // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return '-';
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString(undefined, { 
-        year: 'numeric', 
-        month: 'short', 
+      return date.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'short',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
@@ -124,33 +124,33 @@
       return '-';
     }
   };
-  
+
   // Initialize the analytics display
   const initializeDisplay = () => {
     try {
       console.log('Initializing analytics display...');
       const data = getAnalyticsData();
       console.log('Analytics data:', data);
-      
+
       // Update overview cards
       document.getElementById('total-views').textContent = data?.totalViews || 0;
-      
+
       const today = new Date().toISOString().split('T')[0];
       const todayVisitors = data?.visitors?.[today] || [];
       document.getElementById('unique-visitors').textContent = todayVisitors.length;
-      
+
       document.getElementById('first-visit').textContent = formatDate(data?.firstVisit);
       document.getElementById('last-visit').textContent = formatDate(data?.lastVisit);
-      
+
       // Populate popular pages table
       const pagesBody = document.getElementById('popular-pages-body');
       pagesBody.innerHTML = '';
-      
+
       const pageEntries = Object.entries(data?.pageViews || {});
-      
+
       // Sort pages by view count (descending)
       pageEntries.sort((a, b) => b[1] - a[1]);
-      
+
       if (pageEntries.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -171,16 +171,16 @@
           pagesBody.appendChild(row);
         });
       }
-      
+
       // Populate referrers table
       const referrersBody = document.getElementById('referrers-body');
       referrersBody.innerHTML = '';
-      
+
       const referrerEntries = Object.entries(data?.referrers || {});
-      
+
       // Sort referrers by count (descending)
       referrerEntries.sort((a, b) => b[1] - a[1]);
-      
+
       if (referrerEntries.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -198,7 +198,7 @@
           referrersBody.appendChild(row);
         });
       }
-      
+
       // Generate visitor trend chart
       const visitorTrend = getVisitorTrendData(data);
       createVisitorTrendChart(visitorTrend.dates, visitorTrend.counts);
@@ -214,7 +214,7 @@
           </button>
         </div>
       `;
-      
+
       // Add event listener for error reset button
       setTimeout(() => {
         const errorResetBtn = document.getElementById('error-reset-analytics');
@@ -227,41 +227,41 @@
       }, 100);
     }
   };
-  
+
   // Get visitor trend data for the chart
   const getVisitorTrendData = (data) => {
     try {
       const dates = [];
       const counts = [];
-      
+
       // Get the last 7 days
       const today = new Date();
       for (let i = 6; i >= 0; i--) {
         const date = new Date(today);
         date.setDate(today.getDate() - i);
         const dateString = date.toISOString().split('T')[0];
-        
-        dates.push(date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+
+        dates.push(date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }));
         const visitors = data?.visitors?.[dateString] || [];
         counts.push(visitors.length);
       }
-      
+
       return { dates, counts };
     } catch (error) {
       console.error('Error getting visitor trend data:', error);
       return { dates: [], counts: [] };
     }
   };
-  
+
   // Create the visitor trend chart
   const createVisitorTrendChart = (dates, counts) => {
     const ctx = document.getElementById('visitor-trend-chart');
-    
+
     // If a chart already exists, destroy it
     if (window.visitorChart) {
       window.visitorChart.destroy();
     }
-    
+
     window.visitorChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -300,11 +300,11 @@
       }
     });
   };
-  
+
   // Initialize when the DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
     initializeDisplay();
-    
+
     // Add event listener for reset button
     document.getElementById('reset-analytics').addEventListener('click', () => {
       if (confirm('Are you sure you want to reset all analytics data? This cannot be undone.')) {

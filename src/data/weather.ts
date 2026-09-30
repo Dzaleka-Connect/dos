@@ -89,7 +89,7 @@ export const practicalGuidance = [
 ] as const;
 
 function formatDisplayDate(date: Date) {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-GB', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',

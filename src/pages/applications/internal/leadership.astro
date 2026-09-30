@@ -23,7 +23,7 @@ const formId = 'leadership-support-form';
 
         <div class="bg-white rounded p-5 sm:p-8">
           <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Leadership Support Application</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Leadership support application</h1>
             <p class="text-gray-600">
               Apply for leadership training, community organizing support, and capacity building programs.
             </p>
@@ -51,11 +51,11 @@ const formId = 'leadership-support-form';
 
             {/* Personal Information */}
             <div class="space-y-6">
-              <h2 class="text-xl font-semibold text-gray-900">Personal Information</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Personal information</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">Given name</label>
                   <input
                     type="text"
                     name="firstName"
@@ -66,7 +66,7 @@ const formId = 'leadership-support-form';
                 </div>
 
                 <div>
-                  <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                  <label for="lastName" class="block text-sm font-medium text-gray-700">Family name</label>
                   <input
                     type="text"
                     name="lastName"
@@ -78,7 +78,7 @@ const formId = 'leadership-support-form';
               </div>
 
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                 <input
                   type="email"
                   name="email"
@@ -89,7 +89,7 @@ const formId = 'leadership-support-form';
               </div>
 
               <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone number</label>
                 <input
                   type="tel"
                   name="phone"
@@ -100,7 +100,7 @@ const formId = 'leadership-support-form';
               </div>
 
               <div>
-                <label for="organization" class="block text-sm font-medium text-gray-700">Organization/Community Group (if any)</label>
+                <label for="organization" class="block text-sm font-medium text-gray-700">Organization/community group (if any) <span class="font-normal text-slate-600">(optional)</span></label>
                 <input
                   type="text"
                   name="organization"
@@ -112,32 +112,32 @@ const formId = 'leadership-support-form';
 
             {/* Leadership Experience */}
             <div class="space-y-6 pt-6 border-t">
-              <h2 class="text-xl font-semibold text-gray-900">Leadership Experience</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Leadership experience</h2>
 
               <div>
-                <label for="currentRole" class="block text-sm font-medium text-gray-700">Current Leadership Role (if any)</label>
-                <input
+                <label for="currentRole" class="block text-sm font-medium text-gray-700">Current leadership role (if any) <span class="font-normal text-slate-600">(optional)</span></label>
+                <p id="currentRole-hint" class="mb-1 text-sm text-slate-600">For example, Community Leader, Youth Coordinator</p>
+                <input aria-describedby="currentRole-hint"
                   type="text"
                   name="currentRole"
                   id="currentRole"
                   class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                  placeholder="For example, Community Leader, Youth Coordinator"
                 />
               </div>
 
               <div>
-                <label for="experience" class="block text-sm font-medium text-gray-700">Leadership Experience</label>
-                <textarea
+                <label for="experience" class="block text-sm font-medium text-gray-700">Leadership experience <span class="font-normal text-slate-600">(optional)</span></label>
+                <p id="experience-hint" class="mb-1 text-sm text-slate-600">Describe your leadership experience and activities in the community</p>
+                <textarea aria-describedby="experience-hint"
                   name="experience"
                   id="experience"
                   rows="4"
                   class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                  placeholder="Describe your leadership experience and activities in the community..."
                 ></textarea>
               </div>
 
               <div>
-                <label for="supportType" class="block text-sm font-medium text-gray-700">Type of Support Needed</label>
+                <label for="supportType" class="block text-sm font-medium text-gray-700">Type of support needed</label>
                 <select
                   name="supportType"
                   id="supportType"
@@ -156,10 +156,10 @@ const formId = 'leadership-support-form';
 
             {/* Project/Initiative Information */}
             <div class="space-y-6 pt-6 border-t">
-              <h2 class="text-xl font-semibold text-gray-900">Project/Initiative Information</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Project/initiative information</h2>
 
               <div>
-                <label for="projectTitle" class="block text-sm font-medium text-gray-700">Project/Initiative Title (if applicable)</label>
+                <label for="projectTitle" class="block text-sm font-medium text-gray-700">Project/initiative title (if applicable) <span class="font-normal text-slate-600">(optional)</span></label>
                 <input
                   type="text"
                   name="projectTitle"
@@ -169,47 +169,46 @@ const formId = 'leadership-support-form';
               </div>
 
               <div>
-                <label for="projectDescription" class="block text-sm font-medium text-gray-700">Project/Initiative Description</label>
-                <textarea
+                <label for="projectDescription" class="block text-sm font-medium text-gray-700">Project/initiative description <span class="font-normal text-slate-600">(optional)</span></label>
+                <p id="projectDescription-hint" class="mb-1 text-sm text-slate-600">Describe your current or planned community initiative</p>
+                <textarea aria-describedby="projectDescription-hint"
                   name="projectDescription"
                   id="projectDescription"
                   rows="4"
                   class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                  placeholder="Describe your current or planned community initiative..."
                 ></textarea>
               </div>
 
               <div>
-                <label for="goals" class="block text-sm font-medium text-gray-700">Goals and Objectives</label>
-                <textarea
+                <label for="goals" class="block text-sm font-medium text-gray-700">Goals and objectives</label>
+                <p id="goals-hint" class="mb-1 text-sm text-slate-600">What do you hope to achieve with this support?</p>
+                <textarea aria-describedby="goals-hint"
                   name="goals"
                   id="goals"
                   rows="4"
                   required
                   class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                  placeholder="What do you hope to achieve with this support?"
                 ></textarea>
               </div>
             </div>
 
             {/* File Upload Section */}
             <div class="space-y-6 pt-6 border-t">
-              <h2 class="text-xl font-semibold text-gray-900">Supporting Documents</h2>
+              <h2 class="text-xl font-semibold text-gray-900">Supporting documents</h2>
 
               <div class="space-y-4">
                 <div>
                   <label for="documentLinks" class="block text-sm font-medium text-gray-700">
-                    Document Links
-                  </label>
+                    Document links <span class="font-normal text-slate-600">(optional)</span></label>
                   <p class="text-sm text-gray-500 mb-2">
                     Upload your documents (CV, certificates, recommendations) to Google Drive or another file sharing service and paste the links below. Make sure the links are accessible.
                   </p>
-                  <textarea
+                  <p id="documentLinks-hint" class="mb-1 text-sm text-slate-600">Paste your document links here, one per line</p>
+                  <textarea aria-describedby="documentLinks-hint"
                     name="documentLinks"
                     id="documentLinks"
                     rows="3"
                     class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-                    placeholder="Paste your document links here, one per line..."
                   ></textarea>
                 </div>
               </div>
@@ -231,7 +230,7 @@ const formId = 'leadership-support-form';
                     />
                   </div>
                   <div class="ml-3 text-sm">
-                    <label for="consent" class="font-medium text-gray-700">Information Consent</label>
+                    <label for="consent" class="font-medium text-gray-700">Information consent</label>
                     <p class="text-gray-500">I agree to share my information for the purpose of receiving leadership support and being contacted about relevant opportunities.</p>
                   </div>
                 </div>

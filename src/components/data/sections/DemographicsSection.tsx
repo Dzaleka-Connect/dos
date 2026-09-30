@@ -106,7 +106,7 @@ export function DemographicsSection() {
               <h3 className="text-lg font-medium text-gray-900">{group.nationality}</h3>
               <div className="text-right">
                 <span className="text-sm font-medium text-primary-600">{group.percentage}%</span>
-                <span className="text-sm text-gray-500 ml-2">({group.population.toLocaleString()})</span>
+                <span className="text-sm text-gray-500 ml-2">({group.population.toLocaleString('en-GB')})</span>
               </div>
             </div>
             <p className="text-gray-600 mt-2">{group.background}</p>

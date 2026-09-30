@@ -29,3 +29,28 @@
 .submission-form .form-section > legend + * { clear: both; }
 .submission-form .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; border-top: 1px solid #cbd5e1; padding-top: 1.5rem; }
 @media (max-width: 639px) { .submission-form .form-actions > :is(button, a) { width: 100%; justify-content: center; text-align: center; } }
+
+.submission-form [hidden], .form-error-summary[hidden] { display: none !important; }
+.form-entry-fields > * + * { margin-top: 2rem; }
+.form-error-summary { border: 3px solid #b91c1c; padding: 1.25rem; color: #991b1b; background: #fff; margin-bottom: 2rem; }
+.form-error-summary h2, .form-review h2, .form-confirmation h2 { margin: 0 0 1rem; font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+.form-error-summary ul { list-style: none; padding: 0; margin: 0; }
+.form-error-summary li + li { margin-top: .5rem; }
+.form-error-summary a, .form-change { text-decoration: underline; text-underline-offset: .2em; font-weight: 600; }
+.form-field-error { color: #991b1b; font-weight: 600; margin-top: .5rem; }
+.site-shell .submission-form [aria-invalid="true"] { border: 2px solid #b91c1c; }
+.form-error-summary:focus, .form-review h2:focus, .form-confirmation:focus { outline: 3px solid #075985; outline-offset: 4px; }
+.form-error-summary, .form-review h2, .form-confirmation { scroll-margin-top: 1rem; }
+.form-review > p { margin-bottom: 2rem; color: #475569; }
+.answer-summary > div { display: grid; gap: .5rem 1.5rem; padding: 1.25rem 0; border-top: 1px solid #cbd5e1; }
+.answer-summary dt { font-weight: 600; }
+.answer-summary dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.form-change { color: #075985; min-height: 44px; text-align: left; }
+.form-review .form-actions { margin-top: 1rem; }
+.form-secondary-details { border-top: 1px solid #cbd5e1; padding-top: 1rem; }
+.form-secondary-details > summary { min-height: 44px; cursor: pointer; color: #075985; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; }
+.form-secondary-details[open] > summary { margin-bottom: 1rem; }
+.form-confirmation { border-top: 5px solid #15803d; background: #f0fdf4; padding: 1.5rem; }
+.form-confirmation p { margin-bottom: 1rem; }
+.form-confirmation a { display: block; width: fit-content; padding: .5rem 0; color: #075985; text-decoration: underline; text-underline-offset: .2em; }
+@media (min-width: 640px) { .answer-summary > div { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; align-items: start; } }

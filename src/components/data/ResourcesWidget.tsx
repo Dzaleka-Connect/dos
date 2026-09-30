@@ -27,7 +27,7 @@ const formatDate = (value?: string) => {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? value
-    : date.toLocaleDateString(undefined, {
+    : date.toLocaleDateString('en-GB', {
         year: 'numeric',
         month: 'short',
       });
@@ -147,7 +147,6 @@ export function ResourcesWidget() {
           <a
             key={resource.id}
             href={getResourceHref(resource)}
-            target={resource.resourceUrl || resource.downloadUrl ? '_blank' : undefined}
             rel={resource.resourceUrl || resource.downloadUrl ? 'noopener noreferrer' : undefined}
             className="block p-4 bg-white rounded transition-shadow border border-gray-100"
           >

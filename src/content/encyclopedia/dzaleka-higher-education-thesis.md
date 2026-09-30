@@ -41,8 +41,6 @@ relatedEntries:
   - "dzaleka-appfactory"
 ---
 
-## Overview
-
 ***Preparing for Uncertainty: Exploring Access to Higher Education in Dzaleka Refugee Camp, Malawi*** is an academic master's thesis published through **York University** (Canada). Utilizing qualitative oral histories and deep participant interviews, the research investigates how young refugees inside Dzaleka navigate access to tertiary online degrees, diploma programs, and digital skill certifications.
 
 In a setting where less than 3% of refugees globally have access to higher education, the study examines the transformational role played by blended online learning hubs inside the camp.

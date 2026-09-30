@@ -722,7 +722,6 @@ export function KeepingPlaceExplorer() {
                 </button>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${selectedRecord.lat},${selectedRecord.lng}`}
-                  target="_blank"
                   rel="noopener noreferrer"
                   className="rounded border border-slate-200 bg-white py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 "
                 >
@@ -819,7 +818,7 @@ export function KeepingPlaceExplorer() {
 
               {/* Full Description */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-500 mb-2">Detailed Operational Overview</h3>
+                <h3 className="text-sm font-semibold text-slate-500 mb-2">Detailed operational overview</h3>
                 <p className="text-slate-700 leading-relaxed text-sm bg-slate-50 p-4 rounded border border-slate-200">
                   {expandedModalRecord.detailedDescription}
                 </p>
@@ -828,7 +827,7 @@ export function KeepingPlaceExplorer() {
               {/* Academic Notes & Citations */}
               {expandedModalRecord.academicNotes && (
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-500 mb-2">Academic Research & Survey Citations</h3>
+                  <h3 className="text-sm font-semibold text-slate-500 mb-2">Academic research & survey citations</h3>
                   <p className="text-slate-700 leading-relaxed text-sm bg-slate-50 p-4 rounded border border-slate-200 italic">
                     "{expandedModalRecord.academicNotes}"
                   </p>
@@ -837,7 +836,7 @@ export function KeepingPlaceExplorer() {
 
               {/* Connected Relationships & Publications */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-500 mb-3">Linked Primary Sources & Publications</h3>
+                <h3 className="text-sm font-semibold text-slate-500 mb-3">Linked primary sources & publications</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {expandedModalRecord.relationships.map((rel) => (
                     <div key={rel.id} className="bg-slate-50 p-4 rounded border border-slate-200">
@@ -861,7 +860,7 @@ export function KeepingPlaceExplorer() {
 
               {/* Raw Spatial Geometry Inspector */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-500 mb-2">Spatial GeoJSON Feature Definition</h3>
+                <h3 className="text-sm font-semibold text-slate-500 mb-2">Spatial GeoJSON feature definition</h3>
                 <pre className="bg-slate-900 p-4 rounded text-sm text-slate-200 font-mono overflow-x-auto">
 {JSON.stringify({
   type: "Feature",
@@ -915,7 +914,6 @@ export function KeepingPlaceExplorer() {
                 </button>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${expandedModalRecord.lat},${expandedModalRecord.lng}`}
-                  target="_blank"
                   rel="noopener noreferrer"
                   className="rounded border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5 "
                 >
@@ -966,11 +964,12 @@ export function KeepingPlaceExplorer() {
 
             <form onSubmit={handleCreateRecord} className="space-y-4 text-sm">
               <div>
-                <label htmlFor="newSiteName" className="block font-semibold text-slate-700 mb-1">Landmark / Site Name *</label>
+                <label htmlFor="newSiteName" className="block font-semibold text-slate-700 mb-1">Landmark or site name</label>
+                <p id="newSiteName-hint" className="mb-2 text-sm text-slate-600">For example, Dzaleka Youth Centre</p>
                 <input
                   type="text"
                   required
-                  placeholder="For example, Dzaleka Youth Center"
+                  aria-describedby="newSiteName-hint"
                   id="newSiteName" value={newSiteName}
                   onChange={(e) => setNewSiteName(e.target.value)}
                   className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-slate-400 focus:outline-none "
@@ -993,7 +992,7 @@ export function KeepingPlaceExplorer() {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="newSiteProtocol" className="block font-semibold text-slate-700 mb-1">Protocol Access</label>
+                  <label htmlFor="newSiteProtocol" className="block font-semibold text-slate-700 mb-1">Sharing category</label>
                   <select
                     id="newSiteProtocol" value={newSiteProtocol}
                     onChange={(e) => setNewSiteProtocol(e.target.value as CulturalProtocolLevel)}
@@ -1030,7 +1029,7 @@ export function KeepingPlaceExplorer() {
               </div>
 
               <div>
-                <label htmlFor="newSiteZone" className="block font-semibold text-slate-700 mb-1">Zone / Sector</label>
+                <label htmlFor="newSiteZone" className="block font-semibold text-slate-700 mb-1">Zone or sector</label>
                 <input
                   type="text"
                   id="newSiteZone" value={newSiteZone}
@@ -1040,10 +1039,9 @@ export function KeepingPlaceExplorer() {
               </div>
 
               <div>
-                <label htmlFor="newSiteSummary" className="block font-semibold text-slate-700 mb-1">Field Notes</label>
+                <label htmlFor="newSiteSummary" className="block font-semibold text-slate-700 mb-1">Field notes (optional)</label>
                 <textarea
                   rows={3}
-                  placeholder="Record spatial notes..."
                   id="newSiteSummary" value={newSiteSummary}
                   onChange={(e) => setNewSiteSummary(e.target.value)}
                   className="w-full rounded border border-slate-200 bg-white p-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none "

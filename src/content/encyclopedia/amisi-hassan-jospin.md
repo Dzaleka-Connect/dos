@@ -47,8 +47,6 @@ relatedEntries:
   - "education-in-dzaleka"
 ---
 
-## Overview
-
 **Amisi Hassan Jospin** (also known as **Jospin Amisi Hassan**) is a Congolese refugee software engineer, artificial intelligence researcher, and educator based in Malawi. He is an AI researcher at **[Rexplore Research Labs](/encyclopedia/rexplore-labs)**, an **MIT Emerging Talent fellow**, and co-founded **[ADAI Circle](/encyclopedia/adai-circle)** on 2 February 2020 alongside **[Byamasu Patrick Paul](/encyclopedia/byamasu-patrick-paul)**.
 
 ---

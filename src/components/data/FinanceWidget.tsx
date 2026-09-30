@@ -68,10 +68,9 @@ export function FinanceWidget() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h3 className="font-semibold text-gray-900">UNHCR Funding 2025</h3>
+        <h3 className="font-semibold text-gray-900">UNHCR funding 2025</h3>
         <a
           href={data.source}
-          target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-blue-600 hover:underline"
         >
@@ -104,7 +103,7 @@ export function FinanceWidget() {
         </div>
 
         <div className="text-xs text-gray-400 mt-2">
-          As of {new Date(data.lastUpdated).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+          As of {new Date(data.lastUpdated).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })}
         </div>
       </div>
 

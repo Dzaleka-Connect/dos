@@ -12,12 +12,12 @@ try {
 }
 
 const seo = {
-  title: "Report Issue - Dzaleka Online Services",
+  title: "Report a site issue | Dzaleka Online Services",
   description: "Report damage, maintenance needs, or other issues with heritage sites in Dzaleka Refugee Camp. Help us preserve and maintain important cultural and historical locations.",
   type: "website",
   canonical: "https://services.dzaleka.com/site-register/report-issue",
   openGraph: {
-    title: "Report Issue - Dzaleka Online Services",
+    title: "Report a site issue | Dzaleka Online Services",
     description: "Report damage, maintenance needs, or other issues with heritage sites in Dzaleka Refugee Camp.",
     type: "website",
     site_name: "Dzaleka Online Services",
@@ -43,7 +43,7 @@ const seo = {
           <!-- Site Information -->
           <div>
             <label for="site-name" class="block text-sm font-medium text-gray-700 mb-2">
-              Site Name *
+              Site name
             </label>
             <select
               id="site-name"
@@ -63,21 +63,20 @@ const seo = {
 
           <div id="other-site-container" class="hidden">
             <label for="other-site-name" class="block text-sm font-medium text-gray-700 mb-2">
-              Specify Site Name *
+              Specify site name
             </label>
             <input
               type="text"
               id="other-site-name"
               name="otherSiteName"
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="Enter the name of the site"
             />
           </div>
 
           <!-- Issue Type -->
           <div>
             <label for="issue-type" class="block text-sm font-medium text-gray-700 mb-2">
-              Type of Issue *
+              Type of issue
             </label>
             <select
               id="issue-type"
@@ -99,36 +98,35 @@ const seo = {
           <!-- Issue Description -->
           <div>
             <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-              Detailed Description *
+              Detailed description
             </label>
-            <textarea
+            <p id="description-hint" class="mb-1 text-sm text-slate-600">Provide a detailed description of the issue, including location, severity, and any relevant details</p>
+            <textarea aria-describedby="description-hint"
               id="description"
               name="description"
               rows="4"
               required
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="Provide a detailed description of the issue, including location, severity, and any relevant details..."
             ></textarea>
           </div>
 
           <!-- Location Details -->
           <div>
             <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
-              Specific Location
-            </label>
-            <input
+              Specific location <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="location-hint" class="mb-1 text-sm text-slate-600">For example, Camp zone, block number, or specific location details</p>
+            <input aria-describedby="location-hint"
               type="text"
               id="location"
               name="location"
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="Camp zone, block number, or specific location details"
             />
           </div>
 
           <!-- Current Condition -->
           <div>
             <label for="condition" class="block text-sm font-medium text-gray-700 mb-2">
-              Observed Condition *
+              Observed condition
             </label>
             <select
               id="condition"
@@ -148,7 +146,7 @@ const seo = {
           <!-- Urgency Level -->
           <div>
             <label for="urgency" class="block text-sm font-medium text-gray-700 mb-2">
-              Urgency Level *
+              Urgency level
             </label>
             <select
               id="urgency"
@@ -168,26 +166,22 @@ const seo = {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                Your Name
-              </label>
+                Your name <span class="font-normal text-slate-600">(optional)</span></label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-                placeholder="Your full name"
               />
             </div>
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
+                Email address <span class="font-normal text-slate-600">(optional)</span></label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-                placeholder="name@domain.com"
               />
             </div>
           </div>
@@ -195,14 +189,13 @@ const seo = {
           <!-- Phone Number -->
           <div>
             <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number
-            </label>
-            <input
+              Phone number <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="phone-hint" class="mb-1 text-sm text-slate-600">Include the country code, for example +265 991 234 567</p>
+            <input aria-describedby="phone-hint"
               type="tel"
               id="phone"
               name="phone"
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="+265 XXX XXX XXX"
             />
           </div>
 
@@ -255,7 +248,7 @@ const seo = {
 
       <!-- Additional Information -->
       <div class="mt-8 bg-slate-50 rounded border border-slate-200 p-6">
-        <h3 class="text-lg font-semibold text-slate-900 mb-3">What happens next?</h3>
+        <h2 class="text-lg font-semibold text-slate-900 mb-3">What happens next</h2>
         <ul class="space-y-2 text-slate-700">
           <li class="flex items-start">
             <svg class="w-5 h-5 text-slate-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

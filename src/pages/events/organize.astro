@@ -72,7 +72,7 @@ const breadcrumbStructuredData = {
 
   <div class="bg-white">
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <p class="mb-6 text-sm text-slate-600">Free to submit. Events are reviewed before publication. Fields marked * are required.</p>
+      <p class="mb-6 text-sm text-slate-600">Free to submit. Events are reviewed before publication. Optional fields are marked.</p>
       <div>
         <form id="eventForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
           <!-- Add hidden field for form name -->
@@ -83,7 +83,7 @@ const breadcrumbStructuredData = {
             <div class="space-y-6 sm:space-y-5">
               <div>
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                  Event Details
+                  Event details
                 </h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">
                   Provide information about your event
@@ -93,7 +93,7 @@ const breadcrumbStructuredData = {
               <div class="space-y-6 sm:space-y-5">
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                   <label for="title" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    Event Title
+                    Event title
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <input
@@ -155,7 +155,7 @@ const breadcrumbStructuredData = {
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                   <label for="date" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    Start Date & Time
+                    Start date & time
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <input
@@ -172,7 +172,7 @@ const breadcrumbStructuredData = {
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                   <label for="endDate" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    End Date & Time (optional)
+                    End date & time (optional)
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <input
@@ -218,7 +218,7 @@ const breadcrumbStructuredData = {
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                   <label for="registrationRequired" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    Registration Required
+                    Registration required
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <div class="flex items-center space-x-6">
@@ -250,11 +250,11 @@ const breadcrumbStructuredData = {
                     Registration URL
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <input
+                    <p id="registrationUrl-hint" class="mb-1 text-sm text-slate-600">For example, https://events.dzaleka.com/register</p>
+                    <input aria-describedby="registrationUrl-hint"
                       type="url"
                       name="registrationUrl"
                       id="registrationUrl"
-                      placeholder="https://events.dzaleka.com/register"
                       class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded"
                     />
                   </div>
@@ -262,7 +262,7 @@ const breadcrumbStructuredData = {
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start" id="registrationDeadlineField" style="display: none;">
                   <label for="registrationDeadline" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    Registration Deadline
+                    Registration deadline
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <input
@@ -277,8 +277,7 @@ const breadcrumbStructuredData = {
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                   <label for="image" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    Event Image
-                  </label>
+                    Event image <span class="font-normal text-slate-600">(optional)</span></label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <input
                       type="file"
@@ -296,11 +295,11 @@ const breadcrumbStructuredData = {
                     Tags (optional)
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <input
+                    <p id="tags-hint" class="mb-1 text-sm text-slate-600">For example, refugee, community, education, culture</p>
+                    <input aria-describedby="tags-hint"
                       type="text"
                       name="tags"
                       id="tags"
-                      placeholder="refugee, community, education, culture"
                       class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded"
                     />
                     <p class="mt-1 text-sm text-gray-500">Separate tags with commas</p>
@@ -309,7 +308,7 @@ const breadcrumbStructuredData = {
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                   <label for="featured" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                    Featured Event
+                    Featured event
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
                     <div class="flex items-center">
@@ -331,7 +330,7 @@ const breadcrumbStructuredData = {
             <div class="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
               <div>
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                  Organizer Information
+                  Organizer information
                 </h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">
                   Your contact information for event coordination
@@ -388,11 +387,11 @@ const breadcrumbStructuredData = {
                     WhatsApp (optional)
                   </label>
                   <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <input
+                    <p id="organizerWhatsApp-hint" class="mb-1 text-sm text-slate-600">Include the country code, for example +265 991 234 567</p>
+                    <input aria-describedby="organizerWhatsApp-hint"
                       type="tel"
                       name="organizerWhatsApp"
                       id="organizerWhatsApp"
-                      placeholder="+265-999-999-999"
                       class="block w-full focus:ring-primary-500 focus:border-primary-500 sm:text-sm border-gray-300 rounded"
                     />
                     <p class="mt-1 text-sm text-gray-500">Include country code (for example, +265 for Malawi)</p>

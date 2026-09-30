@@ -21,33 +21,32 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- Name -->
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your name</label>
             <input
               type="text"
               id="name"
               name="name"
               required
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="Enter your name"
             />
           </div>
 
           <!-- Email -->
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
+            <p id="email-hint" class="mb-1 text-sm text-slate-600">For example, your@dzaleka.com</p>
+            <input aria-describedby="email-hint"
               type="email"
               id="email"
               name="email"
               required
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="For example, your@dzaleka.com"
             />
           </div>
 
           <!-- Tour Date -->
           <div>
-            <label for="tour_date" class="block text-sm font-medium text-gray-700 mb-1">Date of Visit</label>
+            <label for="tour_date" class="block text-sm font-medium text-gray-700 mb-1">Date of visit</label>
             <input
               type="date"
               id="tour_date"
@@ -59,31 +58,31 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- Tour Guide Name -->
           <div>
-            <label for="tour_guide" class="block text-sm font-medium text-gray-700 mb-1">Tour Guide Name</label>
-            <input
+            <label for="tour_guide" class="block text-sm font-medium text-gray-700 mb-1">Tour guide name <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="tour_guide-hint" class="mb-1 text-sm text-slate-600">Name of your tour guide</p>
+            <input aria-describedby="tour_guide-hint"
               type="text"
               id="tour_guide"
               name="tour_guide"
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="Name of your tour guide"
             />
           </div>
 
           <!-- Country -->
           <div>
-            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
-            <input
+            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="country-hint" class="mb-1 text-sm text-slate-600">Where are you from?</p>
+            <input aria-describedby="country-hint"
               type="text"
               id="country"
               name="country"
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="Where are you from?"
             />
           </div>
 
           <!-- Purpose of Visit -->
           <div>
-            <label for="purpose" class="block text-sm font-medium text-gray-700 mb-1">Purpose of Visit</label>
+            <label for="purpose" class="block text-sm font-medium text-gray-700 mb-1">Purpose of visit <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="purpose"
               name="purpose"
@@ -103,7 +102,7 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- Group Size -->
           <div>
-            <label for="group_size" class="block text-sm font-medium text-gray-700 mb-1">Group Size</label>
+            <label for="group_size" class="block text-sm font-medium text-gray-700 mb-1">Group size <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="group_size"
               name="group_size"
@@ -120,7 +119,7 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- How did you hear about us -->
           <div>
-            <label for="heard_about" class="block text-sm font-medium text-gray-700 mb-1">How did you hear about Visit Dzaleka?</label>
+            <label for="heard_about" class="block text-sm font-medium text-gray-700 mb-1">How did you hear about Visit Dzaleka? <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="heard_about"
               name="heard_about"
@@ -139,7 +138,7 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- Overall Rating -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-3">Overall Experience</label>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Overall experience</label>
             <div class="flex gap-4 flex-wrap">
               {['Excellent', 'Good', 'Average', 'Poor'].map((rating) => (
                 <label class="flex items-center">
@@ -177,25 +176,25 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- What did you enjoy most -->
           <div>
-            <label for="enjoyed_most" class="block text-sm font-medium text-gray-700 mb-1">What did you enjoy most about the tour?</label>
-            <textarea
+            <label for="enjoyed_most" class="block text-sm font-medium text-gray-700 mb-1">What did you enjoy most about the tour? <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="enjoyed_most-hint" class="mb-1 text-sm text-slate-600">Tell us what you liked</p>
+            <textarea aria-describedby="enjoyed_most-hint"
               id="enjoyed_most"
               name="enjoyed_most"
               rows="3"
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="Tell us what you liked..."
             ></textarea>
           </div>
 
           <!-- Areas for improvement -->
           <div>
-            <label for="improvements" class="block text-sm font-medium text-gray-700 mb-1">How can we improve?</label>
-            <textarea
+            <label for="improvements" class="block text-sm font-medium text-gray-700 mb-1">How can we improve? <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="improvements-hint" class="mb-1 text-sm text-slate-600">Any suggestions or areas we can do better</p>
+            <textarea aria-describedby="improvements-hint"
               id="improvements"
               name="improvements"
               rows="3"
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="Any suggestions or areas we can do better..."
             ></textarea>
           </div>
 
@@ -236,13 +235,13 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
 
           <!-- Additional comments -->
           <div>
-            <label for="additional_comments" class="block text-sm font-medium text-gray-700 mb-1">Any other comments?</label>
-            <textarea
+            <label for="additional_comments" class="block text-sm font-medium text-gray-700 mb-1">Any other comments? <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="additional_comments-hint" class="mb-1 text-sm text-slate-600">Anything else you'd like to share</p>
+            <textarea aria-describedby="additional_comments-hint"
               id="additional_comments"
               name="additional_comments"
               rows="3"
               class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="Anything else you'd like to share..."
             ></textarea>
           </div>
 
@@ -310,7 +309,7 @@ const description = "Share your feedback about your Dzaleka tour experience. Hel
                   class="w-5 h-5 mt-0.5 text-green-600 border-gray-300 rounded focus:ring-green-500"
                 />
                 <span class="text-sm text-gray-700">
-                  I consent to my data being collected and processed to improve Visit Dzaleka services. View our <a href="/privacy" class="text-green-600 hover:underline">Privacy Policy</a>.
+                  I consent to my data being collected and processed to improve Visit Dzaleka services. View our <a href="/privacy" target="_blank" rel="noopener noreferrer" class="text-green-600 hover:underline">Privacy Policy (opens in a new tab)</a>.
                 </span>
               </label>
             </div>

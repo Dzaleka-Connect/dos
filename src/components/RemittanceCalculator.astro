@@ -3,16 +3,16 @@
 
 <div class="bg-blue-50 p-6 rounded border border-blue-100 my-8">
   <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-    Mobile Money Fee Estimator
+    Mobile money fee estimator
   </h3>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Amount to Send (MWK)</label>
-      <input
+      <label for="amount-input" class="block text-sm font-medium text-gray-700 mb-1">Amount to send (MWK)</label>
+      <p id="amount-input-hint" class="mb-1 text-sm text-slate-600">For example, 50000</p>
+      <input aria-describedby="amount-input-hint"
         type="number"
-        id="amount-input" aria-label="Amount to send in Australian dollars"
-        placeholder="For example, 50000"
+        id="amount-input"
         class="block w-full rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500 p-2 border"
       />
       <p class="text-xs text-gray-500 mt-1">Includes 2026 Levy (0.05% > K100k)</p>
@@ -20,15 +20,15 @@
 
     <div class="bg-white p-4 rounded border border-gray-200">
       <div class="flex justify-between items-center mb-2">
-        <span class="text-sm text-gray-600">Cross-Network Fee:</span>
+        <span class="text-sm text-gray-600">Cross-network fee:</span>
         <span id="fee-display" class="font-bold text-gray-900">K0</span>
       </div>
       <div class="flex justify-between items-center mb-2">
-        <span class="text-sm text-gray-600">Govt Levy (0.05%):</span>
+        <span class="text-sm text-gray-600">Government levy (0.05%):</span>
         <span id="levy-display" class="font-bold text-red-600">K0</span>
       </div>
       <div class="border-t border-gray-100 pt-2 flex justify-between items-center">
-        <span class="font-bold text-gray-900">Est. Total Cost:</span>
+        <span class="font-bold text-gray-900">Estimated total cost:</span>
         <span id="total-display" class="font-bold text-blue-600 text-lg">K0</span>
       </div>
     </div>
@@ -68,9 +68,9 @@
       const val = parseFloat((e.target as HTMLInputElement).value) || 0;
       const { fee, levy } = calculate(val);
 
-      if (feeDisplay) feeDisplay.textContent = `K${Math.round(fee).toLocaleString()}`;
-      if (levyDisplay) levyDisplay.textContent = `K${Math.round(levy).toLocaleString()}`;
-      if (totalDisplay) totalDisplay.textContent = `K${Math.round(val + fee + levy).toLocaleString()}`;
+      if (feeDisplay) feeDisplay.textContent = `K${Math.round(fee).toLocaleString('en-GB')}`;
+      if (levyDisplay) levyDisplay.textContent = `K${Math.round(levy).toLocaleString('en-GB')}`;
+      if (totalDisplay) totalDisplay.textContent = `K${Math.round(val + fee + levy).toLocaleString('en-GB')}`;
     });
   }
 </script>

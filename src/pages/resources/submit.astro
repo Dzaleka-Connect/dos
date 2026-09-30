@@ -18,7 +18,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
           {/* Title */}
           <div>
             <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
-              Resource Title <span class="text-red-500">*</span>
+              Resource title
             </label>
             <input
               type="text"
@@ -26,29 +26,28 @@ import MainLayout from '../../layouts/MainLayout.astro';
               id="title"
               required
               class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              placeholder="Enter the title of your resource"
             />
           </div>
 
           {/* Description */}
           <div>
             <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
-              Description <span class="text-red-500">*</span>
+              Description
             </label>
-            <textarea
+            <p id="description-hint" class="mb-1 text-sm text-slate-600">Provide a brief description of the resource</p>
+            <textarea aria-describedby="description-hint"
               name="description"
               id="description"
               required
               rows="4"
               class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              placeholder="Provide a brief description of the resource"
             ></textarea>
           </div>
 
           {/* Category */}
           <div>
             <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
-              Category <span class="text-red-500">*</span>
+              Category
             </label>
             <select
               name="category"
@@ -66,7 +65,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 
           {/* Resource Type Notice */}
           <div class="mb-6 p-4 bg-blue-50 rounded border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-800 mb-2">Important notice about PDF documents</h3>
+            <h2 class="text-sm font-medium text-blue-800 mb-2">Important notice about PDF documents</h2>
             <p class="text-sm text-blue-700">
               Host your PDF documents on a reliable platform (like Google Drive, Dropbox, or similar) and provide the sharing link below.
               Make sure to:
@@ -82,7 +81,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
           <div class="space-y-6">
             <div>
               <label for="resourceUrl" class="block text-sm font-medium text-gray-700 mb-1">
-                Resource URL <span class="text-red-500">*</span>
+                Resource URL
               </label>
               <div class="mt-1 flex rounded">
                 <span class="inline-flex items-center px-3 rounded-l border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
@@ -90,13 +89,13 @@ import MainLayout from '../../layouts/MainLayout.astro';
                     <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd" />
                   </svg>
                 </span>
-                <input
+                <p id="resourceUrl-hint" class="mb-1 text-sm text-slate-600">For example, https://drive.google.com/file/d/</p>
+                <input aria-describedby="resourceUrl-hint"
                   type="url"
                   name="resourceUrl"
                   id="resourceUrl"
                   required
                   class="flex-1 px-4 py-2 border border-gray-300 rounded-r focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="https://drive.google.com/file/d/..."
                 />
               </div>
               <p class="mt-1 text-sm text-gray-500">
@@ -107,15 +106,14 @@ import MainLayout from '../../layouts/MainLayout.astro';
             {/* File Size */}
             <div>
               <label for="fileSize" class="block text-sm font-medium text-gray-700 mb-1">
-                File Size
-              </label>
+                File size <span class="font-normal text-slate-600">(optional)</span></label>
               <div class="mt-1 relative rounded">
-                <input
+                <p id="fileSize-hint" class="mb-1 text-sm text-slate-600">For example, 2.5</p>
+                <input aria-describedby="fileSize-hint"
                   type="text"
                   name="fileSize"
                   id="fileSize"
                   class="block w-full px-4 py-2 pr-12 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="For example, 2.5"
                 />
                 <div class="absolute inset-y-0 right-0 flex items-center">
                   <label for="file-size-unit" class="sr-only">File size unit</label>
@@ -139,7 +137,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label for="date" class="block text-sm font-medium text-gray-700 mb-1">
-                Publication Date <span class="text-red-500">*</span>
+                Publication date
               </label>
               <input
                 type="date"
@@ -152,8 +150,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 
             <div>
               <label for="lastUpdated" class="block text-sm font-medium text-gray-700 mb-1">
-                Last Updated
-              </label>
+                Last updated <span class="font-normal text-slate-600">(optional)</span></label>
               <input
                 type="date"
                 name="lastUpdated"
@@ -185,20 +182,19 @@ import MainLayout from '../../layouts/MainLayout.astro';
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label for="author" class="block text-sm font-medium text-gray-700 mb-1">
-                Author/Organization
-              </label>
-              <input
+                Author/organization <span class="font-normal text-slate-600">(optional)</span></label>
+              <p id="author-hint" class="mb-1 text-sm text-slate-600">Name of author or organization</p>
+              <input aria-describedby="author-hint"
                 type="text"
                 name="author"
                 id="author"
                 class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Name of author or organization"
               />
             </div>
 
             <div>
               <label for="languages" class="block text-sm font-medium text-gray-700 mb-1">
-                Available Languages
+                Available languages
               </label>
               <div class="mt-2 space-y-2">
                 <div class="flex items-center">
@@ -251,7 +247,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 
         {/* Help Text */}
         <div class="mt-8 border-t border-gray-200 pt-6">
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Important Notes:</h3>
+          <h2 class="text-sm font-medium text-gray-700 mb-2">Important notes:</h2>
           <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
             <li>All submitted resources will be reviewed before being published</li>
             <li>Ensure the resource is relevant to Dzaleka Refugee Camp</li>

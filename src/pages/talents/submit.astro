@@ -8,27 +8,30 @@ const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET;
   <FormHeader title="Add your talent profile" description="Introduce your work and skills to the community. Your submitted profile and links are intended for publication in the talent directory." parent="Dzaleka talents" href="/talents" />
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
     <form id="talentForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8 rounded border border-slate-200 bg-white p-5 sm:p-8" data-cloud-name={cloudName} data-upload-preset={uploadPreset}>
-      <p class="text-sm text-slate-600">Fields marked with * are required.</p>
+      <p class="text-sm text-slate-600">Optional fields are marked.</p>
       <fieldset class="space-y-5">
         <legend class="mb-4 text-lg font-semibold">Your profile</legend>
-        <div><label for="name" class="block font-medium">Full name *</label><input type="text" name="name" id="name" required autocomplete="name" class="mt-2 block w-full" /></div>
-        <div><label for="category" class="block font-medium">Profession or creative practice *</label><p id="category-help" class="mt-1 text-sm text-slate-600">For example, graphic designer, musician or developer.</p><input type="text" name="category" id="category" required aria-describedby="category-help" class="mt-2 block w-full" /></div>
-        <div><label for="bio" class="block font-medium">Short biography</label><p id="bio-help" class="mt-1 text-sm text-slate-600">Describe your work, skills and achievements in a few sentences.</p><textarea name="bio" id="bio" rows="4" aria-describedby="bio-help" class="mt-2 block w-full"></textarea></div>
+        <div><label for="name" class="block font-medium">Full name</label><input type="text" name="name" id="name" required autocomplete="name" class="mt-2 block w-full" /></div>
+        <div><label for="category" class="block font-medium">Profession or creative practice</label><p id="category-help" class="mt-1 text-sm text-slate-600">For example, graphic designer, musician or developer.</p><input type="text" name="category" id="category" required aria-describedby="category-help" class="mt-2 block w-full" /></div>
+        <div><label for="bio" class="block font-medium">Short biography <span class="font-normal text-slate-600">(optional)</span></label><p id="bio-help" class="mt-1 text-sm text-slate-600">Describe your work, skills and achievements in a few sentences.</p><textarea name="bio" id="bio" rows="4" aria-describedby="bio-help" class="mt-2 block w-full"></textarea></div>
       </fieldset>
       <fieldset class="form-section space-y-5">
         <legend>Profile photograph</legend>
-        <div><label for="profilePicUrl" class="block font-medium">Photo link *</label><p id="photo-help" class="mt-1 text-sm text-slate-600">Link directly to a photograph you have permission to publish.{cloudName && uploadPreset ? ' You can also upload a photo below to fill in this link.' : ''}</p><input type="url" name="profilePic" id="profilePicUrl" required placeholder="https://example.com/your-photo.jpg" aria-describedby="photo-help" class="mt-2 block w-full" /></div>
+        <div><label for="profilePicUrl" class="block font-medium">Photo link</label><p id="photo-help" class="mt-1 text-sm text-slate-600">Link directly to a photograph you have permission to publish.{cloudName && uploadPreset ? ' You can also upload a photo below to fill in this link.' : ''}</p><p id="profilePicUrl-hint" class="mb-1 text-sm text-slate-600">For example, https://example.com/your-photo.jpg</p>
+<input type="url" name="profilePic" id="profilePicUrl" required aria-describedby="photo-help profilePicUrl-hint" class="mt-2 block w-full" /></div>
         {cloudName && uploadPreset && <div data-photo-upload hidden><label for="profilePicInput" class="block font-medium">Upload a photograph</label><p id="upload-help" class="mt-1 text-sm text-slate-600">JPEG, PNG or WebP, up to 10 MB. The preview shows your whole photograph.</p><input type="file" id="profilePicInput" accept="image/jpeg,image/png,image/webp" aria-describedby="upload-help uploadStatus" class="mt-2 block w-full" /><p id="uploadStatus" role="status" class="mt-2 text-sm text-slate-700"></p><figure id="imagePreview" hidden class="mt-4 max-w-xs"><img id="previewImage" alt="Your selected profile photograph" class="aspect-[4/3] w-full rounded border border-slate-200 bg-slate-100 object-contain" /><figcaption class="mt-2 text-sm text-slate-600">Photo preview</figcaption></figure></div>}
       </fieldset>
       <fieldset class="form-section space-y-5">
         <legend>Links and additional information</legend>
         <p class="text-sm text-slate-600">These fields are optional. Only include details you want to share publicly.</p>
-        <div><label for="linkedin" class="block font-medium">LinkedIn profile</label><input type="url" name="linkedin" id="linkedin" placeholder="https://linkedin.com/in/your-profile" class="mt-2 block w-full" /></div>
-        <div><label for="twitter" class="block font-medium">X / Twitter profile</label><input type="url" name="twitter" id="twitter" placeholder="https://x.com/your-handle" class="mt-2 block w-full" /></div>
+        <div><label for="linkedin" class="block font-medium">LinkedIn profile</label><p id="linkedin-hint" class="mb-1 text-sm text-slate-600">For example, https://linkedin.com/in/your-profile</p>
+<input aria-describedby="linkedin-hint" type="url" name="linkedin" id="linkedin" class="mt-2 block w-full" /></div>
+        <div><label for="twitter" class="block font-medium">X / Twitter profile</label><p id="twitter-hint" class="mb-1 text-sm text-slate-600">For example, https://x.com/your-handle</p>
+<input aria-describedby="twitter-hint" type="url" name="twitter" id="twitter" class="mt-2 block w-full" /></div>
         <div><label for="message" class="block font-medium">Additional information</label><textarea name="message" id="message" rows="3" class="mt-2 block w-full"></textarea></div>
       </fieldset>
       <div class="form-actions"><button type="submit" id="submitButton">Submit profile</button><a href="/talents" class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">Back to the talent directory</a></div>
-      <p class="text-sm text-slate-600">By submitting, you agree to share this information on Dzaleka Online Services. Read our <a href="/privacy" class="text-primary-800 underline underline-offset-4">privacy policy</a>.</p>
+      <p class="text-sm text-slate-600">By submitting, you agree to share this information on Dzaleka Online Services. Read our <a href="/privacy" target="_blank" rel="noopener noreferrer" class="text-primary-800 underline underline-offset-4">privacy policy (opens in a new tab)</a>.</p>
     </form>
   </div>
 </MainLayout>

@@ -42,8 +42,6 @@ relatedEntries:
   - "amahoro-burundian-drummers"
 ---
 
-## Overview
-
 ***Tumaini*** is an international audio documentary produced by independent radio producer **Bairbre Flood** and broadcast on the **BBC World Service**. Recorded on-location inside Dzaleka Refugee Camp, the documentary offers an immersive auditory portrait of the annual **Tumaini Festival**—the world’s only major music and arts festival staged entirely within a refugee camp.
 
 Combining live concert recordings, intimate tent interviews, spoken word poetry, and traditional percussion, the production captures how music functions as a powerful instrument of healing, intercultural bridge-building, and refugee dignity.

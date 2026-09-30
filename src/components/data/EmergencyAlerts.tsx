@@ -44,7 +44,7 @@ const formatDate = (value: string) => {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? value
-    : date.toLocaleDateString(undefined, {
+    : date.toLocaleDateString('en-GB', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',

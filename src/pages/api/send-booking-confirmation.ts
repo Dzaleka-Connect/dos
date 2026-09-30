@@ -67,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Format date
     const date = new Date(visitDate);
-    const formattedDate = date.toLocaleDateString('en-US', {
+    const formattedDate = date.toLocaleDateString('en-GB', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -75,11 +75,11 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     // Format time
-    const formattedTime = new Date(`2000-01-01T${visitTime}`).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
+    // House style: 10am, 2:30pm
+    const [hours = '0', minutes = '00'] = String(visitTime).split(':');
+    const hour24 = Number(hours);
+    const hour12 = hour24 % 12 || 12;
+    const formattedTime = `${hour12}${minutes === '00' ? '' : `:${minutes}`}${hour24 < 12 ? 'am' : 'pm'}`;
 
     // Format meeting point
     const meetingPointMap: Record<string, string> = {

@@ -2,7 +2,7 @@ export function formatDate(date?: string | Date): string {
   if (!date) return 'Ongoing';
   const d = new Date(date);
   if (isNaN(d.getTime())) return 'Ongoing';
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-GB', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'

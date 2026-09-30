@@ -34,8 +34,6 @@ sources:
     url: "https://www.dzalekaartproject.com/"
 ---
 
-## Overview
-
 The Dzaleka Art Project is a documentation project by and about the artists who live as refugees and asylum seekers in Dzaleka. It gathers profiles of individual artists, images of their work, and writing about the place of the arts in their lives, and publishes them on a public website.
 
 ## History

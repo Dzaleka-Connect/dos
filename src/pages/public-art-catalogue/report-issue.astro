@@ -2,7 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import FormHeader from '../../components/ui/FormHeader.astro';
 
-const title = "Report Issue - Dzaleka Online Services";
+const title = "Report an artwork issue | Dzaleka Online Services";
 const description = "Report issues, damage, or maintenance needs for public artworks in the Dzaleka Online Services.";
 ---
 
@@ -24,7 +24,7 @@ const description = "Report issues, damage, or maintenance needs for public artw
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="artworkTitle" class="block text-sm font-medium text-gray-700 mb-2">
-                    Artwork Title *
+                    Artwork title
                   </label>
                   <input
                     type="text"
@@ -32,35 +32,32 @@ const description = "Report issues, damage, or maintenance needs for public artw
                     name="artworkTitle"
                     required
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white"
-                    placeholder="Enter the artwork title"
                   />
                 </div>
 
                 <div>
                   <label for="artistName" class="block text-sm font-medium text-gray-700 mb-2">
-                    Artist Name
-                  </label>
+                    Artist name <span class="font-normal text-slate-600">(optional)</span></label>
                   <input
                     type="text"
                     id="artistName"
                     name="artistName"
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white"
-                    placeholder="Enter the artist's name if known"
                   />
                 </div>
               </div>
 
               <div class="mt-6">
                 <label for="artworkLocation" class="block text-sm font-medium text-gray-700 mb-2">
-                  Artwork Location *
+                  Artwork location
                 </label>
-                <input
+                <p id="artworkLocation-hint" class="mb-1 text-sm text-slate-600">Describe the specific location of the artwork</p>
+                <input aria-describedby="artworkLocation-hint"
                   type="text"
                   id="artworkLocation"
                   name="artworkLocation"
                   required
                   class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white"
-                  placeholder="Describe the specific location of the artwork"
                 />
               </div>
             </div>
@@ -77,7 +74,7 @@ const description = "Report issues, damage, or maintenance needs for public artw
               <div class="space-y-6">
                 <div>
                   <label for="issueType" class="block text-sm font-medium text-gray-700 mb-2">
-                    Type of Issue *
+                    Type of issue
                   </label>
                   <select
                     id="issueType"
@@ -99,21 +96,21 @@ const description = "Report issues, damage, or maintenance needs for public artw
 
                 <div>
                   <label for="issueDescription" class="block text-sm font-medium text-gray-700 mb-2">
-                    Detailed Description *
+                    Detailed description
                   </label>
-                  <textarea
+                  <p id="issueDescription-hint" class="mb-1 text-sm text-slate-600">Provide a detailed description of the issue, including the extent of damage, when you first noticed it, and any other relevant details</p>
+                  <textarea aria-describedby="issueDescription-hint"
                     id="issueDescription"
                     name="issueDescription"
                     required
                     rows="6"
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white resize-none"
-                    placeholder="Provide a detailed description of the issue, including the extent of damage, when you first noticed it, and any other relevant details..."
                   ></textarea>
                 </div>
 
                 <div>
                   <label for="urgency" class="block text-sm font-medium text-gray-700 mb-2">
-                    Urgency Level *
+                    Urgency level
                   </label>
                   <select
                     id="urgency"
@@ -142,14 +139,14 @@ const description = "Report issues, damage, or maintenance needs for public artw
 
               <div>
                 <label for="photos" class="block text-sm font-medium text-gray-700 mb-2">
-                  Upload Photos
+                  Upload photos
                 </label>
                 <div class="border-2 border-dashed border-slate-200 bg-slate-50/50 rounded p-5 sm:p-8 text-center hover:bg-slate-50 transition-colors">
                   <svg class="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                   <div class="mt-4">
-                    <label for="photo-upload" class="mb-2 block text-sm font-medium text-slate-700">Select photographs</label>
+                    <label for="photo-upload" class="mb-2 block text-sm font-medium text-slate-700">Select photographs <span class="font-normal text-slate-600">(optional)</span></label>
                     <input id="photo-upload" name="photos" type="file" multiple accept="image/*" class="block w-full" aria-describedby="photoUploadStatus" />
                   </div>
                   <p class="mt-2 text-sm text-gray-500">
@@ -174,7 +171,7 @@ const description = "Report issues, damage, or maintenance needs for public artw
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="reporterName" class="block text-sm font-medium text-gray-700 mb-2">
-                    Your Name *
+                    Your name
                   </label>
                   <input
                     type="text"
@@ -182,13 +179,12 @@ const description = "Report issues, damage, or maintenance needs for public artw
                     name="reporterName"
                     required
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white"
-                    placeholder="Enter your full name"
                   />
                 </div>
 
                 <div>
                   <label for="reporterEmail" class="block text-sm font-medium text-gray-700 mb-2">
-                    Your Email *
+                    Your email
                   </label>
                   <input
                     type="email"
@@ -196,21 +192,18 @@ const description = "Report issues, damage, or maintenance needs for public artw
                     name="reporterEmail"
                     required
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white"
-                    placeholder="Enter your email address"
                   />
                 </div>
               </div>
 
               <div class="mt-6">
                 <label for="reporterPhone" class="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number
-                </label>
+                  Phone number <span class="font-normal text-slate-600">(optional)</span></label>
                 <input
                   type="tel"
                   id="reporterPhone"
                   name="reporterPhone"
                   class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white"
-                  placeholder="Enter your phone number (optional)"
                 />
               </div>
             </div>
@@ -227,27 +220,25 @@ const description = "Report issues, damage, or maintenance needs for public artw
               <div class="space-y-6">
                 <div>
                   <label for="suggestions" class="block text-sm font-medium text-gray-700 mb-2">
-                    Suggestions for Resolution
-                  </label>
-                  <textarea
+                    Suggestions for resolution <span class="font-normal text-slate-600">(optional)</span></label>
+                  <p id="suggestions-hint" class="mb-1 text-sm text-slate-600">Any suggestions for how this issue could be resolved or prevented in the future</p>
+                  <textarea aria-describedby="suggestions-hint"
                     id="suggestions"
                     name="suggestions"
                     rows="4"
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white resize-none"
-                    placeholder="Any suggestions for how this issue could be resolved or prevented in the future..."
                   ></textarea>
                 </div>
 
                 <div>
                   <label for="additionalInfo" class="block text-sm font-medium text-gray-700 mb-2">
-                    Additional Information
-                  </label>
-                  <textarea
+                    Additional information <span class="font-normal text-slate-600">(optional)</span></label>
+                  <p id="additionalInfo-hint" class="mb-1 text-sm text-slate-600">Any other relevant information that might help us understand or address the issue</p>
+                  <textarea aria-describedby="additionalInfo-hint"
                     id="additionalInfo"
                     name="additionalInfo"
                     rows="3"
                     class="w-full px-4 py-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-shadow bg-gray-50 focus:bg-white resize-none"
-                    placeholder="Any other relevant information that might help us understand or address the issue..."
                   ></textarea>
                 </div>
               </div>
@@ -260,7 +251,7 @@ const description = "Report issues, damage, or maintenance needs for public artw
                 id="submitButton"
                 class="min-h-[44px] w-full sm:w-auto px-8 py-4 bg-primary-900 text-white rounded font-semibold hover:bg-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span id="submitText">Report Issue</span>
+                <span id="submitText">Report an artwork issue</span>
                 <span id="submitSpinner" class="hidden">
                   <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

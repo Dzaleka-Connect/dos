@@ -39,8 +39,6 @@ sources:
     note: "Master's Thesis in International Social Work, supervised by Dr. Michael Bigos and Dr. Katja Ludwig."
 ---
 
-## Overview
-
 *Waiting in Dzaleka Refugee Camp - Agency through self- and community organisation* is a 2025 Master's thesis by Anna-Lena Stammen, submitted to the Faculty of Applied Social Sciences at the University of Applied Sciences Erfurt. Grounded in qualitative fieldwork and an internship with [Tumaini Letu](/encyclopedia/tumaini-letu), the research investigates how refugees residing in Dzaleka experience temporal restriction, legal encampment, and bureaucratic limbo, and how they exercise self-determination and agency through Refugee-Led Organisations (RLOs).
 
 The thesis bridges sociological theories of forced migration, camp urbanism, and the "politics of waiting" with empirical data gathered directly from camp residents and community leaders.

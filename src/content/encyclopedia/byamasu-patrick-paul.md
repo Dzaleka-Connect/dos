@@ -42,8 +42,6 @@ relatedEntries:
   - "education-in-dzaleka"
 ---
 
-## Overview
-
 **Byamasu Patrick Paul** is a refugee technology innovator, artificial intelligence researcher, and entrepreneur. He is the **CEO and Chief Research Scientist at [Rexplore Research Labs](/encyclopedia/rexplore-labs)** in Lilongwe, Malawi, and co-founded **[ADAI Circle](/encyclopedia/adai-circle)** in Dzaleka Refugee Camp on 2 February 2020 alongside **[Amisi Hassan Jospin](/encyclopedia/amisi-hassan-jospin)**.
 
 ---

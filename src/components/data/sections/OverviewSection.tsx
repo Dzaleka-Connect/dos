@@ -57,7 +57,7 @@ const chartOptions = {
       beginAtZero: true,
       ticks: {
         callback: function(value: any) {
-          return value.toLocaleString();
+          return value.toLocaleString('en-GB');
         }
       }
     }

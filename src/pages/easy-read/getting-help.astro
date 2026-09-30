@@ -144,7 +144,7 @@ const schema = {
           {contacts.map((contact) => (
             <article class="rounded border border-slate-200 bg-slate-50 px-5 py-5">
               <h3 class="text-lg font-semibold text-slate-900">{contact.title}</h3>
-              <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">{contact.value}</p>
+              <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">{contact.value.split(' or ').map((number, index) => <>{index > 0 && ' or '}<a href={`tel:${number.replace(/[^\d+]/g, '')}`} class="inline-flex min-h-[44px] items-center underline underline-offset-4">{number}</a></>)}</p>
               <p class="mt-2 text-sm leading-6 text-slate-600">{contact.detail}</p>
             </article>
           ))}
@@ -194,7 +194,6 @@ const schema = {
             <li class="border-t border-slate-300 pt-4">
               <a
                 href={source.href}
-                target="_blank"
                 rel="noopener noreferrer"
                 class="text-base font-semibold text-primary-700 hover:text-primary-800 hover:underline"
               >

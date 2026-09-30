@@ -5,6 +5,7 @@ import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import Button from '../../components/ui/Button.astro';
 import ServiceLogo from '../../components/services/ServiceLogo.astro';
 import { providerLogo } from '../../utils/providerLogo';
+import SummaryList from '../../components/ui/SummaryList.astro';
 import { serviceAccessRows, providerConfirmation, contactLanguages } from '../../utils/serviceDetails';
 
 export async function getStaticPaths() {
@@ -32,7 +33,7 @@ const breadcrumbItems = [
 
 // Format date
 const formattedDate = service.data.lastUpdated
-  ? new Date(service.data.lastUpdated).toLocaleDateString('en-US', {
+  ? new Date(service.data.lastUpdated).toLocaleDateString('en-GB', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -233,7 +234,7 @@ const seo = {
         <div class="order-2 min-w-0 lg:order-1">
           {accessRows.length > 0 && <section aria-labelledby="service-access-heading" class="mb-8">
             <h2 id="service-access-heading" class="text-primary-900">Using this service</h2>
-            <dl class="mt-4 divide-y divide-slate-200 border-y border-slate-200 text-sm leading-6">{accessRows.map(row => <div class="grid gap-2 py-4 sm:grid-cols-[11rem_1fr] sm:gap-5"><dt class="font-semibold text-slate-900">{row.label}</dt><dd class="whitespace-pre-line text-slate-700">{row.value}</dd></div>)}</dl>
+            <SummaryList facts={accessRows} class="mt-4" />
           </section>}
           <div class="service-description prose prose-slate max-w-prose prose-a:text-primary-800">
             <Content />

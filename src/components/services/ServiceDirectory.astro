@@ -15,7 +15,7 @@ const title = categoryPage || 'Find a service in Dzaleka';
 const description = 'Organizations, schools, clinics, community groups and businesses in and around Dzaleka.';
 const pageUrl = categoryPage ? `/services/category/${serviceCategorySlug(categoryPage)}` : '/services';
 ---
-<MainLayout title={title} description={description}>
+<MainLayout title={`${categoryPage ? `${categoryPage} services in Dzaleka` : title}${results.currentPage > 1 ? ` — page ${results.currentPage}` : ''}`} description={`${description}${results.currentPage > 1 ? ` Page ${results.currentPage} of ${results.totalPages}.` : ''}`}>
   {!categoryPage && !results.query && !results.category && results.currentPage === 1 ? <FeatureHeader
     title={title} description={description} eyebrow="Services directory"
     image="/images/dzaleka-hero.jpeg" imageAlt="Homes, community buildings and the football ground in Dzaleka"

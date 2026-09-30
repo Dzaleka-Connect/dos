@@ -39,8 +39,6 @@ sources:
     date: "27 March 2013"
 ---
 
-## Overview
-
 Jesuit Worldwide Learning (JWL) delivers university-level education to learners in refugee camps and other marginalised settings through a blended model: students study at a local learning centre with on-site facilitation, while courses are taught online by faculty from Jesuit universities.
 
 Dzaleka hosts one of JWL's learning centres, operated alongside [Jesuit Refugee Service](/encyclopedia/jesuit-refugee-service)'s education work in the camp. The programme began under the name Jesuit Commons: Higher Education at the Margins, founded in 2010.

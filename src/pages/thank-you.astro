@@ -1,241 +1,36 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-
-// Get the form type from URL parameters
-const formType = Astro.url.searchParams.get('type') || 'default';
-
-// Define messages for different form types
-const messages = {
-  support: {
-    title: 'Support Request Received',
-    message: 'Thank you for contacting our support team. We have received your request and will respond within 24-48 hours.',
-    nextSteps: [
-      'Check your email for a confirmation of your request',
-      'Keep your contact information handy for our response',
-      'For urgent issues, you can contact us directly at dzalekaconnect@gmail.com'
-    ]
-  },
-  visit: {
-    title: 'Thank You for Planning Your Visit',
-    message: 'We have received your visit request and are excited to welcome you to Dzaleka. Our team will review your details and contact you within 24-48 hours to confirm your visit arrangements.',
-    nextSteps: [
-      'Check your email for a confirmation of your request',
-      'Review our visitor guidelines to prepare for your visit',
-      'Feel free to contact us if you have any immediate questions'
-    ]
-  },
-  'guide-registration': {
-    title: 'Guide Application Received',
-    message: 'Thank you for your interest in becoming a local guide with Visit Dzaleka. Our team will review your application and contact you within 7 business days.',
-    nextSteps: [
-      'Check your email for application confirmation',
-      'Gather any identification documents that may be required',
-      'If selected, you will be invited for an interview and orientation session',
-      'You\'ll learn on the job with guidance from experienced team members'
-    ]
-  },
-  legal: {
-    title: 'Legal Support Application Received',
-    message: 'Thank you for submitting your legal support application. Our team will review your case and contact you within 2-3 business days.',
-    nextSteps: [
-      'Review your email for a confirmation message',
-      'Gather any additional documentation that might be requested',
-      'Be available for follow-up contact from our legal team'
-    ]
-  },
-  emergency: {
-    title: 'Emergency Relief Request Submitted',
-    message: 'Your emergency relief request has been received. Given the urgent nature, our team will prioritize your case and respond as soon as possible.',
-    nextSteps: [
-      'Keep your phone nearby for urgent contact',
-      'Monitor your email for updates',
-      'Document any changes in your situation'
-    ]
-  },
-  leadership: {
-    title: 'Leadership Support Application Received',
-    message: 'Thank you for your interest in our leadership support programs. We will review your application and contact you within 5-7 business days.',
-    nextSteps: [
-      'Check your email for application confirmation',
-      'Review our leadership resources while you wait',
-      'Consider connecting with other community leaders'
-    ]
-  },
-  advocacy: {
-    title: 'Advocacy Campaign Request Submitted',
-    message: 'Your advocacy campaign request has been received. Our team will review your proposal and reach out to discuss next steps.',
-    nextSteps: [
-      'Review the campaign materials you submitted',
-      'Start gathering community support',
-      'Prepare for a strategy discussion with our team'
-    ]
-  },
-  default: {
-    title: 'Thank You',
-    message: 'Your submission has been received.',
-    nextSteps: [
-      'We will review your submission',
-      'You will receive a confirmation email shortly'
-    ]
-  },
-  profile: {
-    title: 'Profile Created Successfully',
-    message: 'Thank you for creating your skills exchange profile. Your profile will be reviewed and published within 24 hours.',
-    nextSteps: [
-      'Check your email for profile confirmation',
-      'Browse other skills while you wait',
-      'Prepare any additional materials you might need for teaching'
-    ]
-  },
-  'profile-update': {
-    title: 'Profile Update Request Received',
-    description: 'Thank you for submitting your profile update request. Our team will review your changes and update your profile accordingly. You will receive a confirmation email once the changes are made.',
-    cta: {
-      text: 'View Skills Exchange',
-      href: '/skills-exchange'
-    }
-  },
-  'opportunity-submission': {
-    title: 'Opportunity Submission Received',
-    message: 'Thank you for sharing an opportunity with us. We will review the information, verify the source, and consider it for listing on the grants and programs page.',
-    nextSteps: [
-      'We will check the official source page and eligibility details.',
-      'If the opportunity is suitable, we will add it to the grants and programs page.',
-      'We may contact you if we need clarification before publishing it.'
-    ],
-    cta: {
-      text: 'View Grants and Programs',
-      href: '/grants-and-programs'
-    }
-  }
-};
-
-const currentMessage = messages[formType] || messages.default;
+import { submissionConfirmations } from '../data/submissionConfirmations';
+const confirmation = submissionConfirmations.default;
 ---
-
-<MainLayout title={currentMessage.title}>
-  <!-- Hidden data element for messages -->
-  <script id="thank-you-messages" type="application/json" set:html={JSON.stringify(messages)}></script>
-
-  <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
-    <div class="max-w-3xl w-full mx-auto relative z-10">
-      <div class="bg-white rounded p-8 md:p-12 border border-gray-200">
-        {/* Success Icon with Animation */}
-        <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-8">
-          <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-        </div>
-
-        {/* Title */}
-        <h1 id="thank-you-title" class="text-center text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">
-          {currentMessage.title}
-        </h1>
-
-        {/* Message */}
-        <p id="thank-you-message" class="text-center text-lg text-gray-600 mb-10 leading-relaxed">
-          {currentMessage.message || currentMessage.description}
-        </p>
-
-        {/* Next Steps */}
-        <div id="thank-you-next-steps" class="bg-white/50 rounded p-5 sm:p-8 mb-10 border border-gray-100 hidden">
-          <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center justify-center">
-            <span class="bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mr-3">What Happens Next</span>
-          </h2>
-          <ul class="space-y-4" id="next-steps-list">
-          </ul>
-        </div>
-
-        {/* CTA */}
-        <div id="thank-you-cta" class="text-center hidden">
-          <a
-            href="/"
-            class="min-h-[44px] inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded text-white bg-primary-900 hover:bg-primary-800 transition-colors duration-200"
-          >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-            </svg>
-            Return to Home
-          </a>
-        </div>
-      </div>
+<MainLayout title={confirmation.title} description="Submission confirmation and next steps." robots="noindex, follow" showFeedback={false}>
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
+    <div class="border-t-4 border-green-700 bg-green-50 p-6 sm:p-8">
+      <p class="mb-3 text-sm font-semibold text-green-800">Dzaleka Online Services</p>
+      <h1 id="thank-you-title" class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{confirmation.title}</h1>
+      <p id="thank-you-message" class="mt-4 text-lg leading-7 text-slate-700">{confirmation.message}</p>
     </div>
+    <section class="mt-8" aria-labelledby="next-steps-heading">
+      <h2 id="next-steps-heading" class="text-xl font-bold text-slate-900">What happens next</h2>
+      <ul id="next-steps-list" class="mt-4 list-disc space-y-3 pl-5 text-slate-700">{confirmation.nextSteps.map(step => <li>{step}</li>)}</ul>
+      <p class="mt-5 text-slate-700">For questions or corrections, <a href="/help-desk" class="text-primary-800 underline underline-offset-4">contact the help desk</a>.</p>
+    </section>
+    <a id="thank-you-cta" href={confirmation.cta.href} class="mt-8 inline-flex min-h-[44px] items-center rounded bg-primary-900 px-5 py-3 font-semibold text-white hover:bg-primary-800">{confirmation.cta.text}</a>
   </div>
 </MainLayout>
-
 <script>
-  // Run immediately when the script loads
-  (function() {
-    // Get the form type from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const formType = urlParams.get('type') || 'default';
-
-    // Get messages from the hidden data element
-    const messagesElement = document.getElementById('thank-you-messages');
-    if (!messagesElement) return;
-
-    const messages = JSON.parse(messagesElement.textContent);
-    const currentMessage = messages[formType] || messages.default;
-
-    // Update the page content
-    if (currentMessage) {
-      // Update title
-      document.title = currentMessage.title;
-
-      // Update heading
-      const heading = document.getElementById('thank-you-title');
-      if (heading) {
-        heading.textContent = currentMessage.title;
-      }
-
-      // Update message
-      const message = document.getElementById('thank-you-message');
-      if (message) {
-        message.textContent = currentMessage.message || currentMessage.description;
-      }
-
-      // Update next steps if they exist
-      if (currentMessage.nextSteps) {
-        const nextStepsContainer = document.getElementById('thank-you-next-steps');
-        if (nextStepsContainer) {
-          nextStepsContainer.classList.remove('hidden');
-          const nextStepsList = document.getElementById('next-steps-list');
-          if (nextStepsList) {
-            nextStepsList.innerHTML = currentMessage.nextSteps.map((step, index) => `
-              <li class="flex items-start p-3 rounded hover:bg-white transition-colors duration-200">
-                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-sm mr-4">
-                  ${index + 1}
-                </div>
-                <span class="text-gray-700 text-lg">${step}</span>
-              </li>
-            `).join('');
-          }
-        }
-      }
-
-      // Update CTA if it exists
-      if (currentMessage.cta) {
-        const ctaContainer = document.getElementById('thank-you-cta');
-        if (ctaContainer) {
-          ctaContainer.classList.remove('hidden');
-          const ctaLink = ctaContainer.querySelector('a');
-          if (ctaLink) {
-            ctaLink.href = currentMessage.cta.href;
-            ctaLink.innerHTML = `
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-              </svg>
-              ${currentMessage.cta.text}
-            `;
-          }
-        }
-      } else {
-        // Show default CTA
-        const ctaContainer = document.getElementById('thank-you-cta');
-        if (ctaContainer) {
-           ctaContainer.classList.remove('hidden');
-        }
-      }
-    }
-  })();
+  import { submissionConfirmation } from '../data/submissionConfirmations';
+  const confirmation = submissionConfirmation(new URLSearchParams(window.location.search).get('type'));
+  document.title = `${confirmation.title} | Dzaleka Online Services`;
+  document.getElementById('thank-you-title')!.textContent = confirmation.title;
+  document.getElementById('thank-you-message')!.textContent = confirmation.message;
+  const steps = document.getElementById('next-steps-list')!;
+  steps.replaceChildren(...confirmation.nextSteps.map(step => {
+    const item = document.createElement('li');
+    item.textContent = step;
+    return item;
+  }));
+  const link = document.getElementById('thank-you-cta') as HTMLAnchorElement;
+  link.href = confirmation.cta.href;
+  link.textContent = confirmation.cta.text;
 </script>

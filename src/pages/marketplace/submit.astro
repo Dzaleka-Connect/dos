@@ -65,7 +65,7 @@ const categories = [
 
         <!-- Listing Type -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-3">What are you listing? *</label>
+          <label class="block text-sm font-medium text-gray-700 mb-3">What are you listing?</label>
           <div class="grid grid-cols-2 gap-4">
             <label class="relative flex items-center justify-center p-4 border-2 rounded cursor-pointer hover:border-blue-500 transition-colors">
               <input type="radio" name="type" value="product" class="sr-only peer" required>
@@ -92,20 +92,20 @@ const categories = [
 
         <!-- Title -->
         <div>
-          <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
-          <input
+          <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+          <p id="title-hint" class="mb-1 text-sm text-slate-600">For example, Fresh Chapati Daily or Phone Repair Services</p>
+          <input aria-describedby="title-hint"
             type="text"
             id="title"
             name="title"
             required
-            placeholder="For example, Fresh Chapati Daily or Phone Repair Services"
             class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
         </div>
 
         <!-- Category -->
         <div>
-          <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+          <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
           <select
             id="category"
             name="category"
@@ -121,13 +121,13 @@ const categories = [
 
         <!-- Description -->
         <div>
-          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-          <textarea
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <p id="description-hint" class="mb-1 text-sm text-slate-600">Describe your product or service in detail</p>
+          <textarea aria-describedby="description-hint"
             id="description"
             name="description"
             rows="4"
             required
-            placeholder="Describe your product or service in detail..."
             class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           ></textarea>
         </div>
@@ -135,20 +135,20 @@ const categories = [
         <!-- Price Section -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
-            <label for="priceAmount" class="block text-sm font-medium text-gray-700 mb-1">Price amount</label>
-            <input
+            <label for="priceAmount" class="block text-sm font-medium text-gray-700 mb-1">Price amount <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="priceAmount-hint" class="mb-1 text-sm text-slate-600">For example, 5000</p>
+            <input aria-describedby="priceAmount-hint"
               type="number"
               id="priceAmount"
               name="priceAmount"
               min="0"
               step="0.01"
               inputmode="decimal"
-              placeholder="For example, 5000"
               class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
           </div>
           <div>
-            <label for="currency" class="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+            <label for="currency" class="block text-sm font-medium text-gray-700 mb-1">Currency <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="currency"
               name="currency"
@@ -159,7 +159,7 @@ const categories = [
             </select>
           </div>
           <div>
-            <label for="priceType" class="block text-sm font-medium text-gray-700 mb-1">Price Type</label>
+            <label for="priceType" class="block text-sm font-medium text-gray-700 mb-1">Price type <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="priceType"
               name="priceType"
@@ -175,7 +175,7 @@ const categories = [
 
         <!-- Condition (for products) -->
         <div id="conditionField">
-          <label for="condition" class="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+          <label for="condition" class="block text-sm font-medium text-gray-700 mb-1">Condition <span class="font-normal text-slate-600">(optional)</span></label>
           <select
             id="condition"
             name="condition"
@@ -189,7 +189,7 @@ const categories = [
         </div>
 
         <div id="availabilityField">
-          <label for="availability" class="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+          <label for="availability" class="block text-sm font-medium text-gray-700 mb-1">Availability <span class="font-normal text-slate-600">(optional)</span></label>
           <select
             id="availability"
             name="availability"
@@ -204,7 +204,7 @@ const categories = [
 
         <!-- Image Upload -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Product image</label>
           <div class="space-y-3">
             <div id="imagePreview" class="hidden">
               <img id="previewImg" src="" alt="Preview" class="w-32 h-32 object-cover rounded border" />
@@ -230,7 +230,7 @@ const categories = [
 
           <div class="space-y-4">
             <div>
-              <label for="vendorName" class="block text-sm font-medium text-gray-700 mb-1">Your Name / Business Name *</label>
+              <label for="vendorName" class="block text-sm font-medium text-gray-700 mb-1">Your name / business name</label>
               <input
                 type="text"
                 id="vendorName"
@@ -242,30 +242,30 @@ const categories = [
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label for="vendorPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                <input
+                <label for="vendorPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone number</label>
+                <p id="vendorPhone-hint" class="mb-1 text-sm text-slate-600">Include the country code, for example +265 991 234 567</p>
+                <input aria-describedby="vendorPhone-hint"
                   type="tel"
                   id="vendorPhone"
                   name="vendorPhone"
                   required
-                  placeholder="+265..."
                   class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
               </div>
               <div>
-                <label for="vendorWhatsapp" class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-                <input
+                <label for="vendorWhatsapp" class="block text-sm font-medium text-gray-700 mb-1">WhatsApp <span class="font-normal text-slate-600">(optional)</span></label>
+                <p id="vendorWhatsapp-hint" class="mb-1 text-sm text-slate-600">Include the country code, for example +265 991 234 567</p>
+                <input aria-describedby="vendorWhatsapp-hint"
                   type="tel"
                   id="vendorWhatsapp"
                   name="vendorWhatsapp"
-                  placeholder="+265..."
                   class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
               </div>
             </div>
 
             <div>
-              <label for="vendorEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label for="vendorEmail" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="font-normal text-slate-600">(optional)</span></label>
               <input
                 type="email"
                 id="vendorEmail"
@@ -275,13 +275,13 @@ const categories = [
             </div>
 
             <div>
-              <label for="vendorLocation" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
-              <input
+              <label for="vendorLocation" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+              <p id="vendorLocation-hint" class="mb-1 text-sm text-slate-600">For example, Dzaleka Camp, Kawale Zone</p>
+              <input aria-describedby="vendorLocation-hint"
                 type="text"
                 id="vendorLocation"
                 name="vendorLocation"
                 required
-                placeholder="For example, Dzaleka Camp, Kawale Zone"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
             </div>
@@ -290,11 +290,11 @@ const categories = [
 
         <!-- Delivery & Payment -->
         <div class="border-t pt-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Delivery & Payment</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Delivery & payment</h3>
 
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Options</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Delivery options</label>
               <div class="flex flex-wrap gap-3">
                 <label class="flex items-center">
                   <input type="checkbox" name="delivery" value="pickup" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
@@ -316,15 +316,15 @@ const categories = [
               <p class="mt-1 text-xs leading-5 text-gray-600">Complete these fields when delivery is available. Enter 0 when delivery is free.</p>
               <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div>
-                  <label for="shippingCost" class="block text-sm font-medium text-gray-700 mb-1">Delivery cost</label>
+                  <label for="shippingCost" class="block text-sm font-medium text-gray-700 mb-1">Delivery cost <span class="font-normal text-slate-600">(optional)</span></label>
                   <input type="number" id="shippingCost" name="shippingCost" min="0" step="0.01" inputmode="decimal" class="w-full rounded border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <div>
-                  <label for="handlingDays" class="block text-sm font-medium text-gray-700 mb-1">Preparation days</label>
+                  <label for="handlingDays" class="block text-sm font-medium text-gray-700 mb-1">Preparation days <span class="font-normal text-slate-600">(optional)</span></label>
                   <input type="number" id="handlingDays" name="handlingDays" min="0" step="1" inputmode="numeric" class="w-full rounded border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <div>
-                  <label for="transitDays" class="block text-sm font-medium text-gray-700 mb-1">Delivery days</label>
+                  <label for="transitDays" class="block text-sm font-medium text-gray-700 mb-1">Delivery days <span class="font-normal text-slate-600">(optional)</span></label>
                   <input type="number" id="transitDays" name="transitDays" min="0" step="1" inputmode="numeric" class="w-full rounded border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500" />
                 </div>
               </div>
@@ -332,7 +332,7 @@ const categories = [
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Payment Methods Accepted</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Payment methods accepted</label>
               <div class="flex flex-wrap gap-3">
                 <label class="flex items-center">
                   <input type="checkbox" name="payment" value="cash" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
@@ -357,12 +357,12 @@ const categories = [
 
         <!-- Tags -->
         <div>
-          <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
-          <input
+          <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Tags <span class="font-normal text-slate-600">(optional)</span></label>
+          <p id="tags-hint" class="mb-1 text-sm text-slate-600">For example, handmade, organic, fast-delivery (comma separated)</p>
+          <input aria-describedby="tags-hint"
             type="text"
             id="tags"
             name="tags"
-            placeholder="For example, handmade, organic, fast-delivery (comma separated)"
             class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
         </div>

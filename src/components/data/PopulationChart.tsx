@@ -122,7 +122,7 @@ export function PopulationChart() {
         callbacks: {
           label: (context: { dataIndex: number; label: string; raw: number }) => {
             const item = nationalityData[context.dataIndex];
-            return `${context.label}: ${context.raw.toLocaleString()} (${item.percentage}%)`;
+            return `${context.label}: ${context.raw.toLocaleString('en-GB')} (${item.percentage}%)`;
           },
         },
       },
@@ -141,17 +141,16 @@ export function PopulationChart() {
     <div className="space-y-4">
       <div className="bg-blue-50 p-3 rounded">
         <div className="flex justify-between items-center">
-          <h3 className="text-sm font-semibold">Total Population</h3>
-          <span className="text-lg font-bold text-blue-600">{data.total.toLocaleString()}</span>
+          <h3 className="text-sm font-semibold">Total population</h3>
+          <span className="text-lg font-bold text-blue-600">{data.total.toLocaleString('en-GB')}</span>
         </div>
         <p className="text-xs text-gray-600 mt-1">
-          New arrivals: <span className="font-medium">{data.newArrivals.toLocaleString()}</span>
+          New arrivals: <span className="font-medium">{data.newArrivals.toLocaleString('en-GB')}</span>
         </p>
         <p className="text-xs text-gray-600 mt-1">
           Source:{' '}
           <a
             href="https://data.unhcr.org/en/country/mwi"
-            target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 hover:underline"
           >
@@ -167,7 +166,7 @@ export function PopulationChart() {
       </div>
 
       <div className="text-xs text-gray-500 text-center">
-        Data as of {new Date().toLocaleDateString()}
+        Data as of {new Date().toLocaleDateString('en-GB')}
       </div>
 
       {error ? <div className="text-sm text-amber-700 bg-amber-50 rounded p-3">{error}</div> : null}

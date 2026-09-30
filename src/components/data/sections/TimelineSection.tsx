@@ -57,7 +57,7 @@ export function TimelineSection() {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">Camp History Timeline</h3>
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Camp history timeline</h3>
 
       <div className="relative pl-8 md:pl-0">
         <div className="absolute left-3 top-2 h-[calc(100%-1rem)] w-px bg-gray-200 md:left-1/2 md:-translate-x-1/2"></div>

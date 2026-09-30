@@ -127,7 +127,7 @@ export function DzalekaInteractiveMap() {
           if (layer === 'satellite') {
             return 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics';
           }
-          return '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors';
+          return '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         };
 
         const tileLayer = L.tileLayer(getTileUrl(activeLayer), {
@@ -178,7 +178,7 @@ export function DzalekaInteractiveMap() {
               ${pt.operator ? `<div style="font-size: 10px; color: #64748b; margin-bottom: 6px;"><strong>Operator:</strong> ${pt.operator}</div>` : ''}
               ${/^\d+$/.test(String(pt.osmId)) ? `<div style="font-size: 10px; font-family: monospace; color: #94a3b8; margin-bottom: 8px;">OSM ${pt.osmType.toUpperCase()} #${pt.osmId}</div>` : `<div style="font-size: 10px; color: #94a3b8; margin-bottom: 8px;">Dzaleka Heritage Site Register</div>`}
               <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; border-top: 1px solid #f1f5f9; padding-top: 6px;">
-                ${/^\d+$/.test(String(pt.osmId)) ? `<a href="https://www.openstreetmap.org/${pt.osmType}/${pt.osmId}" target="_blank" rel="noopener" style="font-weight: 600; color: #0284c7; text-decoration: none;">OpenStreetMap &rarr;</a>` : ''}
+                ${/^\d+$/.test(String(pt.osmId)) ? `<a href="https://www.openstreetmap.org/${pt.osmType}/${pt.osmId}" rel="noopener" style="font-weight: 600; color: #0284c7; text-decoration: none;">OpenStreetMap &rarr;</a>` : ''}
                 ${pt.encyclopediaUrl ? `<a href="${pt.encyclopediaUrl}" style="font-weight: 600; color: #0f172a; text-decoration: none;">Encyclopedia &rarr;</a>` : ''}
               </div>
             </div>
@@ -926,7 +926,6 @@ export function DzalekaInteractiveMap() {
                 <div className="mt-4 flex flex-col gap-2">
                   <a
                     href={`https://www.google.com/maps/dir/?api=1&origin=${originPoint.lat},${originPoint.lng}&destination=${destinationPoint.lat},${destinationPoint.lng}&travelmode=${travelMode}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white shadow-md hover:bg-slate-800 transition-colors w-full"
                   >
@@ -938,7 +937,6 @@ export function DzalekaInteractiveMap() {
                   {travelMode === 'driving' && <div className="grid grid-cols-2 gap-2 text-xs">
                     <a
                       href={`https://maps.apple.com/?saddr=${originPoint.lat},${originPoint.lng}&daddr=${destinationPoint.lat},${destinationPoint.lng}`}
-                      target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-1 rounded-lg border border-slate-300 bg-white py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
                     >
@@ -946,7 +944,6 @@ export function DzalekaInteractiveMap() {
                     </a>
                     <a
                       href={`https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${originPoint.lat}%2C${originPoint.lng}%3B${destinationPoint.lat}%2C${destinationPoint.lng}`}
-                      target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-1 rounded-lg border border-slate-300 bg-white py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
                     >
@@ -1034,7 +1031,6 @@ export function DzalekaInteractiveMap() {
                   </button>
                   <a
                     href={`https://www.google.com/maps/dir/?api=1&destination=${selectedPoint.lat},${selectedPoint.lng}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
                   >
@@ -1044,7 +1040,6 @@ export function DzalekaInteractiveMap() {
                 {/^\d+$/.test(String(selectedPoint.osmId)) && (
                   <a
                     href={`https://www.openstreetmap.org/${selectedPoint.osmType}/${selectedPoint.osmId}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 w-full"
                   >
@@ -1181,14 +1176,14 @@ export function DzalekaInteractiveMap() {
                   Places ({MAP_POINTS.length})
                 </h3>
                 <div className="overflow-x-auto border border-slate-200 rounded-xl">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full text-left text-xs"><caption className="sr-only">Mapped places in Dzaleka</caption>
                     <thead className="bg-slate-100 border-b border-slate-200 font-semibold text-slate-700">
                       <tr>
-                        <th className="py-2.5 px-3">Facility Name</th>
-                        <th className="py-2.5 px-3">Category</th>
-                        <th className="py-2.5 px-3">Zone / Sector</th>
-                        <th className="py-2.5 px-3">GPS Coordinates</th>
-                        <th className="py-2.5 px-3">OSM Record</th>
+                        <th scope="col" className="py-2.5 px-3">Facility Name</th>
+                        <th scope="col" className="py-2.5 px-3">Category</th>
+                        <th scope="col" className="py-2.5 px-3">Zone / Sector</th>
+                        <th scope="col" className="py-2.5 px-3">GPS Coordinates</th>
+                        <th scope="col" className="py-2.5 px-3">OSM Record</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">

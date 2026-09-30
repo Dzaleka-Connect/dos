@@ -139,7 +139,6 @@ export function EventsSection() {
                     <a 
                       href={event.link}
                       className="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700"
-                      target="_blank"
                       rel="noopener noreferrer"
                     >
                       Learn More

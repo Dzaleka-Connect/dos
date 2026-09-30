@@ -75,6 +75,10 @@ const defaultOgImage = "https://services.dzaleka.com/images/dzaleka-hero.jpeg";
 
 // Use provided values or defaults
 const metaDescription = description || defaultDescription;
+const suppliedTitle = title?.trim() || 'Page';
+const unbrandedTitle = suppliedTitle.replace(/\s+[|—–-]\s+Dzaleka Online Services$/, '');
+const brandedTitle = suppliedTitle.includes('Dzaleka') ? suppliedTitle : `${suppliedTitle} | Dzaleka Online Services`;
+const documentTitle = brandedTitle.length > 70 ? unbrandedTitle : brandedTitle;
 const metaOgImage = ogImage || defaultOgImage;
 const canonicalUrl = canonical && canonical.startsWith('http')
 	? canonical
@@ -99,7 +103,7 @@ import Schema from '../components/Schema.astro';
 		<meta property="og:type" content={openGraph?.type || type} />
 		<meta property="og:site_name" content={openGraph?.site_name || "Dzaleka Online Services"} />
 		<meta property="og:url" content={openGraph?.url || canonicalUrl} />
-		<meta property="og:locale" content={openGraph?.locale || "en_US"} />
+		<meta property="og:locale" content={openGraph?.locale || "en_GB"} />
 
 		{/* OpenGraph Image Tags */}
 		{openGraph?.image && typeof openGraph.image === 'object' ? (
@@ -149,7 +153,7 @@ import Schema from '../components/Schema.astro';
 		<link rel="apple-touch-icon" href="/images/dzaleka-digital-heritage.png" />
 		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
-		<title>{(title && title.includes('Dzaleka')) ? title : `${title || 'Page'} | Dzaleka Online Services`}</title>
+		<title>{documentTitle}</title>
 
 		{/* JSON-LD Schema */}
 		{schema && <Schema item={schema} />}
@@ -453,3 +457,8 @@ import Schema from '../components/Schema.astro';
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	}
 </style>
+
+<script>
+  import { initFormErrors } from '../utils/formErrors';
+  document.querySelectorAll<HTMLFormElement>('form.submission-form, form[data-error-summary]').forEach(initFormErrors);
+</script>

@@ -3,12 +3,12 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import FormHeader from '../../components/ui/FormHeader.astro';
 
 const seo = {
-  title: "Submit Update - Dzaleka Online Services",
+  title: "Update a site record | Dzaleka Online Services",
   description: "Submit updates, corrections, or additional information about heritage sites in Dzaleka Refugee Camp. Help us maintain accurate and comprehensive records.",
   type: "website",
   canonical: "https://services.dzaleka.com/site-register/submit-update",
   openGraph: {
-    title: "Submit Update - Dzaleka Online Services",
+    title: "Update a site record | Dzaleka Online Services",
     description: "Submit updates, corrections, or additional information about heritage sites in Dzaleka Refugee Camp.",
     type: "website",
     site_name: "Dzaleka Online Services",
@@ -34,7 +34,7 @@ const seo = {
           <!-- Site Information -->
           <div>
             <label for="site-name" class="block text-sm font-medium text-gray-700 mb-2">
-              Site Name *
+              Site name
             </label>
             <input
               type="text"
@@ -42,14 +42,13 @@ const seo = {
               name="siteName"
               required
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="Enter the name of the site you're updating"
             />
           </div>
 
           <!-- Update Type -->
           <div>
             <label for="update-type" class="block text-sm font-medium text-gray-700 mb-2">
-              Type of Update *
+              Type of update
             </label>
             <select
               id="update-type"
@@ -70,8 +69,7 @@ const seo = {
           <!-- Field Being Updated -->
           <div>
             <label for="field-updated" class="block text-sm font-medium text-gray-700 mb-2">
-              Field Being Updated
-            </label>
+              Field being updated <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="field-updated"
               name="fieldUpdated"
@@ -92,50 +90,48 @@ const seo = {
           <!-- Current Information -->
           <div>
             <label for="current-info" class="block text-sm font-medium text-gray-700 mb-2">
-              Current Information (if correcting)
-            </label>
-            <textarea
+              Current information (if correcting) <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="current-info-hint" class="mb-1 text-sm text-slate-600">Provide the current/incorrect information that needs to be updated</p>
+            <textarea aria-describedby="current-info-hint"
               id="current-info"
               name="currentInfo"
               rows="3"
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="Provide the current/incorrect information that needs to be updated..."
             ></textarea>
           </div>
 
           <!-- Updated Information -->
           <div>
             <label for="updated-info" class="block text-sm font-medium text-gray-700 mb-2">
-              Updated/Correct Information *
+              Updated/correct information
             </label>
-            <textarea
+            <p id="updated-info-hint" class="mb-1 text-sm text-slate-600">Provide the corrected or new information</p>
+            <textarea aria-describedby="updated-info-hint"
               id="updated-info"
               name="updatedInfo"
               rows="4"
               required
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="Provide the corrected or new information..."
             ></textarea>
           </div>
 
           <!-- Source of Information -->
           <div>
             <label for="source" class="block text-sm font-medium text-gray-700 mb-2">
-              Source of Information
-            </label>
-            <input
+              Source of information <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="source-hint" class="mb-1 text-sm text-slate-600">How did you obtain this information? (for example, personal knowledge, documents, interviews)</p>
+            <input aria-describedby="source-hint"
               type="text"
               id="source"
               name="source"
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="How did you obtain this information? (for example, personal knowledge, documents, interviews)"
             />
           </div>
 
           <!-- Supporting Documents -->
           <div>
             <label for="documents" class="block text-sm font-medium text-gray-700 mb-2">
-              Supporting Documents (if available)
+              Supporting documents (if available)
             </label>
             <input
               type="file"
@@ -154,7 +150,7 @@ const seo = {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                Your Name *
+                Your name
               </label>
               <input
                 type="text"
@@ -162,12 +158,11 @@ const seo = {
                 name="name"
                 required
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-                placeholder="Your full name"
               />
             </div>
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                Email Address *
+                Email address
               </label>
               <input
                 type="email"
@@ -175,7 +170,6 @@ const seo = {
                 name="email"
                 required
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-                placeholder="name@domain.com"
               />
             </div>
           </div>
@@ -183,22 +177,20 @@ const seo = {
           <!-- Phone Number -->
           <div>
             <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number
-            </label>
-            <input
+              Phone number <span class="font-normal text-slate-600">(optional)</span></label>
+            <p id="phone-hint" class="mb-1 text-sm text-slate-600">Include the country code, for example +265 991 234 567</p>
+            <input aria-describedby="phone-hint"
               type="tel"
               id="phone"
               name="phone"
               class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-              placeholder="+265 XXX XXX XXX"
             />
           </div>
 
           <!-- Relationship to Site -->
           <div>
             <label for="relationship" class="block text-sm font-medium text-gray-700 mb-2">
-              Your Relationship to the Site
-            </label>
+              Your relationship to the site <span class="font-normal text-slate-600">(optional)</span></label>
             <select
               id="relationship"
               name="relationship"
@@ -221,7 +213,7 @@ const seo = {
               id="submitButton"
               class="min-h-[44px] px-6 py-3 bg-primary-900 text-white rounded hover:bg-primary-800 focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
             >
-              <span id="submitText">Submit Update</span>
+              <span id="submitText">Update a site record</span>
               <span id="submitSpinner" class="hidden">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -263,7 +255,7 @@ const seo = {
 
       <!-- Additional Information -->
       <div class="mt-8 bg-slate-50 rounded border border-slate-200 p-6">
-        <h3 class="text-lg font-semibold text-slate-900 mb-3">What happens next?</h3>
+        <h2 class="text-lg font-semibold text-slate-900 mb-3">What happens next</h2>
         <ul class="space-y-2 text-slate-700">
           <li class="flex items-start">
             <svg class="w-5 h-5 text-slate-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

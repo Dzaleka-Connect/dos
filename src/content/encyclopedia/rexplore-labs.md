@@ -44,8 +44,6 @@ relatedEntries:
   - "dzaleka-appfactory"
 ---
 
-## Overview
-
 **Rexplore Research Labs** (`rexplore.ai`) is an artificial intelligence research and product development enterprise headquartered in **Lilongwe, Malawi**. Founded by CEO and Chief Research Scientist **[Byamasu Patrick Paul](/encyclopedia/byamasu-patrick-paul)**, the lab develops adaptive AI systems, reinforcement learning frameworks, autonomous multi-agent architectures, and multilingual voice AI tailored for African and global markets.
 
 Key researchers and engineers at Rexplore include **[Amisi Hassan Jospin](/encyclopedia/amisi-hassan-jospin)**, who leads data engineering and machine learning initiatives.

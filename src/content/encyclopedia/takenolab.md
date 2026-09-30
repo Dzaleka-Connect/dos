@@ -42,8 +42,6 @@ sources:
     date: "24 May 2021"
 ---
 
-## Overview
-
 TakeNoLab is a technology school with operations in the Katudza sector near the gates of Dzaleka in Dowa District. [Remy Gakwaya](/encyclopedia/remy-gakwaya), a Burundian who lived in the camp as a refugee, founded it in 2015. Its courses — digital skills, online freelancing, and software development — are offered to refugees and Malawians at no cost.
 
 The [Wilson Center](https://www.wilsoncenter.org/article/refugee-creativity-fun-and-initiative-dzaleka-refugee-camp-malawi)'s profile of the camp describes TakeNoLab as one of the refugee-led initiatives that residents built themselves, rather than programmes brought in from outside. It grew out of the same work covered in Gakwaya's own entry, where early students sometimes practised typing on printed keyboard diagrams because the group had too few computers.

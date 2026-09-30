@@ -247,10 +247,10 @@ const twitter = {
               <p class="mt-2 text-[0.9375rem] leading-7 text-slate-700">{s!.data.description}</p>
               {(s!.data.contact?.phone || s!.data.contact?.email || s!.data.socialMedia?.website) && (
                 <p class="mt-3 text-sm text-slate-600">
-                  {s!.data.contact?.phone && <span class="mr-4">{s!.data.contact.phone}</span>}
-                  {s!.data.contact?.email && <span class="mr-4">{s!.data.contact.email}</span>}
+                  {s!.data.contact?.phone && <a href={`tel:${cleanPhone(s!.data.contact.phone)}`} class="mr-4 inline-flex min-h-[44px] items-center underline underline-offset-[3px]">{s!.data.contact.phone}</a>}
+                  {s!.data.contact?.email && <a href={`mailto:${s!.data.contact.email}`} class="mr-4 inline-flex min-h-[44px] items-center underline underline-offset-[3px]">{s!.data.contact.email}</a>}
                   {s!.data.socialMedia?.website && (
-                    <a href={s!.data.socialMedia.website} target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Website</a>
+                    <a href={s!.data.socialMedia.website} rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Website</a>
                   )}
                 </p>
               )}
@@ -327,7 +327,7 @@ const twitter = {
           <li><strong class="text-slate-900">Break the stigma.</strong> Mental health is health. Naming trauma, exhaustion, fear, and hopelessness without shame is often the first step toward care.</li>
           <li><strong class="text-slate-900">Seek counseling.</strong> Use JRS, IAFR, the health centre, or a trusted referral partner. You do not need to be "crazy" to ask for help. Most people who seek support look and function like everyone else.</li>
           <li><strong class="text-slate-900">Build skills and purpose.</strong> Futurelessness deepens distress. Even small projects — <a href="/e-learning" class="underline underline-offset-[3px]">learning</a>, <a href="/skills-exchange" class="underline underline-offset-[3px]">teaching someone else</a>, creating — can help restore momentum.</li>
-          <li><strong class="text-slate-900">Stay connected.</strong> Faith groups, sports, art, peer support, and events like the <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-[3px]">Tumaini Festival</a> reduce isolation and strengthen everyday resilience.</li>
+          <li><strong class="text-slate-900">Stay connected.</strong> Faith groups, sports, art, peer support, and events like the <a href="https://tumainiletu.org/our_work/tumaini-festival/" rel="noopener noreferrer" class="underline underline-offset-[3px]">Tumaini Festival</a> reduce isolation and strengthen everyday resilience.</li>
         </ol>
       </section>
 
@@ -400,7 +400,7 @@ const twitter = {
           </div>
         </dl>
         <p class="mt-4 text-sm leading-6 text-slate-500">
-          Source: <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-[3px]">Psychiatry Research, 2022</a> (study sample, not full census).
+          Source: <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" rel="noopener noreferrer" class="underline underline-offset-[3px]">Psychiatry Research, 2022</a> (study sample, not full census).
           <a href="/dzaleka-wellbeing/the-research" class="ml-1 font-semibold text-slate-700 underline underline-offset-[3px] hover:text-slate-900">Read our research summary</a>
         </p>
       </section>
@@ -473,15 +473,15 @@ const twitter = {
         <h3 class="mt-8 text-lg font-bold text-slate-900">Core evidence</h3>
         <ul class="mt-3 space-y-4 text-[0.9375rem] leading-7 text-slate-700">
           <li>
-            <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">PubMed: Refugees' mental health — Dzaleka</a>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/36037741/" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">PubMed: Refugees' mental health — Dzaleka</a>
             <span class="block text-sm text-slate-600">Primary abstract for the 2022 Psychiatry Research paper.</span>
           </li>
           <li>
-            <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">UNHCR Malawi Fact Sheet (August 2024)</a>
+            <a href="https://www.unhcr.org/sites/default/files/2024-11/Fact%20Sheet_Malawi_August%202024.pdf" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">UNHCR Malawi Fact Sheet (August 2024)</a>
             <span class="block text-sm text-slate-600">Official population data for Dzaleka.</span>
           </li>
           <li>
-            <a href="https://www.unhcr.org/sites/default/files/2025-06/Malawi%20ARR%202024.pdf" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">UNHCR Annual Results Report 2024</a>
+            <a href="https://www.unhcr.org/sites/default/files/2025-06/Malawi%20ARR%202024.pdf" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">UNHCR Annual Results Report 2024</a>
             <span class="block text-sm text-slate-600">Operational context for the Malawi refugee response.</span>
           </li>
         </ul>
@@ -489,15 +489,15 @@ const twitter = {
         <h3 class="mt-8 text-lg font-bold text-slate-900">Operational and advocacy</h3>
         <ul class="mt-3 space-y-4 text-[0.9375rem] leading-7 text-slate-700">
           <li>
-            <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Funding cuts push Dzaleka to the brink</a>
+            <a href="https://www.fairplanet.org/story/funding-cuts-push-malawis-dzaleka-refugee-camp-to-the-brink/" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Funding cuts push Dzaleka to the brink</a>
             <span class="block text-sm text-slate-600">FairPlanet reporting on shrinking humanitarian support.</span>
           </li>
           <li>
-            <a href="https://www.hrw.org/world-report/2024/country-chapters/malawi" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">World Report 2024: Malawi — HRW</a>
+            <a href="https://www.hrw.org/world-report/2024/country-chapters/malawi" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">World Report 2024: Malawi — HRW</a>
             <span class="block text-sm text-slate-600">Rights environment including refugee policy context.</span>
           </li>
           <li>
-            <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Community-based mental health support (IATI)</a>
+            <a href="https://datastore.iatistandard.org/activity/DE-1-202406007-7767" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Community-based mental health support (IATI)</a>
             <span class="block text-sm text-slate-600">Programme-level activity data for MHPSS.</span>
           </li>
         </ul>
@@ -505,19 +505,19 @@ const twitter = {
         <h3 class="mt-8 text-lg font-bold text-slate-900">Community resilience</h3>
         <ul class="mt-3 space-y-4 text-[0.9375rem] leading-7 text-slate-700">
           <li>
-            <a href="https://apr.jrs.net/en/programme/mental-health-and-psychosocial-support-mhpss/" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">JRS: MHPSS Programme</a>
+            <a href="https://apr.jrs.net/en/programme/mental-health-and-psychosocial-support-mhpss/" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">JRS: MHPSS Programme</a>
             <span class="block text-sm text-slate-600">The psychosocial accompaniment model used by JRS.</span>
           </li>
           <li>
-            <a href="https://tumainiletu.org/our_work/tumaini-festival/" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Tumaini Festival</a>
+            <a href="https://tumainiletu.org/our_work/tumaini-festival/" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Tumaini Festival</a>
             <span class="block text-sm text-slate-600">Refugee-led cultural work that supports dignity and wellbeing.</span>
           </li>
           <li>
-            <a href="https://match-foundation.com/2025/03/20/mental-health-through-sports-at-dzaleka-camp/" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Mental Health Through Sports</a>
+            <a href="https://match-foundation.com/2025/03/20/mental-health-through-sports-at-dzaleka-camp/" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Mental Health Through Sports</a>
             <span class="block text-sm text-slate-600">Sports-based wellbeing support for youth.</span>
           </li>
           <li>
-            <a href="https://reframe.network/rlo/art-for-hope" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Art for Hope</a>
+            <a href="https://reframe.network/rlo/art-for-hope" rel="noopener noreferrer" class="font-semibold text-slate-900 underline underline-offset-[3px] hover:text-slate-600">Art for Hope</a>
             <span class="block text-sm text-slate-600">Arts-based community wellbeing work.</span>
           </li>
         </ul>

@@ -52,7 +52,7 @@ export const GET: APIRoute = async () => {
     const html = await response.text();
 
     const location = html.match(/<h2[^>]*>([^<]+)<\/h2>/i)?.[1]?.trim() || 'Dowa District';
-    const date = html.match(/<h5[^>]*>([^<]+)<\/h5>/i)?.[1]?.trim() || new Date().toLocaleDateString();
+    const date = html.match(/<h5[^>]*>([^<]+)<\/h5>/i)?.[1]?.trim() || new Date().toLocaleDateString('en-GB');
     const tableMarkup = html.match(/<table[^>]*>([\s\S]*?)<\/table>/i)?.[1];
 
     if (!tableMarkup) {
