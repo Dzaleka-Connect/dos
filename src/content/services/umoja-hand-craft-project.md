@@ -11,7 +11,7 @@ location:
 contact:
   email: 'jrs.igasmw@gmail.com'
   phone: '+265 992 82 08 94'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/Umoja-Women-Crafts-at-JRS-Malawi-677073515744731/'
   twitter: ''

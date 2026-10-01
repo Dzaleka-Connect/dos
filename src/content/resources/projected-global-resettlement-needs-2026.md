@@ -11,6 +11,7 @@ languages: ["English"]
 featured: true
 author: "UNHCR"
 regions: ["Global", "Malawi"]
+fileSize: ''
 ---
 
 This UNHCR report outlines the projected global resettlement needs for 2026, identifying priority populations and countries of asylum. The document serves as a key planning tool for resettlement countries and provides data-driven recommendations for expanding resettlement opportunities worldwide.

@@ -12,8 +12,6 @@ featured: false
 tags: ["Dzaleka", "Tumaini Festival", "Culture", "Social Integration", "Research"]
 ---
 
-## Overview
-
 This research explores how the Tumaini Festival, held annually within the Dzaleka Refugee Camp, serves as a form of "strategic infrastructuring." The festival creates a unique platform where cultural expression and public gathering transform the attitudes of both refugees and the host Malawian community.
 
 ## Key Insights

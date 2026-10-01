@@ -65,7 +65,7 @@ It is useful for:
 
 ## What the UNHCR record says
 
-The UNHCR catalog describes this as a 2012 Standardised Expanded Nutrition Survey for Dzaleka Refugee Camp. The public entry states that fieldwork took place between June 27, 2012 and July 5, 2012 and that the survey included household, child, infant, women, mosquito net, WASH, and food-security modules.
+The UNHCR catalog describes this as a 2012 Standardised Expanded Nutrition Survey for Dzaleka Refugee Camp. The public entry states that fieldwork took place between 27 June 2012 and 5 July 2012 and that the survey included household, child, infant, women, mosquito net, WASH, and food-security modules.
 
 Because the metadata records both target and achieved sample sizes, it is a stronger reference than a simple headline figure when you need to understand the shape of the study.
 

@@ -8,8 +8,6 @@ tags: ["constitution", "human rights", "freedom of movement", "asylum"]
 featured: false
 ---
 
-## Overview
-
 The **Constitution of the Republic of Malawi (1994)** is the supreme law of the land. While it guarantees broad human rights, the application of these rights to refugees is complex due to the specific limitations in the Refugees Act and Malawi's reservations to international treaties.
 
 ## Key Sections for Dzaleka Residents

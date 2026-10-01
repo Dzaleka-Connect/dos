@@ -74,7 +74,16 @@ const defaultDescription = "Find Dzaleka services, urgent contacts, jobs, events
 const defaultOgImage = "https://services.dzaleka.com/images/dzaleka-hero.jpeg";
 
 // Use provided values or defaults
-const metaDescription = description || defaultDescription;
+// Search results cut descriptions at about 160 characters, so end cleanly before that:
+// at the last full sentence if there is one, otherwise at a word boundary.
+function fitDescription(text: string, limit = 160) {
+	const clean = text.replace(/\s+/g, ' ').trim();
+	if (clean.length <= limit) return clean;
+	const sentences = clean.slice(0, limit).match(/^.*[.!?](?=\s|$)/);
+	if (sentences && sentences[0].length >= 70) return sentences[0];
+	return `${clean.slice(0, limit - 1).replace(/\s+\S*$/, '').replace(/[,;:–-]+$/, '')}…`;
+}
+const metaDescription = fitDescription(description || defaultDescription);
 const suppliedTitle = title?.trim() || 'Page';
 const unbrandedTitle = suppliedTitle.replace(/\s+[|—–-]\s+Dzaleka Online Services$/, '');
 const brandedTitle = suppliedTitle.includes('Dzaleka') ? suppliedTitle : `${suppliedTitle} | Dzaleka Online Services`;

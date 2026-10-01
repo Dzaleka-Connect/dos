@@ -13,15 +13,15 @@ interface Event {
 
 const events: Event[] = [
   {
-    date: "November 22, 2022",
-    title: "Aid Distribution Unrest",
+    date: "22 November 2022",
+    title: "Aid distribution unrest",
     description: "Unrest at Dzaleka Camp over distribution of aid materials",
     type: "Security",
     location: "Dzaleka Camp",
     impact: "Disruption of aid distribution services"
   },
   {
-    date: "December 14, 2022",
+    date: "14 December 2022",
     title: "Grenade Attack",
     description: "Grenade attack on Burundian community leader Butoyi Fideli",
     type: "Security",
@@ -29,7 +29,7 @@ const events: Event[] = [
     impact: "Increased security concerns in Burundian community"
   },
   {
-    date: "May 17, 2023",
+    date: "17 May 2023",
     title: "Forced Relocation",
     description: "Forced relocation of urban refugees back to Dzaleka Camp",
     type: "Policy",
@@ -37,7 +37,7 @@ const events: Event[] = [
     impact: "Significant population increase in camp"
   },
   {
-    date: "July 17, 2024",
+    date: "17 July 2024",
     title: "Security Operation",
     description: "Malawi Defence Force raid on Dzaleka Camp targeting suspected human traffickers",
     type: "Security",
@@ -45,7 +45,7 @@ const events: Event[] = [
     impact: "Disruption of camp operations"
   },
   {
-    date: "October 12, 2024",
+    date: "12 October 2024",
     title: "Security Operation",
     description: "Second widespread raid on Dzaleka Camp, resulting in arrests and injuries",
     type: "Security",

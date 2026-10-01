@@ -37,8 +37,7 @@ Use [Update profile](/skills-exchange/update-profile) when your availability, co
 - Use respectful language and realistic availability.
 - Share only the contact details you are comfortable publishing.
 
-## Need help?
-
+## Get help
 - [Skills Exchange](/skills-exchange)
 - [List your profile](/skills-exchange/list-profile)
 - [Request a skill](/skills-exchange/request)

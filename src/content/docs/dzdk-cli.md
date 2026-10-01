@@ -103,8 +103,7 @@ If you do not need the CLI itself, you can work directly with:
 - [Agent Access](/docs/agent-access-guide) for agent and MCP integration
 - [Open Data Platform](/open-data-platform)
 
-## Need help?
-
+## Get help
 - [API Documentation](/api-docs)
 - [Contact](/contact)
 - [Help Desk](/help-desk)

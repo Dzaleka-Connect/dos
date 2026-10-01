@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.unhcr.org/ibelong/wp-content/uploads/1954-Convention-relating-to-the-Status-of-Stateless-Persons_ENG.pdf"
 downloadUrl: "https://www.unhcr.org/ibelong/wp-content/uploads/1954-Convention-relating-to-the-Status-of-Stateless-Persons_ENG.pdf"
-fileSize: ""
+fileSize: ''
 lastUpdated: 2009-01-01
 languages: ["English"]
 featured: true

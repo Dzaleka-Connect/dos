@@ -11,7 +11,7 @@ location:
 contact:
   email: 'refugeeyouthforselfassitance@gmail.com'
   phone: '+265 992 57 34 25'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/RYSA.Org'
   twitter: ''
@@ -27,4 +27,4 @@ lastUpdated: 2024-03-11
 
 ## About Refugee Youth for Self-Assistance
 
-The REFUGEE YOUTH FOR SELF-ASSISTANCE, RYSA in acronym, is a Community Based Organization established on February 8, 2017, by a group of reliable young refugees, victims of different types of abuse and survivors of various civil wars, family discrimination and torture in their respective countries. Thus, the idea was born to bring together young refugees and host communities in order to appeal to self-reliance and contribute to an inactive, non-marginalized and invulnerable society with the concept of raising awareness of prevention of regular risks that block the future development of youth such as early pregnancies , premature marriages and also fighting against problems of unsanitary conditions, non-choice of religion, non-cultural integration, bad cultural behaviors, limit in strengthening skills, leadership restrictions and denial of access to similar opportunities.
+The REFUGEE YOUTH FOR SELF-ASSISTANCE, RYSA in acronym, is a Community Based Organization established on 8 February 2017, by a group of reliable young refugees, victims of different types of abuse and survivors of various civil wars, family discrimination and torture in their respective countries. Thus, the idea was born to bring together young refugees and host communities in order to appeal to self-reliance and contribute to an inactive, non-marginalized and invulnerable society with the concept of raising awareness of prevention of regular risks that block the future development of youth such as early pregnancies , premature marriages and also fighting against problems of unsanitary conditions, non-choice of religion, non-cultural integration, bad cultural behaviors, limit in strengthening skills, leadership restrictions and denial of access to similar opportunities.

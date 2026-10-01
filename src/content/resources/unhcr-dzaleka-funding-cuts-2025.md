@@ -14,8 +14,6 @@ author: "Mirriam Kademba"
 tags: ["Dzaleka", "Funding", "Food assistance", "Health", "Livelihoods", "UNHCR"]
 ---
 
-## Overview
-
 This UNHCR Africa story follows a Dzaleka household affected by reduced services and assistance in 2025. It connects personal experience to wider funding shortfalls affecting food support, health referrals, livelihood programs, shelter upgrades, household items, and community protection systems.
 
 ## Coverage

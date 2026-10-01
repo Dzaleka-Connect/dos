@@ -13,8 +13,6 @@ featured: false
 author: 'Emmanuel Kanike'
 ---
 
-## Overview
-
 Focusing on the prolonged nature of displacement, this study by Emmanuel Kanike investigates how refugee youth in Dzaleka build economic lives despite the constraints of the encampment policy. It provides a detailed look at the informal economy and the creative strategies used by young people to secure their futures.
 
 ## Key Focus Areas

@@ -11,7 +11,7 @@ location:
 contact:
   email: 'dyouthorganization@gmail.com'
   phone: '+265 212 095 097'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=100081649144914'
   twitter: 'https://twitter.com/DzalekaYouth/'

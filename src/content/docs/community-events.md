@@ -32,8 +32,7 @@ Prepare the details below before opening the form:
 - Education and youth programmes
 - Advocacy and public information sessions
 
-## Need help?
-
+## Get help
 - [Events](/events)
 - [Organiser guide and form](/events/organize)
 - [Contact](/contact)

@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info.malawi@welthungerhilfe.de'
   phone: '+265 1 774 000'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   website: 'https://www.welthungerhilfe.de'
 logo: >-

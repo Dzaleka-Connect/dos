@@ -11,7 +11,7 @@ location:
 contact:
   email: malawi.co@plan-international.org
   phone: +265 1 712 210
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/PlanMalawi/'
   twitter: 'https://twitter.com/PlanMalawi'

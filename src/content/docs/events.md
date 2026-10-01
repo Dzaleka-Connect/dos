@@ -20,8 +20,7 @@ Event listings usually include the title, date, location, organiser, and a short
 3. Include organiser details and any registration link.
 4. Submit the form for review.
 
-## What kinds of events fit here?
-
+## Events that fit here
 - Workshops and training sessions
 - Community meetings
 - Cultural celebrations
@@ -36,8 +35,7 @@ Event listings usually include the title, date, location, organiser, and a short
 - Add a contact method people can use for questions.
 - Update the team if something changes after submission.
 
-## Need help?
-
+## Get help
 - [Events](/events)
 - [Organise an event](/events/organize)
 - [Contact](/contact)

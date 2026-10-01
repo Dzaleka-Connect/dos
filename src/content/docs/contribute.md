@@ -62,8 +62,7 @@ If you are changing the site's help guides, technical reference, or docs navigat
 - Public resources: [Submit Resource](/resources/submit)
 - General questions: [Contact](/contact)
 
-## Need help before submitting?
-
+## Help before you submit
 - [Getting Started](/docs/getting-started)
 - [Privacy Guidelines](/docs/privacy-guidelines)
 - [Help Desk](/help-desk)

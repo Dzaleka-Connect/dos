@@ -12,7 +12,7 @@ location:
 contact:
   email: 'salamaafricaiyc1@gmail.com'
   phone: '+265 997 47 60 65'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://facebook.com/salamaafrica'
   twitter: ''

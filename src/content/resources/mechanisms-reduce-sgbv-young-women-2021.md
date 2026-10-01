@@ -13,8 +13,6 @@ featured: true
 author: 'Priscilla Miseleni Chirambo'
 ---
 
-## Overview
-
 This research provides a critical look at the systems intended to protect young women and adolescents in Dzaleka from Sexual and Gender-Based Violence (SGBV). It evaluates the effectiveness of institutional responses and highlights the agency of the survivors in developing their own survival strategies.
 
 ## Key Research Areas

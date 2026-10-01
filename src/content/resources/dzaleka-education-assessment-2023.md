@@ -13,8 +13,6 @@ featured: false
 author: "UNHCR"
 ---
 
-## Overview
-
 This assessment examines the state of education in Dzaleka Refugee Camp, focusing on access to quality education, learning outcomes, and challenges faced by refugee children and youth in pursuing their educational goals.
 
 ## Key Areas Covered

@@ -11,7 +11,7 @@ location:
 contact:
   email: ''
   phone: '+1 236-888-5055'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: ''
   twitter: 'https://x.com/roux_sofie'

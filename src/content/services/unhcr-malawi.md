@@ -11,7 +11,7 @@ location:
 contact:
   email: 'mlwli@unhcr.org'
   phone: '+265 177 2155'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/UNHCRSouthernAfrica'
   twitter: 'https://twitter.com/unhcrrosa'

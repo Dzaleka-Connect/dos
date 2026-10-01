@@ -8,8 +8,6 @@ tags: ["regulations", "CTD", "travel", "documents"]
 featured: false
 ---
 
-## Overview
-
 The **Refugee Regulations of 1990** provide the operational details for implementing the 1989 Refugees Act. They cover the practical steps for status determination, ID cards, and crucially, international travel documents.
 
 ## Convention Travel Documents (CTDs)

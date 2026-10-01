@@ -11,7 +11,7 @@ location:
 contact:
   email: 'WFP.Lilongwe@wfp.org'
   phone: '+ 265 (0) 1 774 666'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: ''
   twitter: 'https://twitter.com/WFP_Malawi'

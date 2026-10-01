@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@gofrilministries.org'
   phone: '+265 995 30401'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://web.facebook.com/GofrilMinistries2011/?_rdc=1&_rdr'
   twitter: 'https://twitter.com/gofrilministri2'

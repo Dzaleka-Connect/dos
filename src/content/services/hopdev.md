@@ -11,7 +11,7 @@ location:
 contact:
   email: 'hopdevinfo@gmail.com'
   phone: '+265 997 898116'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/p/HOPDEV-100082984977921/'
   twitter: 'https://twitter.com/hopdev_i/'

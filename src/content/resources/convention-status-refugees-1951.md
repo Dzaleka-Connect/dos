@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.unhcr.org/1951-refugee-convention.html"
 downloadUrl: "https://www.unhcr.org/4ca34be29.pdf"
-fileSize: ""
+fileSize: ''
 lastUpdated: 1987-01-01
 languages: ["English"]
 featured: true

@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.ohchr.org/en/instruments-mechanisms/instruments/international-convention-elimination-all-forms-racial-discrimination"
 downloadUrl: "https://www.ohchr.org/sites/default/files/Documents/ProfessionalInterest/cerd.pdf"
-fileSize: ""
+fileSize: '91 KB'
 lastUpdated: 1996-01-01
 languages: ["English"]
 featured: true

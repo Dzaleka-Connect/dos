@@ -7,14 +7,14 @@ location:
   address: "Dzaleka Refugee Camp, Dowa District"
   city: "Dowa"
 contact:
-  hours: "Monday-Friday, 7:30 AM - 4:30 PM and Saturday, 7:30 AM - 12:00 PM"
+  hours: "Monday to Friday, 7:30am to 4:30pm and Saturday, 7:30am to midday"
 date: 2024-02-09
 lastUpdated: 2024-02-09
 ---
 
 ## About
 
-Dzaleka Health Centre is situated at the heart of Dzaleka Refugee Camp, approximately 41 kilometers from Malawi's capital, Lilongwe. The facility operates Monday - Friday, 7:30 AM - 4:30 PM and Saturday, 7:30 AM - 12:00 PM, providing essential primary healthcare services to both camp residents and surrounding Malawian communities.
+Dzaleka Health Centre is situated at the heart of Dzaleka Refugee Camp, approximately 41 kilometers from Malawi's capital, Lilongwe. The facility operates Monday to Friday, 7:30am to 4:30pm and Saturday, 7:30am to midday, providing essential primary healthcare services to both camp residents and surrounding Malawian communities.
 
 ## Services
 

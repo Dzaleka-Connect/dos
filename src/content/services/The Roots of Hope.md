@@ -12,7 +12,7 @@ location:
 contact:
   email: 'rootsofhope4@gmail.com'
   phone: '+265 985 95 18 50'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61576004536038'
   twitter: ''

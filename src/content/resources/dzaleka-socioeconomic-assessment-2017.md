@@ -14,8 +14,6 @@ author: "UNHCR"
 tags: ["socioeconomic", "livelihoods", "education", "health", "protection"]
 ---
 
-## Overview
-
 This comprehensive assessment was conducted to inform UNHCR's multi-year planning and programming in Malawi. The study provides detailed insights into the livelihood conditions and vulnerabilities of refugees and host communities in Dzaleka camp.
 
 ## Key Areas Covered

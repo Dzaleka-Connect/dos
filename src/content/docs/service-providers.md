@@ -47,8 +47,7 @@ The team may review the listing before it appears publicly. If something on a pu
 - Make the service area and eligibility clear.
 - Tell the team if a listing closes or changes significantly.
 
-## Need help?
-
+## Get help
 - [Services](/services)
 - [Service Registration](/services/register)
 - [Service Update Request](/services/update-request)

@@ -12,7 +12,7 @@ location:
 contact:
   email: 'management@jpcentreyoga.com'
   phone: '(617) 942-8936'
-  hours: 'Monday-Sunday, 7:00 AM - 9:00 PM'
+  hours: 'Monday to Sunday, 7am to 9pm'
 socialMedia:
   facebook: 'https://www.facebook.com/jpcentreyoga'
   instagram: 'https://www.instagram.com/jpcentreyoga'

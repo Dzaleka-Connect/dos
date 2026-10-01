@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.un.org/womenwatch/daw/cedaw/"
 downloadUrl: "https://www.ohchr.org/sites/default/files/Documents/ProfessionalInterest/cedaw.pdf"
-fileSize: ""
+fileSize: '91 KB'
 lastUpdated: 1987-01-01
 languages: ["English"]
 featured: true

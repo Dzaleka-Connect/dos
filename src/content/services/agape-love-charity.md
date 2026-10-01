@@ -32,7 +32,7 @@ Agape Love Charity is a Malawi-based organization dedicated to empowering vulner
 
 - **Education for All**: Striving to make education accessible to everyone, regardless of social class, to foster knowledge and opportunity.
 
-- **Care for the Elderly**: Supporting elderly individuals to ensure they live with dignity, care, and a sense of belonging.
+- **Care for older people**: Supporting older people to ensure they live with dignity, care, and a sense of belonging.
 
 The organization has achieved significant milestones, such as providing scholarships to youth, supporting young mothers through agricultural entrepreneurship, and aiding hundreds of children, refugees, and vulnerable communities toward a promising future.
 

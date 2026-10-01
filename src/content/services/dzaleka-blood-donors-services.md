@@ -11,7 +11,7 @@ location:
 contact:
   email: ''
   phone: '+265 999 638207'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: ''
   twitter: ''

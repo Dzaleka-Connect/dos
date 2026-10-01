@@ -41,8 +41,7 @@ Developers can use the public search endpoint:
 
 See [API Documentation](/api-docs) for details.
 
-## Need help?
-
+## Get help
 - [Search](/search)
 - [Support](/support)
 - [Contact](/contact)

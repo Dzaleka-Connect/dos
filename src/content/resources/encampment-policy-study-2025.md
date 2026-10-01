@@ -6,7 +6,7 @@ category: "Research"
 fileType: "Journal Article"
 resourceUrl: "https://www.multiresearchjournal.com/arclist/list-2025.5.1/id-3718"
 downloadUrl: "https://www.multiresearchjournal.com/admin/uploads/archives/archive-1738905370.pdf"
-fileSize: ""
+fileSize: '360 KB'
 lastUpdated: 2025-01-01
 languages: ["English"]
 featured: true
@@ -17,7 +17,7 @@ author: "Atupele Mbewe, Moses Makungu, Brivery Siamabele"
 
 The global refugee crisis has displaced over 42 million people as of 2023, driven by conflicts, natural disasters, and socio-economic challenges. Encampment policies, widely used to manage refugee populations, aim to centralize aid distribution and maintain security. However, these policies often lead to overcrowding, dependency on aid, and restricted autonomy. Malawi's Refugee Act of 1989 exemplifies this, with Dzaleka Refugee Camp, initially designed for 12,000 people, now hosting over 50,600, straining resources and infrastructure. This study explores opportunities to improve Malawi's encampment policy through a qualitative approach, incorporating interviews, focus group discussions, and document analysis. Findings reveal significant challenges, including weak enforcement, inadequate infrastructure, and limited access to livelihoods. Drawing on regional and global best practices, the study identifies reforms such as stronger NGO partnerships, expanded education and employment opportunities, and infrastructure improvements to mitigate overcrowding and dependency. By advocating for rights-based, sustainable solutions, the study emphasizes aligning Malawi's policy with international standards. These reforms are crucial for addressing immediate humanitarian needs while fostering long-term resilience, self-reliance, and social integration for both refugees and host communities.
 
-## Overview
+## About the study
 
 This study explores opportunities to improve Malawi's encampment policy through a qualitative approach, incorporating interviews, focus group discussions, and document analysis. The research focuses on the Dzaleka Refugee Camp, which was initially designed for 12,000 people but now hosts over 50,600, creating significant challenges for resource management and infrastructure.
 

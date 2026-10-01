@@ -13,8 +13,6 @@ featured: true
 author: "Plan International"
 ---
 
-## Overview
-
 This case study follows Florence, an 18-year-old refugee from the Democratic Republic of Congo who has become a powerful advocate for refugee rights and education in Dzaleka Refugee Camp, Malawi. Having fled conflict at the age of six, Florence has transformed her challenges into a platform for change through her work with the Dzaleka Children's Parliament.
 
 ## Key Areas Covered

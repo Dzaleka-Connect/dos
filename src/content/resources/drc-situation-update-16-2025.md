@@ -36,4 +36,4 @@ regions: [
 ]
 ---
 
-DRC Situation External Update #16 covering the refugee situation in the Democratic Republic of the Congo and surrounding countries as of May 29, 2025. 
+DRC Situation External Update #16 covering the refugee situation in the Democratic Republic of the Congo and surrounding countries as of 29 May 2025. 

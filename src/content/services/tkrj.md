@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info.tkrj@tkrj.org'
   phone: '+265 999 123 456 / +256 770 982258 / +61 427 385 12'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61577249341503'
   instagram: 'https://www.instagram.com/tkrj_org/'

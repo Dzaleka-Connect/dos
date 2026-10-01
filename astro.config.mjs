@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import remarkToc from 'remark-toc';
 import remarkSlug from 'remark-slug';
 import remarkContentHeadings from './src/plugins/remark-content-headings.mjs';
+import rehypeTableCaptions from './src/plugins/rehype-table-captions.mjs';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 
@@ -39,7 +40,7 @@ export default defineConfig({
       theme: 'dracula',
       wrap: true
     },
-    rehypePlugins: []
+    rehypePlugins: [rehypeTableCaptions]
   },
   vite: {
     resolve: {

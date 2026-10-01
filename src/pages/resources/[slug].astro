@@ -139,6 +139,7 @@ const breadcrumbStructuredData = {
     }
   ]
 };
+const originalIsPdf = /\.pdf(\?|#|$)/i.test(resource.data.resourceUrl || '');
 ---
 
 <MainLayout
@@ -299,7 +300,7 @@ const breadcrumbStructuredData = {
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
-                    <span>Download {resource.data.fileType?.toUpperCase() || 'file'}{resource.data.fileSize && ` (${resource.data.fileSize})`}<span class="sr-only">: {resource.data.title}</span></span>
+                    <span>Download [{resource.data.fileType?.toUpperCase() || 'file'}{resource.data.fileSize && `, ${resource.data.fileSize}`}]<span class="sr-only">: {resource.data.title}</span></span>
                   </a>
                 )}
                 {resource.data.resourceUrl && (
@@ -311,7 +312,9 @@ const breadcrumbStructuredData = {
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                    View Original
+                    {originalIsPdf
+                      ? <span>View the original [PDF{resource.data.fileSize && !resource.data.downloadUrl ? `, ${resource.data.fileSize}` : ''}]<span class="sr-only">: {resource.data.title}</span></span>
+                      : <span>View the original source<span class="sr-only">: {resource.data.title}</span></span>}
                   </a>
                 )}
               </div>
@@ -503,7 +506,7 @@ const breadcrumbStructuredData = {
               url: window.location.href
             });
             if (window.showToast) {
-              window.showToast('Shared successfully!', 'success');
+              window.showToast('Shared.', 'success');
             }
             return;
           } catch (err) {
@@ -518,7 +521,7 @@ const breadcrumbStructuredData = {
         try {
           await navigator.clipboard.writeText(window.location.href);
           if (window.showToast) {
-            window.showToast('Link copied to clipboard!', 'success');
+            window.showToast('Link copied.', 'success');
           }
         } catch (err) {
           console.error('Failed to copy link:', err);

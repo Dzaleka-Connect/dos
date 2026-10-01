@@ -11,7 +11,7 @@ location:
 contact:
   email: 'psychological.reflexocenter@gmail.com'
   phone: '+265 992 521 781'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: ''
   twitter: ''
@@ -27,7 +27,7 @@ lastUpdated: 2025-03-11
 
 ## About Psychological and Reflexology Reception Center
 
-In the year two thousand and twenty-one, twenty-one, June, was established in the north of the capital of the Republic of Malawi, in the district of Dowa Boma, in the refugee camp of Dzaleka between the undersigned and those who will join Status, a community access organization for people with Parkinson's syndrome and other people suffering from psychological disorders where mental processes, non-profit Psychology and Reflexology Reception Center "PRRC » in acronym. It is an apolitical and non-denominational social, professional, health and educational organization working for the massage and psychological reception of the well-being of the public. we are calling on the support of our funding partners, old and new.
+In the year two thousand and twenty-one, twenty-one, June, was established in the north of the capital of the Republic of Malawi, in the district of Dowa Boma, in the refugee camp of Dzaleka between the undersigned and those who will join Status, a community access organization for people with Parkinson's syndrome and other people with psychological disorders where mental processes, non-profit Psychology and Reflexology Reception Center "PRRC » in acronym. It is an apolitical and non-denominational social, professional, health and educational organization working for the massage and psychological reception of the well-being of the public. we are calling on the support of our funding partners, old and new.
 
 ### Mission
 

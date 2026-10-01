@@ -13,8 +13,6 @@ featured: false
 author: "UNHCR"
 ---
 
-## Overview
-
 This monitoring study assessed the effectiveness of cash-based interventions (CBI) provided to extremely poor households in Dzaleka Refugee Camp who graduated from the livelihoods programme. The study was conducted between October and November 2020.
 
 ## Program Details
@@ -29,7 +27,7 @@ This monitoring study assessed the effectiveness of cash-based interventions (CB
 - Simple random sampling
 - Total CBI recipients: 449 households
 - Sample size: 264 households
-- Data collection period: October 26 - November 16, 2020
+- Data collection period: October 26 - 16 November 2020
 
 ## Key Objectives
 

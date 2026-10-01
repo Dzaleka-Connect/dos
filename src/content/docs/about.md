@@ -61,8 +61,7 @@ The site now includes clearer entry routes for common public needs:
 - [Platform Principles](/docs/platform-principles)
 - [Documentation Roadmap](/docs/documentation-roadmap)
 
-## Need help?
-
+## Get help
 - [Support](/support)
 - [Help Desk](/help-desk)
 - [Contact](/contact)

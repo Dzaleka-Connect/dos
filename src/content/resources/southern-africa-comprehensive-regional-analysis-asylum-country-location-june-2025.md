@@ -14,8 +14,6 @@ author: "UNHCR"
 tags: ["Southern Africa", "Malawi", "Population data", "Location analysis", "UNHCR"]
 ---
 
-## Overview
-
 This UNHCR Operational Data Portal factsheet provides a regional breakdown of UNHCR populations by asylum country and location across Southern Africa. Malawi is included among the listed country locations.
 
 ## Research Use

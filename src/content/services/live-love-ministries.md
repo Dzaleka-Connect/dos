@@ -11,7 +11,7 @@ location:
 contact:
   email: 'eric@liveloveministries.org'
   phone: '+265 997 51 19 23'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   website: 'https://liveloveministries.org/'
 logo: >-

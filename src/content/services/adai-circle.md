@@ -11,7 +11,7 @@ location:
 contact:
   email: 'ptrckbyamasu@gmail.com'
   phone: '+265996668149'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/adaicircle/videos/'
   twitter: ''

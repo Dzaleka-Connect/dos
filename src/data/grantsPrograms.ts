@@ -387,7 +387,7 @@ export const externalOpportunities: ExternalOpportunity[] = [
     verifiedDate: '2026-04-13',
     eligibilityNote:
       'For forcibly displaced leaders. This is not a direct business grant, but it can help founders and community leaders build visibility, networks, and advocacy skills.',
-    note: 'Applications were listed as open, with a deadline of April 30, 2026.'
+    note: 'Applications were listed as open, with a deadline of 30 April 2026.'
   },
   {
     slug: 'acumen-green-rise-east-africa-2026',
@@ -406,7 +406,7 @@ export const externalOpportunities: ExternalOpportunity[] = [
     verifiedDate: '2026-04-13',
     eligibilityNote:
       'Open to entrepreneurs working in Kenya, Uganda, Tanzania, Rwanda, Ethiopia, Burundi, South Sudan, and Somalia. Malawi-based founders would need a qualifying operating base in one of those countries.',
-    note: 'Applications were listed as open, with a deadline of May 11, 2026.'
+    note: 'Applications were listed as open, with a deadline of 11 May 2026.'
   },
   {
     slug: 'neef-malawi-loan-products',

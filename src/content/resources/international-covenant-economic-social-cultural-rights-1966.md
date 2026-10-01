@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-economic-social-and-cultural-rights"
 downloadUrl: "https://www.ohchr.org/sites/default/files/Documents/ProfessionalInterest/cescr.pdf"
-fileSize: ""
+fileSize: '80 KB'
 lastUpdated: 1993-01-01
 languages: ["English"]
 featured: true

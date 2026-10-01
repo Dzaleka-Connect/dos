@@ -13,8 +13,6 @@ featured: false
 author: 'M. Dyrness'
 ---
 
-## Overview
-
 M. Dyrness explores how the choice of language in education (specifically the shift towards the Malawian curriculum) impacts refugee students' identities and their feelings of "belonging" in a country where they have limited legal rights to stay permanently.
 
 ## Key Themes

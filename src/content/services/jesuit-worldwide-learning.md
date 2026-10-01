@@ -11,7 +11,7 @@ location:
 contact:
   email: 'jwlinfo@jwl.org'
   phone: '+41 22 525 38 58'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/JesuitWorldwideLearning/'
   twitter: 'https://twitter.com/jwl_global'

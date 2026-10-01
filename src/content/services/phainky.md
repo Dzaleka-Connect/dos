@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@phainkycom'
   phone: '+265 993 906 365'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://web.facebook.com/Phainky/'
   twitter: ''

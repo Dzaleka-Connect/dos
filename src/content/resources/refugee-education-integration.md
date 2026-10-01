@@ -6,7 +6,7 @@ category: Report
 fileType: pdf
 resourceUrl: 'https://www.unicef.org/esa/media/6461/file/UNICEF-Malawi-2019-2020-Refugee-Education-Budget-Brief.pdf'
 downloadUrl: ''
-fileSize: ''
+fileSize: '1.1 MB'
 lastUpdated: 2020-12-15
 languages: ['English']
 featured: true

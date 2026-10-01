@@ -14,8 +14,6 @@ author: "UNHCR"
 tags: ["Southern Africa", "Malawi", "Refugees", "Asylum seekers", "Population data"]
 ---
 
-## Overview
-
 This UNHCR Operational Data Portal factsheet summarizes refugee, asylum-seeker, and other population-of-concern figures across Southern Africa by country of asylum and nationality. It includes Malawi in the regional country comparison.
 
 ## Research Use

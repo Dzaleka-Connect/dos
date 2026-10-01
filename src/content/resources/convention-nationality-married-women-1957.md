@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://treaties.un.org/doc/Treaties/1962/08/19620829%2009-44%20PM/Ch_XVI_2p.pdf"
 downloadUrl: "https://treaties.un.org/doc/Treaties/1962/08/19620829%2009-44%20PM/Ch_XVI_2p.pdf"
-fileSize: ""
+fileSize: ''
 lastUpdated: 1966-01-01
 languages: ["English"]
 featured: true

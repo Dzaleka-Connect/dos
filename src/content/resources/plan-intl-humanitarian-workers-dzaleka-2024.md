@@ -12,8 +12,6 @@ featured: false
 tags: ["Dzaleka", "Humanitarian Work", "Refugee Workers", "Community Support", "Plan International"]
 ---
 
-## Overview
-
 Published for World Humanitarian Day, this case study profiles refugee volunteers and staff working with Plan International in Dzaleka. It emphasizes the unique role they play as "double humanitarians"—individuals who are themselves displaced but dedicated to serving other vulnerable members of their community.
 
 ## Featured Stories

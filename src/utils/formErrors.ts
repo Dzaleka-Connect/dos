@@ -6,6 +6,9 @@ export function formFields(form: HTMLFormElement): Field[] {
 }
 
 export function fieldLabel(field: Field): string {
+  // A radio button's own label is one answer; the question is the fieldset legend.
+  const legend = field.type === 'radio' ? field.closest('fieldset')?.querySelector('legend') : null;
+  if (legend?.textContent) return legend.textContent.replace(/\s+/g, ' ').replace(/\s*\(optional\)/g, '').trim();
   const label = field.labels?.[0] || field.closest('label') || [...field.ownerDocument.querySelectorAll('label')]
     .find(label => label.getAttribute('for') === field.id);
   return (label?.textContent || field.getAttribute('aria-label') || field.name)

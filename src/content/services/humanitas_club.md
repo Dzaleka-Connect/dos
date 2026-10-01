@@ -11,7 +11,7 @@ location:
 contact:
   email: 'humanitasclub184@gmail.com'
   phone: '+265 994 04 08 04'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61574779551731'
   twitter: ''

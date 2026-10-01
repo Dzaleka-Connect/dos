@@ -13,9 +13,7 @@ featured: false
 author: "UNHCR"
 ---
 
-## Overview
-
-The first comprehensive nutrition survey since 2008 was conducted in Dzaleka refugee camp between June 27 and July 5, 2012. The survey used SMART methodology and UNHCR SENS Guidelines to assess the nutritional status and related factors among refugees.
+The first comprehensive nutrition survey since 2008 was conducted in Dzaleka refugee camp between June 27 and 5 July 2012. The survey used SMART methodology and UNHCR SENS Guidelines to assess the nutritional status and related factors among refugees.
 
 ## Key Areas Covered
 
@@ -31,7 +29,7 @@ The first comprehensive nutrition survey since 2008 was conducted in Dzaleka ref
 - Simple random sampling used
 - Target sample: 504 households and 314 children under 5
 - Achieved sample: 422 households and 365 children
-- Data collection period: June 27 - July 5, 2012
+- Data collection period: June 27 - 5 July 2012
 
 ## Significance
 

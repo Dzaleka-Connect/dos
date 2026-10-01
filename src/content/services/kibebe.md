@@ -11,7 +11,7 @@ location:
 contact:
   email: 'kibebemarketing@gmail.com'
   phone: '+265 996 68 15 20'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/Kibebemalawi/'
   twitter: ''

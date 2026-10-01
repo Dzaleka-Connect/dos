@@ -11,7 +11,7 @@ location:
 contact:
   email: youthonboard.org@gmail.com
   phone: '+265-987-114-472'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=100067104733030&mibextid=kFxxJD'
   twitter: 'https://x.com/youthonboard?t=G3RPKjdzdj_7bhB2Js6gaA&s=03'

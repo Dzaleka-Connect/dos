@@ -11,7 +11,7 @@ location:
 contact:
   email: ''
   phone: ''
-  hours: 'Monday-Saturday, 8:00 AM - 7:00 PM'
+  hours: 'Monday to Saturday, 8am to 7pm'
 socialMedia:
   facebook: ''
   twitter: ''
@@ -26,7 +26,7 @@ lastUpdated: 2025-04-29
 
 Star Café is a community-run internet hub in Dzaleka offering fast, reliable, and affordable internet powered by Starlink Mini. We provide high-speed access at 125+ Mbps for just 200 MK per hour. Perfect for studying, remote work, streaming, and gaming.
 
-- Opening Hours: Monday to Saturday, 8AM – 7PM
+- Opening Hours: Monday to Saturday, 8am to 7pm
 - Location: Kawale 2, Opposite the Borehole
 
 ## Services:

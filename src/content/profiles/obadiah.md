@@ -42,12 +42,12 @@ As a musician, I specialize in:
   - Festival Shows
   - Musical Storytelling
 
-### Services offered:
+## Services offered
   - Live music performances
   - Festival appearances
   - Musical collaborations
   - Guitar lessons
   - Event entertainment
 
-### Background:
+## Background
 Originally from DRC, I brought my musical talents to Dzaleka where I've continued to develop as an artist. My performances at camp festivals led to collaborations with artists from Lilongwe, expanding my reach beyond the camp. Through music, I share stories of hope and resilience, using my art as both expression and healing.

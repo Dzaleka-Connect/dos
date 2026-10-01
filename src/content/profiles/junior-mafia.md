@@ -42,12 +42,12 @@ As a young music producer and beatmaker, I offer:
   - Artist Development
   - Sound Engineering
 
-### Studio Services:
+## Studio services
   - Professional beat making
   - Recording sessions for artists
   - Music production
   - Basic mixing and mastering
   - Studio rental for recording
 
-### Background:
+## Background
 Born and raised in Dzaleka refugee camp to Congolese parents, I started my music journey at 14 by studying local producers and artists. Through dedication and self-learning, I've built my own studio where I now help other upcoming artists bring their music to life.

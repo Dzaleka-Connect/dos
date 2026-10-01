@@ -11,7 +11,7 @@ location:
 contact:
   email: 'wakahozisergekahozi@gmail.com'
   phone: ''
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=100095442573742'
   twitter: ''

@@ -11,7 +11,7 @@ location:
 contact:
   email: 'acdp.pacd@yahoo.com'
   phone: '+265 886 46 53 15'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61556658653340'
   twitter: ''

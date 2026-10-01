@@ -11,6 +11,7 @@ languages: ["English"]
 featured: true
 author: "UNHCR"
 regions: ["Malawi"]
+fileSize: ''
 ---
 
 The UNHCR Malawi Strategy 2023-2026 outlines the organization's multi-year approach to protecting refugees and seeking durable solutions in Malawi. The strategy covers key priorities including:

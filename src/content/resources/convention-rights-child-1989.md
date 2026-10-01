@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-rights-child"
 downloadUrl: "https://www.ohchr.org/sites/default/files/Documents/ProfessionalInterest/crc.pdf"
-fileSize: ""
+fileSize: '112 KB'
 lastUpdated: 1991-01-01
 languages: ["English"]
 featured: true

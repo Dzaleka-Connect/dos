@@ -13,8 +13,6 @@ featured: true
 author: 'Felix Kakowa'
 ---
 
-## Overview
-
 This study explores how indigenous cultural practices and community-based approaches can be leveraged to support the mental health and social integration of unaccompanied minors in Dzaleka. It assesses the gap between formal humanitarian psychosocial services and the lived experiences/cultural needs of the minors.
 
 ## Key Themes

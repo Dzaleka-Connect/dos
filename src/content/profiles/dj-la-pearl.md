@@ -43,12 +43,12 @@ As a professional DJ, I specialize in:
   - Club Sets
   - Music Selection & Curation
 
-### Services offered:
+## Services offered
   - Club performances
   - Private event DJ services
   - Music mixing and transitions
   - Event entertainment
   - Playlist curation
 
-### Background:
+## Background
 Originally from DRC, I discovered my passion for DJing after arriving in Dzaleka 10 years ago. Despite initial community resistance to female DJs, I persevered and turned my love for music into a successful career. Starting from club performances within the camp, I've now expanded to venues outside, proving that passion knows no boundaries.

@@ -11,7 +11,7 @@ location:
 contact:
   email: 'comms@thereishopemalawi.org'
   phone: '+265 212 273 688'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/thereishopemalawi/'
   twitter: 'https://twitter.com/tihopemalawi'

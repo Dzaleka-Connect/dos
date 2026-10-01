@@ -6,7 +6,7 @@ category: Research
 fileType: pdf
 resourceUrl: 'https://www.ictworks.org/wp-content/uploads/2021/02/business-entrepreneurship-refugee-camps.pdf'
 downloadUrl: ''
-fileSize: ''
+fileSize: '337 KB'
 lastUpdated: 2021-02-15
 languages: ['English']
 featured: true

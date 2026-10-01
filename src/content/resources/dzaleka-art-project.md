@@ -6,7 +6,7 @@ category: Research
 fileType: pdf
 resourceUrl: 'https://files.eric.ed.gov/fulltext/EJ1455752.pdf'
 downloadUrl: ''
-fileSize: ''
+fileSize: '863 KB'
 lastUpdated: 2023-08-15
 languages: ['English']
 featured: true

@@ -73,24 +73,39 @@ const CLOUDINARY_UPLOAD_PRESET = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET
 
         <!-- Category -->
         <div class="space-y-2">
-          <label for="category" class="block text-sm font-medium text-gray-700">
-            Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            required
-            class="block w-full rounded border-gray-300 focus:border-slate-500 focus:ring-slate-500 transition-colors"
-          >
-            <option value="">Select a category</option>
-            <option value="Personal Story">Personal Story</option>
-            <option value="Community Impact">Community Impact</option>
-            <option value="Culture & Tradition">Culture & Tradition</option>
-            <option value="Education">Education</option>
-            <option value="Health & Wellness">Health & Wellness</option>
-            <option value="Arts & Creativity">Arts & Creativity</option>
-            <option value="Business & Entrepreneurship">Business & Entrepreneurship</option>
-          </select>
+          <fieldset>
+            <legend class="text-sm font-medium text-gray-700">Category</legend>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-1" name="category" value="Personal Story" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-1" class="text-sm text-gray-700">Personal story</label>
+              </div>
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-2" name="category" value="Community Impact" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-2" class="text-sm text-gray-700">Community impact</label>
+              </div>
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-3" name="category" value="Culture &amp; Tradition" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-3" class="text-sm text-gray-700">Culture & tradition</label>
+              </div>
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-4" name="category" value="Education" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-4" class="text-sm text-gray-700">Education</label>
+              </div>
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-5" name="category" value="Health &amp; Wellness" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-5" class="text-sm text-gray-700">Health & wellness</label>
+              </div>
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-6" name="category" value="Arts &amp; Creativity" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-6" class="text-sm text-gray-700">Arts & creativity</label>
+              </div>
+              <div class="flex items-start gap-3">
+                <input type="radio" id="category-7" name="category" value="Business &amp; Entrepreneurship" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                <label for="category-7" class="text-sm text-gray-700">Business & entrepreneurship</label>
+              </div>
+            </div>
+          </fieldset>
         </div>
 
         <!-- Excerpt -->
@@ -358,7 +373,7 @@ async function handleSubmit(event) {
     }).catch(err => console.error('API notification failed:', err));
 
     // Success feedback
-    alert('Thank you! Your story has been submitted for review.');
+    alert('Thank you. We have received your story and will review it.');
     window.location.href = '/community-voice';
 
   } catch (error) {

@@ -34,6 +34,6 @@ This mixed methods study was conducted to assess factors that affect the uptake 
 ## More details
 
 - **Researcher:** Josephine Palika
-- **Published:** April 5, 2026
+- **Published:** 5 April 2026
 - **Certificate ID:** AR20262WK4MF
 - **Platform:** AfriResearch

@@ -75,24 +75,39 @@ const seo = {
 
           <!-- Issue Type -->
           <div>
-            <label for="issue-type" class="block text-sm font-medium text-gray-700 mb-2">
-              Type of issue
-            </label>
-            <select
-              id="issue-type"
-              name="issueType"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-            >
-              <option value="">Select an issue type</option>
-              <option value="damage">Structural Damage</option>
-              <option value="vandalism">Vandalism or Graffiti</option>
-              <option value="maintenance">Maintenance Needed</option>
-              <option value="safety">Safety Hazard</option>
-              <option value="access">Access Issues</option>
-              <option value="environmental">Environmental Damage</option>
-              <option value="other">Other</option>
-            </select>
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 mb-2">Type of issue</legend>
+              <div class="mt-2 space-y-2">
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-1" name="issueType" value="damage" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-1" class="text-sm text-gray-700">Structural damage</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-2" name="issueType" value="vandalism" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-2" class="text-sm text-gray-700">Vandalism or graffiti</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-3" name="issueType" value="maintenance" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-3" class="text-sm text-gray-700">Maintenance needed</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-4" name="issueType" value="safety" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-4" class="text-sm text-gray-700">Safety hazard</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-5" name="issueType" value="access" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-5" class="text-sm text-gray-700">Access issues</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-6" name="issueType" value="environmental" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-6" class="text-sm text-gray-700">Environmental damage</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="issue-type-7" name="issueType" value="other" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="issue-type-7" class="text-sm text-gray-700">Other</label>
+                </div>
+              </div>
+            </fieldset>
           </div>
 
           <!-- Issue Description -->
@@ -145,21 +160,27 @@ const seo = {
 
           <!-- Urgency Level -->
           <div>
-            <label for="urgency" class="block text-sm font-medium text-gray-700 mb-2">
-              Urgency level
-            </label>
-            <select
-              id="urgency"
-              name="urgency"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-            >
-              <option value="">Select urgency level</option>
-              <option value="low">Low - Minor issue, no immediate action needed</option>
-              <option value="medium">Medium - Should be addressed soon</option>
-              <option value="high">High - Requires immediate attention</option>
-              <option value="critical">Critical - Safety hazard or severe damage</option>
-            </select>
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 mb-2">Urgency level</legend>
+              <div class="mt-2 space-y-2">
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="urgency-1" name="urgency" value="low" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="urgency-1" class="text-sm text-gray-700">Low: minor issue, no immediate action needed</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="urgency-2" name="urgency" value="medium" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="urgency-2" class="text-sm text-gray-700">Medium: should be addressed soon</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="urgency-3" name="urgency" value="high" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="urgency-3" class="text-sm text-gray-700">High: requires immediate attention</label>
+                </div>
+                <div class="flex items-start gap-3">
+                  <input type="radio" id="urgency-4" name="urgency" value="critical" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                  <label for="urgency-4" class="text-sm text-gray-700">Critical: safety hazard or severe damage</label>
+                </div>
+              </div>
+            </fieldset>
           </div>
 
           <!-- Contact Information -->
@@ -190,7 +211,7 @@ const seo = {
           <div>
             <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
               Phone number <span class="font-normal text-slate-600">(optional)</span></label>
-            <p id="phone-hint" class="mb-1 text-sm text-slate-600">Include the country code, for example +265 991 234 567</p>
+            <p id="phone-hint" class="mb-1 text-sm text-slate-600">Start with the country code, +265</p>
             <input aria-describedby="phone-hint"
               type="tel"
               id="phone"
@@ -225,7 +246,7 @@ const seo = {
                 </svg>
               </div>
               <div class="ml-3">
-                <p class="text-sm font-medium text-green-800">Report submitted successfully! We'll review it within 24-48 hours.</p>
+                <p class="text-sm font-medium text-green-800">Report submitted. We'll review it within 24-48 hours.</p>
               </div>
             </div>
           </div>

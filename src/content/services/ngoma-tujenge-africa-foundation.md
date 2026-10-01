@@ -11,7 +11,7 @@ location:
 contact:
   email: 'foundationngomatujengeafrica@gmail.com'
   phone: ''
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://web.facebook.com/profile.php?id=61550956337767&sk=followers'
   twitter: 'https://twitter.com/NgomaTujengeaf'

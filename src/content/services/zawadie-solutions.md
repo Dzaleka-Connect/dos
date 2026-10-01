@@ -11,7 +11,7 @@ location:
 contact:
   email: 'Info@zawadie.com'
   phone: '+1-(907) 487-4575'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61555842895575'
   twitter: ''

@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@takenolab.com'
   phone: '+265 991 302 202'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/takenolab/'
   twitter: 'https://twitter.com/takenolab'

@@ -13,8 +13,6 @@ featured: true
 author: "Anika Fenn Gilman"
 ---
 
-## Overview
-
 This case study examines the Dzaleka Mapping Project, a participatory mapping initiative implemented in Dzaleka Refugee Camp, Malawi. The project, initiated in 2020 by Malawian YouthMappers alumni, aimed to map essential services and infrastructure within the camp to address overcrowding and resource allocation challenges.
 
 ## Key Areas Covered

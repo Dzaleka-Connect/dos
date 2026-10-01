@@ -11,7 +11,7 @@ location:
 contact:
   email: 'tresorweny8@gmail.com'
   phone: '+265 993955620'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/YouthWithAMission/'
   youtube: 'https://www.youtube.com/user/ywam'

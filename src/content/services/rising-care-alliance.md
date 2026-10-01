@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@so-rising.org'
   phone: '+265 981 81 25 44'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/risingcarealliance'
   twitter: ''

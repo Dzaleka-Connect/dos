@@ -11,7 +11,7 @@ location:
 contact:
   email: 'corneilleorphanage@gmail.com'
   phone: '+265 887 47 21 58'
-  hours: 'Monday-Sunday, 24/7'
+  hours: 'Monday to Sunday, 24/7'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=100080502168579'
 logo: >-

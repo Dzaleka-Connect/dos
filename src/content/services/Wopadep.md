@@ -11,7 +11,7 @@ location:
 contact:
   email: 'wopadep@gmail.com'
   phone: ''
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/people/Wopadep/61565778214639/?rdid=MR78fIb56VKtBQk4&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15PYmDsmsK%2F'
   twitter: ''

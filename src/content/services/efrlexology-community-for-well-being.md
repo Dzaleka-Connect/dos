@@ -11,7 +11,7 @@ location:
 contact:
   email: 'nindajovial90@gmail.com'
   phone: '+265 986 84 10 02'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://web.facebook.com/profile.php?id=61552492501617'
   twitter: ''

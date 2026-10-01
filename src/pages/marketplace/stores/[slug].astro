@@ -1,4 +1,5 @@
 ---
+import { formatOpeningHours } from '../../../utils/clockTime';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import { getCollection, render } from 'astro:content';
 
@@ -237,7 +238,7 @@ const schemaData = {
                   <div class="flex justify-between gap-4">
                     <span class="text-gray-600">{hour.day}</span>
                     <span class={hour.closed ? 'text-red-600' : 'font-medium text-gray-900'}>
-                      {hour.closed ? 'Closed' : `${hour.open} - ${hour.close}`}
+                      {hour.closed ? 'Closed' : formatOpeningHours(hour.open, hour.close)}
                     </span>
                   </div>
                 ))}

@@ -11,7 +11,7 @@ location:
 contact:
   email: 'comfortthecommunity@gmail.com'
   phone: '+265 992 612 356'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: ''
   twitter: ''

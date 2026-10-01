@@ -14,8 +14,6 @@ author: "Rachel Savage and Leonard Masauli"
 tags: ["Dzaleka", "Women", "Protection", "Domestic violence", "Food assistance", "Resettlement"]
 ---
 
-## Overview
-
 This Guardian feature reports on the gendered impact of Dzaleka's overcrowding, aid cuts, restricted work rights, and shrinking relocation pathways. It focuses on women facing survival sex, domestic violence, food insecurity, and gaps in protection support.
 
 ## Coverage

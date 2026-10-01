@@ -11,7 +11,7 @@ location:
 contact:
   email: 'breathoflifec@gmail.com'
   phone: '+265 996 35 84 79'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/GROrphanage?mibextid=ZbWKwL'
   twitter: ''
@@ -26,4 +26,4 @@ lastUpdated: 2025-02-06
 
 ## About Gracious Refugee Orphanage (GRO)
 
-Gracious Refugee Orphanage is established to support orphans and vulnerable children within the camp and surroundings of the camp in their academic life and to provide basic needs such as food, clothes, training, academic materials, etc.
+Gracious Refugee Orphanage is established to support orphans and vulnerable children within the camp and surroundings of the camp in their academic life and to provide basic needs such as food, clothes, training and school materials.

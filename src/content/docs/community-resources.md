@@ -34,8 +34,7 @@ The resources section brings together reports, guides, toolkits, forms, research
 - [Submit a resource](/resources/submit)
 - [Tools and Templates](/tools-and-templates)
 
-## Need help?
-
+## Get help
 - [Contact](/contact)
 - [Help Desk](/help-desk)
 - [Support](/support)

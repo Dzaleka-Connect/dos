@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-against-torture-and-other-cruel-inhuman-or-degrading"
 downloadUrl: "https://www.ohchr.org/sites/default/files/Documents/ProfessionalInterest/cat.pdf"
-fileSize: ""
+fileSize: '121 KB'
 lastUpdated: 1996-01-01
 languages: ["English"]
 featured: true

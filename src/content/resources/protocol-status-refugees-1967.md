@@ -6,7 +6,7 @@ category: International Instrument
 fileType: pdf
 resourceUrl: "https://www.unhcr.org/1967-protocol-relating-to-the-status-of-refugees.html"
 downloadUrl: "https://www.unhcr.org/4ca34be3a.pdf"
-fileSize: ""
+fileSize: ''
 lastUpdated: 1987-01-01
 languages: ["English"]
 featured: true

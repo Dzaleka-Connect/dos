@@ -35,6 +35,6 @@ Our chapatis are made fresh every morning using traditional recipes passed down 
 - Fresh cooking oil
 - Perfect seasoning
 
-**Available Daily**: 6 AM - 6 PM
+**Available Daily**: 6am to 6pm
 
 Order in advance for large quantities. We also cater for events and gatherings.

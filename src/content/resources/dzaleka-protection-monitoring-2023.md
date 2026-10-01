@@ -13,8 +13,6 @@ featured: false
 author: "UNHCR"
 ---
 
-## Overview
-
 Regular protection monitoring assessment conducted to understand the protection environment, identify risks, and monitor the well-being of persons of concern in Dzaleka Refugee Camp.
 
 ## Key Areas Covered

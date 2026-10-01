@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@vijanafrica.org'
   phone: '+1 916-833-2312'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/vijanafrica.org/'
   twitter: 'https://twitter.com/vijanafrica'

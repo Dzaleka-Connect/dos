@@ -18,12 +18,11 @@ Life at Dzaleka Refugee Camp, Malawi, remains challenging for most residents des
 Join Us in Creating a Brighter Future
 The situation in Dzaleka Refugee Camp remains complex, but it is not without hope. Through continued support and collaborative efforts, we can create a brighter future for the refugees who call Malawi home.
 
-### Here’s how you can contribute:
-
+## How you can contribute
 - Donate: Every contribution, big or small, can make a difference. Inua Advocacy is one of the organizations that work tirelessly to support refugees.
 - Raise awareness: Share stories and information about the challenges faced by refugees. This can help raise awareness and encourage others to take action.
 - Advocate for change: Support policies that promote the rights of refugees and encourage their integration into host communities.
 - By working together, we can create a world where refugees are not just surviving, but thriving.
-Visit our website at inuaadvocacy.org to learn more about our work and [here](https://inuaadvocacy.org/donate) to support us.
+Visit inuaadvocacy.org to learn more about our work, or [donate to support Inua Advocacy](https://inuaadvocacy.org/donate).
 
  

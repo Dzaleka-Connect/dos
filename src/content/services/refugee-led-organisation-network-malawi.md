@@ -13,7 +13,7 @@ location:
 contact:
   email: 'Info@relonmalawi.org'
   phone: '+265880763053'
-  hours: 'Monday-Friday, 8:00 AM - 4:00 PM'
+  hours: 'Monday to Friday, 8am to 4pm'
 socialMedia:
   facebook: 'https://www.facebook.com/relonmalawi'
   twitter: 'https://twitter.com/relonmalawi'

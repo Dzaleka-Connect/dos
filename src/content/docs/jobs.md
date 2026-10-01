@@ -45,8 +45,7 @@ Before you submit, prepare:
 - Keep the contact details current.
 - Update the team if the role closes early or changes.
 
-## Need help?
-
+## Get help
 - [Jobs](/jobs)
 - [Post Job](/jobs/post)
 - [Contact](/contact)

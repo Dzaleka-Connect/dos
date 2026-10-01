@@ -11,7 +11,7 @@ location:
 contact:
   email: 'mail@rocyourworld.org'
   phone: '+1 (269) 929-6698'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/rocyourworld/'
   twitter: 'https://twitter.com/rocyourworld'

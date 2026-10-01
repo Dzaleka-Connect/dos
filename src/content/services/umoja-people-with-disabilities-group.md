@@ -11,7 +11,7 @@ location:
 contact:
   email: 'umojapeopledisabilitiesgroup@gmail.com'
   phone: '+265 994 413301'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://web.facebook.com/profile.php?id=100083382738628&_rdc=1&_rdr'
   twitter: 'https://x.com/UmojaWith'

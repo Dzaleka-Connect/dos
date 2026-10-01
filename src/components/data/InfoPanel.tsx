@@ -22,11 +22,11 @@ const infoData: Record<string, InfoItem> = {
   incidents: {
     title: "Recent Major Events (2022 to 2024)",
     content: [
-      "November 22, 2022: Unrest at Dzaleka Camp over distribution of aid materials",
-      "December 14, 2022: Grenade attack on Burundian community leader Butoyi Fideli",
-      "May 17, 2023: Forced relocation of urban refugees back to Dzaleka Camp",
-      "July 17, 2024: Malawi Defence Force raid targeting suspected human traffickers",
-      "October 12, 2024: Second widespread raid resulting in arrests and injuries"
+      "22 November 2022: Unrest at Dzaleka Camp over distribution of aid materials",
+      "14 December 2022: Grenade attack on Burundian community leader Butoyi Fideli",
+      "17 May 2023: Forced relocation of urban refugees back to Dzaleka Camp",
+      "17 July 2024: Malawi Defence Force raid targeting suspected human traffickers",
+      "12 October 2024: Second widespread raid resulting in arrests and injuries"
     ],
     source: "Dzaleka Camp Security Reports, 2022 to 2024"
   },

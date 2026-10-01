@@ -11,7 +11,7 @@ location:
 contact:
   email: 'mwi.director@jrs.net'
   phone: '+265 881 08 28 30'
-  hours: 'Monday-Friday, 8:00 AM - 4:00 PM'
+  hours: 'Monday to Friday, 8am to 4pm'
 socialMedia:
   facebook: 'https://www.facebook.com/p/Dzaleka-community-day-secondary-school-100067937029248/'
   twitter: 'https://twitter.com/jesuitrefugee'

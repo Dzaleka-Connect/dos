@@ -65,24 +65,39 @@ const description = "Submit updates, corrections, or additional information for 
 
               <div class="space-y-4">
                 <div>
-                  <label for="updateType" class="block text-sm font-medium text-gray-700 mb-2">
-                    What type of update are you submitting?
-                  </label>
-                  <select
-                    id="updateType"
-                    name="updateType"
-                    required
-                    class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
-                  >
-                    <option value="">Select update type</option>
-                    <option value="correction">Correction to existing information</option>
-                    <option value="additional">Additional information</option>
-                    <option value="status">Status change (removed, relocated)</option>
-                    <option value="restoration">Restoration or conservation work</option>
-                    <option value="new_photos">New or better photos</option>
-                    <option value="artist_info">Artist information update</option>
-                    <option value="other">Other</option>
-                  </select>
+                  <fieldset>
+                    <legend class="text-sm font-medium text-gray-700 mb-2">What type of update are you submitting?</legend>
+                    <div class="mt-2 space-y-2">
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-1" name="updateType" value="correction" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-1" class="text-sm text-gray-700">Correction to existing information</label>
+                      </div>
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-2" name="updateType" value="additional" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-2" class="text-sm text-gray-700">Additional information</label>
+                      </div>
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-3" name="updateType" value="status" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-3" class="text-sm text-gray-700">Status change (removed, relocated)</label>
+                      </div>
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-4" name="updateType" value="restoration" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-4" class="text-sm text-gray-700">Restoration or conservation work</label>
+                      </div>
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-5" name="updateType" value="new_photos" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-5" class="text-sm text-gray-700">New or better photos</label>
+                      </div>
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-6" name="updateType" value="artist_info" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-6" class="text-sm text-gray-700">Artist information update</label>
+                      </div>
+                      <div class="flex items-start gap-3">
+                        <input type="radio" id="updateType-7" name="updateType" value="other" required class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                        <label for="updateType-7" class="text-sm text-gray-700">Other</label>
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
 
                 <div>
@@ -283,7 +298,7 @@ const description = "Submit updates, corrections, or additional information for 
                   </svg>
                 </div>
                 <div class="ml-3">
-                  <p class="text-sm font-medium text-green-800">Update submitted successfully! We'll review it and update the catalogue.</p>
+                  <p class="text-sm font-medium text-green-800">Update submitted. We'll review it and update the catalogue.</p>
                 </div>
               </div>
             </div>
@@ -338,7 +353,7 @@ const description = "Submit updates, corrections, or additional information for 
         const data = await response.json();
 
         if (data.secure_url) {
-          statusElement.textContent = 'Upload successful!';
+          statusElement.textContent = 'Upload complete.';
           statusElement.classList.add('text-green-500');
           return data.secure_url;
         } else {

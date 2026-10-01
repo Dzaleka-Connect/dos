@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@iafr.org'
   phone: ''
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: ''
   twitter: ''
@@ -32,7 +32,7 @@ The refugee churches in Dzaleka offer supportive, live-giving community to the r
 
 We break the isolation of our displaced brothers and sisters through regular visits to the camp, and we work to connect them with the church-at-large in ways that help them accomplish their mission.
 
-Refugee church activities in Dzaleka include counseling and trauma care, reconciliation and peace-building initiatives, pre-school and primary school initiatives, income generation projects, language and other skill-building courses, as well as caring for orphans, widows, single mothers, and the disabled in the camp and surrounding host community.
+Refugee church activities in Dzaleka include counseling and trauma care, reconciliation and peace-building initiatives, pre-school and primary school initiatives, income generation projects, language and other skill-building courses, as well as caring for orphans, widows, single mothers, and people with disability in the camp and surrounding host community.
 
 ## Our Ministries
 

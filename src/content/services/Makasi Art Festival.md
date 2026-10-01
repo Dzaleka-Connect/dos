@@ -11,7 +11,7 @@ location:
 contact:
   email: 'johnkazadi25@gmail.com'
   phone: '+265 992 83 22 15'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/Makasiartfestival'
   twitter: ''

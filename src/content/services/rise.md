@@ -11,7 +11,7 @@ location:
 contact:
   email: 'risamalawi@gmail.com'
   phone: '+265 888 139 383'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61572797753753'
   twitter: ''

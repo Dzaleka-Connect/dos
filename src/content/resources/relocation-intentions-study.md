@@ -6,7 +6,7 @@ category: Research
 fileType: pdf
 resourceUrl: 'https://inuaadvocacy.org/wp-content/uploads/2022/03/Report_Relocation-Intention-Dzaleka-Refugees_Inua-2022.pdf'
 downloadUrl: ''
-fileSize: ''
+fileSize: '697 KB'
 lastUpdated: 2022-03-15
 languages: ['English']
 featured: true

@@ -52,8 +52,7 @@ Include the page link and explain what needs to be reviewed.
 - double-check names, dates, and image captions
 - ask before uploading someone else's photo or story
 
-## Need help?
-
+## Get help
 - [Privacy Policy](/privacy)
 - [Terms of Service](/terms)
 - [Contact](/contact)

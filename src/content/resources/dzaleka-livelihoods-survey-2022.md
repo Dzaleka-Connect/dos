@@ -13,8 +13,6 @@ featured: false
 author: "UNHCR"
 ---
 
-## Overview
-
 This survey examines the livelihood strategies, economic activities, and self-reliance initiatives of refugees in Dzaleka camp, with a focus on identifying opportunities for sustainable economic inclusion and development.
 
 ## Key Areas Covered

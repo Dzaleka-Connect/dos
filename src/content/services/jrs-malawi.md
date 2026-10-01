@@ -13,7 +13,7 @@ location:
 contact:
   email: mwi.director@jrs.net
   phone: +265 1 471 102
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/JRSMalawi/'
   twitter: 'https://twitter.com/jrsusa'

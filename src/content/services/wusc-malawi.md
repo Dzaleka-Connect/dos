@@ -11,7 +11,7 @@ location:
 contact:
   email: 'wuscmalawi@wusc.ca'
   phone: '+265 1 772 275'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/wuscmw/'
   twitter: 'https://twitter.com/WUSC_EUMC'

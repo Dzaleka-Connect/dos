@@ -11,7 +11,7 @@ location:
 contact:
   email: 'Info@faithinchildren.org'
   phone: '+1 646-761-1762'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM EST'
+  hours: 'Monday to Friday, 9am to 5pm EST'
 socialMedia:
   instagram: 'https://instagram.com/faithinchildren'
   website: 'https://faithinchildren.org'
@@ -51,7 +51,7 @@ We reach over 6,000 individuals monthly through our programs, striving for lasti
 
 ## Infrastructure Projects:
 - Building artesian wells for clean water
-- Constructing homes for the elderly in Mozambique
+- Constructing homes for older people in Mozambique
 - Providing emergency aid in Haiti during the 2010 and 2016 disasters
 
 ## Impact:

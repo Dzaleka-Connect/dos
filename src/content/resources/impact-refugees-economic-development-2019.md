@@ -6,14 +6,12 @@ category: Research
 fileType: pdf
 resourceUrl: 'https://kaluinstitute.org/wp-content/uploads/2020/07/EN-DISSERTATION-RICHMOND-MSOWOYA-2019_05_07.pdf'
 downloadUrl: ''
-fileSize: ''
+fileSize: '1.8 MB'
 lastUpdated: 2019-05-07
 languages: ['English']
 featured: false
 author: 'Richmond E.M. Msowoya'
 ---
-
-## Overview
 
 This research dissertation explores the complex relationship between refugee populations and host community economic development. Focusing on Dzaleka Refugee Camp, the study analyzes both the positive economic contributions of refugees and the negative externalities, such as environmental pressure and competition for local resources.
 

@@ -12,7 +12,7 @@ location:
 contact:
   email: 'women4actions@gmail.com'
   phone: '+265 880 76 30 53'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/WomenForAction/?ref=page_internal&_rdc=2&_rdr#'
   twitter: ''

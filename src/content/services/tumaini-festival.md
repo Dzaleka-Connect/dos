@@ -13,7 +13,7 @@ location:
 contact:
   email: 'info@tumainifestival.org'
   phone: '+265 888 123456'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://facebook.com/tumainifestival'
   twitter: ''

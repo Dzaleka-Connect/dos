@@ -1,4 +1,5 @@
 ---
+import { formatOpeningHours } from '../../utils/clockTime';
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
@@ -270,7 +271,7 @@ const seo = {
             {(service.data.businessHours?.length || service.data.contact?.hours) && <div>
               <dt class="font-semibold text-slate-900">Opening hours</dt>
               <dd class="mt-1 text-slate-700">
-                {service.data.businessHours?.length ? <ul class="space-y-1">{service.data.businessHours.map((hours) => <li class="flex flex-wrap justify-between gap-x-3"><span>{hours.day}</span><span>{hours.closed ? 'Closed' : `${hours.open} – ${hours.close}`}</span></li>)}</ul> : <p class="whitespace-pre-line">{service.data.contact.hours}</p>}
+                {service.data.businessHours?.length ? <ul class="space-y-1">{service.data.businessHours.map((hours) => <li class="flex flex-wrap justify-between gap-x-3"><span>{hours.day}</span><span>{hours.closed ? 'Closed' : formatOpeningHours(hours.open, hours.close)}</span></li>)}</ul> : <p class="whitespace-pre-line">{service.data.contact.hours}</p>}
               </dd>
             </div>}
           </dl>

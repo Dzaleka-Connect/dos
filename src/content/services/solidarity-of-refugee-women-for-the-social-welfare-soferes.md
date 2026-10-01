@@ -11,7 +11,7 @@ location:
 contact:
   email: 'soferesinfo@gmail.com'
   phone: '+265 994 036 644'
-  hours: 'Monday-Friday, 8:00 AM - 4:00 PM'
+  hours: 'Monday to Friday, 8am to 4pm'
 socialMedia:
   facebook: 'https://web.facebook.com/SOFERES/?_rdc=3&_rdr'
   twitter: 'https://twitter.com/SolidarityofRe1'

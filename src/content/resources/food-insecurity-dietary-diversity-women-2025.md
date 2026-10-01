@@ -23,7 +23,7 @@ This health-focused study provides critical data on the nutritional status of wo
 - **Health Implications:** The study links chronic food insecurity to broader health vulnerabilities among the refugee population.
 - **Systemic Factors:** Discusses how funding cuts, ration reductions, and space limitations for agriculture contribute to the nutrition crisis.
 
-## More Information
+## Who can use this data
 
 This data is crucial for humanitarian organizations and health providers working to improve nutritional support systems within Dzaleka.
 

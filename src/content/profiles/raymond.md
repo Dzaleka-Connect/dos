@@ -49,19 +49,19 @@ As an educator, I specialize in:
   - Driving Theory
   - Remote Education
 
-### Services offered:
+## Services offered
   - Online English lessons
   - Computer skills training
   - Driving theory classes
   - Digital literacy education
   - Audio/video learning materials
 
-### Impact:
+## Impact
   - Reached over 190 learners
   - Free education access
   - Digital-first approach
   - Flexible learning options
   - Practical skill development
 
-### Background:
+## Background
 As a secondary school teacher in Dzaleka, I adapted to COVID-19 challenges by creating an innovative digital learning program. Using messaging apps, I provide free education to those who can't access formal schooling, helping them build practical skills for a better future.

@@ -48,18 +48,18 @@ description: |
   - UI/UX Design
   - Code Learning
 
-### Services offered:
+## Services offered
   - Custom app development
   - Mobile app design
   - Software development
   - Coding mentorship
   - Technical consulting
 
-### Projects:
+## Projects
   - Developed a custom messaging application
   - Working on scalable communication solutions
   - Focus on user-friendly interfaces
   - Mobile-first development approach
 
-### Background:
+## Background
 My journey into technology began through vocational training in Dzaleka, where I discovered my passion for coding. Starting with a personal messaging app project, I've continued to develop my skills in software development, focusing on creating practical solutions for everyday communication needs.

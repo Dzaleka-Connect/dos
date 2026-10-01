@@ -151,31 +151,51 @@ const quickLinks = [
             </div>
 
             <div>
-              <label for="category" class="block text-sm font-medium text-gray-700">Category <span class="font-normal text-slate-600">(optional)</span></label>
-              <select
-                id="category"
-                name="category"
-                class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-              >
-                <option value="general">General Inquiry</option>
-                <option value="technical">Technical Issue</option>
-                <option value="application">Application Help</option>
-                <option value="content">Content Submission</option>
-                <option value="feedback">Feedback</option>
-              </select>
+              <fieldset>
+                <legend class="text-sm font-medium text-gray-700">Category <span class="font-normal text-slate-600">(optional)</span></legend>
+                <div class="mt-2 space-y-2">
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="category-1" name="category" value="general" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="category-1" class="text-sm text-gray-700">General inquiry</label>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="category-2" name="category" value="technical" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="category-2" class="text-sm text-gray-700">Technical issue</label>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="category-3" name="category" value="application" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="category-3" class="text-sm text-gray-700">Application help</label>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="category-4" name="category" value="content" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="category-4" class="text-sm text-gray-700">Content submission</label>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="category-5" name="category" value="feedback" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="category-5" class="text-sm text-gray-700">Feedback</label>
+                  </div>
+                </div>
+              </fieldset>
             </div>
 
             <div>
-              <label for="priority" class="block text-sm font-medium text-gray-700">Priority level <span class="font-normal text-slate-600">(optional)</span></label>
-              <select
-                id="priority"
-                name="priority"
-                class="mt-1 block w-full rounded border-gray-300 focus:border-primary-500 focus:ring-primary-500"
-              >
-                <option value="low">Low - General Question</option>
-                <option value="medium">Medium - Need Assistance</option>
-                <option value="high">High - Urgent Issue</option>
-              </select>
+              <fieldset>
+                <legend class="text-sm font-medium text-gray-700">Priority level <span class="font-normal text-slate-600">(optional)</span></legend>
+                <div class="mt-2 space-y-2">
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="priority-1" name="priority" value="low" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="priority-1" class="text-sm text-gray-700">Low: general question</label>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="priority-2" name="priority" value="medium" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="priority-2" class="text-sm text-gray-700">Medium: need assistance</label>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <input type="radio" id="priority-3" name="priority" value="high" class="mt-1 h-4 w-4 border-gray-300 text-primary-700 focus:ring-primary-600">
+                    <label for="priority-3" class="text-sm text-gray-700">High: urgent issue</label>
+                  </div>
+                </div>
+              </fieldset>
             </div>
 
             <div>
@@ -254,7 +274,7 @@ const quickLinks = [
           // Show success message
           form.reset();
           if (window.showToast) {
-            window.showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
+            window.showToast('Message sent. We\'ll get back to you soon.', 'success');
           }
           submitText.textContent = 'Send Message';
         } else {

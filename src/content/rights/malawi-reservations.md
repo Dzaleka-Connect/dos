@@ -8,7 +8,7 @@ tags: ["reservations", "right to work", "right to property", "education"]
 featured: true
 ---
 
-## What is a "Reservation"?
+## What a reservation means
 
 Malawi is a signatory to the **1951 UN Refugee Convention**, the main international treaty protecting refugees. However, when signing, a country can legally state that it will *not* be bound by specific articles. These are called "Reservations."
 

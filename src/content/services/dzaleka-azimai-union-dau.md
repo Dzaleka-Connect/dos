@@ -25,7 +25,7 @@ lastUpdated: 2025-01-03
 
 ## About Dzaleka Azimai Union (DAU)
 
-**Dzaleka Azimai Union (DAU)** is a non-profit, women-led community organization founded on February 23, 2015, by refugee women and girls who are survivors of war and gender-based violence (GBV). DAU was created to address the unique challenges faced by women and girls in Dzaleka Refugee Camp, including harmful cultural practices, extreme poverty, early marriages, teen pregnancies, and barriers to education. Our mission is to empower women and girls by restoring their rights, providing access to quality sexual and reproductive health services, and challenging discriminatory attitudes and harmful traditions.
+**Dzaleka Azimai Union (DAU)** is a non-profit, women-led community organization founded on 23 February 2015, by refugee women and girls who are survivors of war and gender-based violence (GBV). DAU was created to address the unique challenges faced by women and girls in Dzaleka Refugee Camp, including harmful cultural practices, extreme poverty, early marriages, teen pregnancies, and barriers to education. Our mission is to empower women and girls by restoring their rights, providing access to quality sexual and reproductive health services, and challenging discriminatory attitudes and harmful traditions.
 
 ![DAU and its staff organized a training for sex workers](https://i.imgur.com/9iJmfvD.jpg, "DAU and its staff organized a training for sex workers")<em>DAU and its staff organized a training for sex workers</em>
 

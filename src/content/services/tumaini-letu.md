@@ -11,7 +11,7 @@ location:
 contact:
   email: 'Info@tumainiletu.org'
   phone: '+265993380983'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/tumaini.malawi/'
   twitter: 'https://twitter.com/TumainiLetuMW'

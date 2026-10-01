@@ -6,7 +6,7 @@ category: Report
 fileType: pdf
 resourceUrl: "https://www.unhcr.org/sites/default/files/2025-06/Southern-africa-sustainable-responses-to-displacement.pdf"
 downloadUrl: "https://www.unhcr.org/sites/default/files/2025-06/Southern-africa-sustainable-responses-to-displacement.pdf"
-fileSize: ""
+fileSize: ''
 lastUpdated: 2025-06-01
 languages: ["English"]
 featured: true

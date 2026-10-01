@@ -16,8 +16,6 @@ educationalResources:
     url: "https://www.dzaleka.com/2026/06/salama-africa-and-artolution-complete.html"
 ---
 
-## Overview
-
 In June 2026, **Salama Africa** and **Artolution** completed a landmark collaborative community mural at Dzaleka Refugee Camp, created with support from **HOME Storytellers**. 
 
 The mural was created through Artolution's *Training of Trainers* programme hosted at Salama Africa's youth center in the Katudza Sector. According to Salama Africa Executive Director **Prince Lokendo**, the artwork was directly shaped by community discussions, reflecting themes of **hope, protection, unity, and solidarity**.

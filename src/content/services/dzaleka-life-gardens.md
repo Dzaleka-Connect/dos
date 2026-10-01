@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@iafr.ca'
   phone: '+265 886 82 97 47'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/profile.php?id=61563591853448'
   website: 'https://www.iafr.ca/'

@@ -6,7 +6,7 @@ category: Research
 fileType: pdf
 resourceUrl: 'https://ijrpr.com/uploads/V5ISSUE9/IJRPR33140.pdf'
 downloadUrl: ''
-fileSize: ''
+fileSize: '204 KB'
 lastUpdated: 2023-09-01
 languages: ['English']
 featured: false

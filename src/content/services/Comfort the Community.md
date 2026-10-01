@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@comfortthecommunity.org'
   phone: '+265 995 60 40 33'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: ''
   twitter: ''

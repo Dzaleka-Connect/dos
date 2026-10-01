@@ -11,7 +11,7 @@ location:
 contact:
   email: 'info@inuaadvocacy.org'
   phone: '+265 882 717995'
-  hours: 'Monday-Friday, 8:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 8am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/inuaadvocacy/'
   youtube: 'https://www.youtube.com/channel/UCgFvd8yc4Tcur5SFhdZHgMw'

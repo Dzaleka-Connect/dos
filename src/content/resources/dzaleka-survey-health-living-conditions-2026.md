@@ -14,8 +14,6 @@ author: "Dzaleka Online"
 tags: ["Dzaleka", "Health", "Nutrition", "Water", "Employment", "Family planning", "Survey summary"]
 ---
 
-## Overview
-
 This Dzaleka Online article summarizes the 2024 report on health, nutrition, and population conditions in Dzaleka Refugee Camp. It presents the findings in a community-facing format and links to the full Joint Data Center report.
 
 ## Coverage

@@ -13,9 +13,7 @@ featured: true
 author: "UNHCR"
 ---
 
-## Overview
-
-This report provides a detailed analysis of UNHCR's funding situation for refugee operations in Malawi as of May 31, 2025. The total financial requirements for 2025 amount to $26.3 million, with current funding at 14% ($3,807,432), leaving a significant funding gap of $22,501,046 (86%).
+This report provides a detailed analysis of UNHCR's funding situation for refugee operations in Malawi as of 31 May 2025. The total financial requirements for 2025 amount to $26.3 million, with current funding at 14% ($3,807,432), leaving a significant funding gap of $22,501,046 (86%).
 
 ## Key Areas Covered
 

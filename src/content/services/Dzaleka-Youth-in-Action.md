@@ -11,7 +11,7 @@ location:
 contact:
   email: 'dzalekayouth@gmail.com'
   phone: '+265 882 89 99 37'
-  hours: 'Monday-Friday, 9:00 AM - 5:00 PM'
+  hours: 'Monday to Friday, 9am to 5pm'
 socialMedia:
   facebook: 'https://www.facebook.com/dzalekayia'
   twitter: ''

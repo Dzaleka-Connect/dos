@@ -12,7 +12,7 @@ location:
 contact:
   email: "dk5.risin@gmail.com"
   phone: "+265 991 234567"
-  hours: "Monday-Friday, 9:00 AM - 5:00 PM"
+  hours: "Monday to Friday, 9am to 5pm"
 socialMedia:
   facebook: "https://facebook.com/dzalekarising"
   twitter: "https://twitter.com/dzalekarising"
