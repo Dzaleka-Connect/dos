@@ -39,13 +39,15 @@ export default mergeConfig(base, {
       storage: s3(),
       siteUrl: origin,
       fonts: false,
+      admin: { siteName: 'Dzaleka Online Services', logo: '/images/dzaleka-digital-heritage.png', favicon: '/images/dzaleka-digital-heritage.png' },
       mcp: false,
       middleware: { outer: new URL('./src/lib/news/staging-middleware.ts', import.meta.url) },
     }),
     {
       name: 'dos-netlify-news-staging',
       hooks: {
-        'astro:config:setup': ({ updateConfig, injectRoute }) => {
+        'astro:config:setup': ({ updateConfig, injectRoute, addMiddleware }) => {
+          addMiddleware({ entrypoint: new URL('./src/lib/news/staging-session-middleware.ts', import.meta.url), order: 'post' });
           updateConfig({ security: { checkOrigin: true } });
           injectRoute({ pattern: '/_dos/public/[collection].json', entrypoint: './src/lib/news/public-feed.ts', prerender: false });
           injectRoute({ pattern: '/_dos/public/[collection]/[...slug]', entrypoint: './src/lib/news/PublicArticle.astro', prerender: false });

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
-import { authorizeStaging, stagingResponse, maintenancePath } from '../src/lib/news/staging-access.mjs';
+import { authorizeStaging, stagingResponse, maintenancePath, needsEditorSession, signInResponse, hasEditorSession } from '../src/lib/news/staging-access.mjs';
 import { stagingOrigin, validateStagingRuntime } from '../scripts/emdash/staging-env.mjs';
 import maintenance from '../netlify/emdash-functions/emdash-maintenance.mjs';
 import { rootCertificates } from 'node:tls';
@@ -48,13 +48,46 @@ describe('Netlify CMS staging boundaries', () => {
     expect(() => validateStagingRuntime({ ...env, DATABASE_URL: 'not-a-url-super-secret' })).toThrow('valid PostgreSQL');
   });
 
-  it('protects initial setup, admin, signed previews and reader pages before CMS initialization', () => {
+  it('retains explicit maintenance access without triggering a browser password popup', () => {
     for (const path of ['/_emdash/admin/setup', '/_emdash/api/setup', '/news/test?preview=abc', '/api/search-index.json']) {
       expect(authorizeStaging(request(path), env)?.status).toBe(401);
+      expect(authorizeStaging(request(path), env)?.headers.has('WWW-Authenticate')).toBe(false);
       expect(authorizeStaging(request(path, basic('wrong')), env)?.status).toBe(401);
       expect(authorizeStaging(request(path, basic(env.DOS_STAGING_PASSWORD)), env)).toBeNull();
     }
     expect(authorizeStaging(request('/news'), {})?.status).toBe(503);
+  });
+
+  it('requires editor sessions for previews and raw uploads while delegating native admin authentication', () => {
+    for (const path of ['/news/draft', '/api/search-index.json', '/_emdash/api/media/file/private.png']) {
+      expect(needsEditorSession(path)).toBe(true);
+    }
+    for (const path of ['/_emdash/admin/', '/_emdash/admin/login', '/_emdash/api/auth/passkey/verify', '/_emdash/api/content/news']) {
+      expect(needsEditorSession(path)).toBe(false);
+    }
+    const denied = signInResponse(request('/news/draft?_preview=token'));
+    expect(denied.status).toBe(302);
+    expect(denied.headers.get('Location')).toBe('/_emdash/admin/login?redirect=%2Fnews%2Fdraft%3F_preview%3Dtoken');
+    for (const path of ['/api/search-index.json', '/sitemap.xml', '/_emdash/api/media/file/private.png']) {
+      expect(signInResponse(request(path)).status).toBe(401);
+    }
+    expect(signInResponse(request('/news/draft', '', 'POST')).status).toBe(401);
+  });
+
+  it('validates the stored session and active editor role, failing closed on session errors', async () => {
+    const session = { get: vi.fn().mockResolvedValue({ id: 'editor' }) };
+    const getUser = vi.fn().mockResolvedValue({ id: 'editor', role: 40, disabled: false });
+    expect(await hasEditorSession(session, getUser)).toBe(true);
+    expect(getUser).toHaveBeenCalledWith('editor');
+    for (const user of [null, { role: 10 }, { role: 50, disabled: true }]) {
+      getUser.mockResolvedValue(user);
+      expect(await hasEditorSession(session, getUser)).toBe(false);
+    }
+    getUser.mockClear();
+    expect(await hasEditorSession(undefined, getUser)).toBe(false);
+    expect(getUser).not.toHaveBeenCalled();
+    expect(await hasEditorSession({ get: () => Promise.reject(new Error('Unavailable')) }, getUser)).toBe(false);
+    expect(await hasEditorSession({ get: () => new Promise(() => {}) }, getUser, 5)).toBe(false);
   });
 
   it('preserves the trusted CA in pg and rejects TLS overrides or missing certificates', () => {

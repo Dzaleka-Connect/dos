@@ -23,9 +23,24 @@ const feed = async () => {
   assert.match(response.headers.get('cache-control'), /no-store/);
   return (await response.json()).entries;
 };
+// Public pages are cached at the CDN for a minute and may be served stale once
+// while they refresh, so give a publication change up to three minutes to show.
+const settle = async (path, done) => {
+  const deadline = Date.now() + 180000;
+  for (;;) {
+    const response = await get(path, target);
+    const text = await response.text();
+    if (done(response.status, text) || Date.now() > deadline) return { response, text };
+    await new Promise(resolve => setTimeout(resolve, 10000));
+  }
+};
+const mentions = (path, text) => (path.startsWith('/api/search?') ? JSON.stringify(JSON.parse(text).results) : text).includes(slug);
 let article, media;
 try {
-  assert.equal((await get('/_emdash/admin/')).status, 401, 'Admin remains protected');
+  const admin = await get('/_emdash/admin/');
+  assert.equal(admin.status, 302, 'Admin requires native sign-in');
+  assert.match(admin.headers.get('location'), /\/_emdash\/admin\/login/);
+  assert.equal(admin.headers.has('www-authenticate'), false);
   assert.equal((await get('/_emdash/api/content/news')).status, 401, 'Editor API remains protected');
   assert.equal((await get(`${publicPrefix}media/backups/private.zip`)).status, 404);
   assert.equal((await get(`${publicPrefix}media/transfers/private.zip`)).status, 404);
@@ -63,11 +78,10 @@ try {
   assert.equal((await feed()).find(item => item.id === slug).data.title, slug, 'Unpublished edit never leaks');
   if (target) {
     for (const path of [`/news/${slug}`, '/news', '/', '/api/search-index.json', '/api/rss', '/news-sitemap.xml', '/sitemap.xml', '/api/news', `/api/search?q=${slug}&collections=news`]) {
-      const response = await get(path, target);
+      const { response, text } = await settle(path, (status, body) => status === 200 && mentions(path, body));
       assert.equal(response.status, 200, path);
-      assert.match(response.headers.get('cache-control'), /no-store/, `${path}: publication changes are fresh`);
-      const text = await response.text();
-      assert.ok((path.startsWith('/api/search?') ? JSON.stringify(JSON.parse(text).results) : text).includes(slug), `${path}: published article appears without a rebuild`);
+      assert.match(response.headers.get('cache-control'), /max-age=0/, `${path}: browsers check for publication changes`);
+      assert.ok(mentions(path, text), `${path}: published article appears without a rebuild`);
       assert.ok(!text.includes('UNPUBLISHED PRIVATE EDIT'), `${path}: draft edit excluded`);
       if (path === `/news/${slug}`) {
         assert.ok(text.includes(`${cmsOrigin}${publicPrefix}media/${key}`), 'Public cover and inline image');
@@ -81,11 +95,10 @@ try {
   assert.equal((await get(`${publicPrefix}news/${slug}`)).status, 404);
   assert.equal((await get(`${publicPrefix}media/${key}`)).status, 404, 'Unpublished media is private again');
   if (target) {
-    assert.equal((await get(`/news/${slug}`, target)).status, 404);
+    assert.equal((await settle(`/news/${slug}`, status => status === 404)).response.status, 404);
     for (const path of ['/api/search-index.json', '/api/news', `/api/search?q=${slug}&collections=news`]) {
-      const response = await get(path, target);
-      const value = await response.json();
-      assert.ok(!JSON.stringify(path.includes('/api/search?') ? value.results : value).includes(slug), `${path}: unpublished article removed`);
+      const { text } = await settle(path, (status, body) => !mentions(path, body));
+      assert.ok(!mentions(path, text), `${path}: unpublished article removed`);
     }
   }
   console.log('Verified: published feed, draft privacy, edits, cover and inline images, unpublishing' + (target ? ', public pages, homepage, search, RSS and sitemaps.' : '.'));

@@ -16,7 +16,7 @@ News responses use `no-store`; request-local memoization avoids duplicate CMS me
 
 The owner connected `cms.dzaleka.com` to the existing Netlify CMS project on 30 September 2026. Its CNAME points to `dos-news-staging.netlify.app`; Netlify reports an issued certificate for the custom hostname. The configuration now permits this exact CMS hostname while still rejecting the public website and a mismatched Netlify project ID.
 
-The administrator originally registered a passkey on the Netlify hostname, then used an explicitly approved, single-use native recovery link to sign in on the custom hostname. The CMS origin has now switched to `https://cms.dzaleka.com`. The owner must add a passkey for this hostname from the existing signed-in session; the old credential was preserved but is bound to the old hostname.
+The administrator originally registered a passkey on the Netlify hostname, then used an explicitly approved, single-use native recovery link to sign in on the custom hostname. The CMS origin is now `https://cms.dzaleka.com`, and the owner confirmed passkey sign-in works there. The old credential was preserved but is bound to the old hostname. Email sign-in still requires an email provider to be configured.
 
 ## Create the services
 
@@ -76,8 +76,8 @@ Deploy the staging site's main/published deploy. The build rejects a mismatched 
 
 ## Check the hosted editor
 
-1. Visit `/_emdash/admin/` on the staging origin. The first prompt uses username `staging` and the generated `DOS_STAGING_PASSWORD`. This gate protects setup before any administrator exists. Complete EmDash setup and create your own passkey for this hostname. Keep the staging password separate from the passkey/recovery credentials.
-2. Use a private browser window to confirm the setup/editor and News URLs return a password prompt without staging access. Without an editor session, unpublished articles must still return 404 after passing the staging gate. A signed preview may display the draft but must carry `Cache-Control: private, no-store` and `X-Robots-Tag: noindex`.
+1. Visit the CMS homepage or `/_emdash/admin/`. The homepage redirects to EmDash's branded sign-in screen. Sign in with a passkey registered for `cms.dzaleka.com`; no shared-password browser popup is shown. Initial setup endpoints remain restricted to explicitly supplied `staging` Basic credentials. Use the local initialization script before opening a new hosted editor.
+2. Use a private browser window to confirm editor and reader pages redirect to native sign-in. Raw uploads and reader APIs return 401 without an active editor session; a forged session cookie must not grant access. The staging password remains available to verification scripts, but never grants editor API access. A signed preview also requires editor access and must carry `Cache-Control: private, no-store` and `X-Robots-Tag: noindex`.
 3. Create a disposable News draft, upload a small JPG or PNG, preview, publish, replace its image, restore a revision and unpublish it. Confirm changes appear on News, its category, the homepage, search, RSS, relevant Encyclopedia coverage and the News sitemap without rebuilding. For the News sitemap, use a publication date within the last two days.
 4. Start with images below 4 MB. The editor's upload path and Netlify request limits need a hosted check before accepting larger images. If enabling direct signed uploads later, configure bucket CORS for only this staging origin; the current private-bucket setup does not require public bucket access.
 5. Schedule another disposable article a few minutes ahead. Check Netlify → Functions → `emdash-maintenance` for its next run and logs, then confirm the article becomes public. A successful HTTP response alone is insufficient: EmDash logs some task failures internally, so verify the resulting publication and scheduler health in the editor.
@@ -124,7 +124,9 @@ In the CMS, the listing status fields are named "Listed as" (events: upcoming or
 
 ## Boundaries and verification
 
-The CMS, News pages, homepage, search index, RSS, both sitemaps, staff dashboard and Encyclopedia coverage run through Node Functions, with runtime middleware, no-store caching and the staging access gate. Other existing public pages can remain static; the Netlify staging configuration marks all responses `noindex`. This is protection for the editorial pilot, not a promise that every existing public asset is private. The public News/search/export APIs read the same published feed; other collections and their editorial tools remain file based.
+The CMS, News pages, homepage, search index, RSS, both sitemaps, staff dashboard and Encyclopedia coverage run through Node Functions with runtime middleware and no-store caching. Native EmDash authentication protects the editor; a second middleware verifies an active contributor-or-higher session for reader previews and raw uploads. Published-only delivery routes remain accessible to the public website.
+
+All CMS responses, including static files and published media, carry `X-Robots-Tag: noindex, nofollow, noarchive`. Its build writes a separate `robots.txt` that allows crawlers to read that header and contains no public sitemap or search opt-in. Disallowing crawling would prevent crawlers from seeing `noindex`. Previously indexed URLs may take time to disappear. The public website keeps its own indexing rules. Static copies of existing public pages and assets are not private editorial content.
 
 EmDash 1.0.1's built-in full-text search is SQLite-only, so the PostgreSQL seed omits the `search` collection capability. DOS's existing public search index continues to include published CMS News.
 

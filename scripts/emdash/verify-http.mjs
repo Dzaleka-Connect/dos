@@ -57,13 +57,13 @@ try {
   const wrongToken = await getPreviewUrl({ collection: 'news', id: unrelated.id, secret, expiresIn: '5m' });
   assert.equal((await get(`/news/${slug}${new URL(wrongToken, origin).search}`)).status, 404, 'Token cannot preview another draft');
 
-  for (const path of ['/news', '/', '/api/search-index.json', '/api/rss', '/news-sitemap.xml']) {
+  for (const path of ['/news', ...(staging ? [] : ['/']), '/api/search-index.json', '/api/rss', '/news-sitemap.xml']) {
     const response = await get(path);
     assert.equal(response.status, 200, path);
     assert.ok(!(await response.text()).includes(slug), `${path}: draft excluded`);
   }
   await repository.publish('news', article.id);
-  for (const path of [`/news/${slug}`, '/news', '/', '/api/search-index.json', '/api/rss', '/news-sitemap.xml']) {
+  for (const path of [`/news/${slug}`, '/news', ...(staging ? [] : ['/']), '/api/search-index.json', '/api/rss', '/news-sitemap.xml']) {
     const response = await get(path);
     assert.equal(response.status, 200, path);
     assert.ok((await response.text()).includes(slug), `${path}: published article included`);

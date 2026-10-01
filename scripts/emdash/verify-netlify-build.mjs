@@ -13,12 +13,14 @@ try {
   const stagingPassword = process.env.DOS_STAGING_PASSWORD;
   const origin = 'https://dos-news-staging-test.netlify.app';
   process.env.DOS_STAGING_PASSWORD = 'build-verification-only-'.repeat(3);
-  const paths = ['/', '/news', '/news/category/news', '/news/nonexistent', '/_emdash/admin/', '/_emdash/api/setup',
+  const paths = ['/', '/news', '/news/category/news', '/news/nonexistent', '/_emdash/api/media/file/private.png', '/_emdash/api/setup',
     '/api/search-index.json', '/api/rss', '/sitemap.xml', '/news-sitemap.xml', '/encyclopedia/nonexistent',
     '/staff', '/dashboard', '/dzaleka-wellbeing'];
   for (const path of paths) {
     const response = await handler(new Request(origin + path), { ip: '127.0.0.1' });
-    assert.equal(response.status, 401, `${path} must run through the staging gate`);
+    const api = path.startsWith('/api/') || path.startsWith('/_emdash/api/') || path.endsWith('.xml');
+    assert.equal(response.status, api ? 401 : 302, `${path} must require CMS sign-in`);
+    assert.equal(response.headers.has('www-authenticate'), false, 'No browser password popup');
     assert.match(response.headers.get('cache-control') || '', /no-store/);
     assert.match(response.headers.get('x-robots-tag') || '', /noindex/);
   }
