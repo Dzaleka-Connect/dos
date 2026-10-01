@@ -91,7 +91,7 @@ node --env-file=.env.staging scripts/emdash/verify-staging.mjs
 
 This checks the 30 imported article URLs, live News consumers, authentication boundaries, missing articles and cache/indexing headers. It does not create an editor account or substitute for the publishing/upload checks above.
 
-The scheduler sends a secret-authenticated POST to `/_emdash/api/dos-maintenance` every minute. It rejects redirects and stops waiting after 25 seconds. EmDash's in-process timer is disabled in the staging bundle so frozen function instances cannot become the scheduler. Maintenance failures surface in Netlify function logs; large backups and marketplace sandbox plugins are outside this pilot.
+The scheduler sends a secret-authenticated POST to `/_emdash/api/dos-maintenance` every 15 minutes, so scheduled articles go live up to 15 minutes after their time. It rejects redirects and stops waiting after 25 seconds. EmDash's in-process timer is disabled in the staging bundle so frozen function instances cannot become the scheduler. Maintenance failures surface in Netlify function logs; large backups and marketplace sandbox plugins are outside this pilot.
 
 **Schedules only run automatically on published deploys.** Deploy previews and branch deploys do not trigger schedules. Use a published deploy on this separate staging site for the end-to-end test, as described in [Netlify Scheduled Functions](https://docs.netlify.com/build/functions/scheduled-functions/). Do not share a staging database across changing preview hostnames: passkeys and the cron target use the fixed staging origin.
 

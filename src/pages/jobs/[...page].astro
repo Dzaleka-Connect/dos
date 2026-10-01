@@ -1,6 +1,6 @@
 ---
 import { getContent } from '../../lib/content';
-import { jobsPage, jobsPageSize, sortJobsForListing } from '../../lib/jobs-pages';
+import { jobsPage, jobsPageSize, jobsSort, sortJobsForListing } from '../../lib/jobs-pages';
 import JobsListing from '../../components/jobs/JobsListing.astro';
 
 // Built as static pages while jobs are Markdown; rendered on request once they are live in the CMS.
@@ -9,7 +9,8 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const allJobs = await getContent('jobs');
-const page = Astro.props.page ?? jobsPage(allJobs, Astro.params.page ? Number(Astro.params.page) : 1);
+const sort = Astro.isPrerendered ? 'recent' : jobsSort(Astro.url.searchParams.get('sort'));
+const page = Astro.props.page ?? jobsPage(allJobs, Astro.params.page ? Number(Astro.params.page) : 1, sort);
 if (!page) return new Response('Page not found', { status: 404 });
 ---
-<JobsListing page={page} allJobs={allJobs} />
+<JobsListing page={page} allJobs={allJobs} sort={sort} />

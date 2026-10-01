@@ -4,40 +4,20 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import JobCard from './JobCard.astro';
 import { isJobExpired } from '../../utils/dateHelpers';
 
-const { page, allJobs } = Astro.props;
-const currentSort = Astro.url.searchParams.get('sort') || 'recent';
+const { page, allJobs, sort = 'recent' } = Astro.props;
 const activeJobs = allJobs.filter(job =>
   job.data.status === 'open' && !isJobExpired(job.data.deadline)
 );
+// The whole list is sorted before it is split into pages, so each page keeps its order.
+const sortedJobs = page.data;
+const sortLinks = [
+  { value: 'recent', label: 'Most recent', href: '/jobs' },
+  { value: 'deadline', label: 'Closing date', href: '/jobs?sort=deadline' },
+];
+const query = sort === 'deadline' ? '?sort=deadline' : '';
 
-// Sort jobs
-let sortedJobs = [...page.data];
-sortedJobs = sortedJobs.sort((a, b) => {
-  if (currentSort === 'recent') {
-    return new Date(b.data.posted).getTime() - new Date(a.data.posted).getTime();
-  } else {
-    const dateA = a.data.deadline ? new Date(a.data.deadline).getTime() : Infinity;
-    const dateB = b.data.deadline ? new Date(b.data.deadline).getTime() : Infinity;
-    return dateA - dateB;
-  }
-});
-
-// Generate pagination URLs
 function getPaginationUrl(pageNum: number) {
-  const basePath = '/jobs';
-  const queryParams = new URLSearchParams();
-
-  if (currentSort && currentSort !== 'recent') {
-    queryParams.set('sort', currentSort);
-  }
-
-  const queryString = queryParams.toString();
-
-  if (pageNum === 1) {
-    return `${basePath}${queryString ? `?${queryString}` : ''}`;
-  }
-
-  return `${basePath}/${pageNum}${queryString ? `?${queryString}` : ''}`;
+  return (pageNum === 1 ? '/jobs' : `/jobs/${pageNum}`) + query;
 }
 ---
 
@@ -88,17 +68,16 @@ function getPaginationUrl(pageNum: number) {
         <span class="ml-2 text-sm font-medium text-gray-500">{activeJobs.length} active {activeJobs.length === 1 ? 'opportunity' : 'opportunities'}</span>
       </h2>
 
-      <div class="flex items-center gap-3">
-        <label for="sort-select" class="text-sm font-medium text-gray-700">Sort by:</label>
-        <select
-          id="sort-select"
-          class="block w-48 pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 rounded"
-          onchange="window.location.href = this.value === 'recent' ? '/jobs' : '/jobs?sort=' + this.value"
-        >
-          <option value="recent" selected={currentSort === 'recent'}>Most Recent</option>
-          <option value="deadline" selected={currentSort === 'deadline'}>Deadline</option>
-        </select>
-      </div>
+      <nav aria-label="Sort jobs" class="flex items-center gap-3 text-sm">
+        <span class="font-medium text-gray-700">Sort by</span>
+        {sortLinks.map(link => (
+          <a
+            href={link.href}
+            aria-current={sort === link.value ? 'true' : undefined}
+            class={sort === link.value ? 'font-semibold text-gray-900 underline underline-offset-4' : 'text-primary-700 hover:text-primary-900 hover:underline'}
+          >{link.label}</a>
+        ))}
+      </nav>
     </div>
 
     <div class="space-y-8">

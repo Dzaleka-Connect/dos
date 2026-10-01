@@ -5,8 +5,13 @@ import JobCard from '../../components/jobs/JobCard.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { isJobExpired } from '../../utils/dateHelpers';
 import { getPaginationData } from '../../utils/pagination';
-// Get URL parameters
-const currentSort = Astro.url.searchParams.get('sort') || 'recent';
+import { jobsSort } from '../../lib/jobs-pages';
+
+const currentSort = Astro.isPrerendered ? 'recent' : jobsSort(Astro.url.searchParams.get('sort'));
+const sortLinks = [
+  { value: 'recent', label: 'Most recent', href: '/jobs' },
+  { value: 'deadline', label: 'Closing date', href: '/jobs?sort=deadline' },
+];
 
 // Get all jobs
 const allJobs = await getContent('jobs');
@@ -178,17 +183,16 @@ const jobsStructuredData = {
         <span class="ml-2 text-sm font-medium text-gray-500">{activeJobs.length} active {activeJobs.length === 1 ? 'opportunity' : 'opportunities'}</span>
       </h2>
 
-      <div class="flex w-full flex-wrap items-center gap-3 sm:w-auto">
-        <label for="sort-select" class="text-sm font-medium text-gray-700">Sort by:</label>
-        <select
-          id="sort-select"
-          class="block w-48 pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-slate-500 focus:border-slate-500 rounded"
-          onchange="window.location.href = this.value === 'recent' ? '/jobs' : '/jobs?sort=' + this.value"
-        >
-          <option value="recent" selected={currentSort === 'recent'}>Most Recent</option>
-          <option value="deadline" selected={currentSort === 'deadline'}>Deadline</option>
-        </select>
-      </div>
+      <nav aria-label="Sort jobs" class="flex w-full flex-wrap items-center gap-3 text-sm sm:w-auto">
+        <span class="font-medium text-gray-700">Sort by</span>
+        {sortLinks.map(link => (
+          <a
+            href={link.href}
+            aria-current={currentSort === link.value ? 'true' : undefined}
+            class={currentSort === link.value ? 'font-semibold text-gray-900 underline underline-offset-4' : 'text-primary-700 hover:text-primary-900 hover:underline'}
+          >{link.label}</a>
+        ))}
+      </nav>
     </div>
 
     <div class="space-y-8">
