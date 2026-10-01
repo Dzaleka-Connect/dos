@@ -2,6 +2,7 @@ import { withNewsRequest, NewsUnavailable } from './lib/news/public-client.mjs';
 import { defineMiddleware } from 'astro:middleware';
 import { discoveryLinks } from './data/agentDiscovery';
 import { convertHtmlToMarkdown, estimateMarkdownTokens } from './utils/markdownForAgents';
+import { withCdnCaching } from './utils/cdnCaching';
 
 function appendVary(headers: Headers, value: string) {
   const existing = headers
@@ -41,16 +42,7 @@ export const onRequest = defineMiddleware((context, next) => withNewsRequest(asy
       status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'Retry-After': '30' },
     });
   }
-  if (!context.isPrerendered) {
-    const path = context.url.pathname.replace(/\/$/, '') || '/';
-    if (path === '/' || path === '/news' || path.startsWith('/news/') ||
-      ['/api/news', '/api/search', '/api/export', '/api/rss', '/api/search-index.json', '/news-sitemap.xml', '/sitemap.xml', '/dashboard', '/staff', '/dzaleka-wellbeing'].includes(path) || path.startsWith('/encyclopedia/')) {
-      const headers = new Headers(response.headers);
-      headers.set('Cache-Control', 'no-store');
-      headers.set('Netlify-CDN-Cache-Control', 'no-store');
-      response = new Response(response.body, { status: response.status, statusText: response.statusText, headers });
-    }
-  }
+  if (!context.isPrerendered) response = withCdnCaching(context.request, context.url.pathname, response, wantsMarkdown(context.request));
 
   if (!isHtmlResponse(response) || (response.status >= 300 && response.status < 400)) {
     return response;

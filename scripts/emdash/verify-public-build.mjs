@@ -15,7 +15,9 @@ try {
   for (const path of paths) {
     const response = await handler(new Request('https://services.dzaleka.com' + path), { ip: '127.0.0.1' });
     assert.equal(response.status, 200, path);
-    assert.match(response.headers.get('cache-control'), /no-store/);
+    // Browsers revalidate every time; Netlify's CDN may reuse the page for up to a minute.
+    assert.match(response.headers.get('cache-control'), /max-age=0/, path);
+    assert.match(response.headers.get('netlify-cdn-cache-control') || '', /s-maxage=60/, path);
     const body = await response.text();
     assert.ok(!response.headers.get('x-robots-tag')?.includes('noindex'));
     assert.ok(!body.includes('Draft preview.'));

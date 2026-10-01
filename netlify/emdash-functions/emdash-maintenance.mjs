@@ -1,6 +1,9 @@
 import { stagingOrigin } from '../../scripts/emdash/staging-env.mjs';
 
-export const config = { schedule: '* * * * *' };
+// Every 15 minutes: scheduled posts go live within 15 minutes of their time.
+// Running every minute cost about 86,000 function calls a month on its own
+// (this function plus the maintenance route it calls).
+export const config = { schedule: '*/15 * * * *' };
 
 export default async function () {
   const origin = stagingOrigin();
