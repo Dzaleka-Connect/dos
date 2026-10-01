@@ -62,6 +62,16 @@ export function articleFragment(html) {
       element.setAttribute(attribute, value.startsWith('/_astro/') ? `${cmsOrigin}${value}` : rewriteMediaUrl(value));
     }
   }
+  // Give each table a caption for screen readers, taken from the heading just before it.
+  let heading = '';
+  for (const element of article.querySelectorAll('h2, h3, h4, h5, h6, table')) {
+    if (element.tagName !== 'TABLE') { heading = element.textContent.trim(); continue; }
+    if (!heading || element.querySelector('caption')) continue;
+    const caption = document.createElement('caption');
+    caption.className = 'sr-only';
+    caption.textContent = heading;
+    element.prepend(caption);
+  }
   return [...document.head.querySelectorAll('link[rel="stylesheet"], style')].map(node => node.outerHTML).join('') + article.innerHTML;
 }
 

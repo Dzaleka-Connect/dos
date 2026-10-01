@@ -1,5 +1,5 @@
 ---
-title: News & Updates
+title: News and updates
 description: Guide to reading community news and updates
 section: news
 ---

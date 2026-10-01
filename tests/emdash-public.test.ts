@@ -77,4 +77,11 @@ describe('Public news reader', () => {
     expect(html).toContain('<td>Value</td>');
     expect(html).not.toMatch(/<html|<head|<body/);
   });
+
+  it('captions CMS tables from the heading before them', () => {
+    const html = articleFragment('<html><body><div data-dos-article><h2>Registration fees</h2><p>Fees in MWK.</p><table><tr><th>Type</th></tr></table><table><caption>Own caption</caption></table></div></body></html>');
+    expect(html).toContain('<table><caption class="sr-only">Registration fees</caption><tr><th>Type</th></tr></table>');
+    expect(html).toContain('<table><caption>Own caption</caption></table>');
+    expect(articleFragment('<div data-dos-article><table><tr><td>1</td></tr></table></div>')).not.toContain('<caption');
+  });
 });
