@@ -14,6 +14,7 @@ vite.ssr.noExternal.push('sanitize-html', 'htmlparser2', 'escape-string-regexp',
   'domhandler', 'domutils', 'dom-serializer', 'domelementtype', 'entities', 'launder', 'parse-srcset',
   'is-plain-object', 'deepmerge', 'postcss', 'picocolors', 'nanoid', 'source-map-js', 'dayjs');
 vite.resolve.alias['virtual:emdash/scheduler'] = fileURLToPath(new URL('./src/lib/news/netlify-scheduler.mjs', import.meta.url));
+vite.resolve.alias['virtual:emdash/wait-until'] = fileURLToPath(new URL('./src/lib/news/netlify-deferred.mjs', import.meta.url));
 vite.plugins = [{
   name: 'dos-static-pages-without-cms',
   transform(_code, id) {
@@ -41,6 +42,11 @@ export default mergeConfig(base, {
       fonts: false,
       admin: { siteName: 'Dzaleka Online Services', logo: '/images/dzaleka-digital-heritage.png', favicon: '/images/dzaleka-digital-heritage.png' },
       mcp: false,
+      plugins: [{ id: 'dos-submissions', version: '1.0.0',
+        entrypoint: fileURLToPath(new URL('./src/lib/submissions/plugin.ts', import.meta.url)),
+        adminPages: [{ path: '/inbox', label: 'Submissions', icon: 'inbox' }],
+        adminWidgets: [{ id: 'submissions', title: 'New submissions', size: 'full' }],
+      }],
       middleware: { outer: new URL('./src/lib/news/staging-middleware.ts', import.meta.url) },
     }),
     {
@@ -50,6 +56,7 @@ export default mergeConfig(base, {
           addMiddleware({ entrypoint: new URL('./src/lib/news/staging-session-middleware.ts', import.meta.url), order: 'post' });
           updateConfig({ security: { checkOrigin: true } });
           injectRoute({ pattern: '/_dos/public/[collection].json', entrypoint: './src/lib/news/public-feed.ts', prerender: false });
+          injectRoute({ pattern: '/_dos/public/site.json', entrypoint: './src/lib/news/public-site.ts', prerender: false });
           injectRoute({ pattern: '/_dos/public/[collection]/[...slug]', entrypoint: './src/lib/news/PublicArticle.astro', prerender: false });
           injectRoute({ pattern: '/_dos/public/media/[...key]', entrypoint: './src/lib/news/public-media.ts', prerender: false });
           injectRoute({ pattern: '/_emdash/api/dos-maintenance', entrypoint: './src/lib/news/maintenance-route.ts', prerender: false });

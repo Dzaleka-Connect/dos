@@ -11,7 +11,8 @@ import JobGuide from '../../components/jobs/JobGuide.astro';
     <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div class="bg-white rounded border border-gray-200/50 overflow-hidden">
         <div class="p-5 sm:p-8">
-          <form id="jobForm" class="submission-form space-y-8"><p class="text-sm text-slate-600">Optional fields are marked.</p>
+          <form action="/api/submissions?form=job-submission" method="POST" id="jobForm" class="submission-form space-y-8">
+      <div hidden aria-hidden="true"><label>Leave this empty<input name="_gotcha" tabindex="-1" autocomplete="off" /></label></div><p class="text-sm text-slate-600">Optional fields are marked.</p>
             <!-- Organization Information -->
             <section>
               <h2 class="text-xl font-semibold text-gray-900 mb-4">Organization information</h2>
@@ -199,7 +200,7 @@ import JobGuide from '../../components/jobs/JobGuide.astro';
     };
 
     try {
-      const response = await fetch('https://formspree.io/f/xqaaajae', {
+      const response = await fetch('/api/submissions?form=job-submission', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -219,7 +220,7 @@ import JobGuide from '../../components/jobs/JobGuide.astro';
                 </svg>
               </div>
               <div class="ml-3">
-                <h3 class="text-sm font-medium text-green-800">Job posted successfully</h3>
+                <h3 class="text-sm font-medium text-green-800">Job submitted for review</h3>
                 <div class="mt-2 text-sm text-green-700">
                   <p>Your job has been submitted successfully. We'll review it and publish it soon.</p>
                 </div>

@@ -7,6 +7,8 @@ import '../styles/patterns.css';
 import '../styles/site.css';
 
 interface Props {
+	exactTitle?: boolean;
+	exactDescription?: boolean;
 	lang?: string;
 	title: string;
 	description?: string;
@@ -83,11 +85,11 @@ function fitDescription(text: string, limit = 160) {
 	if (sentences && sentences[0].length >= 70) return sentences[0];
 	return `${clean.slice(0, limit - 1).replace(/\s+\S*$/, '').replace(/[,;:–-]+$/, '')}…`;
 }
-const metaDescription = fitDescription(description || defaultDescription);
+const metaDescription = Astro.props.exactDescription ? description : fitDescription(description || defaultDescription);
 const suppliedTitle = title?.trim() || 'Page';
 const unbrandedTitle = suppliedTitle.replace(/\s+[|—–-]\s+Dzaleka Online Services$/, '');
 const brandedTitle = suppliedTitle.includes('Dzaleka') ? suppliedTitle : `${suppliedTitle} | Dzaleka Online Services`;
-const documentTitle = brandedTitle.length > 70 ? unbrandedTitle : brandedTitle;
+const documentTitle = Astro.props.exactTitle ? suppliedTitle : brandedTitle.length > 70 ? unbrandedTitle : brandedTitle;
 const metaOgImage = ogImage || defaultOgImage;
 const canonicalUrl = canonical && canonical.startsWith('http')
 	? canonical
@@ -163,6 +165,7 @@ import Schema from '../components/Schema.astro';
 		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{documentTitle}</title>
+    <script is:inline type="application/json" id="dos-page-seo" set:html={JSON.stringify({ title: unbrandedTitle, exactTitle: Boolean(Astro.props.exactTitle), defaultImage: !ogImage || ogImage === defaultOgImage }).replace(/</g, '\\u003c')} />
 
 		{/* JSON-LD Schema */}
 		{schema && <Schema item={schema} />}

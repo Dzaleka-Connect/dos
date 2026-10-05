@@ -56,7 +56,7 @@ if (target) {
     if (response.status === 301) response = await get(response.headers.get('location'), target);
     assert.equal(response.status, 200);
     const doc = parseHTML(await response.text()).document;
-    assert.equal(doc.querySelector(path.endsWith('register') ? '#registrationForm' : '#updateForm').getAttribute('action'), 'https://formspree.io/f/xqaaajae');
+    assert.equal(doc.querySelector(path.endsWith('register') ? '#registrationForm' : '#updateForm').getAttribute('action'), path.endsWith('register') ? '/api/submissions?form=service-registration' : '/api/submissions?form=service-correction');
   }
   if (process.argv.includes('--all-listings')) {
     for (let start = 0; start < initial.length; start += 6) {

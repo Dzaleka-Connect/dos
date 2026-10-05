@@ -1,4 +1,5 @@
 ---
+import { publicUrl } from '../../lib/news/content-seo';
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getContent } from '../../lib/content';
 import Badge from '../../components/ui/Badge.astro';
@@ -9,14 +10,7 @@ export const prerender = false;
 
 const events = await getContent('events');
 
-// Function to determine if an event is upcoming
-function isUpcoming(date: Date) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const eventDate = new Date(date);
-  eventDate.setHours(0, 0, 0, 0);
-  return eventDate >= today;
-}
+
 
 // Function to check if event is TBA
 function isEventTBA(event: any) {
@@ -25,7 +19,7 @@ function isEventTBA(event: any) {
 
 // Filter and sort upcoming events
 const allUpcomingEvents = events
-  .filter(event => isEventTBA(event) || isUpcoming(event.data.date))
+  .filter(event => event.data.status === 'upcoming')
   .map(event => ({
     ...event,
     data: {
@@ -43,7 +37,7 @@ const allUpcomingEvents = events
 
 // Filter and sort past events
 const allPastEvents = events
-  .filter(event => !isEventTBA(event) && !isUpcoming(event.data.date))
+  .filter(event => event.data.status === 'past')
   .map(event => ({
     ...event,
     data: {
@@ -95,7 +89,7 @@ const eventsStructuredData = {
         "@type": "Event",
         "name": event.data.title,
         "description": event.data.description,
-        "image": event.data.image.startsWith('http') ? event.data.image : `https://services.dzaleka.com${event.data.image}`,
+        "image": publicUrl(event.data.image),
         "startDate": event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date,
         "endDate": event.data.endDate ? (event.data.endDate instanceof Date ? event.data.endDate.toISOString() : event.data.endDate) : (event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date),
         "eventStatus": event.data.isTBA ? "https://schema.org/EventPostponed" : "https://schema.org/EventScheduled",
@@ -139,7 +133,7 @@ const eventsStructuredData = {
         "@type": "Event",
         "name": event.data.title,
         "description": event.data.description,
-        "image": event.data.image.startsWith('http') ? event.data.image : `https://services.dzaleka.com${event.data.image}`,
+        "image": publicUrl(event.data.image),
         "startDate": event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date,
         "endDate": event.data.endDate ? (event.data.endDate instanceof Date ? event.data.endDate.toISOString() : event.data.endDate) : (event.data.date instanceof Date ? event.data.date.toISOString() : event.data.date),
         "eventStatus": "https://schema.org/EventCompleted",

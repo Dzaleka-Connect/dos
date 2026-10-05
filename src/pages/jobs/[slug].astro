@@ -1,5 +1,6 @@
 ---
-import { getContent, getContentEntry } from '../../lib/content';
+import { getContent } from '../../lib/content';
+import { getEntry } from '@dos/news';
 import { jobsPage, jobsSort } from '../../lib/jobs-pages';
 import JobDetail from '../../components/jobs/JobDetail.astro';
 import JobsListing from '../../components/jobs/JobsListing.astro';
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
 const slug = Astro.params.slug || '';
 let job = Astro.props.job;
 let page = null;
+let isPreview = false;
 let allJobs: any[] = [];
 const sort = Astro.isPrerendered ? 'recent' : jobsSort(Astro.url.searchParams.get('sort'));
 if (!job && /^\d+$/.test(slug)) {
@@ -24,8 +26,16 @@ if (!job && /^\d+$/.test(slug)) {
   page = jobsPage(allJobs, Number(slug), sort);
   if (!page) return new Response('Page not found', { status: 404 });
 } else {
-  job ??= await getContentEntry('jobs', slug);
+  if (!job) {
+    const result = await getEntry('jobs', slug);
+    job = result.entry;
+    isPreview = result.isPreview;
+  }
   if (!job) return new Response('Job not found', { status: 404 });
 }
+if (isPreview) {
+  Astro.response.headers.set('Cache-Control', 'private, no-store');
+  Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+}
 ---
-{page ? <JobsListing page={page} allJobs={allJobs} sort={sort} /> : <JobDetail job={job} />}
+{page ? <JobsListing page={page} allJobs={allJobs} sort={sort} /> : <JobDetail job={job} isPreview={isPreview} />}

@@ -1,3 +1,4 @@
+import { getSiteSettings } from 'emdash';
 import type { APIRoute } from 'astro';
 import { publishedItems } from './published';
 import { entryMedia, referencedMediaKeys, safeMediaKey } from './public-contract.mjs';
@@ -6,10 +7,12 @@ import { cmsCollections } from './live-collections.mjs';
 export const GET: APIRoute = async ({ params, locals }) => {
   const key = params.key || '';
   if (!safeMediaKey(key)) return new Response('Not found', { status: 404 });
-  let referenced = false;
+  const settings = await getSiteSettings();
+  let referenced = referencedMediaKeys(entryMedia('news', {}, { image: settings.seo?.defaultOgImage?.url })).has(key);
   for (const collection of cmsCollections) {
+    if (referenced) break;
     const published = await publishedItems(collection);
-    if (published.some(item => referencedMediaKeys(entryMedia(collection, item.data)).has(key))) { referenced = true; break; }
+    if (published.some(item => referencedMediaKeys(entryMedia(collection, item.data, item.seo)).has(key))) { referenced = true; break; }
   }
   if (!referenced) {
     return new Response('Not found', { status: 404 });

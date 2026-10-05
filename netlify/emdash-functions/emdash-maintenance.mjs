@@ -13,7 +13,7 @@ export default async function () {
     method: 'POST',
     headers: { Authorization: `Bearer ${secret}`, Origin: origin, 'Content-Type': 'application/json' },
     redirect: 'error',
-    signal: AbortSignal.timeout(25000),
+    signal: AbortSignal.timeout(55000),
   });
   if (!response.ok) throw new Error(`EmDash maintenance returned HTTP ${response.status}.`);
   return new Response(null, { status: 204 });

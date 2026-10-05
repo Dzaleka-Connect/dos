@@ -5,8 +5,11 @@ import PageFeedback from '../components/ui/PageFeedback.astro';
 import Footer from '../components/Footer.astro';
 
 import Toast from '../components/ui/Toast.astro';
+import { contentSeo } from '../lib/news/content-seo';
 
 interface Props {
+	cmsSeo?: unknown;
+	isPreview?: boolean;
 	lang?: string;
 	showFeedback?: boolean;
 	title: string;
@@ -75,21 +78,37 @@ const {
 // Prepare OpenGraph image for Layout
 const ogImage = openGraph?.images?.[0]?.url
 	|| (openGraph?.image ? (typeof openGraph.image === 'string' ? openGraph.image : openGraph.image.url) : image);
+const cms = contentSeo(Astro.props.cmsSeo);
+const resolvedOpenGraph = {
+	...openGraph,
+	...(cms.title && { title: cms.title }),
+	...(cms.description && { description: cms.description }),
+	...(cms.canonical && { url: cms.canonical }),
+	...(cms.image && { image: cms.image }),
+};
+const resolvedTwitter = {
+	...twitter,
+	...(cms.title && { title: cms.title }),
+	...(cms.description && { description: cms.description }),
+	...(cms.image && { image: cms.image }),
+};
 ---
 
 <Layout
 	lang={lang}
-	title={title}
-	description={description}
+	title={cms.title || title}
+	description={cms.description || description}
+	exactTitle={Boolean(cms.title)}
+	exactDescription={Boolean(cms.description)}
 	author={author}
 	keywords={keywords}
 	type={type}
-	canonical={canonical}
-	ogImage={ogImage}
-	robots={robots}
+	canonical={cms.canonical || canonical}
+	ogImage={cms.image || ogImage}
+	robots={Astro.props.isPreview || cms.noIndex ? 'noindex, nofollow' : robots}
 	schema={schema}
-	openGraph={openGraph}
-	twitter={twitter}
+	openGraph={resolvedOpenGraph}
+	twitter={resolvedTwitter}
 >
 	<slot name="head" slot="head" />
 

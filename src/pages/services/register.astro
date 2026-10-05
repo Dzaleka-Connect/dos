@@ -16,7 +16,8 @@ const socialFields = [['facebook', 'Facebook', 'https://facebook.com/'], ['twitt
       <p>Have your organization’s contact details and a description of its services ready. Entries are reviewed before publication.</p>
       <p class="mt-2">Already listed? <a href="/services/update-request" class="text-primary-800 underline underline-offset-4">Update an existing service</a>. For help, <a href="/support" class="text-primary-800 underline underline-offset-4">contact support</a>.</p>
     </div>
-    <form id="registrationForm" class="submission-form space-y-10" action="https://formspree.io/f/xqaaajae" method="POST">
+    <form id="registrationForm" class="submission-form space-y-10" action="/api/submissions?form=service-registration" method="POST">
+      <div hidden aria-hidden="true"><label>Leave this empty<input name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
       <p class="text-sm text-slate-600">Optional fields are marked.</p>
       <input type="hidden" name="logoUrl" id="logoUrlInput" />
       <input type="hidden" name="form-name" value="service-registration" />

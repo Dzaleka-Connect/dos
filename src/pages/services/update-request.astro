@@ -14,7 +14,8 @@ const contactFields = [
   <FormHeader title={title} description={description} parent="Services" href="/services" />
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
     <p class="mb-8 border-l-4 border-primary-800 bg-primary-50 p-5 text-sm leading-6 text-slate-700">Send only the details that need changing. Updates are reviewed before publication. For a new organisation, <a href="/services/register" class="text-primary-800 underline underline-offset-4">register a service</a>.</p>
-    <form id="updateForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-10">
+    <form id="updateForm" action="/api/submissions?form=service-correction" method="POST" class="submission-form space-y-10">
+      <div hidden aria-hidden="true"><label>Leave this empty<input name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
       <input type="hidden" name="form-name" value="service-update-request" />
       <p class="text-sm text-slate-600">Optional fields are marked.</p>
       <fieldset class="form-section">

@@ -12,18 +12,11 @@ const itemsPerPage = 4;
 
 const allEvents = await getContent('events');
 
-// Function to determine if an event is upcoming
-function isUpcoming(date: Date) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const eventDate = new Date(date);
-  eventDate.setHours(0, 0, 0, 0);
-  return eventDate >= today;
-}
+
 
 // Filter and sort upcoming events
 const upcomingEvents = allEvents
-  .filter(event => isUpcoming(event.data.date))
+  .filter(event => event.data.status === 'upcoming')
   .map(event => ({
     ...event,
     data: { ...event.data, status: 'upcoming' }

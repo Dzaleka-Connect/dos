@@ -1,15 +1,18 @@
-import { ContentRepository } from 'emdash';
+import { ContentRepository, handleContentList } from 'emdash';
 import { getDb } from 'emdash/runtime';
 
 // Repository reads always use the live row, including during authenticated preview requests.
 export async function publishedItems(collection: string) {
-  const repository = new ContentRepository(await getDb());
+  const db = await getDb();
   const items = [];
   let cursor: string | undefined;
   do {
-    const result = await repository.findMany(collection, { where: { status: 'published' }, limit: 100, cursor });
-    items.push(...result.items);
-    cursor = result.nextCursor;
+    // The list handler hydrates the separate SEO records; raw repository rows
+    // omit them. Its explicit status filter continues to read only live data.
+    const result = await handleContentList(db, collection, { status: 'published', limit: 100, cursor });
+    if (!result.success) throw new Error(`Published ${collection} unavailable: ${result.error.code}`);
+    items.push(...result.data.items);
+    cursor = result.data.nextCursor;
   } while (cursor);
   return items;
 }

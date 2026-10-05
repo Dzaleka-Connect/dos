@@ -55,9 +55,9 @@ export async function hasEditorSession(session, getUser, timeoutMs = 3000) {
   } finally { clearTimeout(timer); }
 }
 
-export function stagingResponse(response) {
+export function stagingResponse(response, indexableMedia = false) {
   const headers = new Headers(response.headers);
-  headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  headers.set('X-Robots-Tag', indexableMedia ? 'index, follow' : 'noindex, nofollow, noarchive');
   headers.set('Cache-Control', 'private, no-store');
   headers.set('Netlify-CDN-Cache-Control', 'no-store');
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });

@@ -74,7 +74,8 @@ const breadcrumbStructuredData = {
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <p class="mb-6 text-sm text-slate-600">Free to submit. Events are reviewed before publication. Optional fields are marked.</p>
       <div>
-        <form id="eventForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
+        <form id="eventForm" action="/api/submissions?form=event-submission" method="POST" class="submission-form space-y-8">
+      <div hidden aria-hidden="true"><label>Leave this empty<input name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
           <!-- Add hidden field for form name -->
           <input type="hidden" name="_subject" value="New Event Submission" />
           <input type="hidden" name="imageUrl" id="imageUrlInput" />
@@ -565,6 +566,7 @@ const breadcrumbStructuredData = {
     try {
       // Submit the form using FormData
       const formData = new FormData(form);
+      formData.delete('image');
       const response = await fetch(form.action, {
         method: 'POST',
         body: formData,

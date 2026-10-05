@@ -1,3 +1,4 @@
+import { eventStatus } from './event-status.mjs';
 import { cmsCollections } from './live-collections.mjs';
 
 export const cmsOrigin = 'https://cms.dzaleka.com';
@@ -6,7 +7,7 @@ const internalMediaPrefix = '/_emdash/api/media/file/';
 
 export function isPublicRead(request) {
   const path = new URL(request.url).pathname;
-  return ['GET', 'HEAD'].includes(request.method) && (path.startsWith(`${publicPrefix}media/`) ||
+  return ['GET', 'HEAD'].includes(request.method) && (path === `${publicPrefix}site.json` || path.startsWith(`${publicPrefix}media/`) ||
     cmsCollections.some(name => path === `${publicPrefix}${name}.json` || path.startsWith(`${publicPrefix}${name}/`)));
 }
 
@@ -61,13 +62,30 @@ const text = value => (typeof value === 'string' && value.trim() ? value : undef
 const list = value => (Array.isArray(value) ? value.filter(item => typeof item === 'string') : []);
 const object = value => (value && typeof value === 'object' && !Array.isArray(value) ? value : undefined);
 
+export function seoImageUrl(value) {
+  if (typeof value !== 'string' || !value.trim()) return undefined;
+  const image = value.trim();
+  if (!image.startsWith('/') && !/^https?:\/\//i.test(image)) return publicMediaUrl(image);
+  const rewritten = rewriteMediaUrl(image);
+  if (!rewritten) return undefined;
+  try {
+    const url = new URL(rewritten, 'https://services.dzaleka.com/');
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : undefined;
+  } catch { return undefined; }
+}
+
+export function seoMetadata(seo) {
+  return seo ? { title: seo.title, description: seo.description,
+    image: seoImageUrl(seo.image), canonical: seo.canonical, noIndex: seo.noIndex } : undefined;
+}
+
 export function newsMetadata(item) {
   const d = item.data;
   const media = d.image;
   const image = imageUrl(media);
   return {
     id: item.slug || item.id, collection: 'news', body: articleText(d.content),
-    seo: item.seo ? { title: item.seo.title, description: item.seo.description, noIndex: item.seo.noIndex } : undefined,
+    seo: seoMetadata(item.seo),
     data: {
       title: d.title, description: d.description, date: d.date, updated: d.updated || undefined,
       category: d.category, featured: Boolean(d.featured), author: d.author || undefined,
@@ -84,12 +102,12 @@ export function eventMetadata(item) {
   const registration = object(d.registration);
   return {
     id: item.slug || item.id, collection: 'events', body: articleText(d.content),
-    seo: item.seo ? { title: item.seo.title, description: item.seo.description, noIndex: item.seo.noIndex } : undefined,
+    seo: seoMetadata(item.seo),
     data: {
       title: d.title, description: d.description, date: d.date, endDate: d.end_date || undefined,
       location: d.location, category: d.category, featured: Boolean(d.featured),
-      image: imageUrl(d.image), imageAlt: d.image?.alt, organizer: d.organizer,
-      status: d.event_status || 'past', tags: list(d.tags),
+      image: imageUrl(d.image), imageAlt: d.image?.alt, organizer: d.organizer, organizerUrl: text(d.organizer_url), capacity: d.capacity ?? undefined, host: object(d.host),
+      status: eventStatus(d), tags: list(d.tags),
       contact: contact && { email: text(contact.email), phone: text(contact.phone), whatsapp: text(contact.whatsapp) },
       registration: registration && { required: Boolean(registration.required), url: text(registration.url), deadline: text(registration.deadline) },
       panelists: Array.isArray(d.panelists) ? d.panelists.filter(person => typeof person?.name === 'string').map(person => ({
@@ -105,12 +123,12 @@ export function jobMetadata(item) {
   const contact = object(d.contact) || {};
   return {
     id: item.slug || item.id, collection: 'jobs', body: articleText(d.content),
-    seo: item.seo ? { title: item.seo.title, description: item.seo.description, noIndex: item.seo.noIndex } : undefined,
+    seo: seoMetadata(item.seo),
     data: {
       title: d.title, organization: d.organization, location: d.location, type: d.type, category: d.category,
       salary: text(d.salary), deadline: d.deadline || undefined, posted: d.posted,
-      status: d.job_status || 'open', featured: Boolean(d.featured), skills: list(d.skills),
-      contact: { email: text(contact.email), phone: text(contact.phone), website: text(contact.website) },
+      status: d.job_status || 'open', featured: Boolean(d.featured), skills: list(d.skills), requirements: list(d.requirements),
+      contact: { email: text(contact.email), phone: text(contact.phone), website: text(contact.website), salary: text(contact.salary) },
       description: d.description,
     },
   };
@@ -121,7 +139,7 @@ export function serviceMetadata(item) {
   const present = value => Object.values(value).some(value => value !== undefined) ? value : undefined;
   return {
     id: item.slug || item.id, collection: 'services', body: articleText(d.content),
-    seo: item.seo ? { title: item.seo.title, description: item.seo.description, noIndex: item.seo.noIndex } : undefined,
+    seo: seoMetadata(item.seo),
     data: {
       title: d.title, description: d.description, category: d.category,
       status: d.listing_status === 'inactive' ? 'inactive' : 'active',
@@ -150,9 +168,17 @@ export function serviceMetadata(item) {
 export const publicMetadata = { news: newsMetadata, events: eventMetadata, jobs: jobMetadata, services: serviceMetadata };
 
 // Fields that may hold uploaded media, per collection.
-export function entryMedia(collection, data) {
-  if (collection === 'services') return { logo: data.logo, image: data.image, content: data.content };
-  if (collection === 'events') return { image: data.image, panelists: data.panelists, content: data.content };
-  if (collection === 'jobs') return { content: data.content };
-  return { image: data.image, content: data.content };
+export function entryMedia(collection, data, seo) {
+  const image = seoImageUrl(seo?.image);
+  let seoMedia;
+  if (image?.startsWith(`${cmsOrigin}${publicPrefix}media/`)) {
+    try {
+      const key = decodeURIComponent(image.slice(`${cmsOrigin}${publicPrefix}media/`.length));
+      if (safeMediaKey(key)) seoMedia = { id: key };
+    } catch { /* A malformed SEO URL must not interrupt unrelated media delivery. */ }
+  }
+  if (collection === 'services') return { logo: data.logo, image: data.image, content: data.content, seoMedia };
+  if (collection === 'events') return { image: data.image, panelists: data.panelists, content: data.content, seoMedia };
+  if (collection === 'jobs') return { content: data.content, seoMedia };
+  return { image: data.image, content: data.content, seoMedia };
 }

@@ -17,19 +17,12 @@ if (type !== 'upcoming' && type !== 'past') {
 
 const allEvents = await getContent('events');
 
-// Function to determine if an event is upcoming
-function isUpcoming(date: Date) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const eventDate = new Date(date);
-  eventDate.setHours(0, 0, 0, 0);
-  return eventDate >= today;
-}
+
 
 // Filter events based on type
 const filteredEvents = allEvents
   .filter(event => {
-    const upcoming = isUpcoming(event.data.date);
+    const upcoming = event.data.status === 'upcoming';
     return type === 'upcoming' ? upcoming : !upcoming;
   })
   .sort((a, b) => {

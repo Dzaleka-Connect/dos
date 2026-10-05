@@ -27,8 +27,7 @@ const organizer = organizerName;
 const events = allEvents.filter(event => event.data.organizer === organizer);
 
 // Classify calendar days in Malawi, including events that span several days.
-const today = formatDateInCAT(new Date(), 'yyyy-MM-dd');
-const isUpcoming = (event: typeof events[number]) => event.data.isTBA || formatDateInCAT(event.data.endDate || event.data.date, 'yyyy-MM-dd') >= today;
+const isUpcoming = (event: typeof events[number]) => event.data.status === 'upcoming';
 
 // Filter and sort events
 const upcomingEvents = events

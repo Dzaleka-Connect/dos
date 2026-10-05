@@ -1,15 +1,19 @@
 import { isPublicRead } from './public-contract.mjs';
 import { defineMiddleware } from 'astro:middleware';
+import { getDb } from 'emdash/runtime';
+import { deliverSubmissions } from '../submissions/store';
+import { withDeferredTasks } from './netlify-deferred.mjs';
 import { runScheduledTasks } from 'emdash/middleware';
 import { authorizeStaging, maintenancePath, needsEditorSession, signInResponse, stagingResponse } from './staging-access.mjs';
 
-export const onRequest = defineMiddleware(async (context, next) => {
+export const onRequest = defineMiddleware((context, next) => withDeferredTasks(async () => {
   if (context.isPrerendered) return next();
   const path = context.url.pathname.replace(/\/$/, '');
   if (!path) return stagingResponse(context.redirect('/_emdash/admin/', 302));
   if (isPublicRead(context.request)) {
     try {
-      return stagingResponse(await next());
+      const response = await next();
+      return stagingResponse(response, path.startsWith('/_dos/public/media/') && response.status === 200);
     }
     catch {
       console.error('[DOS CMS] Published content request failed.');
@@ -23,6 +27,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (path === maintenancePath) {
     try {
       const result = await runScheduledTasks();
+      await deliverSubmissions(await getDb());
       return stagingResponse(Response.json({ published: result.published.length }));
     } catch {
       console.error('[DOS staging] EmDash maintenance failed; inspect the CMS scheduler logs.');
@@ -35,4 +40,4 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return stagingResponse(signInResponse(context.request));
   }
   return stagingResponse(await next());
-});
+}));

@@ -51,20 +51,7 @@ const serviceTopics = [
 // Get upcoming events
 const events = await getContent('events');
 const upcomingEvents = events
-  .filter(event => {
-    // Check if event is TBA either in data or title
-    const isTBA = event.data.isTBA || event.data.title.toLowerCase().includes('tba');
-    if (isTBA) return true;
-
-    const eventDate = new Date(event.data.date);
-    const now = new Date();
-
-    // Reset time to start of day for accurate date comparison
-    eventDate.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
-
-    return eventDate >= now;
-  })
+  .filter(event => event.data.status === 'upcoming')
   .sort((a, b) => {
     // Put TBA events at the end
     const aIsTBA = a.data.isTBA || a.data.title.toLowerCase().includes('tba');

@@ -1,13 +1,14 @@
-import { getEmDashCollection, getEmDashEntry, type ContentEntry, type MediaValue, type PortableTextBlock } from 'emdash';
+import { eventStatus } from './event-status.mjs';
+import { getEmDashCollection, getEmDashEntry, type ContentSeo, type ContentEntry, type MediaValue, type PortableTextBlock } from 'emdash';
 import { getMediaProvider } from 'emdash/runtime';
-import { serviceMetadata } from './public-contract.mjs';
+import { serviceMetadata, seoMetadata, cmsOrigin, publicPrefix } from './public-contract.mjs';
 
 type CmsData = Record<string, unknown> & {
   slug?: string | null;
   image?: MediaValue | null;
   logo?: MediaValue | null;
   content?: PortableTextBlock[];
-  seo?: { title?: string; description?: string; noIndex?: boolean };
+  seo?: ContentSeo;
 };
 
 async function mediaUrl(media: MediaValue | null | undefined) {
@@ -28,7 +29,9 @@ const date = (value: unknown) => (value ? new Date(value as string) : undefined)
 async function adapt(collection: string, entry: ContentEntry<CmsData> | null) {
   if (!entry) return undefined;
   const d = entry.data;
-  const base = { id: String(d.slug || entry.id), collection, content: d.content, seo: d.seo };
+  const seo = seoMetadata(d.seo);
+  if (seo?.image) seo.image = seo.image.replace(`${cmsOrigin}${publicPrefix}media/`, `${cmsOrigin}/_emdash/api/media/file/`);
+  const base = { id: String(d.slug || entry.id), collection, content: d.content, seo };
   if (collection === 'services') {
     const { data } = serviceMetadata(entry);
     return { ...base, data: {
@@ -39,7 +42,7 @@ async function adapt(collection: string, entry: ContentEntry<CmsData> | null) {
   if (collection === 'events') {
     return { ...base, data: {
       ...d, date: date(d.date), endDate: date(d.end_date), image: await mediaUrl(d.image), imageAlt: d.image?.alt,
-      status: d.event_status || 'past', tags: d.tags ?? [],
+      organizerUrl: d.organizer_url, status: eventStatus(d), tags: d.tags ?? [],
       registration: d.registration && typeof d.registration === 'object'
         ? { ...(d.registration as object), deadline: date((d.registration as { deadline?: string }).deadline) } : undefined,
     } };
