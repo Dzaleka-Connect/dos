@@ -45,9 +45,9 @@ describe('Events and jobs import', () => {
 
   it('imports only collections the CMS does not have, so deleted news is never restored', async () => {
     const pending = newCollectionsOnly(await buildSeed(), new Set(['news']));
-    expect(pending.collections.map((collection) => collection.slug)).toEqual(['events', 'jobs']);
-    expect(Object.keys(pending.content).sort()).toEqual(['events', 'jobs']);
-    expect(newCollectionsOnly(await buildSeed(), new Set(['news', 'events', 'jobs'])).collections).toHaveLength(0);
+    expect(pending.collections.map((collection) => collection.slug)).toEqual(['events', 'jobs', 'services']);
+    expect(Object.keys(pending.content).sort()).toEqual(['events', 'jobs', 'services']);
+    expect(newCollectionsOnly(await buildSeed(), new Set(['news', 'events', 'jobs', 'services'])).collections).toHaveLength(0);
   });
 
   it('keeps unpublished job drafts out of the published list', async () => {
@@ -79,6 +79,17 @@ describe('Events and jobs import', () => {
       const jobs = await content.findMany('jobs', { where: { status: 'published' }, limit: 100 });
       expect(events.items).toHaveLength(full.content.events.length);
       expect(jobs.items).toHaveLength(full.content.jobs.filter((job) => job.status === 'published').length);
+      const services = await content.findMany('services', { where: { status: 'published' }, limit: 100 });
+      expect(services.nextCursor).toBeTruthy();
+      const rest = await content.findMany('services', { where: { status: 'published' }, limit: 100, cursor: services.nextCursor });
+      expect([...services.items, ...rest.items]).toHaveLength(full.content.services.length);
+      const listing = services.items[0];
+      await content.updateDraftAware('services', listing.id, { data: { title: 'Private service edit' } });
+      expect((await content.findById('services', listing.id))?.data.title).toBe(listing.data.title);
+      await content.publish('services', listing.id);
+      expect((await content.findById('services', listing.id))?.data.title).toBe('Private service edit');
+      await content.unpublish('services', listing.id);
+      expect((await content.findById('services', listing.id))?.status).toBe('draft');
     } finally {
       await db.destroy();
     }

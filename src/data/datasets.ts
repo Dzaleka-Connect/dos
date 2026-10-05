@@ -4,7 +4,7 @@ import { getContent } from '../lib/content';
 const SITE_URL = 'https://services.dzaleka.com';
 
 const collectionLoaders = {
-  services: () => getCollection('services'),
+  services: () => getContent('services'),
   resources: () => getCollection('resources'),
   events: () => getContent('events'),
   jobs: () => getContent('jobs'),

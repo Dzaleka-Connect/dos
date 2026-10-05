@@ -1,6 +1,6 @@
 # EmDash News pilot
 
-The pilot uses EmDash 1.0.1 to edit a local copy of News. It retains the current News layouts, URLs, categories, images and article content. All other collections remain file based. Production and `npm run dev` read published News from `cms.dzaleka.com`. The separate local pilot below still uses its own SQLite database. Other content collections continue using Markdown.
+The pilot uses EmDash 1.1.0 to edit a local copy of News. It retains the current News layouts, URLs, categories, images and article content. All other collections remain file based. Production and `npm run dev` read published News from `cms.dzaleka.com`. The separate local pilot below still uses its own SQLite database. Other content collections continue using Markdown.
 
 ## Start
 

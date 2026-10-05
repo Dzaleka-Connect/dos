@@ -37,6 +37,9 @@ export function newsViteConfig() {
 
 // Pages that read each CMS collection. They render on request once the collection is live.
 const pagesByCollection = {
+  services: ['services/index.astro', 'services/[...slug].astro', 'services/category/', 'services/stats.astro',
+    'e-learning.astro', 'dzaleka-wellbeing.astro', 'staff/index.astro', 'dashboard.astro', 'test-resources.astro',
+    'api/search-index.json.ts', 'sitemap.xml.js', 'datasets/', 'open-data-platform.astro'],
   news: ['news/', 'index.astro', 'encyclopedia/[slug].astro', 'staff/index.astro', 'dashboard.astro',
     'dzaleka-wellbeing.astro', 'api/rss.ts', 'api/search-index.json.ts', 'news-sitemap.xml.js', 'sitemap.xml.js'],
   events: ['events/', 'index.astro', 'staff/index.astro', 'dashboard.astro', 'api/search-index.json.ts', 'sitemap.xml.js',

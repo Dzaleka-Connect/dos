@@ -9,7 +9,7 @@ describe('CDN caching for pages rendered on request', () => {
     const response = withCdnCaching(get('/events'), '/events', page());
     expect(response.headers.get('Cache-Control')).toBe('public, max-age=0, must-revalidate');
     expect(response.headers.get('Netlify-CDN-Cache-Control')).toContain('s-maxage=60');
-    expect(response.headers.get('Netlify-Vary')).toBe('header=Accept');
+    expect(response.headers.get('Netlify-Vary')).toBe('query');
   });
 
   it('never shares previews, errors, writes, agent Markdown or visitor-specific answers', () => {

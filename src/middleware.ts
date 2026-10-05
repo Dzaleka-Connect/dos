@@ -38,7 +38,7 @@ export const onRequest = defineMiddleware((context, next) => withNewsRequest(asy
   try { response = await next(); }
   catch (error) {
     if (!(error instanceof NewsUnavailable)) throw error;
-    return new Response('News is temporarily unavailable. Please try again shortly.', {
+    return new Response('Content is temporarily unavailable. Please try again shortly.', {
       status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'Retry-After': '30' },
     });
   }

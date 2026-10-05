@@ -1,10 +1,10 @@
 ---
+import { getContent } from '../../lib/content';
 import { providerConfirmation } from '../../utils/serviceDetails';
 import MainLayout from '../../layouts/MainLayout.astro';
 import CollectionHeader from '../../components/ui/CollectionHeader.astro';
-import { getCollection } from 'astro:content';
 
-const services = await getCollection('services');
+const services = await getContent('services');
 const total = services.length;
 const builtOn = new Date();
 const builtOnLabel = builtOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });

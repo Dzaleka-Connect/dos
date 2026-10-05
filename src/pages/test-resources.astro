@@ -1,4 +1,5 @@
 ---
+import { getContent } from '../lib/content';
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
@@ -7,7 +8,7 @@ const resources = await getCollection('resources');
 console.log(`Found ${resources.length} resources`);
 
 // Also fetch services for comparison
-const services = await getCollection('services');
+const services = await getContent('services');
 console.log(`Found ${services.length} services`);
 ---
 

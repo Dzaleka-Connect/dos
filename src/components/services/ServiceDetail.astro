@@ -1,0 +1,305 @@
+---
+import { getContent } from '../../lib/content';
+import { formatOpeningHours } from '../../utils/clockTime';
+import EntryBody from '../../lib/news/EntryBody.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import Button from '../../components/ui/Button.astro';
+import ServiceLogo from '../../components/services/ServiceLogo.astro';
+import { providerLogo } from '../../utils/providerLogo';
+import SummaryList from '../../components/ui/SummaryList.astro';
+import { serviceAccessRows, providerConfirmation, contactLanguages } from '../../utils/serviceDetails';
+
+const { service, isPreview = false } = Astro.props;
+const accessRows = serviceAccessRows(service.data.access);
+const confirmation = providerConfirmation(service.data.providerConfirmation);
+const confirmationDate = confirmation?.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Blantyre' });
+
+
+
+// Breadcrumb navigation
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: service.data.title }
+];
+
+// Format date
+const formattedDate = service.data.lastUpdated
+  ? new Date(service.data.lastUpdated).toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  : null;
+
+const phones = (service.data.contact?.phone || '').split(/[,;/]|\s+or\s+/i)
+  .map((label) => ({ label: label.trim(), number: label.replace(/[^+\d]/g, '') }))
+  .filter((phone) => /\d/.test(phone.number));
+const whatsappNumber = service.data.contact?.whatsapp?.replace(/\D/g, '');
+const address = [service.data.location?.address, service.data.location?.city, service.data.location?.state].filter(Boolean).join(', ');
+const coordinates = service.data.location?.coordinates;
+const mapQuery = coordinates ? `${coordinates.lat},${coordinates.lng}` : address;
+const mapUrl = mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
+const socialLinks = [
+  ['Facebook', service.data.socialMedia?.facebook],
+  ['Instagram', service.data.socialMedia?.instagram],
+  ['X (Twitter)', service.data.socialMedia?.twitter],
+  ['LinkedIn', service.data.socialMedia?.linkedin],
+  ['YouTube', service.data.socialMedia?.youtube],
+  ['TikTok', service.data.socialMedia?.tiktok],
+].filter(([, url]) => url);
+const correctionUrl = `/services/update-request?title=${encodeURIComponent(service.data.title)}&service=${encodeURIComponent(service.id)}`;
+const hasContact = phones.length || service.data.contact?.email || service.data.socialMedia?.website || whatsappNumber;
+
+// Get related services based on category
+const relatedServices = await getContent('services')
+  .then(services => services
+    .filter(s => {
+      // Skip if it's the same service
+      if (s.id === service.id) return false;
+
+      // Skip if no category
+      if (!s.data.category || !service.data.category) return false;
+
+      // Normalize categories for comparison (same logic as stats page)
+      const normalizeCategory = (cat) => {
+        return cat.toLowerCase()
+          .replace(/organizations?/g, 'organization')
+          .replace(/organisations?/g, 'organization')
+          .replace(/services?/g, 'service')
+          .replace(/centers?/g, 'center')
+          .replace(/clinics?/g, 'clinic')
+          .replace(/schools?/g, 'school')
+          .replace(/programs?/g, 'program')
+          .replace(/non-profit/g, 'nonprofit')
+          .replace(/non-governmental/g, 'ngo')
+          .replace(/charity/g, 'nonprofit')
+          .trim();
+      };
+
+      const normalizedCurrent = normalizeCategory(service.data.category);
+      const normalizedService = normalizeCategory(s.data.category);
+
+      return normalizedCurrent === normalizedService;
+    })
+    .slice(0, 3)
+  );
+
+// Generate meta description
+const metaDescription = service.data.description || 'A service provided by the Dzaleka community';
+
+// Current URL for sharing
+const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+// Get the service logo URL
+const logoUrl = providerLogo(service.data.title, service.data.logo);
+
+// Generate Organization schema
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": service.data.title,
+  "description": service.data.description,
+  "url": currentUrl,
+  "logo": logoUrl ? new URL(logoUrl, Astro.site).href : undefined,
+  "address": service.data.location?.address ? {
+    "@type": "PostalAddress",
+    "streetAddress": service.data.location.address,
+    "addressLocality": service.data.location.city || "Dzaleka Refugee Camp",
+    "addressCountry": "MW"
+  } : undefined,
+  "contactPoint": service.data.contact ? {
+    "@type": "ContactPoint",
+    "telephone": service.data.contact.phone,
+    "email": service.data.contact.email,
+    "contactType": "customer service",
+    "availableLanguage": contactLanguages(service.data.access)
+  } : undefined,
+  "sameAs": service.data.socialMedia ? [
+    service.data.socialMedia.facebook,
+    service.data.socialMedia.twitter,
+    service.data.socialMedia.instagram,
+    service.data.socialMedia.linkedin,
+    service.data.socialMedia.youtube,
+    service.data.socialMedia.tiktok,
+    service.data.socialMedia.website
+  ].filter(Boolean) : undefined,
+  "openingHoursSpecification": service.data.contact?.hours ? service.data.contact.hours.split('\n').map(schedule => {
+    const [days, times] = schedule.split(': ');
+    if (!days || !times) return null;
+
+    const [startTime, endTime] = times.split(' - ');
+    if (!startTime || !endTime) return null;
+
+    const dayMap = {
+      'mon': 'Monday',
+      'tue': 'Tuesday',
+      'wed': 'Wednesday',
+      'thu': 'Thursday',
+      'fri': 'Friday',
+      'sat': 'Saturday',
+      'sun': 'Sunday'
+    };
+
+    const [startDay, endDay] = days.split('-').map(d => dayMap[d.toLowerCase().trim()]);
+    if (!startDay || !endDay) return null;
+
+    // Convert time to 24-hour format
+    const convertTime = (time) => {
+      const [timePart, period = ''] = time.trim().split(/\s+/);
+      let [hours, minutes] = timePart.split(':');
+      hours = parseInt(hours);
+      if (period.toLowerCase() === 'pm' && hours !== 12) hours += 12;
+      if (period.toLowerCase() === 'am' && hours === 12) hours = 0;
+      return `${hours.toString().padStart(2, '0')}:${minutes}`;
+    };
+
+    return {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [startDay, endDay],
+      "opens": convertTime(startTime),
+      "closes": convertTime(endTime)
+    };
+  }).filter(Boolean) : undefined,
+  "areaServed": {
+    "@type": "City",
+    "name": "Dzaleka Refugee Camp",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "MW"
+    }
+  },
+  "location": service.data.location?.coordinates ? {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": service.data.location.coordinates.lat,
+      "longitude": service.data.location.coordinates.lng
+    }
+  } : undefined,
+  "status": service.data.status === 'active' ? 'https://schema.org/ActiveActionStatus' : 'https://schema.org/InactiveActionStatus',
+  "additionalType": `https://schema.org/${service.data.category.replace(/\s+/g, '')}`,
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": "Service ID",
+    "value": service.id
+  }
+};
+
+// SEO metadata
+const seo = {
+  title: service.data.title || 'Service Details',
+  description: metaDescription,
+  image: logoUrl || '/images/dzaleka-hero.jpeg',
+  keywords: [
+    service.data.category,
+    'Dzaleka Services',
+    'Refugee Services',
+    service.data.title,
+    ...(service.data.tags || [])
+  ].filter(Boolean).join(', '),
+  type: 'article',
+  publishedDate: service.data.date,
+  modifiedDate: service.data.lastUpdated || service.data.date
+};
+
+---
+
+<MainLayout title={seo.title} description={seo.description} image={seo.image} type={seo.type} keywords={seo.keywords} modifiedDate={seo.modifiedDate} schema={organizationSchema} robots={isPreview || service.seo?.noIndex ? 'noindex, nofollow' : 'index, follow'}>
+  {isPreview && <aside class="border-b border-amber-300 bg-amber-50 px-4 py-3 text-center text-sm" aria-label="Preview status"><strong>Draft preview.</strong> Changes here may not be published yet.</aside>}
+  <article class="bg-white">
+    <header class="border-b border-slate-200 bg-slate-50">
+      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <Breadcrumb items={breadcrumbItems} />
+        <div class="mt-6 flex items-start gap-4 sm:gap-6">
+          <ServiceLogo title={service.data.title} logo={service.data.logo} size="large" />
+          <div class="min-w-0 max-w-3xl">
+            <p class="text-sm font-medium text-slate-600">{service.data.category}</p>
+            <h1 class="mt-2 text-primary-900">{service.data.title}</h1>
+            <p class="mt-4 text-base leading-7 text-slate-700">{service.data.description}</p>
+            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+              {formattedDate && <p>Listing updated <time datetime={service.data.lastUpdated.toISOString()}>{formattedDate}</time></p>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      {service.data.status === 'inactive' && <p class="mb-8 border-l-4 border-amber-600 bg-amber-50 p-4 text-base text-amber-950">This service is listed as inactive. Contact the provider to confirm availability.</p>}
+      <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12">
+        <div class="order-2 min-w-0 lg:order-1">
+          {accessRows.length > 0 && <section aria-labelledby="service-access-heading" class="mb-8">
+            <h2 id="service-access-heading" class="text-primary-900">Using this service</h2>
+            <SummaryList facts={accessRows} class="mt-4" />
+          </section>}
+          <div class="service-description prose prose-slate max-w-prose prose-a:text-primary-800">
+            <EntryBody entry={service} />
+          </div>
+          <div class="mt-8 border-t border-slate-200 pt-6">
+            <h2 class="text-lg text-primary-900">About this listing</h2>
+            {confirmation ? <>
+              <p class="mt-3 text-sm leading-6 text-slate-700">Details confirmed by {confirmation.by} on <time datetime={confirmation.date.toISOString()}>{confirmationDate}</time>.</p>
+              {confirmation.sourceUrl && <a href={confirmation.sourceUrl} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">View confirmation source</a>}
+              {confirmation.reviewDue && <p class="mt-2 text-sm text-slate-600">This confirmation is more than 180 days old. Details may have changed.</p>}
+            </> : <p class="mt-3 text-sm leading-6 text-slate-600">A provider confirmation date has not been recorded.</p>}
+            <a href="/services/about" class="mr-6 inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">How listings are maintained</a>
+            <a href={correctionUrl} class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4 hover:text-primary-900">Suggest an update to this listing</a>
+          </div>
+        </div>
+
+        <aside class="order-1 min-w-0 rounded border border-slate-200 bg-slate-50 p-5 sm:p-6 lg:order-2" aria-labelledby="service-contact-heading">
+          <h2 id="service-contact-heading" class="text-primary-900">Contact and location</h2>
+          {service.data.socialMedia?.website && <div class="mt-5"><Button href={service.data.socialMedia.website} fullWidth>Visit website <span class="ml-2" aria-hidden="true">↗</span></Button></div>}
+          <dl class="mt-5 space-y-5 text-sm leading-6">
+            {phones.length > 0 && <div>
+              <dt class="font-semibold text-slate-900">Phone</dt>
+              <dd>{phones.map((phone) => <a href={`tel:${phone.number}`} class="flex min-h-[44px] items-center text-primary-800 underline underline-offset-4 [overflow-wrap:anywhere]">{phone.label}</a>)}</dd>
+            </div>}
+            {service.data.contact?.email && <div>
+              <dt class="font-semibold text-slate-900">Email</dt>
+              <dd><a href={`mailto:${service.data.contact.email}`} class="flex min-h-[44px] items-center text-primary-800 underline underline-offset-4 [overflow-wrap:anywhere]">{service.data.contact.email}</a></dd>
+            </div>}
+            {address && <div>
+              <dt class="font-semibold text-slate-900">Location</dt>
+              <dd class="mt-1 text-slate-700">{address}</dd>
+            </div>}
+            {(service.data.businessHours?.length || service.data.contact?.hours) && <div>
+              <dt class="font-semibold text-slate-900">Opening hours</dt>
+              <dd class="mt-1 text-slate-700">
+                {service.data.businessHours?.length ? <ul class="space-y-1">{service.data.businessHours.map((hours) => <li class="flex flex-wrap justify-between gap-x-3"><span>{hours.day}</span><span>{hours.closed ? 'Closed' : formatOpeningHours(hours.open, hours.close)}</span></li>)}</ul> : <p class="whitespace-pre-line">{service.data.contact.hours}</p>}
+              </dd>
+            </div>}
+          </dl>
+          {!hasContact && <p class="mt-5 text-sm leading-6 text-slate-600">Contact details have not been provided for this listing.</p>}
+          {(whatsappNumber || mapUrl) && <div class="mt-5 flex flex-col gap-3">
+            {whatsappNumber && <Button href={`https://wa.me/${whatsappNumber}`} variant="secondary" fullWidth>Contact on WhatsApp</Button>}
+            {mapUrl && <Button href={mapUrl} variant="secondary" fullWidth>View on Google Maps</Button>}
+          </div>}
+          {socialLinks.length > 0 && <div class="mt-6 border-t border-slate-200 pt-4">
+            <h3 class="text-sm text-slate-900">Follow this service</h3>
+            <ul class="mt-1 flex flex-wrap gap-x-5">{socialLinks.map(([label, url]) => <li><a href={url} class="inline-flex min-h-[44px] items-center text-sm text-primary-800 underline underline-offset-4">{label}</a></li>)}</ul>
+          </div>}
+        </aside>
+      </div>
+
+      {relatedServices.length > 0 && <section class="mt-12 border-t border-slate-200 pt-8" aria-labelledby="related-services-heading">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 id="related-services-heading" class="text-primary-900">Related services</h2>
+          <a href="/services" class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary-800 underline underline-offset-4">Browse all services</a>
+        </div>
+        <ul class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {relatedServices.map((related) => <li class="border-t border-slate-200 pt-5">
+            <h3 class="text-lg"><a href={`/services/${related.id}`} class="text-primary-800 underline underline-offset-4 hover:text-primary-900">{related.data.title}</a></h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">{related.data.description}</p>
+          </li>)}
+        </ul>
+      </section>}
+    </div>
+  </article>
+</MainLayout>
+
+<style>
+  .service-description :global(:first-child) { margin-top: 0; }
+</style>

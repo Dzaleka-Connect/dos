@@ -80,7 +80,7 @@ try {
     for (const path of [`/news/${slug}`, '/news', '/', '/api/search-index.json', '/api/rss', '/news-sitemap.xml', '/sitemap.xml', '/api/news', `/api/search?q=${slug}&collections=news`]) {
       const { response, text } = await settle(path, (status, body) => status === 200 && mentions(path, body));
       assert.equal(response.status, 200, path);
-      assert.match(response.headers.get('cache-control'), /max-age=0/, `${path}: browsers check for publication changes`);
+      assert.match(response.headers.get('cache-control'), /(?:^|,)\s*(?:no-store|max-age=0)\s*(?:,|$)/, `${path}: browsers check for publication changes`);
       assert.ok(mentions(path, text), `${path}: published article appears without a rebuild`);
       assert.ok(!text.includes('UNPUBLISHED PRIVATE EDIT'), `${path}: draft edit excluded`);
       if (path === `/news/${slug}`) {

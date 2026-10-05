@@ -116,10 +116,42 @@ export function jobMetadata(item) {
   };
 }
 
-export const publicMetadata = { news: newsMetadata, events: eventMetadata, jobs: jobMetadata };
+export function serviceMetadata(item) {
+  const d = item.data;
+  const present = value => Object.values(value).some(value => value !== undefined) ? value : undefined;
+  return {
+    id: item.slug || item.id, collection: 'services', body: articleText(d.content),
+    seo: item.seo ? { title: item.seo.title, description: item.seo.description, noIndex: item.seo.noIndex } : undefined,
+    data: {
+      title: d.title, description: d.description, category: d.category,
+      status: d.listing_status === 'inactive' ? 'inactive' : 'active',
+      featured: Boolean(d.featured), verified: Boolean(d.verified), tags: list(d.tags),
+      logo: imageUrl(d.logo), image: imageUrl(d.image), lastUpdated: d.last_updated || undefined, date: d.date || undefined,
+      contact: present({ email: text(d.contact_email), phone: text(d.contact_phone), whatsapp: text(d.contact_whatsapp), hours: text(d.contact_hours) }),
+      location: d.address || d.city ? {
+        address: d.address || '', city: d.city || '', state: text(d.state),
+        coordinates: typeof d.latitude === 'number' && typeof d.longitude === 'number' ? { lat: d.latitude, lng: d.longitude } : undefined,
+      } : undefined,
+      socialMedia: present(Object.fromEntries(['website', 'facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok'].map(key => [key, text(d[key])]))),
+      access: present({
+        ...Object.fromEntries(['eligibility', 'fees', 'documents', 'appointment', 'accessibility'].map(key => [key, text(d[`access_${key}`])])),
+        languages: text(d.access_languages)?.split('\n').map(value => value.trim()).filter(Boolean),
+      }),
+      providerConfirmation: d.confirmation_by && d.confirmation_date ? {
+        by: d.confirmation_by, date: d.confirmation_date, sourceUrl: text(d.confirmation_source),
+      } : undefined,
+      businessHours: Array.isArray(d.business_hours) ? d.business_hours.filter(hours => hours && typeof hours.day === 'string' && typeof hours.open === 'string' && typeof hours.close === 'string').map(hours => ({
+        day: hours.day, open: hours.open, close: hours.close, closed: hours.closed,
+      })) : undefined,
+    },
+  };
+}
+
+export const publicMetadata = { news: newsMetadata, events: eventMetadata, jobs: jobMetadata, services: serviceMetadata };
 
 // Fields that may hold uploaded media, per collection.
 export function entryMedia(collection, data) {
+  if (collection === 'services') return { logo: data.logo, image: data.image, content: data.content };
   if (collection === 'events') return { image: data.image, panelists: data.panelists, content: data.content };
   if (collection === 'jobs') return { content: data.content };
   return { image: data.image, content: data.content };

@@ -1,17 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
+import { getContent } from '../../../../lib/content';
 import ServiceDirectory from '../../../../components/services/ServiceDirectory.astro';
-import { SERVICES_PER_PAGE, serviceCategorySlug } from '../../../../utils/serviceDirectory';
+import { getServiceDirectory, serviceCategorySlug } from '../../../../utils/serviceDirectory';
 
-export async function getStaticPaths({ paginate }) {
-  const services = await getCollection('services');
-  const categories = [...new Set(services.map(service => service.data.category))];
-  return categories.flatMap(category => paginate(services.filter(service => service.data.category === category), {
-    params: { category: serviceCategorySlug(category) }, props: { categoryName: category }, pageSize: SERVICES_PER_PAGE,
-  }));
-}
-const { page, categoryName } = Astro.props;
-const services = await getCollection('services');
-const params = new URLSearchParams({ category: categoryName, page: String(page.currentPage) });
+export const prerender = false;
+const services = await getContent('services');
+const categoryName = services.find(service => serviceCategorySlug(service.data.category) === Astro.params.category)?.data.category;
+const page = Number(Astro.params.page || 1);
+const params = new URLSearchParams(Astro.url.searchParams);
+params.set('category', categoryName);
+params.set('page', String(page));
+if (!categoryName || !Number.isSafeInteger(page) || page < 1 || page > getServiceDirectory(services, params).totalPages) return new Response('Not found', { status: 404 });
 ---
 <ServiceDirectory services={services} params={params} categoryPage={categoryName} />

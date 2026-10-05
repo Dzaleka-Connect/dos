@@ -1,9 +1,11 @@
 import { getEmDashCollection, getEmDashEntry, type ContentEntry, type MediaValue, type PortableTextBlock } from 'emdash';
 import { getMediaProvider } from 'emdash/runtime';
+import { serviceMetadata } from './public-contract.mjs';
 
 type CmsData = Record<string, unknown> & {
   slug?: string | null;
   image?: MediaValue | null;
+  logo?: MediaValue | null;
   content?: PortableTextBlock[];
   seo?: { title?: string; description?: string; noIndex?: boolean };
 };
@@ -27,6 +29,13 @@ async function adapt(collection: string, entry: ContentEntry<CmsData> | null) {
   if (!entry) return undefined;
   const d = entry.data;
   const base = { id: String(d.slug || entry.id), collection, content: d.content, seo: d.seo };
+  if (collection === 'services') {
+    const { data } = serviceMetadata(entry);
+    return { ...base, data: {
+      ...data, logo: await mediaUrl(d.logo), image: await mediaUrl(d.image), lastUpdated: date(data.lastUpdated),
+      providerConfirmation: data.providerConfirmation ? { ...data.providerConfirmation, date: date(data.providerConfirmation.date) } : undefined,
+    } };
+  }
   if (collection === 'events') {
     return { ...base, data: {
       ...d, date: date(d.date), endDate: date(d.end_date), image: await mediaUrl(d.image), imageAlt: d.image?.alt,

@@ -1,8 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
+import { getContent } from '../../lib/content';
 import ServiceDirectory from '../../components/services/ServiceDirectory.astro';
 
 export const prerender = false;
-const services = await getCollection('services');
+if (Astro.url.searchParams.has('page')) {
+  const params = new URLSearchParams(Astro.url.searchParams);
+  const page = Number(params.get('page'));
+  params.delete('page');
+  const path = Number.isSafeInteger(page) && page > 1 ? `/services/${page}` : '/services';
+  return Astro.redirect(params.size ? `${path}?${params}` : path, 301);
+}
+const services = await getContent('services');
 ---
 <ServiceDirectory services={services} params={Astro.url.searchParams} />

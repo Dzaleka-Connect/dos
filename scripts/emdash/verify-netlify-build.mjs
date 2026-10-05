@@ -15,7 +15,7 @@ try {
   process.env.DOS_STAGING_PASSWORD = 'build-verification-only-'.repeat(3);
   const paths = ['/', '/news', '/news/category/news', '/news/nonexistent', '/_emdash/api/media/file/private.png', '/_emdash/api/setup',
     '/api/search-index.json', '/api/rss', '/sitemap.xml', '/news-sitemap.xml', '/encyclopedia/nonexistent',
-    '/staff', '/dashboard', '/dzaleka-wellbeing'];
+    '/staff', '/dashboard', '/dzaleka-wellbeing', '/services', '/services/2', '/services/category/education'];
   for (const path of paths) {
     const response = await handler(new Request(origin + path), { ip: '127.0.0.1' });
     const api = path.startsWith('/api/') || path.startsWith('/_emdash/api/') || path.endsWith('.xml');
@@ -37,7 +37,7 @@ try {
     validateStagingRuntime();
     const seed = await buildSeed({ fullTextSearch: false });
     const authorization = `Basic ${Buffer.from(`staging:${stagingPassword}`).toString('base64')}`;
-    for (const path of [`/news/${seed.content.news[0].slug}`, '/sitemap.xml']) {
+    for (const path of [`/news/${seed.content.news[0].slug}`, '/sitemap.xml', '/services', '/services/2', `/services/${seed.content.services[0].slug}`, '/services/category/education']) {
       const response = await handler(new Request(stagingOrigin() + path, {
         headers: { Authorization: authorization },
       }), { ip: '127.0.0.1' });

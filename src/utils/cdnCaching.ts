@@ -17,7 +17,7 @@ export function withCdnCaching(request: Request, pathname: string, response: Res
   if (cacheable) {
     headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
     headers.set('Netlify-CDN-Cache-Control', 'public, durable, s-maxage=60, stale-while-revalidate=300');
-    headers.set('Netlify-Vary', 'header=Accept');
+    headers.set('Netlify-Vary', 'query');
   } else {
     if (!/private/.test(ownPolicy)) headers.set('Cache-Control', 'no-store');
     headers.set('Netlify-CDN-Cache-Control', 'no-store');

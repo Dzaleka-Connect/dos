@@ -10,8 +10,12 @@ interface Props {
 const { currentPage, totalPages, baseUrl, searchParams, urlStyle = 'query' } = Astro.props;
 
 function getPageUrl(page: number): string {
-  if (urlStyle === 'path') return page === 1 ? baseUrl : `${baseUrl}/${page}`;
   const params = new URLSearchParams(searchParams);
+  if (urlStyle === 'path') {
+    params.delete('page');
+    const path = page === 1 ? baseUrl : `${baseUrl}/${page}`;
+    return params.size ? `${path}?${params}` : path;
+  }
   params.set('page', page.toString());
   return `${baseUrl}?${params.toString()}`;
 }

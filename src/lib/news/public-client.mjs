@@ -19,7 +19,7 @@ async function read(path) {
 }
 
 // Date fields per collection: the first is required, the rest optional.
-const dateFields = { news: ['date', 'updated'], events: ['date', 'endDate'], jobs: ['posted', 'deadline'] };
+const dateFields = { news: ['date', 'updated'], events: ['date', 'endDate'], jobs: ['posted', 'deadline'], services: [null, 'lastUpdated'] };
 const unavailable = collection => new NewsUnavailable(`Published ${collection} are temporarily unavailable.`);
 
 async function load(collection) {
@@ -32,9 +32,16 @@ async function load(collection) {
     if (payload.version !== 1 || !Array.isArray(payload.entries)) throw new Error('Invalid feed');
     return payload.entries.map(entry => {
       const [required, ...optional] = fields;
-      if (typeof entry.id !== 'string' || typeof entry.data?.title !== 'string' || !Number.isFinite(Date.parse(entry.data[required]))) throw new Error('Invalid entry');
-      const data = { ...entry.data, [required]: new Date(entry.data[required]) };
-      for (const field of optional) data[field] = entry.data[field] ? new Date(entry.data[field]) : undefined;
+      if (typeof entry.id !== 'string' || typeof entry.data?.title !== 'string' || (required && !Number.isFinite(Date.parse(entry.data[required])))) throw new Error('Invalid entry');
+      const data = { ...entry.data, ...(required ? { [required]: new Date(entry.data[required]) } : {}) };
+      for (const field of optional) {
+        if (entry.data[field] && !Number.isFinite(Date.parse(entry.data[field]))) throw new Error('Invalid date');
+        data[field] = entry.data[field] ? new Date(entry.data[field]) : undefined;
+      }
+      if (collection === 'services' && data.providerConfirmation) {
+        if (!Number.isFinite(Date.parse(data.providerConfirmation.date))) throw new Error('Invalid confirmation date');
+        data.providerConfirmation = { ...data.providerConfirmation, date: new Date(data.providerConfirmation.date) };
+      }
       if (collection === 'events' && data.registration?.deadline) data.registration = { ...data.registration, deadline: new Date(data.registration.deadline) };
       return { ...entry, data };
     });

@@ -1,18 +1,18 @@
 # Netlify and Supabase News staging
 
-This deploys the News pilot to a **separate Netlify site**. The live DOS site keeps its root `netlify.toml`, normal build and existing submission functions. Published News is read from the CMS on request; other collections still use Markdown. Staging uses Supabase PostgreSQL, a private Supabase Storage bucket through its S3 API, and Netlify Blobs sessions. EmDash continues to manage editor accounts and passkeys; Supabase Auth is not used. No live services, accounts or secrets should be copied into it.
+This deploys the News pilot to a **separate Netlify site**. The live DOS site keeps its root `netlify.toml`, normal build and existing submission functions. Published News, Events, Jobs and Services are read from the CMS on request; other collections still use Markdown. Staging uses Supabase PostgreSQL, a private Supabase Storage bucket through its S3 API, and Netlify Blobs sessions. EmDash continues to manage editor accounts and passkeys; Supabase Auth is not used. No live services, accounts or secrets should be copied into it.
 
 ## Public site and CMS addresses
 
 The public website remains `https://services.dzaleka.com/`. The existing `dos-news-staging` Netlify project is the dedicated CMS host at `https://cms.dzaleka.com`, with the editor at `/_emdash/admin/`. Its original Netlify address remains a deployment hostname; use the custom hostname for editor login.
 
-The standard Astro configuration connects News consumers to a published-only interface on the CMS host. Publishing, editing a published article, or unpublishing takes effect on the next request; a site rebuild is unnecessary. Draft saves remain private until Publish is selected. This applies to News, categories, homepage, related coverage, dashboards, search, RSS, sitemaps and the public News/search/export APIs.
+The standard Astro configuration connects News consumers to a published-only interface on the CMS host. Publishing or unpublishing updates the CMS feed immediately; the public CDN refreshes cached pages after 60 seconds, with stale responses possible while refreshing. A site rebuild is unnecessary. Draft saves remain private until Publish is selected. This applies to News, categories, homepage, related coverage, dashboards, search, RSS, sitemaps and the public News/search/export APIs.
 
 The public site has no CMS database, S3, admin or staging-password credentials. It fetches `https://cms.dzaleka.com/_dos/public/news.json` for reader metadata and `/_dos/public/news/{slug}` for the existing EmDash-rendered article body. CMS admin and preview routes still require authentication. These read-only routes query the repository's live rows directly, so even an authenticated preview token cannot select a draft. Only allowlisted reader fields are exported.
 
 Uploaded cover and inline media use `/_dos/public/media/{key}`. Each read checks that a currently published News article references that storage key. Draft-only uploads, backups and transfer archives are refused. The bucket remains private. Unpublishing the last referencing article removes access on the next request. Previously downloaded public copies cannot be recalled.
 
-News responses use `no-store`; request-local memoization avoids duplicate CMS metadata calls within one render without caching unpublished articles across requests. Public API search bypasses its result cache when News is included. A CMS outage returns an error rather than silently restoring outdated Markdown articles. Article bodies retain EmDash's renderer, media handling and component styles; canonical URLs remain on `services.dzaleka.com`.
+CMS feed responses use `no-store`; public pages use a 60-second CDN cache with separate query-string entries. Request-local memoization avoids duplicate CMS metadata calls within one render without caching unpublished articles across requests. Public API search bypasses its result cache when any live CMS collection is included. A CMS outage returns an error rather than silently restoring outdated Markdown articles. Article bodies retain EmDash's renderer, media handling and component styles; canonical URLs remain on `services.dzaleka.com`.
 
 The owner connected `cms.dzaleka.com` to the existing Netlify CMS project on 30 September 2026. Its CNAME points to `dos-news-staging.netlify.app`; Netlify reports an issued certificate for the custom hostname. The configuration now permits this exact CMS hostname while still rejecting the public website and a mismatched Netlify project ID.
 
@@ -128,11 +128,11 @@ The CMS, News pages, homepage, search index, RSS, both sitemaps, staff dashboard
 
 All CMS responses, including static files and published media, carry `X-Robots-Tag: noindex, nofollow, noarchive`. Its build writes a separate `robots.txt` that allows crawlers to read that header and contains no public sitemap or search opt-in. Disallowing crawling would prevent crawlers from seeing `noindex`. Previously indexed URLs may take time to disappear. The public website keeps its own indexing rules. Static copies of existing public pages and assets are not private editorial content.
 
-EmDash 1.0.1's built-in full-text search is SQLite-only, so the PostgreSQL seed omits the `search` collection capability. DOS's existing public search index continues to include published CMS News.
+EmDash 1.1.0's built-in full-text search is SQLite-only, so the PostgreSQL seed omits the `search` collection capability. DOS's existing public search index continues to include published CMS News.
 
 Set `AWS_LAMBDA_JS_RUNTIME=nodejs24.x` through Netlify's environment settings/API as well as `NODE_VERSION=24`; the runtime override cannot be set in `netlify.toml`. The staging build bundles `sanitize-html` and its dependencies to avoid its CommonJS-to-ESM `require()` on Lambda, where that Node feature is disabled.
 
-The scheduler alias and static-build exclusion depend on EmDash 1.0.1's virtual modules. Recheck the built middleware contains `createScheduler: null` when upgrading EmDash. The prerender build uses a null CMS config: its pages do not read News and must never connect to or migrate the remote database. Standard DOS builds do not load the staging middleware, adapter or scheduler.
+The scheduler alias and static-build exclusion depend on EmDash 1.1.0's virtual modules. Recheck the built middleware contains `createScheduler: null` when upgrading EmDash. The prerender build uses a null CMS config: its pages do not read News and must never connect to or migrate the remote database. Standard DOS builds do not load the staging middleware, adapter or scheduler.
 
 Local tests cover staging isolation, fail-closed authentication, preview access, TLS configuration and cron requests. A successful local Netlify bundle is not a substitute for hosted Supabase PostgreSQL/Storage, Netlify Blobs and passkey acceptance tests. Those require the services and credentials above.
 
@@ -155,7 +155,7 @@ To exercise the hosted publishing path using disposable content:
 node --env-file=.env.staging scripts/emdash/verify-http.mjs --staging
 ```
 
-This creates a temporary draft through EmDash's repositories, checks signed previews and public exclusion, publishes and replaces an image in S3, unpublishes, and waits up to three minutes for Netlify's scheduled function to publish it again. It removes its article and image in `finally`. These checks do not verify the editor UI, browser upload request or passkey/session flow.
+This creates a temporary draft through EmDash's repositories, checks signed previews and public exclusion, publishes and replaces an image in S3, unpublishes, and waits up to sixteen minutes for Netlify's scheduled function (which runs every fifteen minutes) to publish it again. It removes its article and image in `finally`. These checks do not verify the editor UI, browser upload request or passkey/session flow.
 
 The initial staging deployment uses the local CLI because these pilot changes have not been committed. GitHub automatic deployments are not connected yet. Build for the real staging origin, then deploy only the staging project:
 
@@ -218,3 +218,50 @@ The CMS feed must be deployed before the public reader. Deploy the public site f
 - 374 tests across 40 suites passed. The isolated public function rendered eight reader routes without CMS credentials, and 2,870 public artifact files contained none of the configured CMS credential values.
 - The old generated `dist` tree stalled cleanup during build. It was preserved at ignored `.emdash-pilot/pre-cms-public-build`; rebuilding into a fresh `dist` completed successfully.
 - This release was deployed directly. Push the committed source changes before subsequent GitHub builds, otherwise a build of the old main branch will replace the connection.
+
+### EmDash 1.1.0 release — 5 October 2026
+
+- Live CMS deployment: `6ac2eb1887c44f26eb933ec7` at `https://cms.dzaleka.com`. Previous deployment: `6abe247ae47119062e954636`.
+- Applied `090_redirect_enable_loop_guard` and `091_redirect_artifacts` to the private PostgreSQL schema. All 90 registered migrations are applied, with no pending or unknown migrations. Existing News, Events and Jobs collections were preserved without reimporting content.
+- All 348 tests across 43 suites and both public and CMS builds passed. The packaged CMS function passed its 14 protected-route checks and authenticated article/sitemap rendering. A scan of 4,452 release files found no configured credential values.
+- Both Netlify functions are present on Node.js 24: Astro SSR and `emdash-maintenance`. Maintenance retains its fifteen-minute schedule; the built in-process scheduler remains disabled.
+- All 36 hosted reader/access checks and 30 original article URLs passed. The disposable workflow passed draft privacy, signed previews, publication, image replacement, unpublishing and automatic scheduled publication. Its test article and image were removed.
+- The live public-site workflow at `https://services.dzaleka.com` passed publication, draft-edit exclusion, cover and inline media, homepage, News, search, RSS, sitemaps and unpublishing. Its verification article and upload were removed; no public-site deployment was required.
+- The CMS sign-in interface renders in the browser. This verification did not perform a biometric/passkey sign-in or an editor upload.
+- Updated the scheduling verifier to allow sixteen minutes for the fifteen-minute cron interval. The public-site verifier now accepts `no-store` as well as `max-age=0` for browser freshness.
+
+
+## Services editor workflow (5 October 2026)
+
+Services are now managed in EmDash at <https://cms.dzaleka.com/_emdash/admin/>. The initial import contains 149 existing listings and preserves their public slugs. The Markdown files remain as an import archive; editing them no longer changes the live directory.
+
+1. Review new registrations and correction requests in the existing Formspree inbox (`xqaaajae`). These forms do not publish automatically. Correction requests include the service name and listing URL.
+2. In EmDash, open **Services**, find the existing listing or create a service. Enter its name, summary, category and details, then the public contact information, address, logo, social profiles and access information. Enter one language per line. Tags and structured business hours are optional JSON fields; the ordinary opening-hours field accepts text.
+3. Keep private submitter contact details in the review inbox. Copy only information intended for the public listing. Set provider confirmation only when the provider has actually confirmed the information; the legacy verification flag is separate.
+4. Save a draft and use Preview to check the listing. Publish when approved. Subsequent draft edits stay private until published. To remove a listing from the directory, unpublish it; setting its listing status to inactive keeps it visible with an inactive label.
+
+The directory, category pages, detail pages, related services, search, statistics, dashboards, APIs, sitemap and dataset record counts all read published CMS services. CMS feed pagination follows every cursor, including directories larger than 100 entries. Uploaded logos use the same reference-checked public media delivery as other CMS images.
+
+Directory page links use `/services/2`, `/services/3`, and so on; page one is `/services`. Search, category and sort filters remain in the query string. Old `/services?page=2` links redirect to the path URL. Category pagination uses `/services/category/education/2`.
+
+Verification commands:
+
+```sh
+npm test
+node --env-file=.env.staging scripts/emdash/verify-services.mjs --origin=https://services.dzaleka.com --all-listings
+node --env-file=.env.staging scripts/emdash/verify-services.mjs --origin=https://services.dzaleka.com --workflow
+```
+
+The workflow check creates and removes one temporary service and logo to exercise draft privacy, signed preview, publication, draft edits and unpublishing. The read-only check verifies original listings, pagination, search/filter caching and the forms' Formspree destinations.
+
+Browser form verification used a localhost submission mock: required fields, multiple available days, review/back, failure messages, retained inputs, successful retry, correction prefilling and the success page. No test submission was sent to the real Formspree inbox. Existing unit tests cover logo type/size validation and uploaded-logo payloads; a real Cloudinary upload was not repeated for this migration.
+
+
+Services release record:
+
+- CMS deployment: `6ac2f2e750fda23d5815b723`; previous deployment: `6ac2eb1887c44f26eb933ec7`.
+- Public production deployment: `6ac2f46cb024d35754c068fa`; previous deployment: `6abe2ea9b793a80008107c30`.
+- Preview deployment: `6ac2f34c5c17f00ce854d5fc`, with all 149 detail URLs checked successfully before production deployment.
+- Both Astro/Netlify builds passed. The isolated CMS handler checked access protection on 17 routes and authenticated service rendering; the isolated public handler checked 18 routes without CMS credentials.
+- All 353 tests across 44 suites passed. Full `tsc --noEmit` remains failing on existing repository typing issues; a comparison against the pre-change source confirmed existing diagnostics, including Netlify handlers, content types and EmDash integration types.
+- The public deployment retains all six existing submission/email functions and Astro SSR. Service registration and correction forms retain the existing Formspree destination.

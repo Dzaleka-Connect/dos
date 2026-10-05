@@ -9,7 +9,7 @@ export async function publishedItems(collection: string) {
   do {
     const result = await repository.findMany(collection, { where: { status: 'published' }, limit: 100, cursor });
     items.push(...result.items);
-    cursor = result.hasMore ? result.nextCursor : undefined;
+    cursor = result.nextCursor;
   } while (cursor);
   return items;
 }

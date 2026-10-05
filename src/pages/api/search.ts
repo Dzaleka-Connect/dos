@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { isLive } from '../../lib/news/live-collections.mjs';
 import { getContent } from '../../lib/content';
 import { checkRateLimit, apiHeaders } from '../../utils/api-utils';
 import { problemResponse } from '../../utils/api-errors';
@@ -123,8 +124,8 @@ export const GET: APIRoute = async ({ request, url }) => {
 
     // Check cache first
     const cacheKey = getCacheKey(searchTerm, requestedCollections, limit);
-    const includesNews = requestedCollections.includes('news');
-    const cachedResults = includesNews ? null : getCachedResults(cacheKey);
+    const includesLiveContent = requestedCollections.some(isLive);
+    const cachedResults = includesLiveContent ? null : getCachedResults(cacheKey);
 
     if (cachedResults) {
       return new Response(
@@ -138,7 +139,7 @@ export const GET: APIRoute = async ({ request, url }) => {
           headers: {
             ...apiHeaders(request),
             'X-Cache': 'HIT',
-            'Cache-Control': includesNews ? 'no-store' : 'public, max-age=300'
+            'Cache-Control': includesLiveContent ? 'no-store' : 'public, max-age=300'
           }
         }
       );
@@ -201,7 +202,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     };
 
     // Cache the results
-    if (!includesNews) setCachedResults(cacheKey, responseData);
+    if (!includesLiveContent) setCachedResults(cacheKey, responseData);
 
     return new Response(
       JSON.stringify({
@@ -213,7 +214,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         headers: {
           ...apiHeaders(request),
           'X-Cache': 'MISS',
-          'Cache-Control': includesNews ? 'no-store' : 'public, max-age=300'
+          'Cache-Control': includesLiveContent ? 'no-store' : 'public, max-age=300'
         }
       }
     );

@@ -3,6 +3,7 @@ import matter from 'gray-matter';
 import { slug } from 'github-slugger';
 import { validateSeed } from 'emdash/seed';
 import { importMarkdown } from './markdown.mjs';
+import { serviceEntry, serviceFields } from './services.mjs';
 
 export const categories = ['news', 'business-spotlight', 'announcement', 'success-story', 'business-guide', 'education'];
 export const jobTypes = ['full-time', 'part-time', 'contract', 'volunteer', 'internship'];
@@ -122,7 +123,11 @@ export async function buildSeed({ fullTextSearch = true } = {}) {
         field('content', 'Job details', 'portableText', { searchable: true }),
         field('skills', 'Skills', 'json'), field('contact', 'How to apply (contact details)', 'json'),
       ],
-    }], content: { news: content, events: await eventEntries(), jobs: await jobEntries() },
+    }, { slug: 'services', label: 'Services', labelSingular: 'Service',
+      supports: ['drafts', 'revisions', 'preview', 'scheduling', ...(fullTextSearch ? ['search'] : []), 'seo'],
+      urlPattern: '/services/{slug}', routable: true, titleField: 'title',
+      commentsEnabled: false, fields: serviceFields,
+    }], content: { news: content, events: await eventEntries(), jobs: await jobEntries(), services: (await readFolder('services')).map(serviceEntry) },
   };
   const validation = validateSeed(seed);
   if (!validation.valid) throw new Error(validation.errors.join('\n'));
@@ -133,5 +138,5 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
   const seed = await buildSeed();
   await mkdir('.emdash-pilot', { recursive: true });
   await writeFile('.emdash-pilot/seed.json', JSON.stringify(seed, null, 2) + '\n');
-  console.log(`Prepared ${seed.content.news.length} articles, ${seed.content.events.length} events and ${seed.content.jobs.length} jobs; source Markdown is unchanged.`);
+  console.log(`Prepared ${seed.content.news.length} articles, ${seed.content.events.length} events, ${seed.content.jobs.length} jobs and ${seed.content.services.length} services; source Markdown is unchanged.`);
 }

@@ -89,7 +89,7 @@ try {
   if (staging) {
     await repository.schedule('news', article.id, new Date(Date.now() + 5000).toISOString());
     console.log('Waiting for Netlify scheduled maintenance to publish the disposable article.');
-    const deadline = Date.now() + 180000;
+    const deadline = Date.now() + 16 * 60 * 1000;
     while (Date.now() < deadline) {
       if ((await repository.findById('news', article.id))?.status === 'published') break;
       await new Promise((resolve) => setTimeout(resolve, 10000));

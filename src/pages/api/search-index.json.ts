@@ -8,7 +8,7 @@ import { toolsLibrary, templatePath } from '../../utils/startupTemplates';
 export const GET = async () => {
     // Fetch all collections
     const profiles = await getCollection('profiles');
-    const services = await getCollection('services');
+    const services = await getContent('services');
     const stories = await getCollection('stories');
     const events = await getContent('events');
     const resources = await getCollection('resources');

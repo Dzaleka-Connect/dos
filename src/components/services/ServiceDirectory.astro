@@ -56,7 +56,7 @@ const pageUrl = categoryPage ? `/services/category/${serviceCategorySlug(categor
         </li>)}
       </ul>
       {results.total === 0 && <p class="py-8 text-slate-700">No services match these filters. Try another name or keyword, or choose all categories.</p>}
-      {results.totalPages > 1 && <div class="mt-6"><Pagination currentPage={results.currentPage} totalPages={results.totalPages} baseUrl="/services" searchParams={results.searchParams} /></div>}
+      {results.totalPages > 1 && <div class="mt-6"><Pagination currentPage={results.currentPage} totalPages={results.totalPages} baseUrl={pageUrl} searchParams={results.searchParams} urlStyle="path" /></div>}
     </section>
 
     <details class="mt-10 border-y border-slate-200 py-4">

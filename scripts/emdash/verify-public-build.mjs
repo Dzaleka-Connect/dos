@@ -11,7 +11,9 @@ try {
   const feed = await fetch('https://cms.dzaleka.com/_dos/public/news.json');
   assert.equal(feed.status, 200);
   const { entries } = await feed.json();
-  const paths = ['/', '/news', `/news/${entries[0].id}`, '/news/category/news', '/api/search-index.json', '/api/news', '/sitemap.xml', '/news-sitemap.xml'];
+  const paths = ['/', '/news', `/news/${entries[0].id}`, '/news/category/news', '/api/search-index.json', '/api/news', '/sitemap.xml', '/news-sitemap.xml',
+    '/services', '/services/2', '/services/25', '/services/accb-private-school', '/services/category/education/2',
+    '/services?q=refan', '/services?category=Education&sort=name', '/api/services', '/datasets/services-directory', '/services/stats'];
   for (const path of paths) {
     const response = await handler(new Request('https://services.dzaleka.com' + path), { ip: '127.0.0.1' });
     assert.equal(response.status, 200, path);

@@ -1,6 +1,6 @@
 ---
+import { getContent } from '../lib/content';
 import { getNews } from '@dos/news';
-import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { formatDate } from '../utils/dateHelpers';
@@ -11,7 +11,7 @@ const description =
 const canonical = 'https://services.dzaleka.com/dzaleka-wellbeing';
 
 const [allServices, allNews] = await Promise.all([
-  getCollection('services'),
+  getContent('services'),
   getNews(),
 ]);
 const serviceIds = [

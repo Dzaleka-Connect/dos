@@ -21,10 +21,22 @@ function blocks(tokens) {
     switch (token.type) {
       case 'space': return [];
       case 'paragraph': {
-        // A paragraph holding only images becomes image blocks (remote images keep their original URL).
+        // Split images from surrounding text while retaining captions and original URLs.
         const parts = (token.tokens || []).filter((part) => !(part.type === 'text' && !part.text.trim()) && part.type !== 'br');
-        if (parts.length && parts.every((part) => part.type === 'image')) {
-          return parts.map((image) => ({ type: 'image', attrs: { provider: 'external', src: image.href, alt: image.text || '', ...(image.title ? { caption: image.title } : {}) } }));
+        if (parts.some((part) => part.type === 'image')) {
+          const result = [];
+          let paragraph = [];
+          const flush = () => {
+            if (paragraph.some(part => part.type !== 'text' || part.text.trim())) result.push({ type: 'paragraph', content: inline(paragraph) });
+            paragraph = [];
+          };
+          for (const part of token.tokens || []) {
+            if (part.type !== 'image') { paragraph.push(part); continue; }
+            flush();
+            result.push({ type: 'image', attrs: { provider: 'external', src: part.href, alt: part.text || '', ...(part.title ? { caption: part.title } : {}) } });
+          }
+          flush();
+          return result;
         }
         return [{ type: 'paragraph', content: inline(token.tokens || [token]) }];
       }
@@ -56,5 +68,5 @@ function blocks(tokens) {
 }
 
 export function importMarkdown(markdown) {
-  return prosemirrorToPortableText({ type: 'doc', content: blocks(lexer(markdown)) });
+  return prosemirrorToPortableText({ type: 'doc', content: blocks(lexer(markdown.replace(/<em>([^<]*)<\/em>/g, '*$1*'))) });
 }
