@@ -1,6 +1,8 @@
 import { isPublicRead } from './public-contract.mjs';
 import { defineMiddleware } from 'astro:middleware';
 import { getDb } from 'emdash/runtime';
+import { cleanupInsights } from '../insights/store';
+import { checkLinks } from '../insights/health';
 import { deliverSubmissions } from '../submissions/store';
 import { withDeferredTasks } from './netlify-deferred.mjs';
 import { runScheduledTasks } from 'emdash/middleware';
@@ -27,7 +29,10 @@ export const onRequest = defineMiddleware((context, next) => withDeferredTasks(a
   if (path === maintenancePath) {
     try {
       const result = await runScheduledTasks();
-      await deliverSubmissions(await getDb());
+      const db = await getDb();
+      await deliverSubmissions(db);
+      await cleanupInsights(db);
+      await checkLinks(db);
       return stagingResponse(Response.json({ published: result.published.length }));
     } catch {
       console.error('[DOS staging] EmDash maintenance failed; inspect the CMS scheduler logs.');

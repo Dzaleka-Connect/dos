@@ -1,3 +1,4 @@
+import { recordSubmission } from '../insights/submission';
 import { type Database, handleContentCreate } from 'emdash';
 import type { Kysely } from 'kysely';
 import { submissionId, value, type Submission } from './contract';
@@ -83,6 +84,7 @@ export async function saveSubmission(db: Kysely<Database>, input: Submission) {
       delivery: input.test ? 'test' : 'pending', attempts: 0, last_attempt: null, lease_until: null,
     }).onConflict(c => c.column('id').doNothing()).returningAll().executeTakeFirst();
     if (!created) return trx.selectFrom('_dos_submissions').selectAll().where('id', '=', id).executeTakeFirstOrThrow();
+    await recordSubmission(transaction, input, created.id, created.created_at);
     const draft = draftFor(input);
     if (draft) {
       const result = await handleContentCreate(transaction, draft.collection, { data: draft.data, slug: `submission-${id.slice(0, 24)}`, status: 'draft' });

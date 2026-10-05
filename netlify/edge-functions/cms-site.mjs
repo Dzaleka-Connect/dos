@@ -3,7 +3,7 @@ import { applySiteSettings, redirectResponse } from '../../src/lib/news/site-res
 export default async function cmsSite(request, context) {
   if (context.site?.id && context.site.id !== 'f3ccff67-a393-4e11-b887-9a29d67477b1') return context.next();
   const url = new URL(request.url);
-  if (!['GET', 'HEAD'].includes(request.method) || /^\/(?:_|api\/|admin\/)/.test(url.pathname) ||
+  if (!['GET', 'HEAD'].includes(request.method) || /^\/(?:_|api\/|go\/|admin\/)/.test(url.pathname) ||
       (/\.[a-z0-9]{1,10}$/i.test(url.pathname) && url.pathname !== '/robots.txt')) return context.next();
   let data;
   try {

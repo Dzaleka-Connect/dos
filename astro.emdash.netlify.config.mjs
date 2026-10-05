@@ -9,6 +9,8 @@ import { stagingOrigin } from './scripts/emdash/staging-env.mjs';
 
 const origin = stagingOrigin();
 const vite = newsViteConfig();
+// Use the exact UI dependency shipped with EmDash, including its isolated peers.
+const adminEntry = fileURLToPath(import.meta.resolve('@emdash-cms/admin'));
 // Lambda disables require(ESM); bundle the sanitizer's CommonJS bridge.
 vite.ssr.noExternal.push('sanitize-html', 'htmlparser2', 'escape-string-regexp',
   'domhandler', 'domutils', 'dom-serializer', 'domelementtype', 'entities', 'launder', 'parse-srcset',
@@ -16,6 +18,12 @@ vite.ssr.noExternal.push('sanitize-html', 'htmlparser2', 'escape-string-regexp',
 vite.resolve.alias['virtual:emdash/scheduler'] = fileURLToPath(new URL('./src/lib/news/netlify-scheduler.mjs', import.meta.url));
 vite.resolve.alias['virtual:emdash/wait-until'] = fileURLToPath(new URL('./src/lib/news/netlify-deferred.mjs', import.meta.url));
 vite.plugins = [{
+  name: 'dos-emdash-native-ui',
+  enforce: 'pre',
+  resolveId(source) {
+    if (source === '@dos/emdash-ui') return this.resolve('@cloudflare/kumo', adminEntry, { skipSelf: true });
+  },
+}, {
   name: 'dos-static-pages-without-cms',
   transform(_code, id) {
     // News consumers are SSR. Other static pages must not connect to or migrate the CMS during a build.
@@ -42,7 +50,12 @@ export default mergeConfig(base, {
       fonts: false,
       admin: { siteName: 'Dzaleka Online Services', logo: '/images/dzaleka-digital-heritage.png', favicon: '/images/dzaleka-digital-heritage.png' },
       mcp: false,
-      plugins: [{ id: 'dos-submissions', version: '1.0.0',
+      plugins: [{ id: 'dos-insights', version: '1.0.0',
+        entrypoint: fileURLToPath(new URL('./src/lib/insights/plugin.ts', import.meta.url)),
+        adminEntry: fileURLToPath(new URL('./src/lib/insights/admin.tsx', import.meta.url)),
+        adminPages: [{ path: '/links', label: 'Links', icon: 'link' }, { path: '/statistics', label: 'Statistics', icon: 'chart-bar' }],
+        adminWidgets: [{ id: 'overview', title: 'Site statistics', size: 'full' }],
+      }, { id: 'dos-submissions', version: '1.0.0',
         entrypoint: fileURLToPath(new URL('./src/lib/submissions/plugin.ts', import.meta.url)),
         adminPages: [{ path: '/inbox', label: 'Submissions', icon: 'inbox' }],
         adminWidgets: [{ id: 'submissions', title: 'New submissions', size: 'full' }],

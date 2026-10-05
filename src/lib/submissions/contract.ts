@@ -9,6 +9,7 @@ export const submissionSchema = z.object({
   sourcePath: z.string().max(300),
   clientHash: z.string().regex(/^[a-f0-9]{64}$/),
   test: z.boolean().default(false),
+  analytics: z.object({ visitor: z.string().regex(/^[a-f0-9]{64}$/), device: z.string().max(20), browser: z.string().max(20), source: z.string().max(80), medium: z.string().max(80), campaign: z.string().max(80) }).optional(),
 });
 export type Submission = z.infer<typeof submissionSchema>;
 export const value = (fields: Submission['fields'], key: string) => {

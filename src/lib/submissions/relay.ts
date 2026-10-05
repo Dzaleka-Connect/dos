@@ -1,3 +1,4 @@
+import { eventMetadata, shouldTrack } from '../insights/transport';
 import { createHmac } from 'node:crypto';
 import { fieldsSchema, signSubmission, validSignature, value, type Submission } from './contract';
 
@@ -71,6 +72,13 @@ export async function relaySubmission(request: Request, clientAddress: string, s
   } catch { return fail('Check your form details and try again.', 400); }
   const input: Submission = { form, fields, sourcePath: forms[form], test,
     clientHash: createHmac('sha256', secret).update(clientAddress).digest('hex') };
+  if (shouldTrack(request) && !request.headers.get('cookie')?.includes('dos_statistics_optout=1')) {
+    const meta = eventMetadata(request, clientAddress, secret);
+    const campaign = (key: string) => {
+      try { const value = new URL(request.headers.get('referer') || '').searchParams.get(`utm_${key}`) || ''; return /^[a-zA-Z0-9 _.-]{0,80}$/.test(value) ? value : ''; } catch { return ''; }
+    };
+    input.analytics = { visitor: meta.visitor, device: meta.device, browser: meta.browser, source: campaign('source'), medium: campaign('medium'), campaign: campaign('campaign') };
+  }
   const body = JSON.stringify(input);
   const timestamp = String(Date.now());
   try {
