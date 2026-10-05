@@ -51,3 +51,5 @@ The verifier creates temporary links, events and a short-lived administrator API
 The browser exclusion cookie, DNT and GPC apply to this plugin only. They do not reconfigure other analytics integrations. Disabling collection leaves short links functional. Disabling the entire plugin makes its public routes unavailable, so pause collection through Statistics settings when links must continue working.
 
 Session counts, bounce rate, visit duration, geolocation and Google Search Console reports are not collected by this plugin. They are not represented as available dashboard metrics. Previous-period comparisons may be empty or partial when they precede collection or retained history.
+
+When changing dependencies, validate the lockfile with npm 10 (the Node 22 CI version). npm 11 can prune EmDash’s nested optional peers even though npm 10 requires them for a clean install. Run `npx --yes npm@10 ci --dry-run --ignore-scripts --no-audit` before pushing dependency changes.
