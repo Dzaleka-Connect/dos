@@ -7,7 +7,7 @@ function dialect(migration) {
   return postgresDialect({
     // Web requests use transaction pooling; migration commands retain a session connection.
     ...postgresConnectionOptions(process.env, { migration }),
-    pool: { min: 0, max: 1, connectionTimeoutMillis: 8000, idleTimeoutMillis: 1000 },
+    pool: { min: 0, max: 1, connectionTimeoutMillis: 8000, idleTimeoutMillis: 30000 },
   });
 }
 

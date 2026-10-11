@@ -33,7 +33,8 @@ function wantsMarkdown(request: Request) {
 }
 
 export const onRequest = defineMiddleware((context, next) => withNewsRequest(async () => {
-  if (context.url.pathname.startsWith('/_emdash/')) return next();
+  // The CMS owns its private routes and its explicitly published feed policy.
+  if (context.url.pathname.startsWith('/_emdash/') || context.url.pathname.startsWith('/_dos/public/')) return next();
   let response: Response;
   try { response = await next(); }
   catch (error) {

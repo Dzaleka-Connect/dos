@@ -11,11 +11,15 @@ import { cmsOrigin, publicPrefix } from '../../src/lib/news/public-contract.mjs'
 
 const target = process.argv.find(arg => arg.startsWith('--origin='))?.slice(9);
 assert(!target || /^https:\/\/[a-z0-9.-]+$/.test(target), 'Use an HTTPS deployment origin');
-const get = (path, origin = cmsOrigin, headers = {}) => fetch(new URL(path, origin), { headers, redirect: 'manual', signal: AbortSignal.timeout(30000) });
+const get = (path, origin = cmsOrigin, headers = {}) => {
+  const url = new URL(path, origin);
+  if (url.origin === cmsOrigin && url.pathname.startsWith(publicPrefix)) url.searchParams.set('verification', randomUUID());
+  return fetch(url, { headers, redirect: 'manual', signal: AbortSignal.timeout(30000) });
+};
 const feed = async () => {
   const response = await get(`${publicPrefix}services.json`);
   assert.equal(response.status, 200, 'Services feed');
-  assert.match(response.headers.get('cache-control'), /no-store/);
+  assert.match(response.headers.get('cache-control'), /max-age=0/);
   return (await response.json()).entries;
 };
 const seed = await buildSeed({ fullTextSearch: false });
@@ -87,7 +91,7 @@ const mentions = (path, body) => {
 };
 const auth = { Authorization: `Basic ${Buffer.from(`staging:${process.env.DOS_STAGING_PASSWORD}`).toString('base64')}` };
 const settle = async (path, accept) => {
-  const deadline = Date.now() + 180000;
+  const deadline = Date.now() + 720000;
   for (;;) {
     const response = await get(path, target); const body = await response.text();
     if (accept(response.status, body)) return body;

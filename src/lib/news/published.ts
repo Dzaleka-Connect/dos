@@ -1,9 +1,20 @@
 import { ContentRepository, handleContentList } from 'emdash';
 import { getDb } from 'emdash/runtime';
+import { createPublishedCache, publishedRevision } from './published-cache.mjs';
+
+const readPublished = createPublishedCache();
 
 // Repository reads always use the live row, including during authenticated preview requests.
-export async function publishedItems(collection: string) {
+export async function publishedItems(collection: string): ReturnType<typeof loadPublishedItems> {
   const db = await getDb();
+  const load = () => loadPublishedItems(db, collection);
+  // The local SQLite pilot retains its normal repository path.
+  return process.env.DOS_EMDASH_STAGING === '1'
+    ? readPublished(collection, () => publishedRevision(db, collection), load)
+    : load();
+}
+
+async function loadPublishedItems(db: Awaited<ReturnType<typeof getDb>>, collection: string) {
   const items = [];
   let cursor: string | undefined;
   do {

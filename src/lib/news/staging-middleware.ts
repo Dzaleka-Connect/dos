@@ -6,7 +6,7 @@ import { checkLinks } from '../insights/health';
 import { deliverSubmissions } from '../submissions/store';
 import { withDeferredTasks } from './netlify-deferred.mjs';
 import { runScheduledTasks } from 'emdash/middleware';
-import { authorizeStaging, maintenancePath, needsEditorSession, signInResponse, stagingResponse } from './staging-access.mjs';
+import { authorizeStaging, maintenancePath, needsEditorSession, signInResponse, stagingResponse, publishedResponse } from './staging-access.mjs';
 
 export const onRequest = defineMiddleware((context, next) => withDeferredTasks(async () => {
   if (context.isPrerendered) return next();
@@ -15,7 +15,7 @@ export const onRequest = defineMiddleware((context, next) => withDeferredTasks(a
   if (isPublicRead(context.request)) {
     try {
       const response = await next();
-      return stagingResponse(response, path.startsWith('/_dos/public/media/') && response.status === 200);
+      return publishedResponse(context.request, response);
     }
     catch {
       console.error('[DOS CMS] Published content request failed.');

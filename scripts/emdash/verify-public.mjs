@@ -16,17 +16,21 @@ const mediaRepository = new MediaRepository(db);
 const storage = createStorage({});
 const slug = `cms-connection-check-${randomUUID()}`;
 const key = `${slug}.png`;
-const get = (path, origin = cmsOrigin) => fetch(new URL(path, origin), { redirect: 'manual', signal: AbortSignal.timeout(30000) });
+const get = (path, origin = cmsOrigin) => {
+  const url = new URL(path, origin);
+  // Exercise publication changes at the origin without reusing a CDN snapshot.
+  if (url.origin === cmsOrigin && url.pathname.startsWith(publicPrefix)) url.searchParams.set('verification', randomUUID());
+  return fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(30000) });
+};
 const feed = async () => {
   const response = await get(`${publicPrefix}news.json`);
   assert.equal(response.status, 200, 'Published feed available without credentials');
-  assert.match(response.headers.get('cache-control'), /no-store/);
+  assert.match(response.headers.get('cache-control'), /max-age=0/);
   return (await response.json()).entries;
 };
-// Public pages are cached at the CDN for a minute and may be served stale once
-// while they refresh, so give a publication change up to three minutes to show.
+// Allow for both the CMS feed cache and the public page's revalidation window.
 const settle = async (path, done) => {
-  const deadline = Date.now() + 180000;
+  const deadline = Date.now() + 720000;
   for (;;) {
     const response = await get(path, target);
     const text = await response.text();

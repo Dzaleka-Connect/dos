@@ -51,7 +51,8 @@ describe('Public news reader', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     await withNewsRequest(getNews);
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(fetchMock.mock.calls[0][1]).toMatchObject({ redirect: 'error', cache: 'no-store' });
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({ redirect: 'error' });
+    expect(fetchMock.mock.calls[0][1]).not.toHaveProperty('cache', 'no-store');
   });
 
   it('does not fall back to removed Markdown articles or forward preview tokens', async () => {

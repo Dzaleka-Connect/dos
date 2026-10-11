@@ -10,7 +10,7 @@ async function read(path) {
   try {
     const response = await fetch(`${cmsOrigin}${publicPrefix}${path}`, {
       headers: { Accept: path.endsWith('.json') ? 'application/json' : 'text/html' },
-      redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(15000),
+      redirect: 'error', signal: AbortSignal.timeout(15000),
     });
     if (response.status === 404) return null;
     if (!response.ok) throw new Error(`CMS returned ${response.status}`);

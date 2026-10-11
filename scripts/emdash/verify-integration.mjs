@@ -23,7 +23,9 @@ if (!live) {
   ({ default: handler } = await import(pathToFileURL(join(bundle, 'ssr.mjs')).href));
 }
 const request = (path, options = {}) => {
-  const req = new Request(new URL(path, origin), { ...options, redirect: 'manual', signal: AbortSignal.timeout(45000) });
+  const url = new URL(path, origin);
+  if (url.pathname.startsWith('/_dos/public/')) url.searchParams.set('verification', randomUUID());
+  const req = new Request(url, { ...options, redirect: 'manual', signal: AbortSignal.timeout(45000) });
   return live ? fetch(req) : handler(req, { ip: '127.0.0.1' });
 };
 const db = new Kysely({ dialect: createDialect() });

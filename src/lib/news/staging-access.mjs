@@ -1,4 +1,5 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { isPublicRead } from './public-contract.mjs';
 
 export const maintenancePath = '/_emdash/api/dos-maintenance';
 
@@ -61,4 +62,19 @@ export function stagingResponse(response, indexableMedia = false) {
   headers.set('Cache-Control', 'private, no-store');
   headers.set('Netlify-CDN-Cache-Control', 'no-store');
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
+export function publishedResponse(request, response) {
+  const url = new URL(request.url);
+  const media = url.pathname.startsWith('/_dos/public/media/');
+  const wrapped = stagingResponse(response, media && response.status === 200);
+  wrapped.headers.set('Netlify-Vary', 'query');
+  // Only explicit published routes are shared. Errors, editor sessions and
+  // preview requests must never populate the public CDN cache.
+  if (!isPublicRead(request) || response.status !== 200 ||
+      request.headers.has('authorization') || request.headers.has('cookie') ||
+      response.headers.has('set-cookie') || [...url.searchParams.keys()].some(key => /preview|edit/i.test(key))) return wrapped;
+  wrapped.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+  wrapped.headers.set('Netlify-CDN-Cache-Control', 'public, durable, max-age=300, must-revalidate');
+  return wrapped;
 }
