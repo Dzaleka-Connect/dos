@@ -1,3 +1,4 @@
+import { submissionFetch } from './submissionFetch';
 export type PageRating = 'yes' | 'no';
 
 export function feedbackPayload(rating: PageRating, details: string, page: URL) {
@@ -9,7 +10,7 @@ export function feedbackPayload(rating: PageRating, details: string, page: URL) 
   };
 }
 
-export function initPageFeedback(root: HTMLElement, page: URL, send: typeof fetch = fetch) {
+export function initPageFeedback(root: HTMLElement, page: URL, send: typeof fetch = submissionFetch) {
   const form = root.querySelector<HTMLFormElement>('form');
   const button = root.querySelector<HTMLButtonElement>('[type="submit"]');
   const status = root.querySelector<HTMLElement>('[data-feedback-status]');

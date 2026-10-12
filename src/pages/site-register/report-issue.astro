@@ -39,7 +39,7 @@ const seo = {
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div class="bg-white rounded border border-slate-200 p-5 sm:p-8">
-        <form id="reportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-6">
+        <form id="reportForm" action="/api/form-relay?form=site-register-report-issue" method="POST" class="submission-form space-y-6">
           <!-- Site Information -->
           <div>
             <label for="site-name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -301,6 +301,8 @@ const seo = {
   </div>
 
   <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
     import { prefillRecordForm } from '../../utils/recordForm';
     const form = document.getElementById('reportForm') as HTMLFormElement;
     const submitButton = document.getElementById('submitButton') as HTMLButtonElement;

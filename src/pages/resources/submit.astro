@@ -11,7 +11,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
       <div class="bg-white rounded border border-gray-200 p-5 sm:p-8">
         <form
           id="resourceForm"
-          action="https://formspree.io/f/xqaaajae"
+          action="/api/form-relay?form=resources-submit"
           method="POST"
           class="submission-form space-y-8"
         >
@@ -267,6 +267,8 @@ import MainLayout from '../../layouts/MainLayout.astro';
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
   const form = document.getElementById('resourceForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

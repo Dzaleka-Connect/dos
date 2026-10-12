@@ -1,6 +1,7 @@
+import { submissionFetch } from './submissionFetch';
 export function initSupportRequest(
   root: HTMLElement,
-  send: typeof fetch = fetch,
+  send: typeof fetch = submissionFetch,
 ) {
   const form = root.querySelector<HTMLFormElement>("form");
   const button = root.querySelector<HTMLButtonElement>('[type="submit"]');

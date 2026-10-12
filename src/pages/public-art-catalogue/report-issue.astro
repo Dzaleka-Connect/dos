@@ -13,7 +13,7 @@ const description = "Report issues, damage, or maintenance needs for public artw
     <section class="py-10 bg-gray-50">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded border border-slate-200 p-5 sm:p-8">
-          <form id="reportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
+          <form id="reportForm" action="/api/form-relay?form=public-art-catalogue-report-issue" method="POST" class="submission-form space-y-8">
             <!-- Artwork Information -->
             <div>
               <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -318,6 +318,8 @@ const description = "Report issues, damage, or maintenance needs for public artw
     </section>
 
   <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
     import { prefillRecordForm } from '../../utils/recordForm';
     const form = document.getElementById('reportForm') as HTMLFormElement;
     const submitButton = document.getElementById('submitButton') as HTMLButtonElement;

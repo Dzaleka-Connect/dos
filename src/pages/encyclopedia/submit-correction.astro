@@ -59,7 +59,7 @@ const schema = {
 
         <form
           id="correction-form"
-          action="https://formspree.io/f/xqaaajae"
+          action="/api/form-relay?form=encyclopedia-submit-correction"
           method="POST"
           enctype="multipart/form-data"
           class="submission-form space-y-7"
@@ -205,6 +205,8 @@ const schema = {
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
   const form = document.getElementById('correction-form') as HTMLFormElement | null;
   const entrySelect = document.getElementById('entry') as HTMLSelectElement | null;
   const pageInput = document.getElementById('submission-page') as HTMLInputElement | null;

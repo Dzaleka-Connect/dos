@@ -1,6 +1,7 @@
+import { submissionFetch } from './submissionFetch';
 import { initReviewedForm } from './reviewedForm';
 
-export function initRecordSubmission(form: HTMLFormElement, kind: 'site' | 'artwork', send: typeof fetch = fetch) {
+export function initRecordSubmission(form: HTMLFormElement, kind: 'site' | 'artwork', send: typeof fetch = submissionFetch) {
   const flow = initReviewedForm(form, {
     title: kind === 'site' ? 'Site submitted for review' : 'Artwork submitted for review',
     message: 'Your information has been submitted for review. It has not been published. If you need to correct anything, contact the help desk with the name of the site or artwork.',

@@ -1,3 +1,4 @@
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
 import Modal from '../ui/Modal';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect, useRef, type FormEvent } from 'react';
@@ -29,6 +30,8 @@ export function KeepingPlaceExplorer() {
   const [customRecords, setCustomRecords] = useState<KeepingPlaceRecord[]>([]);
 
   // Form state
+  const [isSubmittingRecord, setIsSubmittingRecord] = useState(false);
+  const [submissionError, setSubmissionError] = useState('');
   const [newSiteName, setNewSiteName] = useState('');
   const [newSiteCategory, setNewSiteCategory] = useState<RecordCategory>('cultural_site');
   const [newSiteProtocol, setNewSiteProtocol] = useState<CulturalProtocolLevel>('public');
@@ -309,9 +312,11 @@ export function KeepingPlaceExplorer() {
     }
   };
 
-  const handleCreateRecord = (e: FormEvent) => {
+  const handleCreateRecord = async (e: FormEvent) => {
     e.preventDefault();
-    if (!newSiteName.trim()) return;
+    if (!newSiteName.trim() || isSubmittingRecord) return;
+    setIsSubmittingRecord(true);
+    setSubmissionError('');
 
     const newRec: KeepingPlaceRecord = {
       id: `kp-custom-${Date.now()}`,
@@ -334,6 +339,27 @@ export function KeepingPlaceExplorer() {
       tags: ['Local Record', 'Community GIS']
     };
 
+    try {
+      await fetch('/api/map-submission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          submissionType: 'keeping-place-record',
+          placeName: newSiteName,
+          category: newSiteCategory,
+          zone: newSiteZone,
+          operator: 'Community contributor',
+          description: newSiteSummary || 'Custom site entry recorded in Dzaleka Keeping Place.',
+          lat: newSiteLat,
+          lng: newSiteLng,
+          submitterRole: `Access protocol: ${newSiteProtocol}`,
+        }),
+      });
+    } catch (error) {
+      setSubmissionError(error instanceof Error ? error.message : 'Your record could not be sent. Please try again.');
+      return;
+    } finally { setIsSubmittingRecord(false); }
+
     const updated = [newRec, ...customRecords];
     setCustomRecords(updated);
     try {
@@ -342,26 +368,6 @@ export function KeepingPlaceExplorer() {
       console.error('Failed to save to local storage', err);
     }
 
-    // Send the record for review as well, so submissions are not stranded in
-    // one browser's local storage.
-    fetch('/api/map-submission', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        submissionType: 'keeping-place-record',
-        placeName: newSiteName,
-        category: newSiteCategory,
-        zone: newSiteZone,
-        operator: 'Community contributor',
-        description: newSiteSummary || 'Custom site entry recorded in Dzaleka Keeping Place.',
-        lat: newSiteLat,
-        lng: newSiteLng,
-        submitterRole: `Access protocol: ${newSiteProtocol}`,
-      }),
-    }).catch((err) => {
-      // The record is still stored locally; surface the failure for debugging.
-      console.error('Keeping Place submission could not be sent for review', err);
-    });
 
     const emailSubject = encodeURIComponent(`[Keeping Place GIS] New Site Submission: ${newSiteName}`);
     const emailBody = encodeURIComponent(
@@ -962,7 +968,8 @@ export function KeepingPlaceExplorer() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateRecord} className="space-y-4 text-sm">
+            <form onSubmit={handleCreateRecord} aria-busy={isSubmittingRecord} className="space-y-4 text-sm">
+              {submissionError && <p role="alert" className="text-red-700">{submissionError}</p>}
               <div>
                 <label htmlFor="newSiteName" className="block font-semibold text-slate-700 mb-1">Landmark or site name</label>
                 <p id="newSiteName-hint" className="mb-2 text-sm text-slate-600">For example, Dzaleka Youth Centre</p>
@@ -1058,7 +1065,7 @@ export function KeepingPlaceExplorer() {
                     Cancel
                   </button>
                   <button
-                    type="submit"
+                    type="submit" disabled={isSubmittingRecord}
                     className="rounded bg-sky-700 px-4 py-1.5 text-sm font-semibold text-white hover:bg-sky-600 transition-colors "
                   >
                     Submit Record via Email & Save

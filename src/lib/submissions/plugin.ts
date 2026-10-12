@@ -1,3 +1,6 @@
+import { claimSubmission } from './guard-store';
+import { z as guardZ } from 'zod';
+import { correctionError, spamError } from './spam';
 import { definePlugin, ContentRepository } from 'emdash';
 import { getDb } from 'emdash/runtime';
 import { z } from 'zod';
@@ -11,6 +14,14 @@ export function createPlugin() {
     id: 'dos-submissions', version: '1.0.0', capabilities: ['content:write'],
     admin: { pages: [{ path: '/inbox', label: 'Submissions', icon: 'inbox' }], widgets: [{ id: 'submissions', title: 'New submissions', size: 'full' }] },
     routes: {
+      guard: {
+        public: true, methods: ['POST'], request: { body: 'text', maxBytes: 4096 },
+        handler: async ctx => {
+          if (typeof ctx.input !== 'string' || !validSignature(ctx.input, process.env.DOS_SUBMISSION_SECRET, ctx.request.headers.get('x-dos-timestamp'), ctx.request.headers.get('x-dos-signature'))) return { accepted: false };
+          const claim = guardZ.object({ nonce: guardZ.string().regex(/^[a-f0-9]{48}$/), target: guardZ.string().max(200), ip: guardZ.string().regex(/^[a-f0-9]{64}$/), client: guardZ.string().regex(/^[a-f0-9]{32}$/), expires: guardZ.number().min(Date.now()).max(Date.now() + 600000) }).parse(JSON.parse(ctx.input));
+          return claimSubmission(await getDb(), claim);
+        },
+      },
       receive: {
         public: true, methods: ['POST'], request: { body: 'text', maxBytes: 65536 },
         handler: async ctx => {
@@ -18,6 +29,14 @@ export function createPlugin() {
             ctx.request.headers.get('x-dos-timestamp'), ctx.request.headers.get('x-dos-signature'))) return { accepted: false };
           const input = submissionSchema.parse(JSON.parse(ctx.input));
           const db = await getDb();
+          if (!input.test) {
+            if (spamError(input.fields) || (input.form === 'service-correction' && correctionError(input.fields))) return { accepted: false };
+            if (input.form === 'service-correction') {
+              const slug = decodeURIComponent(new URL(String(input.fields.listingUrl)).pathname.split('/')[2]);
+              const listing = await new ContentRepository(db).findBySlug('services', slug);
+              if (!listing || listing.status !== 'published') return { accepted: false };
+            }
+          }
           const row = await saveSubmission(db, input);
           await deliverSubmissions(db, row.id);
           return { accepted: true, id: row.id };

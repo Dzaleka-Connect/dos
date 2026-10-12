@@ -60,7 +60,7 @@ const audiences = [
 
       </div>
 
-      <form id="opportunityForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
+      <form id="opportunityForm" action="/api/form-relay?form=grants-and-programs-submit" method="POST" class="submission-form space-y-8">
         <input type="hidden" name="_subject" value="New grants and programs opportunity submission" />
         <input type="hidden" name="_next" value="/thank-you?type=opportunity-submission" />
 
@@ -262,6 +262,8 @@ const audiences = [
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
   const form = document.getElementById('opportunityForm');
   const successMessage = document.getElementById('successMessage');
 

@@ -72,7 +72,7 @@ describe('EmDash submission workflow', () => {
     expect((await relaySubmission(request({ ...fields, website: 'javascript:alert(1)' }), 'ip', secret, send)).status).toBe(400);
     expect((await relaySubmission(request(fields, 'https://bad.example'), 'ip', secret, send)).status).toBe(403);
     expect((await relaySubmission(request({ ...fields, serviceDescription: 'x'.repeat(70000) }), 'ip', secret, send)).status).toBe(413);
-    expect((await relaySubmission(request({ ...fields, _gotcha: 'spam' }), 'ip', secret, send)).status).toBe(200);
+    expect((await relaySubmission(request({ ...fields, _gotcha: 'spam' }), 'ip', secret, send)).status).toBe(422);
     expect(send).toHaveBeenCalledTimes(1);
     const verification = request(fields);
     const time = String(Date.now());

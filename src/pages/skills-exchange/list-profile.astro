@@ -288,7 +288,7 @@ const paymentMethodFields = [
       <div class="px-4 py-6 sm:p-8">
 
         <form
-          action="https://formspree.io/f/xqaaajae"
+          action="/api/form-relay?form=skills-exchange-list-profile"
           method="POST"
           class="submission-form space-y-8"
           data-thankyou-url="/thank-you?type=profile"
@@ -477,7 +477,7 @@ const paymentMethodFields = [
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
     try {
-      const response = await fetch(
+      const response = await window.dosSubmissionFetch(
         `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
         {
           method: 'POST',
@@ -503,7 +503,7 @@ const paymentMethodFields = [
     e.preventDefault();
 
     try {
-      const response = await fetch(form.action, {
+      const response = await window.dosSubmissionFetch(form.action, {
         method: 'POST',
         body: new FormData(form),
         headers: {

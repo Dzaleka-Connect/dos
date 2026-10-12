@@ -13,7 +13,7 @@ const pageDescription = "Submit your poet or spoken word artist profile to be fe
     <!-- Form Section -->
     <section class="py-8 bg-white">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <form id="poetForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-8">
+        <form id="poetForm" action="/api/form-relay?form=poets-submit" method="POST" class="submission-form space-y-8">
           <!-- Profile Type -->
           <div>
             <label class="block text-lg font-semibold text-gray-900 mb-4">Profile type</label>
@@ -227,6 +227,8 @@ const pageDescription = "Submit your poet or spoken word artist profile to be fe
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
   // Handle profile type selection
   const profileTypeInputs = document.querySelectorAll('input[name="profileType"]');
   const groupFields = document.getElementById('groupFields');

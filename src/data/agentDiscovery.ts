@@ -410,7 +410,7 @@ const openApiOperations: Record<string, OpenApiOperation[]> = {
     {
       method: 'post',
       summary: 'Submit a community voice entry',
-      description: 'Submits a community voice or story payload for follow-up review.',
+      description: 'Protected website submission endpoint; requires same-origin browser verification before follow-up review.',
       tags: ['Actions'],
     },
   ],
@@ -418,7 +418,7 @@ const openApiOperations: Record<string, OpenApiOperation[]> = {
     {
       method: 'post',
       summary: 'Send a visit booking confirmation',
-      description: 'Processes a visit booking request and sends a booking confirmation email.',
+      description: 'Protected website endpoint; requires same-origin browser verification before sending a visit booking confirmation.',
       tags: ['Actions'],
     },
   ],

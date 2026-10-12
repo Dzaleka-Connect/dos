@@ -288,7 +288,7 @@ async function uploadImage(file) {
   formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
   try {
-    const response = await fetch(
+    const response = await window.dosSubmissionFetch(
       `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
       {
         method: 'POST',
@@ -339,8 +339,9 @@ async function handleSubmit(event) {
       formData.append('image_url', imageUrl);
     }
 
-    // 1. Submit to Formspree
-    const formspreeResponse = await fetch('https://formspree.io/f/xqaaajae', { // Using same ID as visit form for now, or replace if user provides new one
+    if (imageUrl) formData.delete('image');
+    // Submit for review
+    const formspreeResponse = await window.dosSubmissionFetch('/api/form-relay?form=submit-voice', { // Using same ID as visit form for now, or replace if user provides new one
       method: 'POST',
       body: formData,
       headers: {
@@ -364,13 +365,13 @@ async function handleSubmit(event) {
       email: form.email?.value // Add email field to form if not present
     };
 
-    fetch('/.netlify/functions/submit-voice', {
+    await window.dosSubmissionFetch('/.netlify/functions/submit-voice', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(apiData)
-    }).catch(err => console.error('API notification failed:', err));
+    });
 
     // Success feedback
     alert('Thank you. We have received your story and will review it.');

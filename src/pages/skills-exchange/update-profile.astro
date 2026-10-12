@@ -78,7 +78,7 @@ const profilesData = Object.fromEntries(
   <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-3xl rounded border border-slate-200 bg-white">
         <form
-          action="https://formspree.io/f/xqaaajae"
+          action="/api/form-relay?form=skills-exchange-update-profile"
           method="POST"
           class="submission-form space-y-8 divide-y divide-gray-200 p-5 sm:p-8"
           id="profileForm"
@@ -499,7 +499,7 @@ const profilesData = Object.fromEntries(
     const action = form.action;
 
     try {
-      const response = await fetch(action, {
+      const response = await window.dosSubmissionFetch(action, {
         method: 'POST',
         body: data,
         headers: {

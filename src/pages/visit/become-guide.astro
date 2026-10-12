@@ -10,6 +10,8 @@ const ogImage = "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji
 
 <MainLayout title={pageTitle} description={description} keywords={keywords} ogImage={ogImage}>
   <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
     // Form validation and submission handler
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('guideRegistrationForm');
@@ -119,7 +121,7 @@ const ogImage = "https://tumainiletu.org/wp-content/uploads/2024/10/Badre_Bahaji
           <div class="bg-white rounded p-5 sm:p-8">
             <form
               id="guideRegistrationForm"
-              action="https://formspree.io/f/xqaaajae"
+              action="/api/form-relay?form=visit-become-guide"
               method="POST"
               class="submission-form space-y-8"
             >

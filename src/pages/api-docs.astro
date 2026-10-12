@@ -271,7 +271,7 @@ const actionEndpoints = [
     path: "/api/submit-voice",
     description:
       "Submits a community voice/story payload for follow-up review and email notification.",
-    notes: ["Body requires `title`, `author`, and `content`."],
+    notes: ["Use the website submission form. Same-origin requests require a single-use browser verification; unsigned POSTs return 403. Body requires `title`, `author`, and `content`."],
     example: `curl -X POST "${baseApiUrl}/submit-voice" -H "Content-Type: application/json" -d '{"title":"Story title","author":"Name","content":"Story text"}'`,
   },
   {
@@ -302,7 +302,7 @@ const actionEndpoints = [
     description:
       "Processes a visit booking request and sends a booking confirmation email.",
     notes: [
-      "Used by the visit booking flow. Requires booking details in JSON.",
+      "Protected website endpoint: requires same-origin browser verification and booking details in JSON. Unsigned POSTs return 403.",
     ],
     example: `curl -X POST "${baseApiUrl}/send-booking-confirmation" -H "Content-Type: application/json" -d '{"name":"Visitor","email":"visitor@example.com","visitDate":"2026-04-20","visitTime":"10:00","groupSize":"2-5","tourType":"standard","meetingPoint":"appfactory","paymentMethod":"cash"}'`,
   },

@@ -1,9 +1,15 @@
+import { checkNetlifySubmission } from '../../src/lib/submissions/netlify-guard';
 import { Resend } from 'resend';
 import type { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
+  if (event.httpMethod === 'POST') {
+    const rejected = await checkNetlifySubmission(event);
+    if (rejected) return rejected;
+  }
+
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,

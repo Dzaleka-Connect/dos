@@ -53,7 +53,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
                 </div>
             </div>
 
-            <form id="incidentForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-5">
+            <form id="incidentForm" action="/api/form-relay?form=rights-navigator-report" method="POST" class="submission-form space-y-5">
                 <input type="hidden" name="_subject" value="New Rights Violation Report (Rights Navigator)" />
 
                 <!-- Category -->
@@ -145,6 +145,8 @@ import MainLayout from '../../layouts/MainLayout.astro';
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../../utils/submissionFetch';
+
   const form = document.getElementById('incidentForm') as HTMLFormElement;
   const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
   const submitText = document.getElementById('submitText') as HTMLElement;

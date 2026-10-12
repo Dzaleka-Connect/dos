@@ -474,6 +474,8 @@ import Schema from '../components/Schema.astro';
 </style>
 
 <script>
+  import { initSubmissionProtection } from '../utils/submissionFetch';
+  initSubmissionProtection();
   import { initFormErrors } from '../utils/formErrors';
   document.querySelectorAll<HTMLFormElement>('form.submission-form, form[data-error-summary]').forEach(initFormErrors);
 </script>

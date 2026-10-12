@@ -33,7 +33,7 @@ const formId = 'emergency-relief-form';
 
           <form
             id={formId}
-            action="https://formspree.io/f/xqaaajae"
+            action="/api/form-relay?form=applications-internal-emergency"
             method="POST"
             class="submission-form space-y-6"
             enctype="multipart/form-data"
@@ -274,6 +274,8 @@ const formId = 'emergency-relief-form';
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../../../utils/submissionFetch';
+
   // Client-side form validation
   window.addEventListener('load', function() {
     const form = document.getElementById(formId);

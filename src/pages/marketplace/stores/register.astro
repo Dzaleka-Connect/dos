@@ -285,7 +285,7 @@ const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
           formData.append('upload_preset', uploadPreset);
           formData.append('folder', folder);
 
-          const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          const response = await window.dosSubmissionFetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
             method: 'POST',
             body: formData
           });
@@ -380,22 +380,22 @@ const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
         };
 
         // Submit to Formspree first (backup storage)
-        const formspreeResponse = await fetch('https://formspree.io/f/xqaaajae', {
+        const formspreeResponse = await window.dosSubmissionFetch('/api/form-relay?form=marketplace-stores-register', {
           method: 'POST',
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
         if (!formspreeResponse.ok) {
-          console.error('Formspree error');
+          throw new Error('Your submission could not be delivered. Please try again.');
         }
 
         // Send email notification via Netlify function
-        fetch('/.netlify/functions/submit-store', {
+        await window.dosSubmissionFetch('/.netlify/functions/submit-store', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
-        }).catch(err => console.error('Netlify function error:', err));
+        });
 
         window.location.href = '/marketplace/stores/success';
       } catch (error) {

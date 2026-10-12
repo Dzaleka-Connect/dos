@@ -114,7 +114,7 @@ const quickLinks = [
             Send a clear message with the page, service, or issue you are asking about. If the situation is urgent, use <a href="/get-help-now" class="font-medium text-primary-700 underline">Get help now</a> first.
           </p>
 
-          <form id="supportForm" action="https://formspree.io/f/xqaaajae" method="POST" class="submission-form space-y-6">
+          <form id="supportForm" action="/api/form-relay?form=support" method="POST" class="submission-form space-y-6">
             <div class="grid gap-6 md:grid-cols-2">
               <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -247,6 +247,8 @@ const quickLinks = [
 </MainLayout>
 
 <script>
+import { submissionFetch as fetch } from '../utils/submissionFetch';
+
   const form = document.getElementById('supportForm') as HTMLFormElement;
   const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
   const submitText = document.getElementById('submitText') as HTMLElement;

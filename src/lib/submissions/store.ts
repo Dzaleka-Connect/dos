@@ -1,3 +1,4 @@
+import { ensureGuardTable } from './guard-store';
 import { recordSubmission } from '../insights/submission';
 import { type Database, handleContentCreate } from 'emdash';
 import type { Kysely } from 'kysely';
@@ -11,6 +12,7 @@ export interface SubmissionRow {
 export const submissionDb = (db: Kysely<Database>) => db.withTables<{ _dos_submissions: SubmissionRow }>();
 
 export async function ensureSubmissionTable(db: Kysely<Database>) {
+  await ensureGuardTable(db);
   await submissionDb(db).schema.createTable('_dos_submissions').ifNotExists()
     .addColumn('id', 'varchar(64)', c => c.primaryKey())
     .addColumn('form', 'text', c => c.notNull()).addColumn('title', 'text', c => c.notNull())
@@ -113,7 +115,7 @@ export async function deliverSubmissions(db: Kysely<Database>, onlyId?: string, 
     if (!claim) return;
     try {
       const response = await send('https://formspree.io/f/xqaaajae', { method: 'POST', redirect: 'error', signal: AbortSignal.timeout(15000),
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json', Origin: 'https://services.dzaleka.com' },
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json', Origin: 'https://services.dzaleka.com', Referer: 'https://services.dzaleka.com/' },
         body: JSON.stringify({ ...JSON.parse(row.payload), 'form-name': row.form, submission_id: row.id, source: `https://services.dzaleka.com${row.source_path}` }),
       });
       if (response.ok) await database.updateTable('_dos_submissions').set({ delivery: 'sent', lease_until: null }).where('id', '=', row.id).execute();

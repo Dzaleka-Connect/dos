@@ -42,7 +42,7 @@ const { formId } = Astro.props;
           <ul class="mt-1 text-sm list-disc list-inside pl-2">
             <li>Check your internet connection</li>
             <li>Ensure all required fields are filled</li>
-            <li>Reduce file sizes if uploading documents (max 10MB)</li>
+            <li>Reduce file sizes if uploading documents (max 4MB)</li>
           </ul>
           <p class="mt-2 text-sm">
             Need help? Contact us at{' '}
@@ -98,16 +98,16 @@ const { formId } = Astro.props;
             }
           });
 
-          // Check if total file size exceeds 10MB
-          if (totalSize > 10 * 1024 * 1024) {
-            throw new Error('Total file size exceeds 10MB limit. Reduce file sizes and try again.');
+          // Check if total file size exceeds 4MB
+          if (totalSize > 4 * 1024 * 1024) {
+            throw new Error('Total file size exceeds 4MB limit. Reduce file sizes and try again.');
           }
 
           // Get form data
           const formData = new FormData(form);
 
           // Submit the form
-          const response = await fetch(form.action, {
+          const response = await window.dosSubmissionFetch(form.action, {
             method: 'POST',
             body: formData,
             headers: {

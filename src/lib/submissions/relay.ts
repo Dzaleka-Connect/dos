@@ -1,3 +1,4 @@
+import { correctionError, spamError } from './spam';
 import { eventMetadata, shouldTrack } from '../insights/transport';
 import { createHmac } from 'node:crypto';
 import { fieldsSchema, signSubmission, validSignature, value, type Submission } from './contract';
@@ -52,7 +53,8 @@ export async function relaySubmission(request: Request, clientAddress: string, s
       }
       fields = fieldsSchema.parse(entries);
     }
-    if (value(fields, '_gotcha')) return Response.json({ ok: true });
+    const spam = spamError(fields) || (form === 'service-correction' ? correctionError(fields) : null);
+    if (spam) return fail(spam, 422);
     const required = form === 'service-registration' ? ['orgName', 'orgType', 'orgDescription', 'serviceDescription', 'serviceCategory', 'email', 'phone', 'availability']
       : form === 'service-correction' ? ['name', 'email', 'title']
       : form === 'event-submission' ? ['title', 'description', 'date', 'location', 'category', 'organizerName', 'organizerEmail']
